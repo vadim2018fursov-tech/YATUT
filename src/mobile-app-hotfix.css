@@ -647,3 +647,314 @@
 
 
 /* VERCEL GIT SYNC TRIGGER — connected production deployment */
+
+
+/* =========================================================
+   YATUT MOBILE POLISH V2
+   Header spacing / four post actions / stronger bottom nav
+========================================================= */
+
+@media (max-width: 767px) {
+  /* HEADER: leave breathing room between search and actions */
+  .topbar-inner {
+    grid-template-columns: 108px minmax(0, 1fr) auto !important;
+    gap: 7px !important;
+  }
+
+  .brand {
+    width: 108px !important;
+    max-width: 108px !important;
+    min-width: 108px !important;
+    overflow: hidden;
+  }
+
+  .desktop-search {
+    display: flex !important;
+    min-width: 0 !important;
+    justify-content: flex-start !important;
+  }
+
+  .desktop-search-content {
+    min-width: 0 !important;
+    justify-content: flex-start !important;
+  }
+
+  .desktop-search-content svg {
+    width: 19px !important;
+    height: 19px !important;
+    min-width: 19px !important;
+    flex: 0 0 19px !important;
+  }
+
+  .topbar-actions {
+    flex: 0 0 auto !important;
+    gap: 5px !important;
+  }
+
+  .topbar-actions .icon-button,
+  .topbar-actions .profile-mini {
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    border-radius: 13px !important;
+  }
+
+  /* POST ACTIONS: like / comment / share / save always in one row */
+  .post-actions {
+    width: 100% !important;
+    padding: 8px 6px 10px !important;
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    align-items: stretch !important;
+    gap: 3px !important;
+    overflow: hidden !important;
+  }
+
+  .post-actions > button {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 54px !important;
+    padding: 6px 2px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    border-radius: 12px !important;
+    color: #666c7a !important;
+    font-size: 10px !important;
+    font-weight: 780 !important;
+    line-height: 1.05 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+  }
+
+  .post-actions > button svg {
+    width: 21px !important;
+    height: 21px !important;
+    min-width: 21px !important;
+    stroke-width: 2 !important;
+  }
+
+  .post-actions > button > span {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .post-actions .post-save-button {
+    grid-column: auto !important;
+    grid-row: auto !important;
+  }
+
+  .post-actions .reaction-active {
+    background: #f4f0ff !important;
+    color: #635bff !important;
+  }
+
+  /* BOTTOM NAV: larger labels and visible icon surfaces */
+  .mobile-nav {
+    position: fixed !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    z-index: 4000 !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+    height: calc(82px + env(safe-area-inset-bottom)) !important;
+    padding: 7px 8px calc(7px + env(safe-area-inset-bottom)) !important;
+
+    display: grid !important;
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    align-items: center !important;
+    gap: 2px !important;
+
+    border-top: 1px solid #e7e8f0 !important;
+    background: rgba(255, 255, 255, .97) !important;
+    box-shadow: 0 -10px 30px rgba(30, 30, 55, .07) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    overflow: visible !important;
+  }
+
+  .mobile-nav > button:not(.mobile-create-button) {
+    min-width: 0 !important;
+    min-height: 64px !important;
+    padding: 4px 1px !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 5px !important;
+
+    border-radius: 14px !important;
+    background: transparent !important;
+    color: #858a98 !important;
+  }
+
+  .mobile-nav > button:not(.mobile-create-button) > span:first-child {
+    width: 40px !important;
+    height: 34px !important;
+
+    display: grid !important;
+    place-items: center !important;
+
+    border: 1px solid #ececf3 !important;
+    border-radius: 12px !important;
+    background: #f5f5f9 !important;
+    color: #747988 !important;
+  }
+
+  .mobile-nav > button:not(.mobile-create-button) svg {
+    width: 22px !important;
+    height: 22px !important;
+    max-width: none !important;
+    stroke-width: 2.15 !important;
+  }
+
+  .mobile-nav > button:not(.mobile-create-button) > small {
+    color: inherit !important;
+    font-size: 11px !important;
+    font-weight: 820 !important;
+    line-height: 1 !important;
+    letter-spacing: .05px !important;
+    white-space: nowrap !important;
+  }
+
+  .mobile-nav > button.active:not(.mobile-create-button) {
+    color: #635bff !important;
+  }
+
+  .mobile-nav > button.active:not(.mobile-create-button) > span:first-child {
+    border-color: transparent !important;
+    background: #eceaff !important;
+    color: #635bff !important;
+    box-shadow: inset 0 0 0 1px rgba(99, 91, 255, .05) !important;
+  }
+
+  .mobile-nav .mobile-profile-avatar {
+    font-size: 15px !important;
+    font-weight: 900 !important;
+  }
+
+  .mobile-create-button {
+    min-width: 0 !important;
+    min-height: 70px !important;
+    margin-top: -11px !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 4px !important;
+
+    background: transparent !important;
+    color: #635bff !important;
+    overflow: visible !important;
+  }
+
+  .mobile-create-button > span {
+    width: 52px !important;
+    height: 52px !important;
+
+    display: grid !important;
+    place-items: center !important;
+
+    border: 4px solid #fff !important;
+    border-radius: 17px !important;
+    background: linear-gradient(145deg, #786fff, #635bff) !important;
+    color: #fff !important;
+
+    font-size: 27px !important;
+    font-weight: 950 !important;
+
+    box-shadow: 0 10px 24px rgba(99, 91, 255, .28) !important;
+  }
+
+  .mobile-create-button > small {
+    color: #635bff !important;
+    font-size: 11px !important;
+    font-weight: 850 !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+  }
+}
+
+@media (max-width: 430px) {
+  /* On narrow iPhones keep the logo mark, remove the redundant TUT word.
+     This gives the search and notification/chat buttons enough room. */
+  .topbar-inner {
+    grid-template-columns: 48px minmax(0, 1fr) auto !important;
+    padding: 9px 10px !important;
+    gap: 6px !important;
+  }
+
+  .brand {
+    width: 48px !important;
+    max-width: 48px !important;
+    min-width: 48px !important;
+    gap: 0 !important;
+  }
+
+  .brand-tut {
+    display: none !important;
+  }
+
+  .brand-ya {
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px !important;
+  }
+
+  .desktop-search {
+    height: 44px !important;
+    padding: 0 10px !important;
+  }
+
+  .desktop-search-content {
+    gap: 7px !important;
+  }
+
+  .desktop-search-content > span:last-child {
+    font-size: 0 !important;
+  }
+
+  .desktop-search-content > span:last-child::after {
+    content: "Пошук";
+    font-size: 13px;
+    font-weight: 650;
+  }
+
+  .topbar-actions {
+    gap: 4px !important;
+  }
+
+  .topbar-actions .icon-button,
+  .topbar-actions .profile-mini {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    border-radius: 12px !important;
+  }
+
+  .topbar-actions svg {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  .post-actions > button {
+    font-size: 9.5px !important;
+  }
+
+  .mobile-nav {
+    padding-right: 5px !important;
+    padding-left: 5px !important;
+  }
+
+  .mobile-nav > button:not(.mobile-create-button) > small,
+  .mobile-create-button > small {
+    font-size: 10.5px !important;
+  }
+}
