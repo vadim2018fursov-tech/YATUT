@@ -5,7 +5,7 @@ import {
   useState,
 } from "react";
 
-import "./App.css";
+import "./App.css";\nimport "./mobile-app-hotfix.css";
 
 import Stories from "./components/Stories";
 import Profile from "./components/Profile";
