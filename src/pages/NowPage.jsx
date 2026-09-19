@@ -12,29 +12,99 @@ import {
   TrendingUp,
   Users,
   Video,
+  Zap,
 } from "lucide-react";
 
-const FRIENDS = [
+import {
+  useMemo,
+  useState,
+} from "react";
+
+const FRIEND_ACTIVITY = [
   {
     id: "maria",
     name: "Марія",
-    action:
-      "зараз у центрі Києва",
+    action: "зараз у центрі Києва",
+    detail: "Хрещатик · 1,2 км",
     ago: "2 хв",
+    tone: "violet",
   },
   {
     id: "oleksandr",
     name: "Олександр",
-    action:
-      "дивиться LIVE",
+    action: "дивиться LIVE",
+    detail: "Поділ просто неба",
     ago: "4 хв",
+    tone: "blue",
   },
   {
     id: "sofia",
     name: "Софія",
-    action:
-      "додала PULSE момент",
+    action: "додала PULSE момент",
+    detail: "Контрактова площа",
     ago: "7 хв",
+    tone: "pink",
+  },
+  {
+    id: "anna",
+    name: "Анна",
+    action: "приєдналась до події",
+    detail: "Вечірній Київ",
+    ago: "11 хв",
+    tone: "orange",
+  },
+];
+
+const LIVE_ITEMS = [
+  {
+    id: "live-khreshchatyk",
+    title: "Хрещатик зараз",
+    place: "Центр · Київ",
+    viewers: "1,2K",
+    people: "428 поруч",
+  },
+  {
+    id: "live-podil",
+    title: "Поділ ввечері",
+    place: "Контрактова площа",
+    viewers: "846",
+    people: "214 поруч",
+  },
+];
+
+const QUICK_EVENTS = [
+  {
+    time: "19:30",
+    title: "Вечірній Київ",
+    place: "Хрещатик",
+    people: "1,2K",
+  },
+  {
+    time: "20:00",
+    title: "Поділ просто неба",
+    place: "Контрактова площа",
+    people: "428",
+  },
+  {
+    time: "21:00",
+    title: "Нічний PULSE",
+    place: "Центр",
+    people: "684",
+  },
+];
+
+const WINDOWS = [
+  {
+    id: "15m",
+    label: "15 хв",
+  },
+  {
+    id: "1h",
+    label: "1 год",
+  },
+  {
+    id: "today",
+    label: "Сьогодні",
   },
 ];
 
@@ -45,40 +115,32 @@ function NowSection({
   action,
   onAction,
   children,
+  className = "",
 }) {
   return (
-    <section className="now-page-card">
-      <header>
-        <div>
-          <span>
-            <Icon
-              size={18}
-            />
+    <section
+      className={`now-v2-card ${className}`}
+    >
+      <header className="now-v2-card__header">
+        <div className="now-v2-card__heading">
+          <span className="now-v2-card__icon">
+            <Icon size={18} />
           </span>
 
           <div>
-            <strong>
-              {title}
-            </strong>
-
-            <small>
-              {subtitle}
-            </small>
+            <strong>{title}</strong>
+            <small>{subtitle}</small>
           </div>
         </div>
 
         {action && (
           <button
             type="button"
-            onClick={
-              onAction
-            }
+            className="now-v2-card__action"
+            onClick={onAction}
           >
             {action}
-
-            <ArrowRight
-              size={15}
-            />
+            <ArrowRight size={15} />
           </button>
         )}
       </header>
@@ -92,204 +154,323 @@ export default function NowPage({
   onNavigate,
   onOpenChat,
 }) {
-  return (
-    <div className="now-page">
-      <section className="now-page-hero">
-        <div>
-          <span className="now-page-hero__badge">
-            <Activity
-              size={15}
-            />
+  const [
+    activeWindow,
+    setActiveWindow,
+  ] = useState("15m");
 
+  const activityLabel =
+    useMemo(
+      () => {
+        if (activeWindow === "1h") {
+          return "За останню годину";
+        }
+
+        if (activeWindow === "today") {
+          return "Сьогодні";
+        }
+
+        return "За останні 15 хвилин";
+      },
+      [activeWindow]
+    );
+
+  return (
+    <div className="now-page now-v2-page">
+      <section className="now-v2-hero">
+        <div className="now-v2-hero__glow now-v2-hero__glow--one" />
+        <div className="now-v2-hero__glow now-v2-hero__glow--two" />
+
+        <div className="now-v2-hero__copy">
+          <span className="now-v2-hero__badge">
+            <Zap size={15} />
             ЯТУТ ЗАРАЗ
           </span>
 
           <h1>
-            Що відбувається
+            Твій світ
+            <br />
             прямо зараз
           </h1>
 
           <p>
-            Люди, друзі,
-            події, місця,
-            LIVE та активність
-            за останні хвилини.
+            Не стрічка минулого. Тут тільки те,
+            що відбувається зараз: люди, друзі,
+            місця, LIVE, події та активність міста.
           </p>
 
-          <div className="now-page-hero__chips">
-            <span>
-              <Users
-                size={14}
-              />
-
-              32 друзів онлайн
-            </span>
-
-            <span>
-              <Radio
-                size={14}
-              />
-
-              6 LIVE
-            </span>
-
-            <span>
-              <MapPin
-                size={14}
-              />
-
-              Київ активний
-            </span>
+          <div className="now-v2-window">
+            {WINDOWS.map(
+              (item) => (
+                <button
+                  type="button"
+                  key={item.id}
+                  className={
+                    activeWindow === item.id
+                      ? "is-active"
+                      : ""
+                  }
+                  onClick={() =>
+                    setActiveWindow(item.id)
+                  }
+                >
+                  {item.label}
+                </button>
+              )
+            )}
           </div>
         </div>
 
-        <div className="now-page-hero__pulse">
-          <span>
+        <button
+          type="button"
+          className="now-v2-live-orbit"
+          onClick={() =>
+            onNavigate?.("pulse")
+          }
+        >
+          <span className="now-v2-live-orbit__ring now-v2-live-orbit__ring--outer" />
+          <span className="now-v2-live-orbit__ring now-v2-live-orbit__ring--middle" />
+          <span className="now-v2-live-orbit__core">
             <i />
           </span>
 
-          <strong>
-            ЗАРАЗ
-          </strong>
+          <strong>12,4K</strong>
+          <small>людей активні</small>
 
-          <small>
-            оновлюється
-            у реальному часі
-          </small>
+          <div>
+            <Activity size={13} />
+            PULSE Києва
+          </div>
+        </button>
+      </section>
+
+      <section className="now-v2-summary">
+        <button
+          type="button"
+          onClick={() =>
+            onNavigate?.("friends")
+          }
+        >
+          <span>
+            <Users size={19} />
+          </span>
+          <div>
+            <strong>32</strong>
+            <small>друзів онлайн</small>
+          </div>
+          <b>+5</b>
+        </button>
+
+        <button
+          type="button"
+          onClick={() =>
+            onNavigate?.("pulse")
+          }
+        >
+          <span>
+            <Flame size={19} />
+          </span>
+          <div>
+            <strong>18</strong>
+            <small>тем ростуть</small>
+          </div>
+          <b>+8</b>
+        </button>
+
+        <button
+          type="button"
+          onClick={() =>
+            onNavigate?.("live")
+          }
+        >
+          <span>
+            <Radio size={19} />
+          </span>
+          <div>
+            <strong>6</strong>
+            <small>LIVE зараз</small>
+          </div>
+          <b>LIVE</b>
+        </button>
+
+        <button
+          type="button"
+          onClick={() =>
+            onNavigate?.("events")
+          }
+        >
+          <span>
+            <CalendarDays size={19} />
+          </span>
+          <div>
+            <strong>24</strong>
+            <small>події сьогодні</small>
+          </div>
+          <b>3 скоро</b>
+        </button>
+      </section>
+
+      <section className="now-v2-changed">
+        <header>
+          <div>
+            <span>
+              <Clock3 size={18} />
+            </span>
+
+            <div>
+              <strong>
+                Що змінилось
+              </strong>
+              <small>
+                {activityLabel}
+              </small>
+            </div>
+          </div>
+
+          <span className="now-v2-changed__status">
+            <i />
+            оновлено щойно
+          </span>
+        </header>
+
+        <div className="now-v2-changed__grid">
+          <button
+            type="button"
+            onClick={() =>
+              onNavigate?.(
+                "cityPulse",
+                {
+                  cityId: "kyiv",
+                }
+              )
+            }
+          >
+            <span className="is-purple">
+              <TrendingUp size={20} />
+            </span>
+
+            <div>
+              <small>КИЇВ</small>
+              <strong>
+                Центр став активнішим
+              </strong>
+              <p>
+                +2,4K взаємодій за обраний період
+              </p>
+            </div>
+
+            <ArrowRight size={17} />
+          </button>
+
+          <button
+            type="button"
+            onClick={() =>
+              onNavigate?.("nearby")
+            }
+          >
+            <span className="is-blue">
+              <MapPin size={20} />
+            </span>
+
+            <div>
+              <small>ПОРУЧ</small>
+              <strong>
+                12 друзів у твоєму районі
+              </strong>
+              <p>
+                3 з них активні просто зараз
+              </p>
+            </div>
+
+            <ArrowRight size={17} />
+          </button>
+
+          <button
+            type="button"
+            onClick={() =>
+              onNavigate?.("clips")
+            }
+          >
+            <span className="is-pink">
+              <Video size={20} />
+            </span>
+
+            <div>
+              <small>CLIPS</small>
+              <strong>
+                Вечірній Поділ набирає хвилю
+              </strong>
+              <p>
+                +840 переглядів за кілька хвилин
+              </p>
+            </div>
+
+            <ArrowRight size={17} />
+          </button>
         </div>
       </section>
 
-      <section className="now-page-summary">
-        <article>
-          <Users
-            size={20}
-          />
-
-          <strong>
-            32
-          </strong>
-
-          <span>
-            друзів онлайн
-          </span>
-        </article>
-
-        <article>
-          <Flame
-            size={20}
-          />
-
-          <strong>
-            18
-          </strong>
-
-          <span>
-            активних тем
-          </span>
-        </article>
-
-        <article>
-          <Radio
-            size={20}
-          />
-
-          <strong>
-            6
-          </strong>
-
-          <span>
-            LIVE зараз
-          </span>
-        </article>
-
-        <article>
-          <CalendarDays
-            size={20}
-          />
-
-          <strong>
-            24
-          </strong>
-
-          <span>
-            події сьогодні
-          </span>
-        </article>
-      </section>
-
-      <div className="now-page-layout">
-        <main className="now-page-main">
+      <div className="now-v2-layout">
+        <main className="now-v2-main">
           <NowSection
             icon={Users}
             title="Друзі зараз"
             subtitle="Що роблять твої люди"
             action="Усі друзі"
             onAction={() =>
-              onNavigate?.(
-                "friends"
-              )
+              onNavigate?.("friends")
             }
           >
-            <div className="now-friends">
-              {FRIENDS.map(
-                (
-                  friend,
-                  index
-                ) => (
+            <div className="now-v2-friends">
+              {FRIEND_ACTIVITY.map(
+                (friend) => (
                   <article
-                    key={
-                      friend.id
-                    }
+                    key={friend.id}
                   >
                     <button
                       type="button"
-                      className="now-friend-avatar"
+                      className={`now-v2-avatar now-v2-avatar--${friend.tone}`}
                       onClick={() =>
                         onOpenChat?.(
                           friend.id
                         )
                       }
                     >
-                      {
-                        friend.name[
-                          0
-                        ]
-                      }
-
+                      {friend.name[0]}
                       <i />
                     </button>
 
-                    <div>
-                      <strong>
-                        {
-                          friend.name
-                        }
-                      </strong>
+                    <div className="now-v2-friend-copy">
+                      <div>
+                        <strong>
+                          {friend.name}
+                        </strong>
+                        <small>
+                          {friend.ago}
+                        </small>
+                      </div>
 
                       <p>
-                        {
-                          friend.action
-                        }
+                        {friend.action}
                       </p>
 
-                      <small>
-                        {
-                          friend.ago
-                        }
-                      </small>
+                      <span>
+                        <MapPin size={11} />
+                        {friend.detail}
+                      </span>
                     </div>
 
                     <button
                       type="button"
+                      className="now-v2-message"
+                      aria-label={`Написати ${friend.name}`}
                       onClick={() =>
                         onOpenChat?.(
                           friend.id
                         )
                       }
                     >
-                      <MessageCircle
-                        size={16}
-                      />
+                      <MessageCircle size={16} />
                     </button>
                   </article>
                 )
@@ -298,309 +479,190 @@ export default function NowPage({
           </NowSection>
 
           <NowSection
-            icon={Flame}
-            title="Набирає активність"
-            subtitle="За останні 15 хвилин"
-            action="PULSE"
+            icon={Radio}
+            title="LIVE зараз"
+            subtitle="Побач місце до того, як приїдеш"
+            action="Усі LIVE"
             onAction={() =>
-              onNavigate?.(
-                "pulse"
-              )
+              onNavigate?.("live")
             }
           >
-            <div className="now-trending">
-              <button
-                type="button"
-                onClick={() =>
-                  onNavigate?.(
-                    "pulse"
-                  )
-                }
-              >
-                <span>
-                  <TrendingUp
-                    size={18}
-                  />
-                </span>
+            <div className="now-v2-live-grid">
+              {LIVE_ITEMS.map(
+                (item) => (
+                  <button
+                    type="button"
+                    key={item.id}
+                    onClick={() =>
+                      onNavigate?.(
+                        "live",
+                        {
+                          videoId: item.id,
+                        }
+                      )
+                    }
+                  >
+                    <div className="now-v2-live-preview">
+                      <span className="now-v2-live-badge">
+                        <i />
+                        LIVE
+                      </span>
 
-                <div>
-                  <strong>
-                    Київ зараз
-                  </strong>
+                      <span className="now-v2-live-viewers">
+                        <Users size={11} />
+                        {item.viewers}
+                      </span>
 
-                  <p>
-                    +2,4K взаємодій
-                    за 15 хвилин
-                  </p>
-                </div>
+                      <div className="now-v2-live-play">
+                        <Radio size={27} />
+                      </div>
+                    </div>
 
-                <ArrowRight
-                  size={17}
-                />
-              </button>
-
-              <button
-                type="button"
-                onClick={() =>
-                  onNavigate?.(
-                    "clips"
-                  )
-                }
-              >
-                <span>
-                  <Video
-                    size={18}
-                  />
-                </span>
-
-                <div>
-                  <strong>
-                    Вечірній Поділ
-                  </strong>
-
-                  <p>
-                    Clip швидко
-                    набирає перегляди
-                  </p>
-                </div>
-
-                <ArrowRight
-                  size={17}
-                />
-              </button>
+                    <div className="now-v2-live-copy">
+                      <strong>
+                        {item.title}
+                      </strong>
+                      <span>
+                        <MapPin size={11} />
+                        {item.place}
+                      </span>
+                      <small>
+                        {item.people}
+                      </small>
+                    </div>
+                  </button>
+                )
+              )}
             </div>
           </NowSection>
 
           <NowSection
             icon={MapPin}
             title="Поруч із тобою"
-            subtitle="Люди та місця навколо"
-            action="Поруч"
+            subtitle="Твій район просто зараз"
+            action="Відкрити Поруч"
             onAction={() =>
-              onNavigate?.(
-                "nearby"
-              )
+              onNavigate?.("nearby")
             }
           >
-            <div className="now-nearby">
-              <div>
+            <div className="now-v2-nearby">
+              <button
+                type="button"
+                onClick={() =>
+                  onNavigate?.("nearby")
+                }
+              >
                 <span>
-                  <Users
-                    size={17}
-                  />
+                  <Users size={18} />
                 </span>
+                <strong>428 людей</strong>
+                <small>активні поруч</small>
+              </button>
 
-                <strong>
-                  428 людей
-                </strong>
-
-                <small>
-                  зараз поруч
-                </small>
-              </div>
-
-              <div>
+              <button
+                type="button"
+                onClick={() =>
+                  onNavigate?.("nearby")
+                }
+              >
                 <span>
-                  <Sparkles
-                    size={17}
-                  />
+                  <Sparkles size={18} />
                 </span>
+                <strong>12 друзів</strong>
+                <small>у цьому районі</small>
+              </button>
 
-                <strong>
-                  12 друзів
-                </strong>
-
-                <small>
-                  у цьому районі
-                </small>
-              </div>
-
-              <div>
+              <button
+                type="button"
+                onClick={() =>
+                  onNavigate?.("pulse")
+                }
+              >
                 <span>
-                  <Activity
-                    size={17}
-                  />
+                  <Activity size={18} />
                 </span>
-
-                <strong>
-                  8 відео
-                </strong>
-
-                <small>
-                  за останню годину
-                </small>
-              </div>
+                <strong>8 моментів</strong>
+                <small>за останню годину</small>
+              </button>
             </div>
           </NowSection>
+        </main>
 
+        <aside className="now-v2-sidebar">
           <NowSection
-            icon={Radio}
-            title="LIVE зараз"
-            subtitle="Подивись, що відбувається"
-            action="Усі LIVE"
+            icon={CalendarDays}
+            title="Починається скоро"
+            subtitle="Події сьогодні"
+            action="Усі"
             onAction={() =>
-              onNavigate?.(
-                "live"
-              )
+              onNavigate?.("events")
             }
+            className="now-v2-card--events"
           >
-            <div className="now-live-grid">
-              {[
-                {
-                  title:
-                    "Хрещатик зараз",
-                  viewers:
-                    "1,2K",
-                },
-                {
-                  title:
-                    "Поділ ввечері",
-                  viewers:
-                    "846",
-                },
-              ].map(
-                (item) => (
+            <div className="now-v2-events">
+              {QUICK_EVENTS.map(
+                (event) => (
                   <button
-                    key={
-                      item.title
-                    }
                     type="button"
+                    key={`${event.time}-${event.title}`}
                     onClick={() =>
-                      onNavigate?.(
-                        "live"
-                      )
+                      onNavigate?.("events")
                     }
                   >
+                    <span className="now-v2-event-time">
+                      {event.time}
+                    </span>
+
                     <div>
-                      <span>
-                        LIVE
-                      </span>
+                      <strong>
+                        {event.title}
+                      </strong>
 
-                      <i>
-                        {
-                          item.viewers
-                        }
-                      </i>
-
-                      <Radio
-                        size={28}
-                      />
+                      <small>
+                        <MapPin size={10} />
+                        {event.place}
+                      </small>
                     </div>
 
-                    <strong>
-                      {
-                        item.title
-                      }
-                    </strong>
-
-                    <small>
-                      Київ
-                    </small>
+                    <b>
+                      {event.people}
+                    </b>
                   </button>
                 )
               )}
             </div>
           </NowSection>
-        </main>
 
-        <aside className="now-page-sidebar">
           <NowSection
-            icon={CalendarDays}
-            title="Починається скоро"
-            subtitle="Події сьогодні"
-            action="Події"
+            icon={Bell}
+            title="Потребує уваги"
+            subtitle="Твої нові сигнали"
+            action="Сповіщення"
             onAction={() =>
               onNavigate?.(
-                "events"
+                "notifications"
               )
             }
           >
-            <div className="now-events">
+            <div className="now-v2-alerts">
               <button
                 type="button"
                 onClick={() =>
-                  onNavigate?.(
-                    "events"
-                  )
+                  onOpenChat?.("maria")
                 }
               >
-                <span>
-                  19:30
+                <span className="is-message">
+                  <MessageCircle size={15} />
                 </span>
-
                 <div>
                   <strong>
-                    Вечірній Київ
+                    Марія написала тобі
                   </strong>
-
                   <small>
-                    Хрещатик
+                    2 нові повідомлення
                   </small>
                 </div>
-              </button>
-
-              <button
-                type="button"
-                onClick={() =>
-                  onNavigate?.(
-                    "events"
-                  )
-                }
-              >
-                <span>
-                  20:00
-                </span>
-
-                <div>
-                  <strong>
-                    Поділ просто неба
-                  </strong>
-
-                  <small>
-                    Контрактова площа
-                  </small>
-                </div>
-              </button>
-            </div>
-          </NowSection>
-
-          <NowSection
-            icon={MessageCircle}
-            title="Активні чати"
-            subtitle="Нові повідомлення"
-            action="Чати"
-            onAction={() =>
-              onNavigate?.(
-                "chats"
-              )
-            }
-          >
-            <div className="now-chats">
-              <button
-                type="button"
-                onClick={() =>
-                  onOpenChat?.(
-                    "maria"
-                  )
-                }
-              >
-                <span>
-                  М
-                </span>
-
-                <div>
-                  <strong>
-                    Марія
-                  </strong>
-
-                  <small>
-                    Ти сьогодні в центрі?
-                  </small>
-                </div>
-
-                <b>
-                  2
-                </b>
+                <b>2</b>
               </button>
 
               <button
@@ -611,44 +673,54 @@ export default function NowPage({
                   )
                 }
               >
-                <span>
-                  Я
+                <span className="is-community">
+                  <Users size={15} />
                 </span>
-
                 <div>
                   <strong>
-                    ЯТУТ Київ
+                    ЯТУТ Київ активний
                   </strong>
-
                   <small>
                     +14 нових повідомлень
                   </small>
                 </div>
-
-                <b>
-                  14
-                </b>
+                <b>14</b>
               </button>
             </div>
           </NowSection>
 
-          <section className="now-city-card">
-            <MapPin
-              size={20}
-            />
+          <section className="now-v2-city">
+            <div className="now-v2-city__top">
+              <span>
+                <MapPin size={20} />
+              </span>
 
-            <small>
-              ТВОЄ МІСТО
-            </small>
+              <div>
+                <small>
+                  ТВОЄ МІСТО
+                </small>
+                <strong>
+                  Київ зараз
+                </strong>
+              </div>
+            </div>
 
-            <strong>
-              Київ живе
-              прямо зараз
-            </strong>
+            <div className="now-v2-city__signal">
+              <span>
+                <i />
+              </span>
+
+              <div>
+                <strong>12,4K</strong>
+                <small>
+                  людей у PULSE
+                </small>
+              </div>
+            </div>
 
             <p>
-              12,4K людей
-              активні у PULSE.
+              Центр, Поділ та Оболонь —
+              найактивніші просто зараз.
             </p>
 
             <button
@@ -657,17 +729,13 @@ export default function NowPage({
                 onNavigate?.(
                   "cityPulse",
                   {
-                    cityId:
-                      "kyiv",
+                    cityId: "kyiv",
                   }
                 )
               }
             >
-              Відкрити Київ
-
-              <ArrowRight
-                size={15}
-              />
+              Відкрити PULSE Києва
+              <ArrowRight size={15} />
             </button>
           </section>
         </aside>
