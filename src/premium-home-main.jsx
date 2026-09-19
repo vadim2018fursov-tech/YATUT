@@ -49,7 +49,7 @@ import "./styles/events-pulse.css";
 
 /* PROFILE + NOW */
 
-import "./styles/profile-now-v2.css";
+import "./styles/profile-now-v2.css";\nimport "./styles/now-page-v2.css";
 
 /* POLISH */
 
