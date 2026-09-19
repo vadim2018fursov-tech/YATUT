@@ -21,6 +21,15 @@ import Saved from "./components/Saved";
 import Settings from "./components/Settings";
 import Notifications from "./components/Notifications";
 
+import NowPage from "./pages/NowPage";
+import PulsePage from "./pages/PulsePage";
+import ClipsPage from "./pages/ClipsPage";
+import WatchPage from "./pages/WatchPage";
+import LivePage from "./pages/LivePage";
+import CityPulsePage from "./pages/CityPulsePage";
+import CreateHubPage from "./pages/CreateHubPage";
+import CreateMediaPage from "./pages/CreateMediaPage";
+
 import YatutIcon from "./components/YatutIcon";
 
 import {
@@ -55,6 +64,18 @@ const MAIN_NAV = [
     id: "home",
     icon: "home",
     title: "Головна",
+  },
+
+  {
+    id: "now",
+    icon: "now",
+    title: "Зараз",
+  },
+
+  {
+    id: "pulse",
+    icon: "pulse",
+    title: "PULSE",
   },
 
   {
@@ -122,9 +143,9 @@ const MOBILE_NAV = [
   },
 
   {
-    id: "search",
-    icon: "search",
-    title: "Пошук",
+    id: "now",
+    icon: "now",
+    title: "Зараз",
   },
 
   {
@@ -3009,7 +3030,7 @@ function MobileNavigation({
                 type="button"
                 onClick={() =>
                   onNavigate(
-                    "communities"
+                    "create"
                   )
                 }
               >
@@ -3161,6 +3182,30 @@ function App() {
     setChatPersonId,
   ] =
     useState(null);
+
+  const [
+    selectedCityId,
+    setSelectedCityId,
+  ] =
+    useState("kyiv");
+
+  const [
+    selectedVideoId,
+    setSelectedVideoId,
+  ] =
+    useState(null);
+
+  const [
+    selectedLiveVideoId,
+    setSelectedLiveVideoId,
+  ] =
+    useState(null);
+
+  const [
+    selectedCreateType,
+    setSelectedCreateType,
+  ] =
+    useState("video");
 
   const [
     notificationsOpen,
@@ -3359,6 +3404,43 @@ function App() {
       }
     }
 
+    if (
+      page === "cityPulse" &&
+      payload?.cityId
+    ) {
+      setSelectedCityId(
+        payload.cityId
+      );
+    }
+
+    if (
+      page === "clips" ||
+      page === "watch"
+    ) {
+      setSelectedVideoId(
+        payload?.videoId ||
+        null
+      );
+    }
+
+    if (
+      page === "live"
+    ) {
+      setSelectedLiveVideoId(
+        payload?.videoId ||
+        null
+      );
+    }
+
+    if (
+      page === "createMedia" &&
+      payload?.type
+    ) {
+      setSelectedCreateType(
+        payload.type
+      );
+    }
+
     setCurrentPage(
       page
     );
@@ -3430,6 +3512,108 @@ function App() {
       case "home":
         return (
           <Home
+            onNavigate={
+              goToPage
+            }
+          />
+        );
+
+      case "now":
+        return (
+          <NowPage
+            onNavigate={
+              goToPage
+            }
+            onOpenChat={
+              openPersonChat
+            }
+          />
+        );
+
+      case "pulse":
+        return (
+          <PulsePage
+            onNavigate={
+              goToPage
+            }
+          />
+        );
+
+      case "clips":
+        return (
+          <ClipsPage
+            key={
+              selectedVideoId ||
+              "clips"
+            }
+            initialVideoId={
+              selectedVideoId
+            }
+            onNavigate={
+              goToPage
+            }
+          />
+        );
+
+      case "watch":
+        return (
+          <WatchPage
+            key={
+              selectedVideoId ||
+              "watch"
+            }
+            initialVideoId={
+              selectedVideoId
+            }
+            onNavigate={
+              goToPage
+            }
+          />
+        );
+
+      case "live":
+        return (
+          <LivePage
+            key={
+              selectedLiveVideoId ||
+              "live"
+            }
+            initialVideoId={
+              selectedLiveVideoId
+            }
+            onNavigate={
+              goToPage
+            }
+          />
+        );
+
+      case "cityPulse":
+        return (
+          <CityPulsePage
+            cityId={
+              selectedCityId
+            }
+            onNavigate={
+              goToPage
+            }
+          />
+        );
+
+      case "create":
+        return (
+          <CreateHubPage
+            onNavigate={
+              goToPage
+            }
+          />
+        );
+
+      case "createMedia":
+        return (
+          <CreateMediaPage
+            type={
+              selectedCreateType
+            }
             onNavigate={
               goToPage
             }
@@ -3546,6 +3730,29 @@ function App() {
     currentPage ===
     "home";
 
+  const sidebarCurrentPage =
+    [
+      "clips",
+      "watch",
+      "live",
+      "cityPulse",
+    ].includes(
+      currentPage
+    )
+      ? "pulse"
+      : currentPage;
+
+  const hideGlobalMobileNav =
+    [
+      "pulse",
+      "clips",
+      "watch",
+      "live",
+      "cityPulse",
+    ].includes(
+      currentPage
+    );
+
   return (
     <div className="app">
       <TopBar
@@ -3597,7 +3804,7 @@ function App() {
       >
         <LeftSidebar
           currentPage={
-            currentPage
+            sidebarCurrentPage
           }
           onNavigate={
             goToPage
@@ -3622,17 +3829,19 @@ function App() {
         )}
       </div>
 
-      <MobileNavigation
-        currentPage={
-          currentPage
-        }
-        onNavigate={
-          goToPage
-        }
-        unreadChatMessages={
-          unreadChatMessages
-        }
-      />
+      {!hideGlobalMobileNav && (
+        <MobileNavigation
+          currentPage={
+            currentPage
+          }
+          onNavigate={
+            goToPage
+          }
+          unreadChatMessages={
+            unreadChatMessages
+          }
+        />
+      )}
     </div>
   );
 }
