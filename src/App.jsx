@@ -1265,6 +1265,10 @@ function PostCard({
             name="saved"
             size={17}
           />
+
+          <span>
+            Зберегти
+          </span>
         </button>
       </div>
 
@@ -2722,9 +2726,6 @@ function TopBar({
             </span>
           </span>
 
-          <kbd>
-            ⌘ K
-          </kbd>
         </button>
 
         <div className="topbar-actions">
