@@ -1,0 +1,708 @@
+/* =========================================================
+   ЯТУТ — PREMIUM SHELL FIXES
+   Header / Logo / Search / Left navigation
+========================================================= */
+
+.premium-preview-app {
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      circle at 18% 8%,
+      rgba(124, 58, 237, 0.07),
+      transparent 28%
+    ),
+    #f7f8fc;
+
+  color: #161927;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.premium-preview-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  width: 100%;
+  height: 68px;
+
+  border-bottom:
+    1px solid
+    rgba(224, 226, 235, 0.82);
+
+  background:
+    rgba(255, 255, 255, 0.88);
+
+  -webkit-backdrop-filter:
+    blur(20px);
+
+  backdrop-filter:
+    blur(20px);
+}
+
+.premium-preview-header-inner {
+  width:
+    min(
+      1540px,
+      calc(100% - 48px)
+    );
+
+  height: 68px;
+
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 28px;
+}
+
+/* =========================================================
+   HEADER LEFT
+========================================================= */
+
+.premium-preview-header-left {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 24px;
+}
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.premium-preview-logo {
+  flex: 0 0 auto;
+
+  width: 118px;
+  height: 48px;
+
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+
+  border: 0;
+
+  background: transparent;
+
+  cursor: pointer;
+}
+
+.premium-preview-logo-letter {
+  position: relative;
+  z-index: 2;
+
+  width: 48px;
+  height: 48px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 15px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #8b5cf6 0%,
+      #7c3aed 55%,
+      #6d28d9 100%
+    );
+
+  color: #fff;
+
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 1;
+
+  box-shadow:
+    0 8px 22px
+    rgba(124, 58, 237, 0.24);
+}
+
+.premium-preview-logo-word {
+  margin-left: 8px;
+
+  color: #181927;
+
+  font-size: 25px;
+  font-weight: 900;
+  line-height: 1;
+
+  letter-spacing: -1px;
+}
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.premium-preview-search {
+  width: 300px;
+  height: 42px;
+
+  padding: 0 14px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  border:
+    1px solid
+    #e5e7ef;
+
+  border-radius: 14px;
+
+  background:
+    #f7f8fb;
+
+  color: #8e93a3;
+
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.premium-preview-search:focus-within {
+  border-color:
+    rgba(124, 58, 237, 0.4);
+
+  background: #fff;
+
+  box-shadow:
+    0 0 0 4px
+    rgba(124, 58, 237, 0.07);
+}
+
+.premium-preview-search input {
+  min-width: 0;
+  width: 100%;
+
+  padding: 0;
+
+  border: 0;
+  outline: none;
+
+  background: transparent;
+
+  color: #272a37;
+
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.premium-preview-search input::placeholder {
+  color: #a0a4b0;
+}
+
+/* =========================================================
+   HEADER RIGHT
+========================================================= */
+
+.premium-preview-header-right {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+}
+
+.premium-preview-header-icon {
+  position: relative;
+
+  width: 42px;
+  height: 42px;
+
+  flex: 0 0 42px;
+
+  padding: 0;
+
+  display: grid;
+  place-items: center;
+
+  border:
+    1px solid
+    transparent;
+
+  border-radius: 13px;
+
+  background:
+    transparent;
+
+  color: #52586b;
+
+  cursor: pointer;
+
+  transition:
+    background 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.premium-preview-header-icon:hover {
+  background:
+    #f2efff;
+
+  color:
+    #7c3aed;
+}
+
+.premium-preview-header-icon:active {
+  transform:
+    scale(0.94);
+}
+
+.premium-preview-header-badge {
+  position: absolute;
+
+  top: 2px;
+  right: 1px;
+
+  min-width: 17px;
+  height: 17px;
+
+  padding: 0 4px;
+
+  display: grid;
+  place-items: center;
+
+  border:
+    2px solid
+    #fff;
+
+  border-radius: 999px;
+
+  background:
+    #7c3aed;
+
+  color: #fff;
+
+  font-size: 9px;
+  font-weight: 850;
+}
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+.premium-preview-profile {
+  min-width: 162px;
+  height: 48px;
+
+  margin-left: 4px;
+  padding:
+    4px 9px 4px 5px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  border:
+    1px solid
+    transparent;
+
+  border-radius: 15px;
+
+  background:
+    transparent;
+
+  color: #242735;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    background 160ms ease,
+    border-color 160ms ease;
+}
+
+.premium-preview-profile:hover {
+  border-color:
+    #e8e5f5;
+
+  background:
+    #f8f6ff;
+}
+
+.premium-preview-profile-avatar {
+  position: relative;
+
+  width: 38px;
+  height: 38px;
+
+  flex: 0 0 38px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      145deg,
+      #4c4564,
+      #262234
+    );
+
+  color: #fff;
+
+  font-size: 14px;
+  font-weight: 850;
+}
+
+.premium-preview-profile-avatar i {
+  position: absolute;
+
+  right: 0;
+  bottom: 0;
+
+  width: 10px;
+  height: 10px;
+
+  border:
+    2px solid
+    #fff;
+
+  border-radius: 50%;
+
+  background:
+    #22c58b;
+}
+
+.premium-preview-profile-copy {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  line-height: 1.12;
+}
+
+.premium-preview-profile-copy strong {
+  color: #232633;
+
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.premium-preview-profile-copy small {
+  margin-top: 4px;
+
+  color: #9397a5;
+
+  font-size: 9px;
+
+  white-space: nowrap;
+}
+
+.premium-preview-profile-chevron {
+  margin-left: auto;
+
+  color: #9da1ac;
+}
+
+/* =========================================================
+   BODY
+========================================================= */
+
+.premium-preview-body {
+  width:
+    min(
+      1540px,
+      calc(100% - 48px)
+    );
+
+  margin: 0 auto;
+
+  padding:
+    22px 0 60px;
+}
+
+/* =========================================================
+   LEFT NAVIGATION
+========================================================= */
+
+.premium-preview-navigation {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.premium-preview-navigation-primary,
+.premium-preview-navigation-secondary {
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.premium-preview-nav-item {
+  position: relative;
+
+  width: 100%;
+  min-height: 43px;
+
+  padding:
+    0 10px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+
+  border: 0;
+
+  border-radius: 13px;
+
+  background:
+    transparent;
+
+  color: #667085;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 620;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    background 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.premium-preview-nav-item:hover {
+  background:
+    rgba(124, 58, 237, 0.065);
+
+  color:
+    #5f36ca;
+}
+
+.premium-preview-nav-item:active {
+  transform:
+    scale(0.98);
+}
+
+.premium-preview-nav-item.is-active {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(124, 58, 237, 0.13),
+      rgba(124, 58, 237, 0.045)
+    );
+
+  color:
+    #6d28d9;
+
+  font-weight: 780;
+}
+
+.premium-preview-nav-icon {
+  width: 25px;
+  height: 25px;
+
+  flex: 0 0 25px;
+
+  display: grid;
+  place-items: center;
+}
+
+.premium-preview-nav-badge {
+  min-width: 21px;
+  height: 21px;
+
+  margin-left: auto;
+
+  padding: 0 6px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 999px;
+
+  background:
+    #7c3aed;
+
+  color: #fff;
+
+  font-size: 9px;
+  font-weight: 850;
+}
+
+.premium-preview-navigation-divider {
+  height: 1px;
+
+  margin:
+    10px 8px;
+
+  background:
+    #e8e9ef;
+}
+
+.premium-preview-location-button {
+  width: 100%;
+  min-height: 42px;
+
+  margin-top: 10px;
+  padding:
+    0 10px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+
+  border: 0;
+
+  border-radius: 13px;
+
+  background:
+    transparent;
+
+  color: #667085;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 650;
+
+  cursor: pointer;
+}
+
+.premium-preview-location-button:hover {
+  background:
+    rgba(124, 58, 237, 0.06);
+
+  color:
+    #6d28d9;
+}
+
+/* =========================================================
+   TEMP PAGE
+========================================================= */
+
+.premium-preview-section {
+  min-height: 680px;
+
+  padding: 30px;
+
+  border:
+    1px solid
+    #e8e9f0;
+
+  border-radius: 24px;
+
+  background:
+    rgba(255, 255, 255, 0.94);
+
+  box-shadow:
+    0 12px 40px
+    rgba(31, 35, 48, 0.06);
+}
+
+.premium-preview-section h1 {
+  margin:
+    0 0 8px;
+
+  color: #202331;
+
+  font-size: 26px;
+}
+
+.premium-preview-section p {
+  margin: 0;
+
+  color: #878c9a;
+
+  font-size: 14px;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1180px) {
+  .premium-preview-search {
+    width: 230px;
+  }
+
+  .premium-preview-profile-copy {
+    display: none;
+  }
+
+  .premium-preview-profile {
+    min-width: 48px;
+    width: 48px;
+
+    padding: 5px;
+  }
+
+  .premium-preview-profile-chevron {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .premium-preview-header-inner,
+  .premium-preview-body {
+    width:
+      calc(100% - 24px);
+  }
+
+  .premium-preview-logo {
+    width: 52px;
+  }
+
+  .premium-preview-logo-word {
+    display: none;
+  }
+
+  .premium-preview-search {
+    width:
+      min(
+        300px,
+        38vw
+      );
+  }
+}
+
+@media (max-width: 680px) {
+  .premium-preview-header {
+    height: 60px;
+  }
+
+  .premium-preview-header-inner {
+    height: 60px;
+  }
+
+  .premium-preview-search {
+    display: none;
+  }
+
+  .premium-preview-header-icon:nth-of-type(3),
+  .premium-preview-header-icon:nth-of-type(4) {
+    display: none;
+  }
+}
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+  .premium-preview-header-icon,
+  .premium-preview-profile,
+  .premium-preview-nav-item {
+    transition: none;
+  }
+}

@@ -1,0 +1,1248 @@
+/* =========================================================
+   ЯТУТ PULSE
+   CREATOR PROFILE
+========================================================= */
+
+.pulse-creator-page {
+  width: 100%;
+
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 14px;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.pulse-creator-hero {
+  position: relative;
+
+  min-height: 330px;
+
+  overflow: hidden;
+
+  border-radius: 26px;
+
+  background: #0a0712;
+
+  color: #fff;
+
+  box-shadow:
+    0 22px 55px
+    rgba(
+      19,
+      11,
+      41,
+      0.18
+    );
+}
+
+
+.pulse-creator-hero__background {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+}
+
+
+.pulse-creator-hero__shade {
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(
+        8,
+        5,
+        17,
+        0.94
+      )
+      0%,
+      rgba(
+        8,
+        5,
+        17,
+        0.7
+      )
+      48%,
+      rgba(
+        8,
+        5,
+        17,
+        0.3
+      )
+      100%
+    ),
+    linear-gradient(
+      0deg,
+      rgba(
+        8,
+        5,
+        17,
+        0.62
+      ),
+      transparent
+      55%
+    );
+}
+
+
+.pulse-creator-hero__back {
+  position: absolute;
+
+  top: 16px;
+
+  left: 16px;
+
+  z-index: 10;
+
+  min-height: 36px;
+
+  padding:
+    0 10px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.15
+    );
+
+  border-radius: 11px;
+
+  background:
+    rgba(
+      7,
+      5,
+      15,
+      0.44
+    );
+
+  backdrop-filter:
+    blur(
+      12px
+    );
+
+  color: #fff;
+
+  font-size: 8px;
+
+  font-weight: 850;
+
+  cursor: pointer;
+}
+
+
+.pulse-creator-hero__content {
+  position: absolute;
+
+  right: 28px;
+
+  bottom: 27px;
+
+  left: 28px;
+
+  z-index: 5;
+
+  display: grid;
+
+  grid-template-columns:
+    auto
+    minmax(
+      0,
+      1fr
+    )
+    auto;
+
+  align-items: end;
+
+  gap: 15px;
+}
+
+
+/* =========================================================
+   AVATAR
+========================================================= */
+
+.pulse-creator-avatar {
+  position: relative;
+}
+
+
+.pulse-creator-avatar
+> span {
+  width: 94px;
+
+  height: 94px;
+
+  display: grid;
+
+  place-items: center;
+
+  border:
+    4px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.92
+    );
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ede4ff,
+      #bba3ff
+    );
+
+  color: #5b21b6;
+
+  font-size: 31px;
+
+  font-weight: 950;
+
+  box-shadow:
+    0 15px 36px
+    rgba(
+      0,
+      0,
+      0,
+      0.3
+    );
+}
+
+
+.pulse-creator-avatar
+i {
+  position: absolute;
+
+  right: 6px;
+
+  bottom: 7px;
+
+  width: 17px;
+
+  height: 17px;
+
+  border:
+    3px solid #fff;
+
+  border-radius: 50%;
+
+  background: #22c55e;
+}
+
+
+/* =========================================================
+   IDENTITY
+========================================================= */
+
+.pulse-creator-identity {
+  min-width: 0;
+}
+
+
+.pulse-creator-identity__name {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+}
+
+
+.pulse-creator-identity__name
+h1 {
+  margin: 0;
+
+  overflow: hidden;
+
+  font-size:
+    clamp(
+      27px,
+      3vw,
+      39px
+    );
+
+  line-height: 1;
+
+  letter-spacing:
+    -0.8px;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
+}
+
+
+.pulse-creator-identity__name
+span {
+  width: 21px;
+
+  height: 21px;
+
+  flex: 0 0
+    21px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 50%;
+
+  background:
+    #7c3aed;
+
+  color: #fff;
+}
+
+
+.pulse-creator-identity
+> strong {
+  display: block;
+
+  margin-top: 5px;
+
+  color:
+    #c8b8f6;
+
+  font-size: 10px;
+}
+
+
+.pulse-creator-identity
+p {
+  max-width: 450px;
+
+  margin:
+    8px 0 0;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.67
+    );
+
+  font-size: 9px;
+
+  line-height: 1.5;
+}
+
+
+.pulse-creator-location {
+  margin-top: 8px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.77
+    );
+
+  font-size: 8px;
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.pulse-creator-actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+}
+
+
+.pulse-creator-actions
+button {
+  min-height: 40px;
+
+  padding:
+    0 12px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 5px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.16
+    );
+
+  border-radius: 11px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.11
+    );
+
+  backdrop-filter:
+    blur(
+      12px
+    );
+
+  color: #fff;
+
+  font-size: 8px;
+
+  font-weight: 850;
+
+  cursor: pointer;
+}
+
+
+.pulse-creator-actions
+.pulse-creator-subscribe {
+  border: 0;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #c026d3
+    );
+
+  box-shadow:
+    0 10px 26px
+    rgba(
+      124,
+      58,
+      237,
+      0.32
+    );
+}
+
+
+.pulse-creator-actions
+.pulse-creator-subscribe.is-subscribed {
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.18
+    );
+
+  box-shadow: none;
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.pulse-creator-stats {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  gap: 9px;
+}
+
+
+.pulse-creator-stats
+article {
+  min-width: 0;
+
+  padding: 14px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 3px;
+
+  border:
+    1px solid
+    var(
+      --pulse-border
+    );
+
+  border-radius: 16px;
+
+  background: #fff;
+
+  box-shadow:
+    var(
+      --pulse-shadow-card
+    );
+}
+
+
+.pulse-creator-stats
+strong {
+  font-size: 18px;
+}
+
+
+.pulse-creator-stats
+span {
+  color: #989da9;
+
+  font-size: 7px;
+}
+
+
+/* =========================================================
+   PRESENCE
+========================================================= */
+
+.pulse-creator-presence {
+  padding: 13px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content:
+    space-between;
+
+  gap: 12px;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #17102d,
+      #29134d
+    );
+
+  color: #fff;
+}
+
+
+.pulse-creator-presence
+> div {
+  min-width: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+}
+
+
+.pulse-creator-presence
+> div
+> span {
+  width: 40px;
+
+  height: 40px;
+
+  flex: 0 0
+    40px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 12px;
+
+  background:
+    rgba(
+      167,
+      139,
+      250,
+      0.15
+    );
+
+  color: #c4b5fd;
+}
+
+
+.pulse-creator-presence
+> div
+> div {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+
+.pulse-creator-presence
+small {
+  color: #a994e4;
+
+  font-size: 6px;
+
+  font-weight: 900;
+}
+
+
+.pulse-creator-presence
+strong {
+  font-size: 11px;
+}
+
+
+.pulse-creator-presence
+p {
+  margin: 1px 0 0;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.48
+    );
+
+  font-size: 7px;
+}
+
+
+.pulse-creator-presence
+> button {
+  min-height: 38px;
+
+  padding:
+    0 11px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.14
+    );
+
+  border-radius: 10px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.08
+    );
+
+  color: #fff;
+
+  font-size: 7px;
+
+  font-weight: 850;
+
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   TABS
+========================================================= */
+
+.pulse-creator-tabs {
+  padding: 5px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  gap: 4px;
+
+  border:
+    1px solid
+    var(
+      --pulse-border
+    );
+
+  border-radius: 15px;
+
+  background: #fff;
+}
+
+
+.pulse-creator-tabs
+button {
+  min-height: 41px;
+
+  border: 0;
+
+  border-radius: 10px;
+
+  background: transparent;
+
+  color: #868b97;
+
+  font-size: 8px;
+
+  font-weight: 850;
+
+  cursor: pointer;
+}
+
+
+.pulse-creator-tabs
+button.is-active {
+  background:
+    #f0eaff;
+
+  color: #6d28d9;
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.pulse-creator-content {
+  padding: 15px;
+
+  border:
+    1px solid
+    var(
+      --pulse-border
+    );
+
+  border-radius: 20px;
+
+  background: #fff;
+
+  box-shadow:
+    var(
+      --pulse-shadow-card
+    );
+}
+
+
+.pulse-creator-content
+> header {
+  margin-bottom: 13px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content:
+    space-between;
+
+  gap: 10px;
+}
+
+
+.pulse-creator-content
+> header
+> div {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  color: #7c3aed;
+}
+
+
+.pulse-creator-content
+> header
+> div
+> div {
+  display: flex;
+
+  flex-direction: column;
+}
+
+
+.pulse-creator-content
+> header
+strong {
+  color: #1d1e27;
+
+  font-size: 12px;
+}
+
+
+.pulse-creator-content
+> header
+small,
+.pulse-creator-content
+> header
+> span {
+  color: #989daa;
+
+  font-size: 7px;
+}
+
+
+.pulse-creator-video-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  gap: 10px;
+}
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.pulse-creator-empty {
+  min-height: 220px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 5px;
+
+  color: #7c3aed;
+}
+
+
+.pulse-creator-empty
+strong {
+  color: #25262f;
+
+  font-size: 12px;
+}
+
+
+.pulse-creator-empty
+span {
+  color: #999eaa;
+
+  font-size: 8px;
+}
+
+
+/* =========================================================
+   BOTTOM CTA
+========================================================= */
+
+.pulse-creator-bottom {
+  padding: 14px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content:
+    space-between;
+
+  gap: 14px;
+
+  border:
+    1px solid
+    rgba(
+      124,
+      58,
+      237,
+      0.14
+    );
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #faf7ff,
+      #f5f7ff
+    );
+}
+
+
+.pulse-creator-bottom
+> div {
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  color: #7c3aed;
+}
+
+
+.pulse-creator-bottom
+> div
+> div {
+  display: flex;
+
+  flex-direction: column;
+}
+
+
+.pulse-creator-bottom
+strong {
+  color: #20212a;
+
+  font-size: 10px;
+}
+
+
+.pulse-creator-bottom
+span {
+  color: #999eaa;
+
+  font-size: 7px;
+}
+
+
+.pulse-creator-bottom
+> button {
+  min-height: 39px;
+
+  padding:
+    0 13px;
+
+  border: 0;
+
+  border-radius: 11px;
+
+  background:
+    var(
+      --pulse-gradient-primary
+    );
+
+  color: #fff;
+
+  font-size: 8px;
+
+  font-weight: 850;
+
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (
+  max-width: 1100px
+) {
+  .pulse-creator-video-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(
+          0,
+          1fr
+        )
+      );
+  }
+
+
+  .pulse-creator-hero__content {
+    grid-template-columns:
+      auto
+      minmax(
+        0,
+        1fr
+      );
+  }
+
+
+  .pulse-creator-actions {
+    grid-column:
+      1 / -1;
+
+    margin-left:
+      109px;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (
+  max-width: 850px
+) {
+  .premium-app-shell-creator
+  .premium-global-header,
+  .premium-app-shell-creator
+  .yat-sidebar {
+    display:
+      none !important;
+  }
+
+
+  .premium-app-shell-creator
+  .premium-desktop-layout {
+    width: 100% !important;
+
+    max-width: none !important;
+
+    margin: 0 !important;
+
+    display: block !important;
+  }
+
+
+  .premium-app-shell-creator
+  .premium-page-content {
+    width: 100% !important;
+
+    max-width: none !important;
+
+    padding: 0 !important;
+  }
+
+
+  .pulse-creator-page {
+    padding:
+      0 9px
+      22px;
+
+    gap: 10px;
+
+    background: #f7f8fc;
+  }
+
+
+  .pulse-creator-hero {
+    min-height: 430px;
+
+    margin:
+      0 -9px;
+
+    border-radius:
+      0 0
+      25px 25px;
+  }
+
+
+  .pulse-creator-hero__shade {
+    background:
+      linear-gradient(
+        0deg,
+        rgba(
+          7,
+          5,
+          15,
+          0.94
+        )
+        0%,
+        rgba(
+          7,
+          5,
+          15,
+          0.16
+        )
+        78%
+      );
+  }
+
+
+  .pulse-creator-hero__content {
+    right: 17px;
+
+    bottom: 22px;
+
+    left: 17px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items:
+      flex-start;
+
+    gap: 10px;
+  }
+
+
+  .pulse-creator-avatar
+  > span {
+    width: 78px;
+
+    height: 78px;
+
+    font-size: 25px;
+  }
+
+
+  .pulse-creator-identity__name
+  h1 {
+    font-size: 31px;
+  }
+
+
+  .pulse-creator-actions {
+    width: 100%;
+
+    margin: 0;
+
+    overflow-x: auto;
+
+    scrollbar-width: none;
+  }
+
+
+  .pulse-creator-actions::-webkit-scrollbar {
+    display: none;
+  }
+
+
+  .pulse-creator-actions
+  button {
+    flex: 0 0 auto;
+  }
+
+
+  .pulse-creator-stats {
+    grid-template-columns:
+      repeat(
+        2,
+        1fr
+      );
+
+    gap: 7px;
+  }
+
+
+  .pulse-creator-presence {
+    align-items:
+      stretch;
+
+    flex-direction: column;
+  }
+
+
+  .pulse-creator-presence
+  > button {
+    width: 100%;
+  }
+
+
+  .pulse-creator-tabs {
+    position: sticky;
+
+    top: 0;
+
+    z-index: 100;
+  }
+
+
+  .pulse-creator-video-grid {
+    display: flex;
+
+    overflow-x: auto;
+
+    scrollbar-width: none;
+  }
+
+
+  .pulse-creator-video-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+
+  .pulse-creator-video-grid
+  .pulse-video-card {
+    min-width:
+      min(
+        68vw,
+        250px
+      );
+  }
+
+
+  .pulse-creator-video-grid
+  .pulse-video-card--clip {
+    min-width:
+      min(
+        46vw,
+        170px
+      );
+  }
+
+
+  .pulse-creator-bottom {
+    align-items:
+      stretch;
+
+    flex-direction: column;
+  }
+
+
+  .pulse-creator-bottom
+  > button {
+    width: 100%;
+  }
+}

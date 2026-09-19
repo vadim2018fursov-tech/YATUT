@@ -1,0 +1,1362 @@
+/* =========================================================
+   ЯТУТ PULSE
+   UKRAINE MAP
+========================================================= */
+
+
+/* =========================================================
+   MAP ROOT
+========================================================= */
+
+.pulse-ukraine-map {
+  position: relative;
+
+  min-width: 0;
+  min-height: 330px;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    rgba(
+      167,
+      139,
+      250,
+      0.18
+    );
+
+  border-radius:
+    24px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(
+        27,
+        13,
+        60,
+        0.96
+      ),
+      rgba(
+        9,
+        8,
+        24,
+        0.97
+      )
+    );
+
+  box-shadow:
+    inset
+    0 0 50px
+    rgba(
+      124,
+      58,
+      237,
+      0.08
+    );
+}
+
+
+/* =========================================================
+   BACKGROUND
+========================================================= */
+
+.pulse-ukraine-map__background {
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle
+      at 54% 42%,
+      rgba(
+        147,
+        51,
+        234,
+        0.28
+      ),
+      transparent
+      28%
+    ),
+    radial-gradient(
+      circle
+      at 75% 60%,
+      rgba(
+        37,
+        99,
+        235,
+        0.19
+      ),
+      transparent
+      28%
+    ),
+    radial-gradient(
+      circle
+      at 25% 70%,
+      rgba(
+        192,
+        38,
+        211,
+        0.16
+      ),
+      transparent
+      24%
+    );
+}
+
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.pulse-ukraine-map__grid {
+  position: absolute;
+
+  inset: 0;
+
+  opacity:
+    0.14;
+
+  background-image:
+    linear-gradient(
+      rgba(
+        255,
+        255,
+        255,
+        0.12
+      )
+      1px,
+      transparent
+      1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(
+        255,
+        255,
+        255,
+        0.12
+      )
+      1px,
+      transparent
+      1px
+    );
+
+  background-size:
+    44px
+    44px;
+
+  mask-image:
+    linear-gradient(
+      to bottom,
+      rgba(
+        0,
+        0,
+        0,
+        0.45
+      ),
+      transparent
+    );
+}
+
+
+/* =========================================================
+   STARS
+========================================================= */
+
+.pulse-ukraine-map__stars
+i {
+  position: absolute;
+
+  width:
+    3px;
+
+  height:
+    3px;
+
+  border-radius:
+    50%;
+
+  background:
+    #fff;
+
+  opacity:
+    0.55;
+
+  box-shadow:
+    0 0 8px
+    rgba(
+      255,
+      255,
+      255,
+      0.72
+    );
+}
+
+
+.pulse-ukraine-map__stars
+i:nth-child(1) {
+  top: 16%;
+  left: 12%;
+}
+
+
+.pulse-ukraine-map__stars
+i:nth-child(2) {
+  top: 22%;
+  left: 78%;
+}
+
+
+.pulse-ukraine-map__stars
+i:nth-child(3) {
+  top: 72%;
+  left: 84%;
+}
+
+
+.pulse-ukraine-map__stars
+i:nth-child(4) {
+  top: 83%;
+  left: 35%;
+}
+
+
+.pulse-ukraine-map__stars
+i:nth-child(5) {
+  top: 10%;
+  left: 57%;
+}
+
+
+.pulse-ukraine-map__stars
+i:nth-child(6) {
+  top: 57%;
+  left: 8%;
+}
+
+
+/* =========================================================
+   SVG MAP
+========================================================= */
+
+.pulse-ukraine-map__shape {
+  position: absolute;
+
+  top: 9%;
+  left: 5%;
+
+  width: 90%;
+  height: 82%;
+
+  overflow: visible;
+}
+
+
+.pulse-ukraine-map__outline-glow {
+  fill: none;
+
+  stroke:
+    rgba(
+      124,
+      58,
+      237,
+      0.32
+    );
+
+  stroke-width:
+    20;
+
+  filter:
+    blur(
+      13px
+    );
+}
+
+
+.pulse-ukraine-map__outline {
+  fill:
+    url(
+      #pulseUkraineFill
+    );
+
+  stroke:
+    url(
+      #pulseUkraineStroke
+    );
+
+  stroke-width:
+    3;
+
+  filter:
+    drop-shadow(
+      0 0 12px
+      rgba(
+        124,
+        58,
+        237,
+        0.28
+      )
+    );
+}
+
+
+.pulse-ukraine-map__region-line {
+  fill:
+    none;
+
+  stroke:
+    rgba(
+      167,
+      139,
+      250,
+      0.13
+    );
+
+  stroke-width:
+    1.5;
+}
+
+
+/* =========================================================
+   PULSE PATH
+========================================================= */
+
+.pulse-ukraine-map__pulse-path {
+  fill:
+    none;
+
+  stroke:
+    #c026d3;
+
+  stroke-width:
+    3;
+
+  stroke-linecap:
+    round;
+
+  stroke-dasharray:
+    10 16;
+
+  filter:
+    drop-shadow(
+      0 0 7px
+      rgba(
+        192,
+        38,
+        211,
+        0.95
+      )
+    );
+
+  animation:
+    pulse-map-dash
+    8s
+    linear
+    infinite;
+}
+
+
+/* =========================================================
+   HOTSPOTS
+========================================================= */
+
+.pulse-ukraine-map__hotspot {
+  fill:
+    #f59e0b;
+
+  filter:
+    drop-shadow(
+      0 0 12px
+      rgba(
+        245,
+        158,
+        11,
+        0.9
+      )
+    );
+
+  animation:
+    pulse-hotspot
+    3s
+    ease-in-out
+    infinite;
+}
+
+
+.pulse-ukraine-map__hotspot--two {
+  fill:
+    #ec4899;
+
+  animation-delay:
+    0.6s;
+}
+
+
+.pulse-ukraine-map__hotspot--three {
+  fill:
+    #2563eb;
+
+  animation-delay:
+    1.2s;
+}
+
+
+/* =========================================================
+   NODES LAYER
+========================================================= */
+
+.pulse-ukraine-map__nodes {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 5;
+}
+
+
+/* =========================================================
+   CITY NODE
+========================================================= */
+
+.pulse-city-node {
+  position: absolute;
+
+  z-index: 10;
+
+  min-width: 0;
+
+  padding: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  border: 0;
+
+  background:
+    transparent;
+
+  color:
+    #fff;
+
+  text-align:
+    left;
+
+  cursor:
+    pointer;
+
+  transform:
+    translate(
+      -50%,
+      -50%
+    );
+
+  transition:
+    transform
+    180ms
+    var(
+      --pulse-ease
+    );
+}
+
+
+.pulse-city-node:hover {
+  transform:
+    translate(
+      -50%,
+      -50%
+    )
+    scale(
+      1.06
+    );
+}
+
+
+/* =========================================================
+   NODE GLOW
+========================================================= */
+
+.pulse-city-node__glow {
+  position: absolute;
+
+  left: 10px;
+
+  top: 50%;
+
+  width:
+    58px;
+
+  height:
+    58px;
+
+  border-radius:
+    50%;
+
+  background:
+    rgba(
+      147,
+      51,
+      234,
+      0.22
+    );
+
+  filter:
+    blur(
+      10px
+    );
+
+  transform:
+    translate(
+      -50%,
+      -50%
+    )
+    scale(
+      var(
+        --pulse-node-scale,
+        1
+      )
+    );
+
+  animation:
+    pulse-city-glow
+    3.1s
+    var(
+      --pulse-ease
+    )
+    infinite;
+}
+
+
+/* =========================================================
+   NODE RING
+========================================================= */
+
+.pulse-city-node__ring {
+  position: absolute;
+
+  left: 10px;
+
+  top: 50%;
+
+  width:
+    35px;
+
+  height:
+    35px;
+
+  border:
+    1px solid
+    rgba(
+      167,
+      139,
+      250,
+      0.52
+    );
+
+  border-radius:
+    50%;
+
+  transform:
+    translate(
+      -50%,
+      -50%
+    );
+
+  animation:
+    pulse-city-ring
+    2.9s
+    var(
+      --pulse-ease
+    )
+    infinite;
+}
+
+
+/* =========================================================
+   NODE DOT
+========================================================= */
+
+.pulse-city-node__dot {
+  position: relative;
+
+  z-index: 3;
+
+  width:
+    22px;
+
+  height:
+    22px;
+
+  flex:
+    0 0
+    22px;
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  border:
+    3px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.86
+    );
+
+  border-radius:
+    50%;
+
+  background:
+    #9333ea;
+
+  color:
+    #fff;
+
+  box-shadow:
+    0 0 0 7px
+    rgba(
+      147,
+      51,
+      234,
+      0.12
+    ),
+    0 0 24px
+    rgba(
+      147,
+      51,
+      234,
+      0.84
+    );
+}
+
+
+/* =========================================================
+   NODE LABEL
+========================================================= */
+
+.pulse-city-node__label {
+  position: relative;
+
+  z-index: 3;
+
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction:
+    column;
+
+  gap: 1px;
+
+  text-shadow:
+    0 2px 8px
+    rgba(
+      0,
+      0,
+      0,
+      0.72
+    );
+}
+
+
+.pulse-city-node__label
+strong {
+  font-size:
+    10px;
+
+  font-weight:
+    900;
+}
+
+
+.pulse-city-node__label
+small {
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.68
+    );
+
+  font-size:
+    7px;
+
+  font-weight:
+    650;
+}
+
+
+/* =========================================================
+   TRENDING NODE
+========================================================= */
+
+.pulse-city-node.is-trending
+.pulse-city-node__dot {
+  width:
+    26px;
+
+  height:
+    26px;
+
+  flex-basis:
+    26px;
+}
+
+
+.pulse-city-node.is-trending
+.pulse-city-node__label
+strong {
+  font-size:
+    11px;
+}
+
+
+/* =========================================================
+   COLORS
+========================================================= */
+
+.pulse-city-node--pink
+.pulse-city-node__dot {
+  background:
+    #ec4899;
+
+  box-shadow:
+    0 0 0 7px
+    rgba(
+      236,
+      72,
+      153,
+      0.12
+    ),
+    0 0 25px
+    rgba(
+      236,
+      72,
+      153,
+      0.82
+    );
+}
+
+
+.pulse-city-node--pink
+.pulse-city-node__glow {
+  background:
+    rgba(
+      236,
+      72,
+      153,
+      0.22
+    );
+}
+
+
+.pulse-city-node--blue
+.pulse-city-node__dot {
+  background:
+    #2563eb;
+
+  box-shadow:
+    0 0 0 7px
+    rgba(
+      37,
+      99,
+      235,
+      0.12
+    ),
+    0 0 25px
+    rgba(
+      37,
+      99,
+      235,
+      0.82
+    );
+}
+
+
+.pulse-city-node--blue
+.pulse-city-node__glow {
+  background:
+    rgba(
+      37,
+      99,
+      235,
+      0.22
+    );
+}
+
+
+.pulse-city-node--orange
+.pulse-city-node__dot {
+  background:
+    #f59e0b;
+
+  box-shadow:
+    0 0 0 7px
+    rgba(
+      245,
+      158,
+      11,
+      0.12
+    ),
+    0 0 25px
+    rgba(
+      245,
+      158,
+      11,
+      0.82
+    );
+}
+
+
+.pulse-city-node--orange
+.pulse-city-node__glow {
+  background:
+    rgba(
+      245,
+      158,
+      11,
+      0.22
+    );
+}
+
+
+/* =========================================================
+   LIVE BADGE
+========================================================= */
+
+.pulse-ukraine-map__live-badge {
+  position: absolute;
+
+  top: 14px;
+  left: 14px;
+
+  z-index: 15;
+
+  min-height:
+    33px;
+
+  padding:
+    0 10px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.13
+    );
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(
+      12,
+      8,
+      29,
+      0.68
+    );
+
+  backdrop-filter:
+    blur(
+      12px
+    );
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.86
+    );
+
+  font-size:
+    8px;
+
+  font-weight:
+    800;
+}
+
+
+.pulse-ukraine-map__live-badge
+i {
+  width:
+    7px;
+
+  height:
+    7px;
+
+  border-radius:
+    50%;
+
+  background:
+    #22c55e;
+
+  box-shadow:
+    0 0 10px
+    rgba(
+      34,
+      197,
+      94,
+      0.88
+    );
+}
+
+
+/* =========================================================
+   PEOPLE CARD
+========================================================= */
+
+.pulse-ukraine-map__people {
+  position: absolute;
+
+  left: 14px;
+  bottom: 14px;
+
+  z-index: 15;
+
+  min-height:
+    48px;
+
+  padding:
+    8px 11px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.12
+    );
+
+  border-radius:
+    13px;
+
+  background:
+    rgba(
+      14,
+      8,
+      35,
+      0.72
+    );
+
+  backdrop-filter:
+    blur(
+      12px
+    );
+
+  color:
+    #fff;
+}
+
+
+.pulse-ukraine-map__people
+> div {
+  display: flex;
+
+  flex-direction:
+    column;
+}
+
+
+.pulse-ukraine-map__people
+strong {
+  font-size:
+    13px;
+}
+
+
+.pulse-ukraine-map__people
+span {
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.59
+    );
+
+  font-size:
+    7px;
+}
+
+
+/* =========================================================
+   MAP CTA
+========================================================= */
+
+.pulse-ukraine-map__cta {
+  position: absolute;
+
+  right: 14px;
+  bottom: 14px;
+
+  z-index: 15;
+
+  min-height:
+    39px;
+
+  padding:
+    0 12px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  border: 0;
+
+  border-radius:
+    12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #9333ea
+    );
+
+  color:
+    #fff;
+
+  font-size:
+    8px;
+
+  font-weight:
+    850;
+
+  cursor:
+    pointer;
+
+  box-shadow:
+    0 8px 25px
+    rgba(
+      124,
+      58,
+      237,
+      0.32
+    );
+}
+
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+.pulse-ukraine-map__message {
+  position: absolute;
+
+  top: 18px;
+  right: 18px;
+
+  z-index: 10;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.62
+    );
+
+  font-size:
+    10px;
+
+  font-style:
+    italic;
+
+  line-height:
+    1.25;
+
+  text-align:
+    right;
+
+  transform:
+    rotate(
+      -4deg
+    );
+}
+
+
+/* =========================================================
+   HERO WITH NEW MAP
+========================================================= */
+
+.pulse-hero--ukraine
+.pulse-hero__content {
+  grid-template-columns:
+    minmax(
+      240px,
+      0.62fr
+    )
+    minmax(
+      520px,
+      1.55fr
+    );
+}
+
+
+.pulse-hero__signature {
+  margin-top:
+    24px;
+
+  display: flex;
+
+  flex-wrap:
+    wrap;
+
+  gap:
+    5px 9px;
+
+  max-width:
+    260px;
+}
+
+
+.pulse-hero__signature
+span {
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.55
+    );
+
+  font-size:
+    9px;
+
+  font-weight:
+    650;
+}
+
+
+.pulse-hero__signature
+strong {
+  width: 100%;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.84
+    );
+
+  font-size:
+    10px;
+}
+
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes pulse-map-dash {
+  from {
+    stroke-dashoffset:
+      0;
+  }
+
+  to {
+    stroke-dashoffset:
+      -104;
+  }
+}
+
+
+@keyframes pulse-hotspot {
+  0%,
+  100% {
+    opacity:
+      0.6;
+
+    transform:
+      scale(
+        0.9
+      );
+  }
+
+  50% {
+    opacity:
+      1;
+
+    transform:
+      scale(
+        1.25
+      );
+  }
+}
+
+
+@keyframes pulse-city-ring {
+  0% {
+    opacity:
+      0.65;
+
+    transform:
+      translate(
+        -50%,
+        -50%
+      )
+      scale(
+        0.65
+      );
+  }
+
+  100% {
+    opacity:
+      0;
+
+    transform:
+      translate(
+        -50%,
+        -50%
+      )
+      scale(
+        1.75
+      );
+  }
+}
+
+
+@keyframes pulse-city-glow {
+  0%,
+  100% {
+    opacity:
+      0.62;
+  }
+
+  50% {
+    opacity:
+      0.24;
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (
+  max-width: 1350px
+) {
+  .pulse-hero--ukraine
+  .pulse-hero__content {
+    grid-template-columns:
+      minmax(
+        220px,
+        0.58fr
+      )
+      minmax(
+        430px,
+        1.42fr
+      );
+  }
+}
+
+
+@media (
+  max-width: 1050px
+) {
+  .pulse-hero--ukraine
+  .pulse-hero__content {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .pulse-ukraine-map {
+    min-height:
+      360px;
+  }
+}
+
+
+@media (
+  max-width: 700px
+) {
+  .pulse-ukraine-map {
+    min-height:
+      300px;
+  }
+
+
+  .pulse-city-node__label
+  strong {
+    font-size:
+      9px;
+  }
+
+
+  .pulse-city-node__label
+  small {
+    font-size:
+      6px;
+  }
+
+
+  .pulse-ukraine-map__message {
+    display:
+      none;
+  }
+
+
+  .pulse-ukraine-map__people {
+    bottom:
+      10px;
+
+    left:
+      10px;
+  }
+
+
+  .pulse-ukraine-map__cta {
+    right:
+      10px;
+
+    bottom:
+      10px;
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+  .pulse-ukraine-map__pulse-path,
+  .pulse-ukraine-map__hotspot,
+  .pulse-city-node__ring,
+  .pulse-city-node__glow {
+    animation:
+      none !important;
+  }
+}

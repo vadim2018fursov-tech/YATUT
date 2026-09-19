@@ -1,0 +1,2112 @@
+/* =========================================================
+   ЯТУТ PULSE
+   LIVE PAGE
+========================================================= */
+
+.pulse-live-page {
+  width: 100%;
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 12px;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.pulse-live-page__header {
+  min-height: 58px;
+
+  padding:
+    8px 12px;
+
+  display: grid;
+
+  grid-template-columns:
+    1fr
+    auto
+    1fr;
+
+  align-items: center;
+
+  gap: 12px;
+
+  border:
+    1px solid
+    #ececf2;
+
+  border-radius: 17px;
+
+  background: #fff;
+
+  box-shadow:
+    0 8px 26px
+    rgba(
+      24,
+      20,
+      42,
+      0.035
+    );
+}
+
+
+.pulse-live-page__back {
+  width: fit-content;
+
+  padding: 0;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  border: 0;
+
+  background: transparent;
+
+  color: #727783;
+
+  font-size: 8px;
+
+  font-weight: 850;
+
+  cursor: pointer;
+}
+
+
+.pulse-live-page__brand {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+}
+
+
+.pulse-live-page__brand
+> span {
+  width: 34px;
+
+  height: 34px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ec4899,
+      #c026d3
+    );
+
+  color: #fff;
+
+  box-shadow:
+    0 8px 20px
+    rgba(
+      236,
+      72,
+      153,
+      0.22
+    );
+}
+
+
+.pulse-live-page__brand
+> div {
+  display: flex;
+
+  flex-direction: column;
+}
+
+
+.pulse-live-page__brand
+small {
+  color: #a68abd;
+
+  font-size: 6px;
+
+  font-weight: 900;
+}
+
+
+.pulse-live-page__brand
+strong {
+  color: #22232c;
+
+  font-size: 11px;
+}
+
+
+.pulse-live-page__online {
+  justify-self: end;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  color: #737884;
+
+  font-size: 7px;
+
+  font-weight: 800;
+}
+
+
+.pulse-live-page__online
+> span {
+  width: 7px;
+
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #22c55e;
+
+  box-shadow:
+    0 0 11px
+    rgba(
+      34,
+      197,
+      94,
+      0.6
+    );
+}
+
+
+/* =========================================================
+   LAYOUT
+========================================================= */
+
+.pulse-live-layout {
+  display: grid;
+
+  grid-template-columns:
+    minmax(
+      0,
+      1fr
+    )
+    310px;
+
+  gap: 14px;
+
+  align-items: start;
+}
+
+
+.pulse-live-main {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+
+/* =========================================================
+   PLAYER
+========================================================= */
+
+.pulse-live-player {
+  position: relative;
+
+  width: 100%;
+
+  aspect-ratio:
+    16 / 9;
+
+  overflow: hidden;
+
+  border-radius: 23px;
+
+  background: #07050d;
+
+  color: #fff;
+
+  box-shadow:
+    0 22px 58px
+    rgba(
+      18,
+      9,
+      39,
+      0.2
+    );
+}
+
+
+.pulse-live-player
+> img {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+}
+
+
+.pulse-live-player__shade {
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(
+        6,
+        4,
+        12,
+        0.2
+      ),
+      rgba(
+        6,
+        4,
+        12,
+        0.12
+      )
+      45%,
+      rgba(
+        6,
+        4,
+        12,
+        0.76
+      )
+      100%
+    );
+}
+
+
+.pulse-live-player__top {
+  position: absolute;
+
+  top: 14px;
+  left: 14px;
+
+  z-index: 4;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+}
+
+
+.pulse-live-player__live,
+.pulse-live-player__viewers {
+  min-height: 30px;
+
+  padding:
+    0 9px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  border-radius: 9px;
+
+  backdrop-filter:
+    blur(
+      12px
+    );
+
+  font-size: 7px;
+
+  font-weight: 900;
+}
+
+
+.pulse-live-player__live {
+  background:
+    #ec4899;
+}
+
+
+.pulse-live-player__live
+i {
+  width: 6px;
+
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: #fff;
+}
+
+
+.pulse-live-player__viewers {
+  background:
+    rgba(
+      8,
+      5,
+      16,
+      0.55
+    );
+}
+
+
+.pulse-live-player__center {
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  z-index: 4;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  text-align: center;
+
+  transform:
+    translate(
+      -50%,
+      -50%
+    );
+}
+
+
+.pulse-live-player__pulse {
+  width: 68px;
+
+  height: 68px;
+
+  display: grid;
+
+  place-items: center;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.18
+    );
+
+  border-radius: 50%;
+
+  background:
+    rgba(
+      15,
+      7,
+      28,
+      0.52
+    );
+
+  backdrop-filter:
+    blur(
+      14px
+    );
+
+  color: #f472b6;
+
+  box-shadow:
+    0 0 0
+    12px
+    rgba(
+      236,
+      72,
+      153,
+      0.05
+    );
+}
+
+
+.pulse-live-player__center
+small {
+  margin-top: 10px;
+
+  color: #e9b7d1;
+
+  font-size: 6px;
+
+  font-weight: 900;
+}
+
+
+.pulse-live-player__center
+strong {
+  max-width: 260px;
+
+  margin-top: 3px;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.75
+    );
+
+  font-size: 9px;
+}
+
+
+.pulse-live-player__location {
+  position: absolute;
+
+  right: 14px;
+  bottom: 14px;
+
+  z-index: 4;
+
+  min-height: 32px;
+
+  padding:
+    0 9px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  border-radius: 9px;
+
+  background:
+    rgba(
+      8,
+      5,
+      16,
+      0.52
+    );
+
+  backdrop-filter:
+    blur(
+      12px
+    );
+
+  font-size: 7px;
+
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   LIVE INFO
+========================================================= */
+
+.pulse-live-info {
+  padding: 13px 2px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content:
+    space-between;
+
+  gap: 14px;
+
+  border-bottom:
+    1px solid
+    #ececf2;
+}
+
+
+.pulse-live-info__title {
+  min-width: 0;
+
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 8px;
+}
+
+
+.pulse-live-info__title
+> span {
+  margin-top: 2px;
+
+  padding:
+    4px 6px;
+
+  border-radius: 6px;
+
+  background: #ec4899;
+
+  color: #fff;
+
+  font-size: 6px;
+
+  font-weight: 900;
+}
+
+
+.pulse-live-info__title
+h1 {
+  margin: 0;
+
+  color: #20212a;
+
+  font-size:
+    clamp(
+      19px,
+      2.3vw,
+      27px
+    );
+}
+
+
+.pulse-live-info__title
+p {
+  margin:
+    4px 0 0;
+
+  color: #9297a2;
+
+  font-size: 8px;
+}
+
+
+.pulse-live-info__social {
+  flex: 0 0 auto;
+
+  display: flex;
+
+  gap: 6px;
+}
+
+
+.pulse-live-info__social
+button {
+  min-height: 36px;
+
+  padding:
+    0 10px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  border:
+    1px solid
+    #e7e8ed;
+
+  border-radius: 10px;
+
+  background: #f8f8fa;
+
+  color: #5d626e;
+
+  font-size: 7px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+
+.pulse-live-info__social
+button.is-active {
+  border-color:
+    #f5c1dc;
+
+  background:
+    #fff0f7;
+
+  color: #ec4899;
+}
+
+
+/* =========================================================
+   AUTHOR
+========================================================= */
+
+.pulse-live-author {
+  padding:
+    11px 0;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  border-bottom:
+    1px solid
+    #ececf2;
+}
+
+
+.pulse-live-author__identity {
+  min-width: 0;
+
+  padding: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  border: 0;
+
+  background: transparent;
+
+  text-align: left;
+
+  cursor: pointer;
+}
+
+
+.pulse-live-author__identity
+> span {
+  position: relative;
+
+  width: 45px;
+
+  height: 45px;
+
+  flex:
+    0 0 45px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #e8ddff,
+      #c7b3ff
+    );
+
+  color: #5b21b6;
+
+  font-size: 14px;
+
+  font-weight: 900;
+}
+
+
+.pulse-live-author__identity
+> span
+i {
+  position: absolute;
+
+  right: 1px;
+  bottom: 2px;
+
+  width: 11px;
+  height: 11px;
+
+  border:
+    2px solid #fff;
+
+  border-radius: 50%;
+
+  background: #22c55e;
+}
+
+
+.pulse-live-author__identity
+> div {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+
+.pulse-live-author__identity
+strong {
+  color: #25262e;
+
+  font-size: 10px;
+}
+
+
+.pulse-live-author__identity
+small {
+  color: #9398a4;
+
+  font-size: 7px;
+}
+
+
+.pulse-live-subscribe {
+  min-height: 38px;
+
+  margin-left: auto;
+
+  padding:
+    0 12px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  border: 0;
+
+  border-radius: 10px;
+
+  background:
+    #20212a;
+
+  color: #fff;
+
+  font-size: 7px;
+
+  font-weight: 850;
+
+  cursor: pointer;
+}
+
+
+.pulse-live-subscribe.is-active {
+  background:
+    #efeff4;
+
+  color:
+    #555a66;
+}
+
+
+/* =========================================================
+   PLACE
+========================================================= */
+
+.pulse-live-place {
+  padding: 13px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content:
+    space-between;
+
+  gap: 12px;
+
+  border:
+    1px solid
+    rgba(
+      124,
+      58,
+      237,
+      0.13
+    );
+
+  border-radius: 17px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #faf7ff,
+      #f6f8ff
+    );
+}
+
+
+.pulse-live-place
+> div {
+  min-width: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+}
+
+
+.pulse-live-place__icon {
+  width: 40px;
+
+  height: 40px;
+
+  flex:
+    0 0 40px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 12px;
+
+  background: #eee7ff;
+
+  color: #7c3aed;
+}
+
+
+.pulse-live-place
+small {
+  display: block;
+
+  color: #9d82c7;
+
+  font-size: 6px;
+
+  font-weight: 900;
+}
+
+
+.pulse-live-place
+strong {
+  display: block;
+
+  font-size: 10px;
+}
+
+
+.pulse-live-place
+p {
+  margin:
+    2px 0 0;
+
+  color: #9297a2;
+
+  font-size: 7px;
+}
+
+
+/* =========================================================
+   PEOPLE
+========================================================= */
+
+.pulse-live-people {
+  padding: 14px;
+
+  border:
+    1px solid
+    #ececf2;
+
+  border-radius: 18px;
+
+  background: #fff;
+}
+
+
+.pulse-live-people
+> header {
+  display: flex;
+
+  align-items: center;
+
+  justify-content:
+    space-between;
+
+  gap: 10px;
+}
+
+
+.pulse-live-people
+> header
+> div {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  color: #7c3aed;
+}
+
+
+.pulse-live-people
+> header
+> div
+> div {
+  display: flex;
+
+  flex-direction: column;
+}
+
+
+.pulse-live-people
+strong {
+  color: #25262f;
+
+  font-size: 10px;
+}
+
+
+.pulse-live-people
+small {
+  color: #999eaa;
+
+  font-size: 6px;
+}
+
+
+.pulse-live-people
+> header
+> span {
+  color: #7c3aed;
+
+  font-size: 9px;
+
+  font-weight: 900;
+}
+
+
+.pulse-live-people__row {
+  margin-top: 13px;
+
+  display: flex;
+
+  align-items: center;
+}
+
+
+.pulse-live-people__row
+button {
+  position: relative;
+
+  width: 39px;
+
+  height: 39px;
+
+  margin-right: -7px;
+
+  padding: 0;
+
+  border:
+    3px solid #fff;
+
+  border-radius: 50%;
+
+  background: transparent;
+
+  cursor: pointer;
+}
+
+
+.pulse-live-people__row
+button
+> span {
+  width: 100%;
+  height: 100%;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #eee8ff,
+      #cdbdff
+    );
+
+  color: #5b21b6;
+
+  font-size: 10px;
+
+  font-weight: 900;
+}
+
+
+.pulse-live-people__row
+button
+i {
+  position: absolute;
+
+  right: 0;
+  bottom: 0;
+
+  width: 9px;
+  height: 9px;
+
+  border:
+    2px solid #fff;
+
+  border-radius: 50%;
+
+  background: #22c55e;
+}
+
+
+.pulse-live-people__more {
+  margin-left: 14px;
+
+  color: #858a96;
+
+  font-size: 8px;
+
+  font-weight: 850;
+}
+
+
+/* =========================================================
+   EVENT
+========================================================= */
+
+.pulse-live-event {
+  padding: 14px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content:
+    space-between;
+
+  gap: 12px;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #17102c,
+      #2b124b
+    );
+
+  color: #fff;
+}
+
+
+.pulse-live-event
+> div {
+  min-width: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+}
+
+
+.pulse-live-event
+> div
+> span {
+  width: 40px;
+
+  height: 40px;
+
+  flex: 0 0 40px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 12px;
+
+  background:
+    rgba(
+      236,
+      72,
+      153,
+      0.13
+    );
+
+  color: #f472b6;
+}
+
+
+.pulse-live-event
+small {
+  color: #a88ed2;
+
+  font-size: 6px;
+
+  font-weight: 900;
+}
+
+
+.pulse-live-event
+strong {
+  display: block;
+
+  font-size: 11px;
+}
+
+
+.pulse-live-event
+p {
+  max-width: 390px;
+
+  margin:
+    2px 0 0;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.5
+    );
+
+  font-size: 7px;
+}
+
+
+.pulse-live-event
+> button {
+  min-height: 37px;
+
+  padding:
+    0 11px;
+
+  flex: 0 0 auto;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.13
+    );
+
+  border-radius: 10px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.08
+    );
+
+  color: #fff;
+
+  font-size: 7px;
+
+  font-weight: 850;
+
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   MORE LIVE
+========================================================= */
+
+.pulse-live-more {
+  padding: 14px;
+
+  border:
+    1px solid
+    #ececf2;
+
+  border-radius: 19px;
+
+  background: #fff;
+}
+
+
+.pulse-live-more
+> header
+> div {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  color: #ec4899;
+}
+
+
+.pulse-live-more
+> header
+> div
+> div {
+  display: flex;
+
+  flex-direction: column;
+}
+
+
+.pulse-live-more
+strong {
+  color: #25262f;
+
+  font-size: 11px;
+}
+
+
+.pulse-live-more
+small {
+  color: #999eaa;
+
+  font-size: 7px;
+}
+
+
+.pulse-live-more__grid {
+  margin-top: 12px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  gap: 9px;
+}
+
+
+.pulse-live-mini {
+  min-width: 0;
+
+  padding: 0;
+
+  border: 0;
+
+  background: transparent;
+
+  text-align: left;
+
+  cursor: pointer;
+}
+
+
+.pulse-live-mini__media {
+  position: relative;
+
+  aspect-ratio:
+    16 / 9;
+
+  overflow: hidden;
+
+  border-radius: 12px;
+
+  background: #111;
+}
+
+
+.pulse-live-mini__media
+img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  transition:
+    transform
+    180ms ease;
+}
+
+
+.pulse-live-mini:hover
+img {
+  transform:
+    scale(
+      1.04
+    );
+}
+
+
+.pulse-live-mini.is-active
+.pulse-live-mini__media {
+  box-shadow:
+    0 0 0
+    2px
+    #ec4899;
+}
+
+
+.pulse-live-mini__badge {
+  position: absolute;
+
+  top: 6px;
+  left: 6px;
+
+  padding:
+    4px 6px;
+
+  border-radius: 6px;
+
+  background: #ec4899;
+
+  color: #fff;
+
+  font-size: 6px;
+
+  font-weight: 900;
+}
+
+
+.pulse-live-mini__viewers {
+  position: absolute;
+
+  right: 6px;
+  bottom: 6px;
+
+  min-height: 23px;
+
+  padding:
+    0 6px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 4px;
+
+  border-radius: 6px;
+
+  background:
+    rgba(
+      6,
+      4,
+      12,
+      0.65
+    );
+
+  color: #fff;
+
+  font-size: 6px;
+}
+
+
+.pulse-live-mini__copy {
+  padding:
+    7px 2px 0;
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+
+.pulse-live-mini__copy
+strong {
+  overflow: hidden;
+
+  font-size: 8px;
+
+  text-overflow:
+    ellipsis;
+
+  white-space: nowrap;
+}
+
+
+.pulse-live-mini__copy
+span {
+  margin-top: 3px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 3px;
+
+  color: #9297a2;
+
+  font-size: 6px;
+}
+
+
+/* =========================================================
+   CHAT
+========================================================= */
+
+.pulse-live-chat {
+  position: sticky;
+
+  top: 92px;
+
+  height:
+    min(
+      760px,
+      calc(
+        100vh -
+        110px
+      )
+    );
+
+  min-height: 570px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    #e9e9ef;
+
+  border-radius: 20px;
+
+  background: #fff;
+
+  box-shadow:
+    0 12px 34px
+    rgba(
+      24,
+      20,
+      42,
+      0.05
+    );
+}
+
+
+.pulse-live-chat__header {
+  min-height: 59px;
+
+  padding:
+    10px 12px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content:
+    space-between;
+
+  gap: 10px;
+
+  border-bottom:
+    1px solid
+    #eeeeF3;
+}
+
+
+.pulse-live-chat__header
+> div {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  color: #ec4899;
+}
+
+
+.pulse-live-chat__header
+> div
+> div {
+  display: flex;
+
+  flex-direction: column;
+}
+
+
+.pulse-live-chat__header
+strong {
+  color: #24252d;
+
+  font-size: 10px;
+}
+
+
+.pulse-live-chat__header
+small {
+  color: #999da8;
+
+  font-size: 6px;
+}
+
+
+.pulse-live-chat__header
+> span {
+  padding:
+    4px 6px;
+
+  border-radius: 6px;
+
+  background: #ffe8f2;
+
+  color: #ec4899;
+
+  font-size: 6px;
+
+  font-weight: 900;
+}
+
+
+.pulse-live-chat__messages {
+  flex: 1;
+
+  padding: 12px;
+
+  overflow-y: auto;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 13px;
+}
+
+
+.pulse-live-chat__messages
+article {
+  display: grid;
+
+  grid-template-columns:
+    31px
+    minmax(
+      0,
+      1fr
+    );
+
+  gap: 7px;
+}
+
+
+.pulse-live-chat__avatar {
+  width: 31px;
+
+  height: 31px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 50%;
+
+  background:
+    #eee8ff;
+
+  color: #6d28d9;
+
+  font-size: 9px;
+
+  font-weight: 900;
+}
+
+
+.pulse-live-chat__messages
+strong {
+  font-size: 7px;
+}
+
+
+.pulse-live-chat__messages
+p {
+  margin:
+    2px 0 0;
+
+  color: #666b76;
+
+  font-size: 7px;
+
+  line-height: 1.4;
+}
+
+
+.pulse-live-chat__notice {
+  margin:
+    0 10px 9px;
+
+  padding: 8px;
+
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 6px;
+
+  border-radius: 9px;
+
+  background: #f8f5ff;
+
+  color: #8d7aae;
+
+  font-size: 6px;
+
+  line-height: 1.4;
+}
+
+
+.pulse-live-chat__create {
+  padding:
+    9px 10px;
+
+  display: grid;
+
+  grid-template-columns:
+    31px
+    minmax(
+      0,
+      1fr
+    );
+
+  gap: 7px;
+
+  border-top:
+    1px solid
+    #eeeeF3;
+}
+
+
+.pulse-live-chat__create
+> span {
+  width: 31px;
+
+  height: 31px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 50%;
+
+  background: #25212c;
+
+  color: #fff;
+
+  font-size: 9px;
+
+  font-weight: 900;
+}
+
+
+.pulse-live-chat__create
+> div {
+  display: grid;
+
+  grid-template-columns:
+    minmax(
+      0,
+      1fr
+    )
+    33px;
+
+  gap: 5px;
+}
+
+
+.pulse-live-chat__create
+input {
+  min-width: 0;
+
+  padding:
+    0 9px;
+
+  border:
+    1px solid
+    #e5e6ec;
+
+  border-radius: 9px;
+
+  outline: none;
+
+  background: #fafafd;
+
+  font: inherit;
+
+  font-size: 7px;
+}
+
+
+.pulse-live-chat__create
+input:focus {
+  border-color:
+    rgba(
+      124,
+      58,
+      237,
+      0.45
+    );
+}
+
+
+.pulse-live-chat__create
+button {
+  width: 33px;
+
+  height: 33px;
+
+  display: grid;
+
+  place-items: center;
+
+  border: 0;
+
+  border-radius: 9px;
+
+  background: #7c3aed;
+
+  color: #fff;
+
+  cursor: pointer;
+}
+
+
+.pulse-live-chat__create
+button:disabled {
+  opacity: 0.35;
+
+  cursor: default;
+}
+
+
+.pulse-live-chat__city {
+  min-height: 43px;
+
+  margin:
+    0 10px
+    10px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 5px;
+
+  border:
+    1px solid
+    rgba(
+      124,
+      58,
+      237,
+      0.13
+    );
+
+  border-radius: 10px;
+
+  background:
+    #f1ecff;
+
+  color: #6d28d9;
+
+  font-size: 7px;
+
+  font-weight: 850;
+
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (
+  max-width: 1150px
+) {
+  .pulse-live-layout {
+    grid-template-columns:
+      minmax(
+        0,
+        1fr
+      )
+      270px;
+  }
+
+
+  .pulse-live-more__grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(
+          0,
+          1fr
+        )
+      );
+  }
+}
+
+
+@media (
+  max-width: 1000px
+) {
+  .pulse-live-layout {
+    display: block;
+  }
+
+
+  .pulse-live-chat {
+    position: static;
+
+    height: 520px;
+
+    min-height: 0;
+
+    margin-top: 12px;
+  }
+
+
+  .pulse-live-more__grid {
+    grid-template-columns:
+      repeat(
+        3,
+        minmax(
+          0,
+          1fr
+        )
+      );
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (
+  max-width: 850px
+) {
+  .premium-app-shell-live
+  .premium-global-header,
+  .premium-app-shell-live
+  .yat-sidebar {
+    display:
+      none !important;
+  }
+
+
+  .premium-app-shell-live
+  .premium-desktop-layout {
+    display:
+      block !important;
+
+    width:
+      100% !important;
+
+    max-width:
+      none !important;
+
+    margin:
+      0 !important;
+
+    padding:
+      0 !important;
+  }
+
+
+  .premium-app-shell-live
+  .premium-page-content {
+    width:
+      100% !important;
+
+    max-width:
+      none !important;
+
+    padding:
+      0 !important;
+  }
+
+
+  .pulse-live-page {
+    gap: 8px;
+
+    padding:
+      0 8px
+      90px;
+
+    background: #f7f8fc;
+  }
+
+
+  .pulse-live-page__header {
+    position: sticky;
+
+    top: 0;
+
+    z-index: 120;
+
+    margin:
+      0 -8px;
+
+    border-radius: 0;
+  }
+
+
+  .pulse-live-player {
+    margin:
+      0 -8px;
+
+    width:
+      calc(
+        100% +
+        16px
+      );
+
+    border-radius: 0;
+  }
+
+
+  .pulse-live-info {
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
+  }
+
+
+  .pulse-live-info__social {
+    width: 100%;
+  }
+
+
+  .pulse-live-info__social
+  button {
+    flex: 1;
+
+    justify-content: center;
+  }
+
+
+  .pulse-live-place {
+    align-items:
+      stretch;
+
+    flex-direction:
+      column;
+  }
+
+
+  .pulse-live-place
+  .pulse-here-button {
+    width: 100%;
+  }
+
+
+  .pulse-live-event {
+    align-items:
+      stretch;
+
+    flex-direction:
+      column;
+  }
+
+
+  .pulse-live-event
+  > button {
+    width: 100%;
+  }
+
+
+  .pulse-live-more__grid {
+    display: flex;
+
+    overflow-x: auto;
+
+    scrollbar-width: none;
+
+    -webkit-overflow-scrolling:
+      touch;
+  }
+
+
+  .pulse-live-more__grid::-webkit-scrollbar {
+    display: none;
+  }
+
+
+  .pulse-live-mini {
+    min-width:
+      min(
+        70vw,
+        260px
+      );
+  }
+
+
+  .pulse-live-chat {
+    height: 560px;
+
+    border-radius: 17px;
+  }
+}
+
+
+@media (
+  max-width: 430px
+) {
+  .pulse-live-page__header {
+    grid-template-columns:
+      auto
+      1fr
+      auto;
+  }
+
+
+  .pulse-live-page__brand
+  small {
+    display: none;
+  }
+
+
+  .pulse-live-page__online {
+    font-size: 6px;
+  }
+
+
+  .pulse-live-player__center
+  strong {
+    max-width: 190px;
+
+    font-size: 7px;
+  }
+
+
+  .pulse-live-player__pulse {
+    width: 56px;
+
+    height: 56px;
+  }
+
+
+  .pulse-live-author {
+    flex-wrap: wrap;
+  }
+
+
+  .pulse-live-subscribe {
+    width: 100%;
+
+    justify-content: center;
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+  .pulse-live-mini__media
+  img {
+    transition: none;
+  }
+}

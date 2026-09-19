@@ -1,0 +1,373 @@
+/* =========================================================
+   YATUT HOME — INTERACTIONS
+========================================================= */
+
+.premium-feed-meta-button {
+  margin: 0;
+  padding: 0;
+
+  border: 0;
+
+  background:
+    transparent;
+
+  color: inherit;
+
+  font-family:
+    inherit;
+
+  font-size:
+    inherit;
+
+  cursor: pointer;
+}
+
+.premium-feed-meta-button:hover {
+  text-decoration:
+    underline;
+}
+
+/* =========================================================
+   COMMENTS
+========================================================= */
+
+.premium-comments {
+  padding:
+    12px 14px 14px;
+
+  border-top:
+    1px solid
+    #eceef3;
+
+  background:
+    rgba(
+      250,
+      250,
+      253,
+      0.72
+    );
+}
+
+.premium-comments-list {
+  margin-bottom:
+    12px;
+
+  display: flex;
+  flex-direction:
+    column;
+
+  gap: 10px;
+}
+
+.premium-comment {
+  display: flex;
+
+  align-items:
+    flex-start;
+
+  gap: 9px;
+}
+
+.premium-comment-avatar,
+.premium-comment-current-avatar {
+  width: 34px;
+  height: 34px;
+
+  flex: 0 0 34px;
+
+  display: grid;
+
+  place-items:
+    center;
+
+  border-radius:
+    50%;
+
+  background:
+    linear-gradient(
+      145deg,
+      #5b556c,
+      #292633
+    );
+
+  color:
+    #fff;
+
+  font-size:
+    11px;
+
+  font-weight:
+    850;
+}
+
+.premium-comment-bubble {
+  max-width:
+    calc(
+      100% - 45px
+    );
+
+  padding:
+    9px 12px;
+
+  border-radius:
+    7px 16px 16px 16px;
+
+  background:
+    #f0f1f5;
+}
+
+.premium-comment-bubble
+strong {
+  display:
+    block;
+
+  color:
+    #252836;
+
+  font-size:
+    11px;
+
+  font-weight:
+    850;
+}
+
+.premium-comment-bubble
+p {
+  margin:
+    3px 0 0;
+
+  color:
+    #3f4350;
+
+  font-size:
+    12px;
+
+  line-height:
+    1.45;
+
+  white-space:
+    pre-wrap;
+
+  overflow-wrap:
+    anywhere;
+}
+
+.premium-comment-bubble
+small {
+  display:
+    block;
+
+  margin-top:
+    5px;
+
+  color:
+    #969aa7;
+
+  font-size:
+    8px;
+}
+
+/* =========================================================
+   COMMENT COMPOSER
+========================================================= */
+
+.premium-comment-composer {
+  display: flex;
+
+  align-items:
+    center;
+
+  gap: 9px;
+}
+
+.premium-comment-input-wrap {
+  min-width: 0;
+
+  width: 100%;
+  height: 40px;
+
+  padding:
+    0 5px 0 13px;
+
+  display: flex;
+
+  align-items:
+    center;
+
+  gap: 7px;
+
+  border:
+    1px solid
+    #e4e6ed;
+
+  border-radius:
+    999px;
+
+  background:
+    #fff;
+
+  transition:
+    border-color
+    160ms
+    ease,
+    box-shadow
+    160ms
+    ease;
+}
+
+.premium-comment-input-wrap:focus-within {
+  border-color:
+    rgba(
+      124,
+      58,
+      237,
+      0.35
+    );
+
+  box-shadow:
+    0 0 0 3px
+    rgba(
+      124,
+      58,
+      237,
+      0.065
+    );
+}
+
+.premium-comment-input-wrap
+input {
+  min-width: 0;
+  width: 100%;
+
+  border: 0;
+  outline: 0;
+
+  background:
+    transparent;
+
+  color:
+    #303340;
+
+  font-family:
+    inherit;
+
+  font-size:
+    12px;
+}
+
+.premium-comment-input-wrap
+input::placeholder {
+  color:
+    #9b9faa;
+}
+
+.premium-comment-input-wrap
+button {
+  width: 32px;
+  height: 32px;
+
+  flex: 0 0 32px;
+
+  padding: 0;
+
+  display: grid;
+
+  place-items:
+    center;
+
+  border: 0;
+
+  border-radius:
+    50%;
+
+  background:
+    #7c3aed;
+
+  color:
+    #fff;
+
+  cursor:
+    pointer;
+
+  transition:
+    transform
+    150ms
+    ease,
+    opacity
+    150ms
+    ease;
+}
+
+.premium-comment-input-wrap
+button:hover {
+  transform:
+    scale(1.04);
+}
+
+.premium-comment-input-wrap
+button:disabled {
+  opacity:
+    0.35;
+
+  cursor:
+    not-allowed;
+
+  transform:
+    none;
+}
+
+/* =========================================================
+   ACTIVE POST ACTIONS
+========================================================= */
+
+.premium-feed-actions
+button.is-active {
+  color:
+    #7c3aed;
+
+  background:
+    rgba(
+      124,
+      58,
+      237,
+      0.055
+    );
+}
+
+.premium-feed-actions
+button:disabled {
+  opacity:
+    0.5;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (
+  max-width: 680px
+) {
+  .premium-comments {
+    padding:
+      11px 10px 13px;
+  }
+
+  .premium-comment-bubble {
+    max-width:
+      calc(
+        100% - 42px
+      );
+  }
+}
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+  .premium-comment-input-wrap,
+  .premium-comment-input-wrap
+  button {
+    transition:
+      none;
+  }
+}

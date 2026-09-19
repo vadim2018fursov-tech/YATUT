@@ -1,0 +1,433 @@
+/* =========================================================
+   YATUT ANIMATION SYSTEM v1.0
+========================================================= */
+
+@import "./tokens.css";
+
+/* =========================================================
+   GENERIC
+========================================================= */
+
+@keyframes yatFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes yatFadeUp {
+  from {
+    opacity: 0;
+
+    transform:
+      translate3d(
+        0,
+        12px,
+        0
+      );
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      );
+  }
+}
+
+@keyframes yatScaleIn {
+  from {
+    opacity: 0;
+
+    transform:
+      scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      scale(1);
+  }
+}
+
+/* =========================================================
+   ONLINE PRESENCE
+========================================================= */
+
+@keyframes yatPresencePulse {
+  0% {
+    box-shadow:
+      0 0 0
+      0
+      rgba(
+        34,
+        197,
+        94,
+        0.26
+      );
+  }
+
+  70% {
+    box-shadow:
+      0 0 0
+      7px
+      rgba(
+        34,
+        197,
+        94,
+        0
+      );
+  }
+
+  100% {
+    box-shadow:
+      0 0 0
+      0
+      rgba(
+        34,
+        197,
+        94,
+        0
+      );
+  }
+}
+
+.yat-presence-dot.is-animated {
+  animation:
+    yatPresencePulse
+    2.4s
+    var(--yat-ease)
+    infinite;
+}
+
+/* =========================================================
+   PREMIUM SHIMMER
+========================================================= */
+
+@keyframes yatShimmer {
+  from {
+    transform:
+      translateX(-160%)
+      skewX(-18deg);
+  }
+
+  to {
+    transform:
+      translateX(260%)
+      skewX(-18deg);
+  }
+}
+
+.yat-shimmer-hover {
+  position: relative;
+
+  overflow: hidden;
+}
+
+.yat-shimmer-hover::after {
+  content: "";
+
+  position: absolute;
+
+  top: -30%;
+  bottom: -30%;
+  left: 0;
+
+  width: 30%;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(
+        255,
+        255,
+        255,
+        0.48
+      ),
+      transparent
+    );
+
+  opacity: 0;
+
+  transform:
+    translateX(-160%)
+    skewX(-18deg);
+}
+
+.yat-shimmer-hover:hover::after {
+  opacity: 1;
+
+  animation:
+    yatShimmer
+    850ms
+    var(--yat-ease);
+}
+
+/* =========================================================
+   HERO LIGHT MOVEMENT
+========================================================= */
+
+@keyframes yatHeroLight {
+  0%,
+  100% {
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      )
+      scale(1);
+
+    opacity: 0.72;
+  }
+
+  50% {
+    transform:
+      translate3d(
+        16px,
+        -8px,
+        0
+      )
+      scale(1.04);
+
+    opacity: 0.9;
+  }
+}
+
+/* =========================================================
+   BADGE FLOAT
+========================================================= */
+
+@keyframes yatBadgeFloat {
+  0%,
+  100% {
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      );
+  }
+
+  50% {
+    transform:
+      translate3d(
+        0,
+        -4px,
+        0
+      );
+  }
+}
+
+/* =========================================================
+   SPARKLE
+========================================================= */
+
+@keyframes yatSparkle {
+  0% {
+    opacity: 0;
+
+    transform:
+      scale(0.4)
+      rotate(0deg);
+  }
+
+  35% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+
+    transform:
+      scale(1.25)
+      rotate(45deg);
+  }
+}
+
+/* =========================================================
+   ACHIEVEMENT UNLOCK
+========================================================= */
+
+@keyframes yatAchievementUnlock {
+  0% {
+    opacity: 0;
+
+    transform:
+      scale(0.45);
+  }
+
+  62% {
+    opacity: 1;
+
+    transform:
+      scale(1.08);
+  }
+
+  100% {
+    opacity: 1;
+
+    transform:
+      scale(1);
+  }
+}
+
+@keyframes yatAchievementAura {
+  0% {
+    opacity: 0;
+
+    transform:
+      scale(0.55);
+  }
+
+  55% {
+    opacity: 0.85;
+  }
+
+  100% {
+    opacity: 0;
+
+    transform:
+      scale(1.45);
+  }
+}
+
+.yat-achievement-unlock {
+  animation:
+    yatAchievementUnlock
+    var(--yat-duration-achievement)
+    var(--yat-ease)
+    both;
+}
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.yat-hover-card {
+  transition:
+    transform
+      var(--yat-duration-card)
+      var(--yat-ease),
+    box-shadow
+      var(--yat-duration-card)
+      var(--yat-ease),
+    border-color
+      var(--yat-duration-card)
+      var(--yat-ease);
+}
+
+@media (hover: hover) {
+  .yat-hover-card:hover {
+    transform:
+      translate3d(
+        0,
+        -2px,
+        0
+      );
+
+    border-color:
+      rgba(
+        124,
+        58,
+        237,
+        0.15
+      );
+
+    box-shadow:
+      var(--yat-shadow-card-hover);
+  }
+}
+
+/* =========================================================
+   BUTTON
+========================================================= */
+
+.yat-button-motion {
+  transition:
+    transform
+      var(--yat-duration-button)
+      var(--yat-ease),
+    box-shadow
+      var(--yat-duration-button)
+      var(--yat-ease),
+    background
+      var(--yat-duration-button)
+      var(--yat-ease);
+}
+
+@media (hover: hover) {
+  .yat-button-motion:hover {
+    transform:
+      translateY(-2px);
+  }
+}
+
+.yat-button-motion:active {
+  transform:
+    scale(0.98);
+}
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.yat-modal-enter {
+  animation:
+    yatScaleIn
+    var(--yat-duration-modal)
+    var(--yat-ease)
+    both;
+}
+
+.yat-fade-enter {
+  animation:
+    yatFadeIn
+    250ms
+    var(--yat-ease)
+    both;
+}
+
+.yat-fade-up-enter {
+  animation:
+    yatFadeUp
+    420ms
+    var(--yat-ease)
+    both;
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (
+  prefers-reduced-motion:
+    reduce
+) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior:
+      auto !important;
+
+    animation-duration:
+      0.01ms !important;
+
+    animation-iteration-count:
+      1 !important;
+
+    transition-duration:
+      0.01ms !important;
+  }
+}

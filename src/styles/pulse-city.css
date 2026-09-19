@@ -1,0 +1,1697 @@
+/* =========================================================
+   ЯТУТ PULSE
+   CITY PAGE
+========================================================= */
+
+.city-pulse-page {
+  width: 100%;
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 14px;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.city-pulse-hero {
+  position: relative;
+
+  min-height: 365px;
+
+  overflow: hidden;
+
+  border-radius: 27px;
+
+  background-position: center;
+
+  background-size: cover;
+
+  color: #fff;
+
+  box-shadow:
+    0 22px 55px
+    rgba(
+      25,
+      18,
+      45,
+      0.15
+    );
+}
+
+
+.city-pulse-hero__shade {
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(
+        8,
+        6,
+        17,
+        0.9
+      )
+      0%,
+      rgba(
+        8,
+        6,
+        17,
+        0.64
+      )
+      45%,
+      rgba(
+        8,
+        6,
+        17,
+        0.18
+      )
+      100%
+    ),
+    linear-gradient(
+      0deg,
+      rgba(
+        8,
+        6,
+        17,
+        0.5
+      ),
+      transparent
+      50%
+    );
+}
+
+
+.city-pulse-hero__back {
+  position: absolute;
+
+  top: 17px;
+  left: 17px;
+
+  z-index: 5;
+
+  min-height: 37px;
+
+  padding:
+    0 11px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.17
+    );
+
+  border-radius: 11px;
+
+  background:
+    rgba(
+      8,
+      6,
+      17,
+      0.45
+    );
+
+  backdrop-filter:
+    blur(
+      12px
+    );
+
+  color: #fff;
+
+  font-size: 8px;
+
+  font-weight: 850;
+
+  cursor: pointer;
+}
+
+
+.city-pulse-hero__badge {
+  position: absolute;
+
+  top: 17px;
+  right: 17px;
+
+  z-index: 5;
+
+  min-height: 34px;
+
+  padding:
+    0 10px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.15
+    );
+
+  border-radius: 999px;
+
+  background:
+    rgba(
+      8,
+      6,
+      17,
+      0.43
+    );
+
+  backdrop-filter:
+    blur(
+      12px
+    );
+
+  font-size: 7px;
+
+  font-weight: 800;
+}
+
+
+.city-pulse-hero__badge
+i {
+  width: 7px;
+
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #22c55e;
+
+  box-shadow:
+    0 0 9px
+    rgba(
+      34,
+      197,
+      94,
+      0.9
+    );
+
+  animation:
+    city-pulse-online
+    2.6s
+    ease-in-out
+    infinite;
+}
+
+
+.city-pulse-hero__content {
+  position: absolute;
+
+  z-index: 4;
+
+  top: 50%;
+  left: 32px;
+
+  width:
+    min(
+      500px,
+      calc(
+        100% -
+        64px
+      )
+    );
+
+  transform:
+    translateY(
+      -42%
+    );
+}
+
+
+.city-pulse-hero__eyebrow {
+  color: #d2c0ff;
+
+  font-size: 8px;
+
+  font-weight: 950;
+
+  letter-spacing:
+    1px;
+}
+
+
+.city-pulse-hero__content
+h1 {
+  margin:
+    8px 0 4px;
+
+  font-size:
+    clamp(
+      46px,
+      6vw,
+      76px
+    );
+
+  line-height: 0.95;
+
+  letter-spacing:
+    -2px;
+}
+
+
+.city-pulse-hero__people {
+  margin-top: 10px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+}
+
+
+.city-pulse-hero__people
+strong {
+  font-size: 18px;
+}
+
+
+.city-pulse-hero__people
+span {
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.7
+    );
+
+  font-size: 10px;
+}
+
+
+.city-pulse-hero__content
+p {
+  max-width: 390px;
+
+  margin:
+    10px 0 0;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.67
+    );
+
+  font-size: 11px;
+
+  line-height: 1.5;
+}
+
+
+.city-pulse-hero__actions {
+  margin-top: 17px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+}
+
+
+.city-pulse-hero
+.pulse-here-button {
+  width: auto;
+
+  min-width: 110px;
+
+  margin: 0;
+}
+
+
+.city-pulse-hero__map {
+  min-height: 46px;
+
+  padding:
+    0 14px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 6px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.2
+    );
+
+  border-radius: 13px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.1
+    );
+
+  backdrop-filter:
+    blur(
+      10px
+    );
+
+  color: #fff;
+
+  font-size: 8px;
+
+  font-weight: 850;
+
+  cursor: pointer;
+}
+
+
+.city-pulse-hero__pulse {
+  position: absolute;
+
+  right: 0;
+  bottom: 28px;
+  left: 0;
+
+  height: 2px;
+
+  overflow: hidden;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.07
+    );
+}
+
+
+.city-pulse-hero__pulse
+span {
+  position: absolute;
+
+  left: -30%;
+
+  width: 28%;
+
+  height: 100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      #a78bfa,
+      #ec4899,
+      transparent
+    );
+
+  animation:
+    city-pulse-line
+    7s
+    linear
+    infinite;
+}
+
+
+/* =========================================================
+   TABS
+========================================================= */
+
+.city-pulse-tabs {
+  padding: 6px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  gap: 5px;
+
+  border:
+    1px solid
+    var(
+      --pulse-border
+    );
+
+  border-radius: 16px;
+
+  background: #fff;
+
+  box-shadow:
+    var(
+      --pulse-shadow-card
+    );
+}
+
+
+.city-pulse-tabs
+button {
+  min-height: 43px;
+
+  border: 0;
+
+  border-radius: 11px;
+
+  background: transparent;
+
+  color: #808592;
+
+  font-size: 9px;
+
+  font-weight: 850;
+
+  cursor: pointer;
+}
+
+
+.city-pulse-tabs
+button.is-active {
+  background:
+    var(
+      --pulse-gradient-primary
+    );
+
+  color: #fff;
+
+  box-shadow:
+    0 7px 18px
+    rgba(
+      124,
+      58,
+      237,
+      0.2
+    );
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.city-pulse-stats {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  gap: 10px;
+}
+
+
+.city-pulse-stat {
+  min-width: 0;
+
+  min-height: 92px;
+
+  padding: 13px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  border:
+    1px solid
+    var(
+      --pulse-border
+    );
+
+  border-radius: 17px;
+
+  background: #fff;
+
+  box-shadow:
+    var(
+      --pulse-shadow-card
+    );
+}
+
+
+.city-pulse-stat__icon {
+  width: 39px;
+
+  height: 39px;
+
+  flex:
+    0 0 39px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 12px;
+
+  background: #f1ebff;
+
+  color: #7c3aed;
+}
+
+
+.city-pulse-stat
+> div {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+
+.city-pulse-stat
+strong {
+  font-size: 17px;
+}
+
+
+.city-pulse-stat
+small {
+  color: #9297a4;
+
+  font-size: 7px;
+}
+
+
+.city-pulse-stat--blue
+.city-pulse-stat__icon {
+  background: #eef4ff;
+
+  color: #2563eb;
+}
+
+
+.city-pulse-stat--pink
+.city-pulse-stat__icon {
+  background: #fff0f8;
+
+  color: #ec4899;
+}
+
+
+.city-pulse-stat--orange
+.city-pulse-stat__icon {
+  background: #fff5e8;
+
+  color: #f59e0b;
+}
+
+
+/* =========================================================
+   NOW
+========================================================= */
+
+.city-pulse-now,
+.city-pulse-section {
+  padding: 15px;
+
+  border:
+    1px solid
+    var(
+      --pulse-border
+    );
+
+  border-radius: 21px;
+
+  background: #fff;
+
+  box-shadow:
+    var(
+      --pulse-shadow-card
+    );
+}
+
+
+.city-pulse-now
+> header {
+  margin-bottom: 12px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 10px;
+}
+
+
+.city-pulse-now
+> header
+> div {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+}
+
+
+.city-pulse-now
+> header
+> div
+> span {
+  width: 34px;
+
+  height: 34px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 11px;
+
+  background: #f1ebff;
+
+  color: #7c3aed;
+}
+
+
+.city-pulse-now
+> header
+> div
+> div {
+  display: flex;
+
+  flex-direction: column;
+}
+
+
+.city-pulse-now
+> header
+strong {
+  font-size: 12px;
+}
+
+
+.city-pulse-now
+> header
+small {
+  color: #969ba7;
+
+  font-size: 7px;
+}
+
+
+.city-pulse-now
+> header
+button {
+  border: 0;
+
+  background: transparent;
+
+  color: #7c3aed;
+
+  font-size: 8px;
+
+  font-weight: 850;
+
+  cursor: pointer;
+}
+
+
+.city-pulse-feature-grid {
+  display: grid;
+
+  grid-template-columns:
+    minmax(
+      0,
+      1.6fr
+    )
+    repeat(
+      2,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  gap: 9px;
+}
+
+
+/* =========================================================
+   LOCATION CARD
+========================================================= */
+
+.city-pulse-location-card {
+  padding: 16px;
+
+  display: grid;
+
+  grid-template-columns:
+    45px
+    minmax(
+      0,
+      1fr
+    )
+    auto;
+
+  align-items: center;
+
+  gap: 11px;
+
+  border-radius: 20px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #18102f,
+      #29134f,
+      #31125d
+    );
+
+  color: #fff;
+
+  box-shadow:
+    0 16px 40px
+    rgba(
+      43,
+      22,
+      85,
+      0.18
+    );
+}
+
+
+.city-pulse-location-card__icon {
+  width: 45px;
+
+  height: 45px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #c026d3
+    );
+}
+
+
+.city-pulse-location-card__copy {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 2px;
+}
+
+
+.city-pulse-location-card__copy
+span {
+  color: #bca9f5;
+
+  font-size: 6px;
+
+  font-weight: 900;
+
+  letter-spacing:
+    0.8px;
+}
+
+
+.city-pulse-location-card__copy
+strong {
+  font-size: 12px;
+}
+
+
+.city-pulse-location-card__copy
+p {
+  margin: 0;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.5
+    );
+
+  font-size: 7px;
+}
+
+
+.city-pulse-location-card
+> button {
+  min-height: 42px;
+
+  padding:
+    0 13px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.15
+    );
+
+  border-radius: 12px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.1
+    );
+
+  color: #fff;
+
+  font-size: 8px;
+
+  font-weight: 850;
+
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.city-pulse-section__title {
+  margin-bottom: 13px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  color: #7c3aed;
+}
+
+
+.city-pulse-section__title
+> div {
+  display: flex;
+
+  flex-direction: column;
+}
+
+
+.city-pulse-section__title
+strong {
+  color: #181a25;
+
+  font-size: 13px;
+}
+
+
+.city-pulse-section__title
+small {
+  color: #969ba7;
+
+  font-size: 7px;
+}
+
+
+/* =========================================================
+   PEOPLE
+========================================================= */
+
+.city-pulse-people-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  gap: 8px;
+}
+
+
+.city-pulse-person {
+  min-width: 0;
+
+  padding: 10px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  border:
+    1px solid
+    #ececf2;
+
+  border-radius: 13px;
+
+  background: #fafafe;
+
+  text-align: left;
+
+  cursor: pointer;
+}
+
+
+.city-pulse-person
+> span {
+  position: relative;
+
+  width: 38px;
+
+  height: 38px;
+
+  flex:
+    0 0 38px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #e5dcff,
+      #c8b4ff
+    );
+
+  color: #5b21b6;
+
+  font-size: 12px;
+
+  font-weight: 900;
+}
+
+
+.city-pulse-person
+i {
+  position: absolute;
+
+  right: 0;
+  bottom: 1px;
+
+  width: 9px;
+
+  height: 9px;
+
+  border:
+    2px solid #fff;
+
+  border-radius: 50%;
+
+  background: #22c55e;
+}
+
+
+.city-pulse-person
+> div {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+
+.city-pulse-person
+strong {
+  overflow: hidden;
+
+  font-size: 9px;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+.city-pulse-person
+small {
+  color: #999eaa;
+
+  font-size: 6px;
+}
+
+
+/* =========================================================
+   EVENTS
+========================================================= */
+
+.city-pulse-events {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+
+.city-pulse-events
+article {
+  padding: 11px;
+
+  display: grid;
+
+  grid-template-columns:
+    auto
+    minmax(
+      0,
+      1fr
+    )
+    auto;
+
+  align-items: center;
+
+  gap: 10px;
+
+  border:
+    1px solid
+    #ececf2;
+
+  border-radius: 14px;
+}
+
+
+.city-pulse-events
+article
+> span {
+  padding:
+    5px 7px;
+
+  border-radius: 7px;
+
+  background: #ec4899;
+
+  color: #fff;
+
+  font-size: 6px;
+
+  font-weight: 950;
+}
+
+
+.city-pulse-events
+article
+> span.is-purple {
+  background: #7c3aed;
+}
+
+
+.city-pulse-events
+article
+> div {
+  display: flex;
+
+  flex-direction: column;
+}
+
+
+.city-pulse-events
+strong {
+  font-size: 9px;
+}
+
+
+.city-pulse-events
+small {
+  color: #979ca8;
+
+  font-size: 7px;
+}
+
+
+.city-pulse-events
+button {
+  min-height: 32px;
+
+  padding:
+    0 9px;
+
+  border: 0;
+
+  border-radius: 9px;
+
+  background: #f1ebff;
+
+  color: #6d28d9;
+
+  font-size: 7px;
+
+  font-weight: 850;
+
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   VIDEO GRID
+========================================================= */
+
+.city-pulse-video-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  gap: 9px;
+}
+
+
+/* =========================================================
+   BOTTOM CTA
+========================================================= */
+
+.city-pulse-bottom-cta {
+  padding: 14px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 14px;
+
+  border:
+    1px solid
+    rgba(
+      124,
+      58,
+      237,
+      0.16
+    );
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #faf7ff,
+      #f5f7ff
+    );
+}
+
+
+.city-pulse-bottom-cta
+> div {
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  color: #7c3aed;
+}
+
+
+.city-pulse-bottom-cta
+> div
+> div {
+  display: flex;
+
+  flex-direction: column;
+}
+
+
+.city-pulse-bottom-cta
+strong {
+  color: #1b1c29;
+
+  font-size: 10px;
+}
+
+
+.city-pulse-bottom-cta
+span {
+  color: #969ba8;
+
+  font-size: 7px;
+}
+
+
+.city-pulse-bottom-cta
+> button {
+  min-height: 39px;
+
+  padding:
+    0 12px;
+
+  border: 0;
+
+  border-radius: 11px;
+
+  background:
+    var(
+      --pulse-gradient-primary
+    );
+
+  color: #fff;
+
+  font-size: 8px;
+
+  font-weight: 850;
+
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes city-pulse-line {
+  from {
+    transform:
+      translateX(
+        0
+      );
+  }
+
+  to {
+    transform:
+      translateX(
+        470%
+      );
+  }
+}
+
+
+@keyframes city-pulse-online {
+  0%,
+  100% {
+    opacity: 0.55;
+
+    transform:
+      scale(
+        0.85
+      );
+  }
+
+  50% {
+    opacity: 1;
+
+    transform:
+      scale(
+        1.15
+      );
+  }
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (
+  max-width: 1000px
+) {
+  .city-pulse-stats {
+    grid-template-columns:
+      repeat(
+        2,
+        1fr
+      );
+  }
+
+
+  .city-pulse-video-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        1fr
+      );
+  }
+
+
+  .city-pulse-feature-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        1fr
+      );
+  }
+
+
+  .city-pulse-feature-grid__main {
+    grid-column:
+      1 / -1;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (
+  max-width: 850px
+) {
+  .premium-app-shell-cityPulse
+  .premium-global-header,
+  .premium-app-shell-cityPulse
+  .yat-sidebar {
+    display:
+      none !important;
+  }
+
+
+  .premium-app-shell-cityPulse
+  .premium-desktop-layout {
+    width:
+      100% !important;
+
+    max-width:
+      none !important;
+
+    margin:
+      0 !important;
+
+    display:
+      block !important;
+  }
+
+
+  .premium-app-shell-cityPulse
+  .premium-page-content {
+    width:
+      100% !important;
+
+    max-width:
+      none !important;
+
+    padding:
+      0 !important;
+  }
+
+
+  .city-pulse-page {
+    gap: 10px;
+
+    padding:
+      0 9px
+      20px;
+
+    background: #f7f8fc;
+  }
+
+
+  .city-pulse-hero {
+    min-height:
+      430px;
+
+    margin:
+      0 -9px;
+
+    border-radius:
+      0 0
+      24px 24px;
+  }
+
+
+  .city-pulse-hero__shade {
+    background:
+      linear-gradient(
+        0deg,
+        rgba(
+          7,
+          5,
+          15,
+          0.9
+        )
+        0%,
+        rgba(
+          7,
+          5,
+          15,
+          0.2
+        )
+        75%
+      );
+  }
+
+
+  .city-pulse-hero__content {
+    top: auto;
+
+    right: 18px;
+    bottom: 28px;
+    left: 18px;
+
+    width: auto;
+
+    transform: none;
+  }
+
+
+  .city-pulse-hero__content
+  h1 {
+    font-size: 52px;
+  }
+
+
+  .city-pulse-tabs {
+    position: sticky;
+
+    top: 0;
+
+    z-index: 100;
+
+    border-radius: 14px;
+  }
+
+
+  .city-pulse-stats {
+    gap: 7px;
+  }
+
+
+  .city-pulse-stat {
+    min-height: 78px;
+
+    padding: 9px;
+  }
+
+
+  .city-pulse-feature-grid {
+    display: flex;
+
+    overflow-x: auto;
+
+    scrollbar-width: none;
+  }
+
+
+  .city-pulse-feature-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+
+  .city-pulse-feature-grid
+  > div {
+    min-width:
+      min(
+        72vw,
+        285px
+      );
+  }
+
+
+  .city-pulse-location-card {
+    grid-template-columns:
+      40px
+      minmax(
+        0,
+        1fr
+      );
+  }
+
+
+  .city-pulse-location-card
+  > button {
+    grid-column:
+      1 / -1;
+
+    width: 100%;
+
+    justify-content: center;
+  }
+
+
+  .city-pulse-people-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        1fr
+      );
+  }
+
+
+  .city-pulse-video-grid {
+    display: flex;
+
+    overflow-x: auto;
+
+    scrollbar-width: none;
+  }
+
+
+  .city-pulse-video-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+
+  .city-pulse-video-grid
+  .pulse-video-card {
+    min-width:
+      min(
+        58vw,
+        230px
+      );
+  }
+
+
+  .city-pulse-video-grid
+  .pulse-video-card--clip {
+    min-width:
+      min(
+        43vw,
+        170px
+      );
+  }
+
+
+  .city-pulse-bottom-cta {
+    align-items: stretch;
+
+    flex-direction: column;
+  }
+
+
+  .city-pulse-bottom-cta
+  > button {
+    width: 100%;
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (
+  max-width: 430px
+) {
+  .city-pulse-hero {
+    min-height:
+      400px;
+  }
+
+
+  .city-pulse-hero__content
+  h1 {
+    font-size: 46px;
+  }
+
+
+  .city-pulse-hero__actions {
+    align-items: stretch;
+
+    flex-direction: column;
+  }
+
+
+  .city-pulse-hero
+  .pulse-here-button {
+    width: 100%;
+  }
+
+
+  .city-pulse-hero__map {
+    width: 100%;
+  }
+
+
+  .city-pulse-person {
+    padding: 8px;
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+  .city-pulse-hero__pulse
+  span,
+  .city-pulse-hero__badge
+  i {
+    animation: none;
+  }
+}

@@ -1,0 +1,1219 @@
+/* =========================================================
+   ЯТУТ — POST GALLERY VIEWER
+========================================================= */
+
+.yatut-gallery-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index:
+    2147482000;
+
+  padding:
+    20px;
+
+  display: grid;
+
+  place-items:
+    center;
+
+  background:
+    rgba(
+      23,
+      24,
+      33,
+      0.72
+    );
+
+  -webkit-backdrop-filter:
+    blur(18px);
+
+  backdrop-filter:
+    blur(18px);
+}
+
+.yatut-gallery-shell {
+  width:
+    min(
+      1380px,
+      100%
+    );
+
+  height:
+    min(
+      900px,
+      calc(
+        100dvh -
+        40px
+      )
+    );
+
+  overflow: hidden;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(
+      0,
+      1fr
+    )
+    360px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.14
+    );
+
+  border-radius:
+    26px;
+
+  background:
+    #111218;
+
+  box-shadow:
+    0 40px 120px
+    rgba(
+      0,
+      0,
+      0,
+      0.42
+    );
+}
+
+/* =========================================================
+   MEDIA SIDE
+========================================================= */
+
+.yatut-gallery-media-side {
+  position: relative;
+
+  min-width: 0;
+
+  overflow: hidden;
+
+  background:
+    #111218;
+
+  user-select: none;
+}
+
+.yatut-gallery-background {
+  position: absolute;
+
+  inset: -30px;
+
+  overflow: hidden;
+
+  opacity: 0.23;
+}
+
+.yatut-gallery-background
+img {
+  width: 100%;
+  height: 100%;
+
+  object-fit:
+    cover;
+
+  filter:
+    blur(38px)
+    brightness(0.6);
+
+  transform:
+    scale(1.12);
+}
+
+.yatut-gallery-image-stage {
+  position: absolute;
+
+  inset:
+    70px
+    70px
+    88px;
+
+  overflow: auto;
+
+  display: grid;
+
+  place-items:
+    center;
+}
+
+.yatut-gallery-image-stage
+img {
+  max-width: 100%;
+  max-height: 100%;
+
+  object-fit:
+    contain;
+
+  transition:
+    transform
+    160ms ease;
+
+  cursor:
+    zoom-in;
+
+  transform-origin:
+    center;
+}
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.yatut-gallery-topbar {
+  position: absolute;
+
+  top: 0;
+  right: 0;
+  left: 0;
+
+  z-index: 20;
+
+  min-height:
+    66px;
+
+  padding:
+    12px 16px;
+
+  display: flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+
+  gap: 10px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(
+        9,
+        10,
+        16,
+        0.85
+      ),
+      rgba(
+        9,
+        10,
+        16,
+        0
+      )
+    );
+
+  opacity: 0;
+
+  transform:
+    translateY(
+      -8px
+    );
+
+  transition:
+    150ms ease;
+}
+
+.yatut-gallery-media-side.is-ui-visible
+.yatut-gallery-topbar,
+.yatut-gallery-media-side:hover
+.yatut-gallery-topbar {
+  opacity: 1;
+
+  transform:
+    translateY(
+      0
+    );
+}
+
+.yatut-gallery-brand {
+  display: flex;
+
+  align-items:
+    center;
+
+  gap: 8px;
+}
+
+.yatut-gallery-brand
+> span {
+  width: 34px;
+  height: 34px;
+
+  display: grid;
+
+  place-items:
+    center;
+
+  border-radius:
+    11px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #9b63ff,
+      #6d28d9
+    );
+
+  color:
+    #fff;
+
+  font-size:
+    18px;
+
+  font-weight:
+    900;
+}
+
+.yatut-gallery-brand
+strong {
+  color:
+    #fff;
+
+  font-size:
+    14px;
+
+  font-weight:
+    900;
+}
+
+.yatut-gallery-top-actions {
+  display: flex;
+
+  align-items:
+    center;
+
+  gap: 5px;
+}
+
+.yatut-gallery-top-actions
+button {
+  width: 38px;
+  height: 38px;
+
+  padding: 0;
+
+  display: grid;
+
+  place-items:
+    center;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.13
+    );
+
+  border-radius:
+    11px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.09
+    );
+
+  color:
+    #fff;
+
+  cursor: pointer;
+
+  -webkit-backdrop-filter:
+    blur(10px);
+
+  backdrop-filter:
+    blur(10px);
+}
+
+.yatut-gallery-top-actions
+button:hover {
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.16
+    );
+}
+
+.yatut-gallery-top-actions
+button:disabled {
+  opacity:
+    0.35;
+
+  cursor:
+    default;
+}
+
+.yatut-gallery-counter,
+.yatut-gallery-zoom {
+  min-width:
+    48px;
+
+  padding:
+    7px 9px;
+
+  border-radius:
+    10px;
+
+  background:
+    rgba(
+      0,
+      0,
+      0,
+      0.25
+    );
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.78
+    );
+
+  font-size:
+    9px;
+
+  font-weight:
+    800;
+
+  text-align:
+    center;
+}
+
+.yatut-gallery-close {
+  margin-left:
+    5px;
+
+  background:
+    rgba(
+      239,
+      68,
+      68,
+      0.2
+    ) !important;
+}
+
+/* =========================================================
+   ARROWS
+========================================================= */
+
+.yatut-gallery-arrow {
+  position: absolute;
+
+  top: 50%;
+
+  z-index: 15;
+
+  width: 48px;
+  height: 64px;
+
+  display: grid;
+
+  place-items:
+    center;
+
+  border: 0;
+
+  border-radius:
+    15px;
+
+  background:
+    rgba(
+      10,
+      11,
+      17,
+      0.44
+    );
+
+  color:
+    #fff;
+
+  cursor: pointer;
+
+  opacity: 0;
+
+  transition:
+    150ms ease;
+
+  -webkit-backdrop-filter:
+    blur(10px);
+
+  backdrop-filter:
+    blur(10px);
+}
+
+.yatut-gallery-media-side.is-ui-visible
+.yatut-gallery-arrow,
+.yatut-gallery-media-side:hover
+.yatut-gallery-arrow {
+  opacity: 1;
+}
+
+.yatut-gallery-arrow-left {
+  left: 14px;
+}
+
+.yatut-gallery-arrow-right {
+  right: 14px;
+}
+
+/* =========================================================
+   THUMBNAILS
+========================================================= */
+
+.yatut-gallery-thumbs {
+  position: absolute;
+
+  right: 0;
+  bottom: 16px;
+  left: 0;
+
+  z-index: 20;
+
+  display: flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap: 5px;
+
+  opacity: 0;
+
+  transform:
+    translateY(
+      10px
+    );
+
+  transition:
+    150ms ease;
+}
+
+.yatut-gallery-media-side.is-ui-visible
+.yatut-gallery-thumbs,
+.yatut-gallery-media-side:hover
+.yatut-gallery-thumbs {
+  opacity: 1;
+
+  transform:
+    translateY(
+      0
+    );
+}
+
+.yatut-gallery-thumbs
+button {
+  width: 50px;
+  height: 50px;
+
+  padding: 2px;
+
+  overflow: hidden;
+
+  border:
+    2px solid
+    transparent;
+
+  border-radius:
+    10px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.1
+    );
+
+  cursor: pointer;
+}
+
+.yatut-gallery-thumbs
+button.is-active {
+  border-color:
+    #9f7aea;
+
+  transform:
+    translateY(
+      -3px
+    );
+}
+
+.yatut-gallery-thumbs
+img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  border-radius:
+    6px;
+
+  object-fit:
+    cover;
+}
+
+/* =========================================================
+   RIGHT INFO
+========================================================= */
+
+.yatut-gallery-info-side {
+  min-width: 0;
+  min-height: 0;
+
+  display: flex;
+
+  flex-direction:
+    column;
+
+  background:
+    #fff;
+}
+
+.yatut-gallery-post-head {
+  padding:
+    17px 16px
+    12px;
+
+  display: flex;
+
+  align-items:
+    center;
+
+  gap: 9px;
+
+  border-bottom:
+    1px solid
+    #eeeeF3;
+}
+
+.yatut-gallery-post-avatar {
+  width: 38px;
+  height: 38px;
+
+  flex:
+    0 0 38px;
+
+  display: grid;
+
+  place-items:
+    center;
+
+  border-radius:
+    50%;
+
+  background:
+    linear-gradient(
+      145deg,
+      #57515f,
+      #282631
+    );
+
+  color:
+    #fff;
+
+  font-size:
+    10px;
+
+  font-weight:
+    900;
+}
+
+.yatut-gallery-post-head
+strong {
+  display: block;
+
+  color:
+    #313440;
+
+  font-size:
+    11px;
+
+  font-weight:
+    850;
+}
+
+.yatut-gallery-post-head
+span {
+  display: block;
+
+  margin-top:
+    2px;
+
+  color:
+    #9a9da8;
+
+  font-size:
+    8px;
+}
+
+.yatut-gallery-post-text {
+  margin:
+    0;
+
+  padding:
+    12px 16px;
+
+  border-bottom:
+    1px solid
+    #f0f0f4;
+
+  color:
+    #444754;
+
+  font-size:
+    10px;
+
+  line-height:
+    1.55;
+}
+
+.yatut-gallery-post-mood {
+  margin:
+    9px 16px
+    0;
+
+  width:
+    fit-content;
+
+  padding:
+    5px 8px;
+
+  border-radius:
+    999px;
+
+  background:
+    #f0edff;
+
+  color:
+    #6d28d9;
+
+  font-size:
+    8px;
+
+  font-weight:
+    800;
+}
+
+/* =========================================================
+   COMMENTS
+========================================================= */
+
+.yatut-gallery-comments {
+  min-height: 0;
+
+  flex: 1;
+
+  display: flex;
+
+  flex-direction:
+    column;
+}
+
+.yatut-gallery-comments
+> header {
+  min-height:
+    45px;
+
+  padding:
+    0 15px;
+
+  display: flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+
+  border-bottom:
+    1px solid
+    #eeeeF3;
+}
+
+.yatut-gallery-comments
+> header
+> div {
+  display: flex;
+
+  align-items:
+    center;
+
+  gap: 6px;
+
+  color:
+    #515562;
+}
+
+.yatut-gallery-comments
+> header strong {
+  font-size:
+    9px;
+}
+
+.yatut-gallery-comments
+> header
+> span {
+  color:
+    #999ca7;
+
+  font-size:
+    8px;
+}
+
+.yatut-gallery-comments-list {
+  min-height: 0;
+
+  flex: 1;
+
+  padding:
+    12px 13px;
+
+  overflow-y: auto;
+}
+
+.yatut-gallery-comments-list
+article {
+  display: flex;
+
+  align-items:
+    flex-start;
+
+  gap: 7px;
+
+  margin-bottom:
+    12px;
+}
+
+.yatut-gallery-comments-list
+article.is-reply {
+  margin-left:
+    28px;
+}
+
+.yatut-gallery-comment-avatar {
+  width: 30px;
+  height: 30px;
+
+  flex:
+    0 0 30px;
+
+  display: grid;
+
+  place-items:
+    center;
+
+  border-radius:
+    50%;
+
+  background:
+    #ece9f8;
+
+  color:
+    #6d28d9;
+
+  font-size:
+    8px;
+
+  font-weight:
+    900;
+}
+
+.yatut-gallery-comments-list
+article
+> div:last-child {
+  min-width: 0;
+}
+
+.yatut-gallery-comments-list
+strong {
+  display: block;
+
+  color:
+    #3d404c;
+
+  font-size:
+    8.5px;
+
+  font-weight:
+    850;
+}
+
+.yatut-gallery-comments-list
+p {
+  margin:
+    3px 0;
+
+  color:
+    #555966;
+
+  font-size:
+    9px;
+
+  line-height:
+    1.45;
+
+  overflow-wrap:
+    anywhere;
+}
+
+.yatut-gallery-comments-list
+small {
+  color:
+    #9a9da8;
+
+  font-size:
+    7px;
+}
+
+.yatut-gallery-mention {
+  display: inline-block;
+
+  margin-top:
+    2px;
+
+  color:
+    #7c3aed;
+
+  font-size:
+    8px;
+
+  font-weight:
+    800;
+}
+
+.yatut-gallery-comments-empty {
+  height: 100%;
+
+  min-height:
+    170px;
+
+  display: flex;
+
+  flex-direction:
+    column;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap: 5px;
+
+  color:
+    #a1a4ae;
+
+  text-align:
+    center;
+}
+
+.yatut-gallery-comments-empty
+strong {
+  color:
+    #747885;
+
+  font-size:
+    9px;
+}
+
+.yatut-gallery-comments-empty
+span {
+  font-size:
+    8px;
+}
+
+/* composer */
+
+.yatut-gallery-comment-composer {
+  padding:
+    10px 12px;
+
+  display: flex;
+
+  align-items:
+    center;
+
+  gap: 7px;
+
+  border-top:
+    1px solid
+    #eceef3;
+}
+
+.yatut-gallery-comment-composer
+> div {
+  width: 31px;
+  height: 31px;
+
+  flex:
+    0 0 31px;
+
+  display: grid;
+
+  place-items:
+    center;
+
+  border-radius:
+    50%;
+
+  background:
+    #3f3b48;
+
+  color:
+    #fff;
+
+  font-size:
+    8px;
+
+  font-weight:
+    900;
+}
+
+.yatut-gallery-comment-composer
+section {
+  height: 36px;
+
+  min-width: 0;
+
+  flex: 1;
+
+  padding:
+    0 4px 0
+    10px;
+
+  display: flex;
+
+  align-items:
+    center;
+
+  gap: 5px;
+
+  border:
+    1px solid
+    #e2e3ea;
+
+  border-radius:
+    999px;
+
+  background:
+    #f8f8fa;
+}
+
+.yatut-gallery-comment-composer
+input {
+  min-width: 0;
+
+  flex: 1;
+
+  border: 0;
+  outline: 0;
+
+  background:
+    transparent;
+
+  color:
+    #444754;
+
+  font-family:
+    inherit;
+
+  font-size:
+    8.5px;
+}
+
+.yatut-gallery-comment-composer
+button {
+  width: 29px;
+  height: 29px;
+
+  flex:
+    0 0 29px;
+
+  display: grid;
+
+  place-items:
+    center;
+
+  border: 0;
+
+  border-radius:
+    50%;
+
+  background:
+    #7c3aed;
+
+  color:
+    #fff;
+
+  cursor: pointer;
+}
+
+.yatut-gallery-comment-composer
+button:disabled {
+  opacity:
+    0.35;
+
+  cursor:
+    default;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (
+  max-width: 820px
+) {
+  .yatut-gallery-overlay {
+    padding: 0;
+
+    background:
+      #101117;
+  }
+
+  .yatut-gallery-shell {
+    width: 100vw;
+    height: 100dvh;
+
+    display: flex;
+
+    flex-direction:
+      column;
+
+    border: 0;
+
+    border-radius: 0;
+  }
+
+  .yatut-gallery-media-side {
+    min-height:
+      62dvh;
+
+    flex: 1;
+  }
+
+  .yatut-gallery-info-side {
+    max-height:
+      38dvh;
+
+    border-radius:
+      22px
+      22px
+      0
+      0;
+  }
+
+  .yatut-gallery-post-head,
+  .yatut-gallery-post-text,
+  .yatut-gallery-post-mood {
+    display: none;
+  }
+
+  .yatut-gallery-image-stage {
+    inset:
+      64px
+      35px
+      66px;
+  }
+
+  .yatut-gallery-arrow {
+    width: 35px;
+
+    background:
+      transparent;
+
+    opacity: 1;
+  }
+
+  .yatut-gallery-arrow-left {
+    left: 0;
+  }
+
+  .yatut-gallery-arrow-right {
+    right: 0;
+  }
+
+  .yatut-gallery-topbar {
+    opacity: 1;
+
+    transform:
+      none;
+  }
+
+  .yatut-gallery-brand
+  strong,
+  .yatut-gallery-zoom {
+    display: none;
+  }
+
+  .yatut-gallery-thumbs {
+    bottom: 9px;
+
+    opacity: 1;
+
+    transform:
+      none;
+  }
+
+  .yatut-gallery-thumbs
+  button {
+    width: 42px;
+    height: 42px;
+  }
+
+  .yatut-gallery-comments-list {
+    min-height:
+      110px;
+  }
+}
+
+@media (
+  max-width: 500px
+) {
+  .yatut-gallery-counter {
+    min-width:
+      42px;
+  }
+
+  .yatut-gallery-top-actions
+  button {
+    width: 34px;
+    height: 34px;
+  }
+
+  .yatut-gallery-top-actions
+  button:nth-of-type(1),
+  .yatut-gallery-top-actions
+  button:nth-of-type(2) {
+    display: none;
+  }
+}
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+  .yatut-gallery-topbar,
+  .yatut-gallery-arrow,
+  .yatut-gallery-thumbs,
+  .yatut-gallery-image-stage
+  img {
+    transition: none;
+  }
+}

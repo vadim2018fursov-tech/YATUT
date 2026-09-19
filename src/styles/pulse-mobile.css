@@ -1,0 +1,1125 @@
+/* =========================================================
+   ЯТУТ PULSE
+   MOBILE EXPERIENCE
+========================================================= */
+
+
+/* =========================================================
+   DESKTOP DEFAULT
+========================================================= */
+
+.pulse-mobile-header,
+.pulse-mobile-tabs,
+.pulse-mobile-nav {
+  display: none;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (
+  max-width: 850px
+) {
+
+  /* =======================================================
+     GLOBAL APP HEADER
+  ======================================================= */
+
+  .premium-app-shell-pulse
+  .premium-global-header {
+    display: none !important;
+  }
+
+
+  /* =======================================================
+     APP LAYOUT
+  ======================================================= */
+
+  .premium-app-shell-pulse
+  .premium-desktop-layout {
+    width: 100% !important;
+
+    max-width: none !important;
+
+    margin: 0 !important;
+  }
+
+
+  .premium-app-shell-pulse
+  .premium-page-content {
+    width: 100% !important;
+
+    max-width: none !important;
+
+    margin: 0 !important;
+
+    padding: 0 !important;
+  }
+
+
+  .premium-page-pulse {
+    padding-bottom:
+      88px !important;
+  }
+
+
+  /* =======================================================
+     MOBILE HEADER
+  ======================================================= */
+
+  .pulse-mobile-header {
+    position: sticky;
+
+    top: 0;
+
+    z-index: 500;
+
+    width: 100%;
+
+    min-height: 68px;
+
+    padding:
+      9px 14px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 12px;
+
+    border-bottom:
+      1px solid
+      rgba(
+        225,
+        227,
+        236,
+        0.92
+      );
+
+    background:
+      rgba(
+        255,
+        255,
+        255,
+        0.93
+      );
+
+    backdrop-filter:
+      blur(
+        18px
+      );
+  }
+
+
+  .pulse-mobile-header__brand {
+    min-width: 0;
+
+    padding: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    border: 0;
+
+    background: transparent;
+
+    color: #191a26;
+
+    text-align: left;
+
+    cursor: pointer;
+  }
+
+
+  .pulse-mobile-header__logo {
+    width: 41px;
+
+    height: 41px;
+
+    flex: 0 0 41px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 13px;
+
+    background:
+      linear-gradient(
+        135deg,
+        #7c3aed,
+        #9333ea,
+        #c026d3
+      );
+
+    color: #fff;
+
+    font-size: 24px;
+
+    font-weight: 900;
+
+    box-shadow:
+      0 8px 20px
+      rgba(
+        124,
+        58,
+        237,
+        0.24
+      );
+  }
+
+
+  .pulse-mobile-header__brand
+  > div {
+    min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 1px;
+  }
+
+
+  .pulse-mobile-header__brand
+  strong {
+    font-size: 17px;
+
+    line-height: 1;
+  }
+
+
+  .pulse-mobile-header__brand
+  small {
+    overflow: hidden;
+
+    color: #9297a5;
+
+    font-size: 8px;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+  }
+
+
+  .pulse-mobile-header__brand
+  > svg {
+    color: #8b5cf6;
+  }
+
+
+  .pulse-mobile-header__actions {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+  }
+
+
+  .pulse-mobile-header__actions
+  button {
+    position: relative;
+
+    width: 39px;
+
+    height: 39px;
+
+    display: grid;
+
+    place-items: center;
+
+    border: 1px solid #e8e8ef;
+
+    border-radius: 12px;
+
+    background: #f8f8fb;
+
+    color: #4d5260;
+
+    cursor: pointer;
+  }
+
+
+  .pulse-mobile-header__actions
+  i {
+    position: absolute;
+
+    top: 8px;
+
+    right: 8px;
+
+    width: 7px;
+
+    height: 7px;
+
+    border: 2px solid #fff;
+
+    border-radius: 50%;
+
+    background: #ec4899;
+  }
+
+
+  /* =======================================================
+     DESKTOP TABS OFF
+  ======================================================= */
+
+  .pulse-desktop-tabs {
+    display: none;
+  }
+
+
+  /* =======================================================
+     MOBILE TABS
+  ======================================================= */
+
+  .pulse-mobile-tabs {
+    position: sticky;
+
+    top: 68px;
+
+    z-index: 450;
+
+    width: 100%;
+
+    padding:
+      8px 12px;
+
+    display: grid;
+
+    grid-template-columns:
+      repeat(
+        4,
+        minmax(
+          0,
+          1fr
+        )
+      );
+
+    gap: 5px;
+
+    border-bottom:
+      1px solid
+      #ececf2;
+
+    background:
+      rgba(
+        248,
+        249,
+        252,
+        0.95
+      );
+
+    backdrop-filter:
+      blur(
+        14px
+      );
+  }
+
+
+  .pulse-mobile-tabs
+  button {
+    min-width: 0;
+
+    min-height: 38px;
+
+    padding:
+      0 6px;
+
+    border: 0;
+
+    border-radius: 10px;
+
+    background: transparent;
+
+    color: #767c89;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+      background 180ms
+      var(
+        --pulse-ease
+      ),
+      color 180ms
+      var(
+        --pulse-ease
+      );
+  }
+
+
+  .pulse-mobile-tabs
+  button.is-active {
+    background:
+      var(
+        --pulse-gradient-primary
+      );
+
+    color: #fff;
+
+    box-shadow:
+      0 7px 18px
+      rgba(
+        124,
+        58,
+        237,
+        0.22
+      );
+  }
+
+
+  /* =======================================================
+     PULSE PAGE
+  ======================================================= */
+
+  .pulse-page {
+    width: 100%;
+
+    display: block;
+
+    padding:
+      10px 10px 24px;
+
+    background:
+      #f7f8fc;
+  }
+
+
+  .pulse-page__main {
+    width: 100%;
+
+    gap: 11px;
+  }
+
+
+  /* =======================================================
+     RIGHT RAIL OFF
+  ======================================================= */
+
+  .pulse-right-rail {
+    display: none !important;
+  }
+
+
+  /* =======================================================
+     HERO
+  ======================================================= */
+
+  .pulse-hero {
+    min-height: 0;
+
+    border-radius: 22px;
+
+    box-shadow:
+      0 15px 36px
+      rgba(
+        29,
+        13,
+        64,
+        0.15
+      );
+  }
+
+
+  .pulse-hero--ukraine
+  .pulse-hero__content {
+    min-height: 0;
+
+    padding:
+      10px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+  }
+
+
+  /* карта идёт первой */
+
+  .pulse-ukraine-map {
+    order: 1;
+
+    width: 100%;
+
+    min-height: 350px;
+
+    border-radius: 18px;
+  }
+
+
+  .pulse-hero__copy {
+    order: 2;
+
+    padding:
+      5px 6px 10px;
+  }
+
+
+  .pulse-hero__eyebrow {
+    padding:
+      5px 8px;
+
+    font-size: 8px;
+  }
+
+
+  .pulse-hero__copy
+  h1 {
+    margin:
+      10px 0 5px;
+
+    font-size: 28px;
+
+    line-height: 0.96;
+
+    letter-spacing: -0.8px;
+  }
+
+
+  .pulse-hero__copy
+  p {
+    max-width: none;
+
+    font-size: 11px;
+
+    line-height: 1.4;
+  }
+
+
+  .pulse-hero__signature {
+    display: none;
+  }
+
+
+  .pulse-hero__actions {
+    margin-top: 12px;
+  }
+
+
+  .pulse-hero__primary {
+    flex: 1;
+
+    min-height: 43px;
+
+    font-size: 10px;
+  }
+
+
+  .pulse-hero__online {
+    min-height: 43px;
+  }
+
+
+  .pulse-hero__online
+  strong {
+    font-size: 12px;
+  }
+
+
+  /* =======================================================
+     MAP MOBILE
+  ======================================================= */
+
+  .pulse-ukraine-map__shape {
+    top: 11%;
+
+    left: 1%;
+
+    width: 98%;
+
+    height: 75%;
+  }
+
+
+  .pulse-ukraine-map__live-badge {
+    top: 10px;
+
+    left: 10px;
+  }
+
+
+  .pulse-ukraine-map__message {
+    display: none;
+  }
+
+
+  .pulse-ukraine-map__people {
+    left: 10px;
+
+    bottom: 10px;
+
+    min-height: 42px;
+
+    padding:
+      6px 8px;
+  }
+
+
+  .pulse-ukraine-map__cta {
+    right: 10px;
+
+    bottom: 10px;
+
+    min-height: 36px;
+  }
+
+
+  .pulse-city-node__label
+  strong {
+    font-size: 9px;
+  }
+
+
+  .pulse-city-node__label
+  small {
+    font-size: 6px;
+  }
+
+
+  .pulse-city-node__dot {
+    width: 19px;
+
+    height: 19px;
+
+    flex-basis: 19px;
+
+    border-width: 2px;
+  }
+
+
+  /* =======================================================
+     ACTIVE MODE / "ЗАРАЗ ПОРУЧ"
+  ======================================================= */
+
+  .pulse-active-mode {
+    padding: 12px;
+
+    border-radius: 18px;
+  }
+
+
+  .pulse-active-mode__header {
+    margin-bottom: 9px;
+  }
+
+
+  .pulse-active-mode__header
+  strong {
+    font-size: 13px;
+  }
+
+
+  .pulse-active-mode__track {
+    width: 100%;
+
+    display: flex;
+
+    gap: 8px;
+
+    overflow-x: auto;
+
+    padding-bottom: 3px;
+
+    scroll-snap-type:
+      x mandatory;
+
+    scrollbar-width: none;
+  }
+
+
+  .pulse-active-mode__track::-webkit-scrollbar {
+    display: none;
+  }
+
+
+  .pulse-active-mode__feature {
+    min-width:
+      min(
+        78vw,
+        320px
+      );
+
+    scroll-snap-align: start;
+  }
+
+
+  .pulse-active-mode__small {
+    min-width:
+      min(
+        48vw,
+        190px
+      );
+
+    scroll-snap-align: start;
+  }
+
+
+  /* =======================================================
+     VIDEO RAIL
+  ======================================================= */
+
+  .pulse-video-rail {
+    padding: 12px;
+
+    border-radius: 18px;
+  }
+
+
+  .pulse-video-rail__header {
+    margin-bottom: 9px;
+  }
+
+
+  .pulse-video-rail__icon {
+    width: 31px;
+
+    height: 31px;
+
+    flex-basis: 31px;
+  }
+
+
+  .pulse-video-rail__title
+  strong {
+    font-size: 12px;
+  }
+
+
+  .pulse-video-rail__title
+  small {
+    font-size: 7px;
+  }
+
+
+  .pulse-video-rail__all
+  span {
+    display: none;
+  }
+
+
+  .pulse-video-rail__track {
+    display: flex !important;
+
+    gap: 8px;
+
+    overflow-x: auto;
+
+    padding-bottom: 3px;
+
+    scroll-snap-type:
+      x mandatory;
+
+    scrollbar-width: none;
+  }
+
+
+  .pulse-video-rail__track::-webkit-scrollbar {
+    display: none;
+  }
+
+
+  .pulse-video-card {
+    min-width:
+      min(
+        62vw,
+        245px
+      );
+
+    scroll-snap-align: start;
+
+    border-radius: 14px;
+  }
+
+
+  .pulse-video-card--clip {
+    min-width:
+      min(
+        42vw,
+        165px
+      );
+  }
+
+
+  .pulse-video-card--feature {
+    min-width:
+      min(
+        78vw,
+        315px
+      );
+  }
+
+
+  .pulse-video-card--compact {
+    min-width:
+      min(
+        49vw,
+        195px
+      );
+  }
+
+
+  /* =======================================================
+     PEOPLE ROW
+  ======================================================= */
+
+  .pulse-people-row {
+    padding:
+      7px 8px;
+  }
+
+
+  .pulse-people-row__copy {
+    font-size: 7px;
+  }
+
+
+  /* =======================================================
+     WAVE
+  ======================================================= */
+
+  .pulse-wave {
+    padding: 14px;
+
+    border-radius: 20px;
+  }
+
+
+  .pulse-wave__brand-icon {
+    width: 42px;
+
+    height: 42px;
+
+    flex-basis: 42px;
+  }
+
+
+  .pulse-wave__brand
+  h2 {
+    font-size: 20px;
+  }
+
+
+  .pulse-wave__live {
+    display: none;
+  }
+
+
+  .pulse-wave__prompt {
+    margin-top: 13px;
+
+    padding: 10px;
+
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+
+  .pulse-wave__prompt-stats {
+    width: 100%;
+
+    display: flex;
+
+    overflow-x: auto;
+
+    scrollbar-width: none;
+  }
+
+
+  .pulse-wave__prompt-stats::-webkit-scrollbar {
+    display: none;
+  }
+
+
+  .pulse-wave-timeline {
+    display: flex;
+
+    gap: 9px;
+
+    overflow-x: auto;
+
+    padding-bottom: 4px;
+
+    scroll-snap-type:
+      x mandatory;
+
+    scrollbar-width: none;
+  }
+
+
+  .pulse-wave-timeline::-webkit-scrollbar {
+    display: none;
+  }
+
+
+  .pulse-wave-step {
+    min-width:
+      min(
+        61vw,
+        235px
+      );
+
+    scroll-snap-align: start;
+  }
+
+
+  .pulse-wave-step__connector {
+    display: none;
+  }
+
+
+  .pulse-wave__footer {
+    align-items: stretch;
+
+    flex-direction: column;
+  }
+
+
+  .pulse-continue-story-button {
+    width: 100%;
+
+    min-width: 0;
+  }
+
+
+  /* =======================================================
+     BOTTOM NAV
+  ======================================================= */
+
+  .pulse-mobile-nav {
+    position: fixed;
+
+    right: 0;
+
+    bottom: 0;
+
+    left: 0;
+
+    z-index: 1000;
+
+    min-height: 70px;
+
+    padding:
+      7px 9px
+      calc(
+        7px +
+        env(
+          safe-area-inset-bottom
+        )
+      );
+
+    display: grid;
+
+    grid-template-columns:
+      repeat(
+        5,
+        1fr
+      );
+
+    align-items: center;
+
+    border-top:
+      1px solid
+      rgba(
+        221,
+        224,
+        232,
+        0.96
+      );
+
+    background:
+      rgba(
+        255,
+        255,
+        255,
+        0.96
+      );
+
+    backdrop-filter:
+      blur(
+        20px
+      );
+
+    box-shadow:
+      0 -10px 30px
+      rgba(
+        25,
+        27,
+        42,
+        0.07
+      );
+  }
+
+
+  .pulse-mobile-nav
+  > button {
+    min-width: 0;
+
+    min-height: 52px;
+
+    padding:
+      4px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 3px;
+
+    border: 0;
+
+    background: transparent;
+
+    color: #8a8f9c;
+
+    font-size: 7px;
+
+    font-weight: 750;
+
+    cursor: pointer;
+  }
+
+
+  .pulse-mobile-nav
+  > button.is-active {
+    color: #7c3aed;
+  }
+
+
+  .pulse-mobile-nav__create
+  > span {
+    width: 47px;
+
+    height: 47px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 15px;
+
+    background:
+      var(
+        --pulse-gradient-primary
+      );
+
+    color: #fff;
+
+    box-shadow:
+      0 8px 22px
+      rgba(
+        124,
+        58,
+        237,
+        0.3
+      );
+
+    transform:
+      translateY(
+        -9px
+      );
+  }
+
+
+  .pulse-mobile-nav__create
+  > span
+  + span {
+    display: none;
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (
+  max-width: 390px
+) {
+
+  .pulse-mobile-header {
+    padding:
+      8px 10px;
+  }
+
+
+  .pulse-mobile-header__logo {
+    width: 38px;
+
+    height: 38px;
+
+    flex-basis: 38px;
+
+    font-size: 21px;
+  }
+
+
+  .pulse-mobile-header__brand
+  strong {
+    font-size: 15px;
+  }
+
+
+  .pulse-mobile-tabs {
+    padding:
+      7px 8px;
+  }
+
+
+  .pulse-mobile-tabs
+  button {
+    font-size: 9px;
+  }
+
+
+  .pulse-page {
+    padding:
+      8px 8px 20px;
+  }
+
+
+  .pulse-ukraine-map {
+    min-height: 315px;
+  }
+
+
+  .pulse-city-node__label
+  small {
+    display: none;
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+
+  .pulse-mobile-tabs
+  button {
+    transition: none;
+  }
+}

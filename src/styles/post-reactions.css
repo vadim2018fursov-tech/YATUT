@@ -1,0 +1,403 @@
+/* =========================================================
+   ЯТУТ — POST REACTIONS
+========================================================= */
+
+.yatut-post-reaction-action {
+  position: relative;
+
+  min-width: 0;
+
+  display: flex;
+}
+
+/* =========================================================
+   MAIN BUTTON
+========================================================= */
+
+.premium-feed-actions
+.yatut-main-reaction {
+  width: 100%;
+}
+
+.yatut-current-reaction-emoji {
+  min-width: 21px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-size: 17px;
+
+  line-height: 1;
+}
+
+.premium-feed-actions
+.yatut-main-reaction.is-active {
+  background:
+    rgba(
+      124,
+      58,
+      237,
+      0.07
+    );
+
+  color:
+    #6d28d9;
+
+  font-weight: 800;
+}
+
+/* =========================================================
+   PICKER
+========================================================= */
+
+.yatut-reaction-picker {
+  position: absolute;
+
+  left: -5px;
+  bottom: calc(100% + 9px);
+
+  z-index: 250;
+
+  width: max-content;
+
+  padding:
+    7px;
+
+  display: flex;
+
+  align-items: flex-end;
+
+  gap: 2px;
+
+  border:
+    1px solid
+    rgba(
+      222,
+      221,
+      231,
+      0.95
+    );
+
+  border-radius:
+    18px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.98
+    );
+
+  box-shadow:
+    0 17px 45px
+    rgba(
+      25,
+      24,
+      38,
+      0.2
+    );
+
+  -webkit-backdrop-filter:
+    blur(16px);
+
+  backdrop-filter:
+    blur(16px);
+
+  animation:
+    yatutReactionPickerIn
+    150ms
+    ease;
+}
+
+.yatut-reaction-picker::after {
+  content: "";
+
+  position: absolute;
+
+  left: 25px;
+  bottom: -7px;
+
+  width: 12px;
+  height: 12px;
+
+  border-right:
+    1px solid
+    #e5e3ea;
+
+  border-bottom:
+    1px solid
+    #e5e3ea;
+
+  background:
+    #fff;
+
+  transform:
+    rotate(45deg);
+}
+
+/* =========================================================
+   REACTION ITEM
+========================================================= */
+
+.yatut-reaction-picker
+button {
+  position: relative;
+
+  z-index: 1;
+
+  width: 49px;
+  height: 54px;
+
+  padding:
+    4px 2px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 2px;
+
+  border: 0;
+
+  border-radius:
+    13px;
+
+  background:
+    transparent;
+
+  color:
+    #737784;
+
+  font-family:
+    inherit;
+
+  cursor: pointer;
+
+  transition:
+    transform
+      140ms ease,
+    background
+      140ms ease;
+}
+
+.yatut-reaction-picker
+button:hover {
+  z-index: 5;
+
+  background:
+    #f5f2fd;
+
+  transform:
+    translateY(-7px)
+    scale(1.18);
+}
+
+.yatut-reaction-picker
+button.is-selected {
+  background:
+    #eee9ff;
+
+  color:
+    #6d28d9;
+}
+
+.yatut-reaction-picker
+button
+> span {
+  display: block;
+
+  font-size: 23px;
+
+  line-height: 1;
+}
+
+.yatut-reaction-picker
+button
+> small {
+  display: block;
+
+  max-width: 46px;
+
+  overflow: hidden;
+
+  font-size: 6.5px;
+
+  font-weight: 800;
+
+  text-overflow:
+    ellipsis;
+
+  white-space: nowrap;
+}
+
+/* =========================================================
+   SUMMARY
+========================================================= */
+
+.yatut-reaction-summary {
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+}
+
+.yatut-reaction-summary
+> div {
+  display: flex;
+
+  align-items: center;
+}
+
+.yatut-reaction-summary
+> div
+> span {
+  width: 20px;
+  height: 20px;
+
+  margin-left:
+    -4px;
+
+  display: grid;
+
+  place-items: center;
+
+  border:
+    2px solid
+    #fff;
+
+  border-radius:
+    50%;
+
+  background:
+    #f7f7fa;
+
+  font-size: 11px;
+
+  box-shadow:
+    0 2px 5px
+    rgba(
+      28,
+      29,
+      40,
+      0.08
+    );
+}
+
+.yatut-reaction-summary
+> div
+> span:first-child {
+  margin-left: 0;
+}
+
+.yatut-reaction-summary
+> strong {
+  color:
+    #787c89;
+
+  font-size:
+    9px;
+
+  font-weight: 750;
+}
+
+/* =========================================================
+   ANIMATION
+========================================================= */
+
+@keyframes yatutReactionPickerIn {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(
+        7px
+      )
+      scale(
+        0.96
+      );
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(
+        0
+      )
+      scale(
+        1
+      );
+  }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (
+  max-width: 680px
+) {
+  .yatut-reaction-picker {
+    position: fixed;
+
+    right: 10px;
+    bottom: 88px;
+    left: 10px;
+
+    width: auto;
+
+    justify-content:
+      space-around;
+
+    padding:
+      9px 5px;
+
+    border-radius:
+      20px;
+  }
+
+  .yatut-reaction-picker::after {
+    display: none;
+  }
+
+  .yatut-reaction-picker
+  button {
+    width:
+      calc(
+        100% /
+        7
+      );
+
+    max-width:
+      50px;
+  }
+
+  .yatut-reaction-picker
+  button
+  > small {
+    display: none;
+  }
+}
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+  .yatut-reaction-picker {
+    animation: none;
+  }
+
+  .yatut-reaction-picker
+  button {
+    transition: none;
+  }
+}

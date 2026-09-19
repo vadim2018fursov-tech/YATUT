@@ -1,0 +1,1786 @@
+/* =========================================================
+   ЯТУТ PULSE
+   WATCH PAGE
+========================================================= */
+
+.premium-app-shell-watch
+.premium-desktop-layout {
+  grid-template-columns:
+    244px
+    minmax(
+      0,
+      1fr
+    ) !important;
+}
+
+
+.premium-page-watch {
+  min-width: 0;
+}
+
+
+.pulse-watch-page {
+  width: 100%;
+
+  min-width: 0;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(
+      0,
+      1fr
+    )
+    365px;
+
+  gap: 24px;
+
+  align-items: start;
+}
+
+
+.pulse-watch-main {
+  min-width: 0;
+}
+
+
+/* =========================================================
+   PLAYER
+========================================================= */
+
+.pulse-watch-player {
+  position: relative;
+
+  width: 100%;
+
+  aspect-ratio:
+    16 / 9;
+
+  overflow: hidden;
+
+  border-radius: 22px;
+
+  background:
+    #07060d;
+
+  box-shadow:
+    0 22px 55px
+    rgba(
+      10,
+      7,
+      25,
+      0.18
+    );
+}
+
+
+.pulse-watch-player__video,
+.pulse-watch-player__poster {
+  width: 100%;
+
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+}
+
+
+.pulse-watch-player__shade {
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(
+        3,
+        3,
+        8,
+        0.08
+      )
+      40%,
+      rgba(
+        3,
+        3,
+        8,
+        0.72
+      )
+      100%
+    );
+}
+
+
+.pulse-watch-player__big-play {
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  width: 72px;
+
+  height: 72px;
+
+  display: grid;
+
+  place-items: center;
+
+  border: 0;
+
+  border-radius: 50%;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.94
+    );
+
+  color:
+    #6d28d9;
+
+  cursor: pointer;
+
+  transform:
+    translate(
+      -50%,
+      -50%
+    );
+
+  box-shadow:
+    0 15px 35px
+    rgba(
+      0,
+      0,
+      0,
+      0.26
+    );
+
+  transition:
+    transform
+    180ms ease;
+}
+
+
+.pulse-watch-player__big-play:hover {
+  transform:
+    translate(
+      -50%,
+      -50%
+    )
+    scale(
+      1.07
+    );
+}
+
+
+.pulse-watch-player__demo {
+  position: absolute;
+
+  top: 16px;
+  left: 16px;
+
+  padding:
+    6px 9px;
+
+  border-radius:
+    8px;
+
+  background:
+    rgba(
+      8,
+      6,
+      17,
+      0.58
+    );
+
+  backdrop-filter:
+    blur(
+      10px
+    );
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.72
+    );
+
+  font-size: 8px;
+}
+
+
+.pulse-watch-player__controls {
+  position: absolute;
+
+  right: 18px;
+  bottom: 14px;
+  left: 18px;
+
+  display: grid;
+
+  grid-template-columns:
+    auto
+    minmax(
+      0,
+      1fr
+    )
+    auto;
+
+  align-items: center;
+
+  gap: 10px;
+
+  color: #fff;
+}
+
+
+.pulse-watch-player__controls
+button {
+  width: 32px;
+
+  height: 32px;
+
+  display: grid;
+
+  place-items: center;
+
+  border: 0;
+
+  background: transparent;
+
+  color: #fff;
+
+  cursor: pointer;
+}
+
+
+.pulse-watch-player__controls
+> span {
+  font-size: 8px;
+}
+
+
+.pulse-watch-player__progress {
+  height: 4px;
+
+  overflow: hidden;
+
+  border-radius: 99px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.25
+    );
+}
+
+
+.pulse-watch-player__progress
+span {
+  display: block;
+
+  width: 18%;
+  height: 100%;
+
+  background:
+    #8b5cf6;
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.pulse-watch-title {
+  margin-top: 16px;
+}
+
+
+.pulse-watch-back {
+  margin-bottom: 9px;
+
+  padding: 0;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 4px;
+
+  border: 0;
+
+  background: transparent;
+
+  color: #7c3aed;
+
+  font-size: 8px;
+
+  font-weight: 850;
+
+  cursor: pointer;
+}
+
+
+.pulse-watch-title
+h1 {
+  margin: 0;
+
+  color:
+    #171821;
+
+  font-size:
+    clamp(
+      22px,
+      2vw,
+      30px
+    );
+
+  line-height:
+    1.22;
+
+  letter-spacing:
+    -0.5px;
+}
+
+
+.pulse-watch-meta {
+  margin-top: 8px;
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  align-items: center;
+
+  gap: 8px 14px;
+
+  color:
+    #858b98;
+
+  font-size: 9px;
+}
+
+
+.pulse-watch-meta
+span,
+.pulse-watch-meta
+button {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 5px;
+}
+
+
+.pulse-watch-meta
+button {
+  padding: 0;
+
+  border: 0;
+
+  background: transparent;
+
+  color:
+    #7c3aed;
+
+  font-size: inherit;
+
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   AUTHOR BAR
+========================================================= */
+
+.pulse-watch-author-bar {
+  margin-top: 16px;
+
+  padding-bottom: 16px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  border-bottom:
+    1px solid
+    #e8e9ef;
+}
+
+
+.pulse-watch-author {
+  min-width: 0;
+
+  padding: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  border: 0;
+
+  background: transparent;
+
+  text-align: left;
+
+  cursor: pointer;
+}
+
+
+.pulse-watch-author
+> span {
+  width: 44px;
+
+  height: 44px;
+
+  flex:
+    0 0
+    44px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #e4d9ff,
+      #bea8ff
+    );
+
+  color:
+    #5b21b6;
+
+  font-size: 14px;
+
+  font-weight: 900;
+}
+
+
+.pulse-watch-author
+> div {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+
+.pulse-watch-author
+strong {
+  color: #181922;
+
+  font-size: 11px;
+}
+
+
+.pulse-watch-author
+small {
+  color: #9196a2;
+
+  font-size: 7px;
+}
+
+
+.pulse-watch-subscribe {
+  min-height: 39px;
+
+  padding:
+    0 14px;
+
+  flex: 0 0 auto;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  border: 0;
+
+  border-radius: 11px;
+
+  background:
+    #181922;
+
+  color: #fff;
+
+  font-size: 8px;
+
+  font-weight: 850;
+
+  cursor: pointer;
+}
+
+
+.pulse-watch-subscribe.is-subscribed {
+  background:
+    #f0f0f5;
+
+  color:
+    #454955;
+}
+
+
+.pulse-watch-actions {
+  margin-left: auto;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+}
+
+
+.pulse-watch-actions
+> button,
+.pulse-watch-like-group {
+  min-height: 38px;
+
+  border:
+    1px solid
+    #e8e9ef;
+
+  border-radius: 12px;
+
+  background:
+    #f7f7fa;
+}
+
+
+.pulse-watch-actions
+> button {
+  padding:
+    0 11px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  color:
+    #484d58;
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+
+.pulse-watch-actions
+button.is-active {
+  color:
+    #7c3aed;
+
+  background:
+    #f1ebff;
+}
+
+
+.pulse-watch-like-group {
+  display: flex;
+
+  overflow: hidden;
+}
+
+
+.pulse-watch-like-group
+button {
+  min-width: 39px;
+
+  padding:
+    0 10px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 5px;
+
+  border: 0;
+
+  background: transparent;
+
+  color:
+    #484d58;
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+
+.pulse-watch-like-group
+button + button {
+  border-left:
+    1px solid
+    #e0e1e8;
+}
+
+
+.pulse-watch-like-group
+button.is-active {
+  color:
+    #7c3aed;
+}
+
+
+.pulse-watch-more {
+  padding:
+    0 10px !important;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.pulse-watch-description {
+  margin-top: 14px;
+
+  padding: 14px;
+
+  border-radius: 16px;
+
+  background:
+    #f4f4f7;
+}
+
+
+.pulse-watch-description__stats {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 8px;
+
+  color:
+    #30323b;
+
+  font-size: 8px;
+}
+
+
+.pulse-watch-description
+p {
+  max-height:
+    44px;
+
+  margin:
+    8px 0 0;
+
+  overflow: hidden;
+
+  color:
+    #555a66;
+
+  font-size: 9px;
+
+  line-height: 1.55;
+}
+
+
+.pulse-watch-description
+p.is-expanded {
+  max-height: none;
+}
+
+
+.pulse-watch-description__more {
+  margin-top: 6px;
+
+  padding: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 3px;
+
+  border: 0;
+
+  background: transparent;
+
+  color:
+    #272934;
+
+  font-size: 8px;
+
+  font-weight: 850;
+
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   LOCATION
+========================================================= */
+
+.pulse-watch-location {
+  margin-top: 14px;
+
+  padding: 13px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content:
+    space-between;
+
+  gap: 12px;
+
+  border:
+    1px solid
+    rgba(
+      124,
+      58,
+      237,
+      0.14
+    );
+
+  border-radius:
+    16px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #faf7ff,
+      #f6f8ff
+    );
+}
+
+
+.pulse-watch-location__copy {
+  min-width: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+}
+
+
+.pulse-watch-location__icon {
+  width: 39px;
+
+  height: 39px;
+
+  flex:
+    0 0 39px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 12px;
+
+  background:
+    #ede5ff;
+
+  color:
+    #7c3aed;
+}
+
+
+.pulse-watch-location__copy
+> div {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+
+.pulse-watch-location__copy
+small {
+  color: #9b8fc2;
+
+  font-size: 6px;
+
+  font-weight: 900;
+
+  letter-spacing: 0.7px;
+}
+
+
+.pulse-watch-location__copy
+strong {
+  font-size: 10px;
+}
+
+
+.pulse-watch-location__copy
+span {
+  color: #8b909c;
+
+  font-size: 7px;
+}
+
+
+.pulse-watch-location
+.pulse-here-button {
+  width: auto;
+
+  min-width: 100px;
+
+  margin: 0;
+}
+
+
+/* =========================================================
+   COMMENTS
+========================================================= */
+
+.pulse-watch-comments {
+  margin-top: 22px;
+
+  padding-bottom: 50px;
+}
+
+
+.pulse-watch-comments
+> header {
+  display: flex;
+
+  align-items: center;
+
+  justify-content:
+    space-between;
+
+  gap: 12px;
+}
+
+
+.pulse-watch-comments
+> header
+> div {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+}
+
+
+.pulse-watch-comments
+h2 {
+  margin: 0;
+
+  font-size: 15px;
+}
+
+
+.pulse-watch-comments
+> header
+> button {
+  display: flex;
+
+  align-items: center;
+
+  gap: 3px;
+
+  border: 0;
+
+  background: transparent;
+
+  color: #676c78;
+
+  font-size: 8px;
+
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   COMMENT CREATE
+========================================================= */
+
+.pulse-watch-comment-create {
+  margin-top: 16px;
+
+  display: grid;
+
+  grid-template-columns:
+    38px
+    minmax(
+      0,
+      1fr
+    );
+
+  gap: 9px;
+}
+
+
+.pulse-watch-comment-create
+> span {
+  width: 38px;
+
+  height: 38px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 50%;
+
+  background:
+    #312d39;
+
+  color: #fff;
+
+  font-size: 12px;
+
+  font-weight: 900;
+}
+
+
+.pulse-watch-comment-create
+> div {
+  min-width: 0;
+}
+
+
+.pulse-watch-comment-create
+textarea {
+  width: 100%;
+
+  min-height: 38px;
+
+  resize: vertical;
+
+  padding:
+    9px 0;
+
+  border: 0;
+
+  border-bottom:
+    1px solid
+    #d9dbe3;
+
+  outline: none;
+
+  background: transparent;
+
+  color: #21232c;
+
+  font: inherit;
+
+  font-size: 9px;
+}
+
+
+.pulse-watch-comment-create
+textarea:focus {
+  border-bottom-color:
+    #7c3aed;
+}
+
+
+.pulse-watch-comment-create
+> div
+> div {
+  margin-top: 7px;
+
+  display: flex;
+
+  justify-content:
+    flex-end;
+
+  gap: 6px;
+}
+
+
+.pulse-watch-comment-create
+button {
+  min-height: 32px;
+
+  padding:
+    0 10px;
+
+  border: 0;
+
+  border-radius: 9px;
+
+  background:
+    transparent;
+
+  color:
+    #6c717d;
+
+  font-size: 7px;
+
+  font-weight: 850;
+
+  cursor: pointer;
+}
+
+
+.pulse-watch-comment-create
+button.is-primary {
+  display: flex;
+
+  align-items: center;
+
+  gap: 4px;
+
+  background:
+    #7c3aed;
+
+  color: #fff;
+}
+
+
+.pulse-watch-comment-create
+button:disabled {
+  opacity: 0.42;
+
+  cursor: default;
+}
+
+
+/* =========================================================
+   COMMENT
+========================================================= */
+
+.pulse-watch-comment {
+  margin-top: 17px;
+
+  display: grid;
+
+  grid-template-columns:
+    38px
+    minmax(
+      0,
+      1fr
+    );
+
+  gap: 9px;
+}
+
+
+.pulse-watch-comment__avatar {
+  width: 38px;
+
+  height: 38px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #e4dbff,
+      #c2afff
+    );
+
+  color:
+    #5b21b6;
+
+  font-size: 11px;
+
+  font-weight: 900;
+}
+
+
+.pulse-watch-comment__author {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  align-items: center;
+
+  gap: 4px 7px;
+}
+
+
+.pulse-watch-comment__author
+strong {
+  font-size: 8px;
+}
+
+
+.pulse-watch-comment__author
+span,
+.pulse-watch-comment__author
+small {
+  color: #9297a3;
+
+  font-size: 7px;
+}
+
+
+.pulse-watch-comment
+p {
+  margin:
+    5px 0 0;
+
+  color: #4f535e;
+
+  font-size: 9px;
+
+  line-height: 1.48;
+}
+
+
+.pulse-watch-comment__actions {
+  margin-top: 6px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+}
+
+
+.pulse-watch-comment__actions
+button {
+  padding: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 4px;
+
+  border: 0;
+
+  background: transparent;
+
+  color: #7a7f8c;
+
+  font-size: 7px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+
+.pulse-watch-comment__actions
+button.is-active {
+  color:
+    #7c3aed;
+}
+
+
+/* =========================================================
+   RIGHT SIDEBAR
+========================================================= */
+
+.pulse-watch-sidebar {
+  position: sticky;
+
+  top: 92px;
+
+  min-width: 0;
+}
+
+
+.pulse-watch-sidebar__top {
+  display: flex;
+
+  align-items: center;
+
+  justify-content:
+    space-between;
+
+  gap: 8px;
+}
+
+
+.pulse-watch-sidebar__top
+strong {
+  font-size: 15px;
+}
+
+
+.pulse-watch-sidebar__top
+span {
+  color:
+    #7c3aed;
+
+  font-size: 7px;
+
+  font-weight: 900;
+}
+
+
+.pulse-watch-sidebar__filters {
+  margin:
+    10px 0 12px;
+
+  display: flex;
+
+  gap: 5px;
+
+  overflow-x: auto;
+
+  scrollbar-width: none;
+}
+
+
+.pulse-watch-sidebar__filters::-webkit-scrollbar {
+  display: none;
+}
+
+
+.pulse-watch-sidebar__filters
+button {
+  min-height: 31px;
+
+  padding:
+    0 10px;
+
+  flex: 0 0 auto;
+
+  border: 0;
+
+  border-radius: 9px;
+
+  background:
+    #f0f0f4;
+
+  color:
+    #606571;
+
+  font-size: 7px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+
+.pulse-watch-sidebar__filters
+button.is-active {
+  background:
+    #25222c;
+
+  color: #fff;
+}
+
+
+/* =========================================================
+   RECOMMENDATION
+========================================================= */
+
+.pulse-watch-recommendations {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+
+.pulse-watch-recommendation {
+  width: 100%;
+
+  min-width: 0;
+
+  padding: 0;
+
+  display: grid;
+
+  grid-template-columns:
+    164px
+    minmax(
+      0,
+      1fr
+    );
+
+  gap: 9px;
+
+  border: 0;
+
+  background: transparent;
+
+  text-align: left;
+
+  cursor: pointer;
+}
+
+
+.pulse-watch-recommendation__media {
+  position: relative;
+
+  aspect-ratio:
+    16 / 9;
+
+  overflow: hidden;
+
+  border-radius: 11px;
+
+  background: #111;
+}
+
+
+.pulse-watch-recommendation__media
+img {
+  width: 100%;
+
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  transition:
+    transform
+    220ms ease;
+}
+
+
+.pulse-watch-recommendation:hover
+.pulse-watch-recommendation__media
+img {
+  transform:
+    scale(
+      1.04
+    );
+}
+
+
+.pulse-watch-recommendation__media
+span {
+  position: absolute;
+
+  right: 5px;
+  bottom: 5px;
+
+  padding:
+    3px 5px;
+
+  border-radius: 5px;
+
+  background:
+    rgba(
+      0,
+      0,
+      0,
+      0.76
+    );
+
+  color: #fff;
+
+  font-size: 6px;
+
+  font-weight: 850;
+}
+
+
+.pulse-watch-recommendation__media
+b {
+  position: absolute;
+
+  top: 5px;
+  left: 5px;
+
+  padding:
+    4px 5px;
+
+  border-radius: 5px;
+
+  background:
+    #ec4899;
+
+  color: #fff;
+
+  font-size: 6px;
+}
+
+
+.pulse-watch-recommendation__copy {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+
+.pulse-watch-recommendation__copy
+strong {
+  display: -webkit-box;
+
+  overflow: hidden;
+
+  color:
+    #20212a;
+
+  font-size: 9px;
+
+  font-weight: 850;
+
+  line-height: 1.35;
+
+  -webkit-line-clamp: 2;
+
+  -webkit-box-orient:
+    vertical;
+}
+
+
+.pulse-watch-recommendation__copy
+span,
+.pulse-watch-recommendation__copy
+small {
+  overflow: hidden;
+
+  color:
+    #9297a3;
+
+  font-size: 7px;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (
+  max-width: 1350px
+) {
+  .pulse-watch-page {
+    grid-template-columns:
+      minmax(
+        0,
+        1fr
+      )
+      320px;
+
+    gap: 18px;
+  }
+
+
+  .pulse-watch-recommendation {
+    grid-template-columns:
+      145px
+      minmax(
+        0,
+        1fr
+      );
+  }
+
+
+  .pulse-watch-actions
+  > button {
+    padding:
+      0 9px;
+  }
+
+
+  .pulse-watch-actions
+  > button
+  {
+    font-size: 0;
+  }
+
+
+  .pulse-watch-actions
+  > button
+  svg {
+    margin: 0;
+  }
+}
+
+
+@media (
+  max-width: 1100px
+) {
+  .pulse-watch-page {
+    display: block;
+  }
+
+
+  .pulse-watch-sidebar {
+    position: static;
+
+    margin-top: 20px;
+  }
+
+
+  .pulse-watch-recommendations {
+    display: grid;
+
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(
+          0,
+          1fr
+        )
+      );
+  }
+
+
+  .pulse-watch-author-bar {
+    flex-wrap: wrap;
+  }
+
+
+  .pulse-watch-actions {
+    width: 100%;
+
+    margin-left: 0;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (
+  max-width: 850px
+) {
+  .premium-app-shell-watch
+  .premium-global-header,
+  .premium-app-shell-watch
+  .yat-sidebar {
+    display:
+      none !important;
+  }
+
+
+  .premium-app-shell-watch
+  .premium-desktop-layout {
+    width: 100% !important;
+
+    max-width: none !important;
+
+    margin: 0 !important;
+
+    display: block !important;
+  }
+
+
+  .premium-app-shell-watch
+  .premium-page-content {
+    width: 100% !important;
+
+    max-width: none !important;
+
+    padding: 0 !important;
+  }
+
+
+  .pulse-watch-page {
+    padding-bottom: 30px;
+
+    background: #fff;
+  }
+
+
+  .pulse-watch-main {
+    width: 100%;
+  }
+
+
+  .pulse-watch-player {
+    border-radius: 0;
+  }
+
+
+  .pulse-watch-title,
+  .pulse-watch-author-bar,
+  .pulse-watch-description,
+  .pulse-watch-location,
+  .pulse-watch-comments {
+    margin-right: 12px;
+
+    margin-left: 12px;
+  }
+
+
+  .pulse-watch-title {
+    margin-top: 12px;
+  }
+
+
+  .pulse-watch-title
+  h1 {
+    font-size: 19px;
+  }
+
+
+  .pulse-watch-author-bar {
+    align-items: flex-start;
+
+    flex-wrap: wrap;
+  }
+
+
+  .pulse-watch-author {
+    flex:
+      1 1 auto;
+  }
+
+
+  .pulse-watch-actions {
+    width: 100%;
+
+    overflow-x: auto;
+
+    margin-left: 0;
+
+    scrollbar-width: none;
+  }
+
+
+  .pulse-watch-actions::-webkit-scrollbar {
+    display: none;
+  }
+
+
+  .pulse-watch-actions
+  > button {
+    flex: 0 0 auto;
+
+    font-size: 7px;
+  }
+
+
+  .pulse-watch-location {
+    align-items: stretch;
+
+    flex-direction: column;
+  }
+
+
+  .pulse-watch-location
+  .pulse-here-button {
+    width: 100%;
+  }
+
+
+  .pulse-watch-sidebar {
+    margin:
+      20px 12px 0;
+  }
+
+
+  .pulse-watch-recommendations {
+    display: flex;
+
+    flex-direction: column;
+  }
+
+
+  .pulse-watch-recommendation {
+    grid-template-columns:
+      minmax(
+        135px,
+        42%
+      )
+      minmax(
+        0,
+        1fr
+      );
+  }
+}
+
+
+@media (
+  max-width: 480px
+) {
+  .pulse-watch-player__big-play {
+    width: 58px;
+
+    height: 58px;
+  }
+
+
+  .pulse-watch-player__demo {
+    display: none;
+  }
+
+
+  .pulse-watch-player__controls {
+    right: 10px;
+    bottom: 8px;
+    left: 10px;
+  }
+
+
+  .pulse-watch-player__controls
+  > span {
+    font-size: 6px;
+  }
+
+
+  .pulse-watch-title
+  h1 {
+    font-size: 17px;
+  }
+
+
+  .pulse-watch-meta {
+    font-size: 7px;
+  }
+
+
+  .pulse-watch-subscribe {
+    min-height: 35px;
+
+    padding:
+      0 10px;
+  }
+
+
+  .pulse-watch-comment-create,
+  .pulse-watch-comment {
+    grid-template-columns:
+      34px
+      minmax(
+        0,
+        1fr
+      );
+  }
+
+
+  .pulse-watch-comment-create
+  > span,
+  .pulse-watch-comment__avatar {
+    width: 34px;
+
+    height: 34px;
+  }
+}

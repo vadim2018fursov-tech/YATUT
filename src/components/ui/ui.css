@@ -1,0 +1,1575 @@
+/* =========================================================
+   YATUT UI COMPONENTS v1.0
+========================================================= */
+
+@import "../../styles/tokens.css";
+@import "../../styles/animations.css";
+
+/* =========================================================
+   BUTTON
+========================================================= */
+
+.yat-button {
+  position: relative;
+
+  min-height: 44px;
+
+  padding:
+    0 18px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    transparent;
+
+  border-radius:
+    var(--yat-radius-md);
+
+  outline: 0;
+
+  font-size:
+    var(--yat-font-md);
+
+  font-weight:
+    var(--yat-weight-heavy);
+
+  line-height: 1;
+
+  white-space: nowrap;
+
+  user-select: none;
+
+  transition:
+    transform
+      var(--yat-duration-button)
+      var(--yat-ease),
+    box-shadow
+      var(--yat-duration-button)
+      var(--yat-ease),
+    background
+      var(--yat-duration-button)
+      var(--yat-ease),
+    border-color
+      var(--yat-duration-button)
+      var(--yat-ease),
+    color
+      var(--yat-duration-button)
+      var(--yat-ease);
+}
+
+.yat-button-full {
+  width: 100%;
+}
+
+.yat-button-small {
+  min-height: 36px;
+
+  padding:
+    0 13px;
+
+  border-radius:
+    12px;
+
+  font-size:
+    12px;
+}
+
+.yat-button-medium {
+  min-height: 44px;
+}
+
+.yat-button-large {
+  min-height: 50px;
+
+  padding:
+    0 22px;
+
+  border-radius:
+    16px;
+
+  font-size:
+    14px;
+}
+
+.yat-button-primary {
+  background:
+    var(--yat-gradient-primary);
+
+  color:
+    #ffffff;
+
+  box-shadow:
+    0 10px 24px
+    rgba(
+      124,
+      58,
+      237,
+      0.22
+    );
+}
+
+.yat-button-primary:hover {
+  box-shadow:
+    0 15px 32px
+    rgba(
+      124,
+      58,
+      237,
+      0.3
+    );
+}
+
+.yat-button-secondary {
+  border-color:
+    rgba(
+      124,
+      58,
+      237,
+      0.12
+    );
+
+  background:
+    #f1efff;
+
+  color:
+    var(--yat-primary);
+}
+
+.yat-button-secondary:hover {
+  background:
+    #e9e5ff;
+}
+
+.yat-button-white {
+  border-color:
+    rgba(
+      255,
+      255,
+      255,
+      0.72
+    );
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.92
+    );
+
+  color:
+    var(--yat-primary-dark);
+
+  box-shadow:
+    0 8px 22px
+    rgba(
+      15,
+      23,
+      42,
+      0.12
+    );
+
+  backdrop-filter:
+    blur(12px);
+}
+
+.yat-button-ghost {
+  background:
+    transparent;
+
+  color:
+    var(--yat-text-secondary);
+}
+
+.yat-button-ghost:hover {
+  background:
+    rgba(
+      124,
+      58,
+      237,
+      0.07
+    );
+
+  color:
+    var(--yat-primary);
+}
+
+.yat-button-premium {
+  border-color:
+    rgba(
+      255,
+      255,
+      255,
+      0.38
+    );
+
+  background:
+    linear-gradient(
+      135deg,
+      #8b5cf6,
+      #6d28d9 55%,
+      #4c1d95
+    );
+
+  color:
+    #fff;
+
+  box-shadow:
+    0 12px 30px
+      rgba(
+        124,
+        58,
+        237,
+        0.3
+      ),
+    inset
+      0 1px 0
+      rgba(
+        255,
+        255,
+        255,
+        0.28
+      );
+}
+
+.yat-button-premium::after {
+  content: "";
+
+  position: absolute;
+
+  top: -40%;
+  bottom: -40%;
+
+  left: -42%;
+
+  width: 24%;
+
+  opacity: 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(
+        255,
+        255,
+        255,
+        0.48
+      ),
+      transparent
+    );
+
+  transform:
+    skewX(-18deg);
+}
+
+.yat-button-premium:hover::after {
+  opacity: 1;
+
+  animation:
+    yatShimmer
+    850ms
+    var(--yat-ease);
+}
+
+@media (hover: hover) {
+  .yat-button:not(:disabled):hover {
+    transform:
+      translateY(-2px);
+  }
+}
+
+.yat-button:not(:disabled):active {
+  transform:
+    scale(0.98);
+}
+
+.yat-button:disabled {
+  opacity: 0.55;
+}
+
+.yat-button-icon {
+  display: grid;
+
+  place-items: center;
+
+  flex: 0 0 auto;
+}
+
+.yat-button-label {
+  position: relative;
+
+  z-index: 2;
+}
+
+/* SPINNER */
+
+@keyframes yatButtonSpin {
+  to {
+    transform:
+      rotate(360deg);
+  }
+}
+
+.yat-button-spinner {
+  width: 16px;
+  height: 16px;
+
+  border:
+    2px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.35
+    );
+
+  border-top-color:
+    currentColor;
+
+  border-radius:
+    50%;
+
+  animation:
+    yatButtonSpin
+    700ms
+    linear
+    infinite;
+}
+
+/* =========================================================
+   BASE CARD
+========================================================= */
+
+.yat-card {
+  border:
+    1px solid
+    var(--yat-border);
+
+  border-radius:
+    var(--yat-radius-xl);
+
+  background:
+    var(--yat-surface);
+
+  box-shadow:
+    var(--yat-shadow-card);
+}
+
+.yat-card-padding-none {
+  padding: 0;
+}
+
+.yat-card-padding-small {
+  padding:
+    12px;
+}
+
+.yat-card-padding-medium {
+  padding:
+    18px;
+}
+
+.yat-card-padding-large {
+  padding:
+    24px;
+}
+
+.yat-card-interactive {
+  transition:
+    transform
+      var(--yat-duration-card)
+      var(--yat-ease),
+    box-shadow
+      var(--yat-duration-card)
+      var(--yat-ease),
+    border-color
+      var(--yat-duration-card)
+      var(--yat-ease);
+}
+
+@media (hover: hover) {
+  .yat-card-interactive:hover {
+    transform:
+      translateY(-2px);
+
+    border-color:
+      rgba(
+        124,
+        58,
+        237,
+        0.15
+      );
+
+    box-shadow:
+      var(--yat-shadow-card-hover);
+  }
+}
+
+.yat-card-glass {
+  border-color:
+    rgba(
+      255,
+      255,
+      255,
+      0.7
+    );
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.85
+    );
+
+  backdrop-filter:
+    blur(16px);
+
+  -webkit-backdrop-filter:
+    blur(16px);
+}
+
+/* =========================================================
+   PREMIUM CARD
+========================================================= */
+
+.yat-premium-card {
+  position: relative;
+
+  isolation: isolate;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    rgba(
+      124,
+      58,
+      237,
+      0.14
+    );
+
+  border-radius:
+    var(--yat-radius-xl);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(
+        255,
+        255,
+        255,
+        0.98
+      ),
+      rgba(
+        249,
+        248,
+        255,
+        0.95
+      )
+    );
+
+  box-shadow:
+    var(--yat-shadow-card);
+}
+
+.yat-premium-card::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  z-index: -2;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle at 5% 0%,
+      rgba(
+        124,
+        58,
+        237,
+        0.09
+      ),
+      transparent 36%
+    ),
+    radial-gradient(
+      circle at 100% 100%,
+      rgba(
+        37,
+        99,
+        235,
+        0.04
+      ),
+      transparent 38%
+    );
+}
+
+.yat-premium-card-inner {
+  position: relative;
+
+  z-index: 2;
+}
+
+.yat-premium-interactive {
+  transition:
+    transform
+      var(--yat-duration-card)
+      var(--yat-ease),
+    box-shadow
+      var(--yat-duration-card)
+      var(--yat-ease),
+    border-color
+      var(--yat-duration-card)
+      var(--yat-ease);
+}
+
+@media (hover: hover) {
+  .yat-premium-interactive:hover {
+    transform:
+      translateY(-2px);
+
+    border-color:
+      rgba(
+        124,
+        58,
+        237,
+        0.21
+      );
+
+    box-shadow:
+      var(--yat-shadow-card-hover);
+  }
+}
+
+/* GLOW */
+
+.yat-premium-glow-none {
+  box-shadow:
+    var(--yat-shadow-card);
+}
+
+.yat-premium-glow-purple {
+  box-shadow:
+    var(--yat-shadow-card),
+    0 0 40px
+    rgba(
+      124,
+      58,
+      237,
+      0.045
+    );
+}
+
+.yat-premium-glow-blue {
+  box-shadow:
+    var(--yat-shadow-card),
+    0 0 40px
+    rgba(
+      37,
+      99,
+      235,
+      0.05
+    );
+}
+
+.yat-premium-glow-gold {
+  box-shadow:
+    var(--yat-shadow-card),
+    0 0 40px
+    rgba(
+      245,
+      158,
+      11,
+      0.05
+    );
+}
+
+/* SHIMMER */
+
+.yat-premium-shimmer::after {
+  content: "";
+
+  position: absolute;
+
+  top: -50%;
+  bottom: -50%;
+
+  left: -40%;
+
+  width: 20%;
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(
+        255,
+        255,
+        255,
+        0.65
+      ),
+      transparent
+    );
+
+  transform:
+    skewX(-18deg);
+}
+
+@media (hover: hover) {
+  .yat-premium-shimmer:hover::after {
+    opacity: 1;
+
+    animation:
+      yatShimmer
+      1s
+      var(--yat-ease);
+  }
+}
+
+/* =========================================================
+   BADGE
+========================================================= */
+
+.yat-badge-wrap {
+  position: relative;
+
+  width:
+    var(--yat-badge-size);
+
+  display:
+    inline-flex;
+
+  justify-content:
+    center;
+
+  flex:
+    0 0 auto;
+}
+
+.yat-badge {
+  position: relative;
+
+  width:
+    var(--yat-badge-size);
+
+  min-width:
+    var(--yat-badge-size);
+
+  padding: 0;
+
+  display: flex;
+
+  flex-direction:
+    column;
+
+  align-items: center;
+
+  gap: 7px;
+
+  overflow: visible;
+
+  border: 0;
+
+  background:
+    transparent;
+
+  cursor: default;
+
+  perspective:
+    600px;
+}
+
+.yat-badge.is-clickable {
+  cursor: pointer;
+}
+
+.yat-badge-image-shell {
+  position: relative;
+
+  width:
+    var(--yat-badge-size);
+
+  height:
+    var(--yat-badge-size);
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius:
+    26%;
+
+  transform-style:
+    preserve-3d;
+
+  transition:
+    transform
+      300ms
+      var(--yat-ease),
+    filter
+      300ms
+      var(--yat-ease);
+}
+
+.yat-badge-image-shell img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: contain;
+
+  border-radius:
+    inherit;
+
+  user-select: none;
+}
+
+.yat-badge-placeholder {
+  width: 100%;
+  height: 100%;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius:
+    inherit;
+
+  background:
+    var(--yat-gradient-primary);
+
+  color:
+    #fff;
+
+  font-size:
+    calc(
+      var(--yat-badge-size) *
+      0.5
+    );
+
+  font-weight: 950;
+}
+
+.yat-badge-aura {
+  position: absolute;
+
+  top:
+    calc(
+      var(--yat-badge-size) *
+      0.04
+    );
+
+  left: 50%;
+
+  width:
+    calc(
+      var(--yat-badge-size) *
+      0.9
+    );
+
+  height:
+    calc(
+      var(--yat-badge-size) *
+      0.9
+    );
+
+  border-radius:
+    50%;
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  transform:
+    translateX(-50%)
+    scale(0.9);
+
+  filter:
+    blur(18px);
+
+  transition:
+    opacity
+      300ms
+      var(--yat-ease),
+    transform
+      300ms
+      var(--yat-ease);
+}
+
+.yat-badge-rarity-label {
+  min-height: 18px;
+
+  padding:
+    4px 7px;
+
+  border-radius:
+    999px;
+
+  background:
+    #f4f5f8;
+
+  color:
+    var(--yat-text-muted);
+
+  font-size: 8px;
+
+  font-weight: 900;
+
+  line-height: 1;
+
+  letter-spacing:
+    0.06em;
+
+  text-transform:
+    uppercase;
+}
+
+/* COMMON */
+
+.yat-badge.rarity-common
+.yat-badge-aura {
+  background:
+    rgba(
+      148,
+      163,
+      184,
+      0.18
+    );
+}
+
+.yat-badge.rarity-common
+.yat-badge-rarity-label {
+  background:
+    #f1f5f9;
+
+  color:
+    #64748b;
+}
+
+/* RARE */
+
+.yat-badge.rarity-rare
+.yat-badge-aura {
+  background:
+    rgba(
+      37,
+      99,
+      235,
+      0.38
+    );
+}
+
+.yat-badge.rarity-rare
+.yat-badge-rarity-label {
+  background:
+    #e8f1ff;
+
+  color:
+    #2563eb;
+}
+
+/* EPIC */
+
+.yat-badge.rarity-epic
+.yat-badge-aura {
+  background:
+    rgba(
+      139,
+      92,
+      246,
+      0.42
+    );
+}
+
+.yat-badge.rarity-epic
+.yat-badge-rarity-label {
+  background:
+    #f0eaff;
+
+  color:
+    #7c3aed;
+}
+
+/* LEGENDARY */
+
+.yat-badge.rarity-legendary
+.yat-badge-aura {
+  background:
+    rgba(
+      245,
+      158,
+      11,
+      0.46
+    );
+}
+
+.yat-badge.rarity-legendary
+.yat-badge-rarity-label {
+  background:
+    #fff4d7;
+
+  color:
+    #c47a00;
+}
+
+/* MYTHIC */
+
+.yat-badge.rarity-mythic
+.yat-badge-aura {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(
+        124,
+        58,
+        237,
+        0.45
+      ),
+      rgba(
+        244,
+        63,
+        94,
+        0.32
+      )
+    );
+}
+
+.yat-badge.rarity-mythic
+.yat-badge-rarity-label {
+  background:
+    linear-gradient(
+      135deg,
+      #ede9fe,
+      #ffe5ef
+    );
+
+  color:
+    #7c3aed;
+}
+
+/* HOVER */
+
+@media (hover: hover) {
+  .yat-badge.is-animated:hover
+  .yat-badge-image-shell {
+    transform:
+      translateY(-4px)
+      rotateX(4deg)
+      rotateY(-4deg)
+      scale(1.035);
+  }
+
+  .yat-badge.is-animated:hover
+  .yat-badge-aura {
+    opacity: 1;
+
+    transform:
+      translateX(-50%)
+      scale(1.12);
+  }
+}
+
+/* LOCKED */
+
+.yat-badge.is-locked
+.yat-badge-image-shell img {
+  opacity: 0.42;
+
+  filter:
+    grayscale(0.65)
+    saturate(0.55);
+}
+
+.yat-badge-lock {
+  position: absolute;
+
+  inset: 0;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius:
+    inherit;
+
+  background:
+    rgba(
+      15,
+      23,
+      42,
+      0.2
+    );
+
+  backdrop-filter:
+    blur(1.5px);
+}
+
+.yat-badge-lock span {
+  width: 25px;
+  height: 25px;
+
+  display: grid;
+
+  place-items: center;
+
+  border:
+    2px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.86
+    );
+
+  border-radius:
+    8px;
+
+  color:
+    #fff;
+
+  font-size: 0;
+}
+
+.yat-badge-lock span::before {
+  content: "";
+
+  width: 8px;
+  height: 7px;
+
+  margin-top: -8px;
+
+  position: absolute;
+
+  border:
+    2px solid
+    #fff;
+
+  border-bottom: 0;
+
+  border-radius:
+    6px 6px 0 0;
+}
+
+/* PROGRESS */
+
+.yat-badge-progress-ring {
+  position: absolute;
+
+  inset: -4px;
+
+  border-radius:
+    28%;
+
+  pointer-events: none;
+
+  background:
+    conic-gradient(
+      var(--yat-primary)
+        0
+        var(
+          --yat-badge-progress
+        ),
+      rgba(
+        148,
+        163,
+        184,
+        0.18
+      )
+        var(
+          --yat-badge-progress
+        )
+        360deg
+    );
+
+  -webkit-mask:
+    linear-gradient(
+      #000 0 0
+    )
+    content-box,
+    linear-gradient(
+      #000 0 0
+    );
+
+  -webkit-mask-composite:
+    xor;
+
+  mask-composite:
+    exclude;
+
+  padding: 2px;
+}
+
+/* =========================================================
+   TOOLTIP
+========================================================= */
+
+.yat-badge-tooltip {
+  position: absolute;
+
+  bottom:
+    calc(
+      100% +
+      12px
+    );
+
+  left: 50%;
+
+  z-index: 500;
+
+  width: 220px;
+
+  padding:
+    13px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.8
+    );
+
+  border-radius:
+    15px;
+
+  background:
+    rgba(
+      20,
+      22,
+      32,
+      0.96
+    );
+
+  color: #fff;
+
+  box-shadow:
+    0 18px 50px
+    rgba(
+      15,
+      23,
+      42,
+      0.3
+    );
+
+  backdrop-filter:
+    blur(18px);
+
+  transform:
+    translateX(-50%);
+
+  animation:
+    yatFadeUp
+    180ms
+    var(--yat-ease)
+    both;
+}
+
+.yat-badge-tooltip::after {
+  content: "";
+
+  position: absolute;
+
+  top: 100%;
+
+  left: 50%;
+
+  width: 10px;
+  height: 10px;
+
+  background:
+    rgba(
+      20,
+      22,
+      32,
+      0.96
+    );
+
+  transform:
+    translate(
+      -50%,
+      -5px
+    )
+    rotate(45deg);
+}
+
+.yat-badge-tooltip-head {
+  display: flex;
+
+  align-items:
+    flex-start;
+
+  justify-content:
+    space-between;
+
+  gap: 8px;
+}
+
+.yat-badge-tooltip-head
+strong {
+  min-width: 0;
+
+  font-size: 13px;
+
+  line-height: 1.25;
+}
+
+.yat-badge-tooltip-rarity {
+  flex: 0 0 auto;
+
+  padding:
+    4px 6px;
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.1
+    );
+
+  color:
+    #ddd6fe;
+
+  font-size: 7px;
+
+  font-weight: 900;
+
+  letter-spacing:
+    0.06em;
+
+  text-transform:
+    uppercase;
+}
+
+.yat-badge-tooltip p {
+  margin:
+    8px 0 0;
+
+  color:
+    #cbd5e1;
+
+  font-size: 11px;
+
+  line-height: 1.45;
+}
+
+.yat-badge-tooltip-progress {
+  margin-top: 11px;
+}
+
+.yat-badge-tooltip-progress
+> div:first-child {
+  display: flex;
+
+  justify-content:
+    space-between;
+
+  color:
+    #cbd5e1;
+
+  font-size: 9px;
+}
+
+.yat-badge-tooltip-track {
+  height: 5px;
+
+  margin-top: 5px;
+
+  overflow: hidden;
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.12
+    );
+}
+
+.yat-badge-tooltip-track
+span {
+  height: 100%;
+
+  display: block;
+
+  border-radius:
+    inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      #a78bfa,
+      #7c3aed
+    );
+}
+
+.yat-badge-tooltip-locked {
+  margin-top: 9px;
+
+  display: block;
+
+  color:
+    #fda4af;
+
+  font-size: 9px;
+}
+
+/* =========================================================
+   PRESENCE TAG
+========================================================= */
+
+.yat-presence-tag {
+  width: fit-content;
+
+  min-height: 27px;
+
+  padding:
+    0 9px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  border:
+    1px solid
+    transparent;
+
+  border-radius:
+    999px;
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  line-height: 1;
+
+  white-space: nowrap;
+}
+
+.yat-presence-tag-dot {
+  width: 7px;
+  height: 7px;
+
+  flex: 0 0 7px;
+
+  border-radius:
+    50%;
+}
+
+/* ONLINE */
+
+.yat-presence-tag.presence-online {
+  border-color:
+    rgba(
+      34,
+      197,
+      94,
+      0.13
+    );
+
+  background:
+    #ecfdf3;
+
+  color:
+    #168447;
+}
+
+.yat-presence-tag.presence-online
+.yat-presence-tag-dot {
+  background:
+    #22c55e;
+}
+
+/* NEARBY */
+
+.yat-presence-tag.presence-nearby {
+  border-color:
+    rgba(
+      6,
+      182,
+      212,
+      0.14
+    );
+
+  background:
+    #ecfeff;
+
+  color:
+    #0891b2;
+}
+
+.yat-presence-tag.presence-nearby
+.yat-presence-tag-dot {
+  background:
+    #06b6d4;
+}
+
+/* EVENT */
+
+.yat-presence-tag.presence-event {
+  border-color:
+    rgba(
+      124,
+      58,
+      237,
+      0.14
+    );
+
+  background:
+    #f3f0ff;
+
+  color:
+    #7c3aed;
+}
+
+.yat-presence-tag.presence-event
+.yat-presence-tag-dot {
+  background:
+    #7c3aed;
+}
+
+/* HERE */
+
+.yat-presence-tag.presence-here {
+  border-color:
+    rgba(
+      244,
+      63,
+      94,
+      0.14
+    );
+
+  background:
+    #fff1f5;
+
+  color:
+    #e11d48;
+}
+
+.yat-presence-tag.presence-here
+.yat-presence-tag-dot {
+  background:
+    #f43f5e;
+}
+
+/* PULSE */
+
+@keyframes yatPresenceTagPulse {
+  0% {
+    box-shadow:
+      0 0 0
+      0
+      currentColor;
+  }
+
+  70% {
+    box-shadow:
+      0 0 0
+      5px
+      transparent;
+  }
+
+  100% {
+    box-shadow:
+      0 0 0
+      0
+      transparent;
+  }
+}
+
+.yat-presence-tag.is-animated
+.yat-presence-tag-dot {
+  animation:
+    yatPresenceTagPulse
+    2.4s
+    ease-out
+    infinite;
+}
+
+.yat-presence-tag.is-compact {
+  min-height: 23px;
+
+  padding:
+    0 7px;
+
+  gap: 5px;
+
+  font-size: 9px;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+  .yat-card-padding-medium {
+    padding: 15px;
+  }
+
+  .yat-card-padding-large {
+    padding: 18px;
+  }
+
+  .yat-button {
+    min-height: 44px;
+  }
+
+  .yat-badge.is-animated
+  .yat-badge-image-shell {
+    transform: none;
+  }
+
+  .yat-badge-tooltip {
+    display: none;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (
+  prefers-reduced-motion:
+    reduce
+) {
+  .yat-button,
+  .yat-card,
+  .yat-premium-card,
+  .yat-badge-image-shell,
+  .yat-badge-aura {
+    transition:
+      none !important;
+  }
+
+  .yat-presence-tag-dot {
+    animation:
+      none !important;
+  }
+}

@@ -1,0 +1,357 @@
+/* =========================================================
+   ЯТУТ
+   SIDEBAR CORRECTION
+========================================================= */
+
+/* =========================================================
+   HOME
+
+   Home имеет собственный layout.
+========================================================= */
+
+.premium-home-native-layout {
+  width: 100%;
+
+  min-width: 0;
+
+  padding: 0;
+}
+
+/* =========================================================
+   INTERNAL DESKTOP LAYOUT
+========================================================= */
+
+.premium-desktop-layout {
+  width:
+    min(
+      1760px,
+      calc(
+        100% -
+        32px
+      )
+    ) !important;
+
+  grid-template-columns:
+    244px
+    minmax(
+      0,
+      1fr
+    ) !important;
+
+  gap:
+    18px !important;
+}
+
+/* =========================================================
+   SIDEBAR SIZE
+========================================================= */
+
+.premium-desktop-layout
+> .yat-sidebar {
+  width:
+    244px !important;
+
+  min-width:
+    244px !important;
+}
+
+/* card */
+
+.premium-desktop-layout
+.yat-sidebar__inner {
+  padding:
+    14px !important;
+
+  border-radius:
+    24px !important;
+}
+
+/* =========================================================
+   LOGO INSIDE SIDEBAR
+========================================================= */
+
+.premium-desktop-layout
+.yat-sidebar__brand {
+  margin-bottom:
+    12px !important;
+
+  padding-bottom:
+    10px !important;
+}
+
+.premium-desktop-layout
+.yat-sidebar__brand-logo {
+  width:
+    43px !important;
+
+  height:
+    43px !important;
+
+  border-radius:
+    14px !important;
+
+  font-size:
+    25px !important;
+}
+
+.premium-desktop-layout
+.yat-sidebar__brand-title {
+  font-size:
+    19px !important;
+}
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+.premium-desktop-layout
+.yat-sidebar__nav {
+  gap:
+    3px !important;
+}
+
+.premium-desktop-layout
+.yat-sidebar__link {
+  min-height:
+    46px !important;
+
+  padding:
+    0 11px !important;
+
+  gap:
+    10px !important;
+
+  border-radius:
+    13px !important;
+}
+
+.premium-desktop-layout
+.yat-sidebar__link-label {
+  font-size:
+    14px !important;
+
+  font-weight:
+    750 !important;
+}
+
+.premium-desktop-layout
+.yat-sidebar__link-icon
+svg {
+  width:
+    19px;
+
+  height:
+    19px;
+}
+
+/* badge */
+
+.premium-desktop-layout
+.yat-sidebar__link-badge {
+  min-width:
+    23px !important;
+
+  height:
+    23px !important;
+
+  padding:
+    0 6px !important;
+
+  font-size:
+    10px !important;
+}
+
+/* =========================================================
+   CREATE BUTTON
+========================================================= */
+
+.premium-desktop-layout
+.yat-sidebar__create {
+  min-height:
+    48px !important;
+
+  border-radius:
+    14px !important;
+
+  font-size:
+    13px !important;
+}
+
+/* =========================================================
+   CITY CARD
+
+   На внутренних страницах оставляем,
+   но делаем компактнее.
+========================================================= */
+
+.premium-desktop-layout
+.yat-sidebar__city-card {
+  margin-top:
+    14px !important;
+
+  border-radius:
+    19px !important;
+}
+
+.premium-desktop-layout
+.yat-sidebar__city-card-image-wrap {
+  height:
+    145px !important;
+}
+
+.premium-desktop-layout
+.yat-sidebar__city-card-title {
+  top:
+    14px !important;
+
+  right:
+    14px !important;
+
+  font-size:
+    22px !important;
+}
+
+.premium-desktop-layout
+.yat-sidebar__city-card-subtitle {
+  top:
+    42px !important;
+
+  right:
+    14px !important;
+
+  font-size:
+    14px !important;
+}
+
+.premium-desktop-layout
+.yat-sidebar__city-card-body {
+  padding:
+    12px !important;
+}
+
+.premium-desktop-layout
+.yat-sidebar__city-card-caption {
+  margin-bottom:
+    10px !important;
+
+  font-size:
+    11px !important;
+}
+
+.premium-desktop-layout
+.yat-sidebar__city-stats {
+  gap:
+    7px !important;
+
+  margin-bottom:
+    10px !important;
+}
+
+.premium-desktop-layout
+.yat-sidebar__city-stat {
+  gap:
+    7px !important;
+
+  font-size:
+    10px !important;
+}
+
+.premium-desktop-layout
+.yat-sidebar__city-stat-dot {
+  width:
+    8px !important;
+
+  height:
+    8px !important;
+}
+
+.premium-desktop-layout
+.yat-sidebar__city-button {
+  min-height:
+    40px !important;
+
+  border-radius:
+    12px !important;
+
+  font-size:
+    11px !important;
+}
+
+/* =========================================================
+   LARGE DESKTOP
+
+   Не расширяем sidebar обратно.
+========================================================= */
+
+@media (
+  min-width: 1500px
+) {
+  .premium-desktop-layout {
+    grid-template-columns:
+      244px
+      minmax(
+        0,
+        1fr
+      ) !important;
+  }
+
+  .premium-desktop-layout
+  > .yat-sidebar {
+    width:
+      244px !important;
+
+    min-width:
+      244px !important;
+  }
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (
+  max-width: 1100px
+) {
+  .premium-desktop-layout {
+    grid-template-columns:
+      215px
+      minmax(
+        0,
+        1fr
+      ) !important;
+  }
+
+  .premium-desktop-layout
+  > .yat-sidebar {
+    width:
+      215px !important;
+
+    min-width:
+      215px !important;
+  }
+
+  .premium-desktop-layout
+  .yat-sidebar__link-label {
+    font-size:
+      13px !important;
+  }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (
+  max-width: 850px
+) {
+  .premium-desktop-layout {
+    display:
+      block !important;
+  }
+
+  .premium-desktop-layout
+  > .yat-sidebar {
+    display:
+      none !important;
+  }
+}

@@ -1,0 +1,993 @@
+/* =========================================================
+   ЯТУТ — CHAT MANAGEMENT
+========================================================= */
+
+.yatut-chat-modal-backdrop {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 2147482500;
+
+  padding: 20px;
+
+  display: grid;
+
+  place-items: center;
+
+  background:
+    rgba(
+      28,
+      29,
+      39,
+      0.52
+    );
+
+  -webkit-backdrop-filter:
+    blur(18px);
+
+  backdrop-filter:
+    blur(18px);
+}
+
+.yatut-group-manage-modal,
+.yatut-chat-media-modal {
+  width:
+    min(
+      600px,
+      100%
+    );
+
+  max-height:
+    min(
+      820px,
+      calc(
+        100dvh -
+        40px
+      )
+    );
+
+  overflow: hidden;
+
+  display: flex;
+
+  flex-direction: column;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.7
+    );
+
+  border-radius: 24px;
+
+  background: #fff;
+
+  box-shadow:
+    0 28px 90px
+    rgba(
+      20,
+      21,
+      30,
+      0.24
+    );
+}
+
+.yatut-chat-media-modal {
+  width:
+    min(
+      850px,
+      100%
+    );
+}
+
+/* HEADER */
+
+.yatut-chat-manage-header {
+  min-height: 75px;
+
+  padding: 14px 16px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content:
+    space-between;
+
+  gap: 12px;
+
+  border-bottom:
+    1px solid
+    #ececf2;
+}
+
+.yatut-chat-manage-header
+> div
+> span {
+  display: block;
+
+  margin-bottom: 2px;
+
+  color: #7c3aed;
+
+  font-size: 8px;
+
+  font-weight: 900;
+
+  letter-spacing: 1px;
+}
+
+.yatut-chat-manage-header
+h2 {
+  margin: 0;
+
+  color: #30333f;
+
+  font-size: 16px;
+
+  font-weight: 850;
+}
+
+.yatut-chat-manage-header
+small {
+  display: block;
+
+  margin-top: 2px;
+
+  color: #9a9da8;
+
+  font-size: 8px;
+}
+
+.yatut-chat-manage-header
+> button {
+  width: 36px;
+  height: 36px;
+
+  padding: 0;
+
+  display: grid;
+
+  place-items: center;
+
+  border: 0;
+
+  border-radius: 11px;
+
+  background: #f1f2f5;
+
+  color: #6f7380;
+
+  cursor: pointer;
+}
+
+/* GROUP BODY */
+
+.yatut-group-manage-body {
+  min-height: 0;
+
+  padding: 15px;
+
+  overflow-y: auto;
+}
+
+.yatut-group-title-field {
+  display: block;
+
+  margin-bottom: 18px;
+}
+
+.yatut-group-title-field
+> span {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: #747884;
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.5px;
+}
+
+.yatut-group-title-field
+input {
+  width: 100%;
+  height: 43px;
+
+  padding: 0 12px;
+
+  border:
+    1px solid
+    #e0e1e8;
+
+  outline: none;
+
+  border-radius: 12px;
+
+  background: #fafafd;
+
+  color: #343744;
+
+  font-family: inherit;
+
+  font-size: 10px;
+}
+
+.yatut-group-title-field
+input:focus {
+  border-color:
+    rgba(
+      124,
+      58,
+      237,
+      0.42
+    );
+
+  box-shadow:
+    0 0 0
+    3px
+    rgba(
+      124,
+      58,
+      237,
+      0.07
+    );
+}
+
+.yatut-manage-section-title {
+  min-height: 35px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  color: #555966;
+}
+
+.yatut-manage-section-title
+strong {
+  font-size: 10px;
+
+  font-weight: 850;
+}
+
+.yatut-manage-section-title
+> span {
+  margin-left: auto;
+
+  min-width: 25px;
+
+  padding: 3px 7px;
+
+  border-radius: 999px;
+
+  background: #eee9ff;
+
+  color: #6d28d9;
+
+  font-size: 8px;
+
+  font-weight: 850;
+
+  text-align: center;
+}
+
+/* CURRENT MEMBERS */
+
+.yatut-group-member-list {
+  overflow: hidden;
+
+  border:
+    1px solid
+    #e9e9ef;
+
+  border-radius: 15px;
+}
+
+.yatut-group-member {
+  min-height: 59px;
+
+  padding: 8px 10px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  border-bottom:
+    1px solid
+    #f0f0f4;
+}
+
+.yatut-group-member:last-child {
+  border-bottom: 0;
+}
+
+.yatut-group-member-avatar,
+.yatut-group-add-avatar {
+  position: relative;
+
+  width: 36px;
+  height: 36px;
+
+  flex: 0 0 36px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      145deg,
+      #5b5665,
+      #2e2b35
+    );
+
+  color: #fff;
+
+  font-size: 9px;
+
+  font-weight: 900;
+}
+
+.yatut-group-member-avatar
+i,
+.yatut-group-add-avatar
+i {
+  position: absolute;
+
+  right: 0;
+  bottom: 0;
+
+  width: 9px;
+  height: 9px;
+
+  border:
+    2px solid
+    #fff;
+
+  border-radius: 50%;
+
+  background: #22c55e;
+}
+
+.yatut-group-member-copy {
+  min-width: 0;
+
+  flex: 1;
+}
+
+.yatut-group-member-copy
+strong {
+  display: block;
+
+  color: #3b3e49;
+
+  font-size: 9px;
+}
+
+.yatut-group-member-copy
+span {
+  display: block;
+
+  margin-top: 2px;
+
+  color: #9a9da8;
+
+  font-size: 7.5px;
+}
+
+.yatut-admin-crown {
+  color: #f59e0b;
+}
+
+.yatut-group-member-actions {
+  display: flex;
+
+  gap: 4px;
+}
+
+.yatut-group-member-actions
+button {
+  width: 31px;
+  height: 31px;
+
+  padding: 0;
+
+  display: grid;
+
+  place-items: center;
+
+  border: 0;
+
+  border-radius: 9px;
+
+  background: #f4f4f7;
+
+  color: #777b87;
+
+  cursor: pointer;
+}
+
+.yatut-group-member-actions
+button.is-admin {
+  background: #ede9fe;
+
+  color: #7c3aed;
+}
+
+.yatut-group-member-actions
+button.is-remove:hover {
+  background: #fff0f1;
+
+  color: #dc4651;
+}
+
+/* ADD PEOPLE */
+
+.yatut-group-add-people {
+  margin-top: 18px;
+}
+
+.yatut-manage-search {
+  height: 40px;
+
+  margin-bottom: 8px;
+
+  padding: 0 10px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  border:
+    1px solid
+    #e4e5eb;
+
+  border-radius: 11px;
+
+  background: #fafafd;
+
+  color: #9a9da7;
+}
+
+.yatut-manage-search
+input {
+  min-width: 0;
+
+  flex: 1;
+
+  border: 0;
+
+  outline: 0;
+
+  background: transparent;
+
+  font-family: inherit;
+
+  font-size: 9px;
+}
+
+.yatut-group-add-list {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  gap: 6px;
+}
+
+.yatut-group-add-list
+button {
+  min-width: 0;
+
+  min-height: 53px;
+
+  padding: 7px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  border:
+    1px solid
+    #e7e7ed;
+
+  border-radius: 12px;
+
+  background: #fff;
+
+  font-family: inherit;
+
+  text-align: left;
+
+  cursor: pointer;
+}
+
+.yatut-group-add-list
+button.is-added {
+  border-color: #c4b5fd;
+
+  background: #f4f1ff;
+}
+
+.yatut-group-add-list
+button
+> div {
+  min-width: 0;
+
+  flex: 1;
+}
+
+.yatut-group-add-list
+strong {
+  display: block;
+
+  overflow: hidden;
+
+  color: #454854;
+
+  font-size: 8.5px;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+.yatut-group-add-list
+small {
+  color: #9a9da8;
+
+  font-size: 7px;
+}
+
+.yatut-group-add-list
+b {
+  width: 24px;
+  height: 24px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 50%;
+
+  background: #efebff;
+
+  color: #7c3aed;
+
+  font-size: 11px;
+}
+
+/* FOOTER */
+
+.yatut-group-manage-footer {
+  min-height: 66px;
+
+  padding: 11px 15px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content:
+    space-between;
+
+  gap: 10px;
+
+  border-top:
+    1px solid
+    #ececf2;
+}
+
+.yatut-group-manage-footer
+> span {
+  color: #9396a1;
+
+  font-size: 8px;
+}
+
+.yatut-group-manage-footer
+> div {
+  display: flex;
+
+  gap: 6px;
+}
+
+.yatut-group-manage-footer
+button {
+  min-height: 36px;
+
+  padding: 0 13px;
+
+  border: 0;
+
+  border-radius: 10px;
+
+  font-family: inherit;
+
+  font-size: 8.5px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+.yatut-group-manage-footer
+button.is-secondary {
+  background: #f1f2f5;
+
+  color: #666a76;
+}
+
+.yatut-group-manage-footer
+button.is-primary {
+  background:
+    linear-gradient(
+      135deg,
+      #8b5cf6,
+      #7c3aed
+    );
+
+  color: #fff;
+}
+
+.yatut-group-manage-footer
+button:disabled {
+  opacity: 0.4;
+}
+
+/* =========================================================
+   MEDIA
+========================================================= */
+
+.yatut-chat-media-tabs {
+  padding: 8px 10px;
+
+  display: flex;
+
+  gap: 5px;
+
+  overflow-x: auto;
+
+  border-bottom:
+    1px solid
+    #ececf2;
+
+  scrollbar-width: none;
+}
+
+.yatut-chat-media-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.yatut-chat-media-tabs
+button {
+  min-height: 34px;
+
+  padding: 0 10px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  border: 0;
+
+  border-radius: 10px;
+
+  background: #f5f5f8;
+
+  color: #737783;
+
+  font-family: inherit;
+
+  font-size: 8px;
+
+  font-weight: 750;
+
+  white-space: nowrap;
+
+  cursor: pointer;
+}
+
+.yatut-chat-media-tabs
+button.is-active {
+  background: #eee9ff;
+
+  color: #6d28d9;
+}
+
+.yatut-chat-media-tabs
+button
+span {
+  min-width: 20px;
+
+  padding: 2px 5px;
+
+  border-radius: 999px;
+
+  background:
+    rgba(
+      0,
+      0,
+      0,
+      0.05
+    );
+
+  font-size: 7px;
+
+  text-align: center;
+}
+
+.yatut-chat-media-body {
+  min-height: 0;
+
+  flex: 1;
+
+  padding: 12px;
+
+  overflow-y: auto;
+}
+
+.yatut-chat-media-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  gap: 7px;
+}
+
+.yatut-chat-media-item {
+  min-width: 0;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    #e8e8ee;
+
+  border-radius: 13px;
+
+  background: #fafafd;
+}
+
+.yatut-chat-media-item
+img,
+.yatut-chat-media-item
+video {
+  width: 100%;
+  height: 165px;
+
+  display: block;
+
+  object-fit: cover;
+
+  background: #111218;
+}
+
+.yatut-chat-media-item
+footer {
+  min-height: 38px;
+
+  padding: 6px 8px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content:
+    space-between;
+
+  gap: 6px;
+}
+
+.yatut-chat-media-item
+footer
+span {
+  overflow: hidden;
+
+  color: #656975;
+
+  font-size: 7px;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+.yatut-chat-media-item
+footer
+small {
+  flex: 0 0 auto;
+
+  color: #a0a3ad;
+
+  font-size: 6.5px;
+}
+
+.yatut-chat-file-card,
+.yatut-chat-voice-card {
+  min-height: 120px;
+
+  padding: 13px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 9px;
+
+  color: #6d28d9;
+
+  text-decoration: none;
+}
+
+.yatut-chat-file-card
+div {
+  min-width: 0;
+}
+
+.yatut-chat-file-card
+strong {
+  display: block;
+
+  max-width: 145px;
+
+  overflow: hidden;
+
+  color: #4c505c;
+
+  font-size: 8px;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+.yatut-chat-file-card
+span {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #7c3aed;
+
+  font-size: 7px;
+}
+
+.yatut-chat-voice-card {
+  flex-direction: column;
+}
+
+.yatut-chat-voice-card
+audio {
+  width: 100%;
+  max-width: 220px;
+}
+
+.yatut-chat-media-empty {
+  min-height: 330px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 5px;
+
+  color: #9da0ab;
+
+  text-align: center;
+}
+
+.yatut-chat-media-empty
+> span {
+  font-size: 34px;
+}
+
+.yatut-chat-media-empty
+strong {
+  color: #737783;
+
+  font-size: 10px;
+}
+
+.yatut-chat-media-empty
+small {
+  max-width: 260px;
+
+  font-size: 8px;
+
+  line-height: 1.5;
+}
+
+/* MOBILE */
+
+@media (
+  max-width: 700px
+) {
+  .yatut-chat-modal-backdrop {
+    padding: 0;
+
+    align-items: end;
+  }
+
+  .yatut-group-manage-modal,
+  .yatut-chat-media-modal {
+    width: 100%;
+    height:
+      min(
+        92dvh,
+        900px
+      );
+
+    max-height: none;
+
+    border-radius:
+      24px
+      24px
+      0
+      0;
+  }
+
+  .yatut-group-add-list {
+    grid-template-columns:
+      1fr;
+  }
+
+  .yatut-chat-media-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(
+          0,
+          1fr
+        )
+      );
+  }
+
+  .yatut-chat-media-item
+  img,
+  .yatut-chat-media-item
+  video {
+    height: 145px;
+  }
+}

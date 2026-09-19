@@ -1,0 +1,1089 @@
+.yatut-create-post {
+  margin-bottom:
+    14px;
+
+  overflow:
+    visible;
+
+  border:
+    1px solid
+    #e8e8ef;
+
+  border-radius:
+    20px;
+
+  background:
+    #fff;
+
+  box-shadow:
+    0 6px 22px
+    rgba(
+      32,
+      33,
+      48,
+      0.055
+    );
+}
+
+.yatut-create-post-top {
+  padding:
+    13px 14px;
+
+  display: flex;
+
+  align-items:
+    center;
+
+  gap: 10px;
+}
+
+.yatut-create-post-avatar {
+  width: 39px;
+  height: 39px;
+
+  flex:
+    0 0 39px;
+
+  display: grid;
+
+  place-items:
+    center;
+
+  border-radius:
+    50%;
+
+  background:
+    linear-gradient(
+      145deg,
+      #56515f,
+      #292632
+    );
+
+  color:
+    #fff;
+
+  font-size:
+    11px;
+
+  font-weight:
+    900;
+}
+
+.yatut-create-post-placeholder {
+  height: 40px;
+
+  flex: 1;
+
+  padding:
+    0 14px;
+
+  border:
+    1px solid
+    #e6e6ed;
+
+  border-radius:
+    999px;
+
+  background:
+    #f6f6f9;
+
+  color:
+    #91949f;
+
+  font-family:
+    inherit;
+
+  font-size:
+    10px;
+
+  text-align:
+    left;
+
+  cursor:
+    pointer;
+}
+
+.yatut-create-post-quick {
+  padding:
+    0 12px
+    12px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap: 5px;
+}
+
+.yatut-create-post-quick
+button {
+  min-height:
+    36px;
+
+  display: flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap: 6px;
+
+  border: 0;
+
+  border-radius:
+    11px;
+
+  background:
+    #f8f8fa;
+
+  color:
+    #686c78;
+
+  font-family:
+    inherit;
+
+  font-size:
+    9px;
+
+  font-weight:
+    750;
+
+  cursor:
+    pointer;
+}
+
+/* expanded */
+
+.yatut-create-post.is-expanded
+.yatut-create-post-top {
+  display: none;
+}
+
+.yatut-create-post-head {
+  min-height:
+    68px;
+
+  padding:
+    12px 14px;
+
+  display: flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+
+  border-bottom:
+    1px solid
+    #eeeeF3;
+}
+
+.yatut-create-post-head
+> div:first-child {
+  display: flex;
+
+  flex-direction:
+    column;
+
+  gap: 4px;
+}
+
+.yatut-create-post-head
+strong {
+  color:
+    #30333f;
+
+  font-size:
+    11px;
+
+  font-weight:
+    850;
+}
+
+.yatut-create-post-close {
+  width: 34px;
+  height: 34px;
+
+  display: grid;
+
+  place-items:
+    center;
+
+  border: 0;
+
+  border-radius:
+    10px;
+
+  background:
+    #f1f2f5;
+
+  color:
+    #707481;
+
+  cursor:
+    pointer;
+}
+
+/* audience */
+
+.yatut-create-post-audience-wrap {
+  position: relative;
+}
+
+.yatut-create-post-audience {
+  height: 27px;
+
+  padding:
+    0 8px;
+
+  display: flex;
+
+  align-items:
+    center;
+
+  gap: 4px;
+
+  border: 0;
+
+  border-radius:
+    8px;
+
+  background:
+    #efebff;
+
+  color:
+    #6d28d9;
+
+  font-family:
+    inherit;
+
+  font-size:
+    8px;
+
+  font-weight:
+    800;
+
+  cursor:
+    pointer;
+}
+
+.yatut-create-audience-menu {
+  position: absolute;
+
+  top: 34px;
+  left: 0;
+
+  z-index: 100;
+
+  width:
+    230px;
+
+  padding:
+    6px;
+
+  border:
+    1px solid
+    #e4e4eb;
+
+  border-radius:
+    14px;
+
+  background:
+    #fff;
+
+  box-shadow:
+    0 16px 42px
+    rgba(
+      25,
+      26,
+      38,
+      0.16
+    );
+}
+
+.yatut-create-audience-menu
+button {
+  width: 100%;
+
+  padding:
+    8px 9px;
+
+  display: flex;
+
+  flex-direction:
+    column;
+
+  align-items:
+    flex-start;
+
+  gap: 2px;
+
+  border: 0;
+
+  border-radius:
+    9px;
+
+  background:
+    transparent;
+
+  text-align:
+    left;
+
+  cursor:
+    pointer;
+}
+
+.yatut-create-audience-menu
+button:hover,
+.yatut-create-audience-menu
+button.is-active {
+  background:
+    #f4f1ff;
+}
+
+.yatut-create-audience-menu
+small {
+  color:
+    #979aa5;
+
+  font-size:
+    7px;
+}
+
+/* textarea */
+
+.yatut-create-post-textarea {
+  width: 100%;
+  min-height:
+    120px;
+
+  padding:
+    15px 16px;
+
+  resize: vertical;
+
+  border: 0;
+  outline: 0;
+
+  background:
+    #fff;
+
+  color:
+    #30333f;
+
+  font-family:
+    inherit;
+
+  font-size:
+    15px;
+
+  line-height:
+    1.5;
+}
+
+.yatut-create-post-textarea::placeholder {
+  color:
+    #a4a7b1;
+}
+
+/* meta */
+
+.yatut-create-post-meta {
+  padding:
+    0 14px
+    10px;
+
+  display: flex;
+
+  flex-wrap:
+    wrap;
+
+  gap: 5px;
+}
+
+.yatut-create-post-meta
+span {
+  min-height:
+    27px;
+
+  padding:
+    0 8px;
+
+  display: inline-flex;
+
+  align-items:
+    center;
+
+  gap: 4px;
+
+  border-radius:
+    999px;
+
+  background:
+    #f0edff;
+
+  color:
+    #7041d7;
+
+  font-size:
+    8px;
+
+  font-weight:
+    750;
+}
+
+/* media */
+
+.yatut-create-media-grid {
+  margin:
+    0 14px
+    12px;
+
+  display: grid;
+
+  gap: 5px;
+
+  overflow: hidden;
+
+  border-radius:
+    16px;
+}
+
+.yatut-create-media-count-1 {
+  grid-template-columns:
+    1fr;
+}
+
+.yatut-create-media-count-2 {
+  grid-template-columns:
+    1fr 1fr;
+}
+
+.yatut-create-media-count-3,
+.yatut-create-media-count-4 {
+  grid-template-columns:
+    1fr 1fr;
+}
+
+.yatut-create-media-item {
+  position: relative;
+
+  min-height:
+    160px;
+
+  overflow: hidden;
+
+  background:
+    #ececf1;
+}
+
+.yatut-create-media-item
+img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit:
+    cover;
+}
+
+.yatut-create-media-item
+button,
+.yatut-create-video-preview
+> button {
+  position: absolute;
+
+  top: 8px;
+  right: 8px;
+
+  width: 30px;
+  height: 30px;
+
+  display: grid;
+
+  place-items:
+    center;
+
+  border: 0;
+
+  border-radius:
+    50%;
+
+  background:
+    rgba(
+      15,
+      16,
+      24,
+      0.68
+    );
+
+  color:
+    #fff;
+
+  cursor:
+    pointer;
+
+  backdrop-filter:
+    blur(8px);
+}
+
+.yatut-create-video-preview {
+  position: relative;
+
+  margin:
+    0 14px
+    12px;
+
+  overflow: hidden;
+
+  border-radius:
+    16px;
+
+  background:
+    #111;
+}
+
+.yatut-create-video-preview
+video {
+  width: 100%;
+
+  max-height:
+    360px;
+
+  display: block;
+}
+
+/* panels */
+
+.yatut-create-extra-panel {
+  margin:
+    0 14px
+    10px;
+
+  padding:
+    11px;
+
+  border:
+    1px solid
+    #e7e7ed;
+
+  border-radius:
+    14px;
+
+  background:
+    #fafafd;
+}
+
+.yatut-create-extra-title {
+  margin-bottom:
+    8px;
+
+  display: flex;
+
+  align-items:
+    center;
+
+  gap: 5px;
+
+  color:
+    #555966;
+
+  font-size:
+    9px;
+
+  font-weight:
+    850;
+}
+
+.yatut-create-extra-panel
+> input {
+  width: 100%;
+  height: 38px;
+
+  padding:
+    0 10px;
+
+  border:
+    1px solid
+    #e1e2e9;
+
+  outline: 0;
+
+  border-radius:
+    10px;
+
+  background:
+    #fff;
+
+  font-family:
+    inherit;
+
+  font-size:
+    9px;
+}
+
+.yatut-create-extra-panel
+> button {
+  margin-top:
+    8px;
+
+  min-height:
+    31px;
+
+  padding:
+    0 11px;
+
+  border: 0;
+
+  border-radius:
+    9px;
+
+  background:
+    #7c3aed;
+
+  color:
+    #fff;
+
+  font-family:
+    inherit;
+
+  font-size:
+    8px;
+
+  font-weight:
+    800;
+
+  cursor:
+    pointer;
+}
+
+/* moods */
+
+.yatut-create-moods {
+  display: flex;
+
+  flex-wrap:
+    wrap;
+
+  gap: 5px;
+}
+
+.yatut-create-moods
+button {
+  min-height:
+    31px;
+
+  padding:
+    0 9px;
+
+  border:
+    1px solid
+    #e4e4eb;
+
+  border-radius:
+    10px;
+
+  background:
+    #fff;
+
+  font-family:
+    inherit;
+
+  font-size:
+    8px;
+
+  cursor:
+    pointer;
+}
+
+.yatut-create-moods
+button.is-active {
+  border-color:
+    #bba8f6;
+
+  background:
+    #f1edff;
+
+  color:
+    #6d28d9;
+}
+
+/* people */
+
+.yatut-create-people {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  gap: 6px;
+}
+
+.yatut-create-people
+button {
+  min-width: 0;
+
+  min-height:
+    43px;
+
+  padding:
+    6px 7px;
+
+  display: flex;
+
+  align-items:
+    center;
+
+  gap: 7px;
+
+  border:
+    1px solid
+    #e5e5eb;
+
+  border-radius:
+    11px;
+
+  background:
+    #fff;
+
+  font-family:
+    inherit;
+
+  text-align:
+    left;
+
+  cursor:
+    pointer;
+}
+
+.yatut-create-people
+button.is-active {
+  border-color:
+    #baa7f6;
+
+  background:
+    #f1edff;
+}
+
+.yatut-create-people
+button
+> span {
+  width: 29px;
+  height: 29px;
+
+  flex:
+    0 0 29px;
+
+  display: grid;
+
+  place-items:
+    center;
+
+  border-radius:
+    50%;
+
+  background:
+    #4b4756;
+
+  color:
+    #fff;
+
+  font-size:
+    8px;
+
+  font-weight:
+    900;
+}
+
+.yatut-create-people
+strong {
+  overflow: hidden;
+
+  font-size:
+    8px;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
+}
+
+/* tools */
+
+.yatut-create-post-tools {
+  margin:
+    0 14px;
+
+  padding:
+    7px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      6,
+      1fr
+    );
+
+  gap: 4px;
+
+  border:
+    1px solid
+    #e8e8ee;
+
+  border-radius:
+    14px;
+
+  background:
+    #fafafd;
+}
+
+.yatut-create-post-tools
+button {
+  min-width: 0;
+  min-height:
+    48px;
+
+  padding:
+    5px 2px;
+
+  display: flex;
+
+  flex-direction:
+    column;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap: 4px;
+
+  border: 0;
+
+  border-radius:
+    10px;
+
+  background:
+    transparent;
+
+  color:
+    #707480;
+
+  font-family:
+    inherit;
+
+  font-size:
+    7px;
+
+  font-weight:
+    750;
+
+  cursor:
+    pointer;
+}
+
+.yatut-create-post-tools
+button:hover,
+.yatut-create-post-tools
+button.is-active {
+  background:
+    #eee9ff;
+
+  color:
+    #6d28d9;
+}
+
+.yatut-create-post-tools
+button:disabled {
+  opacity:
+    0.35;
+
+  cursor:
+    default;
+}
+
+/* publish */
+
+.yatut-create-post-publish {
+  width:
+    calc(
+      100% - 28px
+    );
+
+  height: 42px;
+
+  margin:
+    12px 14px
+    14px;
+
+  border: 0;
+
+  border-radius:
+    12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #8b5cf6,
+      #7c3aed
+    );
+
+  color:
+    #fff;
+
+  font-family:
+    inherit;
+
+  font-size:
+    10px;
+
+  font-weight:
+    850;
+
+  cursor:
+    pointer;
+
+  box-shadow:
+    0 8px 18px
+    rgba(
+      124,
+      58,
+      237,
+      0.18
+    );
+}
+
+.yatut-create-post-publish:disabled {
+  opacity:
+    0.4;
+
+  cursor:
+    not-allowed;
+
+  box-shadow:
+    none;
+}
+
+@media (
+  max-width: 680px
+) {
+  .yatut-create-post-tools {
+    grid-template-columns:
+      repeat(
+        3,
+        1fr
+      );
+  }
+
+  .yatut-create-people {
+    grid-template-columns:
+      1fr;
+  }
+
+  .yatut-create-audience-menu {
+    width:
+      min(
+        230px,
+        calc(
+          100vw -
+          50px
+        )
+      );
+  }
+}.yatut-create-post-progress {
+  margin:
+    10px 14px
+    -4px;
+
+  padding:
+    8px 10px;
+
+  border-radius:
+    10px;
+
+  background:
+    #f0edff;
+
+  color:
+    #6d28d9;
+
+  font-size:
+    8px;
+
+  font-weight:
+    800;
+
+  text-align:
+    center;
+}.yatut-feed-media-button {
+  width: 100%;
+  height: 100%;
+
+  padding: 0;
+
+  display: block;
+
+  overflow: hidden;
+
+  border: 0;
+
+  background:
+    transparent;
+
+  cursor:
+    zoom-in;
+}
+
+.yatut-feed-media-button
+img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit:
+    cover;
+
+  transition:
+    transform
+    180ms ease,
+    filter
+    180ms ease;
+}
+
+.yatut-feed-media-button:hover
+img {
+  transform:
+    scale(1.015);
+
+  filter:
+    brightness(0.96);
+}
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+  .yatut-feed-media-button
+  img {
+    transition:
+      none;
+  }
+}

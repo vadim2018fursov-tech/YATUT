@@ -1,0 +1,362 @@
+/* =========================================================
+   YATUT PREMIUM HOME — FIXES
+========================================================= */
+
+/* =========================================================
+   CREATE POST INPUT
+========================================================= */
+
+.premium-create-input {
+  min-width: 0;
+  width: 100%;
+
+  border:
+    1px solid
+    transparent;
+
+  outline: none;
+
+  font-family:
+    inherit;
+
+  cursor: text;
+
+  transition:
+    background 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.premium-create-input:focus {
+  border-color:
+    rgba(
+      124,
+      58,
+      237,
+      0.22
+    );
+
+  background:
+    #ffffff;
+
+  box-shadow:
+    0 0 0
+    3px
+    rgba(
+      124,
+      58,
+      237,
+      0.055
+    );
+}
+
+/* =========================================================
+   CREATE POST PREVIEW
+========================================================= */
+
+.premium-create-preview {
+  position: relative;
+
+  height: 300px;
+
+  margin:
+    12px 14px 4px;
+
+  overflow: hidden;
+
+  border-radius:
+    17px;
+
+  background:
+    #eef0f5;
+}
+
+.premium-create-preview img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+}
+
+.premium-create-preview
+button {
+  position: absolute;
+
+  top: 12px;
+  right: 12px;
+
+  width: 38px;
+  height: 38px;
+
+  padding: 0;
+
+  display: grid;
+  place-items: center;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.55
+    );
+
+  border-radius: 50%;
+
+  background:
+    rgba(
+      24,
+      27,
+      38,
+      0.66
+    );
+
+  color: #fff;
+
+  cursor: pointer;
+
+  -webkit-backdrop-filter:
+    blur(10px);
+
+  backdrop-filter:
+    blur(10px);
+
+  transition:
+    transform 160ms ease,
+    background 160ms ease;
+}
+
+.premium-create-preview
+button:hover {
+  background:
+    rgba(
+      24,
+      27,
+      38,
+      0.82
+    );
+
+  transform:
+    scale(1.04);
+}
+
+/* =========================================================
+   PUBLISH BUTTON
+========================================================= */
+
+.premium-create-publish:disabled {
+  opacity: 0.42;
+
+  cursor:
+    not-allowed;
+
+  box-shadow: none;
+}
+
+/* =========================================================
+   SINGLE POST IMAGE
+========================================================= */
+
+.premium-feed-single-image {
+  height: 330px;
+
+  margin:
+    0 14px;
+
+  overflow: hidden;
+
+  border-radius:
+    14px;
+
+  background:
+    #eef0f5;
+}
+
+.premium-feed-single-image img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+}
+
+/* =========================================================
+   TWO POST IMAGES
+========================================================= */
+
+.premium-feed-gallery-two {
+  height: 290px;
+
+  margin:
+    0 14px;
+
+  display: grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap: 4px;
+
+  overflow: hidden;
+
+  border-radius:
+    14px;
+
+  background:
+    #eef0f5;
+}
+
+.premium-feed-gallery-two img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+/* =========================================================
+   POST ACTION ACTIVE
+========================================================= */
+
+.premium-feed-actions
+button.is-active {
+  color:
+    #7c3aed;
+
+  background:
+    rgba(
+      124,
+      58,
+      237,
+      0.055
+    );
+}
+
+/* =========================================================
+   RIGHT CITY BANNER
+========================================================= */
+
+.premium-right-banner {
+  width: 100%;
+  height: 96px;
+
+  padding: 0;
+
+  overflow: hidden;
+
+  display: block;
+
+  border: 0;
+
+  border-radius:
+    18px;
+
+  background-color:
+    #edeef5;
+
+  background-position:
+    center;
+
+  background-repeat:
+    no-repeat;
+
+  background-size:
+    cover;
+
+  box-shadow:
+    0 9px 25px
+    rgba(
+      15,
+      23,
+      42,
+      0.08
+    );
+
+  cursor: pointer;
+
+  transition:
+    transform 280ms ease,
+    box-shadow 280ms ease;
+}
+
+@media (hover: hover) {
+  .premium-right-banner:hover {
+    transform:
+      translateY(-2px);
+
+    box-shadow:
+      0 14px 34px
+      rgba(
+        15,
+        23,
+        42,
+        0.12
+      );
+  }
+}
+
+/* =========================================================
+   IMAGE QUALITY
+========================================================= */
+
+.premium-home-page img {
+  image-rendering:
+    auto;
+
+  -webkit-user-drag:
+    none;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (
+  max-width: 680px
+) {
+  .premium-create-preview {
+    height:
+      220px;
+
+    margin:
+      10px 8px 4px;
+
+    border-radius:
+      13px;
+  }
+
+  .premium-feed-single-image {
+    height:
+      245px;
+
+    margin:
+      0 8px;
+
+    border-radius:
+      12px;
+  }
+
+  .premium-feed-gallery-two {
+    height:
+      220px;
+
+    margin:
+      0 8px;
+
+    border-radius:
+      12px;
+  }
+}
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+  .premium-create-preview
+  button {
+    transition: none;
+  }
+}

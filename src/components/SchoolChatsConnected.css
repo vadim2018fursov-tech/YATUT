@@ -1,0 +1,541 @@
+/* =========================================================
+   YATUT SCHOOL CHATS CONNECTED
+========================================================= */
+
+.school-connected-chats {
+  width: 100%;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.school-connected-chats-header {
+  min-height: 120px;
+
+  margin-bottom: 10px;
+  padding: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  border: 1px solid #e6e8ef;
+  border-radius: 18px;
+
+  background:
+    radial-gradient(
+      circle at 88% 15%,
+      rgba(99, 91, 255, .14),
+      transparent 32%
+    ),
+    #fff;
+}
+
+.school-connected-chats-header > div:first-child > span {
+  color: #635bff;
+
+  font-size: 7px;
+  font-weight: 900;
+
+  letter-spacing: .7px;
+}
+
+.school-connected-chats-header h1 {
+  margin: 4px 0 2px;
+
+  color: #171827;
+
+  font-size: 22px;
+}
+
+.school-connected-chats-header p {
+  margin: 0;
+
+  color: #8b909b;
+
+  font-size: 7.5px;
+}
+
+.school-connected-status {
+  min-height: 34px;
+
+  padding: 0 11px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+
+  border-radius: 10px;
+
+  background: #effbf3;
+
+  color: #188f47;
+
+  font-size: 7px;
+  font-weight: 800;
+}
+
+.school-connected-status > span {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #22c55e;
+
+  box-shadow:
+    0 0 0 4px
+    rgba(34, 197, 94, .11);
+}
+
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.school-connected-section {
+  margin-bottom: 10px;
+}
+
+.school-connected-section-title {
+  min-height: 45px;
+
+  margin-bottom: 6px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+}
+
+.school-connected-section-title > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.school-connected-section-title > div > span {
+  color: #969aa5;
+
+  font-size: 6px;
+  font-weight: 900;
+
+  letter-spacing: .7px;
+}
+
+.school-connected-section-title > div > strong {
+  margin-top: 2px;
+
+  color: #171827;
+
+  font-size: 11px;
+}
+
+.school-connected-section-title > small {
+  color: #9ba0aa;
+
+  font-size: 6.5px;
+}
+
+.school-connected-section-title select {
+  min-width: 120px;
+  height: 36px;
+
+  padding: 0 9px;
+
+  border: 1px solid #e0e2e8;
+  border-radius: 9px;
+
+  outline: none;
+
+  background: #fff;
+
+  color: #555a65;
+
+  font-size: 7px;
+}
+
+
+/* =========================================================
+   CLASS HERO
+========================================================= */
+
+.school-connected-class-hero {
+  min-height: 85px;
+
+  margin-bottom: 7px;
+  padding: 11px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  border: 1px solid #e6e8ef;
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f9f8ff,
+      #fff
+    );
+}
+
+.school-connected-class-hero > div:first-child {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+}
+
+.school-connected-class-hero > div:first-child > span {
+  width: 48px;
+  height: 48px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 13px;
+
+  background: #635bff;
+
+  font-size: 21px;
+
+  box-shadow:
+    0 10px 24px
+    rgba(99, 91, 255, .2);
+}
+
+.school-connected-class-hero section {
+  display: flex;
+  flex-direction: column;
+}
+
+.school-connected-class-hero section small {
+  color: #635bff;
+
+  font-size: 6px;
+  font-weight: 900;
+}
+
+.school-connected-class-hero section h2 {
+  margin: 2px 0;
+
+  font-size: 15px;
+}
+
+.school-connected-class-hero section p {
+  margin: 0;
+
+  color: #979ca7;
+
+  font-size: 6.5px;
+}
+
+.school-connected-class-hero > div:last-child {
+  display: flex;
+  align-items: center;
+
+  padding-right: 5px;
+}
+
+.school-connected-class-hero > div:last-child > span {
+  width: 31px;
+  height: 31px;
+
+  margin-left: -6px;
+
+  display: grid;
+  place-items: center;
+
+  border: 3px solid #fff;
+  border-radius: 50%;
+
+  background: #eceaff;
+
+  color: #635bff;
+
+  font-size: 7px;
+  font-weight: 900;
+}
+
+
+/* =========================================================
+   CHAT GRID
+========================================================= */
+
+.school-connected-grid,
+.school-connected-subject-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 7px;
+}
+
+
+/* =========================================================
+   CHAT CARD
+========================================================= */
+
+.school-connected-chat-card {
+  width: 100%;
+  min-height: 100px;
+
+  padding: 11px;
+
+  display: grid;
+  grid-template-columns:
+    auto minmax(0, 1fr) auto;
+
+  align-items: center;
+
+  gap: 10px;
+
+  border: 1px solid #e6e8ef;
+  border-radius: 14px;
+
+  background: #fff;
+
+  text-align: left;
+
+  transition:
+    transform .15s ease,
+    border-color .15s ease,
+    box-shadow .15s ease,
+    background .15s ease;
+}
+
+.school-connected-chat-card:hover {
+  transform:
+    translateY(-1px);
+
+  border-color:
+    #cbc7ff;
+
+  background:
+    #faf9ff;
+
+  box-shadow:
+    0 9px 25px
+    rgba(26, 28, 45, .06);
+}
+
+.school-connected-chat-card:disabled {
+  opacity: .7;
+
+  cursor: wait;
+}
+
+.school-connected-chat-icon {
+  width: 49px;
+  height: 49px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 14px;
+
+  background: #efeeff;
+
+  font-size: 21px;
+}
+
+.school-connected-chat-card > section {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.school-connected-chat-card > section > span {
+  color: #635bff;
+
+  font-size: 5.8px;
+  font-weight: 900;
+
+  letter-spacing: .55px;
+}
+
+.school-connected-chat-card > section > strong {
+  margin-top: 3px;
+
+  overflow: hidden;
+
+  color: #20212c;
+
+  font-size: 9px;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.school-connected-chat-card > section > p {
+  margin: 3px 0 5px;
+
+  overflow: hidden;
+
+  color: #8f949f;
+
+  font-size: 6.5px;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.school-connected-chat-card > section > div {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 5px;
+}
+
+.school-connected-chat-card small {
+  padding: 4px 6px;
+
+  border-radius: 6px;
+
+  background: #f4f5f8;
+
+  color: #898e98;
+
+  font-size: 5.8px;
+}
+
+.school-connected-chat-card > b {
+  width: 29px;
+  height: 29px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 9px;
+
+  background: #f3f3f7;
+
+  color: #9b9fa9;
+
+  font-size: 10px;
+
+  transition: .15s;
+}
+
+.school-connected-chat-card:hover > b {
+  background: #635bff;
+
+  color: #fff;
+}
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.school-connected-empty {
+  min-height: 250px;
+
+  padding: 25px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px dashed #dcdfe6;
+  border-radius: 16px;
+
+  background: #fafbfc;
+
+  text-align: center;
+}
+
+.school-connected-empty > span {
+  width: 60px;
+  height: 60px;
+
+  display: grid;
+  place-items: center;
+
+  margin-bottom: 10px;
+
+  border-radius: 17px;
+
+  background: #eceaff;
+
+  font-size: 26px;
+}
+
+.school-connected-empty strong {
+  font-size: 11px;
+}
+
+.school-connected-empty p {
+  max-width: 330px;
+
+  margin: 5px 0 0;
+
+  color: #969ba6;
+
+  font-size: 7px;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (
+  max-width: 900px
+) {
+  .school-connected-grid,
+  .school-connected-subject-grid {
+    grid-template-columns:
+      1fr;
+  }
+}
+
+@media (
+  max-width: 767px
+) {
+  .school-connected-chats-header {
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
+  }
+
+  .school-connected-section-title {
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
+  }
+
+  .school-connected-section-title select {
+    width: 100%;
+  }
+
+  .school-connected-class-hero {
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
+  }
+
+  .school-connected-chat-card {
+    min-height:
+      92px;
+  }
+}

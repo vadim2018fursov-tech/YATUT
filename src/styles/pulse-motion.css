@@ -1,0 +1,1600 @@
+/* =========================================================
+   ЯТУТ PULSE
+   MOTION + PREMIUM POLISH
+========================================================= */
+
+
+/* =========================================================
+   GLOBAL PULSE MOTION TOKENS
+========================================================= */
+
+:root {
+  --pulse-motion-fast:
+    160ms;
+
+  --pulse-motion-normal:
+    240ms;
+
+  --pulse-motion-medium:
+    320ms;
+
+  --pulse-motion-slow:
+    520ms;
+
+  --pulse-motion-ease:
+    cubic-bezier(
+      0.2,
+      0.8,
+      0.2,
+      1
+    );
+
+  --pulse-focus-ring:
+    0 0 0 4px
+    rgba(
+      124,
+      58,
+      237,
+      0.16
+    );
+}
+
+
+/* =========================================================
+   BASE PAGE ENTRANCE
+========================================================= */
+
+.premium-page-pulse,
+.premium-page-cityPulse,
+.premium-page-clips {
+  animation:
+    pulse-page-enter
+    420ms
+    var(
+      --pulse-motion-ease
+    )
+    both;
+}
+
+
+@keyframes pulse-page-enter {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(
+        8px
+      );
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(
+        0
+      );
+  }
+}
+
+
+/* =========================================================
+   SECTION ENTRANCE
+========================================================= */
+
+.pulse-page__main
+> *,
+.city-pulse-page
+> * {
+  animation:
+    pulse-section-enter
+    460ms
+    var(
+      --pulse-motion-ease
+    )
+    both;
+}
+
+
+.pulse-page__main
+> *:nth-child(1),
+.city-pulse-page
+> *:nth-child(1) {
+  animation-delay:
+    20ms;
+}
+
+
+.pulse-page__main
+> *:nth-child(2),
+.city-pulse-page
+> *:nth-child(2) {
+  animation-delay:
+    45ms;
+}
+
+
+.pulse-page__main
+> *:nth-child(3),
+.city-pulse-page
+> *:nth-child(3) {
+  animation-delay:
+    70ms;
+}
+
+
+.pulse-page__main
+> *:nth-child(4),
+.city-pulse-page
+> *:nth-child(4) {
+  animation-delay:
+    95ms;
+}
+
+
+.pulse-page__main
+> *:nth-child(n + 5),
+.city-pulse-page
+> *:nth-child(n + 5) {
+  animation-delay:
+    120ms;
+}
+
+
+@keyframes pulse-section-enter {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(
+        12px
+      );
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(
+        0
+      );
+  }
+}
+
+
+/* =========================================================
+   FOCUS ACCESSIBILITY
+========================================================= */
+
+.premium-page-pulse
+button:focus-visible,
+.premium-page-cityPulse
+button:focus-visible,
+.premium-page-clips
+button:focus-visible,
+.pulse-location-panel
+button:focus-visible {
+  outline: none;
+
+  box-shadow:
+    var(
+      --pulse-focus-ring
+    );
+}
+
+
+/* =========================================================
+   SIDEBAR PULSE ACTIVE ITEM
+========================================================= */
+
+.yat-sidebar__link {
+  transition:
+    background
+    var(
+      --pulse-motion-fast
+    )
+    var(
+      --pulse-motion-ease
+    ),
+    color
+    var(
+      --pulse-motion-fast
+    )
+    var(
+      --pulse-motion-ease
+    ),
+    transform
+    var(
+      --pulse-motion-fast
+    )
+    var(
+      --pulse-motion-ease
+    );
+}
+
+
+.yat-sidebar__link:hover {
+  transform:
+    translateX(
+      2px
+    );
+}
+
+
+.yat-sidebar__link.is-active {
+  box-shadow:
+    inset
+    0 0 0 1px
+    rgba(
+      124,
+      58,
+      237,
+      0.08
+    );
+}
+
+
+/* =========================================================
+   TABS
+========================================================= */
+
+.pulse-tab,
+.pulse-mobile-tabs
+button,
+.city-pulse-tabs
+button {
+  transition:
+    color
+    var(
+      --pulse-motion-fast
+    )
+    var(
+      --pulse-motion-ease
+    ),
+    background
+    var(
+      --pulse-motion-fast
+    )
+    var(
+      --pulse-motion-ease
+    ),
+    transform
+    var(
+      --pulse-motion-fast
+    )
+    var(
+      --pulse-motion-ease
+    ),
+    box-shadow
+    var(
+      --pulse-motion-fast
+    )
+    var(
+      --pulse-motion-ease
+    );
+}
+
+
+.pulse-tab:active,
+.pulse-mobile-tabs
+button:active,
+.city-pulse-tabs
+button:active {
+  transform:
+    scale(
+      0.97
+    );
+}
+
+
+.pulse-tab.is-active,
+.pulse-mobile-tabs
+button.is-active,
+.city-pulse-tabs
+button.is-active {
+  box-shadow:
+    0 8px 22px
+    rgba(
+      124,
+      58,
+      237,
+      0.22
+    );
+}
+
+
+/* =========================================================
+   HERO POLISH
+========================================================= */
+
+.pulse-hero {
+  transition:
+    box-shadow
+    var(
+      --pulse-motion-medium
+    )
+    var(
+      --pulse-motion-ease
+    ),
+    transform
+    var(
+      --pulse-motion-medium
+    )
+    var(
+      --pulse-motion-ease
+    );
+}
+
+
+.pulse-hero:hover {
+  box-shadow:
+    0 28px 70px
+    rgba(
+      25,
+      12,
+      64,
+      0.23
+    );
+}
+
+
+.pulse-hero__eyebrow {
+  animation:
+    pulse-eyebrow-enter
+    520ms
+    var(
+      --pulse-motion-ease
+    )
+    both;
+}
+
+
+@keyframes pulse-eyebrow-enter {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(
+        -6px
+      );
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(
+        0
+      );
+  }
+}
+
+
+/* =========================================================
+   HERO BUTTON
+========================================================= */
+
+.pulse-hero__primary,
+.city-pulse-hero__map,
+.pulse-ukraine-map__cta,
+.pulse-nearby-button,
+.city-pulse-bottom-cta
+> button {
+  transition:
+    transform
+    var(
+      --pulse-motion-fast
+    )
+    var(
+      --pulse-motion-ease
+    ),
+    box-shadow
+    var(
+      --pulse-motion-fast
+    )
+    var(
+      --pulse-motion-ease
+    ),
+    filter
+    var(
+      --pulse-motion-fast
+    )
+    var(
+      --pulse-motion-ease
+    );
+}
+
+
+.pulse-hero__primary:hover,
+.pulse-ukraine-map__cta:hover,
+.city-pulse-bottom-cta
+> button:hover {
+  transform:
+    translateY(
+      -2px
+    );
+
+  filter:
+    brightness(
+      1.04
+    );
+
+  box-shadow:
+    0 14px 34px
+    rgba(
+      124,
+      58,
+      237,
+      0.33
+    );
+}
+
+
+.pulse-hero__primary:active,
+.pulse-ukraine-map__cta:active,
+.city-pulse-bottom-cta
+> button:active {
+  transform:
+    translateY(
+      0
+    )
+    scale(
+      0.98
+    );
+}
+
+
+/* =========================================================
+   MAP POLISH
+========================================================= */
+
+.pulse-ukraine-map {
+  transition:
+    border-color
+    var(
+      --pulse-motion-medium
+    )
+    var(
+      --pulse-motion-ease
+    ),
+    box-shadow
+    var(
+      --pulse-motion-medium
+    )
+    var(
+      --pulse-motion-ease
+    );
+}
+
+
+.pulse-ukraine-map:hover {
+  border-color:
+    rgba(
+      167,
+      139,
+      250,
+      0.28
+    );
+
+  box-shadow:
+    inset
+    0 0 60px
+    rgba(
+      124,
+      58,
+      237,
+      0.11
+    ),
+    0 18px 45px
+    rgba(
+      18,
+      9,
+      42,
+      0.18
+    );
+}
+
+
+/* =========================================================
+   CITY NODE
+========================================================= */
+
+.pulse-city-node {
+  transition:
+    transform
+    var(
+      --pulse-motion-fast
+    )
+    var(
+      --pulse-motion-ease
+    ),
+    filter
+    var(
+      --pulse-motion-fast
+    )
+    var(
+      --pulse-motion-ease
+    );
+}
+
+
+.pulse-city-node:hover {
+  z-index: 30;
+
+  filter:
+    brightness(
+      1.1
+    );
+
+  transform:
+    translate(
+      -50%,
+      -50%
+    )
+    scale(
+      1.08
+    );
+}
+
+
+.pulse-city-node:active {
+  transform:
+    translate(
+      -50%,
+      -50%
+    )
+    scale(
+      0.96
+    );
+}
+
+
+.pulse-city-node__label {
+  transition:
+    transform
+    var(
+      --pulse-motion-fast
+    )
+    var(
+      --pulse-motion-ease
+    );
+}
+
+
+.pulse-city-node:hover
+.pulse-city-node__label {
+  transform:
+    translateX(
+      2px
+    );
+}
+
+
+/* =========================================================
+   VIDEO CARD
+========================================================= */
+
+.pulse-video-card {
+  will-change:
+    transform;
+}
+
+
+.pulse-video-card:hover {
+  transform:
+    translateY(
+      -4px
+    );
+
+  border-color:
+    rgba(
+      124,
+      58,
+      237,
+      0.28
+    );
+
+  box-shadow:
+    0 18px 38px
+    rgba(
+      27,
+      20,
+      57,
+      0.12
+    );
+}
+
+
+.pulse-video-card:active {
+  transform:
+    translateY(
+      -1px
+    )
+    scale(
+      0.99
+    );
+}
+
+
+.pulse-video-card__play {
+  transition:
+    transform
+    var(
+      --pulse-motion-fast
+    )
+    var(
+      --pulse-motion-ease
+    ),
+    background
+    var(
+      --pulse-motion-fast
+    )
+    var(
+      --pulse-motion-ease
+    ),
+    color
+    var(
+      --pulse-motion-fast
+    )
+    var(
+      --pulse-motion-ease
+    );
+}
+
+
+.pulse-video-card:hover
+.pulse-video-card__play {
+  transform:
+    scale(
+      1.08
+    );
+
+  background:
+    #fff;
+
+  color:
+    #7c3aed;
+}
+
+
+.pulse-video-card--clip:hover
+.pulse-video-card__play {
+  transform:
+    translate(
+      -50%,
+      -50%
+    )
+    scale(
+      1.08
+    );
+}
+
+
+/* =========================================================
+   VIDEO RAIL
+========================================================= */
+
+.pulse-video-rail,
+.pulse-active-mode,
+.pulse-current-feed {
+  transition:
+    border-color
+    var(
+      --pulse-motion-normal
+    )
+    var(
+      --pulse-motion-ease
+    ),
+    box-shadow
+    var(
+      --pulse-motion-normal
+    )
+    var(
+      --pulse-motion-ease
+    );
+}
+
+
+.pulse-video-rail:hover,
+.pulse-active-mode:hover {
+  border-color:
+    rgba(
+      124,
+      58,
+      237,
+      0.16
+    );
+
+  box-shadow:
+    0 16px 38px
+    rgba(
+      25,
+      20,
+      47,
+      0.075
+    );
+}
+
+
+/* =========================================================
+   PEOPLE
+========================================================= */
+
+.pulse-people-row__avatars
+span,
+.pulse-nearby-avatars
+span,
+.city-pulse-person
+> span {
+  transition:
+    transform
+    var(
+      --pulse-motion-fast
+    )
+    var(
+      --pulse-motion-ease
+    );
+}
+
+
+.pulse-people-row__avatars
+span:hover,
+.pulse-nearby-avatars
+span:hover {
+  z-index: 30 !important;
+
+  transform:
+    translateY(
+      -3px
+    )
+    scale(
+      1.05
+    );
+}
+
+
+/* =========================================================
+   RIGHT RAIL
+========================================================= */
+
+.pulse-side-card {
+  transition:
+    transform
+    var(
+      --pulse-motion-normal
+    )
+    var(
+      --pulse-motion-ease
+    ),
+    box-shadow
+    var(
+      --pulse-motion-normal
+    )
+    var(
+      --pulse-motion-ease
+    ),
+    border-color
+    var(
+      --pulse-motion-normal
+    )
+    var(
+      --pulse-motion-ease
+    );
+}
+
+
+.pulse-side-card:hover {
+  transform:
+    translateY(
+      -2px
+    );
+
+  border-color:
+    rgba(
+      124,
+      58,
+      237,
+      0.15
+    );
+
+  box-shadow:
+    0 14px 32px
+    rgba(
+      25,
+      20,
+      47,
+      0.08
+    );
+}
+
+
+.pulse-trending-item,
+.pulse-live-item {
+  transition:
+    background
+    var(
+      --pulse-motion-fast
+    )
+    var(
+      --pulse-motion-ease
+    ),
+    transform
+    var(
+      --pulse-motion-fast
+    )
+    var(
+      --pulse-motion-ease
+    );
+}
+
+
+.pulse-trending-item:hover,
+.pulse-live-item:hover {
+  transform:
+    translateX(
+      2px
+    );
+}
+
+
+/* =========================================================
+   WAVE
+========================================================= */
+
+.pulse-wave {
+  transition:
+    box-shadow
+    var(
+      --pulse-motion-medium
+    )
+    var(
+      --pulse-motion-ease
+    ),
+    transform
+    var(
+      --pulse-motion-medium
+    )
+    var(
+      --pulse-motion-ease
+    );
+}
+
+
+.pulse-wave:hover {
+  box-shadow:
+    0 28px 68px
+    rgba(
+      31,
+      14,
+      70,
+      0.27
+    );
+}
+
+
+.pulse-wave-card {
+  will-change:
+    transform;
+}
+
+
+.pulse-wave-card:hover {
+  transform:
+    translateY(
+      -5px
+    );
+
+  border-color:
+    rgba(
+      192,
+      38,
+      211,
+      0.38
+    );
+}
+
+
+.pulse-wave-card:active {
+  transform:
+    translateY(
+      -1px
+    )
+    scale(
+      0.99
+    );
+}
+
+
+.pulse-wave-card__play {
+  transition:
+    transform
+    var(
+      --pulse-motion-fast
+    )
+    var(
+      --pulse-motion-ease
+    ),
+    box-shadow
+    var(
+      --pulse-motion-fast
+    )
+    var(
+      --pulse-motion-ease
+    );
+}
+
+
+.pulse-wave-card:hover
+.pulse-wave-card__play {
+  transform:
+    translate(
+      -50%,
+      -50%
+    )
+    scale(
+      1.09
+    );
+
+  box-shadow:
+    0 12px 30px
+    rgba(
+      0,
+      0,
+      0,
+      0.3
+    );
+}
+
+
+/* =========================================================
+   CONTINUE WAVE
+========================================================= */
+
+.pulse-continue-story-button {
+  position: relative;
+}
+
+
+.pulse-continue-story-button::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  bottom: 0;
+
+  left: -45%;
+
+  width: 32%;
+
+  opacity: 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(
+        255,
+        255,
+        255,
+        0.2
+      ),
+      transparent
+    );
+
+  transform:
+    skewX(
+      -18deg
+    );
+
+  transition:
+    left
+    520ms
+    var(
+      --pulse-motion-ease
+    ),
+    opacity
+    160ms
+    ease;
+}
+
+
+.pulse-continue-story-button:hover::before {
+  left: 115%;
+
+  opacity: 1;
+}
+
+
+/* =========================================================
+   Я ТУТ BUTTON
+========================================================= */
+
+.pulse-here-button {
+  position: relative;
+
+  overflow: hidden;
+}
+
+
+.pulse-here-button::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: -50%;
+
+  width: 35%;
+  height: 100%;
+
+  opacity: 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(
+        255,
+        255,
+        255,
+        0.2
+      ),
+      transparent
+    );
+
+  transform:
+    skewX(
+      -18deg
+    );
+
+  transition:
+    left
+    520ms
+    var(
+      --pulse-motion-ease
+    ),
+    opacity
+    160ms
+    ease;
+}
+
+
+.pulse-here-button:hover::before {
+  left: 120%;
+
+  opacity: 1;
+}
+
+
+.pulse-here-button:hover {
+  box-shadow:
+    0 15px 36px
+    rgba(
+      124,
+      58,
+      237,
+      0.42
+    );
+}
+
+
+.pulse-here-button:active {
+  transform:
+    scale(
+      0.98
+    );
+}
+
+
+/* =========================================================
+   LOCATION PANEL
+========================================================= */
+
+.pulse-location-panel-backdrop {
+  animation:
+    pulse-backdrop-enter
+    220ms
+    ease
+    both;
+}
+
+
+.pulse-location-panel {
+  animation:
+    pulse-panel-enter
+    360ms
+    var(
+      --pulse-motion-ease
+    )
+    both;
+}
+
+
+@keyframes pulse-backdrop-enter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+
+@keyframes pulse-panel-enter {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(
+        18px
+      )
+      scale(
+        0.98
+      );
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(
+        0
+      )
+      scale(
+        1
+      );
+  }
+}
+
+
+/* =========================================================
+   CITY HERO
+========================================================= */
+
+.city-pulse-hero {
+  transition:
+    box-shadow
+    var(
+      --pulse-motion-medium
+    )
+    var(
+      --pulse-motion-ease
+    );
+}
+
+
+.city-pulse-hero:hover {
+  box-shadow:
+    0 28px 65px
+    rgba(
+      25,
+      18,
+      45,
+      0.21
+    );
+}
+
+
+.city-pulse-stat,
+.city-pulse-person,
+.city-pulse-events
+article {
+  transition:
+    transform
+    var(
+      --pulse-motion-fast
+    )
+    var(
+      --pulse-motion-ease
+    ),
+    border-color
+    var(
+      --pulse-motion-fast
+    )
+    var(
+      --pulse-motion-ease
+    ),
+    box-shadow
+    var(
+      --pulse-motion-fast
+    )
+    var(
+      --pulse-motion-ease
+    );
+}
+
+
+.city-pulse-stat:hover,
+.city-pulse-person:hover,
+.city-pulse-events
+article:hover {
+  transform:
+    translateY(
+      -2px
+    );
+
+  border-color:
+    rgba(
+      124,
+      58,
+      237,
+      0.17
+    );
+
+  box-shadow:
+    0 10px 26px
+    rgba(
+      26,
+      22,
+      46,
+      0.07
+    );
+}
+
+
+/* =========================================================
+   CLIPS
+========================================================= */
+
+.pulse-clips-stage {
+  animation:
+    pulse-clips-enter
+    440ms
+    var(
+      --pulse-motion-ease
+    )
+    both;
+}
+
+
+@keyframes pulse-clips-enter {
+  from {
+    opacity: 0;
+
+    transform:
+      scale(
+        0.985
+      );
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      scale(
+        1
+      );
+  }
+}
+
+
+.pulse-clips-actions
+> button {
+  transition:
+    color
+    var(
+      --pulse-motion-fast
+    )
+    var(
+      --pulse-motion-ease
+    ),
+    transform
+    var(
+      --pulse-motion-fast
+    )
+    var(
+      --pulse-motion-ease
+    );
+}
+
+
+.pulse-clips-actions
+> button:hover {
+  transform:
+    scale(
+      1.08
+    );
+}
+
+
+.pulse-clips-actions
+> button:active {
+  transform:
+    scale(
+      0.92
+    );
+}
+
+
+.pulse-clips-actions
+> button.is-active {
+  animation:
+    pulse-action-pop
+    300ms
+    var(
+      --pulse-motion-ease
+    );
+}
+
+
+@keyframes pulse-action-pop {
+  0% {
+    transform:
+      scale(
+        0.75
+      );
+  }
+
+  60% {
+    transform:
+      scale(
+        1.16
+      );
+  }
+
+  100% {
+    transform:
+      scale(
+        1
+      );
+  }
+}
+
+
+/* =========================================================
+   MOBILE NAV
+========================================================= */
+
+.pulse-mobile-nav
+> button {
+  transition:
+    color
+    var(
+      --pulse-motion-fast
+    )
+    var(
+      --pulse-motion-ease
+    ),
+    transform
+    var(
+      --pulse-motion-fast
+    )
+    var(
+      --pulse-motion-ease
+    );
+}
+
+
+.pulse-mobile-nav
+> button:active {
+  transform:
+    scale(
+      0.94
+    );
+}
+
+
+.pulse-mobile-nav__create
+> span {
+  transition:
+    transform
+    var(
+      --pulse-motion-fast
+    )
+    var(
+      --pulse-motion-ease
+    ),
+    box-shadow
+    var(
+      --pulse-motion-fast
+    )
+    var(
+      --pulse-motion-ease
+    );
+}
+
+
+.pulse-mobile-nav__create:active
+> span {
+  transform:
+    translateY(
+      -7px
+    )
+    scale(
+      0.94
+    );
+}
+
+
+/* =========================================================
+   SUBTLE ONLINE DOT
+========================================================= */
+
+.city-pulse-person
+i,
+.pulse-ukraine-map__live-badge
+i,
+.pulse-wave__live
+i {
+  animation:
+    pulse-presence-soft
+    2.8s
+    ease-in-out
+    infinite;
+}
+
+
+@keyframes pulse-presence-soft {
+  0%,
+  100% {
+    opacity: 0.65;
+
+    box-shadow:
+      0 0 5px
+      rgba(
+        34,
+        197,
+        94,
+        0.45
+      );
+  }
+
+  50% {
+    opacity: 1;
+
+    box-shadow:
+      0 0 11px
+      rgba(
+        34,
+        197,
+        94,
+        0.78
+      );
+  }
+}
+
+
+/* =========================================================
+   IMAGE POLISH
+========================================================= */
+
+.pulse-trending-item
+img,
+.pulse-live-item__media
+img,
+.pulse-wave-card__media
+img,
+.pulse-video-card__media
+img {
+  backface-visibility:
+    hidden;
+
+  transform:
+    translateZ(
+      0
+    );
+}
+
+
+/* =========================================================
+   MOBILE PANEL
+========================================================= */
+
+@media (
+  max-width: 520px
+) {
+  .pulse-location-panel {
+    transform-origin:
+      bottom center;
+
+    animation-name:
+      pulse-mobile-panel-enter;
+  }
+
+
+  @keyframes pulse-mobile-panel-enter {
+    from {
+      opacity: 0;
+
+      transform:
+        translateY(
+          100%
+        );
+    }
+
+    to {
+      opacity: 1;
+
+      transform:
+        translateY(
+          0
+        );
+    }
+  }
+}
+
+
+/* =========================================================
+   NO HOVER DEVICES
+========================================================= */
+
+@media (
+  hover: none
+) {
+  .pulse-video-card:hover,
+  .pulse-wave-card:hover,
+  .pulse-side-card:hover,
+  .city-pulse-stat:hover,
+  .city-pulse-person:hover,
+  .pulse-hero:hover,
+  .pulse-wave:hover {
+    transform: none;
+  }
+
+
+  .yat-sidebar__link:hover {
+    transform: none;
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+  .premium-page-pulse,
+  .premium-page-cityPulse,
+  .premium-page-clips,
+  .pulse-page__main
+  > *,
+  .city-pulse-page
+  > *,
+  .pulse-hero__eyebrow,
+  .pulse-clips-stage,
+  .pulse-location-panel-backdrop,
+  .pulse-location-panel,
+  .city-pulse-person
+  i,
+  .pulse-ukraine-map__live-badge
+  i,
+  .pulse-wave__live
+  i {
+    animation:
+      none !important;
+  }
+
+
+  .pulse-tab,
+  .pulse-mobile-tabs
+  button,
+  .city-pulse-tabs
+  button,
+  .pulse-video-card,
+  .pulse-video-card__play,
+  .pulse-wave-card,
+  .pulse-wave-card__play,
+  .pulse-here-button,
+  .pulse-continue-story-button,
+  .pulse-city-node,
+  .pulse-side-card,
+  .city-pulse-stat,
+  .city-pulse-person,
+  .pulse-mobile-nav
+  > button {
+    transition:
+      none !important;
+  }
+
+
+  .pulse-continue-story-button::before,
+  .pulse-here-button::before {
+    display:
+      none;
+  }
+}

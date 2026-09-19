@@ -1,0 +1,1895 @@
+/* =========================================================
+   ЯТУТ PULSE
+   RESPONSIVE CLEANUP
+   FINAL LAYOUT SAFETY LAYER
+========================================================= */
+
+
+/* =========================================================
+   GLOBAL SAFETY
+========================================================= */
+
+.premium-page-pulse,
+.premium-page-cityPulse,
+.premium-page-clips,
+.pulse-page,
+.pulse-page__main,
+.city-pulse-page,
+.pulse-video-rail,
+.pulse-active-mode,
+.pulse-wave,
+.pulse-ukraine-map {
+  min-width: 0;
+}
+
+
+.premium-page-pulse *,
+.premium-page-cityPulse *,
+.premium-page-clips * {
+  box-sizing: border-box;
+}
+
+
+.pulse-page img,
+.city-pulse-page img,
+.pulse-clips-page img {
+  max-width: 100%;
+}
+
+
+/* =========================================================
+   DESKTOP APP WIDTH
+========================================================= */
+
+.premium-page-pulse,
+.premium-page-cityPulse {
+  width: 100%;
+
+  min-width: 0;
+
+  max-width: none;
+}
+
+
+.premium-page-pulse
+.pulse-page {
+  width: 100%;
+
+  min-width: 0;
+}
+
+
+/* =========================================================
+   VERY LARGE DESKTOP
+========================================================= */
+
+@media (
+  min-width: 1700px
+) {
+  .pulse-page {
+    grid-template-columns:
+      minmax(
+        0,
+        1fr
+      )
+      330px;
+
+    gap: 20px;
+  }
+
+
+  .pulse-hero--ukraine
+  .pulse-hero__content {
+    grid-template-columns:
+      minmax(
+        250px,
+        0.58fr
+      )
+      minmax(
+        560px,
+        1.65fr
+      );
+
+    gap: 28px;
+  }
+
+
+  .pulse-ukraine-map {
+    min-height: 355px;
+  }
+
+
+  .pulse-video-rail__track--wide {
+    grid-template-columns:
+      repeat(
+        4,
+        minmax(
+          0,
+          1fr
+        )
+      );
+  }
+
+
+  .pulse-video-rail__track--clip {
+    grid-template-columns:
+      repeat(
+        5,
+        minmax(
+          0,
+          1fr
+        )
+      );
+  }
+
+
+  .pulse-wave-timeline {
+    grid-template-columns:
+      repeat(
+        4,
+        minmax(
+          0,
+          1fr
+        )
+      );
+  }
+}
+
+
+/* =========================================================
+   NORMAL DESKTOP
+   1440 - 1699
+========================================================= */
+
+@media (
+  min-width: 1440px
+)
+and (
+  max-width: 1699px
+) {
+  .pulse-page {
+    grid-template-columns:
+      minmax(
+        0,
+        1fr
+      )
+      300px;
+
+    gap: 17px;
+  }
+
+
+  .pulse-hero--ukraine
+  .pulse-hero__content {
+    grid-template-columns:
+      minmax(
+        225px,
+        0.58fr
+      )
+      minmax(
+        480px,
+        1.48fr
+      );
+
+    gap: 19px;
+  }
+
+
+  .pulse-hero__copy
+  h1 {
+    font-size:
+      clamp(
+        36px,
+        3.5vw,
+        52px
+      );
+  }
+
+
+  .pulse-video-rail__track--clip {
+    grid-template-columns:
+      repeat(
+        4,
+        minmax(
+          0,
+          1fr
+        )
+      );
+  }
+
+
+  .pulse-video-rail__track--clip
+  > :nth-child(5) {
+    display: none;
+  }
+}
+
+
+/* =========================================================
+   SMALL DESKTOP / LAPTOP
+   1200 - 1439
+========================================================= */
+
+@media (
+  min-width: 1200px
+)
+and (
+  max-width: 1439px
+) {
+  .pulse-page {
+    grid-template-columns:
+      minmax(
+        0,
+        1fr
+      )
+      270px;
+
+    gap: 15px;
+  }
+
+
+  .pulse-hero {
+    min-height: 360px;
+  }
+
+
+  .pulse-hero__content {
+    min-height: 360px;
+  }
+
+
+  .pulse-hero--ukraine
+  .pulse-hero__content {
+    grid-template-columns:
+      minmax(
+        205px,
+        0.56fr
+      )
+      minmax(
+        390px,
+        1.35fr
+      );
+
+    gap: 16px;
+
+    padding: 24px;
+  }
+
+
+  .pulse-hero__copy
+  h1 {
+    font-size: 39px;
+  }
+
+
+  .pulse-hero__copy
+  p {
+    font-size: 13px;
+  }
+
+
+  .pulse-ukraine-map {
+    min-height: 310px;
+  }
+
+
+  .pulse-right-rail {
+    top: 92px;
+  }
+
+
+  .pulse-video-rail__track--wide {
+    grid-template-columns:
+      repeat(
+        3,
+        minmax(
+          0,
+          1fr
+        )
+      );
+  }
+
+
+  .pulse-video-rail__track--wide
+  > :nth-child(4) {
+    display: none;
+  }
+
+
+  .pulse-video-rail__track--clip {
+    grid-template-columns:
+      repeat(
+        4,
+        minmax(
+          0,
+          1fr
+        )
+      );
+  }
+
+
+  .pulse-video-rail__track--clip
+  > :nth-child(5) {
+    display: none;
+  }
+
+
+  .pulse-active-mode__track {
+    grid-template-columns:
+      minmax(
+        0,
+        1.5fr
+      )
+      repeat(
+        3,
+        minmax(
+          0,
+          1fr
+        )
+      );
+  }
+
+
+  .pulse-active-mode__track
+  > :nth-child(5) {
+    display: none;
+  }
+
+
+  .pulse-wave-timeline {
+    grid-template-columns:
+      repeat(
+        4,
+        minmax(
+          0,
+          1fr
+        )
+      );
+
+    gap: 20px;
+  }
+
+
+  .pulse-wave-step__connector {
+    width: 14px;
+  }
+
+
+  .city-pulse-feature-grid {
+    grid-template-columns:
+      minmax(
+        0,
+        1.4fr
+      )
+      repeat(
+        2,
+        minmax(
+          0,
+          1fr
+        )
+      );
+  }
+}
+
+
+/* =========================================================
+   TABLET LANDSCAPE / NARROW LAPTOP
+   950 - 1199
+========================================================= */
+
+@media (
+  min-width: 950px
+)
+and (
+  max-width: 1199px
+) {
+  .pulse-page {
+    display: block;
+  }
+
+
+  .pulse-right-rail {
+    position: static;
+
+    margin-top: 14px;
+
+    display: grid;
+
+    grid-template-columns:
+      repeat(
+        3,
+        minmax(
+          0,
+          1fr
+        )
+      );
+
+    gap: 10px;
+  }
+
+
+  .pulse-hero--ukraine
+  .pulse-hero__content {
+    grid-template-columns:
+      minmax(
+        200px,
+        0.52fr
+      )
+      minmax(
+        420px,
+        1.35fr
+      );
+
+    padding: 22px;
+  }
+
+
+  .pulse-hero__copy
+  h1 {
+    font-size: 38px;
+  }
+
+
+  .pulse-ukraine-map {
+    min-height: 320px;
+  }
+
+
+  .pulse-active-mode__track {
+    grid-template-columns:
+      minmax(
+        0,
+        1.4fr
+      )
+      repeat(
+        2,
+        minmax(
+          0,
+          1fr
+        )
+      );
+  }
+
+
+  .pulse-active-mode__track
+  > :nth-child(n + 4) {
+    display: none;
+  }
+
+
+  .pulse-video-rail__track--wide,
+  .pulse-video-rail__track--clip {
+    grid-template-columns:
+      repeat(
+        3,
+        minmax(
+          0,
+          1fr
+        )
+      );
+  }
+
+
+  .pulse-video-rail__track--wide
+  > :nth-child(n + 4),
+  .pulse-video-rail__track--clip
+  > :nth-child(n + 4) {
+    display: none;
+  }
+
+
+  .pulse-video-rail__track--mixed {
+    grid-template-columns:
+      minmax(
+        0,
+        1.4fr
+      )
+      repeat(
+        2,
+        minmax(
+          0,
+          1fr
+        )
+      );
+  }
+
+
+  .pulse-video-rail__track--mixed
+  > :nth-child(n + 4) {
+    display: none;
+  }
+
+
+  .pulse-wave-timeline {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(
+          0,
+          1fr
+        )
+      );
+
+    gap: 12px;
+  }
+
+
+  .pulse-wave-step__connector {
+    display: none;
+  }
+
+
+  .city-pulse-stats {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(
+          0,
+          1fr
+        )
+      );
+  }
+
+
+  .city-pulse-video-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(
+          0,
+          1fr
+        )
+      );
+  }
+}
+
+
+/* =========================================================
+   TABLET
+   851 - 949
+========================================================= */
+
+@media (
+  min-width: 851px
+)
+and (
+  max-width: 949px
+) {
+  .pulse-page {
+    display: block;
+  }
+
+
+  .pulse-right-rail {
+    position: static;
+
+    margin-top: 12px;
+
+    display: grid;
+
+    grid-template-columns:
+      1fr 1fr;
+
+    gap: 9px;
+  }
+
+
+  .pulse-right-rail
+  > :last-child {
+    grid-column:
+      1 / -1;
+  }
+
+
+  .pulse-hero--ukraine
+  .pulse-hero__content {
+    display: flex;
+
+    flex-direction: column;
+
+    padding: 18px;
+  }
+
+
+  .pulse-hero__copy {
+    width: 100%;
+  }
+
+
+  .pulse-hero__copy
+  h1 {
+    font-size: 40px;
+  }
+
+
+  .pulse-ukraine-map {
+    width: 100%;
+
+    min-height: 350px;
+  }
+
+
+  .pulse-tabs {
+    overflow-x: auto;
+
+    display: flex;
+
+    scrollbar-width: none;
+  }
+
+
+  .pulse-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+
+  .pulse-tab {
+    min-width: 105px;
+  }
+
+
+  .pulse-active-mode__track {
+    display: flex;
+
+    overflow-x: auto;
+
+    scrollbar-width: none;
+  }
+
+
+  .pulse-active-mode__track::-webkit-scrollbar {
+    display: none;
+  }
+
+
+  .pulse-active-mode__feature {
+    min-width: 320px;
+  }
+
+
+  .pulse-active-mode__small {
+    min-width: 210px;
+  }
+
+
+  .pulse-video-rail__track {
+    display: flex !important;
+
+    overflow-x: auto;
+
+    scrollbar-width: none;
+  }
+
+
+  .pulse-video-rail__track::-webkit-scrollbar {
+    display: none;
+  }
+
+
+  .pulse-video-card {
+    min-width: 235px;
+  }
+
+
+  .pulse-video-card--clip {
+    min-width: 165px;
+  }
+
+
+  .pulse-wave-timeline {
+    display: flex;
+
+    overflow-x: auto;
+
+    scrollbar-width: none;
+  }
+
+
+  .pulse-wave-timeline::-webkit-scrollbar {
+    display: none;
+  }
+
+
+  .pulse-wave-step {
+    min-width: 230px;
+  }
+
+
+  .pulse-wave-step__connector {
+    display: none;
+  }
+}
+
+
+/* =========================================================
+   MOBILE COMMON
+   <= 850
+========================================================= */
+
+@media (
+  max-width: 850px
+) {
+  html,
+  body {
+    max-width: 100%;
+
+    overflow-x: hidden;
+  }
+
+
+  .premium-app-shell-pulse,
+  .premium-app-shell-cityPulse,
+  .premium-app-shell-clips {
+    width: 100%;
+
+    max-width: 100%;
+
+    overflow-x: hidden;
+  }
+
+
+  .premium-app-shell-pulse
+  .premium-desktop-layout,
+  .premium-app-shell-cityPulse
+  .premium-desktop-layout,
+  .premium-app-shell-clips
+  .premium-desktop-layout {
+    width: 100% !important;
+
+    max-width: 100% !important;
+
+    min-width: 0 !important;
+
+    margin: 0 !important;
+
+    padding: 0 !important;
+  }
+
+
+  .premium-app-shell-pulse
+  .premium-page-content,
+  .premium-app-shell-cityPulse
+  .premium-page-content,
+  .premium-app-shell-clips
+  .premium-page-content {
+    width: 100% !important;
+
+    max-width: 100% !important;
+
+    min-width: 0 !important;
+
+    margin: 0 !important;
+  }
+
+
+  /* =======================================================
+     HIDE DESKTOP SIDEBAR ON PULSE MOBILE
+  ======================================================= */
+
+  .premium-app-shell-pulse
+  > .premium-desktop-layout
+  > .yat-sidebar,
+  .premium-app-shell-cityPulse
+  > .premium-desktop-layout
+  > .yat-sidebar,
+  .premium-app-shell-clips
+  > .premium-desktop-layout
+  > .yat-sidebar {
+    display: none !important;
+  }
+
+
+  /* =======================================================
+     PAGE
+  ======================================================= */
+
+  .pulse-page {
+    width: 100%;
+
+    max-width: 100%;
+
+    padding:
+      10px 10px
+      92px;
+
+    overflow: hidden;
+  }
+
+
+  .pulse-page__main {
+    width: 100%;
+
+    max-width: 100%;
+  }
+
+
+  /* =======================================================
+     HEADER
+  ======================================================= */
+
+  .pulse-mobile-header {
+    width: 100%;
+
+    max-width: 100%;
+  }
+
+
+  .pulse-mobile-header__brand {
+    flex: 1;
+  }
+
+
+  .pulse-mobile-header__brand
+  > div {
+    flex: 1;
+  }
+
+
+  /* =======================================================
+     TABS
+  ======================================================= */
+
+  .pulse-mobile-tabs {
+    width: 100%;
+
+    max-width: 100%;
+  }
+
+
+  /* =======================================================
+     HERO
+  ======================================================= */
+
+  .pulse-hero {
+    width: 100%;
+
+    max-width: 100%;
+
+    overflow: hidden;
+  }
+
+
+  .pulse-hero--ukraine
+  .pulse-hero__content {
+    width: 100%;
+
+    max-width: 100%;
+  }
+
+
+  .pulse-ukraine-map {
+    width: 100%;
+
+    max-width: 100%;
+  }
+
+
+  .pulse-hero__copy {
+    width: 100%;
+
+    max-width: 100%;
+  }
+
+
+  .pulse-hero__actions {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+      minmax(
+        0,
+        1fr
+      )
+      auto;
+  }
+
+
+  /* =======================================================
+     RAILS
+  ======================================================= */
+
+  .pulse-video-rail,
+  .pulse-active-mode {
+    width: 100%;
+
+    max-width: 100%;
+  }
+
+
+  .pulse-video-rail__track,
+  .pulse-active-mode__track,
+  .pulse-wave-timeline {
+    overscroll-behavior-x: contain;
+
+    -webkit-overflow-scrolling: touch;
+  }
+
+
+  /* =======================================================
+     WAVE
+  ======================================================= */
+
+  .pulse-wave {
+    width: 100%;
+
+    max-width: 100%;
+  }
+
+
+  .pulse-wave__header {
+    width: 100%;
+  }
+
+
+  .pulse-wave__brand {
+    min-width: 0;
+  }
+
+
+  .pulse-wave__brand
+  > div:last-child {
+    min-width: 0;
+  }
+
+
+  /* =======================================================
+     CITY
+  ======================================================= */
+
+  .city-pulse-page {
+    width: 100%;
+
+    max-width: 100%;
+
+    overflow: hidden;
+  }
+
+
+  .city-pulse-tabs {
+    width: 100%;
+  }
+
+
+  .city-pulse-feature-grid,
+  .city-pulse-video-grid {
+    overscroll-behavior-x: contain;
+
+    -webkit-overflow-scrolling: touch;
+  }
+
+
+  /* =======================================================
+     CLIPS
+  ======================================================= */
+
+  .pulse-clips-page {
+    width: 100%;
+
+    max-width: 100%;
+  }
+
+
+  .pulse-clips-stage {
+    max-width: 100%;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+   600 - 850
+========================================================= */
+
+@media (
+  min-width: 600px
+)
+and (
+  max-width: 850px
+) {
+  .pulse-page {
+    padding-right: 16px;
+
+    padding-left: 16px;
+  }
+
+
+  .pulse-ukraine-map {
+    min-height: 400px;
+  }
+
+
+  .pulse-video-card {
+    min-width: 250px;
+  }
+
+
+  .pulse-video-card--clip {
+    min-width: 180px;
+  }
+
+
+  .pulse-active-mode__feature {
+    min-width: 340px;
+  }
+
+
+  .pulse-wave-step {
+    min-width: 250px;
+  }
+
+
+  .city-pulse-page {
+    padding-right: 15px;
+
+    padding-left: 15px;
+  }
+
+
+  .city-pulse-hero {
+    margin-right: -15px;
+
+    margin-left: -15px;
+  }
+}
+
+
+/* =========================================================
+   STANDARD PHONE
+   430 - 599
+========================================================= */
+
+@media (
+  min-width: 430px
+)
+and (
+  max-width: 599px
+) {
+  .pulse-mobile-header {
+    min-height: 64px;
+
+    padding:
+      8px 12px;
+  }
+
+
+  .pulse-mobile-tabs {
+    top: 64px;
+  }
+
+
+  .pulse-page {
+    padding:
+      8px 9px
+      90px;
+  }
+
+
+  .pulse-ukraine-map {
+    min-height: 340px;
+  }
+
+
+  .pulse-hero__copy
+  h1 {
+    font-size: 30px;
+  }
+
+
+  .pulse-video-card {
+    min-width: 240px;
+  }
+
+
+  .pulse-video-card--clip {
+    min-width: 160px;
+  }
+
+
+  .pulse-active-mode__feature {
+    min-width: 310px;
+  }
+
+
+  .pulse-active-mode__small {
+    min-width: 185px;
+  }
+
+
+  .pulse-wave-step {
+    min-width: 225px;
+  }
+
+
+  .pulse-clips-content {
+    right: 68px;
+  }
+
+
+  .city-pulse-people-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(
+          0,
+          1fr
+        )
+      );
+  }
+}
+
+
+/* =========================================================
+   SMALL PHONE
+   <= 429
+========================================================= */
+
+@media (
+  max-width: 429px
+) {
+  .pulse-mobile-header {
+    min-height: 61px;
+
+    padding:
+      7px 9px;
+  }
+
+
+  .pulse-mobile-header__logo {
+    width: 37px;
+
+    height: 37px;
+
+    flex-basis: 37px;
+
+    border-radius: 11px;
+
+    font-size: 20px;
+  }
+
+
+  .pulse-mobile-header__brand
+  strong {
+    font-size: 15px;
+  }
+
+
+  .pulse-mobile-header__brand
+  small {
+    font-size: 7px;
+  }
+
+
+  .pulse-mobile-header__actions
+  button {
+    width: 36px;
+
+    height: 36px;
+
+    border-radius: 11px;
+  }
+
+
+  .pulse-mobile-tabs {
+    top: 61px;
+
+    padding:
+      6px 7px;
+  }
+
+
+  .pulse-mobile-tabs
+  button {
+    min-height: 35px;
+
+    font-size: 9px;
+  }
+
+
+  .pulse-page {
+    padding:
+      7px 7px
+      88px;
+
+    gap: 8px;
+  }
+
+
+  .pulse-page__main {
+    gap: 9px;
+  }
+
+
+  /* =======================================================
+     HERO
+  ======================================================= */
+
+  .pulse-hero {
+    border-radius: 19px;
+  }
+
+
+  .pulse-hero--ukraine
+  .pulse-hero__content {
+    padding: 8px;
+  }
+
+
+  .pulse-ukraine-map {
+    min-height: 305px;
+
+    border-radius: 16px;
+  }
+
+
+  .pulse-hero__copy {
+    padding:
+      4px 4px
+      8px;
+  }
+
+
+  .pulse-hero__copy
+  h1 {
+    margin-top: 8px;
+
+    font-size: 27px;
+  }
+
+
+  .pulse-hero__copy
+  p {
+    font-size: 10px;
+  }
+
+
+  .pulse-hero__actions {
+    gap: 6px;
+  }
+
+
+  .pulse-hero__primary {
+    padding:
+      0 10px;
+
+    font-size: 9px;
+  }
+
+
+  .pulse-hero__online {
+    padding:
+      6px 8px;
+  }
+
+
+  .pulse-hero__online
+  span {
+    display: none;
+  }
+
+
+  /* =======================================================
+     MAP NODES
+  ======================================================= */
+
+  .pulse-city-node__label
+  strong {
+    font-size: 8px;
+  }
+
+
+  .pulse-city-node__label
+  small {
+    display: none;
+  }
+
+
+  .pulse-city-node__dot {
+    width: 17px;
+
+    height: 17px;
+
+    flex-basis: 17px;
+  }
+
+
+  .pulse-city-node.is-trending
+  .pulse-city-node__dot {
+    width: 20px;
+
+    height: 20px;
+
+    flex-basis: 20px;
+  }
+
+
+  .pulse-city-node__ring {
+    width: 28px;
+
+    height: 28px;
+  }
+
+
+  .pulse-ukraine-map__people {
+    min-height: 38px;
+
+    padding:
+      5px 7px;
+  }
+
+
+  .pulse-ukraine-map__people
+  strong {
+    font-size: 11px;
+  }
+
+
+  .pulse-ukraine-map__people
+  span {
+    font-size: 6px;
+  }
+
+
+  .pulse-ukraine-map__cta {
+    min-height: 34px;
+
+    padding:
+      0 9px;
+
+    font-size: 7px;
+  }
+
+
+  /* =======================================================
+     VIDEO
+  ======================================================= */
+
+  .pulse-video-rail {
+    padding: 10px;
+
+    border-radius: 16px;
+  }
+
+
+  .pulse-video-rail__title
+  strong {
+    font-size: 11px;
+  }
+
+
+  .pulse-video-rail__title
+  small {
+    max-width: 190px;
+
+    font-size: 6px;
+  }
+
+
+  .pulse-video-card {
+    min-width:
+      min(
+        68vw,
+        225px
+      );
+  }
+
+
+  .pulse-video-card--clip {
+    min-width:
+      min(
+        46vw,
+        155px
+      );
+  }
+
+
+  .pulse-video-card--feature {
+    min-width:
+      min(
+        84vw,
+        290px
+      );
+  }
+
+
+  .pulse-active-mode {
+    padding: 10px;
+  }
+
+
+  .pulse-active-mode__feature {
+    min-width:
+      min(
+        82vw,
+        285px
+      );
+  }
+
+
+  .pulse-active-mode__small {
+    min-width:
+      min(
+        51vw,
+        175px
+      );
+  }
+
+
+  /* =======================================================
+     FRIENDS ROW
+  ======================================================= */
+
+  .pulse-people-row {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    gap: 7px;
+  }
+
+
+  /* =======================================================
+     WAVE
+  ======================================================= */
+
+  .pulse-wave {
+    padding: 12px;
+
+    border-radius: 18px;
+  }
+
+
+  .pulse-wave__brand-icon {
+    width: 39px;
+
+    height: 39px;
+
+    flex-basis: 39px;
+  }
+
+
+  .pulse-wave__brand
+  h2 {
+    font-size: 18px;
+  }
+
+
+  .pulse-wave__brand
+  p {
+    font-size: 7px;
+  }
+
+
+  .pulse-wave__prompt {
+    padding: 9px;
+  }
+
+
+  .pulse-wave__prompt-main
+  strong {
+    font-size: 10px;
+  }
+
+
+  .pulse-wave-step {
+    min-width:
+      min(
+        66vw,
+        215px
+      );
+  }
+
+
+  /* =======================================================
+     CITY PULSE
+  ======================================================= */
+
+  .city-pulse-page {
+    padding:
+      0 7px
+      18px;
+  }
+
+
+  .city-pulse-hero {
+    min-height: 395px;
+
+    margin-right: -7px;
+
+    margin-left: -7px;
+  }
+
+
+  .city-pulse-hero__back {
+    top: 11px;
+    left: 11px;
+  }
+
+
+  .city-pulse-hero__badge {
+    top: 11px;
+    right: 11px;
+  }
+
+
+  .city-pulse-hero__content {
+    right: 14px;
+    bottom: 23px;
+    left: 14px;
+  }
+
+
+  .city-pulse-hero__content
+  h1 {
+    font-size: 43px;
+  }
+
+
+  .city-pulse-stats {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(
+          0,
+          1fr
+        )
+      );
+
+    gap: 6px;
+  }
+
+
+  .city-pulse-stat {
+    min-height: 72px;
+
+    padding: 8px;
+
+    gap: 7px;
+  }
+
+
+  .city-pulse-stat__icon {
+    width: 34px;
+
+    height: 34px;
+
+    flex-basis: 34px;
+  }
+
+
+  .city-pulse-stat
+  strong {
+    font-size: 14px;
+  }
+
+
+  .city-pulse-people-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .city-pulse-events
+  article {
+    grid-template-columns:
+      auto
+      minmax(
+        0,
+        1fr
+      );
+  }
+
+
+  .city-pulse-events
+  article
+  > button {
+    grid-column:
+      1 / -1;
+
+    width: 100%;
+  }
+
+
+  /* =======================================================
+     CLIPS
+  ======================================================= */
+
+  .pulse-clips-top {
+    padding:
+      10px;
+
+    grid-template-columns:
+      38px
+      minmax(
+        0,
+        1fr
+      )
+      auto;
+  }
+
+
+  .pulse-clips-back,
+  .pulse-clips-top-actions
+  button {
+    width: 36px;
+
+    height: 36px;
+  }
+
+
+  .pulse-clips-switch
+  button {
+    min-height: 30px;
+
+    padding:
+      0 9px;
+
+    font-size: 8px;
+  }
+
+
+  .pulse-clips-actions {
+    right: 8px;
+
+    bottom: 118px;
+
+    gap: 11px;
+  }
+
+
+  .pulse-clips-content {
+    right: 61px;
+    bottom: 18px;
+    left: 10px;
+  }
+
+
+  .pulse-clips-description {
+    font-size: 9px;
+  }
+
+
+  .pulse-clips-live-info {
+    padding: 7px;
+
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .pulse-here-button {
+    min-height: 46px;
+  }
+
+
+  /* =======================================================
+     BOTTOM NAV
+  ======================================================= */
+
+  .pulse-mobile-nav {
+    min-height: 66px;
+
+    padding:
+      5px 5px
+      calc(
+        5px +
+        env(
+          safe-area-inset-bottom
+        )
+      );
+  }
+
+
+  .pulse-mobile-nav
+  > button {
+    min-height: 48px;
+  }
+
+
+  .pulse-mobile-nav__create
+  > span {
+    width: 43px;
+
+    height: 43px;
+
+    border-radius: 14px;
+  }
+}
+
+
+/* =========================================================
+   VERY SMALL PHONE
+   <= 360
+========================================================= */
+
+@media (
+  max-width: 360px
+) {
+  .pulse-mobile-header__brand
+  small {
+    display: none;
+  }
+
+
+  .pulse-mobile-header__brand
+  > svg {
+    display: none;
+  }
+
+
+  .pulse-mobile-tabs
+  button {
+    padding:
+      0 3px;
+
+    font-size: 8px;
+  }
+
+
+  .pulse-ukraine-map {
+    min-height: 285px;
+  }
+
+
+  .pulse-hero__copy
+  h1 {
+    font-size: 25px;
+  }
+
+
+  .pulse-hero__online {
+    display: none;
+  }
+
+
+  .pulse-hero__actions {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .pulse-video-card {
+    min-width:
+      min(
+        72vw,
+        215px
+      );
+  }
+
+
+  .pulse-video-card--clip {
+    min-width:
+      min(
+        50vw,
+        150px
+      );
+  }
+
+
+  .pulse-wave-step {
+    min-width:
+      min(
+        72vw,
+        205px
+      );
+  }
+
+
+  .city-pulse-tabs
+  button {
+    font-size: 8px;
+  }
+
+
+  .city-pulse-hero__content
+  h1 {
+    font-size: 39px;
+  }
+
+
+  .pulse-clips-switch
+  button {
+    padding:
+      0 7px;
+  }
+}
+
+
+/* =========================================================
+   LANDSCAPE PHONE
+========================================================= */
+
+@media (
+  max-height: 540px
+)
+and (
+  orientation: landscape
+)
+and (
+  max-width: 950px
+) {
+  .pulse-mobile-header {
+    position: relative;
+
+    min-height: 54px;
+  }
+
+
+  .pulse-mobile-tabs {
+    position: relative;
+
+    top: auto;
+  }
+
+
+  .pulse-clips-stage {
+    min-height: 100dvh;
+  }
+
+
+  .pulse-clips-content {
+    bottom: 12px;
+  }
+
+
+  .pulse-clips-live-info {
+    display: none;
+  }
+
+
+  .pulse-here-button {
+    max-width: 250px;
+  }
+
+
+  .pulse-mobile-nav {
+    display: none;
+  }
+}
+
+
+/* =========================================================
+   TOUCH DEVICES
+========================================================= */
+
+@media (
+  pointer: coarse
+) {
+  .pulse-video-card,
+  .pulse-wave-card,
+  .pulse-city-node,
+  .pulse-tab,
+  .pulse-mobile-tabs
+  button,
+  .city-pulse-tabs
+  button {
+    touch-action: manipulation;
+  }
+
+
+  .pulse-video-rail__track,
+  .pulse-active-mode__track,
+  .pulse-wave-timeline,
+  .city-pulse-video-grid,
+  .city-pulse-feature-grid {
+    scroll-behavior: smooth;
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+  .pulse-video-rail__track,
+  .pulse-active-mode__track,
+  .pulse-wave-timeline,
+  .city-pulse-video-grid,
+  .city-pulse-feature-grid {
+    scroll-behavior: auto;
+  }
+}

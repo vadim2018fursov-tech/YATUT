@@ -1,0 +1,1385 @@
+/* =========================================================
+   ЯТУТ
+   UNIFIED SOCIAL + VIDEO + PULSE PROFILE
+========================================================= */
+
+.unified-profile-page {
+  width: 100%;
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 14px;
+}
+
+
+/* =========================================================
+   PULSE IDENTITY BAR
+========================================================= */
+
+.unified-profile-pulse-head {
+  min-height: 94px;
+
+  padding:
+    15px 17px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content:
+    space-between;
+
+  gap: 16px;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    rgba(
+      124,
+      58,
+      237,
+      0.13
+    );
+
+  border-radius: 20px;
+
+  background:
+    radial-gradient(
+      circle at 75% 0%,
+      rgba(
+        192,
+        38,
+        211,
+        0.11
+      ),
+      transparent 34%
+    ),
+    linear-gradient(
+      110deg,
+      #ffffff,
+      #faf7ff
+    );
+
+  box-shadow:
+    0 10px 30px
+    rgba(
+      28,
+      21,
+      51,
+      0.045
+    );
+}
+
+
+.unified-profile-pulse-head__left {
+  min-width: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 11px;
+}
+
+
+.unified-profile-pulse-head__icon {
+  width: 44px;
+
+  height: 44px;
+
+  flex: 0 0
+    44px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 13px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #c026d3
+    );
+
+  color: #fff;
+
+  box-shadow:
+    0 11px 27px
+    rgba(
+      124,
+      58,
+      237,
+      0.24
+    );
+}
+
+
+.unified-profile-pulse-head__left
+> div {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+
+.unified-profile-pulse-head
+small {
+  color: #9a7ec8;
+
+  font-size: 6px;
+
+  font-weight: 900;
+
+  letter-spacing:
+    0.8px;
+}
+
+
+.unified-profile-pulse-head
+strong {
+  color: #20212a;
+
+  font-size: 12px;
+}
+
+
+.unified-profile-pulse-head
+p {
+  margin:
+    2px 0 0;
+
+  color: #9397a2;
+
+  font-size: 8px;
+}
+
+
+.unified-profile-studio-button {
+  min-height: 39px;
+
+  padding:
+    0 13px;
+
+  flex: 0 0 auto;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  border: 0;
+
+  border-radius: 11px;
+
+  background:
+    #17141f;
+
+  color: #fff;
+
+  font-size: 8px;
+
+  font-weight: 850;
+
+  cursor: pointer;
+
+  transition:
+    transform
+    160ms ease,
+    box-shadow
+    160ms ease;
+}
+
+
+.unified-profile-studio-button:hover {
+  transform:
+    translateY(
+      -2px
+    );
+
+  box-shadow:
+    0 11px 26px
+    rgba(
+      23,
+      20,
+      31,
+      0.17
+    );
+}
+
+
+/* =========================================================
+   TABS
+========================================================= */
+
+.unified-profile-tabs {
+  padding: 5px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  gap: 4px;
+
+  border:
+    1px solid
+    #ececf2;
+
+  border-radius: 16px;
+
+  background: #fff;
+
+  box-shadow:
+    0 8px 24px
+    rgba(
+      24,
+      20,
+      42,
+      0.035
+    );
+}
+
+
+.unified-profile-tabs
+button {
+  min-width: 0;
+
+  min-height: 44px;
+
+  padding:
+    0 10px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 6px;
+
+  border: 0;
+
+  border-radius: 11px;
+
+  background: transparent;
+
+  color: #878c98;
+
+  font-size: 8px;
+
+  font-weight: 850;
+
+  cursor: pointer;
+
+  transition:
+    background
+    160ms ease,
+    color
+    160ms ease,
+    transform
+    160ms ease;
+}
+
+
+.unified-profile-tabs
+button:hover {
+  background:
+    #f7f5fb;
+}
+
+
+.unified-profile-tabs
+button:active {
+  transform:
+    scale(
+      0.98
+    );
+}
+
+
+.unified-profile-tabs
+button.is-active {
+  background:
+    linear-gradient(
+      135deg,
+      #efe9ff,
+      #f7edff
+    );
+
+  color: #6d28d9;
+}
+
+
+/* =========================================================
+   EXISTING PROFILE
+========================================================= */
+
+.unified-profile-social {
+  min-width: 0;
+}
+
+
+/* =========================================================
+   MEDIA CONTENT
+========================================================= */
+
+.unified-profile-media {
+  min-width: 0;
+
+  padding: 16px;
+
+  border:
+    1px solid
+    #ececf2;
+
+  border-radius: 21px;
+
+  background: #fff;
+
+  box-shadow:
+    0 10px 30px
+    rgba(
+      25,
+      20,
+      47,
+      0.045
+    );
+}
+
+
+.unified-profile-section-title {
+  margin-bottom: 14px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content:
+    space-between;
+
+  gap: 12px;
+}
+
+
+.unified-profile-section-title
+> div {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+}
+
+
+.unified-profile-section-title
+> div
+> span {
+  width: 38px;
+
+  height: 38px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 11px;
+
+  background:
+    #f0eaff;
+
+  color: #7c3aed;
+}
+
+
+.unified-profile-section-title
+> div
+> div {
+  display: flex;
+
+  flex-direction: column;
+}
+
+
+.unified-profile-section-title
+strong {
+  color: #20212a;
+
+  font-size: 12px;
+}
+
+
+.unified-profile-section-title
+small {
+  color: #989da8;
+
+  font-size: 7px;
+}
+
+
+.unified-profile-section-title
+> button {
+  min-height: 35px;
+
+  padding:
+    0 11px;
+
+  border: 0;
+
+  border-radius: 9px;
+
+  background:
+    #eee8ff;
+
+  color: #6d28d9;
+
+  font-size: 7px;
+
+  font-weight: 850;
+
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   VIDEO GRIDS
+========================================================= */
+
+.unified-profile-video-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  gap: 10px;
+}
+
+
+.unified-profile-clips-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  gap: 9px;
+}
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.unified-profile-empty {
+  min-height: 260px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 5px;
+
+  color: #7c3aed;
+}
+
+
+.unified-profile-empty
+strong {
+  color: #262730;
+
+  font-size: 12px;
+}
+
+
+.unified-profile-empty
+span {
+  color: #999da8;
+
+  font-size: 8px;
+}
+
+
+/* =========================================================
+   PULSE TAB
+========================================================= */
+
+.unified-profile-pulse {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 11px;
+}
+
+
+.unified-profile-pulse-hero {
+  min-height: 240px;
+
+  padding: 24px;
+
+  display: flex;
+
+  align-items: flex-end;
+
+  justify-content:
+    space-between;
+
+  gap: 20px;
+
+  overflow: hidden;
+
+  border-radius: 24px;
+
+  color: #fff;
+
+  background:
+    radial-gradient(
+      circle at 85% 10%,
+      rgba(
+        236,
+        72,
+        153,
+        0.28
+      ),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 45% 115%,
+      rgba(
+        37,
+        99,
+        235,
+        0.28
+      ),
+      transparent 35%
+    ),
+    linear-gradient(
+      135deg,
+      #0d0719,
+      #1b0c35,
+      #37115a
+    );
+
+  box-shadow:
+    0 22px 55px
+    rgba(
+      29,
+      14,
+      64,
+      0.2
+    );
+}
+
+
+.unified-profile-pulse-hero
+> div:first-child {
+  max-width: 460px;
+}
+
+
+.unified-profile-pulse-hero__badge {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  color: #c4b5fd;
+
+  font-size: 7px;
+
+  font-weight: 900;
+
+  letter-spacing:
+    0.8px;
+}
+
+
+.unified-profile-pulse-hero
+h2 {
+  margin:
+    7px 0 0;
+
+  font-size:
+    clamp(
+      29px,
+      4vw,
+      44px
+    );
+
+  letter-spacing:
+    -1px;
+}
+
+
+.unified-profile-pulse-hero
+p {
+  max-width: 390px;
+
+  margin:
+    8px 0 0;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.57
+    );
+
+  font-size: 9px;
+
+  line-height: 1.5;
+}
+
+
+.unified-profile-pulse-hero
+> div:first-child
+> button {
+  min-height: 38px;
+
+  margin-top: 15px;
+
+  padding:
+    0 12px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.15
+    );
+
+  border-radius: 10px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.09
+    );
+
+  color: #fff;
+
+  font-size: 7px;
+
+  font-weight: 850;
+
+  cursor: pointer;
+}
+
+
+.unified-profile-pulse-live {
+  min-width: 130px;
+
+  padding: 16px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.13
+    );
+
+  border-radius: 18px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.07
+    );
+
+  backdrop-filter:
+    blur(
+      12px
+    );
+}
+
+
+.unified-profile-pulse-live
+> span {
+  width: 9px;
+
+  height: 9px;
+
+  margin-bottom: 8px;
+
+  border-radius: 50%;
+
+  background: #22c55e;
+
+  box-shadow:
+    0 0 15px
+    rgba(
+      34,
+      197,
+      94,
+      0.72
+    );
+}
+
+
+.unified-profile-pulse-live
+strong {
+  font-size: 27px;
+}
+
+
+.unified-profile-pulse-live
+small {
+  margin-top: 2px;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.52
+    );
+
+  font-size: 7px;
+
+  text-align: center;
+}
+
+
+/* =========================================================
+   PULSE STATS
+========================================================= */
+
+.unified-profile-pulse-stats {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  gap: 8px;
+}
+
+
+.unified-profile-pulse-stats
+article {
+  padding: 14px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 4px;
+
+  border:
+    1px solid
+    #ececf2;
+
+  border-radius: 16px;
+
+  background: #fff;
+
+  color: #7c3aed;
+}
+
+
+.unified-profile-pulse-stats
+strong {
+  color: #20212a;
+
+  font-size: 17px;
+}
+
+
+.unified-profile-pulse-stats
+span {
+  color: #999da8;
+
+  font-size: 7px;
+}
+
+
+/* =========================================================
+   WAVE
+========================================================= */
+
+.unified-profile-pulse-block {
+  padding: 16px;
+
+  border:
+    1px solid
+    #ececf2;
+
+  border-radius: 20px;
+
+  background: #fff;
+}
+
+
+.unified-profile-pulse-block
+> header {
+  display: flex;
+
+  align-items: center;
+
+  justify-content:
+    space-between;
+
+  gap: 10px;
+}
+
+
+.unified-profile-pulse-block
+> header
+> div {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  color: #7c3aed;
+}
+
+
+.unified-profile-pulse-block
+> header
+> div
+> div {
+  display: flex;
+
+  flex-direction: column;
+}
+
+
+.unified-profile-pulse-block
+strong {
+  color: #22232c;
+
+  font-size: 11px;
+}
+
+
+.unified-profile-pulse-block
+small {
+  color: #999da8;
+
+  font-size: 7px;
+}
+
+
+.unified-profile-pulse-block
+> header
+> button {
+  min-height: 33px;
+
+  padding:
+    0 10px;
+
+  border: 0;
+
+  border-radius: 9px;
+
+  background: #f0eaff;
+
+  color: #6d28d9;
+
+  font-size: 7px;
+
+  font-weight: 850;
+
+  cursor: pointer;
+}
+
+
+.unified-profile-wave {
+  margin-top: 14px;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(
+      0,
+      1fr
+    )
+    auto
+    minmax(
+      0,
+      1fr
+    )
+    auto
+    minmax(
+      0,
+      1fr
+    )
+    auto
+    minmax(
+      0,
+      1fr
+    );
+
+  align-items: center;
+
+  gap: 7px;
+}
+
+
+.unified-profile-wave
+button {
+  min-width: 0;
+
+  min-height: 85px;
+
+  padding: 10px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 3px;
+
+  border:
+    1px solid
+    #ececf2;
+
+  border-radius: 13px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #faf8ff,
+      #f5f7ff
+    );
+
+  cursor: pointer;
+}
+
+
+.unified-profile-wave
+button
+b {
+  color: #272832;
+
+  font-size: 9px;
+}
+
+
+.unified-profile-wave
+button
+span {
+  color: #8e78c4;
+
+  font-size: 6px;
+
+  text-align: center;
+}
+
+
+.unified-profile-wave
+i {
+  color: #b3a6d2;
+
+  font-size: 13px;
+
+  font-style: normal;
+}
+
+
+/* =========================================================
+   BOTTOM
+========================================================= */
+
+.unified-profile-pulse-bottom {
+  padding: 14px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content:
+    space-between;
+
+  gap: 12px;
+
+  border:
+    1px solid
+    rgba(
+      124,
+      58,
+      237,
+      0.13
+    );
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #faf7ff,
+      #f6f8ff
+    );
+}
+
+
+.unified-profile-pulse-bottom
+> div {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  color: #7c3aed;
+}
+
+
+.unified-profile-pulse-bottom
+> div
+> div {
+  display: flex;
+
+  flex-direction: column;
+}
+
+
+.unified-profile-pulse-bottom
+strong {
+  color: #25262f;
+
+  font-size: 10px;
+}
+
+
+.unified-profile-pulse-bottom
+span {
+  color: #989da8;
+
+  font-size: 7px;
+}
+
+
+.unified-profile-pulse-bottom
+> button {
+  min-height: 38px;
+
+  padding:
+    0 12px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  border: 0;
+
+  border-radius: 10px;
+
+  background: #17141f;
+
+  color: #fff;
+
+  font-size: 7px;
+
+  font-weight: 850;
+
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (
+  max-width: 1150px
+) {
+  .unified-profile-video-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(
+          0,
+          1fr
+        )
+      );
+  }
+
+
+  .unified-profile-clips-grid {
+    grid-template-columns:
+      repeat(
+        3,
+        minmax(
+          0,
+          1fr
+        )
+      );
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (
+  max-width: 850px
+) {
+  .unified-profile-page {
+    gap: 9px;
+  }
+
+
+  .unified-profile-pulse-head {
+    margin:
+      0 9px;
+
+    padding: 12px;
+
+    border-radius: 16px;
+  }
+
+
+  .unified-profile-pulse-head
+  p {
+    display: none;
+  }
+
+
+  .unified-profile-studio-button {
+    min-width: 40px;
+
+    width: 40px;
+
+    padding: 0;
+
+    font-size: 0;
+  }
+
+
+  .unified-profile-tabs {
+    position: sticky;
+
+    top: 0;
+
+    z-index: 110;
+
+    margin:
+      0 9px;
+
+    border-radius: 14px;
+  }
+
+
+  .unified-profile-tabs
+  button {
+    min-height: 42px;
+
+    padding:
+      0 4px;
+
+    flex-direction: column;
+
+    gap: 2px;
+
+    font-size: 6px;
+  }
+
+
+  .unified-profile-media,
+  .unified-profile-pulse {
+    margin:
+      0 9px;
+  }
+
+
+  .unified-profile-video-grid,
+  .unified-profile-clips-grid {
+    display: flex;
+
+    overflow-x: auto;
+
+    scrollbar-width: none;
+
+    -webkit-overflow-scrolling:
+      touch;
+  }
+
+
+  .unified-profile-video-grid::-webkit-scrollbar,
+  .unified-profile-clips-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+
+  .unified-profile-video-grid
+  .pulse-video-card {
+    min-width:
+      min(
+        70vw,
+        270px
+      );
+  }
+
+
+  .unified-profile-clips-grid
+  .pulse-video-card {
+    min-width:
+      min(
+        47vw,
+        175px
+      );
+  }
+
+
+  .unified-profile-pulse-hero {
+    min-height: 310px;
+
+    padding: 18px;
+
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
+
+    justify-content:
+      flex-end;
+  }
+
+
+  .unified-profile-pulse-live {
+    min-width: 0;
+
+    width: 100%;
+
+    flex-direction: row;
+
+    justify-content:
+      center;
+
+    gap: 7px;
+  }
+
+
+  .unified-profile-pulse-live
+  > span {
+    margin: 0;
+  }
+
+
+  .unified-profile-pulse-live
+  strong {
+    font-size: 18px;
+  }
+
+
+  .unified-profile-pulse-stats {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(
+          0,
+          1fr
+        )
+      );
+  }
+
+
+  .unified-profile-wave {
+    display: flex;
+
+    overflow-x: auto;
+
+    scrollbar-width: none;
+  }
+
+
+  .unified-profile-wave::-webkit-scrollbar {
+    display: none;
+  }
+
+
+  .unified-profile-wave
+  button {
+    min-width: 135px;
+  }
+
+
+  .unified-profile-wave
+  i {
+    flex: 0 0 auto;
+  }
+
+
+  .unified-profile-pulse-bottom {
+    align-items:
+      stretch;
+
+    flex-direction: column;
+  }
+
+
+  .unified-profile-pulse-bottom
+  > button {
+    width: 100%;
+
+    justify-content: center;
+  }
+}

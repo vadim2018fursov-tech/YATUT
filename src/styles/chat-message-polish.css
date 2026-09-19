@@ -1,0 +1,757 @@
+/* =========================================================
+   ЯТУТ — CHAT MESSAGE POLISH
+   Message avatars + hover actions + reaction picker
+========================================================= */
+
+/* =========================================================
+   MESSAGE ROW
+========================================================= */
+
+.message-row {
+  position: relative;
+
+  display: flex;
+
+  align-items: flex-end;
+
+  gap: 8px;
+
+  margin:
+    5px 0
+    12px;
+}
+
+.message-row.mine {
+  justify-content: flex-end;
+}
+
+/* =========================================================
+   MESSAGE AVATAR
+========================================================= */
+
+.message-avatar {
+  width: 34px;
+  height: 34px;
+
+  flex:
+    0 0 34px;
+
+  display: grid;
+
+  place-items: center;
+
+  margin-bottom: 3px;
+
+  border:
+    2px solid
+    #fff;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      145deg,
+      #5d5867,
+      #2e2a35
+    );
+
+  color: #fff;
+
+  font-size: 9px;
+
+  font-weight: 900;
+
+  line-height: 1;
+
+  box-shadow:
+    0 5px 14px
+    rgba(
+      28,
+      29,
+      42,
+      0.12
+    );
+}
+
+/* =========================================================
+   MESSAGE SHELL
+========================================================= */
+
+.message-shell {
+  position: relative;
+
+  min-width: 0;
+
+  max-width:
+    min(
+      520px,
+      74%
+    );
+}
+
+.message-row.mine
+.message-shell {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-end;
+}
+
+/* =========================================================
+   MORE BUTTON
+========================================================= */
+
+.message-more-trigger {
+  position: absolute;
+
+  top: 50%;
+
+  left: -38px;
+
+  z-index: 35;
+
+  width: 30px;
+  height: 30px;
+
+  padding: 0;
+
+  display: grid;
+
+  place-items: center;
+
+  border:
+    1px solid
+    #e6e7ed !important;
+
+  border-radius:
+    50% !important;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.96
+    ) !important;
+
+  color:
+    #858a96 !important;
+
+  font-size: 13px;
+
+  font-weight: 900;
+
+  line-height: 1;
+
+  opacity: 0;
+
+  transform:
+    translateY(-50%);
+
+  box-shadow:
+    0 5px 16px
+    rgba(
+      20,
+      21,
+      30,
+      0.08
+    );
+
+  transition:
+    opacity 150ms ease,
+    transform 150ms ease,
+    background 150ms ease,
+    color 150ms ease;
+
+  cursor: pointer;
+}
+
+/*
+  Для входящих сообщений кнопка справа от bubble.
+*/
+
+.message-row:not(.mine)
+.message-more-trigger {
+  right: -38px;
+
+  left: auto;
+}
+
+.message-shell:hover
+.message-more-trigger,
+.message-more-trigger:focus-visible {
+  opacity: 1;
+}
+
+.message-more-trigger:hover {
+  background:
+    #f0edff !important;
+
+  color:
+    #6d28d9 !important;
+
+  transform:
+    translateY(-50%)
+    scale(1.06);
+}
+
+/* =========================================================
+   REACTION BUTTON
+========================================================= */
+
+.message-reaction-trigger {
+  position: absolute;
+
+  bottom: -11px;
+
+  left: -7px;
+
+  z-index: 34;
+
+  width: 28px;
+  height: 28px;
+
+  padding: 0;
+
+  display: grid;
+
+  place-items: center;
+
+  border:
+    1px solid
+    #e5e7ed !important;
+
+  border-radius:
+    50% !important;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.97
+    ) !important;
+
+  color:
+    #858a96 !important;
+
+  font-size: 15px;
+
+  line-height: 1;
+
+  opacity: 0;
+
+  box-shadow:
+    0 4px 13px
+    rgba(
+      20,
+      21,
+      30,
+      0.08
+    );
+
+  transition:
+    opacity 150ms ease,
+    transform 150ms ease,
+    color 150ms ease,
+    background 150ms ease;
+
+  cursor: pointer;
+}
+
+.message-row.mine
+.message-reaction-trigger {
+  right: -7px;
+
+  left: auto;
+}
+
+.message-shell:hover
+.message-reaction-trigger,
+.message-reaction-trigger:focus-visible {
+  opacity: 1;
+}
+
+.message-reaction-trigger:hover {
+  background:
+    #f0edff !important;
+
+  color:
+    #6d28d9 !important;
+
+  transform:
+    scale(1.08);
+}
+
+/* =========================================================
+   ACTION MENU
+========================================================= */
+
+.message-action-menu {
+  position: absolute;
+
+  top: 50%;
+
+  left: -207px;
+
+  z-index: 1200;
+
+  width: 192px;
+
+  padding: 7px;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    #e5e7ed;
+
+  border-radius: 16px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.985
+    );
+
+  box-shadow:
+    0 20px 60px
+    rgba(
+      18,
+      20,
+      32,
+      0.16
+    );
+
+  -webkit-backdrop-filter:
+    blur(18px);
+
+  backdrop-filter:
+    blur(18px);
+
+  transform:
+    translateY(-50%);
+}
+
+.message-row:not(.mine)
+.message-action-menu {
+  right: -207px;
+
+  left: auto;
+}
+
+.message-action-menu
+button {
+  width: 100%;
+
+  min-height: 40px;
+
+  padding:
+    0 10px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  border: 0 !important;
+
+  border-radius:
+    10px !important;
+
+  background:
+    transparent !important;
+
+  color:
+    #505460 !important;
+
+  font-size: 9px;
+
+  font-weight: 750;
+
+  text-align: left;
+
+  cursor: pointer;
+}
+
+.message-action-menu
+button:hover {
+  background:
+    #f4f2fb !important;
+
+  color:
+    #6d28d9 !important;
+}
+
+.message-action-menu
+button.danger {
+  color:
+    #ef4444 !important;
+}
+
+.message-action-menu
+button.danger:hover {
+  background:
+    #fff0f1 !important;
+}
+
+/* =========================================================
+   REACTION POPOVER
+========================================================= */
+
+.message-reaction-popover {
+  position: absolute;
+
+  left: 0;
+
+  bottom:
+    calc(
+      100% +
+      8px
+    );
+
+  z-index: 1250;
+
+  padding: 6px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 2px;
+
+  border:
+    1px solid
+    #e5e7ed;
+
+  border-radius: 18px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.99
+    );
+
+  box-shadow:
+    0 17px 48px
+    rgba(
+      15,
+      17,
+      28,
+      0.17
+    );
+
+  -webkit-backdrop-filter:
+    blur(16px);
+
+  backdrop-filter:
+    blur(16px);
+}
+
+.message-row.mine
+.message-reaction-popover {
+  right: 0;
+
+  left: auto;
+}
+
+.message-reaction-popover
+button {
+  width: 38px;
+  height: 38px;
+
+  padding: 0;
+
+  display: grid;
+
+  place-items: center;
+
+  border: 0 !important;
+
+  border-radius:
+    11px !important;
+
+  background:
+    transparent !important;
+
+  font-size: 20px;
+
+  transition:
+    transform 120ms ease,
+    background 120ms ease;
+
+  cursor: pointer;
+}
+
+.message-reaction-popover
+button:hover {
+  background:
+    #f1edff !important;
+
+  transform:
+    translateY(-2px)
+    scale(1.08);
+}
+
+/* =========================================================
+   SAVED REACTION
+========================================================= */
+
+.message-reaction-saved {
+  position: absolute;
+
+  right: 5px;
+
+  bottom: -12px;
+
+  z-index: 25;
+
+  min-width: 29px;
+
+  height: 24px;
+
+  padding:
+    0 6px;
+
+  display: grid;
+
+  place-items: center;
+
+  border:
+    2px solid
+    #f8f7fb !important;
+
+  border-radius:
+    999px !important;
+
+  background:
+    #fff !important;
+
+  font-size: 13px;
+
+  box-shadow:
+    0 3px 9px
+    rgba(
+      20,
+      21,
+      31,
+      0.12
+    );
+
+  cursor: pointer;
+}
+
+.message-row:not(.mine)
+.message-reaction-saved {
+  right: auto;
+
+  left: 6px;
+}
+
+/* =========================================================
+   BUBBLE FINAL POLISH
+========================================================= */
+
+.message-bubble {
+  position: relative;
+
+  min-width: 76px;
+
+  padding:
+    10px 12px
+    8px;
+
+  border:
+    1px solid
+    #e5e6ec;
+
+  border-radius:
+    8px
+    18px
+    18px
+    18px;
+
+  background:
+    #fff;
+
+  color:
+    #353844;
+
+  box-shadow:
+    0 5px 16px
+    rgba(
+      31,
+      32,
+      45,
+      0.055
+    );
+}
+
+.message-row.mine
+.message-bubble,
+.message-bubble.mine {
+  border-color:
+    rgba(
+      124,
+      58,
+      237,
+      0.15
+    );
+
+  border-radius:
+    18px
+    8px
+    18px
+    18px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #853df5,
+      #6f27e7
+    );
+
+  color: #fff;
+
+  box-shadow:
+    0 8px 20px
+    rgba(
+      124,
+      58,
+      237,
+      0.19
+    );
+}
+
+.message-bubble p {
+  margin: 0;
+
+  font-size: 10px;
+
+  line-height: 1.45;
+
+  color: inherit;
+}
+
+/* =========================================================
+   TIME
+========================================================= */
+
+.message-time {
+  margin-top: 5px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: flex-end;
+
+  gap: 3px;
+
+  color:
+    #a2a5af;
+
+  font-size: 6.5px;
+}
+
+.message-row.mine
+.message-time {
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.63
+    );
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (
+  max-width: 700px
+) {
+  .message-avatar {
+    width: 30px;
+    height: 30px;
+
+    flex-basis: 30px;
+
+    font-size: 8px;
+  }
+
+  .message-shell {
+    max-width: 84%;
+  }
+
+  .message-more-trigger,
+  .message-reaction-trigger {
+    opacity: 1;
+  }
+
+  .message-more-trigger {
+    width: 27px;
+    height: 27px;
+
+    left: -31px;
+  }
+
+  .message-row:not(.mine)
+  .message-more-trigger {
+    right: -31px;
+
+    left: auto;
+  }
+
+  .message-action-menu {
+    position: fixed;
+
+    top: auto;
+
+    right: 10px !important;
+
+    bottom: 80px;
+
+    left: 10px !important;
+
+    width: auto;
+
+    transform: none;
+  }
+
+  .message-reaction-popover {
+    position: fixed;
+
+    right: 10px !important;
+
+    bottom: 80px;
+
+    left: 10px !important;
+
+    justify-content: center;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+  .message-more-trigger,
+  .message-reaction-trigger,
+  .message-reaction-popover
+  button {
+    transition:
+      none !important;
+  }
+}

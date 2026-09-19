@@ -1,0 +1,908 @@
+/* =========================================================
+   ЯТУТ
+   PREMIUM GLOBAL SHELL + SIDEBAR LAYOUT
+========================================================= */
+
+html,
+body,
+#premium-home-root {
+  width: 100%;
+  min-height: 100%;
+}
+
+/* =========================================================
+   ROOT
+========================================================= */
+
+.premium-app-shell {
+  width: 100%;
+  min-height: 100vh;
+
+  background:
+    radial-gradient(
+      circle at 0% 0%,
+      rgba(124, 58, 237, 0.06),
+      transparent 28%
+    ),
+    #f8f8fc;
+
+  color: #171827;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.premium-global-header {
+  position: sticky;
+  top: 0;
+
+  z-index: 2000;
+
+  width: 100%;
+  height: 84px;
+
+  border-bottom:
+    1px solid
+    rgba(226, 228, 237, 0.92);
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.94
+    );
+
+  -webkit-backdrop-filter:
+    blur(20px);
+
+  backdrop-filter:
+    blur(20px);
+}
+
+.premium-global-header-inner {
+  width: 100%;
+  height: 100%;
+
+  padding:
+    0 28px;
+
+  display: grid;
+
+  grid-template-columns:
+    150px
+    minmax(
+      260px,
+      390px
+    )
+    1fr;
+
+  align-items: center;
+
+  gap: 20px;
+}
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.premium-global-logo {
+  width: fit-content;
+
+  padding: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 11px;
+
+  border: 0;
+
+  background:
+    transparent;
+
+  font-family: inherit;
+
+  cursor: pointer;
+}
+
+.premium-global-logo
+> span {
+  width: 48px;
+  height: 48px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #8b5cf6,
+      #6d28d9
+    );
+
+  color: #fff;
+
+  font-size: 29px;
+
+  font-weight: 950;
+
+  box-shadow:
+    0 10px 24px
+    rgba(
+      124,
+      58,
+      237,
+      0.23
+    );
+}
+
+.premium-global-logo
+strong {
+  color: #171827;
+
+  font-size: 27px;
+
+  font-weight: 950;
+
+  letter-spacing: -1px;
+}
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.premium-global-search {
+  width: 100%;
+  height: 48px;
+
+  padding:
+    0 16px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  border:
+    1px solid
+    #e1e4ec;
+
+  border-radius: 15px;
+
+  background:
+    #f8f9fc;
+
+  color:
+    #9ca1ac;
+
+  font-family: inherit;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    border-color 150ms ease,
+    background 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.premium-global-search:hover {
+  border-color:
+    #d5cef7;
+
+  background:
+    #fff;
+
+  box-shadow:
+    0 5px 16px
+    rgba(
+      30,
+      32,
+      44,
+      0.05
+    );
+}
+
+.premium-global-search
+span {
+  font-size: 14px;
+
+  font-weight: 600;
+}
+
+/* =========================================================
+   HEADER ACTIONS
+========================================================= */
+
+.premium-global-actions {
+  min-width: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: flex-end;
+
+  gap: 8px;
+}
+
+.premium-header-icon-button {
+  position: relative;
+
+  width: 44px;
+  height: 44px;
+
+  flex:
+    0 0 44px;
+
+  padding: 0;
+
+  display: grid;
+
+  place-items: center;
+
+  border:
+    1px solid
+    #e2e4eb;
+
+  border-radius: 14px;
+
+  background:
+    #fafafe;
+
+  color:
+    #5e6470;
+
+  cursor: pointer;
+
+  transition:
+    transform 140ms ease,
+    color 140ms ease,
+    background 140ms ease;
+}
+
+.premium-header-icon-button:hover {
+  transform:
+    translateY(-1px);
+
+  background:
+    #f1edff;
+
+  color:
+    #6d28d9;
+}
+
+.premium-header-icon-button
+b {
+  position: absolute;
+
+  top: -5px;
+  right: -4px;
+
+  min-width: 19px;
+  height: 19px;
+
+  padding:
+    0 5px;
+
+  display: grid;
+
+  place-items: center;
+
+  border:
+    2px solid
+    #fff;
+
+  border-radius: 999px;
+
+  background:
+    #7c3aed;
+
+  color: #fff;
+
+  font-size: 9px;
+
+  font-weight: 900;
+}
+
+/* =========================================================
+   PROFILE HEADER
+========================================================= */
+
+.premium-header-profile {
+  min-width: 125px;
+  height: 50px;
+
+  margin-left: 4px;
+
+  padding:
+    0 8px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  border: 0;
+
+  border-radius: 15px;
+
+  background:
+    transparent;
+
+  font-family: inherit;
+
+  text-align: left;
+
+  cursor: pointer;
+}
+
+.premium-header-profile:hover {
+  background:
+    #f5f4f9;
+}
+
+.premium-header-profile-avatar {
+  position: relative;
+
+  width: 42px;
+  height: 42px;
+
+  flex:
+    0 0 42px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #44404e,
+      #292631
+    );
+
+  color: #fff;
+
+  font-size: 14px;
+
+  font-weight: 900;
+}
+
+.premium-header-profile-avatar
+i {
+  position: absolute;
+
+  right: -2px;
+  bottom: -2px;
+
+  width: 11px;
+  height: 11px;
+
+  border:
+    2px solid
+    #fff;
+
+  border-radius: 50%;
+
+  background:
+    #22c55e;
+}
+
+.premium-header-profile
+> div {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 2px;
+}
+
+.premium-header-profile
+strong {
+  color: #272a35;
+
+  font-size: 13px;
+
+  font-weight: 850;
+}
+
+.premium-header-profile
+small {
+  color:
+    #989ca7;
+
+  font-size: 9px;
+}
+
+/* =========================================================
+   MAIN LAYOUT
+
+   КЛЮЧЕВОЙ FIX:
+   sidebar получает отдельную колонку.
+========================================================= */
+
+.premium-desktop-layout {
+  width:
+    min(
+      1760px,
+      calc(
+        100% -
+        32px
+      )
+    );
+
+  margin:
+    0 auto;
+
+  padding:
+    22px
+    0
+    50px;
+
+  display: grid;
+
+  grid-template-columns:
+    272px
+    minmax(
+      0,
+      1fr
+    );
+
+  gap: 22px;
+
+  align-items: start;
+}
+
+/* =========================================================
+   SIDEBAR HARD FIX
+========================================================= */
+
+.premium-desktop-layout
+> .yat-sidebar {
+  position: sticky !important;
+
+  top: 106px !important;
+
+  z-index: 100 !important;
+
+  width: 272px !important;
+
+  min-width: 272px !important;
+
+  display: block !important;
+
+  visibility:
+    visible !important;
+
+  opacity:
+    1 !important;
+
+  pointer-events:
+    auto !important;
+}
+
+.premium-desktop-layout
+.yat-sidebar__inner {
+  display: block !important;
+
+  visibility:
+    visible !important;
+
+  opacity:
+    1 !important;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.98
+    ) !important;
+}
+
+/* =========================================================
+   MAIN CONTENT
+========================================================= */
+
+.premium-page-content {
+  position: relative;
+
+  z-index: 1;
+
+  width: 100%;
+
+  min-width: 0;
+
+  max-width: none;
+
+  overflow: visible;
+
+  opacity: 1;
+}
+
+/*
+  Не даём старым страницам
+  занять ширину sidebar.
+*/
+
+.premium-page-content
+> * {
+  max-width: 100%;
+}
+
+/* =========================================================
+   PROFILE FIX
+========================================================= */
+
+.premium-page-profile {
+  min-width: 0;
+}
+
+.premium-page-profile
+.profile-page {
+  width: 100% !important;
+
+  max-width: none !important;
+
+  margin: 0 !important;
+}
+
+.premium-page-profile
+.profile-cover {
+  width: 100% !important;
+
+  max-width: none !important;
+}
+
+/* =========================================================
+   CHAT
+========================================================= */
+
+.premium-page-chats {
+  min-width: 0;
+}
+
+.premium-page-chats
+.messenger {
+  width: 100% !important;
+
+  max-width: none !important;
+}
+
+/* =========================================================
+   SPACES + EVENTS
+========================================================= */
+
+.premium-page-communities
+.spaces-page,
+.premium-page-events
+.events-page,
+.premium-page-events
+.event-detail-page {
+  width: 100% !important;
+
+  max-width: none !important;
+}
+
+/* =========================================================
+   PLACEHOLDER
+========================================================= */
+
+.premium-placeholder-page {
+  min-height: 500px;
+
+  padding: 50px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border:
+    1px solid
+    #e4e6ed;
+
+  border-radius: 28px;
+
+  background:
+    radial-gradient(
+      circle at 50% 0,
+      rgba(
+        124,
+        58,
+        237,
+        0.09
+      ),
+      transparent 35%
+    ),
+    #fff;
+
+  text-align: center;
+
+  box-shadow:
+    0 10px 30px
+    rgba(
+      25,
+      27,
+      39,
+      0.04
+    );
+}
+
+.premium-placeholder-icon {
+  width: 78px;
+  height: 78px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 24px;
+
+  background:
+    #eeeaff;
+
+  font-size: 36px;
+}
+
+.premium-placeholder-page
+> span {
+  margin-top: 18px;
+
+  color:
+    #7c3aed;
+
+  font-size: 9px;
+
+  font-weight: 900;
+
+  letter-spacing: 1px;
+}
+
+.premium-placeholder-page
+h1 {
+  margin:
+    7px 0
+    0;
+
+  color:
+    #292c38;
+
+  font-size: 31px;
+
+  font-weight: 950;
+}
+
+.premium-placeholder-page
+p {
+  max-width: 470px;
+
+  margin:
+    8px 0
+    0;
+
+  color:
+    #878c98;
+
+  font-size: 12px;
+
+  line-height: 1.6;
+}
+
+/* =========================================================
+   LARGE DESKTOP
+========================================================= */
+
+@media (
+  min-width: 1500px
+) {
+  .premium-desktop-layout {
+    grid-template-columns:
+      290px
+      minmax(
+        0,
+        1fr
+      );
+
+    gap: 26px;
+  }
+
+  .premium-desktop-layout
+  > .yat-sidebar {
+    width:
+      290px !important;
+
+    min-width:
+      290px !important;
+  }
+}
+
+/* =========================================================
+   SMALL DESKTOP / TABLET
+========================================================= */
+
+@media (
+  max-width: 1100px
+) {
+  .premium-global-header-inner {
+    grid-template-columns:
+      130px
+      minmax(
+        180px,
+        1fr
+      )
+      auto;
+  }
+
+  .premium-header-profile
+  > div {
+    display: none;
+  }
+
+  .premium-header-profile {
+    min-width: 48px;
+
+    width: 48px;
+
+    padding: 3px;
+  }
+
+  .premium-desktop-layout {
+    grid-template-columns:
+      230px
+      minmax(
+        0,
+        1fr
+      );
+
+    gap: 14px;
+  }
+
+  .premium-desktop-layout
+  > .yat-sidebar {
+    width:
+      230px !important;
+
+    min-width:
+      230px !important;
+  }
+}
+
+/* =========================================================
+   MOBILE
+
+   Sidebar скрываем.
+   Мобильную навигацию потом
+   вернём отдельным блоком.
+========================================================= */
+
+@media (
+  max-width: 850px
+) {
+  .premium-global-header {
+    height: 70px;
+  }
+
+  .premium-global-header-inner {
+    padding:
+      0 12px;
+
+    grid-template-columns:
+      auto
+      1fr
+      auto;
+
+    gap: 10px;
+  }
+
+  .premium-global-logo
+  > span {
+    width: 42px;
+    height: 42px;
+
+    border-radius: 14px;
+
+    font-size: 25px;
+  }
+
+  .premium-global-logo
+  strong {
+    display: none;
+  }
+
+  .premium-global-search {
+    height: 43px;
+  }
+
+  .premium-global-search
+  span {
+    display: none;
+  }
+
+  .premium-global-actions
+  .premium-header-icon-button:nth-child(
+    3
+  ),
+  .premium-global-actions
+  .premium-header-icon-button:nth-child(
+    4
+  ) {
+    display: none;
+  }
+
+  .premium-desktop-layout {
+    width: 100%;
+
+    margin: 0;
+
+    padding:
+      10px
+      0
+      30px;
+
+    display: block;
+  }
+
+  .premium-desktop-layout
+  > .yat-sidebar {
+    display:
+      none !important;
+  }
+
+  .premium-page-content {
+    width: 100%;
+  }
+}
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (
+  max-width: 480px
+) {
+  .premium-global-search {
+    max-width: 130px;
+  }
+
+  .premium-global-actions {
+    gap: 4px;
+  }
+
+  .premium-header-icon-button {
+    width: 40px;
+    height: 40px;
+
+    flex-basis: 40px;
+  }
+
+  .premium-header-profile {
+    width: 42px;
+
+    min-width: 42px;
+  }
+
+  .premium-header-profile-avatar {
+    width: 38px;
+    height: 38px;
+
+    flex-basis: 38px;
+  }
+}

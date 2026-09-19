@@ -1,0 +1,332 @@
+/* =========================================================
+   ЯТУТ — POST CONTENT / META
+========================================================= */
+
+.yatut-post-author-copy {
+  min-width: 0;
+}
+
+/* =========================================================
+   MOOD + TAGGED PEOPLE
+========================================================= */
+
+.premium-feed-author-name {
+  min-width: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap: 4px;
+}
+
+.yatut-post-context {
+  display: inline-flex;
+
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap: 4px;
+
+  color:
+    #737784;
+
+  font-size:
+    8.5px;
+
+  font-weight:
+    600;
+}
+
+.yatut-post-mood {
+  color:
+    #5e6270;
+
+  font-weight:
+    700;
+}
+
+.yatut-post-tagged {
+  color:
+    #8b8f9b;
+}
+
+.yatut-post-tagged
+strong {
+  color:
+    #555966;
+
+  font-size:
+    inherit;
+
+  font-weight:
+    800;
+
+  cursor: pointer;
+}
+
+.yatut-post-tagged
+strong:hover {
+  color:
+    #6d28d9;
+}
+
+/* =========================================================
+   SECOND LINE
+========================================================= */
+
+.yatut-post-subline {
+  margin-top:
+    2px;
+
+  display: flex;
+
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap: 4px;
+
+  color:
+    #989ba7;
+}
+
+.yatut-post-subline
+> span {
+  color:
+    #c1c3ca;
+
+  font-size:
+    7px;
+}
+
+.yatut-post-subline
+small {
+  color:
+    #969aa6;
+
+  font-size:
+    8px;
+}
+
+/* =========================================================
+   AUDIENCE
+========================================================= */
+
+.yatut-post-audience {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 3px;
+
+  color:
+    #9296a2 !important;
+
+  font-size:
+    8px !important;
+
+  font-weight:
+    650;
+
+  cursor:
+    default;
+}
+
+/* =========================================================
+   MEDIA WRAPPER
+========================================================= */
+
+.yatut-post-media {
+  width: 100%;
+}
+
+.yatut-post-media
++ .premium-feed-meta {
+  margin-top:
+    10px;
+}
+
+/* =========================================================
+   MULTI IMAGE
+========================================================= */
+
+.yatut-post-gallery-slot {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+}
+
+.yatut-post-gallery-slot
+> img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit:
+    cover;
+}
+
+.yatut-post-more-media {
+  position: absolute;
+
+  inset: 0;
+
+  display: grid;
+
+  place-items: center;
+
+  background:
+    rgba(
+      15,
+      16,
+      24,
+      0.54
+    );
+
+  color:
+    #fff;
+
+  font-size:
+    25px;
+
+  font-weight:
+    850;
+
+  backdrop-filter:
+    blur(2px);
+}
+
+/* =========================================================
+   VIDEO
+========================================================= */
+
+.yatut-feed-video {
+  position: relative;
+
+  margin-top:
+    4px;
+
+  overflow: hidden;
+
+  background:
+    #111218;
+}
+
+.yatut-feed-video:first-child {
+  margin-top: 0;
+}
+
+.yatut-feed-video
+video {
+  width: 100%;
+
+  max-height:
+    620px;
+
+  display: block;
+
+  background:
+    #111218;
+
+  object-fit:
+    contain;
+}
+
+.yatut-feed-video-name {
+  position: absolute;
+
+  right: 9px;
+  bottom: 9px;
+  left: 9px;
+
+  max-width:
+    max-content;
+
+  padding:
+    5px 8px;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.13
+    );
+
+  border-radius:
+    8px;
+
+  background:
+    rgba(
+      15,
+      16,
+      24,
+      0.48
+    );
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.8
+    );
+
+  font-size:
+    7px;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
+
+  backdrop-filter:
+    blur(10px);
+}
+
+/* =========================================================
+   OWN / PRIVATE POST
+========================================================= */
+
+.premium-feed-post:has(
+  .yatut-post-audience
+) {
+  position: relative;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (
+  max-width: 680px
+) {
+  .yatut-post-context {
+    width: 100%;
+
+    margin-top:
+      1px;
+  }
+
+  .yatut-feed-video
+  video {
+    max-height:
+      72dvh;
+  }
+
+  .yatut-post-subline {
+    gap: 3px;
+  }
+}

@@ -1,0 +1,1481 @@
+/* =========================================================
+   YATUT SPACE ADMIN STUDIO V1
+========================================================= */
+
+.space-detail-top-actions {
+  margin-bottom: 10px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 10px;
+}
+
+.space-admin-mode-button {
+  min-height: 38px;
+
+  padding: 0 13px;
+
+  border-radius: 11px;
+
+  background: #171827;
+
+  color: #fff;
+
+  font-size: 9px;
+  font-weight: 800;
+}
+
+/* =========================================================
+   USER MODULE NAVIGATION
+========================================================= */
+
+.space-user-navigation {
+  display: flex;
+  flex-direction: column;
+
+  gap: 12px;
+}
+
+.space-user-nav-section {
+  padding: 16px;
+
+  border: 1px solid #e5e7ee;
+  border-radius: 20px;
+
+  background: #fff;
+}
+
+.space-user-nav-section > header {
+  margin-bottom: 12px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+}
+
+.space-user-nav-section > header > span {
+  width: 37px;
+  height: 37px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 11px;
+
+  background: #f0efff;
+
+  font-size: 18px;
+}
+
+.space-user-nav-section > header > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.space-user-nav-section > header strong {
+  font-size: 13px;
+}
+
+.space-user-nav-section > header small {
+  color: #999da7;
+
+  font-size: 8px;
+}
+
+.space-user-module-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3,minmax(0,1fr));
+
+  gap: 7px;
+}
+
+.space-user-module-grid > button {
+  min-height: 80px;
+
+  padding: 10px;
+
+  display: grid;
+
+  grid-template-columns:
+    auto
+    minmax(0,1fr)
+    auto;
+
+  align-items: center;
+
+  gap: 9px;
+
+  border: 1px solid transparent;
+  border-radius: 13px;
+
+  background: #f6f7fa;
+
+  text-align: left;
+}
+
+.space-user-module-grid > button:hover {
+  border-color: #d9d7ff;
+
+  background: #f1f0ff;
+}
+
+.space-user-module-grid > button.protected {
+  background: #fff8eb;
+}
+
+.space-user-module-grid > button > div {
+  width: 38px;
+  height: 38px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 11px;
+
+  background: #fff;
+
+  font-size: 18px;
+}
+
+.space-user-module-grid section {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.space-user-module-grid strong {
+  font-size: 9px;
+}
+
+.space-user-module-grid span {
+  margin-top: 2px;
+
+  overflow: hidden;
+
+  color: #9296a1;
+
+  font-size: 7px;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.space-user-module-grid b {
+  color: #a3a7b1;
+}
+
+.space-overview-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.space-overview-heading span {
+  color: #635bff;
+
+  font-size: 7px;
+  font-weight: 900;
+}
+
+.space-overview-heading h2 {
+  margin-top: 3px;
+}
+
+.space-overview-heading button {
+  min-height: 34px;
+
+  padding: 0 10px;
+
+  border-radius: 9px;
+
+  background: #f0efff;
+
+  color: #635bff;
+
+  font-size: 8px;
+  font-weight: 800;
+}
+
+/* =========================================================
+   ADMIN STUDIO
+========================================================= */
+
+.space-admin-studio {
+  width: 100%;
+  min-width: 0;
+
+  overflow: hidden;
+
+  border: 1px solid #e4e6ed;
+  border-radius: 24px;
+
+  background: #fff;
+}
+
+.space-admin-top {
+  min-height: 76px;
+
+  padding: 0 19px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  border-bottom: 1px solid #e9ebf1;
+}
+
+.space-admin-top > div:first-child {
+  display: flex;
+  flex-direction: column;
+}
+
+.space-admin-top > div:first-child span {
+  color: #635bff;
+
+  font-size: 7px;
+  font-weight: 900;
+
+  letter-spacing: .8px;
+}
+
+.space-admin-top h2 {
+  margin: 3px 0 0;
+
+  font-size: 18px;
+}
+
+.space-admin-top-actions {
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+}
+
+.space-admin-unsaved {
+  margin-right: 6px;
+
+  color: #e89b12;
+
+  font-size: 8px;
+  font-weight: 750;
+}
+
+.space-admin-preview,
+.space-admin-save {
+  min-height: 39px;
+
+  padding: 0 12px;
+
+  border-radius: 11px;
+
+  font-size: 9px;
+  font-weight: 850;
+}
+
+.space-admin-preview {
+  background: #f0f1f5;
+
+  color: #626773;
+}
+
+.space-admin-save {
+  background: #635bff;
+
+  color: #fff;
+}
+
+.space-admin-save:disabled {
+  opacity: .4;
+}
+
+/* =========================================================
+   LAYOUT
+========================================================= */
+
+.space-admin-layout {
+  min-height: 680px;
+
+  display: grid;
+
+  grid-template-columns:
+    235px
+    minmax(0,1fr);
+}
+
+.space-admin-sidebar {
+  padding: 14px;
+
+  border-right: 1px solid #e9ebf1;
+
+  background: #fafafd;
+}
+
+.space-admin-space-mini {
+  margin-bottom: 19px;
+  padding: 8px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  border-radius: 13px;
+
+  background: #fff;
+}
+
+.space-admin-space-mini > div {
+  width: 43px;
+  height: 43px;
+
+  flex: 0 0 43px;
+
+  overflow: hidden;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 12px;
+
+  background: #eceaff;
+
+  font-size: 20px;
+}
+
+.space-admin-space-mini img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+.space-admin-space-mini section {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.space-admin-space-mini strong {
+  overflow: hidden;
+
+  font-size: 9px;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.space-admin-space-mini span {
+  overflow: hidden;
+
+  color: #9296a1;
+
+  font-size: 7px;
+
+  text-overflow: ellipsis;
+}
+
+.space-admin-sidebar-label {
+  display: block;
+
+  margin: 0 7px 7px;
+
+  color: #a0a4ae;
+
+  font-size: 7px;
+  font-weight: 900;
+}
+
+.space-admin-sidebar > button {
+  width: 100%;
+
+  min-height: 42px;
+
+  margin-bottom: 3px;
+  padding: 0 10px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  border-radius: 10px;
+
+  background: transparent;
+
+  color: #686d78;
+
+  font-size: 9px;
+  font-weight: 750;
+
+  text-align: left;
+}
+
+.space-admin-sidebar > button.active {
+  background: #eceaff;
+
+  color: #5750d8;
+}
+
+.space-admin-sidebar > button > span {
+  width: 21px;
+
+  text-align: center;
+}
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.space-admin-content {
+  min-width: 0;
+
+  padding: 22px;
+
+  background: #f8f9fc;
+}
+
+.space-admin-heading {
+  margin-bottom: 15px;
+}
+
+.space-admin-heading > span {
+  color: #635bff;
+
+  font-size: 7px;
+  font-weight: 900;
+
+  letter-spacing: .8px;
+}
+
+.space-admin-heading h1 {
+  margin: 3px 0;
+
+  font-size: 23px;
+}
+
+.space-admin-heading p {
+  margin: 0;
+
+  color: #8f949f;
+
+  font-size: 9px;
+}
+
+.space-admin-card {
+  padding: 17px;
+
+  border: 1px solid #e6e7ed;
+  border-radius: 18px;
+
+  background: #fff;
+}
+
+/* =========================================================
+   FIELDS
+========================================================= */
+
+.space-admin-field {
+  margin-bottom: 15px;
+
+  display: grid;
+
+  grid-template-columns:
+    190px
+    minmax(0,1fr);
+
+  align-items: start;
+
+  gap: 15px;
+}
+
+.space-admin-field:last-child {
+  margin-bottom: 0;
+}
+
+.space-admin-field > div:first-child {
+  display: flex;
+  flex-direction: column;
+
+  gap: 2px;
+}
+
+.space-admin-field strong {
+  font-size: 9px;
+}
+
+.space-admin-field > div:first-child > span {
+  color: #9b9fa9;
+
+  font-size: 7px;
+}
+
+.space-admin-field input,
+.space-admin-field textarea,
+.space-admin-field select {
+  width: 100%;
+
+  border: 1px solid #dfe2e9;
+  border-radius: 11px;
+
+  outline: 0;
+
+  background: #fafbfc;
+}
+
+.space-admin-field input,
+.space-admin-field select {
+  height: 41px;
+
+  padding: 0 10px;
+}
+
+.space-admin-field textarea {
+  min-height: 100px;
+
+  padding: 10px;
+
+  resize: vertical;
+}
+
+.space-admin-username {
+  display: flex;
+  align-items: center;
+
+  border: 1px solid #dfe2e9;
+  border-radius: 11px;
+
+  background: #fafbfc;
+}
+
+.space-admin-username span {
+  padding-left: 10px;
+
+  color: #9a9ea8;
+
+  font-size: 8px;
+}
+
+.space-admin-username input {
+  border: 0;
+}
+
+/* =========================================================
+   APPEARANCE
+========================================================= */
+
+.space-admin-cover-editor {
+  position: relative;
+
+  height: 220px;
+
+  overflow: hidden;
+
+  border-radius: 15px;
+
+  background: #eceef4;
+}
+
+.space-admin-cover-editor img,
+.space-admin-cover-placeholder {
+  width: 100%;
+  height: 100%;
+}
+
+.space-admin-cover-editor img {
+  object-fit: cover;
+}
+
+.space-admin-cover-placeholder {
+  display: grid;
+  place-items: center;
+
+  background:
+    linear-gradient(
+      135deg,
+      #635bff,
+      #ff4f8b
+    );
+
+  color: #fff;
+
+  font-size: 45px;
+}
+
+.space-admin-cover-editor > button {
+  position: absolute;
+
+  right: 12px;
+  bottom: 12px;
+
+  min-height: 37px;
+
+  padding: 0 11px;
+
+  border-radius: 10px;
+
+  background: rgba(255,255,255,.94);
+
+  color: #555a65;
+
+  font-size: 8px;
+  font-weight: 800;
+}
+
+.space-admin-avatar-editor {
+  margin-top: 14px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+}
+
+.space-admin-avatar-editor > div {
+  width: 82px;
+  height: 82px;
+
+  overflow: hidden;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 23px;
+
+  background: #eceaff;
+
+  font-size: 30px;
+}
+
+.space-admin-avatar-editor img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+.space-admin-avatar-editor section {
+  display: flex;
+  flex-direction: column;
+}
+
+.space-admin-avatar-editor strong {
+  font-size: 10px;
+}
+
+.space-admin-avatar-editor p {
+  margin: 3px 0 7px;
+
+  color: #969aa5;
+
+  font-size: 8px;
+}
+
+.space-admin-avatar-editor button {
+  width: fit-content;
+
+  min-height: 34px;
+
+  padding: 0 10px;
+
+  border-radius: 9px;
+
+  background: #f0efff;
+
+  color: #635bff;
+
+  font-size: 8px;
+  font-weight: 800;
+}
+
+/* =========================================================
+   TEMPLATE
+========================================================= */
+
+.space-admin-template-info {
+  margin-top: 14px;
+  padding: 13px;
+
+  display: flex;
+
+  gap: 11px;
+
+  border-radius: 13px;
+
+  background: #f7f7fa;
+}
+
+.space-admin-template-info > span {
+  font-size: 28px;
+}
+
+.space-admin-template-info strong {
+  font-size: 10px;
+}
+
+.space-admin-template-info p {
+  margin: 3px 0 0;
+
+  color: #8c919c;
+
+  font-size: 8px;
+
+  line-height: 1.45;
+}
+
+.space-admin-safe-migration {
+  margin-top: 9px;
+  padding: 11px;
+
+  display: flex;
+
+  gap: 9px;
+
+  border-radius: 12px;
+
+  background: #effbf4;
+}
+
+.space-admin-safe-migration > span {
+  color: #22c55e;
+
+  font-weight: 900;
+}
+
+.space-admin-safe-migration strong {
+  font-size: 9px;
+}
+
+.space-admin-safe-migration p {
+  margin: 2px 0 0;
+
+  color: #708076;
+
+  font-size: 7.5px;
+
+  line-height: 1.45;
+}
+
+.space-admin-scale-grid {
+  margin-top: 15px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(4,1fr);
+
+  gap: 7px;
+}
+
+.space-admin-scale-grid button {
+  min-height: 91px;
+
+  padding: 9px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  border: 1px solid #e4e6ed;
+  border-radius: 12px;
+
+  background: #fafafd;
+
+  text-align: left;
+}
+
+.space-admin-scale-grid button.active {
+  border-color: #b9b5ff;
+
+  background: #f0efff;
+}
+
+.space-admin-scale-grid span {
+  font-size: 20px;
+}
+
+.space-admin-scale-grid strong {
+  margin-top: 4px;
+
+  font-size: 9px;
+}
+
+.space-admin-scale-grid small {
+  color: #9196a1;
+
+  font-size: 7px;
+}
+
+/* =========================================================
+   MODULE TOOLBAR
+========================================================= */
+
+.space-admin-modules-toolbar {
+  margin-bottom: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+}
+
+.space-admin-modules-toolbar > label {
+  width: min(330px,100%);
+  height: 40px;
+
+  padding: 0 10px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+
+  border: 1px solid #e1e3e9;
+  border-radius: 11px;
+
+  background: #fff;
+}
+
+.space-admin-modules-toolbar input {
+  width: 100%;
+
+  border: 0;
+  outline: 0;
+}
+
+.space-admin-modules-toolbar > div {
+  display: flex;
+
+  gap: 4px;
+}
+
+.space-admin-modules-toolbar > div button {
+  height: 35px;
+
+  padding: 0 9px;
+
+  border-radius: 9px;
+
+  background: #eceef3;
+
+  color: #777c87;
+
+  font-size: 7.5px;
+  font-weight: 800;
+}
+
+.space-admin-modules-toolbar > div button.active {
+  background: #171827;
+
+  color: #fff;
+}
+
+/* =========================================================
+   MODULE CARDS
+========================================================= */
+
+.space-admin-module-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3,minmax(0,1fr));
+
+  gap: 8px;
+}
+
+.space-admin-module-card {
+  position: relative;
+
+  min-height: 105px;
+
+  padding: 11px;
+
+  display: grid;
+
+  grid-template-columns:
+    auto minmax(0,1fr);
+
+  align-items: start;
+
+  gap: 9px;
+
+  border: 1px solid #e3e5eb;
+  border-radius: 14px;
+
+  background: #fff;
+
+  text-align: left;
+}
+
+.space-admin-module-card.active {
+  border-color: #c0bcff;
+
+  background: #f1f0ff;
+}
+
+.space-admin-module-card.protected {
+  background: #fffaf0;
+}
+
+.space-admin-module-icon {
+  width: 39px;
+  height: 39px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 11px;
+
+  background: #f3f4f7;
+
+  font-size: 19px;
+}
+
+.space-admin-module-card.active
+.space-admin-module-icon {
+  background: #fff;
+}
+
+.space-admin-module-card section {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.space-admin-module-card strong {
+  font-size: 9px;
+}
+
+.space-admin-module-card p {
+  margin: 3px 0 0;
+
+  color: #9397a2;
+
+  font-size: 7px;
+
+  line-height: 1.4;
+}
+
+.space-admin-module-check {
+  position: absolute;
+
+  top: 8px;
+  right: 8px;
+
+  width: 23px;
+  height: 23px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 7px;
+
+  background: #eef0f4;
+
+  color: #858a95;
+
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.space-admin-module-card.active
+.space-admin-module-check {
+  background: #635bff;
+
+  color: #fff;
+}
+
+.space-admin-module-card > small {
+  position: absolute;
+
+  left: 59px;
+  bottom: 9px;
+
+  color: #987735;
+
+  font-size: 6.5px;
+}
+
+/* =========================================================
+   NAVIGATION EDITOR
+========================================================= */
+
+.space-admin-navigation-actions {
+  margin-bottom: 11px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.space-admin-navigation-actions p {
+  margin: 0;
+
+  color: #8f949e;
+
+  font-size: 8px;
+}
+
+.space-admin-navigation-actions button {
+  min-height: 36px;
+
+  padding: 0 10px;
+
+  border-radius: 10px;
+
+  background: #635bff;
+
+  color: #fff;
+
+  font-size: 8px;
+  font-weight: 800;
+}
+
+.space-admin-navigation {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+
+  gap: 9px;
+}
+
+.space-admin-nav-section {
+  overflow: hidden;
+
+  border: 1px solid #e4e6ec;
+  border-radius: 15px;
+
+  background: #fff;
+}
+
+.space-admin-nav-section > header {
+  min-height: 50px;
+
+  padding: 8px 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-bottom: 1px solid #eceef2;
+
+  background: #fafafd;
+}
+
+.space-admin-nav-section > header > div {
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+}
+
+.space-admin-nav-section > header > div > span {
+  width: 30px;
+  height: 30px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 9px;
+
+  background: #eceaff;
+}
+
+.space-admin-nav-section > header strong {
+  font-size: 9px;
+}
+
+.space-admin-nav-section > header button {
+  width: 30px;
+  height: 30px;
+
+  border-radius: 8px;
+
+  background: #eef0f4;
+}
+
+.space-admin-nav-section > div {
+  padding: 7px;
+}
+
+.space-admin-nav-section article {
+  min-height: 57px;
+
+  margin-bottom: 5px;
+  padding: 6px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 7px;
+
+  border-radius: 10px;
+
+  background: #f6f7fa;
+}
+
+.space-admin-nav-module {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+}
+
+.space-admin-nav-module > span {
+  width: 35px;
+  height: 35px;
+
+  flex: 0 0 35px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 10px;
+
+  background: #fff;
+}
+
+.space-admin-nav-module section {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.space-admin-nav-module strong {
+  font-size: 8px;
+}
+
+.space-admin-nav-module small {
+  max-width: 145px;
+
+  overflow: hidden;
+
+  color: #999da7;
+
+  font-size: 6.5px;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.space-admin-nav-controls {
+  flex: 0 0 auto;
+
+  display: flex;
+  align-items: center;
+
+  gap: 3px;
+}
+
+.space-admin-nav-controls button {
+  width: 25px;
+  height: 25px;
+
+  border-radius: 7px;
+
+  background: #fff;
+
+  font-size: 8px;
+}
+
+.space-admin-nav-controls select {
+  max-width: 85px;
+  height: 25px;
+
+  border: 1px solid #e1e3e9;
+  border-radius: 7px;
+
+  background: #fff;
+
+  font-size: 6.5px;
+}
+
+.space-admin-nav-empty {
+  padding: 20px;
+
+  color: #aaaeb7;
+
+  font-size: 8px;
+
+  text-align: center;
+}
+
+/* =========================================================
+   PRIVACY
+========================================================= */
+
+.space-admin-privacy-option {
+  position: relative;
+
+  width: 100%;
+
+  min-height: 72px;
+
+  margin-bottom: 7px;
+  padding: 10px;
+
+  display: grid;
+
+  grid-template-columns:
+    auto minmax(0,1fr) auto;
+
+  align-items: center;
+
+  gap: 10px;
+
+  border: 1px solid #e5e6ec;
+  border-radius: 13px;
+
+  background: #fafafd;
+
+  text-align: left;
+}
+
+.space-admin-privacy-option.active {
+  border-color: #bbb7ff;
+
+  background: #f1f0ff;
+}
+
+.space-admin-privacy-option > span {
+  width: 43px;
+  height: 43px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 12px;
+
+  background: #fff;
+
+  font-size: 20px;
+}
+
+.space-admin-privacy-option strong {
+  font-size: 9px;
+}
+
+.space-admin-privacy-option p {
+  margin: 2px 0 0;
+
+  color: #9296a1;
+
+  font-size: 7px;
+}
+
+.space-admin-privacy-option b {
+  color: #635bff;
+}
+
+.space-admin-protected-notice {
+  margin-top: 11px;
+  padding: 12px;
+
+  display: flex;
+
+  gap: 9px;
+
+  border-radius: 13px;
+
+  background: #fff6e8;
+}
+
+.space-admin-protected-notice > span {
+  font-size: 22px;
+}
+
+.space-admin-protected-notice strong {
+  font-size: 9px;
+}
+
+.space-admin-protected-notice p {
+  margin: 2px 0;
+
+  color: #8d7757;
+
+  font-size: 7px;
+
+  line-height: 1.45;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 1000px) {
+
+  .space-user-module-grid {
+    grid-template-columns:
+      repeat(2,minmax(0,1fr));
+  }
+
+  .space-admin-module-grid {
+    grid-template-columns:
+      repeat(2,minmax(0,1fr));
+  }
+
+  .space-admin-navigation {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+@media (max-width: 767px) {
+
+  .space-detail-top-actions {
+    padding: 0 10px;
+  }
+
+  .space-admin-mode-button {
+    font-size: 7px;
+  }
+
+  .space-user-nav-section {
+    border-right: 0;
+    border-left: 0;
+    border-radius: 0;
+  }
+
+  .space-user-module-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .space-admin-studio {
+    border-right: 0;
+    border-left: 0;
+    border-radius: 0;
+  }
+
+  .space-admin-top {
+    padding: 10px 12px;
+
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .space-admin-top-actions {
+    width: 100%;
+  }
+
+  .space-admin-unsaved {
+    display: none;
+  }
+
+  .space-admin-save,
+  .space-admin-preview {
+    flex: 1;
+  }
+
+  .space-admin-layout {
+    display: block;
+
+    min-height: 0;
+  }
+
+  .space-admin-sidebar {
+    display: flex;
+
+    overflow-x: auto;
+
+    border-right: 0;
+    border-bottom: 1px solid #e9ebf1;
+
+    gap: 4px;
+
+    scrollbar-width: none;
+  }
+
+  .space-admin-sidebar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .space-admin-space-mini,
+  .space-admin-sidebar-label {
+    display: none;
+  }
+
+  .space-admin-sidebar > button {
+    width: auto;
+    min-width: max-content;
+
+    margin: 0;
+  }
+
+  .space-admin-content {
+    padding: 14px 10px;
+  }
+
+  .space-admin-field {
+    grid-template-columns: 1fr;
+
+    gap: 6px;
+  }
+
+  .space-admin-scale-grid {
+    grid-template-columns:
+      repeat(2,1fr);
+  }
+
+  .space-admin-modules-toolbar {
+    align-items: stretch;
+
+    flex-direction: column;
+  }
+
+  .space-admin-modules-toolbar > label {
+    width: 100%;
+  }
+
+  .space-admin-modules-toolbar > div {
+    overflow-x: auto;
+  }
+
+  .space-admin-module-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .space-admin-navigation-actions {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    gap: 7px;
+  }
+
+  .space-admin-navigation {
+    grid-template-columns: 1fr;
+  }
+
+  .space-admin-nav-section article {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .space-admin-nav-controls {
+    width: 100%;
+  }
+
+  .space-admin-nav-controls select {
+    flex: 1;
+
+    max-width: none;
+  }
+
+}

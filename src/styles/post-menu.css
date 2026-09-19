@@ -1,0 +1,459 @@
+/* =========================================================
+   ЯТУТ — POST MENU
+========================================================= */
+
+.yatut-post-menu-wrap {
+  position: relative;
+}
+
+.yatut-post-menu-wrap
+> button.is-active {
+  background:
+    #f0ebff;
+
+  color:
+    #7c3aed;
+}
+
+/* =========================================================
+   MENU
+========================================================= */
+
+.yatut-post-menu {
+  position: absolute;
+
+  top: 37px;
+  right: 0;
+
+  z-index: 150;
+
+  width: 268px;
+
+  padding: 7px;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    rgba(
+      221,
+      222,
+      231,
+      0.9
+    );
+
+  border-radius:
+    17px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.98
+    );
+
+  box-shadow:
+    0 18px 50px
+    rgba(
+      26,
+      25,
+      38,
+      0.17
+    );
+
+  -webkit-backdrop-filter:
+    blur(16px);
+
+  backdrop-filter:
+    blur(16px);
+
+  animation:
+    yatutPostMenuIn
+    150ms ease;
+}
+
+.yatut-post-menu
+> button {
+  width: 100%;
+
+  min-height: 52px;
+
+  padding:
+    7px 9px;
+
+  display: grid;
+
+  grid-template-columns:
+    auto
+    minmax(0, 1fr);
+
+  align-items:
+    center;
+
+  gap: 9px;
+
+  border: 0;
+
+  border-radius:
+    12px;
+
+  background:
+    transparent;
+
+  color:
+    #444854;
+
+  font-family:
+    inherit;
+
+  text-align:
+    left;
+
+  cursor: pointer;
+
+  transition:
+    background
+      140ms ease,
+    color
+      140ms ease;
+}
+
+.yatut-post-menu
+> button:hover {
+  background:
+    #f6f4fb;
+}
+
+.yatut-post-menu
+> button
+> span {
+  width: 34px;
+  height: 34px;
+
+  display: grid;
+
+  place-items:
+    center;
+
+  border-radius:
+    10px;
+
+  background:
+    #f0ecff;
+
+  color:
+    #7041d7;
+}
+
+.yatut-post-menu
+> button
+> div {
+  min-width: 0;
+}
+
+.yatut-post-menu
+strong {
+  display: block;
+
+  color:
+    #373a46;
+
+  font-size:
+    10px;
+
+  font-weight:
+    850;
+}
+
+.yatut-post-menu
+small {
+  display: block;
+
+  margin-top:
+    2px;
+
+  color:
+    #999ca7;
+
+  font-size:
+    8px;
+
+  line-height:
+    1.35;
+}
+
+/* =========================================================
+   SPECIAL ACTIONS
+========================================================= */
+
+.yatut-post-menu
+> button.is-danger
+> span {
+  background:
+    #fff0f1;
+
+  color:
+    #e94d58;
+}
+
+.yatut-post-menu
+> button.is-danger:hover {
+  background:
+    #fff5f5;
+}
+
+.yatut-post-menu
+> button.is-danger
+strong {
+  color:
+    #d93f49;
+}
+
+.yatut-post-menu
+> button.is-warning
+> span {
+  background:
+    #fff4ea;
+
+  color:
+    #e0792f;
+}
+
+.yatut-post-menu
+> button.is-warning:hover {
+  background:
+    #fff8f2;
+}
+
+.yatut-post-menu-divider {
+  height: 1px;
+
+  margin:
+    5px 7px;
+
+  background:
+    #ececf2;
+}
+
+/* =========================================================
+   EDIT POST
+========================================================= */
+
+.yatut-post-edit {
+  padding:
+    2px 14px
+    14px;
+}
+
+.yatut-post-edit
+textarea {
+  width: 100%;
+  min-height: 105px;
+
+  padding:
+    12px 13px;
+
+  resize: vertical;
+
+  border:
+    1px solid
+    #e1dcec;
+
+  outline: none;
+
+  border-radius:
+    14px;
+
+  background:
+    #faf9fd;
+
+  color:
+    #343744;
+
+  font-family:
+    inherit;
+
+  font-size:
+    12px;
+
+  line-height:
+    1.55;
+
+  transition:
+    border-color
+      150ms ease,
+    background
+      150ms ease,
+    box-shadow
+      150ms ease;
+}
+
+.yatut-post-edit
+textarea:focus {
+  border-color:
+    rgba(
+      124,
+      58,
+      237,
+      0.38
+    );
+
+  background:
+    #fff;
+
+  box-shadow:
+    0 0 0
+    3px
+    rgba(
+      124,
+      58,
+      237,
+      0.065
+    );
+}
+
+.yatut-post-edit
+> div {
+  margin-top:
+    8px;
+
+  display: flex;
+
+  justify-content:
+    flex-end;
+
+  gap: 7px;
+}
+
+.yatut-post-edit
+button {
+  height: 36px;
+
+  padding:
+    0 13px;
+
+  display: flex;
+
+  align-items:
+    center;
+
+  gap: 6px;
+
+  border: 0;
+
+  border-radius:
+    11px;
+
+  font-family:
+    inherit;
+
+  font-size:
+    9px;
+
+  font-weight:
+    800;
+
+  cursor: pointer;
+}
+
+.yatut-edit-cancel {
+  background:
+    #f0f1f5;
+
+  color:
+    #656976;
+}
+
+.yatut-edit-save {
+  background:
+    linear-gradient(
+      135deg,
+      #8b5cf6,
+      #7c3aed
+    );
+
+  color:
+    #fff;
+
+  box-shadow:
+    0 6px 16px
+    rgba(
+      124,
+      58,
+      237,
+      0.18
+    );
+}
+
+/* =========================================================
+   ANIMATION
+========================================================= */
+
+@keyframes yatutPostMenuIn {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(-4px)
+      scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (
+  max-width: 600px
+) {
+  .yatut-post-menu {
+    position: fixed;
+
+    right: 10px;
+    bottom: 82px;
+    top: auto;
+
+    width:
+      calc(
+        100vw -
+        20px
+      );
+
+    max-width:
+      360px;
+
+    border-radius:
+      20px;
+  }
+
+  .yatut-post-edit {
+    padding:
+      4px 10px
+      12px;
+  }
+}
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+  .yatut-post-menu {
+    animation: none;
+  }
+
+  .yatut-post-menu
+  > button,
+  .yatut-post-edit
+  textarea {
+    transition: none;
+  }
+}

@@ -1,0 +1,69 @@
+/* =========================================================
+   ЯТУТ PULSE
+   AUTHOR NAVIGATION
+========================================================= */
+
+.pulse-clips-author-name {
+  padding: 0;
+
+  border: 0;
+
+  background: transparent;
+
+  color: #fff;
+
+  font: inherit;
+
+  font-size: inherit;
+
+  font-weight: 850;
+
+  cursor: pointer;
+
+  text-align: left;
+}
+
+
+.pulse-clips-author-name:hover {
+  text-decoration: underline;
+}
+
+
+.pulse-watch-author {
+  transition:
+    opacity
+    160ms ease,
+    transform
+    160ms ease;
+}
+
+
+.pulse-watch-author:hover {
+  opacity: 0.86;
+
+  transform:
+    translateY(
+      -1px
+    );
+}
+
+
+.pulse-watch-author:active {
+  transform:
+    scale(
+      0.98
+    );
+}
+
+
+@media (
+  max-width: 850px
+) {
+  .pulse-clips-author-name {
+    min-height: 30px;
+
+    display: inline-flex;
+
+    align-items: center;
+  }
+}

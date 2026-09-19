@@ -1,0 +1,224 @@
+/* =========================================================
+   ЯТУТ — COMMUNITY ↔ EVENT
+========================================================= */
+
+.event-community-context {
+  min-height: 76px;
+
+  padding: 11px 12px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 11px;
+
+  border:
+    1px solid
+    #ded6ff;
+
+  border-radius: 15px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f7f4ff,
+      #fdfbff
+    );
+}
+
+.event-community-context-avatar {
+  width: 48px;
+  height: 48px;
+
+  flex: 0 0 48px;
+
+  overflow: hidden;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #8b5cf6,
+      #6d28d9
+    );
+
+  color: #fff;
+
+  font-size: 17px;
+
+  font-weight: 900;
+
+  box-shadow:
+    0 7px 16px
+    rgba(
+      124,
+      58,
+      237,
+      0.17
+    );
+}
+
+.event-community-context-avatar
+img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+}
+
+.event-community-context
+> div:last-child {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+.event-community-context
+> div:last-child
+> span {
+  color: #7c3aed;
+
+  font-size: 7px;
+
+  font-weight: 900;
+
+  letter-spacing: 0.7px;
+}
+
+.event-community-context
+strong {
+  margin-top: 2px;
+
+  overflow: hidden;
+
+  color: #393c48;
+
+  font-size: 10px;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+.event-community-context
+small {
+  margin-top: 2px;
+
+  color: #9296a1;
+
+  font-size: 7px;
+}
+
+/* CARD CHIP */
+
+.event-community-chip {
+  width: fit-content;
+
+  max-width: 100%;
+
+  margin-bottom: 8px;
+
+  padding:
+    5px 8px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  overflow: hidden;
+
+  border-radius: 8px;
+
+  background: #f0edff;
+
+  color: #6d28d9;
+
+  font-size: 7.5px;
+
+  font-weight: 800;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+/* DETAIL */
+
+.event-detail-community {
+  margin-bottom: 12px;
+
+  padding:
+    10px 11px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  border:
+    1px solid
+    #e2dcff;
+
+  border-radius: 13px;
+
+  background: #f6f3ff;
+
+  color: #6d28d9;
+}
+
+.event-detail-community
+> div {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+.event-detail-community
+span {
+  font-size: 7px;
+
+  font-weight: 900;
+
+  letter-spacing: 0.6px;
+}
+
+.event-detail-community
+strong {
+  margin-top: 2px;
+
+  color: #464956;
+
+  font-size: 9px;
+}
+
+@media (
+  max-width: 700px
+) {
+  .event-community-context {
+    min-height: 69px;
+
+    padding: 9px;
+  }
+
+  .event-community-context-avatar {
+    width: 42px;
+    height: 42px;
+
+    flex-basis: 42px;
+  }
+}

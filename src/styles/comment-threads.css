@@ -1,0 +1,706 @@
+/* =========================================================
+   ЯТУТ — COMMENTS V2
+========================================================= */
+
+.yatut-comments-area {
+  padding:
+    12px 14px
+    14px;
+
+  border-top:
+    1px solid
+    #eceef3;
+
+  background:
+    rgba(
+      250,
+      250,
+      253,
+      0.76
+    );
+}
+
+.yatut-comments-list {
+  display: flex;
+
+  flex-direction:
+    column;
+
+  gap: 11px;
+
+  margin-bottom:
+    12px;
+}
+
+.yatut-comments-empty {
+  padding:
+    10px 0
+    18px;
+
+  color:
+    #969aa7;
+
+  font-size:
+    10px;
+
+  text-align:
+    center;
+}
+
+/* =========================================================
+   THREAD
+========================================================= */
+
+.yatut-comment-thread {
+  position: relative;
+}
+
+.yatut-comment-thread.is-reply {
+  margin-top:
+    8px;
+
+  padding-left:
+    6px;
+}
+
+.yatut-comment-row {
+  display: flex;
+
+  align-items:
+    flex-start;
+
+  gap: 8px;
+}
+
+.yatut-comment-avatar {
+  width: 34px;
+  height: 34px;
+
+  flex:
+    0 0 34px;
+
+  display: grid;
+
+  place-items:
+    center;
+
+  border-radius:
+    50%;
+
+  background:
+    linear-gradient(
+      145deg,
+      #5a5567,
+      #292632
+    );
+
+  color:
+    #fff;
+
+  font-size:
+    10px;
+
+  font-weight:
+    850;
+}
+
+.is-reply
+.yatut-comment-avatar {
+  width: 29px;
+  height: 29px;
+
+  flex-basis:
+    29px;
+
+  font-size:
+    9px;
+}
+
+.yatut-comment-main {
+  min-width: 0;
+
+  flex: 1;
+}
+
+/* =========================================================
+   BUBBLE
+========================================================= */
+
+.yatut-comment-bubble {
+  position: relative;
+
+  width:
+    fit-content;
+
+  max-width:
+    100%;
+
+  padding:
+    8px 11px;
+
+  border:
+    1px solid
+    #e9e9ef;
+
+  border-radius:
+    7px 15px
+    15px 15px;
+
+  background:
+    #f2f2f6;
+}
+
+.yatut-comment-head {
+  display: flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+
+  gap: 10px;
+}
+
+.yatut-comment-head
+> strong {
+  color:
+    #353844;
+
+  font-size:
+    10px;
+
+  font-weight:
+    850;
+}
+
+.yatut-comment-bubble
+> p {
+  margin:
+    3px 0 0;
+
+  color:
+    #464a57;
+
+  font-size:
+    11px;
+
+  line-height:
+    1.45;
+
+  overflow-wrap:
+    anywhere;
+}
+
+.yatut-comment-mention {
+  display: inline-block;
+
+  margin-top:
+    4px;
+
+  color:
+    #7c3aed;
+
+  font-size:
+    10px;
+
+  font-weight:
+    800;
+}
+
+/* =========================================================
+   COMMENT MENU
+========================================================= */
+
+.yatut-comment-menu-wrap {
+  position: relative;
+}
+
+.yatut-comment-menu-wrap
+> button {
+  width: 24px;
+  height: 24px;
+
+  padding: 0;
+
+  display: grid;
+
+  place-items:
+    center;
+
+  border: 0;
+
+  border-radius:
+    7px;
+
+  background:
+    transparent;
+
+  color:
+    #a1a4ad;
+
+  cursor: pointer;
+}
+
+.yatut-comment-menu-wrap
+> button:hover {
+  background:
+    rgba(
+      0,
+      0,
+      0,
+      0.05
+    );
+}
+
+.yatut-comment-menu {
+  position: absolute;
+
+  top: 26px;
+  right: 0;
+
+  z-index: 80;
+
+  min-width:
+    145px;
+
+  padding: 5px;
+
+  border:
+    1px solid
+    #e4e5eb;
+
+  border-radius:
+    11px;
+
+  background:
+    #fff;
+
+  box-shadow:
+    0 12px 30px
+    rgba(
+      25,
+      26,
+      36,
+      0.14
+    );
+}
+
+.yatut-comment-menu
+button {
+  width: 100%;
+  height: 34px;
+
+  padding:
+    0 9px;
+
+  display: flex;
+
+  align-items:
+    center;
+
+  gap: 7px;
+
+  border: 0;
+
+  border-radius:
+    8px;
+
+  background:
+    transparent;
+
+  color:
+    #555966;
+
+  font-family:
+    inherit;
+
+  font-size:
+    9px;
+
+  font-weight:
+    750;
+
+  cursor: pointer;
+}
+
+.yatut-comment-menu
+button:hover {
+  background:
+    #f5f4f8;
+}
+
+.yatut-comment-menu
+button.is-danger {
+  color:
+    #dc4651;
+}
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.yatut-comment-actions {
+  min-height: 25px;
+
+  padding-left:
+    4px;
+
+  display: flex;
+
+  align-items:
+    center;
+
+  gap: 8px;
+}
+
+.yatut-comment-actions
+> span {
+  color:
+    #9c9faa;
+
+  font-size:
+    7.5px;
+}
+
+.yatut-comment-actions
+button {
+  padding: 0;
+
+  display: flex;
+
+  align-items:
+    center;
+
+  gap: 3px;
+
+  border: 0;
+
+  background:
+    transparent;
+
+  color:
+    #7d818d;
+
+  font-family:
+    inherit;
+
+  font-size:
+    8px;
+
+  font-weight:
+    750;
+
+  cursor: pointer;
+}
+
+.yatut-comment-actions
+button:hover,
+.yatut-comment-actions
+button.is-active {
+  color:
+    #7c3aed;
+}
+
+.yatut-comment-actions
+b {
+  font-size:
+    7px;
+}
+
+/* =========================================================
+   SHOW REPLIES
+========================================================= */
+
+.yatut-comment-show-replies {
+  margin:
+    3px 0 0
+    8px;
+
+  padding: 0;
+
+  display: flex;
+
+  align-items:
+    center;
+
+  gap: 7px;
+
+  border: 0;
+
+  background:
+    transparent;
+
+  color:
+    #777b88;
+
+  font-family:
+    inherit;
+
+  font-size:
+    8px;
+
+  font-weight:
+    800;
+
+  cursor: pointer;
+}
+
+.yatut-comment-show-replies
+> span {
+  width: 24px;
+  height: 1px;
+
+  background:
+    #cfd1d8;
+}
+
+.yatut-comment-replies {
+  margin-top:
+    4px;
+}
+
+/* =========================================================
+   REPLY CONTEXT
+========================================================= */
+
+.yatut-reply-context {
+  min-height: 34px;
+
+  margin:
+    0 0 8px
+    43px;
+
+  padding:
+    0 8px;
+
+  display: flex;
+
+  align-items:
+    center;
+
+  gap: 6px;
+
+  border-radius:
+    10px;
+
+  background:
+    #eee9ff;
+
+  color:
+    #6d28d9;
+
+  font-size:
+    8px;
+}
+
+.yatut-reply-context
+span {
+  flex: 1;
+}
+
+.yatut-reply-context
+button {
+  width: 24px;
+  height: 24px;
+
+  padding: 0;
+
+  display: grid;
+
+  place-items:
+    center;
+
+  border: 0;
+
+  border-radius:
+    7px;
+
+  background:
+    transparent;
+
+  color:
+    inherit;
+
+  cursor: pointer;
+}
+
+/* =========================================================
+   COMPOSER
+========================================================= */
+
+.yatut-comment-composer {
+  display: flex;
+
+  align-items:
+    center;
+
+  gap: 8px;
+}
+
+.yatut-comment-current-avatar {
+  width: 34px;
+  height: 34px;
+
+  flex:
+    0 0 34px;
+
+  display: grid;
+
+  place-items:
+    center;
+
+  border-radius:
+    50%;
+
+  background:
+    linear-gradient(
+      145deg,
+      #565160,
+      #292632
+    );
+
+  color:
+    #fff;
+
+  font-size:
+    10px;
+
+  font-weight:
+    850;
+}
+
+.yatut-comment-input-wrap {
+  min-width: 0;
+
+  height: 40px;
+
+  flex: 1;
+
+  padding:
+    0 5px 0
+    12px;
+
+  display: flex;
+
+  align-items:
+    center;
+
+  gap: 6px;
+
+  border:
+    1px solid
+    #e3e4eb;
+
+  border-radius:
+    999px;
+
+  background:
+    #fff;
+}
+
+.yatut-comment-input-wrap:focus-within {
+  border-color:
+    rgba(
+      124,
+      58,
+      237,
+      0.32
+    );
+
+  box-shadow:
+    0 0 0
+    3px
+    rgba(
+      124,
+      58,
+      237,
+      0.06
+    );
+}
+
+.yatut-comment-input-wrap
+input {
+  min-width: 0;
+  width: 100%;
+
+  border: 0;
+  outline: 0;
+
+  background:
+    transparent;
+
+  color:
+    #343744;
+
+  font-family:
+    inherit;
+
+  font-size:
+    10px;
+}
+
+.yatut-comment-input-wrap
+button {
+  width: 32px;
+  height: 32px;
+
+  flex:
+    0 0 32px;
+
+  padding: 0;
+
+  display: grid;
+
+  place-items:
+    center;
+
+  border: 0;
+
+  border-radius:
+    50%;
+
+  background:
+    #7c3aed;
+
+  color:
+    #fff;
+
+  cursor: pointer;
+}
+
+.yatut-comment-input-wrap
+button:disabled {
+  opacity:
+    0.35;
+
+  cursor:
+    default;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (
+  max-width: 600px
+) {
+  .yatut-comments-area {
+    padding:
+      11px 10px
+      13px;
+  }
+
+  .yatut-comment-bubble {
+    max-width:
+      calc(
+        100vw -
+        85px
+      );
+  }
+
+  .yatut-reply-context {
+    margin-left:
+      41px;
+  }
+}

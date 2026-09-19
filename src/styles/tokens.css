@@ -1,0 +1,300 @@
+/* =========================================================
+   YATUT DESIGN TOKENS v1.0
+   Premium visual foundation
+========================================================= */
+
+:root {
+  /* =======================================================
+     BRAND
+  ======================================================= */
+
+  --yat-primary: #7c3aed;
+  --yat-primary-dark: #5b21b6;
+  --yat-primary-deep: #4c1d95;
+  --yat-primary-light: #a78bfa;
+  --yat-primary-soft: #ede9fe;
+
+  --yat-legacy-violet: #635bff;
+
+  /* =======================================================
+     SEMANTIC
+  ======================================================= */
+
+  --yat-success: #22c55e;
+  --yat-success-soft: #dcfce7;
+
+  --yat-info: #2563eb;
+  --yat-info-soft: #dbeafe;
+
+  --yat-coral: #f9738b;
+  --yat-coral-strong: #f43f5e;
+  --yat-coral-soft: #ffe4e8;
+
+  --yat-turquoise: #06b6d4;
+  --yat-turquoise-soft: #cffafe;
+
+  --yat-warning: #f59e0b;
+  --yat-warning-soft: #fef3c7;
+
+  --yat-danger: #ef4444;
+
+  /* =======================================================
+     ACHIEVEMENT COLORS
+  ======================================================= */
+
+  --yat-gold: #f59e0b;
+  --yat-silver: #94a3b8;
+  --yat-amethyst: #8b5cf6;
+  --yat-sapphire: #2563eb;
+  --yat-ruby: #ef4444;
+
+  /* =======================================================
+     BACKGROUND / SURFACE
+  ======================================================= */
+
+  --yat-bg: #f7f8fc;
+  --yat-bg-alt: #f4f5fb;
+
+  --yat-surface: #ffffff;
+
+  --yat-surface-soft:
+    rgba(255, 255, 255, 0.78);
+
+  --yat-surface-glass:
+    rgba(255, 255, 255, 0.86);
+
+  --yat-surface-glass-strong:
+    rgba(255, 255, 255, 0.94);
+
+  /* =======================================================
+     TEXT
+  ======================================================= */
+
+  --yat-text-main: #0f172a;
+  --yat-text-heading: #111827;
+  --yat-text-secondary: #64748b;
+  --yat-text-muted: #94a3b8;
+  --yat-text-light: #cbd5e1;
+  --yat-text-on-primary: #ffffff;
+
+  /* =======================================================
+     BORDERS
+  ======================================================= */
+
+  --yat-border:
+    rgba(148, 163, 184, 0.14);
+
+  --yat-border-medium:
+    rgba(148, 163, 184, 0.22);
+
+  --yat-border-strong:
+    rgba(148, 163, 184, 0.34);
+
+  --yat-border-purple:
+    rgba(124, 58, 237, 0.20);
+
+  /* =======================================================
+     PAGE BACKGROUND
+  ======================================================= */
+
+  --yat-page-background:
+    radial-gradient(
+      circle at 20% 10%,
+      rgba(124, 58, 237, 0.08),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 85% 18%,
+      rgba(37, 99, 235, 0.06),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 55% 85%,
+      rgba(244, 63, 94, 0.04),
+      transparent 30%
+    ),
+    #f7f8fc;
+
+  /* =======================================================
+     GRADIENTS
+  ======================================================= */
+
+  --yat-gradient-primary:
+    linear-gradient(
+      135deg,
+      #7c3aed 0%,
+      #5b21b6 100%
+    );
+
+  --yat-gradient-primary-bright:
+    linear-gradient(
+      135deg,
+      #8b5cf6 0%,
+      #6d28d9 48%,
+      #5b21b6 100%
+    );
+
+  --yat-gradient-soft:
+    linear-gradient(
+      135deg,
+      rgba(124, 58, 237, 0.08),
+      rgba(37, 99, 235, 0.035)
+    );
+
+  --yat-gradient-card:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.98),
+      rgba(249, 250, 255, 0.94)
+    );
+
+  --yat-gradient-premium-border:
+    linear-gradient(
+      135deg,
+      rgba(167, 139, 250, 0.55),
+      rgba(255, 255, 255, 0.8),
+      rgba(245, 158, 11, 0.22)
+    );
+
+  /* =======================================================
+     SHADOWS
+  ======================================================= */
+
+  --yat-shadow-xs:
+    0 2px 8px
+    rgba(15, 23, 42, 0.035);
+
+  --yat-shadow-sm:
+    0 6px 20px
+    rgba(15, 23, 42, 0.055);
+
+  --yat-shadow-card:
+    0 12px 36px
+    rgba(31, 38, 67, 0.07);
+
+  --yat-shadow-card-hover:
+    0 18px 48px
+    rgba(31, 38, 67, 0.11);
+
+  --yat-shadow-purple:
+    0 14px 34px
+    rgba(124, 58, 237, 0.18);
+
+  --yat-shadow-purple-strong:
+    0 18px 46px
+    rgba(124, 58, 237, 0.28);
+
+  --yat-shadow-modal:
+    0 32px 100px
+    rgba(15, 23, 42, 0.24);
+
+  /* =======================================================
+     GLOWS
+  ======================================================= */
+
+  --yat-glow-common:
+    0 0 0 rgba(148, 163, 184, 0);
+
+  --yat-glow-rare:
+    0 0 26px rgba(37, 99, 235, 0.22);
+
+  --yat-glow-epic:
+    0 0 30px rgba(139, 92, 246, 0.28);
+
+  --yat-glow-legendary:
+    0 0 34px rgba(245, 158, 11, 0.32);
+
+  --yat-glow-mythic:
+    0 0 40px rgba(124, 58, 237, 0.4);
+
+  /* =======================================================
+     RADII
+  ======================================================= */
+
+  --yat-radius-xs: 8px;
+  --yat-radius-sm: 10px;
+  --yat-radius-md: 14px;
+  --yat-radius-lg: 18px;
+  --yat-radius-xl: 22px;
+  --yat-radius-2xl: 26px;
+  --yat-radius-3xl: 32px;
+  --yat-radius-round: 999px;
+
+  /* =======================================================
+     SPACING
+  ======================================================= */
+
+  --yat-space-1: 4px;
+  --yat-space-2: 8px;
+  --yat-space-3: 12px;
+  --yat-space-4: 16px;
+  --yat-space-5: 20px;
+  --yat-space-6: 24px;
+  --yat-space-7: 28px;
+  --yat-space-8: 32px;
+  --yat-space-10: 40px;
+  --yat-space-12: 48px;
+
+  /* =======================================================
+     FONT SIZES
+  ======================================================= */
+
+  --yat-font-xs: 11px;
+  --yat-font-sm: 12px;
+  --yat-font-md: 13px;
+  --yat-font-body: 14px;
+  --yat-font-lg: 16px;
+  --yat-font-xl: 18px;
+  --yat-font-2xl: 22px;
+  --yat-font-3xl: 28px;
+  --yat-font-hero: 32px;
+
+  /* =======================================================
+     FONT WEIGHTS
+  ======================================================= */
+
+  --yat-weight-regular: 400;
+  --yat-weight-medium: 500;
+  --yat-weight-semibold: 650;
+  --yat-weight-bold: 750;
+  --yat-weight-heavy: 850;
+  --yat-weight-black: 900;
+
+  /* =======================================================
+     MOTION
+  ======================================================= */
+
+  --yat-duration-hover: 150ms;
+  --yat-duration-button: 220ms;
+  --yat-duration-card: 280ms;
+  --yat-duration-dropdown: 350ms;
+  --yat-duration-modal: 450ms;
+  --yat-duration-achievement: 850ms;
+
+  --yat-ease:
+    cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* =======================================================
+     LAYOUT
+  ======================================================= */
+
+  --yat-header-height: 72px;
+
+  --yat-layout-max: 1480px;
+
+  --yat-sidebar-width: 190px;
+  --yat-main-width: 720px;
+  --yat-right-width: 330px;
+
+  --yat-layout-gap: 18px;
+
+  /* =======================================================
+     Z INDEX
+  ======================================================= */
+
+  --yat-z-header: 1000;
+  --yat-z-dropdown: 2000;
+  --yat-z-popover: 3000;
+  --yat-z-modal: 5000;
+  --yat-z-toast: 6000;
+}

@@ -1,0 +1,329 @@
+.yat-sidebar {
+  position: sticky;
+  top: 92px;
+  align-self: start;
+  z-index: 20;
+  width: 272px;
+  min-width: 272px;
+}
+
+.yat-sidebar__inner {
+  position: relative;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(249, 247, 255, 0.96));
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 28px;
+  box-shadow:
+    0 24px 50px rgba(15, 23, 42, 0.08),
+    0 8px 22px rgba(124, 58, 237, 0.05);
+  padding: 18px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  opacity: 1;
+}
+
+.yat-sidebar__inner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 28px;
+  pointer-events: none;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.yat-sidebar__brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+  padding: 4px 4px 14px;
+}
+
+.yat-sidebar__brand-logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  font-size: 28px;
+  font-weight: 900;
+  color: #ffffff;
+  background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+  box-shadow:
+    0 12px 24px rgba(124, 58, 237, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.yat-sidebar__brand-title {
+  font-size: 21px;
+  line-height: 1;
+  font-weight: 900;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+}
+
+.yat-sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.yat-sidebar__link {
+  position: relative;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 52px;
+  padding: 0 14px;
+  border-radius: 16px;
+  color: #475569;
+  cursor: pointer;
+  transition:
+    transform 0.18s cubic-bezier(.2,.8,.2,1),
+    background 0.18s cubic-bezier(.2,.8,.2,1),
+    color 0.18s cubic-bezier(.2,.8,.2,1),
+    box-shadow 0.18s cubic-bezier(.2,.8,.2,1);
+}
+
+.yat-sidebar__link:hover {
+  background: rgba(124, 58, 237, 0.07);
+  color: #1e293b;
+  transform: translateY(-1px);
+}
+
+.yat-sidebar__link.is-active {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.14), rgba(167, 139, 250, 0.12));
+  color: #6d28d9;
+  box-shadow: inset 0 0 0 1px rgba(124, 58, 237, 0.08);
+}
+
+.yat-sidebar__link.is-active::before {
+  content: "";
+  position: absolute;
+  left: -18px;
+  top: 10px;
+  bottom: 10px;
+  width: 4px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #8b5cf6, #6d28d9);
+}
+
+.yat-sidebar__link-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+.yat-sidebar__link-label {
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1;
+  flex: 1;
+  text-align: left;
+}
+
+.yat-sidebar__link-badge {
+  min-width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
+  font-size: 12px;
+  font-weight: 800;
+  color: #ffffff;
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  box-shadow: 0 8px 18px rgba(124, 58, 237, 0.24);
+}
+
+.yat-sidebar__divider {
+  height: 1px;
+  background: rgba(148, 163, 184, 0.16);
+  margin: 16px 2px;
+}
+
+.yat-sidebar__create {
+  width: 100%;
+  min-height: 56px;
+  border: 0;
+  border-radius: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+  box-shadow:
+    0 18px 30px rgba(124, 58, 237, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.24);
+  transition:
+    transform 0.2s cubic-bezier(.2,.8,.2,1),
+    box-shadow 0.2s cubic-bezier(.2,.8,.2,1);
+}
+
+.yat-sidebar__create:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 22px 36px rgba(124, 58, 237, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.24);
+}
+
+.yat-sidebar__city-card {
+  margin-top: 18px;
+  overflow: hidden;
+  border-radius: 24px;
+  background: #ffffff;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.06);
+}
+
+.yat-sidebar__city-card-image-wrap {
+  position: relative;
+  height: 188px;
+  overflow: hidden;
+}
+
+.yat-sidebar__city-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transform: scale(1.01);
+}
+
+.yat-sidebar__city-card-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(15, 23, 42, 0.02) 0%, rgba(15, 23, 42, 0.28) 100%);
+}
+
+.yat-sidebar__city-card-title {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  font-size: 28px;
+  line-height: 1;
+  font-weight: 500;
+  color: #ffffff;
+  text-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.yat-sidebar__city-card-subtitle {
+  position: absolute;
+  top: 54px;
+  right: 18px;
+  font-size: 18px;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.96);
+  text-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.yat-sidebar__city-card-body {
+  padding: 16px;
+}
+
+.yat-sidebar__city-card-caption {
+  margin: 0 0 14px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #475569;
+}
+
+.yat-sidebar__city-stats {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.yat-sidebar__city-stat {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  line-height: 1.35;
+  color: #334155;
+  font-weight: 600;
+}
+
+.yat-sidebar__city-stat-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  flex: 0 0 auto;
+}
+
+.yat-sidebar__city-stat-dot.is-blue {
+  background: #3b82f6;
+}
+
+.yat-sidebar__city-stat-dot.is-pink {
+  background: #f43f5e;
+}
+
+.yat-sidebar__city-stat-dot.is-violet {
+  background: #8b5cf6;
+}
+
+.yat-sidebar__city-stat-dot.is-green {
+  background: #22c55e;
+}
+
+.yat-sidebar__city-button {
+  width: 100%;
+  min-height: 48px;
+  border-radius: 16px;
+  border: 1px solid rgba(124, 58, 237, 0.18);
+  background: rgba(124, 58, 237, 0.06);
+  color: #6d28d9;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    transform 0.18s cubic-bezier(.2,.8,.2,1),
+    background 0.18s cubic-bezier(.2,.8,.2,1);
+}
+
+.yat-sidebar__city-button:hover {
+  transform: translateY(-1px);
+  background: rgba(124, 58, 237, 0.1);
+}
+
+@media (max-width: 1200px) {
+  .yat-sidebar {
+    width: 244px;
+    min-width: 244px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .yat-sidebar {
+    position: relative;
+    top: 0;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .yat-sidebar__city-card {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .yat-sidebar__link,
+  .yat-sidebar__create,
+  .yat-sidebar__city-button {
+    transition-duration: 0.01ms !important;
+  }
+}

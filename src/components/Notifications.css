@@ -1,0 +1,1912 @@
+/* =========================================================
+   YATUT NOTIFICATIONS V2
+========================================================= */
+
+.notifications-panel {
+  position: fixed;
+
+  top: 86px;
+  right: 20px;
+
+  z-index: 8500;
+
+  width:
+    min(
+      430px,
+      calc(
+        100vw - 28px
+      )
+    );
+
+  max-height:
+    calc(
+      100dvh - 104px
+    );
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    rgba(
+      225,
+      227,
+      235,
+      0.96
+    );
+
+  border-radius: 26px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.985
+    );
+
+  box-shadow:
+    0 30px 90px
+    rgba(
+      19,
+      22,
+      36,
+      0.18
+    );
+
+  backdrop-filter:
+    blur(24px);
+
+  -webkit-backdrop-filter:
+    blur(24px);
+
+  animation:
+    yatutNotificationsOpen
+    0.2s
+    ease;
+}
+
+@keyframes yatutNotificationsOpen {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(-8px)
+      scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.notifications-header {
+  min-height: 82px;
+
+  padding:
+    15px
+    16px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  border-bottom:
+    1px solid
+    #eceef3;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.96
+    );
+}
+
+.notifications-heading {
+  min-width: 0;
+}
+
+.notifications-brand {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: #635bff;
+
+  font-size: 11px;
+  font-weight: 900;
+
+  letter-spacing:
+    0.13em;
+}
+
+.notifications-title-row {
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+}
+
+.notifications-title-row h2 {
+  margin: 0;
+
+  color: #20232d;
+
+  font-size: 24px;
+  font-weight: 900;
+
+  line-height: 1.1;
+
+  letter-spacing:
+    -0.6px;
+}
+
+.notifications-title-row b {
+  min-width: 28px;
+  height: 28px;
+
+  padding:
+    0
+    7px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 9px;
+
+  background: #eceaff;
+
+  color: #635bff;
+
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.notifications-header-actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+}
+
+.notifications-read-all {
+  min-height: 38px;
+
+  padding:
+    0
+    12px;
+
+  border: 0;
+
+  border-radius: 11px;
+
+  background: #f0efff;
+
+  color: #635bff;
+
+  font-size: 11px;
+  font-weight: 850;
+
+  cursor: pointer;
+
+  transition:
+    background 0.16s ease,
+    transform 0.16s ease;
+}
+
+.notifications-read-all:hover {
+  background: #e5e2ff;
+
+  transform:
+    translateY(-1px);
+}
+
+.notifications-close,
+.notifications-global-menu-button {
+  width: 38px;
+  height: 38px;
+
+  flex:
+    0 0
+    38px;
+
+  display: grid;
+
+  place-items: center;
+
+  border: 0;
+
+  border-radius: 11px;
+
+  background: #f1f2f5;
+
+  color: #676c78;
+
+  cursor: pointer;
+
+  transition:
+    background 0.16s ease,
+    color 0.16s ease;
+}
+
+.notifications-close:hover,
+.notifications-global-menu-button:hover {
+  background: #e9eaf0;
+
+  color: #343844;
+}
+
+/* =========================================================
+   GLOBAL MENU
+========================================================= */
+
+.notifications-global-menu-wrap {
+  position: relative;
+}
+
+.notifications-global-menu {
+  position: absolute;
+
+  top: 44px;
+  right: 0;
+
+  z-index: 100;
+
+  width: 200px;
+
+  padding: 7px;
+
+  border:
+    1px solid
+    #e5e6ed;
+
+  border-radius: 13px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 18px 44px
+    rgba(
+      24,
+      27,
+      42,
+      0.16
+    );
+}
+
+.notifications-global-menu button {
+  width: 100%;
+
+  min-height: 40px;
+
+  padding:
+    0
+    10px;
+
+  border: 0;
+
+  border-radius: 9px;
+
+  background: transparent;
+
+  color: #555a66;
+
+  text-align: left;
+
+  font-size: 12px;
+  font-weight: 750;
+
+  cursor: pointer;
+}
+
+.notifications-global-menu button:hover {
+  background: #f4f5f8;
+}
+
+.notifications-global-menu button.danger {
+  color: #e05262;
+}
+
+.notifications-global-menu button.danger:hover {
+  background: #fff1f3;
+}
+
+.notifications-global-menu button:disabled {
+  opacity: 0.4;
+
+  cursor: default;
+}
+
+/* =========================================================
+   PULSE SUMMARY
+========================================================= */
+
+.notifications-pulse {
+  margin:
+    12px
+    12px
+    8px;
+
+  min-height: 60px;
+
+  padding:
+    10px
+    12px;
+
+  display: grid;
+
+  grid-template-columns:
+    38px
+    minmax(0, 1fr)
+    auto;
+
+  align-items: center;
+
+  gap: 10px;
+
+  border:
+    1px solid
+    #ebe9ff;
+
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(
+        99,
+        91,
+        255,
+        0.08
+      ),
+      rgba(
+        32,
+        199,
+        199,
+        0.025
+      )
+    );
+}
+
+.notifications-pulse-icon {
+  width: 38px;
+  height: 38px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #746cff,
+      #635bff
+    );
+
+  color: #ffffff;
+
+  box-shadow:
+    0 8px 20px
+    rgba(
+      99,
+      91,
+      255,
+      0.18
+    );
+}
+
+.notifications-pulse
+> div:nth-child(2) {
+  display: flex;
+
+  flex-direction: column;
+
+  min-width: 0;
+}
+
+.notifications-pulse
+> div:nth-child(2)
+span {
+  color: #8c87c5;
+
+  font-size: 9px;
+  font-weight: 900;
+
+  letter-spacing:
+    0.1em;
+}
+
+.notifications-pulse strong {
+  margin-top: 2px;
+
+  color: #3e414d;
+
+  font-size: 13px;
+}
+
+.notifications-live-dot {
+  width: 10px;
+  height: 10px;
+
+  border-radius: 50%;
+
+  background:
+    #cfd2da;
+}
+
+.notifications-live-dot.active {
+  background: #635bff;
+
+  box-shadow:
+    0 0 0 5px
+    rgba(
+      99,
+      91,
+      255,
+      0.09
+    );
+
+  animation:
+    yatutNotificationLive
+    2s
+    ease-in-out
+    infinite;
+}
+
+@keyframes yatutNotificationLive {
+  0%,
+  100% {
+    transform:
+      scale(1);
+  }
+
+  50% {
+    transform:
+      scale(1.12);
+  }
+}
+
+/* =========================================================
+   FILTERS
+   НОВАЯ КОМПАКТНАЯ СЕТКА
+========================================================= */
+
+.notifications-filters {
+  padding:
+    8px
+    12px
+    12px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  gap: 6px;
+
+  overflow: visible;
+
+  border-bottom:
+    1px solid
+    #f0f1f4;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.98
+    );
+}
+
+.notifications-filters button {
+  width: 100%;
+  min-width: 0;
+  min-height: 36px;
+
+  padding:
+    0
+    7px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 5px;
+
+  border: 0;
+
+  border-radius: 10px;
+
+  background:
+    #f5f5f8;
+
+  color:
+    #777c87;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  line-height: 1;
+
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  transition:
+    background 0.16s ease,
+    color 0.16s ease,
+    transform 0.16s ease;
+}
+
+.notifications-filters button:hover {
+  background:
+    #eeeeF4;
+
+  color:
+    #4f5460;
+
+  transform:
+    translateY(-1px);
+}
+
+.notifications-filters button.active {
+  background:
+    linear-gradient(
+      145deg,
+      #252532,
+      #171827
+    );
+
+  color:
+    #ffffff;
+
+  box-shadow:
+    0 6px 15px
+    rgba(
+      23,
+      24,
+      39,
+      0.13
+    );
+}
+
+.notifications-filters
+button
+> span {
+  min-width: 0;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+.notifications-filters button b {
+  min-width: 18px;
+  height: 18px;
+
+  padding:
+    0
+    5px;
+
+  flex:
+    0 0
+    auto;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 6px;
+
+  background:
+    rgba(
+      99,
+      91,
+      255,
+      0.11
+    );
+
+  color: #635bff;
+
+  font-size: 8px;
+  font-weight: 900;
+}
+
+.notifications-filters
+button.active
+b {
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.16
+    );
+
+  color: #ffffff;
+}
+
+/* Последние три кнопки второй строки
+   занимают пространство красиво */
+
+.notifications-filters
+button:nth-child(5) {
+  grid-column:
+    1 / 2;
+}
+
+.notifications-filters
+button:nth-child(6) {
+  grid-column:
+    2 / 4;
+}
+
+.notifications-filters
+button:nth-child(7) {
+  grid-column:
+    4 / 5;
+}
+
+/* =========================================================
+   SCROLL
+========================================================= */
+
+.notifications-scroll {
+  min-height: 0;
+
+  flex: 1;
+
+  overflow-y: auto;
+
+  overscroll-behavior:
+    contain;
+}
+
+.notifications-groups {
+  display: flex;
+
+  flex-direction: column;
+}
+
+/* =========================================================
+   GROUP
+========================================================= */
+
+.notifications-group {
+  display: flex;
+
+  flex-direction: column;
+}
+
+.notifications-group-header {
+  min-height: 43px;
+
+  padding:
+    12px
+    15px
+    8px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+}
+
+.notifications-group-header h3 {
+  margin: 0;
+
+  color: #6b707c;
+
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.notifications-group-header span {
+  min-width: 23px;
+  height: 23px;
+
+  padding:
+    0
+    6px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 8px;
+
+  background:
+    #f2f3f6;
+
+  color: #9296a0;
+
+  font-size: 9px;
+  font-weight: 850;
+}
+
+/* =========================================================
+   LIST
+========================================================= */
+
+.notifications-list {
+  display: flex;
+
+  flex-direction: column;
+}
+
+/* =========================================================
+   ITEM
+========================================================= */
+
+.notification-item {
+  position: relative;
+
+  padding:
+    14px
+    12px
+    14px
+    15px;
+
+  display: grid;
+
+  grid-template-columns:
+    54px
+    minmax(0, 1fr)
+    32px;
+
+  align-items: start;
+
+  gap: 12px;
+
+  border-bottom:
+    1px solid
+    #f0f1f4;
+
+  background:
+    #ffffff;
+
+  cursor: pointer;
+
+  transition:
+    background 0.16s ease;
+}
+
+.notification-item:hover {
+  background:
+    #f8f8fb;
+}
+
+.notification-item.unread {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(
+        99,
+        91,
+        255,
+        0.08
+      ),
+      rgba(
+        99,
+        91,
+        255,
+        0.018
+      )
+    );
+}
+
+.notification-item.unread:hover {
+  background:
+    #f3f1ff;
+}
+
+.notification-item.important {
+  box-shadow:
+    inset
+    3px
+    0
+    0
+    rgba(
+      245,
+      158,
+      11,
+      0.8
+    );
+}
+
+/* =========================================================
+   AVATAR
+========================================================= */
+
+.notification-avatar-area {
+  position: relative;
+
+  width: 54px;
+  height: 54px;
+}
+
+.notification-avatar {
+  width: 54px;
+  height: 54px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #f0efff,
+      #dedaff
+    );
+
+  color: #635bff;
+
+  font-size: 18px;
+  font-weight: 900;
+}
+
+/* =========================================================
+   UNREAD AVATAR POINT
+========================================================= */
+
+.notification-avatar-pulse {
+  position: absolute;
+
+  right: -2px;
+  bottom: 1px;
+
+  width: 14px;
+  height: 14px;
+
+  border:
+    3px solid
+    #ffffff;
+
+  border-radius: 50%;
+
+  background:
+    #635bff;
+}
+
+/* =========================================================
+   HIDE OLD TYPE ICONS
+========================================================= */
+
+.notification-type-icon,
+.notification-type-icon.violet,
+.notification-type-icon.pink,
+.notification-type-icon.coral,
+.notification-type-icon.blue,
+.notification-type-icon.cyan,
+.notification-type-icon.amber {
+  display:
+    none !important;
+}
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.notification-content {
+  min-width: 0;
+
+  padding-top: 1px;
+}
+
+.notification-top-row {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 7px;
+}
+
+.notification-top-row strong {
+  min-width: 0;
+
+  color: #343742;
+
+  font-size: 14px;
+  font-weight: 820;
+
+  line-height: 1.35;
+}
+
+.notification-unread-dot {
+  width: 9px;
+  height: 9px;
+
+  flex:
+    0 0
+    9px;
+
+  margin-top: 4px;
+
+  border-radius: 50%;
+
+  background:
+    #635bff;
+
+  box-shadow:
+    0 0 0 4px
+    rgba(
+      99,
+      91,
+      255,
+      0.08
+    );
+}
+
+.notification-content p {
+  margin:
+    5px
+    0
+    0;
+
+  color: #858a95;
+
+  font-size: 13px;
+
+  line-height: 1.45;
+}
+
+/* =========================================================
+   META
+========================================================= */
+
+.notification-meta-row {
+  margin-top: 7px;
+
+  display: flex;
+
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap: 6px;
+}
+
+.notification-time {
+  color: #9da1aa;
+
+  font-size: 11px;
+}
+
+.notification-important-label,
+.notification-context-label {
+  min-height: 23px;
+
+  padding:
+    0
+    7px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  border-radius: 7px;
+
+  font-size: 9px;
+  font-weight: 850;
+}
+
+.notification-important-label {
+  background:
+    #fff5dc;
+
+  color:
+    #a86a00;
+}
+
+.notification-context-label.nearby {
+  background:
+    #e9fbfb;
+
+  color:
+    #169799;
+}
+
+.notification-context-label.event {
+  background:
+    #fff0f3;
+
+  color:
+    #d64d6d;
+}
+
+/* =========================================================
+   REQUEST ACTIONS
+========================================================= */
+
+.notification-request-actions {
+  margin-top: 11px;
+
+  display: grid;
+
+  grid-template-columns:
+    1fr
+    1fr;
+
+  gap: 7px;
+}
+
+.notification-request-actions button {
+  min-height: 40px;
+
+  border: 0;
+
+  border-radius: 11px;
+
+  font-size: 12px;
+  font-weight: 850;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.15s ease,
+    background 0.15s ease;
+}
+
+.notification-request-actions
+button:hover {
+  transform:
+    translateY(-1px);
+}
+
+.notification-request-actions
+.accept {
+  background:
+    linear-gradient(
+      145deg,
+      #726aff,
+      #635bff
+    );
+
+  color:
+    #ffffff;
+
+  box-shadow:
+    0 7px 18px
+    rgba(
+      99,
+      91,
+      255,
+      0.17
+    );
+}
+
+.notification-request-actions
+.accept:hover {
+  background:
+    #554de8;
+}
+
+.notification-request-actions
+.decline {
+  background:
+    #f0f1f4;
+
+  color:
+    #656a75;
+}
+
+.notification-request-actions
+.decline:hover {
+  background:
+    #e6e7ec;
+}
+
+/* =========================================================
+   INLINE ACTION
+========================================================= */
+
+.notification-inline-action {
+  min-height: 34px;
+
+  margin-top: 9px;
+
+  padding:
+    0
+    10px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  border: 0;
+
+  border-radius: 9px;
+
+  background:
+    #f0efff;
+
+  color:
+    #635bff;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+.notification-inline-action:hover {
+  background:
+    #e7e4ff;
+}
+
+.notification-inline-action.security {
+  background:
+    #fff5df;
+
+  color:
+    #9d6708;
+}
+
+.notification-inline-action.security:hover {
+  background:
+    #ffedc6;
+}
+
+/* =========================================================
+   ITEM MENU
+========================================================= */
+
+.notification-menu-wrap {
+  position: relative;
+}
+
+.notification-more {
+  width: 32px;
+  height: 32px;
+
+  display: grid;
+
+  place-items: center;
+
+  border: 0;
+
+  border-radius: 9px;
+
+  background:
+    transparent;
+
+  color:
+    #9296a0;
+
+  cursor: pointer;
+}
+
+.notification-more:hover {
+  background:
+    #eceef2;
+
+  color:
+    #555a66;
+}
+
+.notification-menu {
+  position: absolute;
+
+  right: 0;
+  top: 36px;
+
+  z-index: 60;
+
+  width: 190px;
+
+  padding: 7px;
+
+  border:
+    1px solid
+    #e6e7ed;
+
+  border-radius: 12px;
+
+  background:
+    #ffffff;
+
+  box-shadow:
+    0 16px 38px
+    rgba(
+      23,
+      26,
+      39,
+      0.15
+    );
+}
+
+.notification-menu button {
+  width: 100%;
+
+  min-height: 38px;
+
+  padding:
+    0
+    9px;
+
+  border: 0;
+
+  border-radius: 8px;
+
+  background:
+    transparent;
+
+  color:
+    #5d626e;
+
+  text-align: left;
+
+  font-size: 11px;
+  font-weight: 750;
+
+  cursor: pointer;
+}
+
+.notification-menu button:hover {
+  background:
+    #f4f5f8;
+}
+
+.notification-menu button.danger {
+  color:
+    #e05262;
+}
+
+.notification-menu button.danger:hover {
+  background:
+    #fff0f2;
+}
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.notifications-empty {
+  min-height: 420px;
+
+  padding: 34px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+}
+
+.notifications-empty-icon {
+  width: 68px;
+  height: 68px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 21px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #efedff,
+      #e2deff
+    );
+
+  color:
+    #635bff;
+
+  box-shadow:
+    0 12px 30px
+    rgba(
+      99,
+      91,
+      255,
+      0.11
+    );
+}
+
+.notifications-empty > span {
+  margin-top: 15px;
+
+  color:
+    #635bff;
+
+  font-size: 10px;
+  font-weight: 900;
+
+  letter-spacing:
+    0.12em;
+}
+
+.notifications-empty h3 {
+  margin:
+    6px
+    0
+    6px;
+
+  color:
+    #30333e;
+
+  font-size: 19px;
+}
+
+.notifications-empty p {
+  max-width: 270px;
+
+  margin: 0;
+
+  color:
+    #9296a0;
+
+  font-size: 13px;
+
+  line-height: 1.5;
+}
+
+.notifications-empty > button {
+  min-height: 39px;
+
+  margin-top: 15px;
+
+  padding:
+    0
+    14px;
+
+  border: 0;
+
+  border-radius: 11px;
+
+  background:
+    #635bff;
+
+  color:
+    #ffffff;
+
+  font-size: 11px;
+  font-weight: 850;
+
+  cursor: pointer;
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.notifications-footer {
+  min-height: 62px;
+
+  padding:
+    9px
+    11px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 8px;
+
+  border-top:
+    1px solid
+    #eceef3;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.98
+    );
+}
+
+.notifications-footer button {
+  min-height: 42px;
+
+  padding:
+    0
+    11px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  border: 0;
+
+  border-radius: 11px;
+
+  background:
+    transparent;
+
+  color:
+    #737884;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition:
+    background 0.16s ease,
+    color 0.16s ease;
+}
+
+.notifications-footer button:hover {
+  background:
+    #f2f1ff;
+
+  color:
+    #635bff;
+}
+
+.notifications-all-button {
+  margin-left: auto;
+}
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+.notifications-scroll::-webkit-scrollbar {
+  width: 7px;
+}
+
+.notifications-scroll::-webkit-scrollbar-track {
+  background:
+    transparent;
+}
+
+.notifications-scroll::-webkit-scrollbar-thumb {
+  border:
+    2px solid
+    transparent;
+
+  border-radius: 999px;
+
+  background:
+    #dcdde4;
+
+  background-clip:
+    padding-box;
+}
+
+/* =========================================================
+   TOPBAR BADGE
+========================================================= */
+
+.topbar-actions
+button[data-notification-trigger] {
+  position:
+    relative !important;
+
+  overflow:
+    visible !important;
+}
+
+.topbar-actions
+button[data-notification-trigger]
+.notification-dot {
+  position:
+    absolute !important;
+
+  top:
+    4px !important;
+
+  right:
+    4px !important;
+
+  width:
+    auto !important;
+
+  min-width:
+    19px !important;
+
+  height:
+    19px !important;
+
+  padding:
+    0
+    5px !important;
+
+  display:
+    flex !important;
+
+  align-items:
+    center !important;
+
+  justify-content:
+    center !important;
+
+  border:
+    2px solid
+    #ffffff !important;
+
+  border-radius:
+    999px !important;
+
+  background:
+    #ff4f8b !important;
+
+  color:
+    #ffffff !important;
+
+  font-size:
+    10px !important;
+
+  font-weight:
+    900 !important;
+
+  line-height:
+    1 !important;
+
+  letter-spacing:
+    0 !important;
+
+  white-space:
+    nowrap !important;
+
+  box-sizing:
+    border-box !important;
+
+  box-shadow:
+    0 5px 14px
+    rgba(
+      255,
+      79,
+      139,
+      0.28
+    ) !important;
+
+  transform:
+    none !important;
+
+  pointer-events:
+    none !important;
+}
+
+.topbar-actions
+button[data-notification-trigger].active {
+  background:
+    #eceaff !important;
+
+  color:
+    #635bff !important;
+}
+
+/* =========================================================
+   FOCUS
+========================================================= */
+
+.notifications-panel
+button:focus-visible,
+.topbar-actions
+button[data-notification-trigger]:focus-visible {
+  outline:
+    3px solid
+    rgba(
+      99,
+      91,
+      255,
+      0.22
+    );
+
+  outline-offset:
+    2px;
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (
+  max-width: 1000px
+) {
+
+  .notifications-panel {
+    right: 12px;
+
+    width:
+      min(
+        420px,
+        calc(
+          100vw - 24px
+        )
+      );
+  }
+
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (
+  max-width: 767px
+) {
+
+  .notifications-panel {
+    top: auto;
+
+    right: 0;
+
+    bottom:
+      calc(
+        70px +
+        env(
+          safe-area-inset-bottom
+        )
+      );
+
+    left: 0;
+
+    width: 100%;
+
+    max-height:
+      calc(
+        100dvh - 88px
+      );
+
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+
+    border-radius:
+      26px
+      26px
+      0
+      0;
+
+    animation:
+      yatutNotificationsMobileOpen
+      0.22s
+      ease;
+  }
+
+  @keyframes yatutNotificationsMobileOpen {
+    from {
+      opacity: 0;
+
+      transform:
+        translateY(30px);
+    }
+
+    to {
+      opacity: 1;
+
+      transform:
+        translateY(0);
+    }
+  }
+
+  .notifications-header {
+    min-height: 74px;
+
+    padding:
+      12px;
+  }
+
+  .notifications-title-row h2 {
+    font-size: 21px;
+  }
+
+  .notifications-read-all {
+    padding:
+      0
+      9px;
+
+    font-size:
+      10px;
+  }
+
+  .notifications-filters {
+    padding:
+      7px
+      9px
+      10px;
+
+    gap: 5px;
+  }
+
+  .notifications-filters button {
+    min-height: 34px;
+
+    padding:
+      0
+      5px;
+
+    font-size:
+      9px;
+  }
+
+  .notifications-filters button b {
+    min-width: 17px;
+    height: 17px;
+
+    font-size: 7px;
+  }
+
+  .notification-item {
+    grid-template-columns:
+      50px
+      minmax(0, 1fr)
+      30px;
+
+    gap:
+      10px;
+
+    padding:
+      13px
+      10px
+      13px
+      12px;
+  }
+
+  .notification-avatar-area,
+  .notification-avatar {
+    width:
+      50px;
+
+    height:
+      50px;
+  }
+
+  .notification-avatar {
+    border-radius:
+      16px;
+  }
+
+  .notification-top-row
+  strong {
+    font-size:
+      13px;
+  }
+
+  .notification-content p {
+    font-size:
+      12px;
+  }
+
+}
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (
+  max-width: 430px
+) {
+
+  .notifications-read-all {
+    font-size: 0;
+  }
+
+  .notifications-read-all::after {
+    content:
+      "Прочитати";
+
+    font-size:
+      10px;
+  }
+
+  .notifications-global-menu-button {
+    display: none;
+  }
+
+  .notifications-pulse {
+    margin:
+      9px
+      9px
+      6px;
+  }
+
+  .notifications-filters {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(
+          0,
+          1fr
+        )
+      );
+  }
+
+  .notifications-filters
+  button:nth-child(5),
+  .notifications-filters
+  button:nth-child(6),
+  .notifications-filters
+  button:nth-child(7) {
+    grid-column:
+      auto;
+  }
+
+  .notifications-filters
+  button:last-child {
+    grid-column:
+      1 / -1;
+  }
+
+  .notifications-footer
+  .notifications-settings-button {
+    width:
+      42px;
+
+    padding: 0;
+  }
+
+  .notifications-footer
+  .notifications-settings-button
+  span {
+    display: none;
+  }
+
+  .notifications-footer
+  .notifications-all-button {
+    flex: 1;
+  }
+
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+
+  .notifications-panel,
+  .notifications-panel *,
+  .topbar-actions
+  button[data-notification-trigger]
+  * {
+    animation:
+      none !important;
+
+    transition:
+      none !important;
+
+    scroll-behavior:
+      auto !important;
+  }
+
+}

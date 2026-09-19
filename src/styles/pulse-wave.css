@@ -1,0 +1,1567 @@
+/* =========================================================
+   ЯТУТ PULSE
+   WAVE SYSTEM
+========================================================= */
+
+.pulse-wave {
+  position: relative;
+
+  min-width: 0;
+
+  padding: 20px;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    rgba(
+      124,
+      58,
+      237,
+      0.22
+    );
+
+  border-radius:
+    26px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #1a1034 0%,
+      #24114c 38%,
+      #31125d 66%,
+      #15102d 100%
+    );
+
+  color:
+    #fff;
+
+  box-shadow:
+    0 22px 58px
+    rgba(
+      31,
+      14,
+      70,
+      0.2
+    );
+}
+
+
+/* =========================================================
+   AMBIENT GLOW
+========================================================= */
+
+.pulse-wave__glow {
+  position: absolute;
+
+  width:
+    320px;
+
+  height:
+    320px;
+
+  border-radius:
+    50%;
+
+  filter:
+    blur(
+      80px
+    );
+
+  pointer-events:
+    none;
+}
+
+
+.pulse-wave__glow--one {
+  top:
+    -170px;
+
+  left:
+    -100px;
+
+  background:
+    rgba(
+      124,
+      58,
+      237,
+      0.34
+    );
+}
+
+
+.pulse-wave__glow--two {
+  right:
+    -130px;
+
+  bottom:
+    -190px;
+
+  background:
+    rgba(
+      192,
+      38,
+      211,
+      0.28
+    );
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.pulse-wave__header {
+  position: relative;
+
+  z-index: 2;
+
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content: space-between;
+
+  gap:
+    18px;
+}
+
+
+.pulse-wave__brand {
+  min-width: 0;
+
+  display: flex;
+
+  align-items: flex-start;
+
+  gap:
+    12px;
+}
+
+
+.pulse-wave__brand-icon {
+  width:
+    48px;
+
+  height:
+    48px;
+
+  flex:
+    0 0
+    48px;
+
+  display: grid;
+
+  place-items: center;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.16
+    );
+
+  border-radius:
+    15px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #c026d3
+    );
+
+  box-shadow:
+    0 10px 28px
+    rgba(
+      124,
+      58,
+      237,
+      0.34
+    );
+}
+
+
+.pulse-wave__brand
+> div:last-child {
+  min-width:
+    0;
+}
+
+
+.pulse-wave__brand
+span {
+  color:
+    #bca6ff;
+
+  font-size:
+    8px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    1px;
+}
+
+
+.pulse-wave__brand
+h2 {
+  margin:
+    3px 0 4px;
+
+  font-size:
+    23px;
+
+  line-height:
+    1;
+}
+
+
+.pulse-wave__brand
+p {
+  max-width:
+    380px;
+
+  margin: 0;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.62
+    );
+
+  font-size:
+    9px;
+
+  line-height:
+    1.45;
+}
+
+
+/* =========================================================
+   LIVE
+========================================================= */
+
+.pulse-wave__live {
+  min-height:
+    32px;
+
+  padding:
+    0 10px;
+
+  flex:
+    0 0 auto;
+
+  display: flex;
+
+  align-items: center;
+
+  gap:
+    6px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.12
+    );
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.07
+    );
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.78
+    );
+
+  font-size:
+    7px;
+
+  font-weight:
+    800;
+}
+
+
+.pulse-wave__live
+i {
+  width:
+    7px;
+
+  height:
+    7px;
+
+  border-radius:
+    50%;
+
+  background:
+    #22c55e;
+
+  box-shadow:
+    0 0 9px
+    rgba(
+      34,
+      197,
+      94,
+      0.9
+    );
+
+  animation:
+    pulse-wave-online
+    2.4s
+    ease-in-out
+    infinite;
+}
+
+
+/* =========================================================
+   PROMPT
+========================================================= */
+
+.pulse-wave__prompt {
+  position: relative;
+
+  z-index: 2;
+
+  margin-top:
+    18px;
+
+  padding:
+    12px 14px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap:
+    16px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.1
+    );
+
+  border-radius:
+    16px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.055
+    );
+
+  backdrop-filter:
+    blur(
+      14px
+    );
+}
+
+
+.pulse-wave__prompt-main {
+  min-width: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  gap:
+    9px;
+}
+
+
+.pulse-wave__prompt-icon {
+  width:
+    34px;
+
+  height:
+    34px;
+
+  flex:
+    0 0
+    34px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius:
+    11px;
+
+  background:
+    rgba(
+      167,
+      139,
+      250,
+      0.14
+    );
+
+  color:
+    #d8c7ff;
+}
+
+
+.pulse-wave__prompt-main
+> div {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    2px;
+}
+
+
+.pulse-wave__prompt-main
+small {
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.38
+    );
+
+  font-size:
+    6px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    0.9px;
+}
+
+
+.pulse-wave__prompt-main
+strong {
+  overflow:
+    hidden;
+
+  font-size:
+    12px;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
+}
+
+
+.pulse-wave__prompt-stats {
+  flex:
+    0 0 auto;
+
+  display: flex;
+
+  align-items: center;
+
+  gap:
+    7px;
+}
+
+
+.pulse-wave__prompt-stats
+span {
+  min-height:
+    28px;
+
+  padding:
+    0 8px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap:
+    4px;
+
+  border-radius:
+    9px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.06
+    );
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.65
+    );
+
+  font-size:
+    7px;
+}
+
+
+/* =========================================================
+   TIMELINE
+========================================================= */
+
+.pulse-wave-timeline {
+  position: relative;
+
+  z-index: 2;
+
+  margin-top:
+    18px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  gap:
+    28px;
+}
+
+
+/* =========================================================
+   STEP
+========================================================= */
+
+.pulse-wave-step {
+  position: relative;
+
+  min-width: 0;
+}
+
+
+.pulse-wave-step__connector {
+  position: absolute;
+
+  top:
+    50%;
+
+  left:
+    calc(
+      100% + 4px
+    );
+
+  z-index: 3;
+
+  width:
+    20px;
+
+  display: flex;
+
+  align-items: center;
+
+  color:
+    #a78bfa;
+
+  transform:
+    translateY(
+      -50%
+    );
+}
+
+
+.pulse-wave-step__connector
+span {
+  position: absolute;
+
+  left:
+    -8px;
+
+  width:
+    22px;
+
+  height:
+    1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(
+        167,
+        139,
+        250,
+        0.12
+      ),
+      rgba(
+        192,
+        38,
+        211,
+        0.8
+      )
+    );
+
+  box-shadow:
+    0 0 8px
+    rgba(
+      192,
+      38,
+      211,
+      0.4
+    );
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.pulse-wave-card {
+  width:
+    100%;
+
+  min-width:
+    0;
+
+  padding: 0;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.11
+    );
+
+  border-radius:
+    17px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.055
+    );
+
+  color:
+    #fff;
+
+  text-align:
+    left;
+
+  cursor:
+    pointer;
+
+  transition:
+    transform
+    250ms
+    var(
+      --pulse-ease
+    ),
+    border-color
+    250ms
+    var(
+      --pulse-ease
+    ),
+    box-shadow
+    250ms
+    var(
+      --pulse-ease
+    );
+}
+
+
+.pulse-wave-card:hover {
+  transform:
+    translateY(
+      -4px
+    );
+
+  border-color:
+    rgba(
+      192,
+      38,
+      211,
+      0.34
+    );
+
+  box-shadow:
+    0 14px 34px
+    rgba(
+      0,
+      0,
+      0,
+      0.25
+    );
+}
+
+
+/* =========================================================
+   MEDIA
+========================================================= */
+
+.pulse-wave-card__media {
+  position: relative;
+
+  aspect-ratio:
+    4 / 3;
+
+  overflow: hidden;
+
+  background:
+    #0e0a1d;
+}
+
+
+.pulse-wave-card__media
+img {
+  width:
+    100%;
+
+  height:
+    100%;
+
+  display: block;
+
+  object-fit:
+    cover;
+
+  transition:
+    transform
+    450ms
+    var(
+      --pulse-ease
+    );
+}
+
+
+.pulse-wave-card:hover
+.pulse-wave-card__media
+img {
+  transform:
+    scale(
+      1.045
+    );
+}
+
+
+.pulse-wave-card__shade {
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(
+        7,
+        5,
+        17,
+        0.05
+      )
+      15%,
+      rgba(
+        7,
+        5,
+        17,
+        0.82
+      )
+      100%
+    );
+}
+
+
+/* =========================================================
+   INDEX
+========================================================= */
+
+.pulse-wave-card__index {
+  position: absolute;
+
+  top:
+    8px;
+
+  left:
+    8px;
+
+  z-index: 3;
+
+  min-width:
+    27px;
+
+  height:
+    23px;
+
+  display: grid;
+
+  place-items: center;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.16
+    );
+
+  border-radius:
+    8px;
+
+  background:
+    rgba(
+      15,
+      10,
+      32,
+      0.68
+    );
+
+  backdrop-filter:
+    blur(
+      9px
+    );
+
+  color:
+    #d4c4ff;
+
+  font-size:
+    7px;
+
+  font-weight:
+    900;
+}
+
+
+/* =========================================================
+   PLAY
+========================================================= */
+
+.pulse-wave-card__play {
+  position: absolute;
+
+  top:
+    50%;
+
+  left:
+    50%;
+
+  z-index: 3;
+
+  width:
+    36px;
+
+  height:
+    36px;
+
+  display: grid;
+
+  place-items: center;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.2
+    );
+
+  border-radius:
+    50%;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.9
+    );
+
+  color:
+    #6d28d9;
+
+  box-shadow:
+    0 9px 24px
+    rgba(
+      0,
+      0,
+      0,
+      0.25
+    );
+
+  transform:
+    translate(
+      -50%,
+      -50%
+    );
+}
+
+
+/* =========================================================
+   CITY
+========================================================= */
+
+.pulse-wave-card__city {
+  position: absolute;
+
+  left:
+    10px;
+
+  right:
+    10px;
+
+  bottom:
+    9px;
+
+  z-index: 3;
+
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    2px;
+}
+
+
+.pulse-wave-card__city
+strong {
+  overflow:
+    hidden;
+
+  font-size:
+    13px;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
+}
+
+
+.pulse-wave-card__city
+span {
+  overflow:
+    hidden;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.66
+    );
+
+  font-size:
+    7px;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
+}
+
+
+/* =========================================================
+   FOOTER CARD
+========================================================= */
+
+.pulse-wave-card__footer {
+  min-width: 0;
+
+  padding:
+    9px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap:
+    7px;
+}
+
+
+.pulse-wave-card__author {
+  min-width: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  gap:
+    6px;
+}
+
+
+.pulse-wave-card__author
+> span {
+  width:
+    27px;
+
+  height:
+    27px;
+
+  flex:
+    0 0
+    27px;
+
+  display: grid;
+
+  place-items: center;
+
+  border:
+    2px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.18
+    );
+
+  border-radius:
+    50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #e9ddff,
+      #c8b5ff
+    );
+
+  color:
+    #5b21b6;
+
+  font-size:
+    8px;
+
+  font-weight:
+    900;
+}
+
+
+.pulse-wave-card__author
+> div {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction:
+    column;
+}
+
+
+.pulse-wave-card__author
+strong {
+  overflow:
+    hidden;
+
+  font-size:
+    7px;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
+}
+
+
+.pulse-wave-card__author
+small {
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.4
+    );
+
+  font-size:
+    6px;
+}
+
+
+.pulse-wave-card__views {
+  flex:
+    0 0 auto;
+
+  display: flex;
+
+  align-items: center;
+
+  gap:
+    3px;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.55
+    );
+
+  font-size:
+    7px;
+}
+
+
+/* =========================================================
+   WAVE FOOTER
+========================================================= */
+
+.pulse-wave__footer {
+  position: relative;
+
+  z-index: 2;
+
+  margin-top:
+    18px;
+
+  padding-top:
+    15px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap:
+    18px;
+
+  border-top:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.08
+    );
+}
+
+
+.pulse-wave__footer-copy {
+  min-width: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  gap:
+    9px;
+}
+
+
+.pulse-wave__footer-wave {
+  color:
+    #c084fc;
+
+  font-size:
+    28px;
+
+  line-height:
+    1;
+}
+
+
+.pulse-wave__footer-copy
+> div {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    2px;
+}
+
+
+.pulse-wave__footer-copy
+strong {
+  font-size:
+    10px;
+}
+
+
+.pulse-wave__footer-copy
+p {
+  margin: 0;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.46
+    );
+
+  font-size:
+    7px;
+}
+
+
+/* =========================================================
+   CONTINUE BUTTON
+========================================================= */
+
+.pulse-continue-story-button {
+  position: relative;
+
+  min-width:
+    190px;
+
+  min-height:
+    52px;
+
+  padding:
+    7px 11px;
+
+  flex:
+    0 0 auto;
+
+  display: grid;
+
+  grid-template-columns:
+    35px
+    minmax(
+      0,
+      1fr
+    )
+    auto;
+
+  align-items: center;
+
+  gap:
+    8px;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.18
+    );
+
+  border-radius:
+    15px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #9333ea,
+      #c026d3
+    );
+
+  color:
+    #fff;
+
+  text-align:
+    left;
+
+  cursor:
+    pointer;
+
+  box-shadow:
+    0 12px 28px
+    rgba(
+      124,
+      58,
+      237,
+      0.28
+    );
+
+  transition:
+    transform
+    180ms
+    var(
+      --pulse-ease
+    ),
+    box-shadow
+    180ms
+    var(
+      --pulse-ease
+    );
+}
+
+
+.pulse-continue-story-button:hover {
+  transform:
+    translateY(
+      -2px
+    );
+
+  box-shadow:
+    0 17px 34px
+    rgba(
+      124,
+      58,
+      237,
+      0.34
+    );
+}
+
+
+.pulse-continue-story-button__icon {
+  width:
+    35px;
+
+  height:
+    35px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius:
+    11px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.14
+    );
+}
+
+
+.pulse-continue-story-button__copy {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    2px;
+}
+
+
+.pulse-continue-story-button__copy
+strong {
+  font-size:
+    9px;
+}
+
+
+.pulse-continue-story-button__copy
+small {
+  overflow: hidden;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.61
+    );
+
+  font-size:
+    6px;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
+}
+
+
+.pulse-continue-story-button__spark {
+  opacity:
+    0.65;
+}
+
+
+/* =========================================================
+   ANIMATION
+========================================================= */
+
+@keyframes pulse-wave-online {
+  0%,
+  100% {
+    opacity:
+      0.5;
+
+    transform:
+      scale(
+        0.85
+      );
+  }
+
+  50% {
+    opacity:
+      1;
+
+    transform:
+      scale(
+        1.15
+      );
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (
+  max-width: 1200px
+) {
+  .pulse-wave-timeline {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(
+          0,
+          1fr
+        )
+      );
+
+    gap:
+      16px;
+  }
+
+
+  .pulse-wave-step__connector {
+    display:
+      none;
+  }
+}
+
+
+@media (
+  max-width: 760px
+) {
+  .pulse-wave {
+    padding:
+      15px;
+  }
+
+
+  .pulse-wave__header,
+  .pulse-wave__prompt,
+  .pulse-wave__footer {
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
+  }
+
+
+  .pulse-wave__prompt-stats {
+    width:
+      100%;
+
+    overflow-x:
+      auto;
+  }
+
+
+  .pulse-wave-timeline {
+    display: flex;
+
+    overflow-x:
+      auto;
+
+    padding-bottom:
+      4px;
+
+    scroll-snap-type:
+      x mandatory;
+
+    scrollbar-width:
+      none;
+  }
+
+
+  .pulse-wave-timeline::-webkit-scrollbar {
+    display:
+      none;
+  }
+
+
+  .pulse-wave-step {
+    min-width:
+      220px;
+
+    scroll-snap-align:
+      start;
+  }
+
+
+  .pulse-continue-story-button {
+    width:
+      100%;
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+  .pulse-wave__live
+  i {
+    animation:
+      none;
+  }
+
+
+  .pulse-wave-card,
+  .pulse-wave-card__media
+  img,
+  .pulse-continue-story-button {
+    transition:
+      none;
+  }
+}

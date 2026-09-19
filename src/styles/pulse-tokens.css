@@ -1,0 +1,419 @@
+/* =========================================================
+   ЯТУТ PULSE
+   DESIGN TOKENS
+========================================================= */
+
+:root {
+  /* =======================================================
+     BRAND
+  ======================================================= */
+
+  --pulse-brand:
+    #7c3aed;
+
+  --pulse-brand-dark:
+    #5b21b6;
+
+  --pulse-brand-light:
+    #a78bfa;
+
+
+  /* =======================================================
+     SPECIAL PULSE COLORS
+  ======================================================= */
+
+  --pulse-purple:
+    #9333ea;
+
+  --pulse-pink:
+    #c026d3;
+
+  --pulse-hot-pink:
+    #ec4899;
+
+  --pulse-blue:
+    #2563eb;
+
+  --pulse-orange:
+    #f59e0b;
+
+  --pulse-red:
+    #f43f5e;
+
+
+  /* =======================================================
+     DARK PULSE ENVIRONMENT
+  ======================================================= */
+
+  --pulse-dark-1:
+    #080611;
+
+  --pulse-dark-2:
+    #100820;
+
+  --pulse-dark-3:
+    #161026;
+
+
+  /* =======================================================
+     LIGHT UI
+  ======================================================= */
+
+  --pulse-page:
+    #f7f8fc;
+
+  --pulse-surface:
+    #ffffff;
+
+  --pulse-surface-soft:
+    #fafafe;
+
+  --pulse-surface-purple:
+    #f5f1ff;
+
+  --pulse-border:
+    rgba(
+      221,
+      224,
+      234,
+      0.96
+    );
+
+
+  /* =======================================================
+     TEXT
+  ======================================================= */
+
+  --pulse-text:
+    #161827;
+
+  --pulse-text-soft:
+    #656b79;
+
+  --pulse-text-muted:
+    #969cab;
+
+  --pulse-text-white:
+    #ffffff;
+
+
+  /* =======================================================
+     GRADIENTS
+  ======================================================= */
+
+  --pulse-gradient-primary:
+    linear-gradient(
+      135deg,
+      #7c3aed 0%,
+      #9333ea 45%,
+      #c026d3 100%
+    );
+
+  --pulse-gradient-hot:
+    linear-gradient(
+      135deg,
+      #9333ea 0%,
+      #c026d3 50%,
+      #ec4899 100%
+    );
+
+  --pulse-gradient-dark:
+    linear-gradient(
+      145deg,
+      #080611 0%,
+      #100820 48%,
+      #161026 100%
+    );
+
+
+  /* =======================================================
+     GLOW
+  ======================================================= */
+
+  --pulse-glow-soft:
+    0 0 26px
+    rgba(
+      124,
+      58,
+      237,
+      0.24
+    );
+
+  --pulse-glow-medium:
+    0 0 42px
+    rgba(
+      147,
+      51,
+      234,
+      0.32
+    );
+
+  --pulse-glow-strong:
+    0 0 64px
+    rgba(
+      192,
+      38,
+      211,
+      0.38
+    );
+
+
+  /* =======================================================
+     SHADOWS
+  ======================================================= */
+
+  --pulse-shadow-card:
+    0 14px 36px
+    rgba(
+      24,
+      20,
+      42,
+      0.08
+    );
+
+  --pulse-shadow-floating:
+    0 22px 60px
+    rgba(
+      18,
+      13,
+      42,
+      0.16
+    );
+
+
+  /* =======================================================
+     RADIUS
+  ======================================================= */
+
+  --pulse-radius-sm:
+    12px;
+
+  --pulse-radius-md:
+    16px;
+
+  --pulse-radius-lg:
+    22px;
+
+  --pulse-radius-xl:
+    28px;
+
+  --pulse-radius-pill:
+    999px;
+
+
+  /* =======================================================
+     MOTION
+  ======================================================= */
+
+  --pulse-ease:
+    cubic-bezier(
+      0.2,
+      0.8,
+      0.2,
+      1
+    );
+
+  --pulse-speed-fast:
+    180ms;
+
+  --pulse-speed-card:
+    280ms;
+
+  --pulse-speed-panel:
+    360ms;
+
+  --pulse-speed-map:
+    520ms;
+
+
+  /* =======================================================
+     LAYOUT
+  ======================================================= */
+
+  --pulse-sidebar:
+    244px;
+
+  --pulse-right-rail:
+    320px;
+
+  --pulse-layout-gap:
+    18px;
+}
+
+
+/* =========================================================
+   BASE UTILITY
+========================================================= */
+
+.pulse-surface {
+  border:
+    1px solid
+    var(
+      --pulse-border
+    );
+
+  border-radius:
+    var(
+      --pulse-radius-lg
+    );
+
+  background:
+    var(
+      --pulse-surface
+    );
+
+  box-shadow:
+    var(
+      --pulse-shadow-card
+    );
+}
+
+
+/* =========================================================
+   GLOW UTILITY
+========================================================= */
+
+.pulse-glow {
+  position:
+    relative;
+}
+
+.pulse-glow::after {
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    -14px;
+
+  z-index:
+    -1;
+
+  border-radius:
+    inherit;
+
+  background:
+    rgba(
+      147,
+      51,
+      234,
+      0.28
+    );
+
+  filter:
+    blur(
+      24px
+    );
+
+  opacity:
+    0.45;
+
+  animation:
+    pulse-soft-glow
+    2.8s
+    var(
+      --pulse-ease
+    )
+    infinite;
+}
+
+
+/* =========================================================
+   STATUS COLORS
+========================================================= */
+
+.pulse-status-live {
+  background:
+    linear-gradient(
+      135deg,
+      #f43f5e,
+      #ec4899
+    );
+
+  color:
+    #fff;
+}
+
+.pulse-status-nearby {
+  background:
+    #eef2ff;
+
+  color:
+    #5b21b6;
+}
+
+.pulse-status-here {
+  background:
+    var(
+      --pulse-gradient-primary
+    );
+
+  color:
+    #fff;
+}
+
+.pulse-status-wave {
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #2563eb
+    );
+
+  color:
+    #fff;
+}
+
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes pulse-soft-glow {
+  0% {
+    transform:
+      scale(
+        1
+      );
+
+    opacity:
+      0.45;
+  }
+
+  50% {
+    transform:
+      scale(
+        1.12
+      );
+
+    opacity:
+      0.12;
+  }
+
+  100% {
+    transform:
+      scale(
+        1
+      );
+
+    opacity:
+      0.45;
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+  .pulse-glow::after {
+    animation:
+      none;
+  }
+}
