@@ -1,0 +1,1481 @@
+/* =========================================================
+   YATUT PULSE — LONG VIDEO MOBILE
+========================================================= */
+
+.pulse-long-mobile,
+.pulse-long-watch {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .pulse-immersive-mobile.is-long-form {
+    min-height:
+      calc(
+        100dvh -
+        64px
+      );
+
+    background:
+      #0b0b0f;
+  }
+
+  .pulse-immersive-mobile.is-long-form
+  .pulse-immersive__tabs {
+    position:
+      sticky;
+
+    top:
+      64px;
+
+    margin-bottom:
+      0;
+
+    background:
+      linear-gradient(
+        180deg,
+        rgba(
+          11,
+          11,
+          15,
+          .98
+        ),
+        rgba(
+          11,
+          11,
+          15,
+          .94
+        )
+      );
+
+    border-bottom:
+      1px solid
+      rgba(
+        255,
+        255,
+        255,
+        .05
+      );
+  }
+
+  .pulse-immersive-mobile.is-long-form
+  .pulse-immersive__feed {
+    display:
+      none;
+  }
+
+  .pulse-long-mobile,
+  .pulse-long-watch {
+    display:
+      block;
+
+    width:
+      100%;
+
+    color:
+      #fff;
+
+    background:
+      #0b0b0f;
+  }
+
+  .pulse-long-mobile {
+    min-height:
+      calc(
+        100dvh -
+        122px
+      );
+
+    padding:
+      12px 0
+      calc(
+        100px +
+        env(
+          safe-area-inset-bottom
+        )
+      );
+  }
+
+  /* =======================================================
+     FILTER CHIPS
+  ======================================================= */
+
+  .pulse-long-mobile__chips {
+    padding:
+      0 12px
+      12px;
+
+    display:
+      flex;
+
+    gap:
+      7px;
+
+    overflow-x:
+      auto;
+
+    scrollbar-width:
+      none;
+
+    -webkit-overflow-scrolling:
+      touch;
+  }
+
+  .pulse-long-mobile__chips::-webkit-scrollbar {
+    display:
+      none;
+  }
+
+  .pulse-long-mobile__chips
+  button {
+    min-height:
+      36px;
+
+    padding:
+      0 13px;
+
+    flex:
+      0 0 auto;
+
+    border:
+      1px solid
+      rgba(
+        255,
+        255,
+        255,
+        .11
+      );
+
+    border-radius:
+      12px;
+
+    background:
+      #202026;
+
+    color:
+      rgba(
+        255,
+        255,
+        255,
+        .86
+      );
+
+    font-size:
+      11px;
+
+    font-weight:
+      760;
+
+    white-space:
+      nowrap;
+  }
+
+  .pulse-long-mobile__chips
+  button.is-active {
+    border-color:
+      #fff;
+
+    background:
+      #fff;
+
+    color:
+      #15151a;
+  }
+
+  /* =======================================================
+     CHANNELS
+  ======================================================= */
+
+  .pulse-long-mobile__channels {
+    padding-bottom:
+      12px;
+
+    border-bottom:
+      1px solid
+      rgba(
+        255,
+        255,
+        255,
+        .06
+      );
+  }
+
+  .pulse-long-mobile__section-title {
+    padding:
+      0 14px
+      9px;
+
+    color:
+      rgba(
+        255,
+        255,
+        255,
+        .92
+      );
+
+    font-size:
+      12px;
+
+    font-weight:
+      850;
+  }
+
+  .pulse-long-mobile__channel-row {
+    padding:
+      0 12px;
+
+    display:
+      flex;
+
+    gap:
+      12px;
+
+    overflow-x:
+      auto;
+
+    scrollbar-width:
+      none;
+  }
+
+  .pulse-long-mobile__channel-row::-webkit-scrollbar {
+    display:
+      none;
+  }
+
+  .pulse-long-mobile__channel-row
+  button {
+    width:
+      58px;
+
+    min-width:
+      58px;
+
+    padding:
+      0;
+
+    display:
+      flex;
+
+    flex-direction:
+      column;
+
+    align-items:
+      center;
+
+    gap:
+      6px;
+
+    border:
+      0;
+
+    background:
+      transparent;
+
+    color:
+      rgba(
+        255,
+        255,
+        255,
+        .74
+      );
+  }
+
+  .pulse-long-mobile__channel-row
+  button
+  > span {
+    width:
+      50px;
+
+    height:
+      50px;
+
+    display:
+      grid;
+
+    place-items:
+      center;
+
+    border:
+      2px solid
+      rgba(
+        255,
+        255,
+        255,
+        .11
+      );
+
+    border-radius:
+      50%;
+
+    background:
+      linear-gradient(
+        145deg,
+        #2c2744,
+        #17151f
+      );
+
+    color:
+      #c8c1ff;
+
+    font-size:
+      14px;
+
+    font-weight:
+      900;
+  }
+
+  .pulse-long-mobile__channel-row
+  button.is-active
+  > span {
+    border-color:
+      rgba(
+        138,
+        123,
+        255,
+        .92
+      );
+
+    box-shadow:
+      0 0 0 3px
+      rgba(
+        99,
+        91,
+        255,
+        .14
+      );
+  }
+
+  .pulse-long-mobile__channel-row
+  small {
+    width:
+      100%;
+
+    overflow:
+      hidden;
+
+    font-size:
+      8.5px;
+
+    font-weight:
+      700;
+
+    white-space:
+      nowrap;
+
+    text-overflow:
+      ellipsis;
+  }
+
+  .pulse-long-mobile
+  > .pulse-long-mobile__section-title {
+    padding-top:
+      13px;
+  }
+
+  /* =======================================================
+     VIDEO FEED
+  ======================================================= */
+
+  .pulse-long-mobile__feed,
+  .pulse-long-watch__next {
+    display:
+      grid;
+
+    gap:
+      17px;
+  }
+
+  .pulse-long-card {
+    width:
+      100%;
+
+    padding:
+      0;
+
+    display:
+      block;
+
+    border:
+      0;
+
+    background:
+      transparent;
+
+    color:
+      #fff;
+
+    text-align:
+      left;
+  }
+
+  .pulse-long-card__media {
+    position:
+      relative;
+
+    width:
+      100%;
+
+    aspect-ratio:
+      16 / 9;
+
+    overflow:
+      hidden;
+
+    background:
+      #16161c;
+  }
+
+  .pulse-long-card__media
+  img {
+    width:
+      100%;
+
+    height:
+      100%;
+
+    display:
+      block;
+
+    object-fit:
+      cover;
+  }
+
+  .pulse-long-card__duration {
+    position:
+      absolute;
+
+    right:
+      8px;
+
+    bottom:
+      8px;
+
+    min-height:
+      23px;
+
+    padding:
+      0 6px;
+
+    display:
+      inline-flex;
+
+    align-items:
+      center;
+
+    border-radius:
+      7px;
+
+    background:
+      rgba(
+        0,
+        0,
+        0,
+        .78
+      );
+
+    color:
+      #fff;
+
+    font-size:
+      9px;
+
+    font-weight:
+      850;
+  }
+
+  .pulse-long-card__meta {
+    padding:
+      10px 12px
+      0;
+
+    display:
+      grid;
+
+    grid-template-columns:
+      38px
+      minmax(
+        0,
+        1fr
+      )
+      24px;
+
+    align-items:
+      start;
+
+    gap:
+      9px;
+  }
+
+  .pulse-long-card__avatar {
+    width:
+      38px;
+
+    height:
+      38px;
+
+    display:
+      grid;
+
+    place-items:
+      center;
+
+    border-radius:
+      50%;
+
+    background:
+      linear-gradient(
+        145deg,
+        #756cff,
+        #9b55f7
+      );
+
+    color:
+      #fff;
+
+    font-size:
+      13px;
+
+    font-weight:
+      900;
+  }
+
+  .pulse-long-card__copy {
+    min-width:
+      0;
+  }
+
+  .pulse-long-card__copy
+  strong {
+    display:
+      -webkit-box;
+
+    overflow:
+      hidden;
+
+    color:
+      #fff;
+
+    font-size:
+      13px;
+
+    font-weight:
+      820;
+
+    line-height:
+      1.25;
+
+    -webkit-box-orient:
+      vertical;
+
+    -webkit-line-clamp:
+      2;
+  }
+
+  .pulse-long-card__copy
+  span {
+    display:
+      block;
+
+    margin-top:
+      4px;
+
+    overflow:
+      hidden;
+
+    color:
+      rgba(
+        255,
+        255,
+        255,
+        .56
+      );
+
+    font-size:
+      9px;
+
+    line-height:
+      1.35;
+
+    white-space:
+      nowrap;
+
+    text-overflow:
+      ellipsis;
+  }
+
+  .pulse-long-card__meta
+  > svg {
+    margin-top:
+      1px;
+
+    color:
+      rgba(
+        255,
+        255,
+        255,
+        .76
+      );
+  }
+
+  .pulse-long-mobile__empty {
+    margin:
+      20px 14px;
+
+    padding:
+      24px;
+
+    border:
+      1px solid
+      rgba(
+        255,
+        255,
+        255,
+        .08
+      );
+
+    border-radius:
+      20px;
+
+    background:
+      #15151a;
+
+    color:
+      rgba(
+        255,
+        255,
+        255,
+        .58
+      );
+
+    font-size:
+      11px;
+
+    text-align:
+      center;
+  }
+
+  /* =======================================================
+     WATCH PAGE
+  ======================================================= */
+
+  .pulse-long-watch {
+    min-height:
+      calc(
+        100dvh -
+        64px
+      );
+
+    padding-bottom:
+      calc(
+        96px +
+        env(
+          safe-area-inset-bottom
+        )
+      );
+  }
+
+  .pulse-long-watch__player-wrap {
+    position:
+      relative;
+
+    width:
+      100%;
+
+    aspect-ratio:
+      16 / 9;
+
+    background:
+      #000;
+  }
+
+  .pulse-long-watch__player-wrap
+  .pulse-real-player {
+    width:
+      100%;
+
+    height:
+      100%;
+
+    border-radius:
+      0;
+  }
+
+  .pulse-long-watch__back {
+    position:
+      absolute;
+
+    top:
+      9px;
+
+    left:
+      9px;
+
+    z-index:
+      20;
+
+    width:
+      38px;
+
+    height:
+      38px;
+
+    display:
+      grid;
+
+    place-items:
+      center;
+
+    border:
+      1px solid
+      rgba(
+        255,
+        255,
+        255,
+        .12
+      );
+
+    border-radius:
+      13px;
+
+    background:
+      rgba(
+        10,
+        10,
+        14,
+        .46
+      );
+
+    color:
+      #fff;
+
+    backdrop-filter:
+      blur(
+        10px
+      );
+
+    -webkit-backdrop-filter:
+      blur(
+        10px
+      );
+  }
+
+  .pulse-long-watch__landscape-hint {
+    position:
+      absolute;
+
+    right:
+      10px;
+
+    top:
+      11px;
+
+    z-index:
+      10;
+
+    max-width:
+      175px;
+
+    padding:
+      6px 8px;
+
+    border-radius:
+      9px;
+
+    background:
+      rgba(
+        10,
+        10,
+        14,
+        .44
+      );
+
+    color:
+      rgba(
+        255,
+        255,
+        255,
+        .66
+      );
+
+    font-size:
+      7px;
+
+    backdrop-filter:
+      blur(
+        10px
+      );
+  }
+
+  .pulse-long-watch__body {
+    padding:
+      13px 12px
+      0;
+  }
+
+  .pulse-long-watch__body
+  h1 {
+    margin:
+      0;
+
+    color:
+      #fff;
+
+    font-size:
+      17px;
+
+    font-weight:
+      860;
+
+    line-height:
+      1.2;
+  }
+
+  .pulse-long-watch__stats {
+    margin-top:
+      7px;
+
+    display:
+      flex;
+
+    flex-wrap:
+      wrap;
+
+    gap:
+      5px 10px;
+
+    color:
+      rgba(
+        255,
+        255,
+        255,
+        .55
+      );
+
+    font-size:
+      9px;
+  }
+
+  .pulse-long-watch__channel {
+    margin-top:
+      14px;
+
+    padding:
+      11px 0;
+
+    display:
+      grid;
+
+    grid-template-columns:
+      42px
+      minmax(
+        0,
+        1fr
+      )
+      auto;
+
+    align-items:
+      center;
+
+    gap:
+      9px;
+
+    border-top:
+      1px solid
+      rgba(
+        255,
+        255,
+        255,
+        .06
+      );
+
+    border-bottom:
+      1px solid
+      rgba(
+        255,
+        255,
+        255,
+        .06
+      );
+  }
+
+  .pulse-long-watch__avatar {
+    width:
+      42px;
+
+    height:
+      42px;
+
+    display:
+      grid;
+
+    place-items:
+      center;
+
+    border-radius:
+      50%;
+
+    background:
+      linear-gradient(
+        145deg,
+        #756cff,
+        #a855f7
+      );
+
+    color:
+      #fff;
+
+    font-size:
+      14px;
+
+    font-weight:
+      900;
+  }
+
+  .pulse-long-watch__channel
+  > div {
+    min-width:
+      0;
+  }
+
+  .pulse-long-watch__channel
+  strong,
+  .pulse-long-watch__channel
+  small {
+    display:
+      block;
+
+    overflow:
+      hidden;
+
+    white-space:
+      nowrap;
+
+    text-overflow:
+      ellipsis;
+  }
+
+  .pulse-long-watch__channel
+  strong {
+    color:
+      #fff;
+
+    font-size:
+      12px;
+
+    font-weight:
+      820;
+  }
+
+  .pulse-long-watch__channel
+  small {
+    margin-top:
+      3px;
+
+    color:
+      rgba(
+        255,
+        255,
+        255,
+        .48
+      );
+
+    font-size:
+      8.5px;
+  }
+
+  .pulse-long-watch__channel
+  > button {
+    min-height:
+      38px;
+
+    padding:
+      0 13px;
+
+    display:
+      inline-flex;
+
+    align-items:
+      center;
+
+    gap:
+      5px;
+
+    border:
+      0;
+
+    border-radius:
+      999px;
+
+    background:
+      linear-gradient(
+        135deg,
+        #756cff,
+        #8f52f4
+      );
+
+    color:
+      #fff;
+
+    font-size:
+      9px;
+
+    font-weight:
+      830;
+  }
+
+  .pulse-long-watch__channel
+  > button.is-subscribed {
+    background:
+      #28282f;
+
+    color:
+      rgba(
+        255,
+        255,
+        255,
+        .84
+      );
+  }
+
+  /* =======================================================
+     ACTIONS
+  ======================================================= */
+
+  .pulse-long-watch__actions {
+    padding:
+      12px 0
+      13px;
+
+    display:
+      flex;
+
+    gap:
+      7px;
+
+    overflow-x:
+      auto;
+
+    scrollbar-width:
+      none;
+  }
+
+  .pulse-long-watch__actions::-webkit-scrollbar {
+    display:
+      none;
+  }
+
+  .pulse-long-watch__actions
+  > button,
+  .pulse-long-watch__quality
+  > button {
+    min-height:
+      38px;
+
+    padding:
+      0 11px;
+
+    display:
+      inline-flex;
+
+    align-items:
+      center;
+
+    justify-content:
+      center;
+
+    gap:
+      6px;
+
+    flex:
+      0 0 auto;
+
+    border:
+      1px solid
+      rgba(
+        255,
+        255,
+        255,
+        .07
+      );
+
+    border-radius:
+      999px;
+
+    background:
+      #222228;
+
+    color:
+      rgba(
+        255,
+        255,
+        255,
+        .88
+      );
+
+    font-size:
+      9px;
+
+    font-weight:
+      760;
+  }
+
+  .pulse-long-watch__actions
+  > button.is-active {
+    color:
+      #b8afff;
+
+    background:
+      #2a2640;
+  }
+
+  .pulse-long-watch__quality {
+    position:
+      relative;
+
+    flex:
+      0 0 auto;
+  }
+
+  .pulse-long-watch__quality-menu {
+    position:
+      absolute;
+
+    right:
+      0;
+
+    bottom:
+      calc(
+        100% +
+        8px
+      );
+
+    z-index:
+      100;
+
+    width:
+      156px;
+
+    padding:
+      7px;
+
+    border:
+      1px solid
+      rgba(
+        255,
+        255,
+        255,
+        .10
+      );
+
+    border-radius:
+      17px;
+
+    background:
+      rgba(
+        22,
+        22,
+        29,
+        .98
+      );
+
+    box-shadow:
+      0 18px 44px
+      rgba(
+        0,
+        0,
+        0,
+        .30
+      );
+
+    backdrop-filter:
+      blur(
+        18px
+      );
+  }
+
+  .pulse-long-watch__quality-menu
+  > strong {
+    display:
+      block;
+
+    padding:
+      4px 7px
+      7px;
+
+    color:
+      rgba(
+        255,
+        255,
+        255,
+        .52
+      );
+
+    font-size:
+      8px;
+  }
+
+  .pulse-long-watch__quality-menu
+  button {
+    width:
+      100%;
+
+    min-height:
+      36px;
+
+    padding:
+      0 8px;
+
+    display:
+      flex;
+
+    align-items:
+      center;
+
+    justify-content:
+      space-between;
+
+    border:
+      0;
+
+    border-radius:
+      10px;
+
+    background:
+      transparent;
+
+    color:
+      rgba(
+        255,
+        255,
+        255,
+        .76
+      );
+
+    font-size:
+      10px;
+  }
+
+  .pulse-long-watch__quality-menu
+  button.is-active {
+    background:
+      rgba(
+        99,
+        91,
+        255,
+        .18
+      );
+
+    color:
+      #fff;
+  }
+
+  .pulse-long-watch__description {
+    padding:
+      12px;
+
+    border:
+      1px solid
+      rgba(
+        255,
+        255,
+        255,
+        .06
+      );
+
+    border-radius:
+      16px;
+
+    background:
+      #18181e;
+  }
+
+  .pulse-long-watch__description
+  strong {
+    display:
+      block;
+
+    color:
+      #fff;
+
+    font-size:
+      10px;
+  }
+
+  .pulse-long-watch__description
+  p {
+    margin:
+      6px 0
+      0;
+
+    color:
+      rgba(
+        255,
+        255,
+        255,
+        .62
+      );
+
+    font-size:
+      10px;
+
+    line-height:
+      1.45;
+  }
+
+  .pulse-long-watch__next-head {
+    margin-top:
+      17px;
+
+    padding-bottom:
+      10px;
+
+    display:
+      flex;
+
+    align-items:
+      center;
+
+    gap:
+      7px;
+
+    color:
+      #fff;
+  }
+
+  .pulse-long-watch__next-head
+  strong {
+    font-size:
+      12px;
+  }
+
+  .pulse-long-watch__next {
+    margin:
+      0 -12px;
+  }
+
+  /* =======================================================
+     AUTO LANDSCAPE THEATER
+  ======================================================= */
+
+  @media (orientation: landscape) {
+    body.pulse-long-video-open {
+      overflow:
+        hidden !important;
+
+      background:
+        #000 !important;
+    }
+
+    body.pulse-long-video-open
+    .topbar,
+    body.pulse-long-video-open
+    .mobile-nav,
+    body.pulse-long-video-open
+    .mobile-bottom-nav {
+      display:
+        none !important;
+    }
+
+    body.pulse-long-video-open
+    .pulse-long-watch {
+      position:
+        fixed;
+
+      inset:
+        0;
+
+      z-index:
+        2147483000;
+
+      width:
+        100vw;
+
+      height:
+        100dvh;
+
+      min-height:
+        0;
+
+      padding:
+        0;
+
+      background:
+        #000;
+    }
+
+    body.pulse-long-video-open
+    .pulse-long-watch__player-wrap {
+      width:
+        100vw;
+
+      height:
+        100dvh;
+
+      aspect-ratio:
+        auto;
+    }
+
+    body.pulse-long-video-open
+    .pulse-long-watch__player-wrap
+    .pulse-real-player {
+      width:
+        100%;
+
+      height:
+        100%;
+
+      border-radius:
+        0;
+    }
+
+    body.pulse-long-video-open
+    .pulse-long-watch__player-wrap
+    .pulse-real-player__video,
+    body.pulse-long-video-open
+    .pulse-long-watch__player-wrap
+    .pulse-real-player__poster {
+      object-fit:
+        contain;
+    }
+
+    body.pulse-long-video-open
+    .pulse-long-watch__body,
+    body.pulse-long-video-open
+    .pulse-long-watch__landscape-hint {
+      display:
+        none;
+    }
+
+    body.pulse-long-video-open
+    .pulse-long-watch__back {
+      top:
+        calc(
+          8px +
+          env(
+            safe-area-inset-top
+          )
+        );
+
+      left:
+        calc(
+          8px +
+          env(
+            safe-area-inset-left
+          )
+        );
+    }
+  }
+}
+
+@media (max-width: 390px) {
+  .pulse-long-watch__body
+  h1 {
+    font-size:
+      16px;
+  }
+
+  .pulse-long-card__copy
+  strong {
+    font-size:
+      12.5px;
+  }
+}
