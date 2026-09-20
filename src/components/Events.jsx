@@ -1514,6 +1514,7 @@ function EventDetail({
 
 function Events({
   onNavigate,
+  createRequestKey = 0,
 }) {
   const [
     events,
@@ -1580,6 +1581,32 @@ function Events({
       setEvents
     );
   }, []);
+
+  /* =======================================================
+     HUB → EVENT CREATOR
+  ======================================================= */
+
+  useEffect(() => {
+    if (
+      !createRequestKey
+    ) {
+      return;
+    }
+
+    setCommunityContext(
+      null
+    );
+
+    setActiveEventId(
+      null
+    );
+
+    setCreateOpen(
+      true
+    );
+  }, [
+    createRequestKey,
+  ]);
 
   const activeEvent =
     events.find(
