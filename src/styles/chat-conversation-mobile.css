@@ -1,0 +1,1062 @@
+/* =========================================================
+   YATUT CHAT — NATIVE MOBILE CONVERSATION V1
+   Full-screen conversation inspired by lightweight mobile messengers
+========================================================= */
+
+@media (max-width: 700px) {
+  /* =======================================================
+     FULLSCREEN DIALOG MODE
+     Keep the global YATUT chrome on the chat list,
+     but hand the whole viewport to an opened conversation.
+  ======================================================= */
+
+  body:has(.messenger.mobile-dialog-open) {
+    overflow: hidden !important;
+  }
+
+  body:has(.messenger.mobile-dialog-open) .topbar,
+  body:has(.messenger.mobile-dialog-open) .mobile-nav {
+    display: none !important;
+  }
+
+  body:has(.messenger.mobile-dialog-open) .layout,
+  body:has(.messenger.mobile-dialog-open) .layout.layout-wide {
+    width: 100% !important;
+    max-width: 100% !important;
+
+    min-height: 100dvh !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: block !important;
+  }
+
+  body:has(.messenger.mobile-dialog-open) .main-content,
+  body:has(.messenger.mobile-dialog-open) .feed-column {
+    width: 100% !important;
+    max-width: none !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .messenger.mobile-dialog-open {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 7000 !important;
+
+    width: 100vw !important;
+    height: 100dvh !important;
+    min-height: 0 !important;
+
+    overflow: hidden !important;
+
+    background: #fbfbfd !important;
+  }
+
+  .messenger.mobile-dialog-open .chat-dialog {
+    position: absolute !important;
+    inset: 0 !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    overflow: hidden !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        #ffffff 0%,
+        #fbfbfd 100%
+      ) !important;
+  }
+
+  /* =======================================================
+     HEADER
+  ======================================================= */
+
+  .messenger.mobile-dialog-open .chat-dialog-header {
+    position: relative !important;
+    z-index: 80 !important;
+
+    min-height:
+      calc(
+        76px +
+        env(
+          safe-area-inset-top
+        )
+      ) !important;
+
+    padding:
+      calc(
+        9px +
+        env(
+          safe-area-inset-top
+        )
+      )
+      14px
+      9px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+
+    border-bottom:
+      1px solid
+      rgba(
+        235,
+        236,
+        241,
+        .88
+      ) !important;
+
+    background:
+      rgba(
+        255,
+        255,
+        255,
+        .94
+      ) !important;
+
+    box-shadow:
+      0 4px 18px
+      rgba(
+        24,
+        27,
+        42,
+        .035
+      ) !important;
+
+    backdrop-filter:
+      blur(20px)
+      saturate(1.18) !important;
+
+    -webkit-backdrop-filter:
+      blur(20px)
+      saturate(1.18) !important;
+  }
+
+  .messenger.mobile-dialog-open .chat-dialog-left {
+    width: 100% !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .messenger.mobile-dialog-open .chat-mobile-back {
+    position: absolute !important;
+    left: 14px !important;
+    bottom: 17px !important;
+
+    width: 38px !important;
+    height: 38px !important;
+
+    display: grid !important;
+    place-items: center !important;
+
+    border:
+      1px solid
+      #ececf2 !important;
+
+    border-radius:
+      14px !important;
+
+    background:
+      #f7f7fa !important;
+
+    color:
+      #606572 !important;
+
+    font-size:
+      25px !important;
+    font-weight: 500 !important;
+    line-height: 1 !important;
+
+    box-shadow:
+      none !important;
+  }
+
+  .messenger.mobile-dialog-open .chat-dialog-person {
+    width: min(220px, 58vw) !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    gap: 5px !important;
+
+    text-align: center !important;
+  }
+
+  .messenger.mobile-dialog-open .chat-header-avatar {
+    width: 43px !important;
+    height: 43px !important;
+    flex:
+      0 0 43px !important;
+
+    border:
+      3px solid
+      #fff !important;
+
+    border-radius:
+      50% !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        #8c72ff,
+        #675cff
+      ) !important;
+
+    color: #fff !important;
+
+    font-size: 13px !important;
+
+    box-shadow:
+      0 5px 14px
+      rgba(
+        73,
+        65,
+        157,
+        .15
+      ) !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-header-avatar.is-online {
+    box-shadow:
+      0 0 0 2px
+      rgba(
+        57,
+        205,
+        147,
+        .42
+      ),
+      0 0 12px
+      rgba(
+        57,
+        205,
+        147,
+        .18
+      ),
+      0 5px 14px
+      rgba(
+        73,
+        65,
+        157,
+        .12
+      ) !important;
+  }
+
+  .messenger.mobile-dialog-open .chat-dialog-person > div:last-child {
+    min-width: 0 !important;
+  }
+
+  .messenger.mobile-dialog-open .chat-dialog-person strong {
+    max-width: 100% !important;
+
+    color:
+      #242630 !important;
+
+    font-size:
+      clamp(
+        13px,
+        3.8vw,
+        15px
+      ) !important;
+
+    line-height: 1.05 !important;
+
+    text-align: center !important;
+  }
+
+  .messenger.mobile-dialog-open .chat-dialog-person span {
+    margin-top:
+      3px !important;
+
+    color:
+      #31a876 !important;
+
+    font-size:
+      9px !important;
+
+    text-align: center !important;
+  }
+
+  .messenger.mobile-dialog-open .chat-call-actions {
+    position: absolute !important;
+    right: 14px !important;
+    bottom: 17px !important;
+
+    gap: 0 !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-call-actions button {
+    display: none !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-call-actions button:last-child {
+    width: 38px !important;
+    height: 38px !important;
+
+    display: grid !important;
+    place-items: center !important;
+
+    border:
+      1px solid
+      #ececf2 !important;
+
+    border-radius:
+      14px !important;
+
+    background:
+      #f7f7fa !important;
+
+    color:
+      #606572 !important;
+
+    font-size:
+      16px !important;
+  }
+
+  /* =======================================================
+     SEARCH / PINNED
+  ======================================================= */
+
+  .messenger.mobile-dialog-open .message-search-bar,
+  .messenger.mobile-dialog-open .pinned-message-bar {
+    flex:
+      0 0 auto !important;
+  }
+
+  /* =======================================================
+     MESSAGE CANVAS
+  ======================================================= */
+
+  .messenger.mobile-dialog-open .chat-messages {
+    min-height: 0 !important;
+
+    flex: 1 1 auto !important;
+
+    padding:
+      20px 14px
+      22px !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        #ffffff 0%,
+        #fcfcfd 100%
+      ) !important;
+
+    scrollbar-width:
+      none !important;
+
+    overscroll-behavior:
+      contain !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-messages::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .messenger.mobile-dialog-open .chat-day {
+    margin:
+      0 auto
+      18px !important;
+
+    padding:
+      5px 10px !important;
+
+    border: 0 !important;
+
+    background:
+      transparent !important;
+
+    color:
+      #a2a6b0 !important;
+
+    font-size:
+      9px !important;
+
+    box-shadow:
+      none !important;
+  }
+
+  /* =======================================================
+     MESSAGE ROWS
+  ======================================================= */
+
+  .messenger.mobile-dialog-open .message-row {
+    width: 100% !important;
+
+    margin:
+      3px 0
+      14px !important;
+
+    display: flex !important;
+    align-items: flex-end !important;
+
+    gap: 0 !important;
+  }
+
+  .messenger.mobile-dialog-open .message-row.mine {
+    justify-content:
+      flex-end !important;
+  }
+
+  .messenger.mobile-dialog-open .message-avatar {
+    display: none !important;
+  }
+
+  .messenger.mobile-dialog-open .message-shell,
+  .messenger.mobile-dialog-open .message-row > div {
+    max-width:
+      min(
+        78vw,
+        420px
+      ) !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .message-row.mine
+  .message-shell {
+    align-items:
+      flex-end !important;
+  }
+
+  /* =======================================================
+     BUBBLES
+  ======================================================= */
+
+  .messenger.mobile-dialog-open .message-bubble {
+    min-width: 58px !important;
+
+    padding:
+      10px 12px
+      9px !important;
+
+    border: 0 !important;
+
+    border-radius:
+      18px
+      18px
+      18px
+      7px !important;
+
+    background:
+      #f0f1f4 !important;
+
+    color:
+      #2f323b !important;
+
+    box-shadow:
+      none !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .message-row.mine
+  .message-bubble,
+  .messenger.mobile-dialog-open
+  .message-bubble.mine {
+    border-radius:
+      18px
+      18px
+      7px
+      18px !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        #25232d,
+        #1b1923
+      ) !important;
+
+    color:
+      #fff !important;
+
+    box-shadow:
+      0 7px 18px
+      rgba(
+        20,
+        19,
+        28,
+        .12
+      ) !important;
+  }
+
+  .messenger.mobile-dialog-open .message-bubble p {
+    font-size:
+      clamp(
+        12px,
+        3.5vw,
+        14px
+      ) !important;
+
+    line-height:
+      1.34 !important;
+
+    letter-spacing:
+      -.08px !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .group-message-author,
+  .messenger.mobile-dialog-open
+  .forwarded-label {
+    margin-bottom:
+      5px !important;
+
+    font-size:
+      9px !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .message-reply-quote {
+    margin-bottom:
+      7px !important;
+
+    border-left-width:
+      2px !important;
+
+    background:
+      rgba(
+        255,
+        255,
+        255,
+        .56
+      ) !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .message-row.mine
+  .message-reply-quote {
+    background:
+      rgba(
+        255,
+        255,
+        255,
+        .10
+      ) !important;
+  }
+
+  /* =======================================================
+     TIME BELOW BUBBLE
+  ======================================================= */
+
+  .messenger.mobile-dialog-open .message-time {
+    margin-top:
+      5px !important;
+
+    padding:
+      0 3px !important;
+
+    display: flex !important;
+    align-items: center !important;
+
+    gap: 4px !important;
+
+    color:
+      #a4a7b0 !important;
+
+    font-size:
+      8.5px !important;
+
+    line-height: 1 !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .message-row.mine
+  .message-time {
+    justify-content:
+      flex-end !important;
+
+    color:
+      #a4a7b0 !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .message-row.mine
+  .message-time span {
+    color:
+      #756cff !important;
+  }
+
+  /* =======================================================
+     MESSAGE MEDIA
+  ======================================================= */
+
+  .messenger.mobile-dialog-open
+  .message-bubble:has(.chat-image),
+  .messenger.mobile-dialog-open
+  .message-bubble:has(.chat-video) {
+    padding:
+      4px !important;
+
+    overflow:
+      hidden !important;
+
+    background:
+      transparent !important;
+  }
+
+  .messenger.mobile-dialog-open .chat-image,
+  .messenger.mobile-dialog-open .chat-video {
+    width:
+      min(
+        68vw,
+        310px
+      ) !important;
+
+    max-height:
+      390px !important;
+
+    border-radius:
+      17px !important;
+
+    box-shadow:
+      0 7px 20px
+      rgba(
+        26,
+        28,
+        39,
+        .09
+      ) !important;
+  }
+
+  /* =======================================================
+     VOICE
+  ======================================================= */
+
+  .messenger.mobile-dialog-open .voice-message {
+    min-width:
+      min(
+        68vw,
+        270px
+      ) !important;
+
+    gap: 7px !important;
+  }
+
+  .messenger.mobile-dialog-open .voice-message > span:first-child {
+    width: 31px !important;
+    height: 31px !important;
+
+    display: grid !important;
+    place-items: center !important;
+
+    flex:
+      0 0 31px !important;
+
+    border-radius:
+      50% !important;
+
+    background:
+      rgba(
+        99,
+        91,
+        255,
+        .12
+      ) !important;
+
+    font-size: 13px !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .message-row.mine
+  .voice-message > span:first-child {
+    background:
+      rgba(
+        255,
+        255,
+        255,
+        .14
+      ) !important;
+  }
+
+  .messenger.mobile-dialog-open .voice-message audio {
+    width:
+      min(
+        44vw,
+        170px
+      ) !important;
+
+    height: 30px !important;
+  }
+
+  .messenger.mobile-dialog-open .voice-message small {
+    font-size:
+      8px !important;
+  }
+
+  /* =======================================================
+     LIGHTWEIGHT MESSAGE ACTIONS
+  ======================================================= */
+
+  .messenger.mobile-dialog-open .message-reaction-trigger {
+    display:
+      none !important;
+  }
+
+  .messenger.mobile-dialog-open .message-more-trigger {
+    top: auto !important;
+    bottom: -2px !important;
+
+    width: 25px !important;
+    height: 25px !important;
+
+    border: 0 !important;
+
+    background:
+      transparent !important;
+
+    color:
+      #a0a3ac !important;
+
+    box-shadow:
+      none !important;
+
+    opacity: .48 !important;
+
+    transform:
+      none !important;
+
+    font-size: 11px !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .message-row.mine
+  .message-more-trigger {
+    left: -29px !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .message-row:not(.mine)
+  .message-more-trigger {
+    right: -29px !important;
+    left: auto !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .message-reaction-saved {
+    bottom:
+      -8px !important;
+  }
+
+  /* =======================================================
+     CONTEXT / ATTACHMENT BARS
+  ======================================================= */
+
+  .messenger.mobile-dialog-open .composer-context-bar,
+  .messenger.mobile-dialog-open .chat-attachment-preview {
+    flex:
+      0 0 auto !important;
+
+    margin:
+      0 10px !important;
+
+    border:
+      1px solid
+      #ececf2 !important;
+
+    border-radius:
+      14px !important;
+
+    background:
+      rgba(
+        255,
+        255,
+        255,
+        .96
+      ) !important;
+  }
+
+  /* =======================================================
+     COMPOSER
+  ======================================================= */
+
+  .messenger.mobile-dialog-open .chat-composer {
+    position: relative !important;
+    z-index: 90 !important;
+
+    min-height:
+      calc(
+        72px +
+        env(
+          safe-area-inset-bottom
+        )
+      ) !important;
+
+    padding:
+      9px 12px
+      calc(
+        9px +
+        env(
+          safe-area-inset-bottom
+        )
+      ) !important;
+
+    display: flex !important;
+    align-items: center !important;
+
+    gap: 7px !important;
+
+    border-top:
+      1px solid
+      rgba(
+        235,
+        236,
+        241,
+        .86
+      ) !important;
+
+    background:
+      rgba(
+        255,
+        255,
+        255,
+        .94
+      ) !important;
+
+    backdrop-filter:
+      blur(20px)
+      saturate(1.15) !important;
+
+    -webkit-backdrop-filter:
+      blur(20px)
+      saturate(1.15) !important;
+  }
+
+  .messenger.mobile-dialog-open .chat-plus {
+    width: 39px !important;
+    height: 39px !important;
+    flex:
+      0 0 39px !important;
+
+    border:
+      1px solid
+      #ececf2 !important;
+
+    border-radius:
+      14px !important;
+
+    background:
+      #f7f7fa !important;
+
+    color:
+      #656a76 !important;
+
+    font-size: 22px !important;
+
+    box-shadow:
+      none !important;
+  }
+
+  .messenger.mobile-dialog-open .chat-composer textarea {
+    min-width: 0 !important;
+    min-height: 42px !important;
+    max-height: 104px !important;
+
+    flex:
+      1 1 auto !important;
+
+    margin: 0 !important;
+
+    padding:
+      11px 43px
+      10px 13px !important;
+
+    border:
+      1px solid
+      #ececf2 !important;
+
+    border-radius:
+      18px !important;
+
+    background:
+      #f7f7f9 !important;
+
+    color:
+      #2e313a !important;
+
+    font-size: 16px !important;
+    line-height: 1.25 !important;
+
+    box-shadow:
+      none !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-composer textarea::placeholder {
+    color:
+      #a4a7b0 !important;
+  }
+
+  .messenger.mobile-dialog-open .yatut-emoji-wrapper {
+    display:
+      none !important;
+  }
+
+  .messenger.mobile-dialog-open .chat-voice-button {
+    width: 36px !important;
+    height: 36px !important;
+    flex:
+      0 0 36px !important;
+
+    margin-left:
+      -48px !important;
+    margin-right:
+      5px !important;
+
+    border: 0 !important;
+
+    background:
+      transparent !important;
+
+    color:
+      #8b8f99 !important;
+
+    font-size: 15px !important;
+
+    box-shadow:
+      none !important;
+  }
+
+  .messenger.mobile-dialog-open .chat-send {
+    width: 40px !important;
+    height: 40px !important;
+    flex:
+      0 0 40px !important;
+
+    border-radius:
+      50% !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        #756cff,
+        #635bff
+      ) !important;
+
+    color:
+      #fff !important;
+
+    font-size: 16px !important;
+
+    box-shadow:
+      0 7px 18px
+      rgba(
+        99,
+        91,
+        255,
+        .23
+      ) !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-composer.voice-mode {
+    padding:
+      8px 12px
+      calc(
+        8px +
+        env(
+          safe-area-inset-bottom
+        )
+      ) !important;
+  }
+
+  /* =======================================================
+     POPOVERS
+  ======================================================= */
+
+  .messenger.mobile-dialog-open
+  .yatut-attach-popover,
+  .messenger.mobile-dialog-open
+  .message-action-menu,
+  .messenger.mobile-dialog-open
+  .message-reaction-popover {
+    border-radius:
+      20px !important;
+
+    box-shadow:
+      0 20px 58px
+      rgba(
+        24,
+        27,
+        42,
+        .17
+      ) !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .messenger.mobile-dialog-open .chat-dialog-header {
+    min-height:
+      calc(
+        72px +
+        env(
+          safe-area-inset-top
+        )
+      ) !important;
+  }
+
+  .messenger.mobile-dialog-open .chat-mobile-back {
+    left: 10px !important;
+    bottom: 15px !important;
+  }
+
+  .messenger.mobile-dialog-open .chat-call-actions {
+    right: 10px !important;
+    bottom: 15px !important;
+  }
+
+  .messenger.mobile-dialog-open .chat-dialog-person {
+    width:
+      min(
+        210px,
+        60vw
+      ) !important;
+  }
+
+  .messenger.mobile-dialog-open .chat-messages {
+    padding:
+      17px 10px
+      20px !important;
+  }
+
+  .messenger.mobile-dialog-open .message-shell,
+  .messenger.mobile-dialog-open .message-row > div {
+    max-width:
+      82vw !important;
+  }
+
+  .messenger.mobile-dialog-open .chat-composer {
+    gap: 5px !important;
+
+    padding-right:
+      9px !important;
+    padding-left:
+      9px !important;
+  }
+
+  .messenger.mobile-dialog-open .chat-plus {
+    width: 37px !important;
+    height: 37px !important;
+    flex-basis: 37px !important;
+  }
+
+  .messenger.mobile-dialog-open .chat-send {
+    width: 38px !important;
+    height: 38px !important;
+    flex-basis: 38px !important;
+  }
+}
