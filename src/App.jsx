@@ -32,6 +32,7 @@ import "./styles/pulse-clips-layout-fix.css";
 import "./mobile-app-hotfix.css";
 import "./styles/chat-conversation-mobile.css";
 import "./styles/pulse-long-video-mobile.css";
+import "./styles/mobile-more-menu.css";
 
 import Stories from "./components/Stories";
 import Profile from "./components/Profile";
@@ -45,6 +46,7 @@ import Business from "./components/Business";
 import Saved from "./components/Saved";
 import Settings from "./components/Settings";
 import Notifications from "./components/Notifications";
+import MobileMoreMenu from "./components/MobileMoreMenu";
 
 import NowPage from "./pages/NowPage";
 import PulsePage from "./pages/PulsePage";
@@ -2707,6 +2709,8 @@ function TopBar({
   onNavigate,
   notificationOpen,
   onToggleNotifications,
+  mobileMenuOpen,
+  onToggleMobileMenu,
   unreadNotifications,
   unreadChatMessages,
 }) {
@@ -2833,10 +2837,34 @@ function TopBar({
             )}
           </button>
 
+          {/* MOBILE MENU */}
+
+          <button
+            className={`icon-button topbar-mobile-menu-action ${
+              mobileMenuOpen
+                ? "active"
+                : ""
+            }`.trim()}
+            type="button"
+            onClick={
+              onToggleMobileMenu
+            }
+            aria-label="Меню ЯТУТ"
+            aria-expanded={
+              mobileMenuOpen
+            }
+            title="Меню"
+          >
+            <YatutIcon
+              name="menuGrid"
+              size={20}
+            />
+          </button>
+
           {/* CHATS */}
 
           <button
-            className={`icon-button ${
+            className={`icon-button topbar-chat-action ${
               currentPage ===
               "chats"
                 ? "active"
@@ -3318,6 +3346,14 @@ function App() {
     );
 
   const [
+    mobileMenuOpen,
+    setMobileMenuOpen,
+  ] =
+    useState(
+      false
+    );
+
+  const [
     unreadNotifications,
     setUnreadNotifications,
   ] =
@@ -3424,6 +3460,10 @@ function App() {
     }
 
     setNotificationsOpen(
+      false
+    );
+
+    setMobileMenuOpen(
       false
     );
 
@@ -3875,14 +3915,33 @@ function App() {
         notificationOpen={
           notificationsOpen
         }
-        onToggleNotifications={() =>
+        onToggleNotifications={() => {
+          setMobileMenuOpen(
+            false
+          );
+
           setNotificationsOpen(
             (
               previous
             ) =>
               !previous
-          )
+          );
+        }}
+        mobileMenuOpen={
+          mobileMenuOpen
         }
+        onToggleMobileMenu={() => {
+          setNotificationsOpen(
+            false
+          );
+
+          setMobileMenuOpen(
+            (
+              previous
+            ) =>
+              !previous
+          );
+        }}
         unreadNotifications={
           unreadNotifications
         }
@@ -3897,6 +3956,23 @@ function App() {
         }
         onClose={() =>
           setNotificationsOpen(
+            false
+          )
+        }
+        onNavigate={
+          goToPage
+        }
+      />
+
+      <MobileMoreMenu
+        open={
+          mobileMenuOpen
+        }
+        currentPage={
+          currentPage
+        }
+        onClose={() =>
+          setMobileMenuOpen(
             false
           )
         }
