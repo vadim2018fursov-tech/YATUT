@@ -164,6 +164,8 @@ export default function CreateMediaPage({
             <button
               type="button"
               className="yatut-media-location"
+              disabled
+              title="Локацію для відео підключимо разом із публікацією"
             >
               <MapPin
                 size={17}
@@ -176,6 +178,8 @@ export default function CreateMediaPage({
           <div className="yatut-media-options">
             <button
               type="button"
+              disabled
+              title="Вибір аудиторії підключимо разом із публікацією"
             >
               <Sparkles
                 size={17}
@@ -186,6 +190,8 @@ export default function CreateMediaPage({
 
             <button
               type="button"
+              disabled
+              title="Режим Поруч підключимо разом із публікацією"
             >
               <MapPin
                 size={17}

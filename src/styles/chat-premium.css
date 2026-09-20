@@ -3013,3 +3013,70 @@ span {
       none !important;
   }
 }
+
+/* =========================================================
+   YATUT CHAT AUDIT POLISH V12
+========================================================= */
+
+.chat-info-avatar {
+  background: linear-gradient(145deg,#8179ff,#635bff);
+  box-shadow: 0 12px 26px rgba(99,91,255,.22);
+}
+
+.chat-info-primary-action {
+  border-color: rgba(99,91,255,.18);
+  background: #eceaff;
+  color: #635bff;
+}
+
+.chat-info-row-button:hover {
+  border-color: rgba(99,91,255,.22);
+  background: #f2f0ff;
+  color: #635bff;
+}
+
+.chat-info-row-button:disabled,
+.chat-attach-grid button:disabled {
+  opacity: .48;
+  cursor: not-allowed;
+  filter: saturate(.55);
+}
+
+.chat-attach-grid button:disabled:hover {
+  transform: none;
+}
+
+.call-controls button.active {
+  background: #eceaff;
+  color: #635bff;
+  box-shadow: 0 0 0 2px rgba(99,91,255,.1);
+}
+
+.chat-global-toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(92px + env(safe-area-inset-bottom));
+  z-index: 2147483300;
+  min-height: 42px;
+  max-width: min(86vw,420px);
+  padding: 0 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255,255,255,.7);
+  border-radius: 999px;
+  background: rgba(25,26,37,.88);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 780;
+  box-shadow: 0 16px 42px rgba(20,21,33,.22);
+  backdrop-filter: blur(18px) saturate(1.15);
+  -webkit-backdrop-filter: blur(18px) saturate(1.15);
+  transform: translateX(-50%);
+}
+
+@media (min-width: 701px) {
+  .chat-global-toast {
+    bottom: 28px;
+  }
+}

@@ -23,6 +23,10 @@ import YatutHereButton from "../components/pulse/YatutHereButton";
 import LocationPulsePanel from "../components/pulse/LocationPulsePanel";
 
 import {
+  shareYatutItem,
+} from "../utils/shareYatutItem";
+
+import {
   pulseRecommendations,
   pulseVideos,
 } from "../data/pulseMockData";
@@ -184,6 +188,7 @@ function WatchComment({
   text,
   likes,
   time,
+  onReply,
 }) {
   const [
     liked,
@@ -241,7 +246,14 @@ function WatchComment({
               (liked ? 1 : 0)}
           </button>
 
-          <button type="button">
+          <button
+            type="button"
+            onClick={() =>
+              onReply?.(
+                username
+              )
+            }
+          >
             Відповісти
           </button>
         </div>
@@ -336,6 +348,11 @@ export default function WatchPage({
     setUserComments,
   ] = useState([]);
 
+  const [
+    commentsNewestFirst,
+    setCommentsNewestFirst,
+  ] = useState(true);
+
   const recommendations =
     useMemo(
       () =>
@@ -351,6 +368,42 @@ export default function WatchPage({
         video?.id,
       ]
     );
+
+  async function shareVideo() {
+    if (!video) {
+      return;
+    }
+
+    await shareYatutItem({
+      title:
+        video.title ||
+        "ЯТУТ PULSE",
+      text:
+        video.description ||
+        "Дивись відео у ЯТУТ PULSE",
+      path:
+        `#watch=${encodeURIComponent(video.id)}`,
+    });
+  }
+
+  function replyToComment(
+    username
+  ) {
+    setCommentText(
+      `@${username} `
+    );
+
+    window.setTimeout(
+      () => {
+        document
+          .querySelector(
+            ".pulse-watch-comment-create textarea"
+          )
+          ?.focus();
+      },
+      0
+    );
+  }
 
   if (!video) {
     return (
@@ -634,7 +687,12 @@ export default function WatchPage({
               </button>
             </div>
 
-            <button type="button">
+            <button
+              type="button"
+              onClick={
+                shareVideo
+              }
+            >
               <Share2
                 size={17}
               />
@@ -673,6 +731,12 @@ export default function WatchPage({
             <button
               type="button"
               className="pulse-watch-more"
+              onClick={() =>
+                setExpanded(
+                  true
+                )
+              }
+              aria-label="Показати більше інформації"
             >
               <MoreHorizontal
                 size={18}
@@ -789,8 +853,20 @@ export default function WatchPage({
               </h2>
             </div>
 
-            <button type="button">
-              Сортувати
+            <button
+              type="button"
+              onClick={() =>
+                setCommentsNewestFirst(
+                  (
+                    value
+                  ) =>
+                    !value
+                )
+              }
+            >
+              {commentsNewestFirst
+                ? "Нові спочатку"
+                : "Популярні"}
 
               <ChevronDown
                 size={14}
@@ -850,7 +926,12 @@ export default function WatchPage({
             </div>
           </div>
 
-          {userComments.map(
+          {(commentsNewestFirst
+            ? [
+                ...userComments,
+              ].reverse()
+            : userComments
+          ).map(
             (comment) => (
               <WatchComment
                 key={
@@ -864,6 +945,9 @@ export default function WatchPage({
                 }
                 likes={0}
                 time="щойно"
+                onReply={
+                  replyToComment
+                }
               />
             )
           )}
@@ -875,6 +959,9 @@ export default function WatchPage({
             text="Дуже атмосферно. Саме за такі живі відео й люблю PULSE 🔥"
             likes={124}
             time="12 хв тому"
+            onReply={
+              replyToComment
+            }
           />
 
           <WatchComment
@@ -884,6 +971,9 @@ export default function WatchPage({
             text="Було б круто ще побачити, хто з друзів зараз знаходиться поруч із цією локацією."
             likes={47}
             time="31 хв тому"
+            onReply={
+              replyToComment
+            }
           />
 
           <WatchComment
@@ -893,6 +983,9 @@ export default function WatchPage({
             text="Я буквально була тут годину тому 😄"
             likes={31}
             time="48 хв тому"
+            onReply={
+              replyToComment
+            }
           />
         </section>
       </main>
@@ -912,19 +1005,50 @@ export default function WatchPage({
           <button
             type="button"
             className="is-active"
+            onClick={() =>
+              onNavigate?.(
+                "pulse"
+              )
+            }
           >
             Для тебе
           </button>
 
-          <button type="button">
+          <button
+            type="button"
+            onClick={() =>
+              onNavigate?.(
+                "nearby"
+              )
+            }
+          >
             Поруч
           </button>
 
-          <button type="button">
+          <button
+            type="button"
+            onClick={() =>
+              onNavigate?.(
+                "cityPulse",
+                {
+                  cityId:
+                    video.city ||
+                    "kyiv",
+                }
+              )
+            }
+          >
             Київ
           </button>
 
-          <button type="button">
+          <button
+            type="button"
+            onClick={() =>
+              onNavigate?.(
+                "live"
+              )
+            }
+          >
             LIVE
           </button>
         </div>

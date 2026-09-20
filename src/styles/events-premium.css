@@ -2921,3 +2921,271 @@ span {
       none !important;
   }
 }
+
+/* =========================================================
+   EVENT INVITE AUDIT V4
+========================================================= */
+
+.event-invite-panel {
+  margin-top:
+    10px;
+  padding:
+    11px;
+  border:
+    1px solid
+    rgba(
+      99,
+      91,
+      255,
+      .11
+    );
+  border-radius:
+    15px;
+  background:
+    #faf9ff;
+}
+
+.event-invite-panel__head {
+  display:
+    flex;
+  align-items:
+    center;
+  justify-content:
+    space-between;
+  gap:
+    10px;
+}
+
+.event-invite-panel__head
+> div {
+  display:
+    flex;
+  flex-direction:
+    column;
+  gap:
+    2px;
+}
+
+.event-invite-panel__head
+span {
+  color:
+    #8c87a0;
+  font-size:
+    7px;
+  font-weight:
+    900;
+  letter-spacing:
+    .9px;
+}
+
+.event-invite-panel__head
+strong {
+  color:
+    #343744;
+  font-size:
+    11px;
+}
+
+.event-invite-panel__head
+small {
+  color:
+    #878b97;
+  font-size:
+    8px;
+}
+
+.event-invite-people {
+  margin-top:
+    9px;
+  display:
+    grid;
+  gap:
+    6px;
+}
+
+.event-invite-people
+button {
+  width:
+    100%;
+  min-height:
+    48px;
+  padding:
+    6px 8px;
+  display:
+    grid;
+  grid-template-columns:
+    34px
+    minmax(
+      0,
+      1fr
+    )
+    26px;
+  align-items:
+    center;
+  gap:
+    8px;
+  border:
+    1px solid
+    #e7e5f1;
+  border-radius:
+    12px;
+  background:
+    #fff;
+  text-align:
+    left;
+}
+
+.event-invite-people
+button.active {
+  border-color:
+    rgba(
+      99,
+      91,
+      255,
+      .28
+    );
+  background:
+    #f1efff;
+}
+
+.event-invite-people
+button:disabled {
+  opacity:
+    .52;
+}
+
+.event-invite-people
+button > span {
+  width:
+    34px;
+  height:
+    34px;
+  display:
+    grid;
+  place-items:
+    center;
+  border-radius:
+    50%;
+  background:
+    #eceaff;
+  color:
+    #635bff;
+  font-size:
+    10px;
+  font-weight:
+    900;
+}
+
+.event-invite-people
+button > div {
+  min-width:
+    0;
+  display:
+    flex;
+  flex-direction:
+    column;
+  gap:
+    2px;
+}
+
+.event-invite-people
+button strong {
+  overflow:
+    hidden;
+  color:
+    #3d404b;
+  font-size:
+    9px;
+  text-overflow:
+    ellipsis;
+  white-space:
+    nowrap;
+}
+
+.event-invite-people
+button small {
+  color:
+    #989ba5;
+  font-size:
+    7px;
+}
+
+.event-invite-people
+button > b {
+  width:
+    25px;
+  height:
+    25px;
+  display:
+    grid;
+  place-items:
+    center;
+  border-radius:
+    9px;
+  background:
+    #f2f1f8;
+  color:
+    #635bff;
+  font-size:
+    11px;
+}
+
+.event-invite-send {
+  width:
+    100%;
+  min-height:
+    42px;
+  margin-top:
+    9px;
+  border-radius:
+    12px;
+  background:
+    linear-gradient(
+      145deg,
+      #726aff,
+      #635bff
+    );
+  color:
+    #fff;
+  font-size:
+    9px;
+  font-weight:
+    850;
+}
+
+.event-invite-send:disabled {
+  opacity:
+    .4;
+}
+
+@media (max-width: 767px) {
+  .event-invite-panel {
+    border-radius:
+      16px;
+  }
+
+  .event-invite-people
+  button {
+    min-height:
+      52px;
+  }
+
+  .event-invite-people
+  button strong {
+    font-size:
+      11px;
+  }
+
+  .event-invite-people
+  button small {
+    font-size:
+      9px;
+  }
+
+  .event-invite-send {
+    min-height:
+      46px;
+    font-size:
+      11px;
+  }
+}

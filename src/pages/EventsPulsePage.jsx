@@ -358,9 +358,7 @@ export default function EventsPulsePage({
       if (
         parsed?.route ===
           "events" &&
-        payload?.createEvent &&
-        payload?.source ===
-          "createHub"
+        payload?.createEvent
       ) {
         setCreateRequestKey(
           (value) =>

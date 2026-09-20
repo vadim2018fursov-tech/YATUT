@@ -1119,6 +1119,7 @@ function EventDetail({
   onOpenDiscussion,
   onDelete,
   onShare,
+  onInviteFriends,
 }) {
   const going =
     event.attendees?.includes(
@@ -1132,6 +1133,83 @@ function EventDetail({
 
   const attendees =
     event.attendees || [];
+
+  const [
+    inviteOpen,
+    setInviteOpen,
+  ] = useState(false);
+
+  const [
+    selectedInvites,
+    setSelectedInvites,
+  ] = useState([]);
+
+  const invitedIds =
+    Array.isArray(
+      event.invited
+    )
+      ? event.invited
+      : [];
+
+  const inviteCandidates =
+    Object.values(
+      PEOPLE
+    ).filter(
+      (
+        person
+      ) =>
+        person.id !==
+          "me" &&
+        !event.attendees
+          ?.includes(
+            person.id
+          )
+    );
+
+  function toggleInvite(
+    personId
+  ) {
+    setSelectedInvites(
+      (
+        current
+      ) =>
+        current.includes(
+          personId
+        )
+          ? current.filter(
+              (
+                id
+              ) =>
+                id !==
+                personId
+            )
+          : [
+              ...current,
+              personId,
+            ]
+    );
+  }
+
+  function sendInvites() {
+    if (
+      !selectedInvites.length
+    ) {
+      return;
+    }
+
+    onInviteFriends?.(
+      event.id,
+      selectedInvites
+    );
+
+    setSelectedInvites(
+      []
+    );
+
+    setInviteOpen(
+      false
+    );
+  }
 
   return (
     <section className="event-detail-page">
@@ -1315,13 +1393,131 @@ function EventDetail({
             <button
               type="button"
               className="event-invite-button"
+              onClick={() =>
+                setInviteOpen(
+                  (
+                    value
+                  ) =>
+                    !value
+                )
+              }
             >
               <Users
                 size={15}
               />
 
-              Запросити друзів
+              {inviteOpen
+                ? "Закрити"
+                : invitedIds.length
+                ? `Запрошено ${invitedIds.length}`
+                : "Запросити друзів"}
             </button>
+
+            {inviteOpen && (
+              <div className="event-invite-panel">
+                <div className="event-invite-panel__head">
+                  <div>
+                    <span>
+                      ЗАПРОШЕННЯ
+                    </span>
+
+                    <strong>
+                      Оберіть друзів
+                    </strong>
+                  </div>
+
+                  <small>
+                    {
+                      selectedInvites.length
+                    }{" "}
+                    вибрано
+                  </small>
+                </div>
+
+                <div className="event-invite-people">
+                  {inviteCandidates.map(
+                    (
+                      person
+                    ) => {
+                      const selected =
+                        selectedInvites.includes(
+                          person.id
+                        );
+
+                      const alreadyInvited =
+                        invitedIds.includes(
+                          person.id
+                        );
+
+                      return (
+                        <button
+                          key={
+                            person.id
+                          }
+                          type="button"
+                          className={
+                            selected
+                              ? "active"
+                              : ""
+                          }
+                          disabled={
+                            alreadyInvited
+                          }
+                          onClick={() =>
+                            toggleInvite(
+                              person.id
+                            )
+                          }
+                        >
+                          <span>
+                            {
+                              person.initials
+                            }
+                          </span>
+
+                          <div>
+                            <strong>
+                              {
+                                person.name
+                              }
+                            </strong>
+
+                            <small>
+                              {alreadyInvited
+                                ? "Вже запрошено"
+                                : selected
+                                ? "Обрано"
+                                : "Запросити"}
+                            </small>
+                          </div>
+
+                          <b>
+                            {alreadyInvited
+                              ? "✓"
+                              : selected
+                              ? "✓"
+                              : "+"}
+                          </b>
+                        </button>
+                      );
+                    }
+                  )}
+                </div>
+
+                <button
+                  type="button"
+                  className="event-invite-send"
+                  disabled={
+                    !selectedInvites.length
+                  }
+                  onClick={
+                    sendInvites
+                  }
+                >
+                  Надіслати запрошення
+                </button>
+              </div>
+            )}
           </article>
         </main>
 
@@ -2024,6 +2220,44 @@ function Events({
     );
   }
 
+  function inviteFriends(
+    eventId,
+    personIds
+  ) {
+    updateEvents(
+      (
+        previous
+      ) =>
+        previous.map(
+          (
+            event
+          ) => {
+            if (
+              event.id !==
+              eventId
+            ) {
+              return event;
+            }
+
+            return {
+              ...event,
+
+              invited: [
+                ...new Set([
+                  ...(
+                    event.invited ||
+                    []
+                  ),
+
+                  ...personIds,
+                ]),
+              ],
+            };
+          }
+        )
+    );
+  }
+
   async function shareEvent(
     event
   ) {
@@ -2122,6 +2356,9 @@ function Events({
         }
         onShare={
           shareEvent
+        }
+        onInviteFriends={
+          inviteFriends
         }
       />
     );

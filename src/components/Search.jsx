@@ -11,6 +11,17 @@ import {
   saveSocialState,
 } from "../storage/database";
 
+import {
+  FRIEND_STATUSES,
+  acceptIncomingFriendRequest,
+  cancelFriendRequest,
+  declineIncomingFriendRequest,
+  getFriendStatus,
+  removeFriend,
+  sendFriendRequest,
+  subscribeFriends,
+} from "../storage/friendService";
+
 /* =========================================================
    PEOPLE
 ========================================================= */
@@ -628,6 +639,38 @@ const TABS = [
   },
 ];
 
+function searchFriendStatus(
+  personId
+) {
+  const status =
+    getFriendStatus(
+      personId
+    );
+
+  if (
+    status ===
+    FRIEND_STATUSES.FRIEND
+  ) {
+    return "friends";
+  }
+
+  if (
+    status ===
+    FRIEND_STATUSES.INCOMING
+  ) {
+    return "incoming";
+  }
+
+  if (
+    status ===
+    FRIEND_STATUSES.OUTGOING
+  ) {
+    return "outgoing";
+  }
+
+  return "none";
+}
+
 /* =========================================================
    SEARCH
 ========================================================= */
@@ -671,24 +714,214 @@ function Search({
   ]);
 
   useEffect(() => {
+    let mounted =
+      true;
+
     const load =
       async () => {
         const saved =
           await getSocialState();
 
+        if (!mounted) {
+          return;
+        }
+
+        const relationships = {
+          ...DEFAULT_RELATIONSHIPS,
+
+          ...(saved?.relationships ||
+            {}),
+        };
+
+        PEOPLE.forEach(
+          (
+            person
+          ) => {
+            relationships[
+              person.id
+            ] = {
+              ...(
+                relationships[
+                  person.id
+                ] ||
+                {}
+              ),
+
+              friendStatus:
+                searchFriendStatus(
+                  person.id
+                ),
+            };
+          }
+        );
+
         setSocial({
-          id: "me-social",
+          id:
+            "me-social",
 
-          relationships: {
-            ...DEFAULT_RELATIONSHIPS,
-
-            ...(saved?.relationships ||
-              {}),
-          },
+          relationships,
         });
       };
 
     load();
+
+    const unsubscribe =
+      subscribeFriends(
+        () => {
+          if (!mounted) {
+            return;
+          }
+
+          setSocial(
+            (
+              current
+            ) => {
+              if (!current) {
+                return current;
+              }
+
+              const relationships = {
+                ...current.relationships,
+              };
+
+              PEOPLE.forEach(
+                (
+                  person
+                ) => {
+                  relationships[
+                    person.id
+                  ] = {
+                    ...(
+                      relationships[
+                        person.id
+                      ] ||
+                      {}
+                    ),
+
+                    friendStatus:
+                      searchFriendStatus(
+                        person.id
+                      ),
+                  };
+                }
+              );
+
+              return {
+                ...current,
+
+                relationships,
+              };
+            }
+          );
+        }
+      );
+
+    return () => {
+      mounted =
+        false;
+
+      unsubscribe();
+    };
+  }, []);
+
+  /* =======================================================
+     ROUTE PAYLOAD
+  ======================================================= */
+
+  useEffect(() => {
+    function applyPayload(
+      payload
+    ) {
+      const value =
+        payload?.query ||
+        payload?.search ||
+        "";
+
+      if (value) {
+        setQuery(
+          value
+        );
+
+        setActiveTab(
+          payload?.tab ||
+          "all"
+        );
+      }
+
+      if (
+        payload?.personId
+      ) {
+        setOpenedPerson(
+          payload.personId
+        );
+      }
+
+      try {
+        sessionStorage.removeItem(
+          "yatut-open-route-payload"
+        );
+      } catch {
+        // No-op.
+      }
+    }
+
+    try {
+      const raw =
+        sessionStorage.getItem(
+          "yatut-open-route-payload"
+        );
+
+      if (raw) {
+        const parsed =
+          JSON.parse(
+            raw
+          );
+
+        if (
+          parsed?.route ===
+          "search"
+        ) {
+          applyPayload(
+            parsed.payload ||
+            {}
+          );
+        }
+      }
+    } catch (
+      error
+    ) {
+      console.warn(
+        "SEARCH ROUTE PAYLOAD ERROR:",
+        error
+      );
+    }
+
+    function handleRoute(
+      event
+    ) {
+      if (
+        event?.detail?.route !==
+        "search"
+      ) {
+        return;
+      }
+
+      applyPayload(
+        event.detail.payload ||
+        {}
+      );
+    }
+
+    window.addEventListener(
+      "yatut:route-payload",
+      handleRoute
+    );
+
+    return () =>
+      window.removeEventListener(
+        "yatut:route-payload",
+        handleRoute
+      );
   }, []);
 
   const showNotice = (
@@ -762,24 +995,35 @@ function Search({
         action ===
         "send"
       ) {
+        sendFriendRequest(
+          personId
+        );
+
         await updateRelation(
           personId,
           {
             friendStatus:
               "outgoing",
-            following: true,
+            following:
+              true,
           }
         );
 
         showNotice(
           "Запит у друзі надіслано"
         );
+
+        return;
       }
 
       if (
         action ===
         "cancel"
       ) {
+        cancelFriendRequest(
+          personId
+        );
+
         await updateRelation(
           personId,
           {
@@ -791,30 +1035,43 @@ function Search({
         showNotice(
           "Запит скасовано"
         );
+
+        return;
       }
 
       if (
         action ===
         "accept"
       ) {
+        acceptIncomingFriendRequest(
+          personId
+        );
+
         await updateRelation(
           personId,
           {
             friendStatus:
               "friends",
-            following: true,
+            following:
+              true,
           }
         );
 
         showNotice(
           "Ви тепер друзі 🎉"
         );
+
+        return;
       }
 
       if (
         action ===
         "reject"
       ) {
+        declineIncomingFriendRequest(
+          personId
+        );
+
         await updateRelation(
           personId,
           {
@@ -822,18 +1079,32 @@ function Search({
               "none",
           }
         );
+
+        showNotice(
+          "Запит відхилено"
+        );
+
+        return;
       }
 
       if (
         action ===
         "remove"
       ) {
+        removeFriend(
+          personId
+        );
+
         await updateRelation(
           personId,
           {
             friendStatus:
               "none",
           }
+        );
+
+        showNotice(
+          "Користувача видалено з друзів"
         );
       }
     };
@@ -1629,7 +1900,7 @@ function Search({
                         }
                         onClick={() =>
                           onNavigate?.(
-                            "near"
+                            "nearby"
                           )
                         }
                       >

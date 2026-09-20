@@ -5,6 +5,7 @@ import {
   useState,
 } from "react";
 
+import "./styles/tokens.css";
 import "./App.css";
 import "./styles/global-create.css";
 import "./styles/spaces-premium.css";
@@ -57,6 +58,7 @@ import LivePage from "./pages/LivePage";
 import CityPulsePage from "./pages/CityPulsePage";
 import EventsPulsePage from "./pages/EventsPulsePage";
 import CreatorStudioPage from "./pages/CreatorStudioPage";
+import CreatorProfilePage from "./pages/CreatorProfilePage";
 import CreateHubPage from "./pages/CreateHubPage";
 import CreateMediaPage from "./pages/CreateMediaPage";
 
@@ -440,11 +442,39 @@ function safeLoadPosts() {
                 ) => ({
                   ...comment,
 
+                  liked:
+                    Boolean(
+                      comment.liked
+                    ),
+
+                  likes:
+                    Number(
+                      comment.likes ||
+                        0
+                    ),
+
                   replies:
                     Array.isArray(
                       comment.replies
                     )
-                      ? comment.replies
+                      ? comment.replies.map(
+                          (
+                            reply
+                          ) => ({
+                            ...reply,
+
+                            liked:
+                              Boolean(
+                                reply.liked
+                              ),
+
+                            likes:
+                              Number(
+                                reply.likes ||
+                                  0
+                              ),
+                          })
+                        )
                       : [],
                 })
               )
@@ -567,6 +597,7 @@ function highlightElement(
 
 function PostComposer({
   onPublish,
+  onNavigate,
 }) {
   const [
     text,
@@ -591,6 +622,39 @@ function PostComposer({
     setPublishing,
   ] =
     useState(false);
+
+  const [
+    locationOpen,
+    setLocationOpen,
+  ] =
+    useState(false);
+
+  const [
+    locationText,
+    setLocationText,
+  ] =
+    useState("");
+
+  const [
+    pollOpen,
+    setPollOpen,
+  ] =
+    useState(false);
+
+  const [
+    pollQuestion,
+    setPollQuestion,
+  ] =
+    useState("");
+
+  const [
+    pollOptions,
+    setPollOptions,
+  ] =
+    useState([
+      "",
+      "",
+    ]);
 
   const imageInputRef =
     useRef(null);
@@ -631,9 +695,27 @@ function PostComposer({
     const cleanText =
       text.trim();
 
+    const cleanLocation =
+      locationText.trim();
+
+    const cleanPollOptions =
+      pollOptions
+        .map(
+          (option) =>
+            option.trim()
+        )
+        .filter(Boolean);
+
+    const hasPoll =
+      pollOpen &&
+      pollQuestion.trim() &&
+      cleanPollOptions.length >=
+        2;
+
     if (
       !cleanText &&
-      !media
+      !media &&
+      !hasPoll
     ) {
       return;
     }
@@ -656,6 +738,38 @@ function PostComposer({
         media,
 
         mediaType,
+
+        location:
+          cleanLocation ||
+          null,
+
+        poll:
+          hasPoll
+            ? {
+                question:
+                  pollQuestion.trim(),
+
+                options:
+                  cleanPollOptions.map(
+                    (
+                      option,
+                      index
+                    ) => ({
+                      id:
+                        `poll-option-${Date.now()}-${index}`,
+
+                      text:
+                        option,
+
+                      votes:
+                        0,
+                    })
+                  ),
+
+                votedOptionId:
+                  null,
+              }
+            : null,
       });
 
       setText("");
@@ -667,6 +781,15 @@ function PostComposer({
       setMediaType(
         null
       );
+
+      setLocationText("");
+      setLocationOpen(false);
+      setPollQuestion("");
+      setPollOptions([
+        "",
+        "",
+      ]);
+      setPollOpen(false);
 
       if (
         imageInputRef.current
@@ -694,6 +817,12 @@ function PostComposer({
         <button
           className="avatar"
           type="button"
+          onClick={() =>
+            onNavigate?.(
+              "profile"
+            )
+          }
+          aria-label="Відкрити профіль"
         >
           В
         </button>
@@ -753,6 +882,165 @@ function PostComposer({
         </div>
       )}
 
+      {locationOpen && (
+        <div className="composer-inline-location">
+          <YatutIcon
+            name="pin"
+            size={17}
+          />
+
+          <input
+            value={
+              locationText
+            }
+            onChange={(
+              event
+            ) =>
+              setLocationText(
+                event.target.value
+              )
+            }
+            placeholder="Наприклад: Поділ, Київ"
+            autoFocus
+          />
+
+          <button
+            type="button"
+            onClick={() => {
+              setLocationText("");
+              setLocationOpen(false);
+            }}
+            aria-label="Прибрати місце"
+          >
+            ×
+          </button>
+        </div>
+      )}
+
+      {pollOpen && (
+        <div className="composer-poll-editor">
+          <div className="composer-poll-head">
+            <strong>
+              Опитування
+            </strong>
+
+            <button
+              type="button"
+              onClick={() => {
+                setPollOpen(false);
+                setPollQuestion("");
+                setPollOptions([
+                  "",
+                  "",
+                ]);
+              }}
+              aria-label="Закрити опитування"
+            >
+              ×
+            </button>
+          </div>
+
+          <input
+            value={
+              pollQuestion
+            }
+            onChange={(
+              event
+            ) =>
+              setPollQuestion(
+                event.target.value
+              )
+            }
+            placeholder="Ваше запитання"
+          />
+
+          {pollOptions.map(
+            (
+              option,
+              index
+            ) => (
+              <div
+                className="composer-poll-option"
+                key={
+                  index
+                }
+              >
+                <input
+                  value={
+                    option
+                  }
+                  onChange={(
+                    event
+                  ) =>
+                    setPollOptions(
+                      (
+                        previous
+                      ) =>
+                        previous.map(
+                          (
+                            value,
+                            optionIndex
+                          ) =>
+                            optionIndex ===
+                            index
+                              ? event.target.value
+                              : value
+                        )
+                    )
+                  }
+                  placeholder={`Варіант ${index + 1}`}
+                />
+
+                {pollOptions.length >
+                  2 && (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setPollOptions(
+                        (
+                          previous
+                        ) =>
+                          previous.filter(
+                            (
+                              _,
+                              optionIndex
+                            ) =>
+                              optionIndex !==
+                              index
+                          )
+                      )
+                    }
+                    aria-label="Видалити варіант"
+                  >
+                    ×
+                  </button>
+                )}
+              </div>
+            )
+          )}
+
+          {pollOptions.length <
+            6 && (
+            <button
+              type="button"
+              className="composer-poll-add"
+              onClick={() =>
+                setPollOptions(
+                  (
+                    previous
+                  ) => [
+                    ...previous,
+                    "",
+                  ]
+                )
+              }
+            >
+              + Додати варіант
+            </button>
+          )}
+        </div>
+      )}
+
       <div className="composer-footer">
         <div className="composer-tools">
           <button
@@ -785,6 +1073,19 @@ function PostComposer({
 
           <button
             type="button"
+            className={
+              locationOpen
+                ? "active"
+                : ""
+            }
+            onClick={() =>
+              setLocationOpen(
+                (
+                  previous
+                ) =>
+                  !previous
+              )
+            }
           >
             <YatutIcon
               name="pin"
@@ -796,6 +1097,19 @@ function PostComposer({
 
           <button
             type="button"
+            className={
+              pollOpen
+                ? "active"
+                : ""
+            }
+            onClick={() =>
+              setPollOpen(
+                (
+                  previous
+                ) =>
+                  !previous
+              )
+            }
           >
             <YatutIcon
               name="poll"
@@ -807,6 +1121,18 @@ function PostComposer({
 
           <button
             type="button"
+            onClick={() =>
+              onNavigate?.(
+                "events",
+                {
+                  createEvent:
+                    true,
+
+                  source:
+                    "homeComposer",
+                }
+              )
+            }
           >
             <YatutIcon
               name="events"
@@ -822,8 +1148,24 @@ function PostComposer({
           type="button"
           disabled={
             publishing ||
-            (!text.trim() &&
-              !media)
+            (
+              !text.trim() &&
+              !media &&
+              !(
+                pollOpen &&
+                pollQuestion.trim() &&
+                pollOptions
+                  .map(
+                    (
+                      option
+                    ) =>
+                      option.trim()
+                  )
+                  .filter(Boolean)
+                  .length >=
+                  2
+              )
+            )
           }
           onClick={
             publish
@@ -878,6 +1220,9 @@ function PostComposer({
 
 function CommentItem({
   comment,
+  onToggleLike,
+  onReply,
+  onToggleReplyLike,
 }) {
   return (
     <div
@@ -916,12 +1261,34 @@ function CommentItem({
 
             <button
               type="button"
+              className={
+                comment.liked
+                  ? "comment-liked"
+                  : ""
+              }
+              onClick={() =>
+                onToggleLike(
+                  comment.id
+                )
+              }
             >
               Подобається
+              {Number(
+                comment.likes ||
+                  0
+              ) >
+                0
+                ? ` · ${comment.likes}`
+                : ""}
             </button>
 
             <button
               type="button"
+              onClick={() =>
+                onReply(
+                  comment
+                )
+              }
             >
               Відповісти
             </button>
@@ -972,8 +1339,26 @@ function CommentItem({
 
                           <button
                             type="button"
+                            className={
+                              reply.liked
+                                ? "comment-liked"
+                                : ""
+                            }
+                            onClick={() =>
+                              onToggleReplyLike(
+                                comment.id,
+                                reply.id
+                              )
+                            }
                           >
                             Подобається
+                            {Number(
+                              reply.likes ||
+                                0
+                            ) >
+                              0
+                              ? ` · ${reply.likes}`
+                              : ""}
                           </button>
                         </div>
                       </div>
@@ -995,12 +1380,21 @@ function CommentItem({
 function PostComments({
   post,
   onAddComment,
+  onAddReply,
+  onToggleCommentLike,
+  onToggleReplyLike,
 }) {
   const [
     draft,
     setDraft,
   ] =
     useState("");
+
+  const [
+    replyTarget,
+    setReplyTarget,
+  ] =
+    useState(null);
 
   function submit() {
     const text =
@@ -1010,12 +1404,21 @@ function PostComments({
       return;
     }
 
-    onAddComment(
-      post.id,
-      text
-    );
+    if (replyTarget) {
+      onAddReply(
+        post.id,
+        replyTarget.id,
+        text
+      );
+    } else {
+      onAddComment(
+        post.id,
+        text
+      );
+    }
 
     setDraft("");
+    setReplyTarget(null);
   }
 
   return (
@@ -1034,6 +1437,27 @@ function PostComments({
                 comment={
                   comment
                 }
+                onToggleLike={(
+                  commentId
+                ) =>
+                  onToggleCommentLike(
+                    post.id,
+                    commentId
+                  )
+                }
+                onReply={
+                  setReplyTarget
+                }
+                onToggleReplyLike={(
+                  commentId,
+                  replyId
+                ) =>
+                  onToggleReplyLike(
+                    post.id,
+                    commentId,
+                    replyId
+                  )
+                }
               />
             )
           )}
@@ -1041,6 +1465,31 @@ function PostComments({
       ) : (
         <div className="comments-empty">
           Коментарів ще немає. Будьте першим.
+        </div>
+      )}
+
+      {replyTarget && (
+        <div className="replying-label">
+          <span>
+            Відповідь для{" "}
+            <strong>
+              {
+                replyTarget.authorName
+              }
+            </strong>
+          </span>
+
+          <button
+            type="button"
+            onClick={() =>
+              setReplyTarget(
+                null
+              )
+            }
+            aria-label="Скасувати відповідь"
+          >
+            ×
+          </button>
         </div>
       )}
 
@@ -1061,7 +1510,11 @@ function PostComments({
                 event.target.value
               )
             }
-            placeholder="Написати коментар..."
+            placeholder={
+              replyTarget
+                ? `Відповісти ${replyTarget.authorName}...`
+                : "Написати коментар..."
+            }
             onKeyDown={(
               event
             ) => {
@@ -1107,6 +1560,10 @@ function PostCard({
   onToggleLike,
   onDelete,
   onAddComment,
+  onAddReply,
+  onToggleCommentLike,
+  onToggleReplyLike,
+  onVotePoll,
   onShare,
   onToggleSaved,
 }) {
@@ -1161,18 +1618,7 @@ function PostCard({
               size={18}
             />
           </button>
-        ) : (
-          <button
-            className="post-delete-button"
-            type="button"
-            aria-label="Меню допису"
-          >
-            <YatutIcon
-              name="more"
-              size={18}
-            />
-          </button>
-        )}
+) : null}
       </header>
 
       {post.text && (
@@ -1203,6 +1649,79 @@ function PostCard({
             />
           )}
         </div>
+      )}
+
+      {post.location && (
+        <div className="post-location-row">
+          <span className="post-location-chip">
+            <YatutIcon
+              name="pin"
+              size={13}
+            />
+
+            {
+              post.location
+            }
+          </span>
+        </div>
+      )}
+
+      {post.poll && (
+        <section className="post-poll">
+          <h4>
+            {
+              post.poll.question
+            }
+          </h4>
+
+          {(post.poll.options ||
+            []).map(
+            (
+              option
+            ) => {
+              const selected =
+                post.poll
+                  .votedOptionId ===
+                option.id;
+
+              return (
+                <button
+                  key={
+                    option.id
+                  }
+                  type="button"
+                  className={`poll-option ${selected ? "selected" : ""}`.trim()}
+                  onClick={() =>
+                    onVotePoll(
+                      post.id,
+                      option.id
+                    )
+                  }
+                >
+                  <span>
+                    {
+                      option.text
+                    }
+                  </span>
+
+                  <strong>
+                    {
+                      option.votes ||
+                      0
+                    }
+                  </strong>
+                </button>
+              );
+            }
+          )}
+
+          {post.poll
+            .votedOptionId && (
+            <div className="poll-voted">
+              Ваш голос враховано
+            </div>
+          )}
+        </section>
       )}
 
       <div className="post-stats">
@@ -1309,6 +1828,15 @@ function PostCard({
           }
           onAddComment={
             onAddComment
+          }
+          onAddReply={
+            onAddReply
+          }
+          onToggleCommentLike={
+            onToggleCommentLike
+          }
+          onToggleReplyLike={
+            onToggleReplyLike
           }
         />
       )}
@@ -1650,6 +2178,8 @@ function Home({
     text,
     media,
     mediaType,
+    location,
+    poll,
   }) {
     const post = {
       id:
@@ -1677,6 +2207,14 @@ function Home({
       media,
 
       mediaType,
+
+      location:
+        location ||
+        null,
+
+      poll:
+        poll ||
+        null,
 
       liked:
         false,
@@ -1823,6 +2361,12 @@ function Home({
       createdAt:
         Date.now(),
 
+      liked:
+        false,
+
+      likes:
+        0,
+
       replies:
         [],
     };
@@ -1848,6 +2392,309 @@ function Home({
                   ],
                 }
               : post
+        )
+    );
+  }
+
+  function addReply(
+    postId,
+    commentId,
+    text
+  ) {
+    const reply = {
+      id:
+        createId(
+          "reply"
+        ),
+
+      authorId:
+        "me",
+
+      authorName:
+        "Вадим",
+
+      authorInitial:
+        "В",
+
+      text,
+
+      createdAt:
+        Date.now(),
+
+      liked:
+        false,
+
+      likes:
+        0,
+    };
+
+    setPosts(
+      (
+        previous
+      ) =>
+        previous.map(
+          (
+            post
+          ) =>
+            post.id ===
+            postId
+              ? {
+                  ...post,
+
+                  comments:
+                    (
+                      post.comments ||
+                      []
+                    ).map(
+                      (
+                        comment
+                      ) =>
+                        comment.id ===
+                        commentId
+                          ? {
+                              ...comment,
+
+                              replies: [
+                                ...(
+                                  comment.replies ||
+                                  []
+                                ),
+
+                                reply,
+                              ],
+                            }
+                          : comment
+                    ),
+                }
+              : post
+        )
+    );
+  }
+
+  function toggleCommentLike(
+    postId,
+    commentId
+  ) {
+    setPosts(
+      (
+        previous
+      ) =>
+        previous.map(
+          (
+            post
+          ) =>
+            post.id ===
+            postId
+              ? {
+                  ...post,
+
+                  comments:
+                    (
+                      post.comments ||
+                      []
+                    ).map(
+                      (
+                        comment
+                      ) => {
+                        if (
+                          comment.id !==
+                          commentId
+                        ) {
+                          return comment;
+                        }
+
+                        const liked =
+                          !comment.liked;
+
+                        return {
+                          ...comment,
+
+                          liked,
+
+                          likes:
+                            Math.max(
+                              0,
+
+                              Number(
+                                comment.likes ||
+                                  0
+                              ) +
+                                (
+                                  liked
+                                    ? 1
+                                    : -1
+                                )
+                            ),
+                        };
+                      }
+                    ),
+                }
+              : post
+        )
+    );
+  }
+
+  function toggleReplyLike(
+    postId,
+    commentId,
+    replyId
+  ) {
+    setPosts(
+      (
+        previous
+      ) =>
+        previous.map(
+          (
+            post
+          ) =>
+            post.id ===
+            postId
+              ? {
+                  ...post,
+
+                  comments:
+                    (
+                      post.comments ||
+                      []
+                    ).map(
+                      (
+                        comment
+                      ) =>
+                        comment.id ===
+                        commentId
+                          ? {
+                              ...comment,
+
+                              replies:
+                                (
+                                  comment.replies ||
+                                  []
+                                ).map(
+                                  (
+                                    reply
+                                  ) => {
+                                    if (
+                                      reply.id !==
+                                      replyId
+                                    ) {
+                                      return reply;
+                                    }
+
+                                    const liked =
+                                      !reply.liked;
+
+                                    return {
+                                      ...reply,
+
+                                      liked,
+
+                                      likes:
+                                        Math.max(
+                                          0,
+
+                                          Number(
+                                            reply.likes ||
+                                              0
+                                          ) +
+                                            (
+                                              liked
+                                                ? 1
+                                                : -1
+                                            )
+                                        ),
+                                    };
+                                  }
+                                ),
+                            }
+                          : comment
+                    ),
+                }
+              : post
+        )
+    );
+  }
+
+  function votePoll(
+    postId,
+    optionId
+  ) {
+    setPosts(
+      (
+        previous
+      ) =>
+        previous.map(
+          (
+            post
+          ) => {
+            if (
+              post.id !==
+                postId ||
+              !post.poll
+            ) {
+              return post;
+            }
+
+            const previousVote =
+              post.poll
+                .votedOptionId;
+
+            return {
+              ...post,
+
+              poll: {
+                ...post.poll,
+
+                votedOptionId:
+                  optionId,
+
+                options:
+                  (
+                    post.poll
+                      .options ||
+                    []
+                  ).map(
+                    (
+                      option
+                    ) => {
+                      let votes =
+                        Number(
+                          option.votes ||
+                            0
+                        );
+
+                      if (
+                        previousVote ===
+                          option.id &&
+                        previousVote !==
+                          optionId
+                      ) {
+                        votes =
+                          Math.max(
+                            0,
+                            votes - 1
+                          );
+                      }
+
+                      if (
+                        option.id ===
+                          optionId &&
+                        previousVote !==
+                          optionId
+                      ) {
+                        votes +=
+                          1;
+                      }
+
+                      return {
+                        ...option,
+
+                        votes,
+                      };
+                    }
+                  ),
+              },
+            };
+          }
         )
     );
   }
@@ -2300,6 +3147,9 @@ function Home({
         onPublish={
           publishPost
         }
+        onNavigate={
+          onNavigate
+        }
       />
 
       <div
@@ -2340,6 +3190,18 @@ function Home({
                 }
                 onAddComment={
                   addComment
+                }
+                onAddReply={
+                  addReply
+                }
+                onToggleCommentLike={
+                  toggleCommentLike
+                }
+                onToggleReplyLike={
+                  toggleReplyLike
+                }
+                onVotePoll={
+                  votePoll
                 }
                 onShare={
                   sharePost
@@ -2464,9 +3326,15 @@ function RightSidebar({
 
           <button
             type="button"
+            onClick={() =>
+              onNavigate(
+                "now"
+              )
+            }
+            aria-label="Відкрити Зараз"
           >
             <YatutIcon
-              name="more"
+              name="arrowRight"
               size={17}
             />
           </button>
@@ -3223,6 +4091,12 @@ function App() {
     useState("video");
 
   const [
+    selectedCreatorId,
+    setSelectedCreatorId,
+  ] =
+    useState("maria");
+
+  const [
     notificationsOpen,
     setNotificationsOpen,
   ] =
@@ -3390,6 +4264,21 @@ function App() {
       return;
     }
 
+    if (
+      page ===
+      "notifications"
+    ) {
+      setMobileMenuOpen(
+        false
+      );
+
+      setNotificationsOpen(
+        true
+      );
+
+      return;
+    }
+
     setNotificationsOpen(
       false
     );
@@ -3525,6 +4414,18 @@ function App() {
     ) {
       setSelectedCreateType(
         payload.type
+      );
+    }
+
+    if (
+      page ===
+      "creator"
+    ) {
+      setSelectedCreatorId(
+        payload?.creatorId ||
+        payload?.personId ||
+        payload?.authorId ||
+        "maria"
       );
     }
 
@@ -3716,6 +4617,21 @@ function App() {
           />
         );
 
+      case "creator":
+        return (
+          <CreatorProfilePage
+            key={
+              selectedCreatorId
+            }
+            creatorId={
+              selectedCreatorId
+            }
+            onNavigate={
+              goToPage
+            }
+          />
+        );
+
       case "friends":
         return (
           <FriendsErrorBoundary
@@ -3754,6 +4670,9 @@ function App() {
           <Chats
             initialPersonId={
               chatPersonId
+            }
+            onNavigate={
+              goToPage
             }
           />
         );
@@ -3841,6 +4760,7 @@ function App() {
       "watch",
       "live",
       "cityPulse",
+      "creator",
     ].includes(
       currentPage
     )
@@ -3853,6 +4773,7 @@ function App() {
       "watch",
       "live",
       "cityPulse",
+      "creator",
     ].includes(
       currentPage
     );

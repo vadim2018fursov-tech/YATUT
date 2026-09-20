@@ -8,11 +8,11 @@
      BRAND
   ======================================================= */
 
-  --yat-primary: #7c3aed;
-  --yat-primary-dark: #5b21b6;
-  --yat-primary-deep: #4c1d95;
-  --yat-primary-light: #a78bfa;
-  --yat-primary-soft: #ede9fe;
+  --yat-primary: #635bff;
+  --yat-primary-dark: #5148eb;
+  --yat-primary-deep: #4038c8;
+  --yat-primary-light: #918bff;
+  --yat-primary-soft: #eceaff;
 
   --yat-legacy-violet: #635bff;
 
@@ -91,7 +91,7 @@
     rgba(148, 163, 184, 0.34);
 
   --yat-border-purple:
-    rgba(124, 58, 237, 0.20);
+    rgba(99, 91, 255, 0.20);
 
   /* =======================================================
      PAGE BACKGROUND
@@ -100,7 +100,7 @@
   --yat-page-background:
     radial-gradient(
       circle at 20% 10%,
-      rgba(124, 58, 237, 0.08),
+      rgba(99, 91, 255, 0.08),
       transparent 28%
     ),
     radial-gradient(
@@ -122,22 +122,22 @@
   --yat-gradient-primary:
     linear-gradient(
       135deg,
-      #7c3aed 0%,
-      #5b21b6 100%
+      #6f67ff 0%,
+      #635bff 100%
     );
 
   --yat-gradient-primary-bright:
     linear-gradient(
       135deg,
-      #8b5cf6 0%,
-      #6d28d9 48%,
-      #5b21b6 100%
+      #8179ff 0%,
+      #635bff 52%,
+      #5148eb 100%
     );
 
   --yat-gradient-soft:
     linear-gradient(
       135deg,
-      rgba(124, 58, 237, 0.08),
+      rgba(99, 91, 255, 0.08),
       rgba(37, 99, 235, 0.035)
     );
 
@@ -178,7 +178,7 @@
 
   --yat-shadow-purple:
     0 14px 34px
-    rgba(124, 58, 237, 0.18);
+    rgba(99, 91, 255, 0.18);
 
   --yat-shadow-purple-strong:
     0 18px 46px

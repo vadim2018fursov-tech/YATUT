@@ -511,6 +511,14 @@ function CallModal({
     setError,
   ] = useState("");
 
+  const screenStreamRef =
+    useRef(null);
+
+  const [
+    screenSharing,
+    setScreenSharing,
+  ] = useState(false);
+
   useEffect(() => {
     let mounted = true;
 
@@ -578,6 +586,13 @@ function CallModal({
           (track) =>
             track.stop()
         );
+
+      screenStreamRef.current
+        ?.getTracks()
+        .forEach(
+          (track) =>
+            track.stop()
+        );
     };
   }, [mode]);
 
@@ -617,6 +632,108 @@ function CallModal({
       setCameraOff(
         !cameraOff
       );
+    };
+
+  const toggleScreenShare =
+    async () => {
+      if (
+        screenSharing
+      ) {
+        screenStreamRef.current
+          ?.getTracks()
+          .forEach(
+            (
+              track
+            ) =>
+              track.stop()
+          );
+
+        screenStreamRef.current =
+          null;
+
+        setScreenSharing(
+          false
+        );
+
+        if (
+          videoRef.current
+        ) {
+          videoRef.current.srcObject =
+            streamRef.current;
+        }
+
+        return;
+      }
+
+      if (
+        !navigator
+          .mediaDevices
+          ?.getDisplayMedia
+      ) {
+        setError(
+          "Демонстрація екрана недоступна на цьому пристрої."
+        );
+
+        return;
+      }
+
+      try {
+        const screen =
+          await navigator.mediaDevices.getDisplayMedia({
+            video: true,
+            audio: false,
+          });
+
+        screenStreamRef.current =
+          screen;
+
+        setScreenSharing(
+          true
+        );
+
+        if (
+          videoRef.current
+        ) {
+          videoRef.current.srcObject =
+            screen;
+        }
+
+        const track =
+          screen.getVideoTracks()
+            ?.[0];
+
+        if (track) {
+          track.onended =
+            () => {
+              screenStreamRef.current =
+                null;
+
+              setScreenSharing(
+                false
+              );
+
+              if (
+                videoRef.current
+              ) {
+                videoRef.current.srcObject =
+                  streamRef.current;
+              }
+            };
+        }
+      } catch (
+        shareError
+      ) {
+        if (
+          shareError?.name !==
+          "NotAllowedError" &&
+        shareError?.name !==
+          "AbortError"
+        ) {
+          setError(
+            "Не вдалося почати демонстрацію екрана."
+          );
+        }
+      }
     };
 
   return (
@@ -702,8 +819,25 @@ function CallModal({
             </button>
           )}
 
-          <button>
-            🖥️
+          <button
+            type="button"
+            className={
+              screenSharing
+                ? "active"
+                : ""
+            }
+            onClick={
+              toggleScreenShare
+            }
+            aria-label={
+              screenSharing
+                ? "Зупинити демонстрацію екрана"
+                : "Показати екран"
+            }
+          >
+            {screenSharing
+              ? "⏹️"
+              : "🖥️"}
           </button>
 
           <button
@@ -1822,6 +1956,7 @@ function MessageBubble({
 
 function Chats({
   initialPersonId = null,
+  onNavigate,
 }) {
   const [
     chats,
@@ -1920,6 +2055,11 @@ function Chats({
     callMode,
     setCallMode,
   ] = useState(null);
+
+  const [
+    chatToast,
+    setChatToast,
+  ] = useState("");
 
   const [
     mobileDialogOpen,
@@ -2066,6 +2206,105 @@ function Chats({
           activeChat.personId
         ]
       : null;
+
+  function showChatToast(
+    text
+  ) {
+    setChatToast(
+      text
+    );
+
+    window.setTimeout(
+      () =>
+        setChatToast(
+          ""
+        ),
+      1700
+    );
+  }
+
+  async function toggleActiveChatMute() {
+    if (!activeChat) {
+      return;
+    }
+
+    const nextMuted =
+      !activeChat.muted;
+
+    await toggleMutedChat(
+      activeChat
+    );
+
+    showChatToast(
+      nextMuted
+        ? "Сповіщення вимкнено"
+        : "Сповіщення увімкнено"
+    );
+  }
+
+  async function toggleActiveChatBlock() {
+    if (!activeChat) {
+      return;
+    }
+
+    const blocked =
+      !activeChat.blocked;
+
+    await updateChatState(
+      activeChat,
+      {
+        blocked,
+      }
+    );
+
+    showChatToast(
+      blocked
+        ? "Користувача заблоковано"
+        : "Користувача розблоковано"
+    );
+  }
+
+  function openActiveCommunity() {
+    if (
+      !activeChat
+        ?.communityId
+    ) {
+      return;
+    }
+
+    setInfoOpen(
+      false
+    );
+
+    onNavigate?.(
+      "communities",
+      {
+        communityId:
+          activeChat.communityId,
+      }
+    );
+  }
+
+  function openActiveProfile() {
+    if (
+      !activeChat
+        ?.personId
+    ) {
+      return;
+    }
+
+    setInfoOpen(
+      false
+    );
+
+    onNavigate?.(
+      "friends",
+      {
+        personId:
+          activeChat.personId,
+      }
+    );
+  }
 
   /* =======================================================
      MOBILE POPOVER OUTSIDE CLICK
@@ -4018,6 +4257,16 @@ function Chats({
   const sendMessage =
     async () => {
       if (!activeChat) {
+        return;
+      }
+
+      if (
+        activeChat.blocked
+      ) {
+        showChatToast(
+          "Спочатку розблокуйте користувача"
+        );
+
         return;
       }
 
@@ -6071,6 +6320,8 @@ function Chats({
 
                           <button
                             type="button"
+                            disabled
+                            title="Опитування в чатах — наступний модуль"
                           >
                             <span className="chat-attach-icon pink">
                               <YatutIcon
@@ -6090,6 +6341,8 @@ function Chats({
 
                           <button
                             type="button"
+                            disabled
+                            title="Надсилання локації — наступний модуль"
                           >
                             <span className="chat-attach-icon green">
                               <YatutIcon
@@ -6109,6 +6362,8 @@ function Chats({
 
                           <button
                             type="button"
+                            disabled
+                            title="Контакти в чатах — наступний модуль"
                           >
                             <span className="chat-attach-icon orange">
                               <YatutIcon
@@ -6344,15 +6599,34 @@ function Chats({
             {activeChat.communityId && (
               <section className="chat-info-section">
 
-                <button className="chat-info-primary-action">
+                <button
+                  type="button"
+                  className="chat-info-primary-action"
+                  onClick={
+                    openActiveCommunity
+                  }
+                >
                   👥 Відкрити спільноту
                 </button>
 
-                <button className="chat-info-row-button">
-                  🔕 Сповіщення
+                <button
+                  type="button"
+                  className="chat-info-row-button"
+                  onClick={
+                    toggleActiveChatMute
+                  }
+                >
+                  {activeChat.muted
+                    ? "🔔 Увімкнути сповіщення"
+                    : "🔕 Вимкнути сповіщення"}
                 </button>
 
-                <button className="chat-info-row-button">
+                <button
+                  type="button"
+                  className="chat-info-row-button"
+                  disabled
+                  title="Медіагалерея буде окремим модулем"
+                >
                   🖼️ Медіа та файли
                 </button>
 
@@ -6426,7 +6700,13 @@ function Chats({
               !activeChat.communityId && (
                 <section className="chat-info-section chat-info-compact-actions">
 
-                  <button className="chat-info-row-button">
+                  <button
+                    type="button"
+                    className="chat-info-row-button"
+                    onClick={
+                      openActiveProfile
+                    }
+                  >
                     <span className="chat-info-menu-icon">
                       <YatutIcon
                         name="friends"
@@ -6439,7 +6719,13 @@ function Chats({
                     </span>
                   </button>
 
-                  <button className="chat-info-row-button">
+                  <button
+                    type="button"
+                    className="chat-info-row-button"
+                    onClick={
+                      toggleActiveChatMute
+                    }
+                  >
                     <span className="chat-info-menu-icon">
                       <YatutIcon
                         name="notification"
@@ -6448,11 +6734,18 @@ function Chats({
                     </span>
 
                     <span>
-                      Вимкнути сповіщення
+                      {activeChat.muted
+                        ? "Увімкнути сповіщення"
+                        : "Вимкнути сповіщення"}
                     </span>
                   </button>
 
-                  <button className="chat-info-row-button">
+                  <button
+                    type="button"
+                    className="chat-info-row-button"
+                    disabled
+                    title="Медіагалерея буде окремим модулем"
+                  >
                     <span className="chat-info-menu-icon">
                       <YatutIcon
                         name="image"
@@ -6465,7 +6758,13 @@ function Chats({
                     </span>
                   </button>
 
-                  <button className="chat-info-row-button danger">
+                  <button
+                    type="button"
+                    className="chat-info-row-button danger"
+                    onClick={
+                      toggleActiveChatBlock
+                    }
+                  >
                     <span className="chat-info-menu-icon">
                       <YatutIcon
                         name="shield"
@@ -6474,7 +6773,9 @@ function Chats({
                     </span>
 
                     <span>
-                      Заблокувати
+                      {activeChat.blocked
+                        ? "Розблокувати"
+                        : "Заблокувати"}
                     </span>
                   </button>
 
@@ -6485,6 +6786,14 @@ function Chats({
         )}
 
       </section>
+
+      {chatToast && (
+        <div className="chat-global-toast">
+          {
+            chatToast
+          }
+        </div>
+      )}
 
       {groupOpen && (
         <GroupModal

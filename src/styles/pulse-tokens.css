@@ -9,13 +9,13 @@
   ======================================================= */
 
   --pulse-brand:
-    #7c3aed;
+    #635bff;
 
   --pulse-brand-dark:
-    #5b21b6;
+    #5148eb;
 
   --pulse-brand-light:
-    #a78bfa;
+    #918bff;
 
 
   /* =======================================================
@@ -104,7 +104,7 @@
   --pulse-gradient-primary:
     linear-gradient(
       135deg,
-      #7c3aed 0%,
+      #635bff 0%,
       #9333ea 45%,
       #c026d3 100%
     );
@@ -133,18 +133,18 @@
   --pulse-glow-soft:
     0 0 26px
     rgba(
-      124,
-      58,
-      237,
+      99,
+      91,
+      255,
       0.24
     );
 
   --pulse-glow-medium:
     0 0 42px
     rgba(
-      147,
-      51,
-      234,
+      113,
+      94,
+      238,
       0.32
     );
 
@@ -296,9 +296,9 @@
 
   background:
     rgba(
-      147,
-      51,
-      234,
+      113,
+      94,
+      238,
       0.28
     );
 
@@ -341,7 +341,7 @@
     #eef2ff;
 
   color:
-    #5b21b6;
+    #5148eb;
 }
 
 .pulse-status-here {
@@ -358,7 +358,7 @@
   background:
     linear-gradient(
       135deg,
-      #7c3aed,
+      #635bff,
       #2563eb
     );
 

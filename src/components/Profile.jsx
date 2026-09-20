@@ -8,6 +8,16 @@ import {
 import "./ProfileV2.css";
 import YatutIcon from "./YatutIcon";
 
+import {
+  createSavedPost,
+  isSaved,
+  toggleSaved,
+} from "../storage/savedService";
+
+import {
+  shareYatutItem,
+} from "../utils/shareYatutItem";
+
 const PROFILE_STORAGE_KEY = "yatut-profile-v2";
 const PROFILE_POSTS_STORAGE_KEY = "yatut-profile-posts-v2";
 
@@ -325,6 +335,30 @@ export default function Profile({
   ] =
     useState("");
 
+  const [
+    openProfileComments,
+    setOpenProfileComments,
+  ] =
+    useState({});
+
+  const [
+    profileCommentDrafts,
+    setProfileCommentDrafts,
+  ] =
+    useState({});
+
+  const [
+    savedVersion,
+    setSavedVersion,
+  ] =
+    useState(0);
+
+  const [
+    postMenuId,
+    setPostMenuId,
+  ] =
+    useState(null);
+
   /* =======================================================
      SAVE PROFILE
   ======================================================= */
@@ -361,6 +395,125 @@ export default function Profile({
       );
     }
   }, [profilePosts]);
+
+  /* =======================================================
+     PROFILE ROUTE PAYLOAD
+  ======================================================= */
+
+  useEffect(() => {
+    let timer =
+      null;
+
+    function applyPayload(
+      payload
+    ) {
+      if (
+        payload?.tab
+      ) {
+        setActiveTab(
+          payload.tab
+        );
+      }
+
+      if (
+        payload?.postId
+      ) {
+        setActiveTab(
+          "posts"
+        );
+
+        timer =
+          window.setTimeout(
+            () => {
+              const element =
+                document.getElementById(
+                  `profile-post-${payload.postId}`
+                );
+
+              element?.scrollIntoView({
+                behavior:
+                  "smooth",
+
+                block:
+                  "center",
+              });
+            },
+            120
+          );
+      }
+
+      try {
+        sessionStorage.removeItem(
+          "yatut-open-route-payload"
+        );
+      } catch {
+        // No-op.
+      }
+    }
+
+    try {
+      const raw =
+        sessionStorage.getItem(
+          "yatut-open-route-payload"
+        );
+
+      if (raw) {
+        const parsed =
+          JSON.parse(raw);
+
+        if (
+          parsed?.route ===
+          "profile"
+        ) {
+          applyPayload(
+            parsed.payload ||
+            {}
+          );
+        }
+      }
+    } catch (
+      error
+    ) {
+      console.warn(
+        "PROFILE ROUTE PAYLOAD ERROR:",
+        error
+      );
+    }
+
+    function handleRoute(
+      event
+    ) {
+      if (
+        event?.detail?.route !==
+        "profile"
+      ) {
+        return;
+      }
+
+      applyPayload(
+        event.detail.payload ||
+        {}
+      );
+    }
+
+    window.addEventListener(
+      "yatut:route-payload",
+      handleRoute
+    );
+
+    return () => {
+      window.removeEventListener(
+        "yatut:route-payload",
+        handleRoute
+      );
+
+      if (timer) {
+        window.clearTimeout(
+          timer
+        );
+      }
+    };
+  }, []);
 
   /* =======================================================
      STATS
@@ -557,6 +710,229 @@ export default function Profile({
     );
   }
 
+  function toggleProfilePostLike(
+    postId
+  ) {
+    setProfilePosts(
+      (
+        current
+      ) =>
+        current.map(
+          (
+            post
+          ) => {
+            if (
+              post.id !==
+              postId
+            ) {
+              return post;
+            }
+
+            const liked =
+              !post.liked;
+
+            return {
+              ...post,
+
+              liked,
+
+              likes:
+                Math.max(
+                  0,
+
+                  Number(
+                    post.likes ||
+                      0
+                  ) +
+                    (
+                      liked
+                        ? 1
+                        : -1
+                    )
+                ),
+            };
+          }
+        )
+    );
+  }
+
+  function toggleProfileComments(
+    postId
+  ) {
+    setOpenProfileComments(
+      (
+        current
+      ) => ({
+        ...current,
+
+        [postId]:
+          !current[
+            postId
+          ],
+      })
+    );
+  }
+
+  function addProfileComment(
+    postId
+  ) {
+    const text =
+      (
+        profileCommentDrafts[
+          postId
+        ] ||
+        ""
+      ).trim();
+
+    if (!text) {
+      return;
+    }
+
+    setProfilePosts(
+      (
+        current
+      ) =>
+        current.map(
+          (
+            post
+          ) =>
+            post.id ===
+            postId
+              ? {
+                  ...post,
+
+                  comments:
+                    Number(
+                      post.comments ||
+                        0
+                    ) + 1,
+
+                  commentItems: [
+                    ...(
+                      post.commentItems ||
+                      []
+                    ),
+
+                    {
+                      id:
+                        `profile-comment-${Date.now()}`,
+
+                      author:
+                        profile.name,
+
+                      text,
+
+                      createdAt:
+                        Date.now(),
+                    },
+                  ],
+                }
+              : post
+        )
+    );
+
+    setProfileCommentDrafts(
+      (
+        current
+      ) => ({
+        ...current,
+
+        [postId]:
+          "",
+      })
+    );
+  }
+
+  async function shareProfilePost(
+    post
+  ) {
+    await shareYatutItem({
+      title:
+        `Допис ${profile.name} у ЯТУТ`,
+
+      text:
+        post.text ||
+        "",
+
+      path:
+        `#profile-post=${encodeURIComponent(post.id)}`,
+    });
+  }
+
+  function toggleProfilePostSaved(
+    post
+  ) {
+    const savedPost =
+      createSavedPost({
+        ...post,
+
+        authorId:
+          "me",
+
+        authorName:
+          profile.name,
+
+        authorUsername:
+          profile.username,
+
+        authorInitial:
+          profile.name
+            ?.[0]
+            ?.toUpperCase() ||
+          "В",
+
+        createdAt:
+          post.createdAt ||
+          Date.now(),
+      });
+
+    toggleSaved({
+      ...savedPost,
+
+      source:
+        "profile",
+
+      route:
+        "profile",
+
+      routePayload: {
+        tab:
+          "posts",
+
+        postId:
+          post.id,
+      },
+    });
+
+    setSavedVersion(
+      (
+        value
+      ) =>
+        value + 1
+    );
+  }
+
+  function removeProfilePost(
+    postId
+  ) {
+    setProfilePosts(
+      (
+        current
+      ) =>
+        current.filter(
+          (
+            post
+          ) =>
+            post.id !==
+            postId
+        )
+    );
+
+    setPostMenuId(
+      null
+    );
+  }
+
   /* =======================================================
      UI
   ======================================================= */
@@ -708,7 +1084,12 @@ export default function Profile({
                 <button
                   className="profile-v3-mobile-action"
                   type="button"
-                  aria-label="Ще"
+                  aria-label="Більше про профіль"
+                  onClick={() =>
+                    setActiveTab(
+                      "about"
+                    )
+                  }
                 >
                   <YatutIcon
                     name="more"
@@ -1158,7 +1539,12 @@ export default function Profile({
               <button
                 className="profile-v2-icon-button"
                 type="button"
-                aria-label="Ще"
+                aria-label="Більше про профіль"
+                onClick={() =>
+                  setActiveTab(
+                    "about"
+                  )
+                }
               >
                 <YatutIcon
                   name="more"
@@ -1413,15 +1799,58 @@ export default function Profile({
 
                         </div>
 
-                        <button
-                          type="button"
-                          aria-label="Меню"
-                        >
-                          <YatutIcon
-                            name="more"
-                            size={17}
-                          />
-                        </button>
+                        <div className="profile-v2-post-menu-wrap">
+                          <button
+                            type="button"
+                            aria-label="Меню"
+                            onClick={() =>
+                              setPostMenuId(
+                                (
+                                  current
+                                ) =>
+                                  current ===
+                                  post.id
+                                    ? null
+                                    : post.id
+                              )
+                            }
+                          >
+                            <YatutIcon
+                              name="more"
+                              size={17}
+                            />
+                          </button>
+
+                          {postMenuId ===
+                            post.id && (
+                            <div className="profile-v2-post-menu">
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  shareProfilePost(
+                                    post
+                                  )
+                                }
+                              >
+                                Поділитися
+                              </button>
+
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  removeProfilePost(
+                                    post.id
+                                  )
+                                }
+                              >
+                                {post.type ===
+                                "own"
+                                  ? "Видалити допис"
+                                  : "Приховати з профілю"}
+                              </button>
+                            </div>
+                          )}
+                        </div>
 
                       </header>
 
@@ -1462,6 +1891,16 @@ export default function Profile({
 
                         <button
                           type="button"
+                          className={
+                            post.liked
+                              ? "is-active"
+                              : ""
+                          }
+                          onClick={() =>
+                            toggleProfilePostLike(
+                              post.id
+                            )
+                          }
                         >
                           <YatutIcon
                             name="heart"
@@ -1475,6 +1914,18 @@ export default function Profile({
 
                         <button
                           type="button"
+                          className={
+                            openProfileComments[
+                              post.id
+                            ]
+                              ? "is-active"
+                              : ""
+                          }
+                          onClick={() =>
+                            toggleProfileComments(
+                              post.id
+                            )
+                          }
                         >
                           <YatutIcon
                             name="chats"
@@ -1488,6 +1939,11 @@ export default function Profile({
 
                         <button
                           type="button"
+                          onClick={() =>
+                            shareProfilePost(
+                              post
+                            )
+                          }
                         >
                           <YatutIcon
                             name="share"
@@ -1499,7 +1955,27 @@ export default function Profile({
 
                         <button
                           type="button"
-                          aria-label="Зберегти"
+                          className={
+                            isSaved(
+                              "post",
+                              post.id
+                            )
+                              ? "is-active"
+                              : ""
+                          }
+                          onClick={() =>
+                            toggleProfilePostSaved(
+                              post
+                            )
+                          }
+                          aria-label={
+                            isSaved(
+                              "post",
+                              post.id
+                            )
+                              ? "Прибрати зі збережених"
+                              : "Зберегти"
+                          }
                         >
                           <YatutIcon
                             name="saved"
@@ -1508,6 +1984,96 @@ export default function Profile({
                         </button>
 
                       </footer>
+
+                      {openProfileComments[
+                        post.id
+                      ] && (
+                        <section className="profile-v2-inline-comments">
+                          {(post.commentItems ||
+                            []).map(
+                            (
+                              comment
+                            ) => (
+                              <div
+                                key={
+                                  comment.id
+                                }
+                              >
+                                <strong>
+                                  {
+                                    comment.author
+                                  }
+                                </strong>
+
+                                <span>
+                                  {
+                                    comment.text
+                                  }
+                                </span>
+                              </div>
+                            )
+                          )}
+
+                          <div className="profile-v2-inline-comment-form">
+                            <input
+                              value={
+                                profileCommentDrafts[
+                                  post.id
+                                ] ||
+                                ""
+                              }
+                              onChange={(
+                                event
+                              ) =>
+                                setProfileCommentDrafts(
+                                  (
+                                    current
+                                  ) => ({
+                                    ...current,
+
+                                    [post.id]:
+                                      event.target.value,
+                                  })
+                                )
+                              }
+                              placeholder="Написати коментар..."
+                              onKeyDown={(
+                                event
+                              ) => {
+                                if (
+                                  event.key ===
+                                  "Enter"
+                                ) {
+                                  event.preventDefault();
+
+                                  addProfileComment(
+                                    post.id
+                                  );
+                                }
+                              }}
+                            />
+
+                            <button
+                              type="button"
+                              disabled={
+                                !(
+                                  profileCommentDrafts[
+                                    post.id
+                                  ] ||
+                                  ""
+                                ).trim()
+                              }
+                              onClick={() =>
+                                addProfileComment(
+                                  post.id
+                                )
+                              }
+                            >
+                              Надіслати
+                            </button>
+                          </div>
+                        </section>
+                      )}
 
                     </article>
                   )
@@ -1592,6 +2158,18 @@ export default function Profile({
                             interest
                           }
                           type="button"
+                          onClick={() =>
+                            onNavigate?.(
+                              "search",
+                              {
+                                query:
+                                  interest,
+
+                                tab:
+                                  "people",
+                              }
+                            )
+                          }
                         >
                           {
                             interest

@@ -20,6 +20,10 @@ import YatutHereButton from "../components/pulse/YatutHereButton";
 import LocationPulsePanel from "../components/pulse/LocationPulsePanel";
 
 import {
+  shareYatutItem,
+} from "../utils/shareYatutItem";
+
+import {
   pulseRecommendations,
   pulseVideos,
 } from "../data/pulseMockData";
@@ -154,6 +158,16 @@ export default function ClipsPage({
     setShowLocation,
   ] = useState(false);
 
+  const [
+    following,
+    setFollowing,
+  ] = useState(false);
+
+  const [
+    moreOpen,
+    setMoreOpen,
+  ] = useState(false);
+
   const video =
     clips[
       currentIndex %
@@ -167,6 +181,8 @@ export default function ClipsPage({
     setLiked(false);
     setSaved(false);
     setShowLocation(false);
+    setMoreOpen(false);
+    setFollowing(false);
   }
 
   function nextVideo() {
@@ -210,6 +226,23 @@ export default function ClipsPage({
           getCreatorId(video),
       }
     );
+  }
+
+  async function shareClip() {
+    if (!video) {
+      return;
+    }
+
+    await shareYatutItem({
+      title:
+        video.title ||
+        "ЯТУТ PULSE",
+      text:
+        video.description ||
+        "Дивись у ЯТУТ PULSE",
+      path:
+        `#clip=${encodeURIComponent(video.id)}`,
+    });
   }
 
   function handleImageError(
@@ -352,14 +385,66 @@ export default function ClipsPage({
               )}
             </button>
 
-            <button
-              type="button"
-              aria-label="Більше"
-            >
-              <MoreHorizontal
-                size={20}
-              />
-            </button>
+            <div className="pulse-clips-more-wrap">
+              <button
+                type="button"
+                aria-label="Більше"
+                onClick={() =>
+                  setMoreOpen(
+                    (
+                      value
+                    ) =>
+                      !value
+                  )
+                }
+              >
+                <MoreHorizontal
+                  size={20}
+                />
+              </button>
+
+              {moreOpen && (
+                <div className="pulse-clips-more-menu">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSaved(
+                        true
+                      );
+                      setMoreOpen(
+                        false
+                      );
+                    }}
+                  >
+                    Зберегти
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      openCreator();
+                      setMoreOpen(
+                        false
+                      );
+                    }}
+                  >
+                    Про автора
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      nextVideo();
+                      setMoreOpen(
+                        false
+                      );
+                    }}
+                  >
+                    Не цікаво
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
@@ -443,6 +528,17 @@ export default function ClipsPage({
           <button
             type="button"
             aria-label="Коментарі"
+            onClick={() =>
+              onNavigate?.(
+                "watch",
+                {
+                  videoId:
+                    video.id,
+                  openComments:
+                    true,
+                }
+              )
+            }
           >
             <MessageCircle
               size={24}
@@ -457,6 +553,9 @@ export default function ClipsPage({
           <button
             type="button"
             aria-label="Поділитися"
+            onClick={
+              shareClip
+            }
           >
             <Share2
               size={24}
@@ -511,8 +610,23 @@ export default function ClipsPage({
 
             <button
               type="button"
+              className={
+                following
+                  ? "is-following"
+                  : ""
+              }
+              onClick={() =>
+                setFollowing(
+                  (
+                    value
+                  ) =>
+                    !value
+                )
+              }
             >
-              Підписатися
+              {following
+                ? "Ви підписані"
+                : "Підписатися"}
             </button>
           </div>
 

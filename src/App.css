@@ -24599,3 +24599,201 @@ body::before {
   min-width: 22px;
   padding: 0 6px;
 }
+
+
+/* =========================================================
+   YATUT HOME AUDIT POLISH V1
+========================================================= */
+
+.composer-tools button.active {
+  background: #efedff;
+  color: #635bff;
+}
+
+.composer-inline-location,
+.composer-poll-editor {
+  margin: 0 16px 12px;
+  border: 1px solid rgba(99,91,255,.13);
+  border-radius: 17px;
+  background: rgba(248,247,255,.92);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.7);
+}
+
+.composer-inline-location {
+  min-height: 48px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #635bff;
+}
+
+.composer-inline-location input {
+  min-width: 0;
+  flex: 1;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #222431;
+}
+
+.composer-inline-location button,
+.composer-poll-head button,
+.composer-poll-option button {
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: rgba(99,91,255,.08);
+  color: #6b667d;
+}
+
+.composer-poll-editor {
+  padding: 13px;
+}
+
+.composer-poll-head {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.composer-poll-head strong {
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.composer-poll-editor > input,
+.composer-poll-option input {
+  width: 100%;
+  min-height: 42px;
+  padding: 0 12px;
+  border: 1px solid #e0def4;
+  border-radius: 12px;
+  outline: 0;
+  background: rgba(255,255,255,.88);
+  color: #222431;
+}
+
+.composer-poll-editor > input:focus,
+.composer-poll-option input:focus {
+  border-color: #aaa5ff;
+  box-shadow: 0 0 0 3px rgba(99,91,255,.07);
+}
+
+.composer-poll-option {
+  margin-top: 7px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.composer-poll-add {
+  min-height: 36px;
+  margin-top: 8px;
+  padding: 0 11px;
+  border-radius: 11px;
+  background: #eceaff;
+  color: #635bff;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.post-location-row {
+  padding: 0 17px 12px;
+}
+
+.post-location-chip {
+  min-height: 30px;
+  padding: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid rgba(99,91,255,.12);
+  border-radius: 999px;
+  background: #f2f0ff;
+  color: #655de6;
+  font-size: 10px;
+  font-weight: 750;
+}
+
+.comment-meta-actions button.comment-liked {
+  color: #635bff;
+}
+
+.replying-label {
+  margin: 8px 0 0 43px;
+  padding: 7px 9px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border-radius: 11px;
+  background: #f2f0ff;
+  color: #716b82;
+  font-size: 10px;
+}
+
+.replying-label button {
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: rgba(99,91,255,.08);
+  color: #635bff;
+}
+
+@media (max-width: 767px) {
+  .composer-inline-location,
+  .composer-poll-editor {
+    margin: 0 12px 10px;
+    border-radius: 16px;
+  }
+
+  .composer-inline-location {
+    min-height: 50px;
+  }
+
+  .composer-inline-location input,
+  .composer-poll-editor > input,
+  .composer-poll-option input {
+    font-size: 16px;
+  }
+
+  .composer-tools {
+    overflow-x: auto;
+    display: flex;
+    scrollbar-width: none;
+  }
+
+  .composer-tools::-webkit-scrollbar {
+    display: none;
+  }
+
+  .composer-tools button {
+    min-width: max-content;
+    padding: 0 11px;
+  }
+
+  .replying-label {
+    margin-left: 0;
+  }
+}
+
+body.yatut-dark-mode .composer-inline-location,
+body.yatut-dark-mode .composer-poll-editor {
+  border-color: rgba(145,139,255,.2);
+  background: rgba(34,32,52,.92);
+}
+
+body.yatut-dark-mode .composer-inline-location input,
+body.yatut-dark-mode .composer-poll-editor > input,
+body.yatut-dark-mode .composer-poll-option input {
+  color: #f6f5ff;
+  background: rgba(255,255,255,.055);
+  border-color: rgba(255,255,255,.09);
+}

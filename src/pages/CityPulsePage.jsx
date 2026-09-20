@@ -471,27 +471,66 @@ export default function CityPulsePage({
 
           <div className="city-pulse-people-grid">
             {[
-              "Марія",
-              "Олександр",
-              "Софія",
-              "Максим",
-              "Анастасія",
-              "Юлія",
+              {
+                id:
+                  "maria",
+                name:
+                  "Марія",
+              },
+              {
+                id:
+                  "oleksandr",
+                name:
+                  "Олександр",
+              },
+              {
+                id:
+                  "sofia",
+                name:
+                  "Софія",
+              },
+              {
+                id:
+                  "max",
+                name:
+                  "Максим",
+              },
+              {
+                id:
+                  "anastasia",
+                name:
+                  "Анастасія",
+              },
+              {
+                id:
+                  "yulia",
+                name:
+                  "Юлія",
+              },
             ].map(
               (
-                name,
+                person,
                 index
               ) => (
                 <button
                   type="button"
                   key={
-                    name
+                    person.id
                   }
                   className="city-pulse-person"
+                  onClick={() =>
+                    onNavigate?.(
+                      "friends",
+                      {
+                        personId:
+                          person.id,
+                      }
+                    )
+                  }
                 >
                   <span>
                     {
-                      name.charAt(
+                      person.name.charAt(
                         0
                       )
                     }
@@ -502,7 +541,7 @@ export default function CityPulsePage({
                   <div>
                     <strong>
                       {
-                        name
+                        person.name
                       }
                     </strong>
 

@@ -24,6 +24,10 @@ import {
   pulseVideos,
 } from "../data/pulseMockData";
 
+import {
+  shareYatutItem,
+} from "../utils/shareYatutItem";
+
 const FALLBACK_IMAGE =
   "/assets/yatut/cities/kyiv/hero.jpg";
 
@@ -146,6 +150,19 @@ export default function CreatorProfilePage({
         "yatut.creator",
       initials: "Я",
     };
+
+  async function shareCreatorProfile() {
+    await shareYatutItem({
+      title:
+        `${creator.name} · ЯТУТ PULSE`,
+
+      text:
+        `@${creator.username} у ЯТУТ PULSE`,
+
+      path:
+        `#creator=${encodeURIComponent(creator.id)}`,
+    });
+  }
 
   const allVideos =
     useMemo(
@@ -425,6 +442,9 @@ export default function CreatorProfilePage({
             <button
               type="button"
               aria-label="Поділитися профілем"
+              onClick={
+                shareCreatorProfile
+              }
             >
               <Share2
                 size={18}

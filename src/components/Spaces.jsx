@@ -8,6 +8,10 @@ import {
 import CommunityEventsSection from "./spaces/CommunityEventsSection";
 
 import {
+  shareYatutItem,
+} from "../utils/shareYatutItem";
+
+import {
   openSchoolChat,
 } from "../bridges/schoolChatBridge";
 
@@ -2774,6 +2778,9 @@ function SchoolModule({
 
         <button
           type="button"
+          disabled
+          className="is-planned"
+          title="Розклад — окремий модуль, який узгодимо"
         >
           <span>
             📅
@@ -2790,6 +2797,9 @@ function SchoolModule({
 
         <button
           type="button"
+          disabled
+          className="is-planned"
+          title="Домашнє — окремий модуль, який узгодимо"
         >
           <span>
             📚
@@ -2806,6 +2816,9 @@ function SchoolModule({
 
         <button
           type="button"
+          disabled
+          className="is-planned"
+          title="Онлайн — окремий модуль, який узгодимо"
         >
           <span>
             🎥
@@ -3129,6 +3142,18 @@ function CommunityFeed({
   ] =
     useState("");
 
+  const [
+    feedCommentOpen,
+    setFeedCommentOpen,
+  ] =
+    useState({});
+
+  const [
+    feedCommentDraft,
+    setFeedCommentDraft,
+  ] =
+    useState({});
+
   const posts =
     Array.isArray(
       space.posts
@@ -3178,6 +3203,163 @@ function CommunityFeed({
     setText("");
   }
 
+  function updatePost(
+    postId,
+    updater
+  ) {
+    onUpdate?.({
+      ...space,
+
+      posts:
+        posts.map(
+          (
+            post
+          ) =>
+            post.id ===
+            postId
+              ? updater(
+                  post
+                )
+              : post
+        ),
+
+      updatedAt:
+        Date.now(),
+    });
+  }
+
+  function togglePostLike(
+    postId
+  ) {
+    updatePost(
+      postId,
+      (
+        post
+      ) => {
+        const liked =
+          !post.liked;
+
+        return {
+          ...post,
+
+          liked,
+
+          likes:
+            Math.max(
+              0,
+
+              Number(
+                post.likes ||
+                  0
+              ) +
+                (
+                  liked
+                    ? 1
+                    : -1
+                )
+            ),
+        };
+      }
+    );
+  }
+
+  function togglePostPinned(
+    postId
+  ) {
+    updatePost(
+      postId,
+      (
+        post
+      ) => ({
+        ...post,
+
+        pinned:
+          !post.pinned,
+      })
+    );
+  }
+
+  function addFeedComment(
+    postId
+  ) {
+    const value =
+      (
+        feedCommentDraft[
+          postId
+        ] ||
+        ""
+      ).trim();
+
+    if (!value) {
+      return;
+    }
+
+    updatePost(
+      postId,
+      (
+        post
+      ) => ({
+        ...post,
+
+        comments:
+          Number(
+            post.comments ||
+              0
+          ) + 1,
+
+        commentItems: [
+          ...(
+            post.commentItems ||
+            []
+          ),
+
+          {
+            id:
+              createId(
+                "space-comment"
+              ),
+
+            author:
+              "Вадим",
+
+            text:
+              value,
+
+            createdAt:
+              Date.now(),
+          },
+        ],
+      })
+    );
+
+    setFeedCommentDraft(
+      (
+        current
+      ) => ({
+        ...current,
+
+        [postId]:
+          "",
+      })
+    );
+  }
+
+  async function shareCommunityPost(
+    post
+  ) {
+    await shareYatutItem({
+      title:
+        `${space.title} · ЯТУТ`,
+
+      text:
+        post.text ||
+        "",
+
+      path:
+        `#space=${encodeURIComponent(space.id)}&post=${encodeURIComponent(post.id)}`,
+    });
+  }
+
   return (
     <div className="community-feed">
       <section className="community-feed-composer">
@@ -3206,18 +3388,27 @@ function CommunityFeed({
           <div>
             <button
               type="button"
+              disabled
+              className="is-planned"
+              title="Медіа у спільнотах узгодимо окремо"
             >
               📷 Фото
             </button>
 
             <button
               type="button"
+              disabled
+              className="is-planned"
+              title="Файли у спільнотах узгодимо окремо"
             >
               📎 Файл
             </button>
 
             <button
               type="button"
+              disabled
+              className="is-planned"
+              title="Опитування у спільнотах узгодимо окремо"
             >
               📊 Опитування
             </button>
@@ -3286,9 +3477,23 @@ function CommunityFeed({
 
               <button
                 type="button"
-                aria-label="Ще"
+                className={
+                  post.pinned
+                    ? "is-active"
+                    : ""
+                }
+                aria-label={
+                  post.pinned
+                    ? "Відкріпити допис"
+                    : "Закріпити допис"
+                }
+                onClick={() =>
+                  togglePostPinned(
+                    post.id
+                  )
+                }
               >
-                •••
+                📌
               </button>
             </header>
 
@@ -3317,22 +3522,151 @@ function CommunityFeed({
             <footer>
               <button
                 type="button"
+                className={
+                  post.liked
+                    ? "is-active"
+                    : ""
+                }
+                onClick={() =>
+                  togglePostLike(
+                    post.id
+                  )
+                }
               >
-                ♡ Подобається
+                {post.liked
+                  ? "♥"
+                  : "♡"}{" "}
+                Подобається
               </button>
 
               <button
                 type="button"
+                className={
+                  feedCommentOpen[
+                    post.id
+                  ]
+                    ? "is-active"
+                    : ""
+                }
+                onClick={() =>
+                  setFeedCommentOpen(
+                    (
+                      current
+                    ) => ({
+                      ...current,
+
+                      [post.id]:
+                        !current[
+                          post.id
+                        ],
+                    })
+                  )
+                }
               >
                 💬 Коментар
               </button>
 
               <button
                 type="button"
+                onClick={() =>
+                  shareCommunityPost(
+                    post
+                  )
+                }
               >
                 ↗ Поділитися
               </button>
             </footer>
+
+            {feedCommentOpen[
+              post.id
+            ] && (
+              <div className="community-feed-comments">
+                {(post.commentItems ||
+                  []).map(
+                  (
+                    comment
+                  ) => (
+                    <div
+                      key={
+                        comment.id
+                      }
+                    >
+                      <strong>
+                        {
+                          comment.author
+                        }
+                      </strong>
+
+                      <span>
+                        {
+                          comment.text
+                        }
+                      </span>
+                    </div>
+                  )
+                )}
+
+                <div className="community-feed-comment-form">
+                  <input
+                    value={
+                      feedCommentDraft[
+                        post.id
+                      ] ||
+                      ""
+                    }
+                    onChange={(
+                      event
+                    ) =>
+                      setFeedCommentDraft(
+                        (
+                          current
+                        ) => ({
+                          ...current,
+
+                          [post.id]:
+                            event.target.value,
+                        })
+                      )
+                    }
+                    placeholder="Написати коментар..."
+                    onKeyDown={(
+                      event
+                    ) => {
+                      if (
+                        event.key ===
+                        "Enter"
+                      ) {
+                        event.preventDefault();
+
+                        addFeedComment(
+                          post.id
+                        );
+                      }
+                    }}
+                  />
+
+                  <button
+                    type="button"
+                    disabled={
+                      !(
+                        feedCommentDraft[
+                          post.id
+                        ] ||
+                        ""
+                      ).trim()
+                    }
+                    onClick={() =>
+                      addFeedComment(
+                        post.id
+                      )
+                    }
+                  >
+                    Надіслати
+                  </button>
+                </div>
+              </div>
+            )}
           </article>
         )
       )}
@@ -3490,6 +3824,9 @@ function WorkModule({
 
           <button
             type="button"
+            disabled
+            className="is-planned"
+            title="Файли — окремий робочий модуль, який узгодимо"
           >
             <span>
               📁
@@ -3506,6 +3843,9 @@ function WorkModule({
 
           <button
             type="button"
+            disabled
+            className="is-planned"
+            title="Календар — окремий робочий модуль, який узгодимо"
           >
             <span>
               📅
@@ -3522,6 +3862,9 @@ function WorkModule({
 
           <button
             type="button"
+            disabled
+            className="is-planned"
+            title="Зустріч — окремий робочий модуль, який узгодимо"
           >
             <span>
               🎥
@@ -3547,6 +3890,7 @@ function WorkModule({
 
 function Overview({
   space,
+  onOpenFeed,
 }) {
   const template =
     templateForSpace(
@@ -3576,6 +3920,9 @@ function Overview({
 
         <button
           type="button"
+          onClick={
+            onOpenFeed
+          }
         >
           Відкрити
         </button>
@@ -4025,6 +4372,11 @@ function SpaceDetail({
               <Overview
                 space={
                   space
+                }
+                onOpenFeed={() =>
+                  setTab(
+                    "feed"
+                  )
                 }
               />
             )}

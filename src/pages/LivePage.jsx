@@ -20,6 +20,10 @@ import {
 import YatutHereButton from "../components/pulse/YatutHereButton";
 
 import {
+  shareYatutItem,
+} from "../utils/shareYatutItem";
+
+import {
   pulseRecommendations,
   pulseVideos,
 } from "../data/pulseMockData";
@@ -418,6 +422,19 @@ export default function LivePage({
     video.author?.username ||
     "maria";
 
+  async function shareLive() {
+    await shareYatutItem({
+      title:
+        video.title ||
+        "ЯТУТ LIVE",
+      text:
+        video.description ||
+        "Дивись LIVE у ЯТУТ",
+      path:
+        `#live=${encodeURIComponent(video.id)}`,
+    });
+  }
+
   return (
     <div className="pulse-live-page">
       {/* ===============================================
@@ -615,6 +632,9 @@ export default function LivePage({
 
               <button
                 type="button"
+                onClick={
+                  shareLive
+                }
               >
                 <Share2
                   size={17}
@@ -789,27 +809,72 @@ export default function LivePage({
 
             <div className="pulse-live-people__row">
               {[
-                "М",
-                "О",
-                "С",
-                "А",
-                "Д",
-                "І",
-                "К",
+                {
+                  id:
+                    "maria",
+                  avatar:
+                    "М",
+                },
+                {
+                  id:
+                    "oleksandr",
+                  avatar:
+                    "О",
+                },
+                {
+                  id:
+                    "sofia",
+                  avatar:
+                    "С",
+                },
+                {
+                  id:
+                    "anastasia",
+                  avatar:
+                    "А",
+                },
+                {
+                  id:
+                    "max",
+                  avatar:
+                    "М",
+                },
+                {
+                  id:
+                    "yulia",
+                  avatar:
+                    "Ю",
+                },
+                {
+                  id:
+                    "vlad",
+                  avatar:
+                    "В",
+                },
               ].map(
                 (
-                  avatar,
+                  person,
                   index
                 ) => (
                   <button
                     key={
-                      `${avatar}-${index}`
+                      person.id
                     }
                     type="button"
+                    onClick={() =>
+                      onNavigate?.(
+                        "friends",
+                        {
+                          personId:
+                            person.id,
+                        }
+                      )
+                    }
+                    aria-label="Відкрити профіль"
                   >
                     <span>
                       {
-                        avatar
+                        person.avatar
                       }
                     </span>
 
