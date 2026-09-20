@@ -2317,3 +2317,366 @@
       26px !important;
   }
 }
+
+
+/* =========================================================
+   MOBILE HEADER V8 — COMPACT RIGHT ACTION ROW
+========================================================= */
+
+@media (max-width: 767px) {
+  .topbar-inner {
+    width: 100% !important;
+    max-width: 100% !important;
+
+    padding:
+      8px 10px !important;
+
+    display: flex !important;
+    align-items: center !important;
+
+    gap: 6px !important;
+  }
+
+  .brand {
+    flex:
+      0 0 auto !important;
+
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+
+    margin: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+
+    gap: 6px !important;
+  }
+
+  .brand-ya {
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    flex: 0 0 44px !important;
+  }
+
+  .brand-tut {
+    display: block !important;
+
+    font-size: 18px !important;
+    line-height: 1 !important;
+
+    white-space: nowrap !important;
+  }
+
+  .desktop-search {
+    flex:
+      0 0 34px !important;
+
+    width: 34px !important;
+    min-width: 34px !important;
+    max-width: 34px !important;
+    height: 34px !important;
+
+    margin:
+      0 0 0 auto !important;
+
+    padding: 0 !important;
+
+    display: grid !important;
+    place-items: center !important;
+
+    border:
+      1px solid
+      #e8e9f0 !important;
+
+    border-radius:
+      11px !important;
+
+    background:
+      #f3f4f8 !important;
+
+    color:
+      #676d7a !important;
+
+    overflow: hidden !important;
+
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  .desktop-search-content {
+    width: 34px !important;
+    height: 34px !important;
+
+    display: grid !important;
+    place-items: center !important;
+
+    overflow: hidden !important;
+  }
+
+  .desktop-search-content svg {
+    width: 19px !important;
+    height: 19px !important;
+    min-width: 19px !important;
+
+    margin: 0 !important;
+  }
+
+  .desktop-search-content > span:last-child {
+    display: none !important;
+  }
+
+  .topbar-actions {
+    flex:
+      0 0 auto !important;
+
+    margin: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+
+    gap: 4px !important;
+  }
+
+  .topbar-actions .icon-button,
+  .topbar-actions .profile-mini {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    flex: 0 0 34px !important;
+
+    border-radius:
+      11px !important;
+  }
+
+  .topbar-actions svg {
+    width: 19px !important;
+    height: 19px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .topbar-inner {
+    padding-right: 8px !important;
+    padding-left: 8px !important;
+
+    gap: 4px !important;
+  }
+
+  .brand {
+    gap: 4px !important;
+  }
+
+  .brand-ya {
+    width: 41px !important;
+    height: 41px !important;
+    min-width: 41px !important;
+    flex-basis: 41px !important;
+  }
+
+  .brand-tut {
+    font-size: 16.5px !important;
+  }
+
+  .desktop-search {
+    width: 31px !important;
+    min-width: 31px !important;
+    max-width: 31px !important;
+    height: 31px !important;
+    flex-basis: 31px !important;
+
+    border-radius:
+      10px !important;
+  }
+
+  .desktop-search-content {
+    width: 31px !important;
+    height: 31px !important;
+  }
+
+  .desktop-search-content svg {
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+  }
+
+  .topbar-actions {
+    gap: 3px !important;
+  }
+
+  .topbar-actions .icon-button,
+  .topbar-actions .profile-mini {
+    width: 31px !important;
+    height: 31px !important;
+    min-width: 31px !important;
+    flex-basis: 31px !important;
+
+    border-radius:
+      10px !important;
+  }
+
+  .topbar-actions svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+}
+
+@media (max-width: 350px) {
+  .brand-tut {
+    font-size: 15px !important;
+  }
+
+  .desktop-search,
+  .topbar-actions .icon-button,
+  .topbar-actions .profile-mini {
+    width: 29px !important;
+    height: 29px !important;
+    min-width: 29px !important;
+    flex-basis: 29px !important;
+  }
+
+  .desktop-search-content {
+    width: 29px !important;
+    height: 29px !important;
+  }
+}
+
+/* =========================================================
+   MOBILE NAV V7 — EXTRA SLIM / RAISED
+========================================================= */
+
+@media (max-width: 767px) {
+  body {
+    padding-bottom:
+      calc(
+        92px +
+        env(
+          safe-area-inset-bottom
+        )
+      ) !important;
+  }
+
+  .mobile-nav {
+    bottom:
+      calc(
+        14px +
+        env(
+          safe-area-inset-bottom
+        )
+      ) !important;
+
+    width:
+      min(
+        520px,
+        calc(
+          100% - 20px
+        )
+      ) !important;
+
+    max-width:
+      calc(
+        100% - 20px
+      ) !important;
+
+    height: 60px !important;
+    min-height: 60px !important;
+
+    padding: 4px !important;
+
+    gap: 2px !important;
+
+    border-radius:
+      32px !important;
+  }
+
+  .mobile-nav > button,
+  .mobile-nav > button:not(.mobile-create-button),
+  .mobile-nav > .mobile-create-button {
+    height: 52px !important;
+    min-height: 52px !important;
+
+    padding:
+      3px 2px !important;
+
+    gap: 2px !important;
+
+    border-radius:
+      27px !important;
+  }
+
+  .mobile-nav > button > span:first-child,
+  .mobile-nav > button:not(.mobile-create-button) > span:first-child,
+  .mobile-nav > .mobile-create-button > span,
+  .mobile-nav .mobile-profile-avatar {
+    width: 25px !important;
+    height: 25px !important;
+    min-width: 25px !important;
+  }
+
+  .mobile-nav > button svg,
+  .mobile-nav > button:not(.mobile-create-button) svg {
+    width: 19px !important;
+    height: 19px !important;
+  }
+
+  .mobile-nav > button > small,
+  .mobile-nav > button:not(.mobile-create-button) > small,
+  .mobile-nav > .mobile-create-button > small {
+    font-size:
+      clamp(
+        8.5px,
+        2.35vw,
+        10px
+      ) !important;
+  }
+
+  .mobile-nav > button.active,
+  .mobile-nav > button[aria-current="page"],
+  .mobile-nav > .mobile-create-button.active,
+  .mobile-nav .mobile-pulse-button.active,
+  .mobile-nav .mobile-pulse-button[aria-current="page"] {
+    border-radius:
+      25px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .mobile-nav {
+    bottom:
+      calc(
+        13px +
+        env(
+          safe-area-inset-bottom
+        )
+      ) !important;
+
+    width:
+      calc(
+        100% - 16px
+      ) !important;
+
+    max-width:
+      calc(
+        100% - 16px
+      ) !important;
+
+    height: 58px !important;
+    min-height: 58px !important;
+
+    padding: 3px !important;
+
+    border-radius:
+      31px !important;
+  }
+
+  .mobile-nav > button,
+  .mobile-nav > button:not(.mobile-create-button),
+  .mobile-nav > .mobile-create-button {
+    height: 52px !important;
+    min-height: 52px !important;
+
+    border-radius:
+      26px !important;
+  }
+}
