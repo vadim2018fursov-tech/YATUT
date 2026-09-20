@@ -8,6 +8,7 @@ import {
 import YatutIcon from "./YatutIcon";
 
 import {
+  deleteChat,
   deleteMessage,
   getChat,
   getChats,
@@ -194,6 +195,81 @@ function formatTime(
     {
       hour: "2-digit",
       minute: "2-digit",
+    }
+  );
+}
+
+function formatChatListTime(
+  value
+) {
+  const time =
+    Number(
+      value || 0
+    );
+
+  if (!time) {
+    return "";
+  }
+
+  const now =
+    Date.now();
+
+  const diff =
+    Math.max(
+      0,
+      now - time
+    );
+
+  if (
+    diff <
+    60000
+  ) {
+    return "зараз";
+  }
+
+  if (
+    diff <
+    3600000
+  ) {
+    return `${Math.max(
+      1,
+      Math.round(
+        diff /
+        60000
+      )
+    )} хв`;
+  }
+
+  const date =
+    new Date(
+      time
+    );
+
+  const today =
+    new Date();
+
+  if (
+    date.toDateString() ===
+    today.toDateString()
+  ) {
+    return date.toLocaleTimeString(
+      "uk-UA",
+      {
+        hour:
+          "2-digit",
+        minute:
+          "2-digit",
+      }
+    );
+  }
+
+  return date.toLocaleDateString(
+    "uk-UA",
+    {
+      day:
+        "2-digit",
+      month:
+        "2-digit",
     }
   );
 }
