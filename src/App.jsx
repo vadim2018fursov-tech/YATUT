@@ -91,9 +91,9 @@ const MAIN_NAV = [
   },
 
   {
-    id: "now",
-    icon: "now",
-    title: "Зараз",
+    id: "pulse",
+    icon: "pulse",
+    title: "PULSE",
   },
 
   {
@@ -2753,6 +2753,30 @@ function TopBar({
         </button>
 
         <div className="topbar-actions">
+          {/* NOW */}
+
+          <button
+            className={`icon-button topbar-now-button ${
+              currentPage ===
+              "now"
+                ? "active"
+                : ""
+            }`}
+            type="button"
+            onClick={() =>
+              onNavigate(
+                "now"
+              )
+            }
+            aria-label="Зараз"
+            title="Зараз"
+          >
+            <YatutIcon
+              name="now"
+              size={20}
+            />
+          </button>
+
           {/* NOTIFICATIONS */}
 
           <button
@@ -3778,7 +3802,6 @@ function App() {
 
   const hideGlobalMobileNav =
     [
-      "pulse",
       "clips",
       "watch",
       "live",
