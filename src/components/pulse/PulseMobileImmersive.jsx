@@ -21,6 +21,8 @@ import {
   pulseVideos,
 } from "../../data/pulseMockData";
 
+import PulseLongVideoMobile from "./PulseLongVideoMobile";
+
 const TABS = [
   {
     id: "forYou",
@@ -599,6 +601,11 @@ export default function PulseMobileImmersive({
   );
 
   const [
+    longWatchOpen,
+    setLongWatchOpen,
+  ] = useState(false);
+
+  const [
     likedIds,
     setLikedIds,
   ] = useState(
@@ -708,7 +715,19 @@ export default function PulseMobileImmersive({
   }
 
   return (
-    <section className="pulse-immersive-mobile">
+    <section
+      className={`pulse-immersive-mobile ${
+        activeTab ===
+        "vlogs"
+          ? "is-long-form"
+          : ""
+      } ${
+        longWatchOpen
+          ? "is-long-watch-open"
+          : ""
+      }`.trim()}
+    >
+      {!longWatchOpen && (
       <nav
         className="pulse-immersive__tabs"
         aria-label="Формати PULSE"
@@ -746,7 +765,19 @@ export default function PulseMobileImmersive({
           )
         )}
       </nav>
+      )}
 
+      {activeTab ===
+      "vlogs" ? (
+        <PulseLongVideoMobile
+          videos={
+            videos
+          }
+          onWatchChange={
+            setLongWatchOpen
+          }
+        />
+      ) : (
       <div className="pulse-immersive__feed">
         {videos.length ? (
           videos.map(
@@ -844,6 +875,7 @@ export default function PulseMobileImmersive({
           </div>
         )}
       </div>
+      )}
     </section>
   );
 }
