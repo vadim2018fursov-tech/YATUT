@@ -1174,6 +1174,48 @@ function MessageBubble({
     setReactions,
   ] = useState(false);
 
+  const menuRef =
+    useRef(null);
+
+  const menuTriggerRef =
+    useRef(null);
+
+  useEffect(() => {
+    if (!menu) {
+      return;
+    }
+
+    function handleOutsidePress(
+      event
+    ) {
+      if (
+        menuRef.current?.contains(
+          event.target
+        ) ||
+        menuTriggerRef.current?.contains(
+          event.target
+        )
+      ) {
+        return;
+      }
+
+      setMenu(false);
+    }
+
+    document.addEventListener(
+      "pointerdown",
+      handleOutsidePress
+    );
+
+    return () =>
+      document.removeEventListener(
+        "pointerdown",
+        handleOutsidePress
+      );
+  }, [
+    menu,
+  ]);
+
   const mine =
     message.senderId ===
     "me";
@@ -1206,6 +1248,9 @@ function MessageBubble({
       <div className="message-shell">
 
         <button
+          ref={
+            menuTriggerRef
+          }
           className="message-more-trigger"
           onClick={() => {
             setMenu(!menu);
@@ -1216,7 +1261,43 @@ function MessageBubble({
         </button>
 
         {menu && (
-          <div className="message-action-menu">
+          <div
+            ref={
+              menuRef
+            }
+            className="message-action-menu"
+          >
+            <div className="message-action-reactions">
+              {REACTIONS.map(
+                (
+                  emoji
+                ) => (
+                  <button
+                    key={
+                      emoji
+                    }
+                    type="button"
+                    className="message-action-reaction"
+                    onClick={() => {
+                      onReaction(
+                        message.id,
+                        emoji
+                      );
+                      setMenu(
+                        false
+                      );
+                    }}
+                    aria-label={`Реакція ${emoji}`}
+                  >
+                    {
+                      emoji
+                    }
+                  </button>
+                )
+              )}
+            </div>
+
+            <div className="message-action-separator" />
 
             <button
               onClick={() => {
@@ -1224,7 +1305,14 @@ function MessageBubble({
                 setMenu(false);
               }}
             >
-              ↩️ Відповісти
+              <span className="message-action-icon">
+                <YatutIcon
+                  name="reply"
+                  size={16}
+                />
+              </span>
+
+              Відповісти
             </button>
 
             <button
@@ -1235,7 +1323,14 @@ function MessageBubble({
                 setMenu(false);
               }}
             >
-              ➡️ Переслати
+              <span className="message-action-icon">
+                <YatutIcon
+                  name="forward"
+                  size={16}
+                />
+              </span>
+
+              Переслати
             </button>
 
             <button
@@ -1244,7 +1339,13 @@ function MessageBubble({
                 setMenu(false);
               }}
             >
-              📌{" "}
+              <span className="message-action-icon">
+                <YatutIcon
+                  name="pin"
+                  size={16}
+                />
+              </span>
+
               {message.pinned
                 ? "Відкріпити"
                 : "Закріпити"}
@@ -1263,7 +1364,14 @@ function MessageBubble({
                     );
                   }}
                 >
-                  ✏️ Редагувати
+                  <span className="message-action-icon">
+                    <YatutIcon
+                      name="edit"
+                      size={16}
+                    />
+                  </span>
+
+                  Редагувати
                 </button>
               )}
 
@@ -1277,7 +1385,14 @@ function MessageBubble({
                   setMenu(false);
                 }}
               >
-                🗑️ Видалити
+                <span className="message-action-icon">
+                  <YatutIcon
+                    name="trash"
+                    size={16}
+                  />
+                </span>
+
+                Видалити
               </button>
             )}
 
@@ -3684,8 +3799,12 @@ function Chats({
                           false
                         );
                       }}
+                    aria-label="Смайли"
                     >
-                      😊
+                      <YatutIcon
+                        name="smile"
+                        size={18}
+                      />
                     </button>
 
                     {emojiOpen && (
