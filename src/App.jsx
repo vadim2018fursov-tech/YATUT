@@ -2957,11 +2957,6 @@ function LeftSidebar({
                   : ""
               }
               type="button"
-              aria-current={
-                active
-                  ? "page"
-                  : undefined
-              }
               onClick={() =>
                 onNavigate(
                   item.id
@@ -3140,6 +3135,11 @@ function MobileNavigation({
                   : ""
               }`.trim()}
               type="button"
+              aria-current={
+                active
+                  ? "page"
+                  : undefined
+              }
               onClick={() =>
                 onNavigate(
                   item.id
