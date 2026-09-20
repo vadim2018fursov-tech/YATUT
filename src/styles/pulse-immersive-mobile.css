@@ -7,6 +7,33 @@
 }
 
 @media (max-width: 767px) {
+  .layout.layout-wide.layout-pulse-immersive {
+    width: 100% !important;
+    max-width: 100% !important;
+
+    margin: 0 !important;
+    margin-bottom:
+      calc(
+        -108px -
+        env(
+          safe-area-inset-bottom
+        )
+      ) !important;
+
+    padding: 0 !important;
+
+    display: block !important;
+  }
+
+  .layout-pulse-immersive
+  .main-content {
+    width: 100% !important;
+    max-width: none !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
   .pulse-desktop-experience {
     display: none !important;
   }
@@ -19,9 +46,7 @@
     max-width: 100vw;
     min-width: 0;
 
-    margin-top: -14px;
-    margin-right: calc(50% - 50vw);
-    margin-left: calc(50% - 50vw);
+    margin: 0;
 
     display: block;
 
