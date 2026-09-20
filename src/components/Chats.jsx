@@ -4199,6 +4199,339 @@ function Chats({
 
   return (
     <>
+      {storyViewer &&
+        currentStory &&
+        currentStoryPerson && (
+          <section
+            className="story-viewer"
+            onTouchStart={
+              handleStoryTouchStart
+            }
+            onTouchEnd={
+              handleStoryTouchEnd
+            }
+          >
+            <div
+              className="story-viewer-media"
+              style={{
+                "--story-background":
+                  currentStory.background,
+              }}
+            >
+              {currentStory.mediaUrl && (
+                currentStory.type ===
+                "video" ? (
+                  <video
+                    src={
+                      currentStory.mediaUrl
+                    }
+                    autoPlay
+                    muted
+                    playsInline
+                    loop
+                  />
+                ) : (
+                  <img
+                    src={
+                      currentStory.mediaUrl
+                    }
+                    alt=""
+                  />
+                )
+              )}
+            </div>
+
+            <div className="story-viewer-shade" />
+
+            <div className="story-progress-row">
+              {currentStorySet.map(
+                (
+                  story,
+                  index
+                ) => (
+                  <span
+                    key={
+                      story.id
+                    }
+                  >
+                    <i
+                      style={{
+                        width:
+                          index <
+                          storyViewer.storyIndex
+                            ? "100%"
+                            : index ===
+                              storyViewer.storyIndex
+                            ? `${storyProgress}%`
+                            : "0%",
+                      }}
+                    />
+                  </span>
+                )
+              )}
+            </div>
+
+            <div className="story-viewer-header">
+              <button
+                type="button"
+                className="story-close"
+                onClick={
+                  closeStory
+                }
+                aria-label="Закрити історію"
+              >
+                <YatutIcon
+                  name="close"
+                  size={19}
+                />
+              </button>
+
+              <div className="story-author">
+                <span className="story-author-avatar">
+                  {currentStoryPerson.avatar ? (
+                    <img
+                      src={
+                        currentStoryPerson.avatar
+                      }
+                      alt=""
+                    />
+                  ) : (
+                    currentStoryPerson.initials
+                  )}
+                </span>
+
+                <div>
+                  <strong>
+                    {
+                      currentStoryPerson.name
+                    }
+                  </strong>
+
+                  <small>
+                    {
+                      currentStory.time
+                    }
+                  </small>
+                </div>
+              </div>
+
+              <div
+                ref={
+                  storyMoreRef
+                }
+                className="story-more-wrap"
+              >
+                <button
+                  type="button"
+                  className="story-more"
+                  onClick={() =>
+                    setStoryMoreOpen(
+                      (
+                        previous
+                      ) =>
+                        !previous
+                    )
+                  }
+                  aria-label="Дії з історією"
+                >
+                  <YatutIcon
+                    name="more"
+                    size={20}
+                  />
+                </button>
+
+                {storyMoreOpen && (
+                  <div className="story-more-popover">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setStoryMoreOpen(
+                          false
+                        );
+                        closeStory();
+                        createDirectChat(
+                          currentStoryPerson.id
+                        );
+                      }}
+                    >
+                      <span>
+                        <YatutIcon
+                          name="friends"
+                          size={16}
+                        />
+                      </span>
+
+                      Профіль
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setStoryMoreOpen(
+                          false
+                        )
+                      }
+                    >
+                      <span>
+                        <YatutIcon
+                          name="volumeOff"
+                          size={16}
+                        />
+                      </span>
+
+                      Вимкнути історії
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={
+                        shareStory
+                      }
+                    >
+                      <span>
+                        <YatutIcon
+                          name="share"
+                          size={16}
+                        />
+                      </span>
+
+                      Переслати
+                    </button>
+
+                    <button
+                      type="button"
+                      className="danger"
+                      onClick={() =>
+                        setStoryMoreOpen(
+                          false
+                        )
+                      }
+                    >
+                      <span>
+                        <YatutIcon
+                          name="shield"
+                          size={16}
+                        />
+                      </span>
+
+                      Поскаржитися
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <button
+              type="button"
+              className="story-hit-zone story-hit-left"
+              onClick={
+                goToPreviousStory
+              }
+              aria-label="Попередня історія"
+            />
+
+            <button
+              type="button"
+              className="story-hit-zone story-hit-right"
+              onClick={
+                goToNextStory
+              }
+              aria-label="Наступна історія"
+            />
+
+            <div className="story-bottom">
+              {currentStory.caption && (
+                <p className="story-caption">
+                  {
+                    currentStory.caption
+                  }
+                </p>
+              )}
+
+              {storyReactionOpen && (
+                <div className="story-reactions">
+                  {REACTIONS.map(
+                    (
+                      emoji
+                    ) => (
+                      <button
+                        key={
+                          emoji
+                        }
+                        type="button"
+                        onClick={() =>
+                          sendStoryReaction(
+                            emoji
+                          )
+                        }
+                      >
+                        {
+                          emoji
+                        }
+                      </button>
+                    )
+                  )}
+                </div>
+              )}
+
+              <div className="story-reply-bar">
+                <input
+                  value={
+                    storyReply
+                  }
+                  onChange={(event) =>
+                    setStoryReply(
+                      event.target.value
+                    )
+                  }
+                  onFocus={() =>
+                    setStoryProgress(
+                      (
+                        previous
+                      ) =>
+                        previous
+                    )
+                  }
+                  placeholder="Відповісти..."
+                />
+
+                <button
+                  type="button"
+                  className="story-reaction-button"
+                  onClick={() =>
+                    setStoryReactionOpen(
+                      (
+                        previous
+                      ) =>
+                        !previous
+                    )
+                  }
+                  aria-label="Реакції"
+                >
+                  <YatutIcon
+                    name="heart"
+                    size={20}
+                  />
+                </button>
+
+                <button
+                  type="button"
+                  className="story-share-button"
+                  onClick={
+                    shareStory
+                  }
+                  aria-label="Переслати історію"
+                >
+                  <YatutIcon
+                    name="share"
+                    size={19}
+                  />
+                </button>
+              </div>
+            </div>
+          </section>
+        )}
+
       <section
         className={`messenger ${
           mobileDialogOpen
