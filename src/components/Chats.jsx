@@ -1921,6 +1921,39 @@ function Chats({
     y: 220,
   });
 
+  const [
+    storyViewer,
+    setStoryViewer,
+  ] = useState(null);
+
+  const [
+    storyProgress,
+    setStoryProgress,
+  ] = useState(0);
+
+  const [
+    storyReactionOpen,
+    setStoryReactionOpen,
+  ] = useState(false);
+
+  const [
+    storyMoreOpen,
+    setStoryMoreOpen,
+  ] = useState(false);
+
+  const [
+    storyReply,
+    setStoryReply,
+  ] = useState("");
+
+  const [
+    viewedStories,
+    setViewedStories,
+  ] = useState(
+    () =>
+      new Set()
+  );
+
   const imageRef =
     useRef(null);
 
@@ -1946,6 +1979,12 @@ function Chats({
     useRef(null);
 
   const personTriggerRef =
+    useRef(null);
+
+  const storyMoreRef =
+    useRef(null);
+
+  const storyTouchStartRef =
     useRef(null);
 
   const newChatPopoverRef =
