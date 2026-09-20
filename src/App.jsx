@@ -20,7 +20,6 @@ import "./styles/pulse-video.css";
 import "./styles/pulse-wave.css";
 import "./styles/pulse-mobile.css";
 import "./styles/pulse-immersive-mobile.css";
-import "./styles/pulse-long-video-mobile.css";
 import "./styles/pulse-clips.css";
 import "./styles/pulse-city.css";
 import "./styles/pulse-watch.css";
@@ -32,6 +31,7 @@ import "./styles/pulse-responsive.css";
 import "./styles/pulse-clips-layout-fix.css";
 import "./mobile-app-hotfix.css";
 import "./styles/chat-conversation-mobile.css";
+import "./styles/pulse-long-video-mobile.css";
 
 import Stories from "./components/Stories";
 import Profile from "./components/Profile";
