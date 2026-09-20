@@ -1077,3 +1077,80 @@
     top: 51px !important;
   }
 }
+
+
+/* =========================================================
+   PULSE MOBILE V2.2 — LOWER META + ACTIONS
+========================================================= */
+
+@media (max-width: 767px) {
+  .pulse-immersive__actions {
+    bottom:
+      calc(
+        88px +
+        env(
+          safe-area-inset-bottom
+        )
+      ) !important;
+  }
+
+  .pulse-immersive__copy {
+    bottom:
+      calc(
+        84px +
+        env(
+          safe-area-inset-bottom
+        )
+      ) !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .pulse-immersive__actions {
+    bottom:
+      calc(
+        84px +
+        env(
+          safe-area-inset-bottom
+        )
+      ) !important;
+  }
+
+  .pulse-immersive__copy {
+    bottom:
+      calc(
+        80px +
+        env(
+          safe-area-inset-bottom
+        )
+      ) !important;
+  }
+}
+
+@media (
+  max-width: 767px
+) and (
+  max-height: 690px
+) {
+  .pulse-immersive__actions {
+    bottom:
+      calc(
+        82px +
+        env(
+          safe-area-inset-bottom
+        )
+      ) !important;
+
+    gap: 7px !important;
+  }
+
+  .pulse-immersive__copy {
+    bottom:
+      calc(
+        78px +
+        env(
+          safe-area-inset-bottom
+        )
+      ) !important;
+  }
+}
