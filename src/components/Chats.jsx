@@ -2704,6 +2704,41 @@ function Chats({
       []
     );
 
+  const storyPeople =
+    useMemo(
+      () =>
+        Object.values(
+          PEOPLE
+        ).filter(
+          (person) =>
+            STORY_SETS[
+              person.id
+            ]?.length
+        ),
+      []
+    );
+
+  const currentStoryPerson =
+    storyViewer
+      ? PEOPLE[
+          storyViewer.personId
+        ] || null
+      : null;
+
+  const currentStorySet =
+    storyViewer
+      ? STORY_SETS[
+          storyViewer.personId
+        ] || []
+      : [];
+
+  const currentStory =
+    storyViewer
+      ? currentStorySet[
+          storyViewer.storyIndex
+        ] || null
+      : null;
+
   const filteredChats =
     useMemo(() => {
       const query =
