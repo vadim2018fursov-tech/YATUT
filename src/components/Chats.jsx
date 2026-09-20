@@ -36,6 +36,7 @@ const PEOPLE = {
     username: "maria.koval",
     initials: "М",
     online: true,
+    storyStatus: "new",
   },
 
   oleksandr: {
@@ -44,6 +45,7 @@ const PEOPLE = {
     username: "bondar",
     initials: "О",
     online: true,
+    storyStatus: "viewed",
   },
 
   anastasia: {
@@ -68,6 +70,7 @@ const PEOPLE = {
     username: "sofia.r",
     initials: "С",
     online: true,
+    storyStatus: null,
   },
 
   vlad: {
@@ -84,6 +87,7 @@ const PEOPLE = {
     username: "yulia.s",
     initials: "Ю",
     online: true,
+    storyStatus: "new",
   },
 };
 
@@ -3681,12 +3685,25 @@ function Chats({
                       )
                     }
                   >
-                    <span className="chat-activity-avatar">
-                      {
-                        person.initials
-                      }
-
-                      <i />
+                    <span
+                      className={`chat-activity-avatar ${
+                        person.storyStatus
+                          ? `story-${person.storyStatus}`
+                          : "story-none"
+                      }`.trim()}
+                    >
+                      <span className="chat-avatar-media">
+                        {person.avatar ? (
+                          <img
+                            src={
+                              person.avatar
+                            }
+                            alt=""
+                          />
+                        ) : (
+                          person.initials
+                        )}
+                      </span>
                     </span>
 
                     <small>
@@ -3875,8 +3892,22 @@ function Chats({
                           : ""
                       }`.trim()}
                     >
-                      {chatInitials(
-                        chat
+                      {chat.personId &&
+                      PEOPLE[
+                        chat.personId
+                      ]?.avatar ? (
+                        <img
+                          src={
+                            PEOPLE[
+                              chat.personId
+                            ].avatar
+                          }
+                          alt=""
+                        />
+                      ) : (
+                        chatInitials(
+                          chat
+                        )
                       )}
                     </div>
 
@@ -3978,8 +4009,22 @@ function Chats({
               <div className="chat-list-action-head">
 
                 <span className="chat-list-action-avatar">
-                  {chatInitials(
-                    chatActionChat
+                  {chatActionChat.personId &&
+                  PEOPLE[
+                    chatActionChat.personId
+                  ]?.avatar ? (
+                    <img
+                      src={
+                        PEOPLE[
+                          chatActionChat.personId
+                        ].avatar
+                      }
+                      alt=""
+                    />
+                  ) : (
+                    chatInitials(
+                      chatActionChat
+                    )
                   )}
                 </span>
 
