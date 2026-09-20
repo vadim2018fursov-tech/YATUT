@@ -1759,6 +1759,18 @@ function Chats({
   const bottomRef =
     useRef(null);
 
+  const emojiRef =
+    useRef(null);
+
+  const infoPanelRef =
+    useRef(null);
+
+  const infoTriggerRef =
+    useRef(null);
+
+  const personTriggerRef =
+    useRef(null);
+
   const activeChat =
     chats.find(
       (chat) =>
@@ -1772,6 +1784,82 @@ function Chats({
           activeChat.personId
         ]
       : null;
+
+  /* =======================================================
+     MOBILE POPOVER OUTSIDE CLICK
+  ======================================================= */
+
+  useEffect(() => {
+    if (!emojiOpen) {
+      return;
+    }
+
+    function handleEmojiOutside(
+      event
+    ) {
+      if (
+        emojiRef.current?.contains(
+          event.target
+        )
+      ) {
+        return;
+      }
+
+      setEmojiOpen(false);
+    }
+
+    document.addEventListener(
+      "pointerdown",
+      handleEmojiOutside
+    );
+
+    return () =>
+      document.removeEventListener(
+        "pointerdown",
+        handleEmojiOutside
+      );
+  }, [
+    emojiOpen,
+  ]);
+
+  useEffect(() => {
+    if (!infoOpen) {
+      return;
+    }
+
+    function handleInfoOutside(
+      event
+    ) {
+      if (
+        infoPanelRef.current?.contains(
+          event.target
+        ) ||
+        infoTriggerRef.current?.contains(
+          event.target
+        ) ||
+        personTriggerRef.current?.contains(
+          event.target
+        )
+      ) {
+        return;
+      }
+
+      setInfoOpen(false);
+    }
+
+    document.addEventListener(
+      "pointerdown",
+      handleInfoOutside
+    );
+
+    return () =>
+      document.removeEventListener(
+        "pointerdown",
+        handleInfoOutside
+      );
+  }, [
+    infoOpen,
+  ]);
 
   /* =======================================================
      LOAD CHATS
@@ -3168,6 +3256,9 @@ function Chats({
                   </button>
 
                   <button
+                    ref={
+                      personTriggerRef
+                    }
                     className="chat-dialog-person"
                     onClick={() =>
                       setInfoOpen(
@@ -3255,6 +3346,9 @@ function Chats({
                   </button>
 
                   <button
+                    ref={
+                      infoTriggerRef
+                    }
                     className="chat-more-button"
                     onClick={() =>
                       setInfoOpen(
@@ -3787,7 +3881,12 @@ function Chats({
                     }}
                   />
 
-                  <div className="yatut-emoji-wrapper">
+                  <div
+                    ref={
+                      emojiRef
+                    }
+                    className="yatut-emoji-wrapper"
+                  >
 
                     <button
                       className="chat-emoji"
@@ -3827,14 +3926,17 @@ function Chats({
                                 key={
                                   index
                                 }
-                                onClick={() =>
+                                onClick={() => {
                                   setDraft(
                                     (
                                       previous
                                     ) =>
                                       `${previous}${emoji}`
-                                  )
-                                }
+                                  );
+                                  setEmojiOpen(
+                                    false
+                                  );
+                                }}
                               >
                                 {
                                   emoji
@@ -3895,7 +3997,12 @@ function Chats({
 
         {activeChat &&
           infoOpen && (
-          <aside className="chat-info-panel">
+          <aside
+            ref={
+              infoPanelRef
+            }
+            className="chat-info-panel"
+          >
 
             <header className="chat-info-header">
 
