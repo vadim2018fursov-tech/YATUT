@@ -2712,7 +2712,6 @@ function TopBar({
   mobileMenuOpen,
   onToggleMobileMenu,
   unreadNotifications,
-  unreadChatMessages,
 }) {
   return (
     <header className="topbar">
@@ -2840,7 +2839,7 @@ function TopBar({
           {/* MOBILE MENU */}
 
           <button
-            className={`icon-button topbar-mobile-menu-action ${
+            className={`icon-button topbar-menu-action ${
               mobileMenuOpen
                 ? "active"
                 : ""
@@ -2859,106 +2858,6 @@ function TopBar({
               name="menuGrid"
               size={20}
             />
-          </button>
-
-          {/* CHATS */}
-
-          <button
-            className={`icon-button topbar-chat-action ${
-              currentPage ===
-              "chats"
-                ? "active"
-                : ""
-            }`}
-            type="button"
-            onClick={() =>
-              onNavigate(
-                "chats"
-              )
-            }
-            aria-label="Чати"
-            style={{
-              position:
-                "relative",
-
-              overflow:
-                "visible",
-            }}
-          >
-            <YatutIcon
-              name="chats"
-              size={20}
-            />
-
-            {unreadChatMessages >
-              0 && (
-              <span
-                className="chat-topbar-badge"
-                style={{
-                  position:
-                    "absolute",
-
-                  top:
-                    4,
-
-                  right:
-                    2,
-
-                  minWidth:
-                    19,
-
-                  height:
-                    19,
-
-                  padding:
-                    "0 5px",
-
-                  display:
-                    "flex",
-
-                  alignItems:
-                    "center",
-
-                  justifyContent:
-                    "center",
-
-                  border:
-                    "2px solid #fff",
-
-                  borderRadius:
-                    999,
-
-                  background:
-                    "#635BFF",
-
-                  color:
-                    "#fff",
-
-                  fontSize:
-                    10,
-
-                  fontWeight:
-                    900,
-
-                  lineHeight:
-                    1,
-
-                  boxSizing:
-                    "border-box",
-
-                  boxShadow:
-                    "0 5px 14px rgba(99,91,255,.25)",
-
-                  pointerEvents:
-                    "none",
-                }}
-              >
-                {unreadChatMessages >
-                9
-                  ? "9+"
-                  : unreadChatMessages}
-              </span>
-            )}
           </button>
 
           {/* PROFILE */}
@@ -3944,9 +3843,6 @@ function App() {
         }}
         unreadNotifications={
           unreadNotifications
-        }
-        unreadChatMessages={
-          unreadChatMessages
         }
       />
 
