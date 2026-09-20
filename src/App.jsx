@@ -24,6 +24,7 @@ import "./styles/pulse-city.css";
 import "./styles/pulse-watch.css";
 import "./styles/pulse-player.css";
 import "./styles/pulse-live-page.css";
+import "./styles/pulse-studio.css";
 import "./styles/pulse-motion.css";
 import "./styles/pulse-responsive.css";
 import "./styles/pulse-clips-layout-fix.css";
@@ -49,6 +50,7 @@ import WatchPage from "./pages/WatchPage";
 import LivePage from "./pages/LivePage";
 import CityPulsePage from "./pages/CityPulsePage";
 import EventsPulsePage from "./pages/EventsPulsePage";
+import CreatorStudioPage from "./pages/CreatorStudioPage";
 import CreateHubPage from "./pages/CreateHubPage";
 import CreateMediaPage from "./pages/CreateMediaPage";
 
@@ -3637,6 +3639,15 @@ function App() {
             type={
               selectedCreateType
             }
+            onNavigate={
+              goToPage
+            }
+          />
+        );
+
+      case "creatorStudio":
+        return (
+          <CreatorStudioPage
             onNavigate={
               goToPage
             }
