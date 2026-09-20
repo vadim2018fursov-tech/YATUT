@@ -1579,3 +1579,295 @@
     height: 21px !important;
   }
 }
+
+
+/* =========================================================
+   MOBILE HEADER V6 — SEARCH BESIDE YATUT LOGO
+   Final mobile override
+========================================================= */
+
+@media (max-width: 767px) {
+  .topbar {
+    overflow: visible !important;
+  }
+
+  .topbar-inner {
+    width: 100% !important;
+    max-width: 100% !important;
+
+    padding:
+      8px 10px !important;
+
+    display: grid !important;
+    grid-template-columns:
+      94px
+      minmax(
+        72px,
+        1fr
+      )
+      auto !important;
+
+    align-items: center !important;
+
+    column-gap: 8px !important;
+  }
+
+  .brand {
+    width: 94px !important;
+    min-width: 94px !important;
+    max-width: 94px !important;
+
+    display: flex !important;
+    align-items: center !important;
+
+    gap: 6px !important;
+
+    overflow: visible !important;
+  }
+
+  .brand-ya {
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+
+    border-radius: 14px !important;
+  }
+
+  .brand-tut {
+    display: block !important;
+
+    min-width: 0;
+
+    font-size: 18px !important;
+    line-height: 1 !important;
+
+    white-space: nowrap !important;
+  }
+
+  .desktop-search {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: 40px !important;
+
+    margin: 0 !important;
+    padding:
+      0 9px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+
+    border: 1px solid #e8e9f0 !important;
+    border-radius: 13px !important;
+
+    background:
+      #f3f4f8 !important;
+
+    color:
+      #777d8b !important;
+
+    visibility: visible !important;
+    opacity: 1 !important;
+
+    overflow: hidden !important;
+  }
+
+  .desktop-search-content {
+    width: 100% !important;
+    min-width: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+
+    gap: 5px !important;
+
+    overflow: hidden !important;
+  }
+
+  .desktop-search-content svg {
+    width: 17px !important;
+    height: 17px !important;
+    min-width: 17px !important;
+    flex:
+      0 0 17px !important;
+  }
+
+  .desktop-search-content > span:last-child {
+    min-width: 0 !important;
+
+    font-size: 0 !important;
+
+    overflow: hidden !important;
+
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .desktop-search-content > span:last-child::after {
+    content: "Пошук";
+
+    font-size:
+      clamp(
+        11px,
+        3vw,
+        13px
+      ) !important;
+
+    font-weight: 680 !important;
+
+    white-space: nowrap !important;
+  }
+
+  .topbar-actions {
+    min-width: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+
+    gap: 4px !important;
+  }
+
+  .topbar-actions .icon-button,
+  .topbar-actions .profile-mini {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+
+    border-radius: 11px !important;
+  }
+
+  .topbar-actions svg {
+    width: 19px !important;
+    height: 19px !important;
+  }
+
+  .topbar-now-button {
+    display: grid !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .topbar-inner {
+    padding-right: 8px !important;
+    padding-left: 8px !important;
+
+    grid-template-columns:
+      88px
+      minmax(
+        68px,
+        1fr
+      )
+      auto !important;
+
+    column-gap: 6px !important;
+  }
+
+  .brand {
+    width: 88px !important;
+    min-width: 88px !important;
+    max-width: 88px !important;
+
+    gap: 5px !important;
+  }
+
+  .brand-ya {
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+  }
+
+  .brand-tut {
+    font-size: 17px !important;
+  }
+
+  .desktop-search {
+    height: 38px !important;
+
+    padding:
+      0 7px !important;
+
+    border-radius:
+      12px !important;
+  }
+
+  .desktop-search-content {
+    gap: 4px !important;
+  }
+
+  .desktop-search-content svg {
+    width: 16px !important;
+    height: 16px !important;
+    min-width: 16px !important;
+  }
+
+  .topbar-actions {
+    gap: 3px !important;
+  }
+
+  .topbar-actions .icon-button,
+  .topbar-actions .profile-mini {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+
+    border-radius:
+      10px !important;
+  }
+
+  .topbar-actions svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+}
+
+@media (max-width: 350px) {
+  .topbar-inner {
+    grid-template-columns:
+      82px
+      minmax(
+        58px,
+        1fr
+      )
+      auto !important;
+
+    column-gap: 5px !important;
+  }
+
+  .brand {
+    width: 82px !important;
+    min-width: 82px !important;
+    max-width: 82px !important;
+
+    gap: 4px !important;
+  }
+
+  .brand-ya {
+    width: 39px !important;
+    height: 39px !important;
+    min-width: 39px !important;
+  }
+
+  .brand-tut {
+    font-size: 16px !important;
+  }
+
+  .desktop-search {
+    height: 36px !important;
+
+    padding:
+      0 6px !important;
+  }
+
+  .desktop-search-content > span:last-child::after {
+    font-size: 10px !important;
+  }
+
+  .topbar-actions .icon-button,
+  .topbar-actions .profile-mini {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+  }
+}
