@@ -5009,3 +5009,301 @@
       20px;
   }
 }
+
+
+/* =========================================================
+   YATUT CHAT LIST — AVATAR STATES + ICON POLISH V9
+========================================================= */
+
+@media (max-width: 700px) {
+  /* ---------------------------
+     ICON SYSTEM
+  --------------------------- */
+
+  .messenger:not(.mobile-dialog-open)
+  .new-chat-button,
+  .messenger:not(.mobile-dialog-open)
+  .chat-search {
+    color:
+      #6b6f7c !important;
+  }
+
+  .messenger:not(.mobile-dialog-open)
+  .new-chat-button {
+    display: grid !important;
+    place-items: center !important;
+
+    padding: 0 !important;
+  }
+
+  .messenger:not(.mobile-dialog-open)
+  .new-chat-button svg,
+  .messenger:not(.mobile-dialog-open)
+  .chat-search svg {
+    display: block !important;
+
+    stroke-width:
+      2 !important;
+  }
+
+  .messenger:not(.mobile-dialog-open)
+  .new-chat-button svg {
+    color:
+      #635bff !important;
+  }
+
+  /* ---------------------------
+     STORY / ACTIVITY AVATARS
+  --------------------------- */
+
+  .chat-activity-avatar {
+    position: relative;
+
+    width:
+      52px !important;
+    height:
+      52px !important;
+
+    padding:
+      3px;
+
+    display: grid !important;
+    place-items: center !important;
+
+    border:
+      0 !important;
+
+    border-radius:
+      50% !important;
+
+    background:
+      transparent !important;
+
+    box-shadow:
+      none !important;
+
+    isolation:
+      isolate;
+  }
+
+  .chat-activity-avatar::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    z-index:
+      -1;
+
+    border-radius:
+      inherit;
+
+    opacity: 0;
+  }
+
+  .chat-activity-avatar.story-new::before {
+    opacity: 1;
+
+    background:
+      conic-gradient(
+        from 0deg,
+        #6f5cff,
+        #b95cff,
+        #ff5fa2,
+        #ffb64d,
+        #55d8b8,
+        #4ba5ff,
+        #6f5cff
+      );
+
+    animation:
+      yatutStoryChameleon
+      4.5s
+      linear
+      infinite;
+
+    box-shadow:
+      0 0 12px
+      rgba(
+        111,
+        92,
+        255,
+        .16
+      );
+  }
+
+  .chat-activity-avatar.story-viewed::before {
+    opacity: 1;
+
+    background:
+      linear-gradient(
+        145deg,
+        #ffd75a,
+        #f2b843
+      );
+
+    box-shadow:
+      0 0 10px
+      rgba(
+        245,
+        190,
+        66,
+        .14
+      );
+  }
+
+  .chat-activity-avatar.story-none::before {
+    opacity: 0;
+  }
+
+  .chat-avatar-media {
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+
+    display: grid;
+    place-items: center;
+
+    border:
+      3px solid
+      #fff;
+
+    border-radius:
+      50%;
+
+    background:
+      linear-gradient(
+        145deg,
+        #f0edff,
+        #ddd9ff
+      );
+
+    color:
+      #635bff;
+
+    font-size:
+      14px;
+    font-weight:
+      900;
+
+    box-shadow:
+      0 4px 12px
+      rgba(
+        38,
+        41,
+        58,
+        .06
+      );
+  }
+
+  .chat-avatar-media img,
+  .messenger:not(.mobile-dialog-open)
+  .chat-avatar img,
+  .chat-list-action-avatar img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .chat-avatar-media img {
+    border-radius: inherit;
+  }
+
+  /* ---------------------------
+     MESSAGE LIST AVATARS
+  --------------------------- */
+
+  .messenger:not(.mobile-dialog-open)
+  .chat-avatar {
+    overflow:
+      hidden !important;
+
+    border:
+      3px solid
+      #fff !important;
+
+    box-shadow:
+      0 5px 14px
+      rgba(
+        42,
+        45,
+        62,
+        .07
+      ) !important;
+  }
+
+  .messenger:not(.mobile-dialog-open)
+  .chat-avatar.is-online {
+    box-shadow:
+      0 0 0 2px
+      rgba(
+        48,
+        211,
+        145,
+        .62
+      ),
+      0 0 14px
+      rgba(
+        48,
+        211,
+        145,
+        .16
+      ),
+      0 5px 14px
+      rgba(
+        42,
+        45,
+        62,
+        .07
+      ) !important;
+  }
+
+  .messenger:not(.mobile-dialog-open)
+  .chat-avatar.group {
+    overflow: hidden !important;
+  }
+
+  .messenger:not(.mobile-dialog-open)
+  .chat-avatar img {
+    border-radius:
+      inherit;
+  }
+
+  /* No green dots — ring communicates online state. */
+  .messenger:not(.mobile-dialog-open)
+  .chat-avatar > span,
+  .chat-activity-avatar > i {
+    display:
+      none !important;
+  }
+
+  .chat-list-action-avatar {
+    overflow: hidden;
+  }
+
+  .chat-list-action-avatar img {
+    border-radius:
+      inherit;
+  }
+}
+
+@keyframes yatutStoryChameleon {
+  to {
+    transform:
+      rotate(
+        360deg
+      );
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chat-activity-avatar.story-new::before {
+    animation:
+      none !important;
+  }
+}
