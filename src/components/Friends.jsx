@@ -347,6 +347,14 @@ const TABS = [
 
   {
     id:
+      "online",
+
+    label:
+      "Онлайн",
+  },
+
+  {
+    id:
       "requests",
 
     label:
@@ -595,6 +603,18 @@ export default function Friends({
 
             if (
               activeTab ===
+                "online" &&
+              !(
+                person.online &&
+                person.friendStatus ===
+                  FRIEND_STATUSES.FRIEND
+              )
+            ) {
+              return false;
+            }
+
+            if (
+              activeTab ===
                 "requests" &&
               person.friendStatus !==
                 FRIEND_STATUSES.INCOMING &&
@@ -713,6 +733,59 @@ export default function Friends({
         friendState,
       ]
     );
+
+  function selectPeopleTab(
+    tab
+  ) {
+    setActiveTab(
+      tab
+    );
+
+    window.requestAnimationFrame(
+      () => {
+        document
+          .querySelector(
+            ".friends-v2-tabs"
+          )
+          ?.scrollIntoView({
+            behavior:
+              "smooth",
+
+            block:
+              "start",
+          });
+      }
+    );
+  }
+
+  function handleRelationTarget(
+    target
+  ) {
+    setRelationPerson(
+      null
+    );
+
+    if (
+      [
+        "friends",
+        "online",
+        "requests",
+        "nearby",
+      ].includes(
+        target
+      )
+    ) {
+      selectPeopleTab(
+        target
+      );
+
+      return;
+    }
+
+    onNavigate?.(
+      target
+    );
+  }
 
   /* =======================================================
      SEND REQUEST
@@ -947,8 +1020,17 @@ export default function Friends({
           value={
             stats.friends
           }
-          label="Друзів"
+          label="Друзі"
           icon="friends"
+          active={
+            activeTab ===
+            "friends"
+          }
+          onClick={() =>
+            selectPeopleTab(
+              "friends"
+            )
+          }
         />
 
         <SummaryStat
@@ -958,6 +1040,15 @@ export default function Friends({
           label="Онлайн"
           icon="users"
           live
+          active={
+            activeTab ===
+            "online"
+          }
+          onClick={() =>
+            selectPeopleTab(
+              "online"
+            )
+          }
         />
 
         <SummaryStat
@@ -965,8 +1056,17 @@ export default function Friends({
             stats.incoming +
             stats.outgoing
           }
-          label="Запитів"
+          label="Запити"
           icon="plus"
+          active={
+            activeTab ===
+            "requests"
+          }
+          onClick={() =>
+            selectPeopleTab(
+              "requests"
+            )
+          }
         />
 
         <SummaryStat
@@ -975,6 +1075,15 @@ export default function Friends({
           }
           label="Поруч"
           icon="nearby"
+          active={
+            activeTab ===
+            "nearby"
+          }
+          onClick={() =>
+            selectPeopleTab(
+              "nearby"
+            )
+          }
         />
       </section>
 
@@ -1022,7 +1131,7 @@ export default function Friends({
           <button
             type="button"
             onClick={() =>
-              setActiveTab(
+              selectPeopleTab(
                 "requests"
               )
             }
@@ -1040,7 +1149,7 @@ export default function Friends({
           <button
             type="button"
             onClick={() =>
-              setActiveTab(
+              selectPeopleTab(
                 "nearby"
               )
             }
@@ -1158,6 +1267,14 @@ export default function Friends({
 
             if (
               tab.id ===
+              "online"
+            ) {
+              count =
+                stats.online;
+            }
+
+            if (
+              tab.id ===
               "requests"
             ) {
               count =
@@ -1194,7 +1311,7 @@ export default function Friends({
                 }
                 type="button"
                 onClick={() =>
-                  setActiveTab(
+                  selectPeopleTab(
                     tab.id
                   )
                 }
@@ -1239,6 +1356,10 @@ export default function Friends({
                 {activeTab ===
                   "friends" &&
                   "Ваші друзі"}
+
+                {activeTab ===
+                  "online" &&
+                  "Друзі онлайн"}
 
                 {activeTab ===
                   "requests" &&
@@ -1360,12 +1481,22 @@ export default function Friends({
                 icon="users"
                 title={`${stats.online} друзів онлайн`}
                 text="Можна написати просто зараз"
+                onClick={() =>
+                  selectPeopleTab(
+                    "online"
+                  )
+                }
               />
 
               <PulseRow
                 icon="nearby"
                 title={`${stats.nearby} людей поруч`}
                 text="У вашому місті та районі"
+                onClick={() =>
+                  selectPeopleTab(
+                    "nearby"
+                  )
+                }
               />
 
               <PulseRow
@@ -1376,6 +1507,11 @@ export default function Friends({
                   0
                     ? "Чекають на вашу відповідь"
                     : "Нових запитів немає"
+                }
+                onClick={() =>
+                  selectPeopleTab(
+                    "requests"
+                  )
                 }
               />
             </div>
@@ -1406,6 +1542,11 @@ export default function Friends({
               ]}
               title="Спільні друзі"
               text="У вашому колі є люди, які вже знають одне одного."
+              onClick={() =>
+                selectPeopleTab(
+                  "friends"
+                )
+              }
             />
 
             <Intersection
@@ -1415,6 +1556,11 @@ export default function Friends({
               ]}
               title="Робота та навчання"
               text="ЯТУТ знаходить реальні точки перетину."
+              onClick={() =>
+                onNavigate?.(
+                  "search"
+                )
+              }
             />
 
             <button
@@ -1471,21 +1617,75 @@ export default function Friends({
             </header>
 
             <div className="friends-v2-nearby-map">
-              <span className="map-dot dot-a">
+              <button
+                className="map-dot dot-a"
+                type="button"
+                onClick={() =>
+                  openProfile(
+                    people.find(
+                      (
+                        item
+                      ) =>
+                        item.id ===
+                        "maria"
+                    )
+                  )
+                }
+                aria-label="Марія Коваль"
+              >
                 М
-              </span>
+              </button>
 
-              <span className="map-dot dot-b">
+              <button
+                className="map-dot dot-b"
+                type="button"
+                onClick={() =>
+                  openProfile(
+                    people.find(
+                      (
+                        item
+                      ) =>
+                        item.id ===
+                        "sofia"
+                    )
+                  )
+                }
+                aria-label="Софія Романенко"
+              >
                 С
-              </span>
+              </button>
 
-              <span className="map-dot dot-c">
+              <button
+                className="map-dot dot-c"
+                type="button"
+                onClick={() =>
+                  openProfile(
+                    people.find(
+                      (
+                        item
+                      ) =>
+                        item.id ===
+                        "anastasia"
+                    )
+                  )
+                }
+                aria-label="Анастасія Мельник"
+              >
                 А
-              </span>
+              </button>
 
-              <span className="map-me">
+              <button
+                className="map-me"
+                type="button"
+                onClick={() =>
+                  onNavigate?.(
+                    "profile"
+                  )
+                }
+                aria-label="Мій профіль"
+              >
                 Я
-              </span>
+              </button>
             </div>
 
             <button
@@ -1605,12 +1805,48 @@ export default function Friends({
 
       {relationPerson && (
         <RelationModal
-          person={
-            relationPerson
-          }
+          person={{
+            ...relationPerson,
+
+            friendStatus:
+              getStatus(
+                relationPerson.id
+              ),
+          }}
           onClose={() =>
             setRelationPerson(
               null
+            )
+          }
+          onOpenSelf={() => {
+            setRelationPerson(
+              null
+            );
+
+            onNavigate?.(
+              "profile"
+            );
+          }}
+          onOpenMutual={() =>
+            handleRelationTarget(
+              "friends"
+            )
+          }
+          onOpenPerson={() => {
+            setSelectedPerson(
+              relationPerson
+            );
+
+            setRelationPerson(
+              null
+            );
+          }}
+          onReason={
+            handleRelationTarget
+          }
+          onMessage={() =>
+            openChat(
+              relationPerson
             )
           }
         />
@@ -1954,15 +2190,30 @@ function SummaryStat({
   label,
   icon,
   live = false,
+  active = false,
+  onClick,
 }) {
   return (
-    <div className="friends-v2-summary-item">
+    <button
+      className={`friends-v2-summary-item ${
+        active
+          ? "active"
+          : ""
+      }`.trim()}
+      type="button"
+      onClick={
+        onClick
+      }
+      aria-pressed={
+        active
+      }
+    >
       <div>
         <YatutIcon
           name={
             icon
           }
-          size={19}
+          size={18}
         />
       </div>
 
@@ -1983,7 +2234,7 @@ function SummaryStat({
       {live && (
         <i className="friends-v2-summary-live" />
       )}
-    </div>
+    </button>
   );
 }
 
@@ -1995,9 +2246,16 @@ function PulseRow({
   icon,
   title,
   text,
+  onClick,
 }) {
   return (
-    <div className="friends-v2-pulse-row">
+    <button
+      className="friends-v2-pulse-row"
+      type="button"
+      onClick={
+        onClick
+      }
+    >
       <div className="friends-v2-pulse-icon">
         <YatutIcon
           name={
@@ -2020,7 +2278,12 @@ function PulseRow({
           }
         </span>
       </section>
-    </div>
+
+      <YatutIcon
+        name="chevronRight"
+        size={16}
+      />
+    </button>
   );
 }
 
@@ -2032,9 +2295,16 @@ function Intersection({
   people,
   title,
   text,
+  onClick,
 }) {
   return (
-    <div className="friends-v2-intersection">
+    <button
+      className="friends-v2-intersection"
+      type="button"
+      onClick={
+        onClick
+      }
+    >
       <div className="friends-v2-mutual-avatars">
         {people.map(
           (
@@ -2065,7 +2335,12 @@ function Intersection({
           }
         </span>
       </section>
-    </div>
+
+      <YatutIcon
+        name="chevronRight"
+        size={16}
+      />
+    </button>
   );
 }
 
@@ -2345,9 +2620,109 @@ function FriendRemoveModal({
    RELATION MODAL
 ========================================================= */
 
+function getRelationAction(
+  connection
+) {
+  const value =
+    String(
+      connection ||
+        ""
+    ).toLowerCase();
+
+  if (
+    value.includes(
+      "друз"
+    )
+  ) {
+    return {
+      target:
+        "friends",
+
+      label:
+        "Друзі",
+
+      icon:
+        "friends",
+    };
+  }
+
+  if (
+    value.includes(
+      "спільнот"
+    )
+  ) {
+    return {
+      target:
+        "communities",
+
+      label:
+        "Спільноти",
+
+      icon:
+        "community",
+    };
+  }
+
+  if (
+    value.includes(
+      "поді"
+    )
+  ) {
+    return {
+      target:
+        "events",
+
+      label:
+        "Події",
+
+      icon:
+        "events",
+    };
+  }
+
+  if (
+    value.includes(
+      "києв"
+    ) ||
+    value.includes(
+      "міст"
+    ) ||
+    value.includes(
+      "район"
+    )
+  ) {
+    return {
+      target:
+        "nearby",
+
+      label:
+        "Поруч",
+
+      icon:
+        "nearby",
+    };
+  }
+
+  return {
+    target:
+      "search",
+
+    label:
+      "Знайти",
+
+    icon:
+      "search",
+  };
+}
+
 function RelationModal({
   person,
   onClose,
+  onOpenSelf,
+  onOpenMutual,
+  onOpenPerson,
+  onReason,
+  onMessage,
 }) {
   return (
     <div
@@ -2357,7 +2732,7 @@ function RelationModal({
       }
     >
       <section
-        className="friends-v2-relation-modal"
+        className="friends-v2-relation-modal friends-v2-relation-modal-v2"
         onClick={(
           event
         ) =>
@@ -2389,14 +2764,16 @@ function RelationModal({
           </button>
         </header>
 
-        {/* =================================================
-            CONNECTION MAP
-        ================================================= */}
-
         <div className="friends-v2-connection-map">
           <span className="friends-v2-map-path" />
 
-          <div className="friends-v2-map-person me">
+          <button
+            className="friends-v2-map-person me"
+            type="button"
+            onClick={
+              onOpenSelf
+            }
+          >
             <span>
               В
             </span>
@@ -2404,9 +2781,19 @@ function RelationModal({
             <strong>
               Ви
             </strong>
-          </div>
 
-          <div className="friends-v2-map-person middle">
+            <small>
+              Профіль
+            </small>
+          </button>
+
+          <button
+            className="friends-v2-map-person middle"
+            type="button"
+            onClick={
+              onOpenMutual
+            }
+          >
             <span>
               М
             </span>
@@ -2414,9 +2801,19 @@ function RelationModal({
             <strong>
               Спільні люди
             </strong>
-          </div>
 
-          <div className="friends-v2-map-person other">
+            <small>
+              Відкрити
+            </small>
+          </button>
+
+          <button
+            className="friends-v2-map-person other"
+            type="button"
+            onClick={
+              onOpenPerson
+            }
+          >
             <span>
               {
                 person.initial
@@ -2428,12 +2825,12 @@ function RelationModal({
                 person.name
               }
             </strong>
-          </div>
-        </div>
 
-        {/* =================================================
-            REASONS
-        ================================================= */}
+            <small>
+              Профіль
+            </small>
+          </button>
+        </div>
 
         <div className="friends-v2-relation-title">
           <span>
@@ -2446,54 +2843,66 @@ function RelationModal({
           </h3>
         </div>
 
-        <div className="friends-v2-relation-list">
+        <div className="friends-v2-relation-list friends-v2-relation-list-v2">
           {person.common.map(
             (
               connection,
               index
-            ) => (
-              <article
-                key={`${person.id}-${index}`}
-              >
-                <div>
-                  <YatutIcon
-                    name={
-                      index ===
-                      0
-                        ? "friends"
-                        : index ===
-                            1
-                          ? "nearby"
-                          : index ===
-                              2
-                            ? "community"
-                            : "events"
-                    }
-                    size={17}
-                  />
-                </div>
+            ) => {
+              const action =
+                getRelationAction(
+                  connection
+                );
 
-                <section>
-                  <strong>
-                    {
-                      connection
-                    }
-                  </strong>
-
-                  <span>
-                    Знайдено через
-                    ваші зв’язки у
-                    ЯТУТ
+              return (
+                <button
+                  className="friends-v2-relation-point"
+                  type="button"
+                  key={`${person.id}-${index}`}
+                  onClick={() =>
+                    onReason?.(
+                      action.target
+                    )
+                  }
+                >
+                  <span className="friends-v2-relation-point-icon">
+                    <YatutIcon
+                      name={
+                        action.icon
+                      }
+                      size={18}
+                    />
                   </span>
-                </section>
-              </article>
-            )
+
+                  <span className="friends-v2-relation-point-copy">
+                    <strong>
+                      {
+                        connection
+                      }
+                    </strong>
+
+                    <small>
+                      Знайдено через
+                      ваші зв’язки у
+                      ЯТУТ
+                    </small>
+                  </span>
+
+                  <span className="friends-v2-relation-point-action">
+                    {
+                      action.label
+                    }
+                  </span>
+
+                  <YatutIcon
+                    name="chevronRight"
+                    size={16}
+                  />
+                </button>
+              );
+            }
           )}
         </div>
-
-        {/* =================================================
-            PRIVACY
-        ================================================= */}
 
         <div className="friends-v2-privacy-note">
           <YatutIcon
@@ -2511,6 +2920,38 @@ function RelationModal({
             розкриваються.
           </p>
         </div>
+
+        <footer className="friends-v2-relation-footer">
+          <button
+            className="profile"
+            type="button"
+            onClick={
+              onOpenPerson
+            }
+          >
+            <YatutIcon
+              name="friends"
+              size={17}
+            />
+
+            Профіль
+          </button>
+
+          <button
+            className="message"
+            type="button"
+            onClick={
+              onMessage
+            }
+          >
+            <YatutIcon
+              name="message"
+              size={17}
+            />
+
+            Написати
+          </button>
+        </footer>
       </section>
     </div>
   );
