@@ -4149,22 +4149,58 @@ function Chats({
             {activeChat.type !==
               "group" &&
               !activeChat.communityId && (
-                <section className="chat-info-section">
+                <section className="chat-info-section chat-info-compact-actions">
 
                   <button className="chat-info-row-button">
-                    👤 Відкрити профіль
+                    <span className="chat-info-menu-icon">
+                      <YatutIcon
+                        name="friends"
+                        size={17}
+                      />
+                    </span>
+
+                    <span>
+                      Відкрити профіль
+                    </span>
                   </button>
 
                   <button className="chat-info-row-button">
-                    🔕 Вимкнути сповіщення
+                    <span className="chat-info-menu-icon">
+                      <YatutIcon
+                        name="notification"
+                        size={17}
+                      />
+                    </span>
+
+                    <span>
+                      Вимкнути сповіщення
+                    </span>
                   </button>
 
                   <button className="chat-info-row-button">
-                    🖼️ Медіа та файли
+                    <span className="chat-info-menu-icon">
+                      <YatutIcon
+                        name="image"
+                        size={17}
+                      />
+                    </span>
+
+                    <span>
+                      Медіа та файли
+                    </span>
                   </button>
 
                   <button className="chat-info-row-button danger">
-                    🚫 Заблокувати
+                    <span className="chat-info-menu-icon">
+                      <YatutIcon
+                        name="shield"
+                        size={17}
+                      />
+                    </span>
+
+                    <span>
+                      Заблокувати
+                    </span>
                   </button>
 
                 </section>
