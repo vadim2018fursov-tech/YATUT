@@ -958,3 +958,153 @@
     font-size: 10.5px !important;
   }
 }
+
+
+/* =========================================================
+   MOBILE HEADER V3 + RESPONSIVE TYPE SCALE
+========================================================= */
+
+@media (max-width: 767px) {
+  .topbar-inner {
+    grid-template-columns: 94px minmax(86px, 1fr) auto !important;
+    gap: 7px !important;
+    padding: 9px 10px !important;
+  }
+
+  .brand {
+    width: 94px !important;
+    min-width: 94px !important;
+    max-width: 94px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 7px !important;
+    overflow: visible !important;
+  }
+
+  .brand-ya {
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    border-radius: 14px !important;
+    font-size: 25px !important;
+  }
+
+  .brand-tut {
+    display: block !important;
+    font-size: 18px !important;
+    letter-spacing: -.7px !important;
+  }
+
+  .desktop-search {
+    min-width: 0 !important;
+    height: 42px !important;
+    margin-left: 2px !important;
+    padding: 0 10px !important;
+    border-radius: 14px !important;
+  }
+
+  .desktop-search-content {
+    gap: 6px !important;
+  }
+
+  .desktop-search-content > span:last-child {
+    font-size: 0 !important;
+  }
+
+  .desktop-search-content > span:last-child::after {
+    content: "Пошук";
+    font-size: clamp(12px, 3.2vw, 14px);
+    font-weight: 650;
+  }
+
+  .topbar-actions {
+    gap: 4px !important;
+  }
+
+  .topbar-actions .icon-button,
+  .topbar-actions .profile-mini {
+    width: 37px !important;
+    height: 37px !important;
+    min-width: 37px !important;
+    border-radius: 12px !important;
+  }
+
+  .topbar-actions svg {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  /* Common content typography scales with phone width */
+  .post-name {
+    font-size: clamp(13px, 3.5vw, 15px) !important;
+  }
+
+  .post-meta,
+  .post-stats,
+  .post-stat-right,
+  .stat-link {
+    font-size: clamp(10px, 2.8vw, 12px) !important;
+  }
+
+  .post-content p {
+    font-size: clamp(14px, 3.8vw, 16px) !important;
+    line-height: 1.52 !important;
+  }
+
+  .feed-tab,
+  .yatut-home-tabs .feed-tab {
+    font-size: clamp(12px, 3.25vw, 14px) !important;
+  }
+
+  .story-name {
+    font-size: clamp(10px, 2.9vw, 12px) !important;
+  }
+
+  .composer-tools button,
+  .post-actions > button {
+    font-size: clamp(9px, 2.6vw, 11px) !important;
+  }
+
+  .mobile-nav > button:not(.mobile-create-button) > small,
+  .mobile-create-button > small {
+    font-size: clamp(10px, 2.8vw, 12px) !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .topbar-inner {
+    grid-template-columns: 88px minmax(70px, 1fr) auto !important;
+    gap: 5px !important;
+    padding-right: 8px !important;
+    padding-left: 8px !important;
+  }
+
+  .brand {
+    width: 88px !important;
+    min-width: 88px !important;
+    max-width: 88px !important;
+    gap: 5px !important;
+  }
+
+  .brand-ya {
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+  }
+
+  .brand-tut {
+    font-size: 17px !important;
+  }
+
+  .desktop-search {
+    height: 40px !important;
+    padding: 0 8px !important;
+  }
+
+  .topbar-actions .icon-button,
+  .topbar-actions .profile-mini {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+  }
+}
