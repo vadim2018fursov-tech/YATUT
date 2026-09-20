@@ -1125,7 +1125,13 @@ function NotificationItem({
 
   return (
     <article
-      className={`notification-item ${
+      className={`notification-item notification-type-${
+        notification.type ||
+        "default"
+      } notification-category-${
+        notification.category ||
+        "general"
+      } ${
         notification.read
           ? "read"
           : "unread"
