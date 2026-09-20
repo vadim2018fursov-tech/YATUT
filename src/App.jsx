@@ -19,6 +19,7 @@ import "./styles/pulse-map.css";
 import "./styles/pulse-video.css";
 import "./styles/pulse-wave.css";
 import "./styles/pulse-mobile.css";
+import "./styles/pulse-immersive-mobile.css";
 import "./styles/pulse-clips.css";
 import "./styles/pulse-city.css";
 import "./styles/pulse-watch.css";
