@@ -36,8 +36,30 @@ const QUALITIES = [
 ];
 
 const LONG_VIDEO_CRITICAL_CSS = `
+  .pulse-immersive-mobile.is-long-form {
+    width: 100% !important;
+    min-height: calc(100dvh - 64px) !important;
+    overflow-x: hidden !important;
+    background: #0a0a0e !important;
+    color: #fff !important;
+  }
+
+  .pulse-immersive-mobile.is-long-form
+  .pulse-immersive__tabs {
+    margin-bottom: 0 !important;
+    background:
+      linear-gradient(
+        180deg,
+        rgba(10,10,14,.99),
+        rgba(10,10,14,.96)
+      ) !important;
+    border-bottom:
+      1px solid rgba(255,255,255,.06) !important;
+  }
+
   .pulse-long-mobile,
   .pulse-long-watch {
+    display: block !important;
     width: 100% !important;
     min-width: 0 !important;
     color: #fff !important;
