@@ -3800,7 +3800,13 @@ function Chats({
 
             <div className="chat-info-profile">
 
-              <div className="chat-info-avatar">
+              <div
+                className={`chat-info-avatar ${
+                  activePerson?.online
+                    ? "is-online"
+                    : ""
+                }`.trim()}
+              >
                 {chatInitials(
                   activeChat
                 )}
