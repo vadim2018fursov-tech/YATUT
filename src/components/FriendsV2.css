@@ -3293,3 +3293,656 @@ input:focus-visible {
   }
 
 }
+
+/* =========================================================
+   YATUT FRIENDS — LIVE CONNECTIONS V3
+========================================================= */
+
+.friends-v2-now-strip {
+  margin-top: 14px;
+  min-height: 92px;
+  padding: 14px 16px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  overflow: hidden;
+  border: 1px solid #e6e4ff;
+  border-radius: 19px;
+  background:
+    radial-gradient(
+      circle at 90% 20%,
+      rgba(217,70,239,.08),
+      transparent 28%
+    ),
+    linear-gradient(
+      145deg,
+      #fbfaff,
+      #f5f7ff
+    );
+  box-shadow:
+    0 10px 28px
+    rgba(41,38,80,.04);
+}
+
+.friends-v2-now-strip__people {
+  min-width: 118px;
+  display: flex;
+  align-items: center;
+}
+
+.friends-v2-now-strip__people span {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 900;
+  box-shadow:
+    0 5px 14px
+    rgba(24,27,42,.09);
+}
+
+.friends-v2-now-strip__people span + span {
+  margin-left: -8px;
+}
+
+.friends-v2-now-strip__people .is-violet {
+  background: #756dff;
+}
+
+.friends-v2-now-strip__people .is-pink {
+  background: #db4b91;
+}
+
+.friends-v2-now-strip__people .is-blue {
+  background: #4c7fea;
+}
+
+.friends-v2-now-strip__people .is-more {
+  background: #242635;
+}
+
+.friends-v2-now-strip__copy {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.friends-v2-now-strip__copy > span {
+  color: #7d76d9;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .12em;
+}
+
+.friends-v2-now-strip__copy strong {
+  margin-top: 3px;
+  color: #2a2c36;
+  font-size: 15px;
+}
+
+.friends-v2-now-strip__copy small {
+  margin-top: 3px;
+  color: #8b909b;
+  font-size: 9px;
+}
+
+.friends-v2-now-strip__actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.friends-v2-now-strip__actions button {
+  min-height: 38px;
+  padding: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border: 1px solid #e2e2eb;
+  border-radius: 11px;
+  background: #fff;
+  color: #696e7a;
+  font-size: 9px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.friends-v2-now-strip__actions .is-primary {
+  border-color: transparent;
+  background:
+    linear-gradient(
+      145deg,
+      #746cff,
+      #635bff
+    );
+  color: #fff;
+  box-shadow:
+    0 8px 18px
+    rgba(99,91,255,.18);
+}
+
+.friends-v2-request-chip {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 2;
+  min-height: 32px;
+  padding: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 850;
+}
+
+.friends-v2-request-chip.incoming {
+  background: #635bff;
+  color: #fff;
+  box-shadow:
+    0 8px 18px
+    rgba(99,91,255,.18);
+}
+
+.friends-v2-request-chip.outgoing {
+  border: 1px solid #e2e0ff;
+  background: rgba(255,255,255,.94);
+  color: #635bff;
+}
+
+.friends-v2-person-actions.incoming {
+  grid-template-columns:
+    minmax(0,1fr)
+    auto
+    minmax(0,1fr);
+}
+
+.friends-v2-person-actions .decline {
+  min-width: 86px;
+  background: #fff0f3;
+  color: #d54a69;
+}
+
+.friends-v2-person-actions .decline:hover {
+  background: #ffe6ec;
+}
+
+/* =========================================================
+   FRIENDS MOBILE — QUICK, SOCIAL, READABLE
+========================================================= */
+
+@media (max-width: 720px) {
+  .friends-v2-page {
+    padding-bottom:
+      calc(
+        98px +
+        env(safe-area-inset-bottom)
+      );
+  }
+
+  .friends-v2-hero {
+    min-height: 205px;
+    border-radius:
+      0
+      0
+      26px
+      26px;
+  }
+
+  .friends-v2-hero-content {
+    padding:
+      26px
+      16px;
+  }
+
+  .friends-v2-eyebrow {
+    margin-bottom: 9px;
+    font-size:
+      clamp(
+        9px,
+        2.6vw,
+        11px
+      );
+  }
+
+  .friends-v2-hero-content h1 {
+    max-width: 90%;
+    font-size:
+      clamp(
+        28px,
+        7.7vw,
+        34px
+      );
+    line-height: 1.02;
+    letter-spacing: -1px;
+  }
+
+  .friends-v2-hero-content p {
+    max-width: 88%;
+    margin-top: 11px;
+    font-size:
+      clamp(
+        12px,
+        3.35vw,
+        14px
+      );
+    line-height: 1.45;
+  }
+
+  .friends-v2-summary {
+    margin:
+      9px
+      10px
+      0;
+    gap: 7px;
+  }
+
+  .friends-v2-summary-item {
+    min-height: 74px;
+    padding: 10px;
+    grid-template-columns:
+      34px
+      minmax(0,1fr);
+    gap: 8px;
+    border-radius: 15px;
+  }
+
+  .friends-v2-summary-item
+  > div:first-child {
+    width: 34px;
+    height: 34px;
+  }
+
+  .friends-v2-summary-item
+  > section
+  > strong {
+    font-size:
+      clamp(
+        18px,
+        5vw,
+        21px
+      );
+  }
+
+  .friends-v2-summary-item
+  > section
+  > span {
+    font-size:
+      clamp(
+        10px,
+        2.8vw,
+        12px
+      );
+  }
+
+  .friends-v2-now-strip {
+    margin:
+      9px
+      10px
+      0;
+    padding: 13px;
+    display: grid;
+    grid-template-columns:
+      auto
+      minmax(0,1fr);
+    gap: 10px;
+    border-radius: 17px;
+  }
+
+  .friends-v2-now-strip__people {
+    min-width: 93px;
+  }
+
+  .friends-v2-now-strip__people span {
+    width: 34px;
+    height: 34px;
+    font-size: 10px;
+  }
+
+  .friends-v2-now-strip__copy > span {
+    font-size:
+      clamp(
+        8px,
+        2.4vw,
+        10px
+      );
+  }
+
+  .friends-v2-now-strip__copy strong {
+    font-size:
+      clamp(
+        14px,
+        3.8vw,
+        16px
+      );
+  }
+
+  .friends-v2-now-strip__copy small {
+    font-size:
+      clamp(
+        10px,
+        2.8vw,
+        12px
+      );
+    line-height: 1.35;
+  }
+
+  .friends-v2-now-strip__actions {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns:
+      repeat(
+        3,
+        minmax(0,1fr)
+      );
+  }
+
+  .friends-v2-now-strip__actions button {
+    min-width: 0;
+    min-height: 40px;
+    padding: 0 6px;
+    font-size:
+      clamp(
+        9px,
+        2.5vw,
+        11px
+      );
+  }
+
+  .friends-v2-toolbar {
+    margin:
+      12px
+      10px
+      0;
+    gap: 7px;
+  }
+
+  .friends-v2-search {
+    height: 52px;
+    padding:
+      0
+      14px;
+    border-radius: 15px;
+  }
+
+  .friends-v2-search input {
+    font-size: 16px !important;
+  }
+
+  .friends-v2-find-button {
+    height: 48px;
+    min-width: 0;
+    border-radius: 14px;
+    font-size:
+      clamp(
+        11px,
+        3vw,
+        13px
+      );
+  }
+
+  .friends-v2-tabs {
+    margin:
+      8px
+      10px
+      0;
+    padding: 5px;
+    gap: 5px;
+    border-radius: 15px;
+  }
+
+  .friends-v2-tabs button {
+    min-height: 40px;
+    padding:
+      0
+      12px;
+    font-size:
+      clamp(
+        10px,
+        2.8vw,
+        12px
+      );
+  }
+
+  .friends-v2-layout {
+    margin:
+      11px
+      10px
+      0;
+  }
+
+  .friends-v2-section-head {
+    min-height: 50px;
+  }
+
+  .friends-v2-section-head span {
+    font-size:
+      clamp(
+        8px,
+        2.4vw,
+        10px
+      );
+  }
+
+  .friends-v2-section-head h2 {
+    font-size:
+      clamp(
+        18px,
+        5vw,
+        21px
+      );
+  }
+
+  .friends-v2-grid {
+    grid-template-columns:
+      1fr;
+    gap: 9px;
+  }
+
+  .friends-v2-person-card {
+    border-radius: 18px;
+  }
+
+  .friends-v2-person-cover {
+    height: 86px;
+  }
+
+  .friends-v2-nearby-chip,
+  .friends-v2-request-chip {
+    top: 10px;
+    min-height: 29px;
+    padding:
+      0
+      8px;
+    font-size:
+      clamp(
+        9px,
+        2.5vw,
+        10px
+      );
+  }
+
+  .friends-v2-nearby-chip {
+    right: 10px;
+  }
+
+  .friends-v2-request-chip {
+    left: 10px;
+  }
+
+  .friends-v2-person-avatar-wrap {
+    top: 54px;
+    left: 14px;
+  }
+
+  .friends-v2-person-pulse {
+    width: 64px;
+    height: 64px;
+    padding: 3px;
+    box-shadow:
+      0 0 0 4px
+      #fff;
+  }
+
+  .friends-v2-person-avatar {
+    font-size: 19px;
+  }
+
+  .friends-v2-person-online {
+    width: 15px;
+    height: 15px;
+    border-width: 3px;
+  }
+
+  .friends-v2-person-body {
+    padding:
+      37px
+      13px
+      13px;
+  }
+
+  .friends-v2-person-name
+  > span {
+    font-size:
+      clamp(
+        15px,
+        4vw,
+        17px
+      );
+  }
+
+  .friends-v2-person-username,
+  .friends-v2-person-city {
+    font-size:
+      clamp(
+        10px,
+        2.8vw,
+        12px
+      );
+  }
+
+  .friends-v2-relation {
+    margin-top: 10px;
+    padding: 10px;
+    grid-template-columns:
+      minmax(0,1fr)
+      auto;
+  }
+
+  .friends-v2-relation
+  > div:first-child
+  > span {
+    font-size:
+      clamp(
+        8px,
+        2.3vw,
+        10px
+      );
+  }
+
+  .friends-v2-relation
+  > div:first-child
+  > strong {
+    font-size:
+      clamp(
+        10px,
+        2.9vw,
+        12px
+      );
+  }
+
+  .friends-v2-relation
+  .friends-v2-mutual-avatars {
+    display: none;
+  }
+
+  .friends-v2-person-actions {
+    grid-template-columns:
+      1fr
+      1fr !important;
+    gap: 6px;
+  }
+
+  .friends-v2-person-actions.incoming {
+    grid-template-columns:
+      1fr
+      1fr !important;
+  }
+
+  .friends-v2-person-actions.incoming
+  .message {
+    grid-column:
+      1 / -1;
+  }
+
+  .friends-v2-person-actions button {
+    min-height: 42px;
+    padding:
+      0
+      7px;
+    font-size:
+      clamp(
+        10px,
+        2.8vw,
+        12px
+      );
+  }
+
+  .friends-v2-person-actions
+  .decline {
+    min-width: 0;
+  }
+
+  .friends-v2-side {
+    gap: 9px;
+  }
+
+  .friends-v2-side-card {
+    padding: 14px;
+    border-radius: 18px;
+  }
+
+  .friends-v2-side-card
+  > header
+  span {
+    font-size:
+      clamp(
+        8px,
+        2.4vw,
+        10px
+      );
+  }
+
+  .friends-v2-side-card
+  > header
+  h3 {
+    font-size:
+      clamp(
+        15px,
+        4vw,
+        18px
+      );
+  }
+}
+
+@media (max-width: 390px) {
+  .friends-v2-hero-content h1 {
+    font-size: 27px;
+  }
+
+  .friends-v2-now-strip__actions button {
+    font-size: 9px;
+  }
+
+  .friends-v2-tabs button {
+    padding:
+      0
+      10px;
+  }
+}
