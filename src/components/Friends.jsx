@@ -12,6 +12,7 @@ import {
   FRIEND_STATUSES,
   acceptIncomingFriendRequest,
   cancelFriendRequest,
+  declineIncomingFriendRequest,
   getFriendState,
   getFriendStatus,
   removeFriend,
@@ -346,6 +347,14 @@ const TABS = [
 
   {
     id:
+      "requests",
+
+    label:
+      "Запити",
+  },
+
+  {
+    id:
       "suggestions",
 
     label:
@@ -528,6 +537,17 @@ export default function Friends({
                 "friends" &&
               person.friendStatus !==
                 FRIEND_STATUSES.FRIEND
+            ) {
+              return false;
+            }
+
+            if (
+              activeTab ===
+                "requests" &&
+              person.friendStatus !==
+                FRIEND_STATUSES.INCOMING &&
+              person.friendStatus !==
+                FRIEND_STATUSES.OUTGOING
             ) {
               return false;
             }
@@ -725,6 +745,29 @@ export default function Friends({
     );
   }
 
+  function declineRequest(
+    person
+  ) {
+    if (
+      !person?.id
+    ) {
+      return;
+    }
+
+    if (
+      getFriendStatus(
+        person.id
+      ) !==
+      FRIEND_STATUSES.INCOMING
+    ) {
+      return;
+    }
+
+    declineIncomingFriendRequest(
+      person.id
+    );
+  }
+
   /* =======================================================
      OPEN PROFILE PREVIEW
   ======================================================= */
@@ -840,19 +883,116 @@ export default function Friends({
 
         <SummaryStat
           value={
+            stats.incoming +
+            stats.outgoing
+          }
+          label="Запитів"
+          icon="plus"
+        />
+
+        <SummaryStat
+          value={
             stats.nearby
           }
           label="Поруч"
           icon="nearby"
         />
+      </section>
 
-        <SummaryStat
-          value={
-            stats.suggestions
-          }
-          label="Нових зв’язків"
-          icon="search"
-        />
+      <section className="friends-v2-now-strip">
+        <div className="friends-v2-now-strip__people">
+          <span className="is-violet">
+            М
+          </span>
+
+          <span className="is-pink">
+            С
+          </span>
+
+          <span className="is-blue">
+            О
+          </span>
+
+          <span className="is-more">
+            +{
+              Math.max(
+                stats.online - 3,
+                0
+              )
+            }
+          </span>
+        </div>
+
+        <div className="friends-v2-now-strip__copy">
+          <span>
+            ТВОЄ КОЛО ЗАРАЗ
+          </span>
+
+          <strong>
+            {
+              stats.online
+            } друзів онлайн
+          </strong>
+
+          <small>
+            Люди, з якими можна бути на зв’язку просто зараз.
+          </small>
+        </div>
+
+        <div className="friends-v2-now-strip__actions">
+          <button
+            type="button"
+            onClick={() =>
+              setActiveTab(
+                "requests"
+              )
+            }
+          >
+            <YatutIcon
+              name="friends"
+              size={16}
+            />
+
+            {
+              stats.incoming
+            } запитів
+          </button>
+
+          <button
+            type="button"
+            onClick={() =>
+              setActiveTab(
+                "nearby"
+              )
+            }
+          >
+            <YatutIcon
+              name="nearby"
+              size={16}
+            />
+
+            {
+              stats.nearby
+            } поруч
+          </button>
+
+          <button
+            type="button"
+            className="is-primary"
+            onClick={() =>
+              onNavigate?.(
+                "now"
+              )
+            }
+          >
+            Зараз
+
+            <YatutIcon
+              name="arrowRight"
+              size={16}
+            />
+          </button>
+        </div>
       </section>
 
       {/* ===================================================
@@ -939,6 +1079,15 @@ export default function Friends({
 
             if (
               tab.id ===
+              "requests"
+            ) {
+              count =
+                stats.incoming +
+                stats.outgoing;
+            }
+
+            if (
+              tab.id ===
               "suggestions"
             ) {
               count =
@@ -1013,6 +1162,10 @@ export default function Friends({
                   "Ваші друзі"}
 
                 {activeTab ===
+                  "requests" &&
+                  "Запити до друзів"}
+
+                {activeTab ===
                   "suggestions" &&
                   "Можливо, ви знайомі"}
 
@@ -1059,6 +1212,11 @@ export default function Friends({
                     }
                     onFriend={() =>
                       requestFriend(
+                        person
+                      )
+                    }
+                    onDecline={() =>
+                      declineRequest(
                         person
                       )
                     }
@@ -1341,6 +1499,7 @@ function PersonCard({
   onOpenProfile,
   onOpenRelation,
   onFriend,
+  onDecline,
   onMessage,
 }) {
   const friendButton =
@@ -1355,6 +1514,25 @@ function PersonCard({
       =================================================== */}
 
       <div className="friends-v2-person-cover">
+        {person.friendStatus ===
+          FRIEND_STATUSES.INCOMING && (
+          <span className="friends-v2-request-chip incoming">
+            <YatutIcon
+              name="plus"
+              size={13}
+            />
+
+            Запит до вас
+          </span>
+        )}
+
+        {person.friendStatus ===
+          FRIEND_STATUSES.OUTGOING && (
+          <span className="friends-v2-request-chip outgoing">
+            Запит надіслано
+          </span>
+        )}
+
         {person.nearby && (
           <span className="friends-v2-nearby-chip">
             <YatutIcon
@@ -1504,7 +1682,14 @@ function PersonCard({
             ACTIONS
         ================================================= */}
 
-        <div className="friends-v2-person-actions">
+        <div
+          className={`friends-v2-person-actions ${
+            person.friendStatus ===
+            FRIEND_STATUSES.INCOMING
+              ? "incoming"
+              : ""
+          }`}
+        >
           <button
             className={`friend ${
               friendButton.active
@@ -1527,6 +1712,19 @@ function PersonCard({
               friendButton.label
             }
           </button>
+
+          {person.friendStatus ===
+            FRIEND_STATUSES.INCOMING && (
+            <button
+              className="decline"
+              type="button"
+              onClick={
+                onDecline
+              }
+            >
+              Відхилити
+            </button>
+          )}
 
           <button
             className="message"
