@@ -2844,6 +2844,39 @@ function Chats({
      STORIES
   ======================================================= */
 
+  function getStoryRingStatus(
+    person
+  ) {
+    const stories =
+      STORY_SETS[
+        person.id
+      ] || [];
+
+    if (!stories.length) {
+      return "none";
+    }
+
+    const allViewed =
+      stories.every(
+        (
+          story,
+          index
+        ) =>
+          viewedStories.has(
+            `${person.id}:${index}`
+          )
+      );
+
+    if (allViewed) {
+      return "viewed";
+    }
+
+    return (
+      person.storyStatus ||
+      "new"
+    );
+  }
+
   function markStoryViewed(
     personId,
     storyIndex
@@ -4344,16 +4377,16 @@ function Chats({
                     }
                     type="button"
                     onClick={() =>
-                      createDirectChat(
+                      openStory(
                         person.id
                       )
                     }
                   >
                     <span
                       className={`chat-activity-avatar ${
-                        person.storyStatus
-                          ? `story-${person.storyStatus}`
-                          : "story-none"
+                        `story-${getStoryRingStatus(
+                          person
+                        )}`
                       }`.trim()}
                     >
                       <span className="chat-avatar-media">
