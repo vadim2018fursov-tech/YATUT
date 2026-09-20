@@ -5,7 +5,6 @@ import {
   Compass,
   Plus,
   Clock3,
-  Eye,
   MapPin,
   Radio,
   Sparkles,
