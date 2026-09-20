@@ -1278,6 +1278,114 @@ export default function Nearby({
       </header>
 
       {/* ===================================================
+          LIVE NEARBY
+      =================================================== */}
+
+      <section className="nearby-live-strip">
+        <div className="nearby-live-strip__lead">
+          <span className="nearby-live-strip__pulse">
+            <i />
+            <YatutIcon
+              name="pulse"
+              size={20}
+            />
+          </span>
+
+          <div>
+            <small>
+              ПОРУЧ ПРЯМО ЗАРАЗ
+            </small>
+
+            <strong>
+              Київ живе навколо тебе
+            </strong>
+
+            <p>
+              Люди, моменти та події в межах {
+                state.radius
+              } км.
+            </p>
+          </div>
+        </div>
+
+        <div className="nearby-live-strip__stats">
+          <button
+            type="button"
+            onClick={() =>
+              setTab(
+                "people"
+              )
+            }
+          >
+            <strong>
+              428
+            </strong>
+
+            <span>
+              людей
+            </span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() =>
+              onNavigate?.(
+                "friends"
+              )
+            }
+          >
+            <strong>
+              12
+            </strong>
+
+            <span>
+              друзів
+            </span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() =>
+              onNavigate?.(
+                "pulse"
+              )
+            }
+          >
+            <strong>
+              8
+            </strong>
+
+            <span>
+              моментів
+            </span>
+          </button>
+        </div>
+
+        <button
+          type="button"
+          className="nearby-live-strip__action"
+          onClick={() =>
+            onNavigate?.(
+              "cityPulse",
+              {
+                cityId:
+                  "kyiv",
+              }
+            )
+          }
+        >
+          <span>
+            PULSE Києва
+          </span>
+
+          <YatutIcon
+            name="arrowRight"
+            size={17}
+          />
+        </button>
+      </section>
+
+      {/* ===================================================
           LOCATION
       =================================================== */}
 
