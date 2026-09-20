@@ -15,6 +15,7 @@ import PulseWave from "../components/pulse/PulseWave";
 
 import PulseMobileHeader from "../components/pulse/PulseMobileHeader";
 import PulseMobileTabs from "../components/pulse/PulseMobileTabs";
+import PulseMobileImmersive from "../components/pulse/PulseMobileImmersive";
 
 import {
   pulseRecommendations,
@@ -234,13 +235,20 @@ export default function PulsePage({
 
   return (
     <>
-      <PulseMobileHeader
+      <PulseMobileImmersive
         onNavigate={
           onNavigate
         }
       />
 
-      <div className="pulse-page">
+      <div className="pulse-desktop-experience">
+        <PulseMobileHeader
+          onNavigate={
+            onNavigate
+          }
+        />
+
+        <div className="pulse-page">
         <div className="pulse-page__main">
           <div className="pulse-desktop-tabs">
             <PulseTabs
@@ -441,8 +449,8 @@ export default function PulsePage({
             onNavigate
           }
         />
+        </div>
       </div>
-
     </>
   );
 }
