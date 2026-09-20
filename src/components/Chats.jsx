@@ -3746,7 +3746,10 @@ function Chats({
                         );
                       }}
                     >
-                      🎙
+                      <YatutIcon
+                        name="microphone"
+                        size={19}
+                      />
                     </button>
                   )}
 
