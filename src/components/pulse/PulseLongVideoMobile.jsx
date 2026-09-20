@@ -5,6 +5,7 @@ import {
   ChevronDown,
   Heart,
   ListVideo,
+  Maximize2,
   MoreHorizontal,
   Settings2,
   Share2,
@@ -211,6 +212,9 @@ export default function PulseLongVideoMobile({
   const qualityRef =
     useRef(null);
 
+  const playerWrapRef =
+    useRef(null);
+
   const channels =
     useMemo(
       () => {
@@ -388,6 +392,54 @@ export default function PulseLongVideoMobile({
     );
   }
 
+  async function openFullscreen() {
+    const target =
+      playerWrapRef.current;
+
+    if (!target) {
+      return;
+    }
+
+    try {
+      if (
+        document.fullscreenElement
+      ) {
+        await document.exitFullscreen();
+
+        return;
+      }
+
+      if (
+        target.requestFullscreen
+      ) {
+        await target.requestFullscreen();
+
+        try {
+          await screen.orientation?.lock?.(
+            "landscape"
+          );
+        } catch {
+          // Orientation lock is not available in every mobile browser.
+        }
+
+        return;
+      }
+
+      const video =
+        target.querySelector(
+          "video"
+        );
+
+      if (
+        video?.webkitEnterFullscreen
+      ) {
+        video.webkitEnterFullscreen();
+      }
+    } catch {
+      // Browser can deny fullscreen outside supported contexts.
+    }
+  }
+
   function openVideo(
     video
   ) {
@@ -473,7 +525,12 @@ export default function PulseLongVideoMobile({
 
     return (
       <section className="pulse-long-watch">
-        <div className="pulse-long-watch__player-wrap">
+        <div
+          ref={
+            playerWrapRef
+          }
+          className="pulse-long-watch__player-wrap"
+        >
           <PulseVideoPlayer
             key={
               `${selectedVideo.id}-${quality}`
@@ -504,6 +561,19 @@ export default function PulseLongVideoMobile({
           >
             <ArrowLeft
               size={21}
+            />
+          </button>
+
+          <button
+            type="button"
+            className="pulse-long-watch__fullscreen"
+            onClick={
+              openFullscreen
+            }
+            aria-label="Повний екран"
+          >
+            <Maximize2
+              size={19}
             />
           </button>
 
