@@ -2218,6 +2218,19 @@ function Chats({
     setStoryMoreOpen(
       false
     );
+  }, [
+    storyViewer?.personId,
+    storyViewer?.storyIndex,
+  ]);
+
+  useEffect(() => {
+    if (
+      !storyViewer ||
+      storyReactionOpen ||
+      storyMoreOpen
+    ) {
+      return;
+    }
 
     const timer =
       setInterval(
@@ -2258,6 +2271,8 @@ function Chats({
   }, [
     storyViewer?.personId,
     storyViewer?.storyIndex,
+    storyReactionOpen,
+    storyMoreOpen,
   ]);
 
   useEffect(() => {
