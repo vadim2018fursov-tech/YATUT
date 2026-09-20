@@ -2680,3 +2680,166 @@
       26px !important;
   }
 }
+
+
+/* =========================================================
+   MOBILE HEADER V9 — FINAL RIGHT-ALIGNED ACTION GROUP
+========================================================= */
+
+.mobile-search-action {
+  display: none !important;
+}
+
+@media (max-width: 767px) {
+  .topbar-inner {
+    width: 100% !important;
+    max-width: 100% !important;
+
+    padding:
+      8px 10px !important;
+
+    display: flex !important;
+    align-items: center !important;
+
+    gap: 8px !important;
+  }
+
+  .brand {
+    flex:
+      0 0 auto !important;
+
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+
+    margin: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+
+    gap: 6px !important;
+  }
+
+  .brand-ya {
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    flex:
+      0 0 44px !important;
+  }
+
+  .brand-tut {
+    display: block !important;
+
+    font-size: 18px !important;
+    line-height: 1 !important;
+
+    white-space: nowrap !important;
+  }
+
+  /* Desktop/search pill is not used in the phone header. */
+  .topbar-inner > .desktop-search {
+    display: none !important;
+  }
+
+  .topbar-actions {
+    flex:
+      0 0 auto !important;
+
+    margin-left: auto !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+
+    gap: 5px !important;
+  }
+
+  .mobile-search-action {
+    display: grid !important;
+  }
+
+  .topbar-actions .icon-button,
+  .topbar-actions .profile-mini,
+  .topbar-actions .mobile-search-action {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    flex:
+      0 0 34px !important;
+
+    margin: 0 !important;
+
+    border-radius:
+      11px !important;
+  }
+
+  .topbar-actions svg {
+    width: 19px !important;
+    height: 19px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .topbar-inner {
+    padding-right: 8px !important;
+    padding-left: 8px !important;
+
+    gap: 6px !important;
+  }
+
+  .brand {
+    gap: 4px !important;
+  }
+
+  .brand-ya {
+    width: 41px !important;
+    height: 41px !important;
+    min-width: 41px !important;
+    flex-basis: 41px !important;
+  }
+
+  .brand-tut {
+    font-size: 16.5px !important;
+  }
+
+  .topbar-actions {
+    gap: 4px !important;
+  }
+
+  .topbar-actions .icon-button,
+  .topbar-actions .profile-mini,
+  .topbar-actions .mobile-search-action {
+    width: 31px !important;
+    height: 31px !important;
+    min-width: 31px !important;
+    flex-basis: 31px !important;
+
+    border-radius:
+      10px !important;
+  }
+
+  .topbar-actions svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+}
+
+@media (max-width: 350px) {
+  .brand-tut {
+    font-size: 15px !important;
+  }
+
+  .topbar-actions {
+    gap: 3px !important;
+  }
+
+  .topbar-actions .icon-button,
+  .topbar-actions .profile-mini,
+  .topbar-actions .mobile-search-action {
+    width: 29px !important;
+    height: 29px !important;
+    min-width: 29px !important;
+    flex-basis: 29px !important;
+  }
+}
