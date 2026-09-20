@@ -6679,3 +6679,94 @@
       39px;
   }
 }
+
+
+/* =========================================================
+   STORY VIEWER V2 — TRUE APP FULLSCREEN
+========================================================= */
+
+@media (max-width: 700px) {
+  body.story-viewer-open {
+    overflow: hidden !important;
+
+    overscroll-behavior:
+      none !important;
+
+    background:
+      #08090d !important;
+  }
+
+  body.story-viewer-open
+  .topbar,
+  body.story-viewer-open
+  .mobile-nav {
+    display:
+      none !important;
+  }
+
+  body.story-viewer-open
+  .story-viewer {
+    position:
+      fixed !important;
+
+    inset:
+      0 !important;
+
+    z-index:
+      2147483000 !important;
+
+    width:
+      100vw !important;
+    max-width:
+      none !important;
+
+    height:
+      100dvh !important;
+    min-height:
+      100dvh !important;
+    max-height:
+      none !important;
+
+    margin:
+      0 !important;
+    padding:
+      0 !important;
+
+    border:
+      0 !important;
+
+    border-radius:
+      0 !important;
+
+    transform:
+      none !important;
+
+    box-shadow:
+      none !important;
+
+    overflow:
+      hidden !important;
+
+    background:
+      #08090d !important;
+  }
+
+  body.story-viewer-open
+  .story-viewer-media,
+  body.story-viewer-open
+  .story-viewer-shade {
+    position:
+      absolute !important;
+
+    inset:
+      0 !important;
+
+    width:
+      100% !important;
+    height:
+      100% !important;
+
+    border-radius:
+      0 !important;
+  }
+}
