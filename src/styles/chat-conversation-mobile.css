@@ -3544,3 +3544,257 @@
       20px !important;
   }
 }
+
+
+/* =========================================================
+   YATUT CHAT — ATTACH SHEET V7
+========================================================= */
+
+@media (max-width: 700px) {
+  /* Raise the composer a little from the system edge. */
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode) {
+    margin-bottom:
+      calc(
+        14px +
+        env(
+          safe-area-inset-bottom
+        )
+      ) !important;
+  }
+
+  /* Cleaner floating attachment card. */
+  .messenger.mobile-dialog-open
+  .yatut-attach-popover {
+    bottom:
+      calc(
+        92px +
+        env(
+          safe-area-inset-bottom
+        )
+      ) !important;
+
+    padding:
+      10px !important;
+
+    border:
+      1px solid
+      rgba(
+        99,
+        91,
+        255,
+        .10
+      ) !important;
+
+    border-radius:
+      30px !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(
+          255,
+          255,
+          255,
+          .985
+        ),
+        rgba(
+          247,
+          246,
+          255,
+          .98
+        )
+      ) !important;
+
+    box-shadow:
+      0 20px 54px
+      rgba(
+        28,
+        30,
+        46,
+        .14
+      ),
+      0 4px 16px
+      rgba(
+        99,
+        91,
+        255,
+        .06
+      ) !important;
+  }
+
+  /* Remove title/subtitle/close row — outside tap closes it. */
+  .messenger.mobile-dialog-open
+  .chat-attach-head {
+    display:
+      none !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-attach-grid {
+    grid-template-columns:
+      repeat(
+        3,
+        minmax(
+          0,
+          1fr
+        )
+      ) !important;
+
+    gap:
+      8px !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-attach-grid > button {
+    min-height:
+      84px !important;
+
+    padding:
+      9px 5px !important;
+
+    gap:
+      6px !important;
+
+    border:
+      1px solid
+      rgba(
+        226,
+        228,
+        237,
+        .88
+      ) !important;
+
+    border-radius:
+      22px !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(
+          251,
+          251,
+          255,
+          .98
+        ),
+        rgba(
+          247,
+          246,
+          255,
+          .92
+        )
+      ) !important;
+
+    box-shadow:
+      inset
+      0 1px 0
+      rgba(
+        255,
+        255,
+        255,
+        .94
+      ) !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-attach-grid > button:active {
+    transform:
+      scale(.97) !important;
+
+    border-color:
+      rgba(
+        99,
+        91,
+        255,
+        .14
+      ) !important;
+
+    background:
+      #f0edff !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-attach-icon {
+    width:
+      42px !important;
+    height:
+      42px !important;
+    min-width:
+      42px !important;
+
+    border-radius:
+      15px !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-attach-grid > button > strong {
+    margin: 0 !important;
+
+    font-size:
+      10.5px !important;
+
+    line-height:
+      1 !important;
+  }
+
+  /* Remove secondary descriptions for a cleaner compact grid. */
+  .messenger.mobile-dialog-open
+  .chat-attach-grid > button > small {
+    display:
+      none !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode) {
+    margin-bottom:
+      calc(
+        13px +
+        env(
+          safe-area-inset-bottom
+        )
+      ) !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .yatut-attach-popover {
+    right:
+      8px !important;
+    left:
+      8px !important;
+
+    bottom:
+      calc(
+        88px +
+        env(
+          safe-area-inset-bottom
+        )
+      ) !important;
+
+    border-radius:
+      28px !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-attach-grid > button {
+    min-height:
+      80px !important;
+
+    border-radius:
+      20px !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-attach-icon {
+    width:
+      39px !important;
+    height:
+      39px !important;
+    min-width:
+      39px !important;
+
+    border-radius:
+      14px !important;
+  }
+}
