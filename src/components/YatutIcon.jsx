@@ -227,6 +227,15 @@ const ICONS = {
     </>
   ),
 
+  smile: (
+    <>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M9 10h.01" />
+      <path d="M15 10h.01" />
+      <path d="M8.5 14c.9 1.4 2.1 2 3.5 2s2.6-.6 3.5-2" />
+    </>
+  ),
+
   poll: (
     <>
       <path d="M5 20V10" />
