@@ -3885,11 +3885,16 @@ function App() {
       />
 
       <div
-        className={
+        className={`${
           showRightSidebar
             ? "layout"
             : "layout layout-wide"
-        }
+        } ${
+          currentPage ===
+          "pulse"
+            ? "layout-pulse-immersive"
+            : ""
+        }`.trim()}
       >
         <LeftSidebar
           currentPage={
