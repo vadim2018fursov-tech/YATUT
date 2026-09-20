@@ -2202,6 +2202,99 @@ function Chats({
     chatActionChatId,
   ]);
 
+  useEffect(() => {
+    if (!storyViewer) {
+      return;
+    }
+
+    setStoryProgress(
+      0
+    );
+
+    setStoryReactionOpen(
+      false
+    );
+
+    setStoryMoreOpen(
+      false
+    );
+
+    const timer =
+      setInterval(
+        () => {
+          setStoryProgress(
+            (previous) => {
+              if (
+                previous >=
+                98
+              ) {
+                clearInterval(
+                  timer
+                );
+
+                setTimeout(
+                  () =>
+                    goToNextStory(),
+                  0
+                );
+
+                return 100;
+              }
+
+              return (
+                previous +
+                2
+              );
+            }
+          );
+        },
+        100
+      );
+
+    return () =>
+      clearInterval(
+        timer
+      );
+  }, [
+    storyViewer?.personId,
+    storyViewer?.storyIndex,
+  ]);
+
+  useEffect(() => {
+    if (!storyMoreOpen) {
+      return;
+    }
+
+    function handleStoryMenuOutside(
+      event
+    ) {
+      if (
+        storyMoreRef.current?.contains(
+          event.target
+        )
+      ) {
+        return;
+      }
+
+      setStoryMoreOpen(
+        false
+      );
+    }
+
+    document.addEventListener(
+      "pointerdown",
+      handleStoryMenuOutside
+    );
+
+    return () =>
+      document.removeEventListener(
+        "pointerdown",
+        handleStoryMenuOutside
+      );
+  }, [
+    storyMoreOpen,
+  ]);
+
   /* =======================================================
      LOAD CHATS
   ======================================================= */
