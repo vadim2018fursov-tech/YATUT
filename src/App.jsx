@@ -2754,6 +2754,25 @@ function TopBar({
         </button>
 
         <div className="topbar-actions">
+          {/* MOBILE SEARCH */}
+
+          <button
+            className="icon-button mobile-search-action"
+            type="button"
+            onClick={() =>
+              onNavigate(
+                "search"
+              )
+            }
+            aria-label="Пошук"
+            title="Пошук"
+          >
+            <YatutIcon
+              name="search"
+              size={20}
+            />
+          </button>
+
           {/* NOW */}
 
           <button
