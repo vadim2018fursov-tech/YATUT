@@ -203,6 +203,37 @@ const ICONS = {
     </>
   ),
 
+  reply: (
+    <>
+      <path d="m9 8-5 4 5 4" />
+      <path d="M5 12h8c4 0 6 2 6 6" />
+    </>
+  ),
+
+  forward: (
+    <>
+      <path d="m15 8 5 4-5 4" />
+      <path d="M19 12h-8c-4 0-6 2-6 6" />
+    </>
+  ),
+
+  edit: (
+    <>
+      <path d="M4 20h4l10.5-10.5a2.1 2.1 0 0 0-4-4L4 16v4Z" />
+      <path d="m13.5 6.5 4 4" />
+    </>
+  ),
+
+  trash: (
+    <>
+      <path d="M4 7h16" />
+      <path d="M9 7V4h6v3" />
+      <path d="m6 7 1 13h10l1-13" />
+      <path d="M10 11v5" />
+      <path d="M14 11v5" />
+    </>
+  ),
+
   image: (
     <>
       <rect x="3" y="4" width="18" height="16" rx="2.5" />
