@@ -2838,3 +2838,106 @@ button[data-notification-trigger]:focus-visible {
     flex: 1 !important;
   }
 }
+
+
+/* =========================================================
+   YATUT NOTIFICATIONS — CONNECTED SOURCES V3
+========================================================= */
+
+.notification-meta-row {
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.notification-source-chip,
+.notification-action-status {
+  min-height: 24px;
+  padding: 0 8px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  font-size: 8px;
+  font-weight: 850;
+  line-height: 1;
+}
+
+.notification-source-chip {
+  border: 1px solid #e7e5ff;
+  background: #f4f2ff;
+  color: #6b63e8;
+}
+
+.notification-source-chip.source-events {
+  border-color: #dff2ee;
+  background: #f0fbf8;
+  color: #15968f;
+}
+
+.notification-source-chip.source-communities {
+  border-color: #e8e3ff;
+  background: #f5f2ff;
+  color: #765fe4;
+}
+
+.notification-source-chip.source-messages {
+  border-color: #dfeeff;
+  background: #f1f7ff;
+  color: #4f7ecf;
+}
+
+.notification-source-chip.source-activity {
+  border-color: #ffe2ed;
+  background: #fff3f7;
+  color: #d45583;
+}
+
+.notification-action-status {
+  border: 1px solid #d9f1e7;
+  background: #effaf5;
+  color: #168463;
+}
+
+.notification-action-status.status-declined {
+  border-color: #ececef;
+  background: #f5f5f7;
+  color: #8a8e98;
+}
+
+.notification-request-actions button:disabled {
+  cursor: wait;
+  opacity: .66;
+}
+
+.notification-item:has(.notification-action-status) {
+  border-color: #e7e7ef;
+}
+
+@media (max-width: 767px) {
+  .notification-source-chip,
+  .notification-action-status {
+    min-height: 22px;
+    padding: 0 7px;
+    font-size: 8px;
+  }
+
+  .notification-request-actions {
+    gap: 7px;
+  }
+
+  .notification-request-actions button {
+    min-height: 44px;
+    border-radius: 13px;
+  }
+}
+
+body.yatut-dark-mode .notification-source-chip {
+  border-color: #3a375d;
+  background: #2d2a4d;
+  color: #bcb5ff;
+}
+
+body.yatut-dark-mode .notification-action-status {
+  border-color: #285244;
+  background: #1d3b32;
+  color: #85d8b7;
+}

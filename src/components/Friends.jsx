@@ -576,6 +576,106 @@ export default function Friends({
       ]
     );
 
+  useEffect(() => {
+    function openFromPayload(
+      payload
+    ) {
+      const personId =
+        payload?.personId;
+
+      if (!personId) {
+        return;
+      }
+
+      const person =
+        people.find(
+          (item) =>
+            item.id ===
+            personId
+        );
+
+      if (!person) {
+        return;
+      }
+
+      setActiveTab(
+        person.friendStatus ===
+          FRIEND_STATUSES.FRIEND
+          ? "friends"
+          : "all"
+      );
+
+      setSelectedPerson(
+        person
+      );
+
+      try {
+        sessionStorage.removeItem(
+          "yatut-open-route-payload"
+        );
+      } catch {
+        // No-op.
+      }
+    }
+
+    try {
+      const raw =
+        sessionStorage.getItem(
+          "yatut-open-route-payload"
+        );
+
+      if (raw) {
+        const parsed =
+          JSON.parse(raw);
+
+        if (
+          parsed?.route ===
+          "friends"
+        ) {
+          openFromPayload(
+            parsed.payload ||
+            {}
+          );
+        }
+      }
+    } catch (error) {
+      console.warn(
+        "FRIENDS ROUTE PAYLOAD ERROR:",
+        error
+      );
+    }
+
+    function handleRoute(
+      event
+    ) {
+      if (
+        event?.detail?.route !==
+        "friends"
+      ) {
+        return;
+      }
+
+      openFromPayload(
+        event.detail.payload ||
+        {}
+      );
+    }
+
+    window.addEventListener(
+      "yatut:route-payload",
+      handleRoute
+    );
+
+    return () => {
+      window.removeEventListener(
+        "yatut:route-payload",
+        handleRoute
+      );
+    };
+  }, [
+    people,
+  ]);
+
   /* =======================================================
      FILTER
   ======================================================= */

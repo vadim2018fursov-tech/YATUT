@@ -11,6 +11,10 @@ import {
   openSchoolChat,
 } from "../bridges/schoolChatBridge";
 
+import {
+  mergeAcceptedCommunityInvites,
+} from "../storage/notificationEntityBridge";
+
 /* =========================================================
    ЯТУТ — SPACES
 ========================================================= */
@@ -4260,7 +4264,9 @@ function Spaces({
     setSpaces,
   ] = useState(
     () =>
-      loadSpaces()
+      mergeAcceptedCommunityInvites(
+        loadSpaces()
+      )
   );
 
   const [
@@ -4295,6 +4301,152 @@ function Spaces({
   ] = useState(
     "all"
   );
+
+  useEffect(() => {
+    function applyRoutePayload(
+      payload
+    ) {
+      const requestedId =
+        payload?.spaceId ||
+        payload?.communityId;
+
+      if (!requestedId) {
+        return;
+      }
+
+      const resolvedId =
+        requestedId ===
+        "kyiv-today"
+          ? "space-yatut-kyiv"
+          : requestedId;
+
+      setSpaces(
+        (previous) =>
+          mergeAcceptedCommunityInvites(
+            previous
+          )
+      );
+
+      setActiveSpaceId(
+        resolvedId
+      );
+
+      try {
+        sessionStorage.removeItem(
+          "yatut-open-route-payload"
+        );
+      } catch {
+        // No-op.
+      }
+    }
+
+    try {
+      const raw =
+        sessionStorage.getItem(
+          "yatut-open-route-payload"
+        );
+
+      if (raw) {
+        const parsed =
+          JSON.parse(raw);
+
+        if (
+          parsed?.route ===
+          "communities"
+        ) {
+          applyRoutePayload(
+            parsed.payload || {}
+          );
+        }
+      }
+    } catch (error) {
+      console.warn(
+        "SPACE ROUTE PAYLOAD ERROR:",
+        error
+      );
+    }
+
+    function handleRoute(
+      event
+    ) {
+      if (
+        event?.detail?.route !==
+        "communities"
+      ) {
+        return;
+      }
+
+      applyRoutePayload(
+        event.detail.payload ||
+        {}
+      );
+    }
+
+    function syncSpaces(
+      incoming
+    ) {
+      const merged =
+        mergeAcceptedCommunityInvites(
+          Array.isArray(incoming)
+            ? incoming
+            : loadSpaces()
+        );
+
+      setSpaces(
+        (previous) =>
+          JSON.stringify(previous) ===
+          JSON.stringify(merged)
+            ? previous
+            : merged
+      );
+    }
+
+    function handleSpacesChanged(
+      event
+    ) {
+      syncSpaces(
+        event?.detail
+      );
+    }
+
+    function handleMembershipChange() {
+      syncSpaces(
+        loadSpaces()
+      );
+    }
+
+    window.addEventListener(
+      "yatut:route-payload",
+      handleRoute
+    );
+
+    window.addEventListener(
+      "yatut:spaces-changed",
+      handleSpacesChanged
+    );
+
+    window.addEventListener(
+      "yatut:community-membership-changed",
+      handleMembershipChange
+    );
+
+    return () => {
+      window.removeEventListener(
+        "yatut:route-payload",
+        handleRoute
+      );
+
+      window.removeEventListener(
+        "yatut:spaces-changed",
+        handleSpacesChanged
+      );
+
+      window.removeEventListener(
+        "yatut:community-membership-changed",
+        handleMembershipChange
+      );
+    };
+  }, []);
 
   useEffect(() => {
     saveSpaces(

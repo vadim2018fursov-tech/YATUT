@@ -3419,6 +3419,20 @@ function App() {
           error
         );
       }
+
+      window.dispatchEvent(
+        new CustomEvent(
+          "yatut:route-payload",
+          {
+            detail: {
+              route:
+                page,
+
+              payload,
+            },
+          }
+        )
+      );
     }
 
     /* =====================================================

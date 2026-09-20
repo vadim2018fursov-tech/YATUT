@@ -39,7 +39,11 @@ export const NOTIFICATION_TYPES = {
   FRIEND_ACCEPTED: "friend_accepted",
   MESSAGE: "message",
   COMMUNITY: "community",
+  COMMUNITY_INVITE:
+    "community_invite",
   EVENT: "event",
+  EVENT_INVITE:
+    "event_invite",
   EVENT_REMINDER: "event_reminder",
   NEARBY: "nearby",
   BUSINESS: "business",
@@ -194,7 +198,7 @@ const DEMO_NOTIFICATIONS = [
 
     payload: {
       eventId:
-        "evening-kyiv",
+        "event-tech-meetup",
     },
 
     groupKey:
@@ -257,7 +261,7 @@ const DEMO_NOTIFICATIONS = [
 
     payload: {
       communityId:
-        "kyiv-today",
+        "space-yatut-kyiv",
     },
 
     groupKey:
@@ -1348,6 +1352,20 @@ export function acceptFriendRequest(
 
       actions: [],
 
+      metadata: {
+        ...(
+          notification
+            .metadata ||
+          {}
+        ),
+
+        actionStatus:
+          "accepted",
+
+        actedAt:
+          Date.now(),
+      },
+
       groupKey:
         notification.authorId
           ? `friend-active:${notification.authorId}`
@@ -1359,8 +1377,42 @@ export function acceptFriendRequest(
 export function declineFriendRequest(
   notificationId
 ) {
-  return removeNotification(
-    notificationId
+  const notification =
+    getNotification(
+      notificationId
+    );
+
+  if (!notification) {
+    return null;
+  }
+
+  return updateNotification(
+    notificationId,
+    {
+      read: true,
+
+      title:
+        "Запит у друзі відхилено",
+
+      text:
+        `Запит від ${notification.authorName || "користувача"} більше не активний`,
+
+      actions: [],
+
+      metadata: {
+        ...(
+          notification
+            .metadata ||
+          {}
+        ),
+
+        actionStatus:
+          "declined",
+
+        actedAt:
+          Date.now(),
+      },
+    }
   );
 }
 
@@ -1547,6 +1599,166 @@ export function notifyCommunity({
 
     groupKey:
       `community:${communityId}:${Date.now()}`,
+  });
+}
+
+/* =========================================================
+   COMMUNITY INVITE
+========================================================= */
+
+export function notifyCommunityInvite({
+  spaceId,
+  communityId,
+  communityName,
+  inviterId = null,
+  inviterName = "Спільнота",
+  space = null,
+}) {
+  const id =
+    spaceId ||
+    communityId ||
+    space?.id;
+
+  if (!id) {
+    return null;
+  }
+
+  return createNotification({
+    type:
+      NOTIFICATION_TYPES.COMMUNITY_INVITE,
+
+    category:
+      NOTIFICATION_CATEGORIES.COMMUNITIES,
+
+    title:
+      `${inviterName} запрошує вас до спільноти`,
+
+    text:
+      communityName ||
+      space?.title ||
+      "Нове запрошення у ЯТУТ",
+
+    authorId:
+      inviterId,
+
+    authorName:
+      inviterName,
+
+    authorInitial:
+      String(
+        inviterName ||
+          "С"
+      )
+        .trim()
+        .charAt(0)
+        .toUpperCase(),
+
+    route:
+      "communities",
+
+    payload: {
+      actionTarget:
+        "community",
+
+      spaceId:
+        id,
+
+      communityId:
+        id,
+
+      communityName:
+        communityName ||
+        space?.title ||
+        "Спільнота",
+
+      inviterId,
+
+      space:
+        space ||
+        null,
+    },
+
+    actions: [
+      "accept",
+      "decline",
+    ],
+
+    groupKey:
+      `community-invite:${id}`,
+  });
+}
+
+/* =========================================================
+   EVENT INVITE
+========================================================= */
+
+export function notifyEventInvite({
+  eventId,
+  eventTitle,
+  inviterId = null,
+  inviterName = "ЯТУТ Події",
+  event = null,
+}) {
+  const id =
+    eventId ||
+    event?.id;
+
+  if (!id) {
+    return null;
+  }
+
+  return createNotification({
+    type:
+      NOTIFICATION_TYPES.EVENT_INVITE,
+
+    category:
+      NOTIFICATION_CATEGORIES.EVENTS,
+
+    title:
+      `${inviterName} запрошує вас на подію`,
+
+    text:
+      eventTitle ||
+      event?.title ||
+      "Нова подія",
+
+    authorId:
+      inviterId,
+
+    authorName:
+      inviterName,
+
+    authorInitial:
+      String(
+        inviterName ||
+          "Я"
+      )
+        .trim()
+        .charAt(0)
+        .toUpperCase(),
+
+    route:
+      "events",
+
+    payload: {
+      actionTarget:
+        "event",
+
+      eventId:
+        id,
+
+      event:
+        event ||
+        null,
+    },
+
+    actions: [
+      "accept",
+      "decline",
+    ],
+
+    groupKey:
+      `event-invite:${id}`,
   });
 }
 
@@ -1840,6 +2052,18 @@ export function ingestNotificationEvent(
         {}
       );
 
+    case "community.invite":
+      return notifyCommunityInvite(
+        event.data ||
+        {}
+      );
+
+    case "event.invite":
+      return notifyEventInvite(
+        event.data ||
+        {}
+      );
+
     case "nearby":
       return notifyNearby(
         event.data ||
@@ -1937,6 +2161,12 @@ if (
 
     community:
       notifyCommunity,
+
+    communityInvite:
+      notifyCommunityInvite,
+
+    eventInvite:
+      notifyEventInvite,
 
     nearby:
       notifyNearby,

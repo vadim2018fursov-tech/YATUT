@@ -1573,6 +1573,97 @@ function Events({
   }, []);
 
   /* =======================================================
+     NOTIFICATION → EVENT
+  ======================================================= */
+
+  useEffect(() => {
+    function openFromPayload(
+      payload
+    ) {
+      const requestedId =
+        payload?.eventId ||
+        payload?.event?.id;
+
+      if (!requestedId) {
+        return;
+      }
+
+      const resolvedId =
+        requestedId ===
+        "evening-kyiv"
+          ? "event-tech-meetup"
+          : requestedId;
+
+      setActiveEventId(
+        resolvedId
+      );
+
+      try {
+        sessionStorage.removeItem(
+          "yatut-open-route-payload"
+        );
+      } catch {
+        // No-op.
+      }
+    }
+
+    try {
+      const raw =
+        sessionStorage.getItem(
+          "yatut-open-route-payload"
+        );
+
+      if (raw) {
+        const parsed =
+          JSON.parse(raw);
+
+        if (
+          parsed?.route ===
+          "events"
+        ) {
+          openFromPayload(
+            parsed.payload ||
+            {}
+          );
+        }
+      }
+    } catch (error) {
+      console.warn(
+        "EVENT ROUTE PAYLOAD ERROR:",
+        error
+      );
+    }
+
+    function handleRoute(
+      event
+    ) {
+      if (
+        event?.detail?.route !==
+        "events"
+      ) {
+        return;
+      }
+
+      openFromPayload(
+        event.detail.payload ||
+        {}
+      );
+    }
+
+    window.addEventListener(
+      "yatut:route-payload",
+      handleRoute
+    );
+
+    return () => {
+      window.removeEventListener(
+        "yatut:route-payload",
+        handleRoute
+      );
+    };
+  }, []);
+
+  /* =======================================================
      EVENT STORAGE SUBSCRIPTION
   ======================================================= */
 

@@ -10,8 +10,6 @@ import "./Notifications.css";
 import YatutIcon from "./YatutIcon";
 
 import {
-  acceptFriendRequest,
-  declineFriendRequest,
   getNotifications,
   markAllNotificationsRead,
   markNotificationRead,
@@ -20,9 +18,11 @@ import {
 } from "../storage/notificationService";
 
 import {
-  acceptIncomingFriendRequest,
-  declineIncomingFriendRequest,
-} from "../storage/friendService";
+  executeNotificationAction,
+  getNotificationDecision,
+  getNotificationSourceInfo,
+  resolveNotificationPayload,
+} from "../storage/notificationActionService";
 
 /* =========================================================
    YATUT NOTIFICATIONS V2
@@ -296,6 +296,12 @@ export default function Notifications({
   ] =
     useState(false);
 
+  const [
+    actionBusyId,
+    setActionBusyId,
+  ] =
+    useState(null);
+
   const panelRef =
     useRef(null);
 
@@ -534,9 +540,14 @@ export default function Notifications({
       );
     }
 
+    const resolvedPayload =
+      resolveNotificationPayload(
+        notification
+      );
+
     if (
       notification.route &&
-      notification.payload
+      resolvedPayload
     ) {
       try {
         sessionStorage.setItem(
@@ -546,7 +557,7 @@ export default function Notifications({
               notification.route,
 
             payload:
-              notification.payload,
+              resolvedPayload,
           })
         );
       } catch (error) {
@@ -562,7 +573,7 @@ export default function Notifications({
     ) {
       onNavigate?.(
         notification.route,
-        notification.payload
+        resolvedPayload
       );
     }
 
@@ -570,67 +581,42 @@ export default function Notifications({
   }
 
   /* =======================================================
-     ACCEPT FRIEND
-
-     Теперь здесь меняется:
-     1. FRIEND STATE
-     2. NOTIFICATION STATE
+     CONNECTED ACTIONS
   ======================================================= */
 
-  function acceptRequest(
+  async function handleDecision(
     event,
-    notification
+    notification,
+    action
   ) {
     event.stopPropagation();
 
-    const personId =
-      notification
-        ?.payload
-        ?.personId ||
-      notification
-        ?.authorId;
-
     if (
-      personId
+      actionBusyId ===
+      notification.id
     ) {
-      acceptIncomingFriendRequest(
-        personId
-      );
+      return;
     }
 
-    acceptFriendRequest(
+    setActionBusyId(
       notification.id
     );
-  }
 
-  /* =======================================================
-     DECLINE FRIEND
-  ======================================================= */
-
-  function declineRequest(
-    event,
-    notification
-  ) {
-    event.stopPropagation();
-
-    const personId =
-      notification
-        ?.payload
-        ?.personId ||
-      notification
-        ?.authorId;
-
-    if (
-      personId
-    ) {
-      declineIncomingFriendRequest(
-        personId
+    try {
+      await executeNotificationAction(
+        notification,
+        action
+      );
+    } catch (error) {
+      console.error(
+        "NOTIFICATION ACTION ERROR:",
+        error
+      );
+    } finally {
+      setActionBusyId(
+        null
       );
     }
-
-    declineFriendRequest(
-      notification.id
-    );
   }
 
   /* =======================================================
@@ -1004,20 +990,18 @@ export default function Notifications({
                               notification
                             )
                           }
-                          onAccept={(
-                            event
-                          ) =>
-                            acceptRequest(
-                              event,
-                              notification
-                            )
+                          actionBusy={
+                            actionBusyId ===
+                            notification.id
                           }
-                          onDecline={(
-                            event
+                          onDecision={(
+                            event,
+                            action
                           ) =>
-                            declineRequest(
+                            handleDecision(
                               event,
-                              notification
+                              notification,
+                              action
                             )
                           }
                           onDelete={(
@@ -1108,20 +1092,32 @@ function NotificationItem({
   menuOpen,
   onToggleMenu,
   onOpen,
-  onAccept,
-  onDecline,
+  actionBusy,
+  onDecision,
   onDelete,
 }) {
-  const isFriendRequest =
-    notification.type ===
-      "friend_request" &&
-    notification.actions
-      ?.length >
-      0;
+  const decision =
+    getNotificationDecision(
+      notification
+    );
+
+  const source =
+    getNotificationSourceInfo(
+      notification
+    );
+
+  const hasDecision =
+    Boolean(
+      decision &&
+      !decision.done
+    );
 
   const accepted =
     notification.type ===
-    "friend_accepted";
+      "friend_accepted" ||
+    notification.metadata
+      ?.actionStatus ===
+      "accepted";
 
   return (
     <article
@@ -1186,6 +1182,24 @@ function NotificationItem({
             )}
           </span>
 
+          <span
+            className={`notification-source-chip source-${source.tone}`}
+          >
+            {
+              source.label
+            }
+          </span>
+
+          {decision?.done && (
+            <span
+              className={`notification-action-status status-${decision.status}`}
+            >
+              {
+                decision.statusLabel
+              }
+            </span>
+          )}
+
           {notification.priority ===
             "important" && (
             <span className="notification-important-label">
@@ -1216,31 +1230,53 @@ function NotificationItem({
           )}
         </div>
 
-        {isFriendRequest && (
+        {hasDecision && (
           <div className="notification-request-actions">
             <button
               className="accept"
               type="button"
-              onClick={
-                onAccept
+              disabled={
+                actionBusy
+              }
+              onClick={(
+                event
+              ) =>
+                onDecision(
+                  event,
+                  "accept"
+                )
               }
             >
-              Прийняти
+              {
+                actionBusy
+                  ? "Зачекайте…"
+                  : decision.acceptLabel
+              }
             </button>
 
             <button
               className="decline"
               type="button"
-              onClick={
-                onDecline
+              disabled={
+                actionBusy
+              }
+              onClick={(
+                event
+              ) =>
+                onDecision(
+                  event,
+                  "decline"
+                )
               }
             >
-              Відхилити
+              {
+                decision.declineLabel
+              }
             </button>
           </div>
         )}
 
-        {!isFriendRequest &&
+        {!hasDecision &&
           (notification.type ===
             "event" ||
             notification.type ===
@@ -1265,7 +1301,7 @@ function NotificationItem({
             </button>
           )}
 
-        {!isFriendRequest &&
+        {!hasDecision &&
           notification.type ===
             "security" && (
             <button
