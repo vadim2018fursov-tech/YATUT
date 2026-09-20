@@ -1939,6 +1939,11 @@ function Chats({
   ] = useState(false);
 
   const [
+    storyDragY,
+    setStoryDragY,
+  ] = useState(0);
+
+  const [
     storyReactionOpen,
     setStoryReactionOpen,
   ] = useState(false);
@@ -2234,6 +2239,10 @@ function Chats({
 
     setStoryPaused(
       false
+    );
+
+    setStoryDragY(
+      0
     );
 
     storySuppressTapRef.current =
@@ -3014,6 +3023,10 @@ function Chats({
       false
     );
 
+    setStoryDragY(
+      0
+    );
+
     storySuppressTapRef.current =
       false;
 
@@ -3326,6 +3339,57 @@ function Chats({
     };
   }
 
+  function handleStoryTouchMove(
+    event
+  ) {
+    const start =
+      storyTouchStartRef.current;
+
+    const touch =
+      event.touches?.[0];
+
+    if (
+      !start ||
+      !touch
+    ) {
+      return;
+    }
+
+    const deltaX =
+      touch.clientX -
+      start.x;
+
+    const deltaY =
+      touch.clientY -
+      start.y;
+
+    const horizontalDistance =
+      Math.abs(
+        deltaX
+      );
+
+    if (
+      deltaY >
+        0 &&
+      deltaY >
+        horizontalDistance *
+          1.05
+    ) {
+      const drag =
+        Math.min(
+          deltaY,
+          180
+        );
+
+      setStoryDragY(
+        drag
+      );
+
+      storySuppressTapRef.current =
+        true;
+    }
+  }
+
   function handleStoryTouchEnd(
     event
   ) {
@@ -3377,6 +3441,10 @@ function Chats({
 
       return;
     }
+
+    setStoryDragY(
+      0
+    );
 
     if (
       horizontalDistance <
@@ -4399,6 +4467,19 @@ function Chats({
         createPortal(
           (
           <section
+            style={{
+              "--story-drag-y":
+                `${storyDragY}px`,
+              "--story-drag-scale":
+                String(
+                  1 -
+                  Math.min(
+                    storyDragY,
+                    180
+                  ) /
+                    2200
+                ),
+            }}
             className={`story-viewer ${
               storyPaused
                 ? "is-paused"
@@ -4418,6 +4499,9 @@ function Chats({
             }
             onTouchStart={
               handleStoryTouchStart
+            }
+            onTouchMove={
+              handleStoryTouchMove
             }
             onTouchEnd={
               handleStoryTouchEnd
