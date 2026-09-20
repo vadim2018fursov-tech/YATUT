@@ -218,6 +218,15 @@ const ICONS = {
     </>
   ),
 
+  microphone: (
+    <>
+      <rect x="8" y="3" width="8" height="12" rx="4" />
+      <path d="M5 11a7 7 0 0 0 14 0" />
+      <path d="M12 18v3" />
+      <path d="M9 21h6" />
+    </>
+  ),
+
   poll: (
     <>
       <path d="M5 20V10" />
