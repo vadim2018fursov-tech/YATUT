@@ -617,7 +617,13 @@ export default function Profile({
           ================================================= */}
 
           <section className="profile-v3-mobile-card">
-            <div className="profile-v3-mobile-avatar-wrap">
+            <div
+              className={`profile-v3-mobile-avatar-wrap ${
+                profile.online
+                  ? "is-online"
+                  : ""
+              }`.trim()}
+            >
               <div className="profile-v3-mobile-avatar">
                 {profile.avatar ? (
                   <img
@@ -638,9 +644,6 @@ export default function Profile({
                 )}
               </div>
 
-              {profile.online && (
-                <span className="profile-v3-mobile-online" />
-              )}
             </div>
 
             <div className="profile-v3-mobile-identity-row">
