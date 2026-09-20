@@ -30,6 +30,7 @@ import "./styles/pulse-motion.css";
 import "./styles/pulse-responsive.css";
 import "./styles/pulse-clips-layout-fix.css";
 import "./mobile-app-hotfix.css";
+import "./styles/chat-conversation-mobile.css";
 
 import Stories from "./components/Stories";
 import Profile from "./components/Profile";
