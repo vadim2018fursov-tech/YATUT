@@ -3103,11 +3103,16 @@ function MobileNavigation({
               key={
                 item.id
               }
-              className={
+              className={`${
                 active
                   ? "active"
                   : ""
-              }
+              } ${
+                item.id ===
+                "pulse"
+                  ? "mobile-pulse-button"
+                  : ""
+              }`.trim()}
               type="button"
               onClick={() =>
                 onNavigate(
