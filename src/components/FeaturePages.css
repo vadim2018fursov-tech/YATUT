@@ -4354,3 +4354,739 @@ section {
     transform: none;
   }
 }
+
+/* =========================================================
+   YATUT NEARBY — LIVE CITY EXPERIENCE
+========================================================= */
+
+.nearby-live-strip {
+  position: relative;
+  overflow: hidden;
+  min-height: 118px;
+  padding: 18px;
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1.2fr)
+    minmax(280px, .8fr)
+    auto;
+  align-items: center;
+  gap: 18px;
+  border: 1px solid rgba(116, 108, 255, .16);
+  border-radius: 22px;
+  background:
+    radial-gradient(
+      circle at 88% 15%,
+      rgba(217, 70, 239, .16),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #120b22,
+      #291244 56%,
+      #45155c
+    );
+  color: #fff;
+  box-shadow:
+    0 18px 42px
+    rgba(38, 19, 64, .13);
+}
+
+.nearby-live-strip::after {
+  content: "";
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  right: -80px;
+  bottom: -155px;
+  border-radius: 50%;
+  border:
+    1px solid
+    rgba(216, 180, 254, .12);
+  box-shadow:
+    0 0 0 28px
+      rgba(216, 180, 254, .035),
+    0 0 0 58px
+      rgba(216, 180, 254, .025);
+  pointer-events: none;
+}
+
+.nearby-live-strip__lead {
+  position: relative;
+  z-index: 2;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.nearby-live-strip__pulse {
+  position: relative;
+  width: 52px;
+  height: 52px;
+  flex: 0 0 52px;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  background:
+    linear-gradient(
+      145deg,
+      #7c3aed,
+      #d946ef
+    );
+  color: #fff;
+  box-shadow:
+    0 10px 28px
+    rgba(192, 38, 211, .28);
+}
+
+.nearby-live-strip__pulse i {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  width: 7px;
+  height: 7px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: #22c55e;
+}
+
+.nearby-live-strip__lead > div {
+  min-width: 0;
+}
+
+.nearby-live-strip__lead small {
+  color: #c7b7e2;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .12em;
+}
+
+.nearby-live-strip__lead strong {
+  display: block;
+  margin-top: 3px;
+  font-size: 16px;
+  letter-spacing: -.2px;
+}
+
+.nearby-live-strip__lead p {
+  margin: 4px 0 0;
+  color: rgba(255,255,255,.55);
+  font-size: 9px;
+}
+
+.nearby-live-strip__stats {
+  position: relative;
+  z-index: 2;
+  min-width: 0;
+  display: grid;
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+  gap: 5px;
+}
+
+.nearby-live-strip__stats button {
+  min-width: 0;
+  min-height: 66px;
+  padding: 8px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border:
+    1px solid
+    rgba(255,255,255,.08);
+  border-radius: 14px;
+  background:
+    rgba(255,255,255,.055);
+  color: #fff;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.nearby-live-strip__stats strong {
+  font-size: 17px;
+}
+
+.nearby-live-strip__stats span {
+  margin-top: 2px;
+  color: rgba(255,255,255,.48);
+  font-size: 7px;
+}
+
+.nearby-live-strip__action {
+  position: relative;
+  z-index: 2;
+  min-height: 43px;
+  padding: 0 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border:
+    1px solid
+    rgba(255,255,255,.12);
+  border-radius: 12px;
+  background:
+    rgba(255,255,255,.08);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   NEARBY — MOBILE EXPERIENCE
+========================================================= */
+
+@media (max-width: 767px) {
+  .nearby-page {
+    padding-bottom:
+      calc(
+        94px +
+        env(safe-area-inset-bottom)
+      );
+  }
+
+  .nearby-page .feature-hero {
+    min-height: 205px;
+    margin:
+      0
+      -10px;
+    padding:
+      24px
+      18px;
+    border-radius:
+      0
+      0
+      27px
+      27px;
+    background:
+      radial-gradient(
+        circle at 88% 12%,
+        rgba(217,70,239,.18),
+        transparent 31%
+      ),
+      linear-gradient(
+        145deg,
+        #f4f1ff,
+        #fff 58%,
+        #fff2f8
+      );
+  }
+
+  .nearby-page .feature-hero > div:first-child {
+    min-width: 0;
+  }
+
+  .nearby-page .feature-hero > div:first-child > span {
+    font-size:
+      clamp(
+        9px,
+        2.7vw,
+        11px
+      );
+  }
+
+  .nearby-page .feature-hero h1 {
+    max-width: 82%;
+    font-size:
+      clamp(
+        29px,
+        8vw,
+        36px
+      );
+    line-height: 1.02;
+    letter-spacing: -1px;
+  }
+
+  .nearby-page .feature-hero p {
+    max-width: 84%;
+    font-size:
+      clamp(
+        12px,
+        3.35vw,
+        14px
+      );
+    line-height: 1.5;
+  }
+
+  .nearby-page .feature-hero-icon {
+    width: 54px;
+    height: 54px;
+    flex: 0 0 54px;
+    border-radius: 17px;
+  }
+
+  .nearby-live-strip {
+    min-height: 0;
+    margin: 0;
+    padding: 15px;
+    display: block;
+    border-radius: 20px;
+  }
+
+  .nearby-live-strip__lead {
+    gap: 11px;
+  }
+
+  .nearby-live-strip__pulse {
+    width: 48px;
+    height: 48px;
+    flex-basis: 48px;
+  }
+
+  .nearby-live-strip__lead small {
+    font-size:
+      clamp(
+        8px,
+        2.5vw,
+        10px
+      );
+  }
+
+  .nearby-live-strip__lead strong {
+    font-size:
+      clamp(
+        15px,
+        4.1vw,
+        18px
+      );
+  }
+
+  .nearby-live-strip__lead p {
+    font-size:
+      clamp(
+        10px,
+        2.9vw,
+        12px
+      );
+  }
+
+  .nearby-live-strip__stats {
+    margin-top: 13px;
+  }
+
+  .nearby-live-strip__stats button {
+    min-height: 61px;
+  }
+
+  .nearby-live-strip__stats strong {
+    font-size:
+      clamp(
+        16px,
+        4.5vw,
+        19px
+      );
+  }
+
+  .nearby-live-strip__stats span {
+    font-size:
+      clamp(
+        9px,
+        2.6vw,
+        11px
+      );
+  }
+
+  .nearby-live-strip__action {
+    width: 100%;
+    min-height: 44px;
+    margin-top: 9px;
+    font-size:
+      clamp(
+        11px,
+        3vw,
+        13px
+      );
+  }
+
+  .nearby-toolbar {
+    gap: 8px;
+  }
+
+  .nearby-location,
+  .nearby-radius {
+    border-radius: 16px;
+  }
+
+  .nearby-location {
+    min-height: 70px;
+    padding: 10px 12px;
+  }
+
+  .nearby-location small,
+  .nearby-radius > span {
+    font-size:
+      clamp(
+        10px,
+        2.8vw,
+        12px
+      );
+  }
+
+  .nearby-location strong,
+  .nearby-radius select {
+    font-size:
+      clamp(
+        13px,
+        3.5vw,
+        15px
+      );
+  }
+
+  .nearby-location > b {
+    font-size:
+      clamp(
+        10px,
+        2.8vw,
+        12px
+      );
+  }
+
+  .feature-search {
+    min-height: 54px;
+    padding:
+      0
+      14px;
+  }
+
+  .feature-search input {
+    font-size: 16px !important;
+  }
+
+  .nearby-tabs {
+    padding: 4px;
+    border-radius: 15px;
+  }
+
+  .nearby-tabs > button {
+    min-height: 40px;
+    padding:
+      0
+      14px;
+    font-size:
+      clamp(
+        11px,
+        3vw,
+        13px
+      );
+  }
+
+  .nearby-page .feature-section {
+    padding: 13px;
+    border-radius: 18px;
+  }
+
+  .nearby-page .feature-section-title > div {
+    width: 40px;
+    height: 40px;
+    flex-basis: 40px;
+  }
+
+  .nearby-page .feature-section-title span {
+    font-size:
+      clamp(
+        8px,
+        2.4vw,
+        10px
+      );
+  }
+
+  .nearby-page .feature-section-title h2 {
+    font-size:
+      clamp(
+        15px,
+        4vw,
+        18px
+      );
+    line-height: 1.18;
+  }
+
+  .nearby-page .feature-section-header > button {
+    font-size:
+      clamp(
+        10px,
+        2.8vw,
+        12px
+      );
+  }
+
+  /* people are easier to scan horizontally on phones */
+  .nearby-people-grid {
+    display: flex !important;
+    gap: 9px !important;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .nearby-people-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nearby-person-card {
+    width:
+      min(
+        72vw,
+        260px
+      );
+    min-width:
+      min(
+        72vw,
+        260px
+      );
+    flex:
+      0
+      0
+      min(
+        72vw,
+        260px
+      );
+    padding: 15px;
+    scroll-snap-align: start;
+    border-radius: 17px;
+  }
+
+  .nearby-person-avatar {
+    width: 72px;
+    height: 72px;
+    font-size: 23px;
+  }
+
+  .nearby-person-card > strong {
+    font-size:
+      clamp(
+        13px,
+        3.6vw,
+        15px
+      );
+  }
+
+  .nearby-person-card > span {
+    font-size:
+      clamp(
+        10px,
+        2.8vw,
+        12px
+      );
+  }
+
+  .nearby-person-card > p {
+    min-height: 0;
+    font-size:
+      clamp(
+        11px,
+        3vw,
+        13px
+      );
+  }
+
+  .nearby-tags small {
+    min-height: 29px;
+    font-size:
+      clamp(
+        9px,
+        2.6vw,
+        11px
+      );
+  }
+
+  .nearby-person-card
+  > .feature-primary-button,
+  .nearby-person-card
+  > .feature-secondary-button {
+    width: 100%;
+    min-height: 42px;
+    font-size:
+      clamp(
+        11px,
+        3vw,
+        13px
+      );
+  }
+
+  .nearby-list-card {
+    min-height: 0;
+    padding: 12px;
+    grid-template-columns:
+      48px
+      minmax(0, 1fr);
+    gap: 10px;
+    border-radius: 16px;
+  }
+
+  .nearby-list-card
+  > button {
+    grid-column: 1 / -1;
+    min-height: 42px;
+    margin-top: 2px;
+    font-size:
+      clamp(
+        11px,
+        3vw,
+        13px
+      );
+  }
+
+  .nearby-list-content > span {
+    font-size:
+      clamp(
+        9px,
+        2.6vw,
+        11px
+      );
+  }
+
+  .nearby-list-content strong {
+    font-size:
+      clamp(
+        13px,
+        3.5vw,
+        15px
+      );
+  }
+
+  .nearby-list-content p,
+  .nearby-list-content small {
+    font-size:
+      clamp(
+        10px,
+        2.8vw,
+        12px
+      );
+  }
+
+  .nearby-place-grid {
+    display: flex !important;
+    gap: 9px !important;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .nearby-place-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nearby-place-card {
+    width:
+      min(
+        80vw,
+        300px
+      );
+    min-width:
+      min(
+        80vw,
+        300px
+      );
+    flex:
+      0
+      0
+      min(
+        80vw,
+        300px
+      );
+    scroll-snap-align: start;
+  }
+
+  .nearby-place-cover {
+    height: 132px;
+  }
+
+  .nearby-place-card
+  > section
+  > div:first-child
+  > span,
+  .nearby-place-card
+  > section
+  > div:first-child
+  > small,
+  .nearby-place-meta span {
+    font-size:
+      clamp(
+        9px,
+        2.6vw,
+        11px
+      );
+  }
+
+  .nearby-place-card h3 {
+    font-size:
+      clamp(
+        14px,
+        3.8vw,
+        16px
+      );
+  }
+
+  .nearby-place-card p {
+    min-height: 0;
+    font-size:
+      clamp(
+        10px,
+        2.8vw,
+        12px
+      );
+  }
+
+  .nearby-community-card {
+    padding: 12px;
+    grid-template-columns:
+      48px
+      minmax(0, 1fr);
+  }
+
+  .nearby-community-card strong {
+    font-size:
+      clamp(
+        13px,
+        3.5vw,
+        15px
+      );
+  }
+
+  .nearby-community-card p,
+  .nearby-community-card
+  section > span {
+    font-size:
+      clamp(
+        10px,
+        2.8vw,
+        12px
+      );
+  }
+
+  .nearby-community-card
+  > button {
+    grid-column: 1 / -1;
+    min-height: 42px;
+    font-size:
+      clamp(
+        11px,
+        3vw,
+        13px
+      );
+  }
+}
+
+@media (max-width: 390px) {
+  .nearby-page .feature-hero h1 {
+    font-size: 28px;
+  }
+
+  .nearby-person-card {
+    width: 78vw;
+    min-width: 78vw;
+    flex-basis: 78vw;
+  }
+
+  .nearby-place-card {
+    width: 84vw;
+    min-width: 84vw;
+    flex-basis: 84vw;
+  }
+}
