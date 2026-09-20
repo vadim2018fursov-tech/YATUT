@@ -2957,6 +2957,11 @@ function LeftSidebar({
                   : ""
               }
               type="button"
+              aria-current={
+                active
+                  ? "page"
+                  : undefined
+              }
               onClick={() =>
                 onNavigate(
                   item.id
@@ -3075,8 +3080,29 @@ function MobileNavigation({
                 key={
                   item.id
                 }
-                className="mobile-create-button"
+                className={`mobile-create-button ${
+                  [
+                    "create",
+                    "createMedia",
+                    "creatorStudio",
+                  ].includes(
+                    currentPage
+                  )
+                    ? "active"
+                    : ""
+                }`.trim()}
                 type="button"
+                aria-current={
+                  [
+                    "create",
+                    "createMedia",
+                    "creatorStudio",
+                  ].includes(
+                    currentPage
+                  )
+                    ? "page"
+                    : undefined
+                }
                 onClick={() =>
                   onNavigate(
                     "create"
