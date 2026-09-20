@@ -613,6 +613,280 @@ export default function Profile({
           </div>
 
           {/* =================================================
+              MOBILE COMPACT PROFILE CARD
+          ================================================= */}
+
+          <section className="profile-v3-mobile-card">
+            <div className="profile-v3-mobile-avatar-wrap">
+              <div className="profile-v3-mobile-avatar">
+                {profile.avatar ? (
+                  <img
+                    src={
+                      profile.avatar
+                    }
+                    alt={
+                      profile.name
+                    }
+                  />
+                ) : (
+                  <span>
+                    {profile.name
+                      ?.[0]
+                      ?.toUpperCase() ||
+                      "В"}
+                  </span>
+                )}
+              </div>
+
+              {profile.online && (
+                <span className="profile-v3-mobile-online" />
+              )}
+            </div>
+
+            <div className="profile-v3-mobile-identity-row">
+              <div className="profile-v3-mobile-identity">
+                <div className="profile-v3-mobile-name-row">
+                  <h1>
+                    {
+                      profile.name
+                    }
+                  </h1>
+
+                  {profile.verified && (
+                    <span className="profile-v3-mobile-badge verified">
+                      Я
+                    </span>
+                  )}
+
+                  {profile.founder && (
+                    <span className="profile-v3-mobile-badge founder">
+                      ✦
+                    </span>
+                  )}
+                </div>
+
+                <div className="profile-v3-mobile-username">
+                  @
+                  {
+                    profile.username
+                  }
+                </div>
+              </div>
+
+              <div className="profile-v3-mobile-actions">
+                <button
+                  className="profile-v3-mobile-edit"
+                  type="button"
+                  onClick={() =>
+                    setEditing(
+                      true
+                    )
+                  }
+                >
+                  Редагувати
+                </button>
+
+                <button
+                  className="profile-v3-mobile-action"
+                  type="button"
+                  onClick={() =>
+                    onNavigate?.(
+                      "settings"
+                    )
+                  }
+                  aria-label="Налаштування"
+                >
+                  <YatutIcon
+                    name="settings"
+                    size={18}
+                  />
+                </button>
+
+                <button
+                  className="profile-v3-mobile-action"
+                  type="button"
+                  aria-label="Ще"
+                >
+                  <YatutIcon
+                    name="more"
+                    size={18}
+                  />
+                </button>
+              </div>
+            </div>
+
+            <div className="profile-v3-mobile-stats">
+              {stats.map(
+                (
+                  item
+                ) => (
+                  <button
+                    key={
+                      item.id
+                    }
+                    type="button"
+                    onClick={() =>
+                      handleProfileStat(
+                        item.id
+                      )
+                    }
+                  >
+                    <strong>
+                      {
+                        item.value
+                      }
+                    </strong>
+
+                    <span>
+                      {
+                        item.label
+                      }
+                    </span>
+                  </button>
+                )
+              )}
+            </div>
+
+            <p className="profile-v3-mobile-bio">
+              {
+                profile.bio
+              }
+            </p>
+
+            <div className="profile-v3-mobile-meta">
+              <span>
+                <YatutIcon
+                  name="pin"
+                  size={15}
+                />
+
+                {
+                  profile.city
+                }
+                ,{" "}
+                {
+                  profile.country
+                }
+              </span>
+
+              <span>
+                <YatutIcon
+                  name="business"
+                  size={15}
+                />
+
+                {
+                  profile.work
+                }
+              </span>
+            </div>
+
+            <div className="profile-v3-mobile-status-wrap">
+              <button
+                className="profile-v3-mobile-status"
+                type="button"
+                onClick={() =>
+                  setStatusOpen(
+                    (
+                      value
+                    ) =>
+                      !value
+                  )
+                }
+              >
+                <span className="profile-v3-mobile-status-dot" />
+
+                <strong>
+                  {
+                    profile.status
+                  }
+                </strong>
+
+                <small>
+                  {
+                    profile.statusText
+                  }
+                </small>
+
+                <YatutIcon
+                  name="chevronDown"
+                  size={14}
+                />
+              </button>
+
+              {statusOpen && (
+                <div className="profile-v2-status-menu profile-v3-mobile-status-menu">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      updateStatus(
+                        "Я тут",
+                        "Зараз у Києві"
+                      )
+                    }
+                  >
+                    <span className="status-tone violet" />
+
+                    <div>
+                      <strong>
+                        Я тут
+                      </strong>
+
+                      <small>
+                        Показати присутність
+                      </small>
+                    </div>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      updateStatus(
+                        "У дорозі",
+                        "Відповім пізніше"
+                      )
+                    }
+                  >
+                    <span className="status-tone blue" />
+
+                    <div>
+                      <strong>
+                        У дорозі
+                      </strong>
+
+                      <small>
+                        Тимчасовий статус
+                      </small>
+                    </div>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      updateStatus(
+                        "Не турбувати",
+                        "Потрібен фокус"
+                      )
+                    }
+                  >
+                    <span className="status-tone coral" />
+
+                    <div>
+                      <strong>
+                        Не турбувати
+                      </strong>
+
+                      <small>
+                        Приховати активність
+                      </small>
+                    </div>
+                  </button>
+                </div>
+              )}
+            </div>
+          </section>
+
+          {/* =================================================
               PROFILE HEAD
           ================================================= */}
 
