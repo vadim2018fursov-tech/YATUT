@@ -9,6 +9,7 @@ import "./ProfileV2.css";
 import YatutIcon from "./YatutIcon";
 
 const PROFILE_STORAGE_KEY = "yatut-profile-v2";
+const PROFILE_POSTS_STORAGE_KEY = "yatut-profile-posts-v2";
 
 const DEFAULT_PROFILE = {
   name: "Вадим",
@@ -96,30 +97,58 @@ const ACHIEVEMENTS = [
   },
 ];
 
-const DEMO_POSTS = [
+const DEFAULT_PROFILE_POSTS = [
   {
     id: "profile-post-1",
-
+    type: "own",
     text:
       "Сьогодні ще один великий крок у розвитку ЯТУТ. Хочу, щоб це була мережа не лише про контент, а про людей, які реально можуть знайти одне одного.",
-
     meta: "2 год",
-
     likes: 84,
-
     comments: 17,
   },
 
   {
-    id: "profile-post-2",
+    id: "profile-repost-friend",
+    type: "repost",
+    text:
+      "Вечірній Київ сьогодні особливий. Хто зараз у центрі — відгукніться ✨",
+    meta: "4 год",
+    likes: 231,
+    comments: 38,
+    repostedFrom: {
+      kind: "friend",
+      name: "Марія Коваль",
+      username: "maria.koval",
+      initial: "М",
+      label: "Допис друга",
+    },
+  },
 
+  {
+    id: "profile-repost-community",
+    type: "repost",
+    text:
+      "На вихідних збираємо людей на відкриту зустріч ЯТУТ у центрі Києва. Знайомства, ідеї та місто без формальностей.",
+    meta: "Вчора",
+    likes: 418,
+    comments: 64,
+    repostedFrom: {
+      kind: "community",
+      name: "ЯТУТ Київ",
+      username: "yatut.kyiv",
+      initial: "Я",
+      label: "Репост зі спільноти",
+    },
+  },
+
+  {
+    id: "profile-post-2",
+    type: "own",
     text:
       "Київ дуже надихає на новий дизайн. Думаю над тим, як зробити «Поруч» по-справжньому живим.",
-
-    meta: "Вчора",
-
+    meta: "2 дні",
     likes: 126,
-
     comments: 21,
   },
 ];
@@ -127,6 +156,28 @@ const DEMO_POSTS = [
 /* =========================================================
    HELPERS
 ========================================================= */
+
+function safeLoadProfilePosts() {
+  try {
+    const raw =
+      localStorage.getItem(
+        PROFILE_POSTS_STORAGE_KEY
+      );
+
+    if (!raw) {
+      return DEFAULT_PROFILE_POSTS;
+    }
+
+    const parsed =
+      JSON.parse(raw);
+
+    return Array.isArray(parsed)
+      ? parsed
+      : DEFAULT_PROFILE_POSTS;
+  } catch {
+    return DEFAULT_PROFILE_POSTS;
+  }
+}
 
 function safeLoadProfile() {
   try {
@@ -260,6 +311,20 @@ export default function Profile({
   ] =
     useState(false);
 
+  const [
+    profilePosts,
+    setProfilePosts,
+  ] =
+    useState(
+      safeLoadProfilePosts
+    );
+
+  const [
+    newPostText,
+    setNewPostText,
+  ] =
+    useState("");
+
   /* =======================================================
      SAVE PROFILE
   ======================================================= */
@@ -280,6 +345,22 @@ export default function Profile({
       );
     }
   }, [profile]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(
+        PROFILE_POSTS_STORAGE_KEY,
+        JSON.stringify(
+          profilePosts
+        )
+      );
+    } catch (error) {
+      console.warn(
+        "PROFILE POSTS SAVE ERROR:",
+        error
+      );
+    }
+  }, [profilePosts]);
 
   /* =======================================================
      STATS
@@ -430,6 +511,49 @@ export default function Profile({
 
     setStatusOpen(
       false
+    );
+  }
+
+  function publishProfilePost() {
+    const text =
+      newPostText.trim();
+
+    if (!text) {
+      return;
+    }
+
+    const post = {
+      id:
+        `profile-own-${Date.now()}`,
+      type:
+        "own",
+      text,
+      meta:
+        "щойно",
+      likes:
+        0,
+      comments:
+        0,
+    };
+
+    setProfilePosts(
+      (current) => [
+        post,
+        ...current,
+      ]
+    );
+
+    setNewPostText("");
+
+    setProfile(
+      (current) => ({
+        ...current,
+        posts:
+          Number(
+            current.posts ||
+            0
+          ) + 1,
+      })
     );
   }
 
@@ -886,7 +1010,68 @@ export default function Profile({
               "posts" && (
               <div className="profile-v2-post-list">
 
-                {DEMO_POSTS.map(
+                <section className="profile-v2-inline-composer">
+
+                  <div className="profile-v2-inline-composer__top">
+
+                    <div className="profile-v2-inline-composer__avatar">
+                      {profile.avatar ? (
+                        <img
+                          src={
+                            profile.avatar
+                          }
+                          alt=""
+                        />
+                      ) : (
+                        profile.name
+                          ?.[0]
+                          ?.toUpperCase() ||
+                        "В"
+                      )}
+                    </div>
+
+                    <textarea
+                      value={
+                        newPostText
+                      }
+                      onChange={(
+                        event
+                      ) =>
+                        setNewPostText(
+                          event.target
+                            .value
+                        )
+                      }
+                      placeholder="Що у тебе нового?"
+                      rows={3}
+                    />
+
+                  </div>
+
+                  <div className="profile-v2-inline-composer__bottom">
+
+                    <span>
+                      Допис буде опубліковано у твоєму профілі
+                    </span>
+
+                    <button
+                      type="button"
+                      disabled={
+                        !newPostText
+                          .trim()
+                      }
+                      onClick={
+                        publishProfilePost
+                      }
+                    >
+                      Опублікувати
+                    </button>
+
+                  </div>
+
+                </section>
+
+                {profilePosts.map(
                   (
                     post
                   ) => (
@@ -896,6 +1081,19 @@ export default function Profile({
                       }
                       className="profile-v2-post-card"
                     >
+
+                      {post.repostedFrom && (
+                        <div className="profile-v2-repost-label">
+                          <YatutIcon
+                            name="share"
+                            size={14}
+                          />
+
+                          <span>
+                            {post.repostedFrom.label}
+                          </span>
+                        </div>
+                      )}
 
                       <header>
 
@@ -949,6 +1147,33 @@ export default function Profile({
                         </button>
 
                       </header>
+
+                      {post.repostedFrom && (
+                        <section className="profile-v2-repost-origin">
+
+                          <div className={`profile-v2-repost-origin__avatar ${post.repostedFrom.kind}`}>
+                            {
+                              post.repostedFrom.initial
+                            }
+                          </div>
+
+                          <div>
+                            <strong>
+                              {
+                                post.repostedFrom.name
+                              }
+                            </strong>
+
+                            <span>
+                              @
+                              {
+                                post.repostedFrom.username
+                              }
+                            </span>
+                          </div>
+
+                        </section>
+                      )}
 
                       <p>
                         {
