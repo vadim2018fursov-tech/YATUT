@@ -2609,3 +2609,538 @@
       9.5px !important;
   }
 }
+
+
+/* =========================================================
+   YATUT CHAT — CONTEXT MENU + EMOJI COMPOSER V5
+========================================================= */
+
+@media (max-width: 700px) {
+  /* =======================================================
+     MESSAGE CONTEXT MENU — YATUT GLASS
+  ======================================================= */
+
+  .messenger.mobile-dialog-open
+  .message-action-menu {
+    width:
+      min(
+        188px,
+        68vw
+      ) !important;
+
+    padding:
+      7px !important;
+
+    gap:
+      2px !important;
+
+    border:
+      1px solid
+      rgba(
+        99,
+        91,
+        255,
+        .12
+      ) !important;
+
+    border-radius:
+      22px !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(
+          255,
+          255,
+          255,
+          .985
+        ),
+        rgba(
+          249,
+          248,
+          255,
+          .98
+        )
+      ) !important;
+
+    box-shadow:
+      0 16px 44px
+      rgba(
+        30,
+        28,
+        48,
+        .14
+      ),
+      0 3px 12px
+      rgba(
+        99,
+        91,
+        255,
+        .06
+      ) !important;
+
+    backdrop-filter:
+      blur(24px)
+      saturate(1.18) !important;
+
+    -webkit-backdrop-filter:
+      blur(24px)
+      saturate(1.18) !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .message-action-reactions {
+    width: 100% !important;
+
+    padding:
+      3px 2px
+      6px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content:
+      space-between !important;
+
+    gap: 2px !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .message-action-reactions
+  .message-action-reaction {
+    width: 27px !important;
+    height: 27px !important;
+    min-width: 27px !important;
+    min-height: 27px !important;
+
+    padding: 0 !important;
+
+    display: grid !important;
+    place-items:
+      center !important;
+
+    border:
+      1px solid
+      transparent !important;
+
+    border-radius:
+      9px !important;
+
+    background:
+      transparent !important;
+
+    font-size:
+      16px !important;
+    line-height: 1 !important;
+
+    transition:
+      transform 120ms ease,
+      background 120ms ease,
+      border-color 120ms ease !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .message-action-reactions
+  .message-action-reaction:active {
+    transform:
+      scale(.91) !important;
+
+    border-color:
+      rgba(
+        99,
+        91,
+        255,
+        .10
+      ) !important;
+
+    background:
+      #efedff !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .message-action-separator {
+    width:
+      calc(
+        100% -
+        10px
+      ) !important;
+
+    height: 1px !important;
+
+    margin:
+      0 auto
+      4px !important;
+
+    background:
+      linear-gradient(
+        90deg,
+        transparent,
+        rgba(
+          99,
+          91,
+          255,
+          .12
+        ),
+        transparent
+      ) !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .message-action-menu
+  > button:not(.message-action-reaction) {
+    min-height:
+      36px !important;
+
+    padding:
+      0 8px !important;
+
+    gap:
+      8px !important;
+
+    border-radius:
+      12px !important;
+
+    color:
+      #4f5360 !important;
+
+    font-size:
+      10px !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .message-action-menu
+  > button:not(.message-action-reaction):active {
+    background:
+      #efedff !important;
+
+    color:
+      #635bff !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .message-action-icon {
+    width: 27px;
+    height: 27px;
+
+    flex:
+      0 0 27px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius:
+      9px;
+
+    background:
+      #f0efff;
+
+    color:
+      #665cff;
+  }
+
+  .messenger.mobile-dialog-open
+  .message-action-icon svg {
+    width: 15px !important;
+    height: 15px !important;
+
+    stroke-width:
+      2 !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .message-action-menu
+  > button.danger
+  .message-action-icon {
+    background:
+      #fff0f2;
+
+    color:
+      #e34d56;
+  }
+
+  /* =======================================================
+     COMPOSER — SMILE NEXT TO MICROPHONE
+  ======================================================= */
+
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode)
+  textarea {
+    padding:
+      11px 9px
+      10px !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .yatut-emoji-wrapper {
+    position:
+      relative !important;
+
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    flex:
+      0 0 34px !important;
+
+    margin: 0 !important;
+
+    display:
+      block !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-emoji {
+    width: 34px !important;
+    height: 34px !important;
+
+    padding: 0 !important;
+
+    display: grid !important;
+    place-items:
+      center !important;
+
+    border: 0 !important;
+
+    border-radius:
+      50% !important;
+
+    background:
+      #f5f4fb !important;
+
+    color:
+      #77718f !important;
+
+    box-shadow:
+      inset
+      0 0 0
+      1px
+      rgba(
+        99,
+        91,
+        255,
+        .06
+      ) !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-emoji svg {
+    width: 18px !important;
+    height: 18px !important;
+
+    stroke-width:
+      2 !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-emoji:active {
+    background:
+      #ece9ff !important;
+
+    color:
+      #635bff !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode)
+  .chat-voice-button {
+    margin:
+      0 !important;
+
+    flex:
+      0 0 34px !important;
+  }
+
+  /* =======================================================
+     EMOJI PICKER
+  ======================================================= */
+
+  .messenger.mobile-dialog-open
+  .yatut-emoji-popover {
+    position:
+      fixed !important;
+
+    right:
+      64px !important;
+    bottom:
+      calc(
+        86px +
+        env(
+          safe-area-inset-bottom
+        )
+      ) !important;
+
+    left:
+      auto !important;
+
+    z-index:
+      9600 !important;
+
+    width:
+      min(
+        286px,
+        calc(
+          100vw -
+          28px
+        )
+      ) !important;
+
+    padding:
+      10px !important;
+
+    border:
+      1px solid
+      rgba(
+        99,
+        91,
+        255,
+        .12
+      ) !important;
+
+    border-radius:
+      22px !important;
+
+    background:
+      rgba(
+        255,
+        255,
+        255,
+        .98
+      ) !important;
+
+    box-shadow:
+      0 18px 48px
+      rgba(
+        29,
+        31,
+        47,
+        .16
+      ) !important;
+
+    transform:
+      none !important;
+
+    backdrop-filter:
+      blur(22px) !important;
+
+    -webkit-backdrop-filter:
+      blur(22px) !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .yatut-emoji-top {
+    padding:
+      2px 3px
+      8px !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .yatut-emoji-top strong {
+    color:
+      #353844 !important;
+
+    font-size:
+      11px !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .yatut-emoji-grid {
+    display: grid !important;
+
+    grid-template-columns:
+      repeat(
+        6,
+        minmax(
+          0,
+          1fr
+        )
+      ) !important;
+
+    gap:
+      4px !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .yatut-emoji-grid button {
+    width: 100% !important;
+    aspect-ratio:
+      1 !important;
+
+    padding: 0 !important;
+
+    display: grid !important;
+    place-items:
+      center !important;
+
+    border: 0 !important;
+
+    border-radius:
+      10px !important;
+
+    background:
+      transparent !important;
+
+    font-size:
+      19px !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .yatut-emoji-grid button:active {
+    background:
+      #f0edff !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .messenger.mobile-dialog-open
+  .message-action-menu {
+    width:
+      min(
+        180px,
+        70vw
+      ) !important;
+
+    border-radius:
+      20px !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .message-action-reactions
+  .message-action-reaction {
+    width: 25px !important;
+    height: 25px !important;
+    min-width: 25px !important;
+    min-height: 25px !important;
+
+    font-size:
+      15px !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode) {
+    gap:
+      4px !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .yatut-emoji-wrapper,
+  .messenger.mobile-dialog-open
+  .chat-emoji,
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode)
+  .chat-voice-button {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    flex-basis:
+      32px !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .yatut-emoji-popover {
+    right:
+      10px !important;
+    left:
+      10px !important;
+
+    width:
+      auto !important;
+  }
+}
