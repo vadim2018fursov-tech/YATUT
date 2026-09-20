@@ -4913,3 +4913,161 @@ label
       6.8px;
   }
 }
+
+
+/* =========================================================
+   PROFILE V3.1 — ONLINE NEON AVATAR
+========================================================= */
+
+@media (max-width: 767px) {
+  .profile-v3-mobile-avatar-wrap.is-online
+  .profile-v3-mobile-avatar {
+    position: relative;
+
+    border:
+      4px solid
+      rgba(
+        255,
+        255,
+        255,
+        .96
+      );
+
+    box-shadow:
+      0 0 0 3px
+      rgba(
+        36,
+        211,
+        145,
+        .92
+      ),
+      0 0 0 7px
+      rgba(
+        99,
+        91,
+        255,
+        .22
+      ),
+      0 0 22px
+      rgba(
+        34,
+        197,
+        94,
+        .50
+      ),
+      0 0 38px
+      rgba(
+        99,
+        91,
+        255,
+        .22
+      ),
+      0 12px 28px
+      rgba(
+        36,
+        38,
+        58,
+        .14
+      );
+
+    animation:
+      yatutOnlineAvatarGlow
+      2.8s
+      ease-in-out
+      infinite;
+  }
+
+  .profile-v3-mobile-online {
+    display:
+      none !important;
+  }
+}
+
+@keyframes yatutOnlineAvatarGlow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 3px
+      rgba(
+        36,
+        211,
+        145,
+        .88
+      ),
+      0 0 0 7px
+      rgba(
+        99,
+        91,
+        255,
+        .18
+      ),
+      0 0 18px
+      rgba(
+        34,
+        197,
+        94,
+        .42
+      ),
+      0 0 32px
+      rgba(
+        99,
+        91,
+        255,
+        .18
+      ),
+      0 12px 28px
+      rgba(
+        36,
+        38,
+        58,
+        .14
+      );
+  }
+
+  50% {
+    box-shadow:
+      0 0 0 3px
+      rgba(
+        50,
+        235,
+        164,
+        .98
+      ),
+      0 0 0 8px
+      rgba(
+        99,
+        91,
+        255,
+        .26
+      ),
+      0 0 28px
+      rgba(
+        34,
+        197,
+        94,
+        .62
+      ),
+      0 0 44px
+      rgba(
+        99,
+        91,
+        255,
+        .28
+      ),
+      0 14px 32px
+      rgba(
+        36,
+        38,
+        58,
+        .16
+      );
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .profile-v3-mobile-avatar-wrap.is-online
+  .profile-v3-mobile-avatar {
+    animation:
+      none !important;
+  }
+}
