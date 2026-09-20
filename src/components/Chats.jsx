@@ -1809,6 +1809,14 @@ function Chats({
   ] = useState(false);
 
   const [
+    newChatPoint,
+    setNewChatPoint,
+  ] = useState({
+    top: 160,
+    right: 16,
+  });
+
+  const [
     infoOpen,
     setInfoOpen,
   ] = useState(false);
@@ -1872,6 +1880,12 @@ function Chats({
     useRef(null);
 
   const personTriggerRef =
+    useRef(null);
+
+  const newChatPopoverRef =
+    useRef(null);
+
+  const newChatTriggerRef =
     useRef(null);
 
   const chatActionRef =
@@ -2010,6 +2024,42 @@ function Chats({
       );
   }, [
     infoOpen,
+  ]);
+
+  useEffect(() => {
+    if (!newChatOpen) {
+      return;
+    }
+
+    function handleNewChatOutside(
+      event
+    ) {
+      if (
+        newChatPopoverRef.current?.contains(
+          event.target
+        ) ||
+        newChatTriggerRef.current?.contains(
+          event.target
+        )
+      ) {
+        return;
+      }
+
+      setNewChatOpen(false);
+    }
+
+    document.addEventListener(
+      "pointerdown",
+      handleNewChatOutside
+    );
+
+    return () =>
+      document.removeEventListener(
+        "pointerdown",
+        handleNewChatOutside
+      );
+  }, [
+    newChatOpen,
   ]);
 
   useEffect(() => {
@@ -2593,6 +2643,42 @@ function Chats({
         );
       }
     };
+
+  function toggleNewChatMenu() {
+    if (
+      newChatOpen
+    ) {
+      setNewChatOpen(
+        false
+      );
+
+      return;
+    }
+
+    const rect =
+      newChatTriggerRef.current?.getBoundingClientRect();
+
+    if (rect) {
+      setNewChatPoint({
+        top:
+          Math.min(
+            rect.bottom + 8,
+            window.innerHeight -
+              420
+          ),
+        right:
+          Math.max(
+            10,
+            window.innerWidth -
+              rect.right
+          ),
+      });
+    }
+
+    setNewChatOpen(
+      true
+    );
+  }
 
   /* =======================================================
      CHAT LIST MANAGEMENT
@@ -3545,11 +3631,12 @@ function Chats({
             <div className="new-chat-wrapper">
 
               <button
+                ref={
+                  newChatTriggerRef
+                }
                 className="new-chat-button"
-                onClick={() =>
-                  setNewChatOpen(
-                    !newChatOpen
-                  )
+                onClick={
+                  toggleNewChatMenu
                 }
                 aria-label="Новий чат"
               >
@@ -3560,7 +3647,18 @@ function Chats({
               </button>
 
               {newChatOpen && (
-                <div className="chat-create-popover">
+                <div
+                  ref={
+                    newChatPopoverRef
+                  }
+                  className="chat-create-popover"
+                  style={{
+                    "--new-chat-top":
+                      `${newChatPoint.top}px`,
+                    "--new-chat-right":
+                      `${newChatPoint.right}px`,
+                  }}
+                >
 
                   <button
                     onClick={() => {
