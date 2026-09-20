@@ -92,6 +92,72 @@ const PEOPLE = {
 };
 
 /* =========================================================
+   STORIES — DEMO DATA
+   Real media URLs can replace backgrounds later.
+========================================================= */
+
+const STORY_SETS = {
+  maria: [
+    {
+      id: "story-maria-1",
+      duration: 5200,
+      background:
+        "radial-gradient(circle at 20% 18%, rgba(97,91,255,.55), transparent 28%), radial-gradient(circle at 78% 35%, rgba(80,209,173,.36), transparent 28%), linear-gradient(145deg, #141728 0%, #313b6d 48%, #090a11 100%)",
+      caption:
+        "Вечірній Київ 💜",
+      time:
+        "3 год",
+    },
+    {
+      id: "story-maria-2",
+      duration: 5200,
+      background:
+        "radial-gradient(circle at 72% 28%, rgba(255,108,172,.48), transparent 26%), radial-gradient(circle at 30% 72%, rgba(107,99,255,.56), transparent 32%), linear-gradient(145deg, #1a1022, #3c244b 52%, #0c0b12)",
+      caption:
+        "Мій сьогоднішній настрій ✨",
+      time:
+        "2 год",
+    },
+  ],
+
+  oleksandr: [
+    {
+      id: "story-oleksandr-1",
+      duration: 5200,
+      background:
+        "radial-gradient(circle at 35% 25%, rgba(255,210,77,.56), transparent 28%), radial-gradient(circle at 72% 68%, rgba(255,144,74,.42), transparent 30%), linear-gradient(150deg, #2a2211, #5d4420 52%, #10100c)",
+      caption:
+        "Дорога додому",
+      time:
+        "4 год",
+    },
+  ],
+
+  yulia: [
+    {
+      id: "story-yulia-1",
+      duration: 5200,
+      background:
+        "radial-gradient(circle at 30% 30%, rgba(86,195,255,.52), transparent 28%), radial-gradient(circle at 70% 62%, rgba(111,92,255,.44), transparent 30%), linear-gradient(150deg, #0a1822, #183b55 48%, #080b11)",
+      caption:
+        "Сьогодні було красиво",
+      time:
+        "1 год",
+    },
+    {
+      id: "story-yulia-2",
+      duration: 5200,
+      background:
+        "radial-gradient(circle at 78% 20%, rgba(87,224,179,.5), transparent 24%), radial-gradient(circle at 28% 68%, rgba(82,137,255,.5), transparent 30%), linear-gradient(150deg, #0d1d1a, #183d3b 50%, #080b0a)",
+      caption:
+        "Ще один момент 💫",
+      time:
+        "48 хв",
+    },
+  ],
+};
+
+/* =========================================================
    DEMO
 ========================================================= */
 
