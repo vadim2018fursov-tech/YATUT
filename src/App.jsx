@@ -9,6 +9,9 @@ import "./App.css";
 import "./styles/global-create.css";
 import "./styles/spaces-premium.css";
 import "./styles/community-events.css";
+import "./styles/events-community-link.css";
+import "./styles/events-premium.css";
+import "./styles/events-pulse.css";
 import "./styles/now-page-v2.css";
 import "./styles/pulse-tokens.css";
 import "./styles/pulse-page.css";
@@ -32,7 +35,6 @@ import Friends from "./components/Friends";
 import Search from "./components/Search";
 import Chats from "./components/Chats";
 import Spaces from "./components/Spaces";
-import Events from "./components/Events";
 
 import Nearby from "./components/Nearby";
 import Business from "./components/Business";
@@ -46,6 +48,7 @@ import ClipsPage from "./pages/ClipsPage";
 import WatchPage from "./pages/WatchPage";
 import LivePage from "./pages/LivePage";
 import CityPulsePage from "./pages/CityPulsePage";
+import EventsPulsePage from "./pages/EventsPulsePage";
 import CreateHubPage from "./pages/CreateHubPage";
 import CreateMediaPage from "./pages/CreateMediaPage";
 
@@ -3684,7 +3687,7 @@ function App() {
 
       case "events":
         return (
-          <Events
+          <EventsPulsePage
             onNavigate={
               goToPage
             }
