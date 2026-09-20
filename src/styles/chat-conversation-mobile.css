@@ -7309,3 +7309,201 @@
       38px !important;
   }
 }
+
+
+/* =========================================================
+   STORY VIEWER V6 — MORE BUTTON BESIDE AVATAR + HOLD PAUSE
+========================================================= */
+
+@media (max-width: 700px) {
+  body.story-viewer-open
+  .story-viewer {
+    -webkit-user-select:
+      none !important;
+
+    user-select:
+      none !important;
+
+    -webkit-touch-callout:
+      none !important;
+  }
+
+  body.story-viewer-open
+  .story-viewer-header {
+    position:
+      absolute !important;
+
+    display:
+      block !important;
+
+    height:
+      40px !important;
+
+    top:
+      calc(
+        34px +
+        env(
+          safe-area-inset-top
+        )
+      ) !important;
+
+    right:
+      8px !important;
+    left:
+      8px !important;
+  }
+
+  body.story-viewer-open
+  .story-author {
+    position:
+      absolute !important;
+
+    top:
+      0 !important;
+    left:
+      0 !important;
+
+    width:
+      40px !important;
+    height:
+      40px !important;
+
+    margin:
+      0 !important;
+
+    display:
+      block !important;
+  }
+
+  body.story-viewer-open
+  .story-author-avatar {
+    position:
+      absolute !important;
+
+    inset:
+      0 !important;
+
+    width:
+      40px !important;
+    height:
+      40px !important;
+
+    margin:
+      0 !important;
+  }
+
+  body.story-viewer-open
+  .story-more-wrap {
+    position:
+      absolute !important;
+
+    top:
+      0 !important;
+    left:
+      47px !important;
+
+    width:
+      40px !important;
+    height:
+      40px !important;
+
+    margin:
+      0 !important;
+  }
+
+  body.story-viewer-open
+  .story-more {
+    position:
+      absolute !important;
+
+    inset:
+      0 !important;
+
+    width:
+      40px !important;
+    height:
+      40px !important;
+
+    margin:
+      0 !important;
+  }
+
+  body.story-viewer-open
+  .story-close {
+    position:
+      absolute !important;
+
+    top:
+      0 !important;
+    right:
+      0 !important;
+
+    width:
+      40px !important;
+    height:
+      40px !important;
+
+    margin:
+      0 !important;
+  }
+
+  body.story-viewer-open
+  .story-more-popover {
+    top:
+      46px !important;
+    right:
+      auto !important;
+    left:
+      0 !important;
+  }
+
+  body.story-viewer-open
+  .story-viewer.is-paused
+  .story-progress-row
+  > span
+  > i {
+    transition:
+      none !important;
+  }
+}
+
+@media (max-width: 390px) {
+  body.story-viewer-open
+  .story-viewer-header {
+    height:
+      38px !important;
+
+    right:
+      6px !important;
+    left:
+      6px !important;
+  }
+
+  body.story-viewer-open
+  .story-author,
+  body.story-viewer-open
+  .story-author-avatar,
+  body.story-viewer-open
+  .story-more-wrap,
+  body.story-viewer-open
+  .story-more,
+  body.story-viewer-open
+  .story-close {
+    width:
+      38px !important;
+    height:
+      38px !important;
+  }
+
+  body.story-viewer-open
+  .story-more-wrap {
+    left:
+      44px !important;
+  }
+
+  body.story-viewer-open
+  .story-more-popover {
+    top:
+      44px !important;
+  }
+}
