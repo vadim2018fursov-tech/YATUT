@@ -1934,6 +1934,11 @@ function Chats({
   ] = useState(0);
 
   const [
+    storyPaused,
+    setStoryPaused,
+  ] = useState(false);
+
+  const [
     storyReactionOpen,
     setStoryReactionOpen,
   ] = useState(false);
@@ -1988,6 +1993,12 @@ function Chats({
 
   const storyTouchStartRef =
     useRef(null);
+
+  const storyPressStartedAtRef =
+    useRef(0);
+
+  const storySuppressTapRef =
+    useRef(false);
 
   const newChatPopoverRef =
     useRef(null);
@@ -2220,6 +2231,13 @@ function Chats({
     setStoryMoreOpen(
       false
     );
+
+    setStoryPaused(
+      false
+    );
+
+    storySuppressTapRef.current =
+      false;
   }, [
     storyViewer?.personId,
     storyViewer?.storyIndex,
@@ -2228,6 +2246,7 @@ function Chats({
   useEffect(() => {
     if (
       !storyViewer ||
+      storyPaused ||
       storyReactionOpen ||
       storyMoreOpen
     ) {
@@ -2273,6 +2292,7 @@ function Chats({
   }, [
     storyViewer?.personId,
     storyViewer?.storyIndex,
+    storyPaused,
     storyReactionOpen,
     storyMoreOpen,
   ]);
@@ -2990,6 +3010,13 @@ function Chats({
       false
     );
 
+    setStoryPaused(
+      false
+    );
+
+    storySuppressTapRef.current =
+      false;
+
     setStoryReply("");
   }
 
@@ -3190,6 +3217,92 @@ function Chats({
         ),
       900
     );
+  }
+
+  function handleStoryPressStart(
+    event
+  ) {
+    const target =
+      event.target;
+
+    if (
+      target?.closest?.(
+        ".story-viewer-header, .story-bottom, .story-more-popover"
+      )
+    ) {
+      return;
+    }
+
+    storyPressStartedAtRef.current =
+      Date.now();
+
+    storySuppressTapRef.current =
+      false;
+
+    setStoryPaused(
+      true
+    );
+  }
+
+  function handleStoryPressEnd() {
+    const startedAt =
+      storyPressStartedAtRef.current;
+
+    if (!startedAt) {
+      return;
+    }
+
+    const heldFor =
+      Date.now() -
+      startedAt;
+
+    storyPressStartedAtRef.current =
+      0;
+
+    if (
+      heldFor >=
+      260
+    ) {
+      storySuppressTapRef.current =
+        true;
+    }
+
+    setStoryPaused(
+      false
+    );
+  }
+
+  function handleStoryPressCancel() {
+    storyPressStartedAtRef.current =
+      0;
+
+    setStoryPaused(
+      false
+    );
+  }
+
+  function handleStoryZoneClick(
+    direction
+  ) {
+    if (
+      storySuppressTapRef.current
+    ) {
+      storySuppressTapRef.current =
+        false;
+
+      return;
+    }
+
+    if (
+      direction ===
+      "previous"
+    ) {
+      goToPreviousStory();
+
+      return;
+    }
+
+    goToNextStory();
   }
 
   function handleStoryTouchStart(
@@ -4242,7 +4355,23 @@ function Chats({
         createPortal(
           (
           <section
-            className="story-viewer"
+            className={`story-viewer ${
+              storyPaused
+                ? "is-paused"
+                : ""
+            }`.trim()}
+            onPointerDown={
+              handleStoryPressStart
+            }
+            onPointerUp={
+              handleStoryPressEnd
+            }
+            onPointerCancel={
+              handleStoryPressCancel
+            }
+            onContextMenu={(event) =>
+              event.preventDefault()
+            }
             onTouchStart={
               handleStoryTouchStart
             }
@@ -4463,8 +4592,10 @@ function Chats({
             <button
               type="button"
               className="story-hit-zone story-hit-left"
-              onClick={
-                goToPreviousStory
+              onClick={() =>
+                handleStoryZoneClick(
+                  "previous"
+                )
               }
               aria-label="Попередня історія"
             />
@@ -4472,8 +4603,10 @@ function Chats({
             <button
               type="button"
               className="story-hit-zone story-hit-right"
-              onClick={
-                goToNextStory
+              onClick={() =>
+                handleStoryZoneClick(
+                  "next"
+                )
               }
               aria-label="Наступна історія"
             />
