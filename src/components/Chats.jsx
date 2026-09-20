@@ -2841,6 +2841,339 @@ function Chats({
     ]);
 
   /* =======================================================
+     STORIES
+  ======================================================= */
+
+  function markStoryViewed(
+    personId,
+    storyIndex
+  ) {
+    setViewedStories(
+      (previous) => {
+        const next =
+          new Set(
+            previous
+          );
+
+        next.add(
+          `${personId}:${storyIndex}`
+        );
+
+        return next;
+      }
+    );
+  }
+
+  function openStory(
+    personId,
+    storyIndex = 0
+  ) {
+    const stories =
+      STORY_SETS[
+        personId
+      ] || [];
+
+    if (!stories.length) {
+      createDirectChat(
+        personId
+      );
+
+      return;
+    }
+
+    const safeIndex =
+      Math.min(
+        Math.max(
+          storyIndex,
+          0
+        ),
+        stories.length -
+          1
+      );
+
+    setStoryViewer({
+      personId,
+      storyIndex:
+        safeIndex,
+    });
+
+    markStoryViewed(
+      personId,
+      safeIndex
+    );
+  }
+
+  function closeStory() {
+    setStoryViewer(
+      null
+    );
+
+    setStoryProgress(
+      0
+    );
+
+    setStoryReactionOpen(
+      false
+    );
+
+    setStoryMoreOpen(
+      false
+    );
+
+    setStoryReply("");
+  }
+
+  function goToNextStory() {
+    if (!storyViewer) {
+      return;
+    }
+
+    const stories =
+      STORY_SETS[
+        storyViewer.personId
+      ] || [];
+
+    if (
+      storyViewer.storyIndex <
+      stories.length -
+        1
+    ) {
+      const nextIndex =
+        storyViewer.storyIndex +
+        1;
+
+      setStoryViewer({
+        personId:
+          storyViewer.personId,
+        storyIndex:
+          nextIndex,
+      });
+
+      markStoryViewed(
+        storyViewer.personId,
+        nextIndex
+      );
+
+      return;
+    }
+
+    const personIndex =
+      storyPeople.findIndex(
+        (person) =>
+          person.id ===
+          storyViewer.personId
+      );
+
+    if (
+      personIndex >= 0 &&
+      personIndex <
+        storyPeople.length -
+          1
+    ) {
+      const nextPerson =
+        storyPeople[
+          personIndex +
+            1
+        ];
+
+      setStoryViewer({
+        personId:
+          nextPerson.id,
+        storyIndex: 0,
+      });
+
+      markStoryViewed(
+        nextPerson.id,
+        0
+      );
+
+      return;
+    }
+
+    closeStory();
+  }
+
+  function goToPreviousStory() {
+    if (!storyViewer) {
+      return;
+    }
+
+    if (
+      storyViewer.storyIndex >
+      0
+    ) {
+      const previousIndex =
+        storyViewer.storyIndex -
+        1;
+
+      setStoryViewer({
+        personId:
+          storyViewer.personId,
+        storyIndex:
+          previousIndex,
+      });
+
+      return;
+    }
+
+    const personIndex =
+      storyPeople.findIndex(
+        (person) =>
+          person.id ===
+          storyViewer.personId
+      );
+
+    if (
+      personIndex >
+      0
+    ) {
+      const previousPerson =
+        storyPeople[
+          personIndex -
+            1
+        ];
+
+      const previousStories =
+        STORY_SETS[
+          previousPerson.id
+        ] || [];
+
+      const previousIndex =
+        Math.max(
+          0,
+          previousStories.length -
+            1
+        );
+
+      setStoryViewer({
+        personId:
+          previousPerson.id,
+        storyIndex:
+          previousIndex,
+      });
+
+      return;
+    }
+
+    setStoryProgress(
+      0
+    );
+  }
+
+  async function shareStory() {
+    if (
+      !currentStory ||
+      !currentStoryPerson
+    ) {
+      return;
+    }
+
+    const text =
+      `${currentStoryPerson.name} · ЯТУТ Story`;
+
+    try {
+      if (
+        navigator.share
+      ) {
+        await navigator.share({
+          title:
+            "ЯТУТ",
+          text,
+        });
+
+        return;
+      }
+
+      await navigator.clipboard?.writeText(
+        text
+      );
+    } catch (
+      error
+    ) {
+      if (
+        error?.name !==
+        "AbortError"
+      ) {
+        console.warn(
+          "STORY SHARE ERROR:",
+          error
+        );
+      }
+    }
+  }
+
+  function sendStoryReaction(
+    emoji
+  ) {
+    setStoryReactionOpen(
+      false
+    );
+
+    setStoryReply(
+      emoji
+    );
+
+    setTimeout(
+      () =>
+        setStoryReply(
+          ""
+        ),
+      900
+    );
+  }
+
+  function handleStoryTouchStart(
+    event
+  ) {
+    storyTouchStartRef.current =
+      event.touches?.[0]
+        ?.clientX ??
+      null;
+  }
+
+  function handleStoryTouchEnd(
+    event
+  ) {
+    const start =
+      storyTouchStartRef.current;
+
+    const end =
+      event.changedTouches?.[0]
+        ?.clientX;
+
+    storyTouchStartRef.current =
+      null;
+
+    if (
+      start == null ||
+      end == null
+    ) {
+      return;
+    }
+
+    const delta =
+      end - start;
+
+    if (
+      Math.abs(
+        delta
+      ) <
+      45
+    ) {
+      return;
+    }
+
+    if (
+      delta >
+      0
+    ) {
+      goToPreviousStory();
+    } else {
+      goToNextStory();
+    }
+  }
+
+  /* =======================================================
      CHAT OPEN
   ======================================================= */
 
