@@ -35,6 +35,315 @@ const QUALITIES = [
   "360p",
 ];
 
+const LONG_VIDEO_CRITICAL_CSS = `
+  .pulse-long-mobile,
+  .pulse-long-watch {
+    width: 100% !important;
+    min-width: 0 !important;
+    color: #fff !important;
+    background: #0a0a0e !important;
+    box-sizing: border-box !important;
+  }
+
+  .pulse-long-mobile *,
+  .pulse-long-watch * {
+    box-sizing: border-box !important;
+  }
+
+  .pulse-long-mobile {
+    min-height: calc(100dvh - 122px) !important;
+    padding: 10px 0 calc(105px + env(safe-area-inset-bottom)) !important;
+    overflow-x: hidden !important;
+  }
+
+  .pulse-long-mobile button,
+  .pulse-long-watch button {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    font: inherit !important;
+    text-decoration: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+  }
+
+  .pulse-long-mobile__chips {
+    width: 100% !important;
+    padding: 0 12px 12px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scrollbar-width: none !important;
+  }
+
+  .pulse-long-mobile__chips::-webkit-scrollbar,
+  .pulse-long-mobile__channel-row::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .pulse-long-mobile__chips button {
+    min-width: max-content !important;
+    height: 36px !important;
+    margin: 0 !important;
+    padding: 0 14px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 0 0 auto !important;
+    border: 1px solid rgba(255,255,255,.12) !important;
+    border-radius: 13px !important;
+    background: #202027 !important;
+    color: rgba(255,255,255,.86) !important;
+    font-size: 11px !important;
+    font-weight: 780 !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+  }
+
+  .pulse-long-mobile__chips button.is-active {
+    border-color: rgba(128,112,255,.65) !important;
+    background: linear-gradient(135deg,#695fff,#913de8) !important;
+    color: #fff !important;
+    box-shadow: 0 7px 18px rgba(99,91,255,.22) !important;
+  }
+
+  .pulse-long-mobile__channels {
+    width: 100% !important;
+    margin: 0 0 14px !important;
+    padding: 0 0 13px !important;
+    border: 0 !important;
+    border-bottom: 1px solid rgba(255,255,255,.07) !important;
+    background: transparent !important;
+  }
+
+  .pulse-long-mobile__section-title {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 14px 9px !important;
+    display: block !important;
+    color: rgba(255,255,255,.88) !important;
+    background: transparent !important;
+    font-size: 12px !important;
+    font-weight: 850 !important;
+    line-height: 1.2 !important;
+    text-align: left !important;
+  }
+
+  .pulse-long-mobile__channel-row {
+    width: 100% !important;
+    padding: 0 12px !important;
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 13px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scrollbar-width: none !important;
+  }
+
+  .pulse-long-mobile__channel-row button {
+    width: 60px !important;
+    min-width: 60px !important;
+    max-width: 60px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    flex: 0 0 60px !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 6px !important;
+    border: 0 !important;
+    background: transparent !important;
+    color: rgba(255,255,255,.7) !important;
+  }
+
+  .pulse-long-mobile__channel-row button > span {
+    width: 52px !important;
+    height: 52px !important;
+    min-width: 52px !important;
+    min-height: 52px !important;
+    display: grid !important;
+    place-items: center !important;
+    border: 2px solid rgba(255,255,255,.12) !important;
+    border-radius: 50% !important;
+    background: linear-gradient(145deg,#27233a,#15141c) !important;
+    color: #bbb3ff !important;
+    font-size: 14px !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.06) !important;
+  }
+
+  .pulse-long-mobile__channel-row button.is-active > span {
+    border-color: #7a6cff !important;
+    background: linear-gradient(145deg,#6e63ff,#9e51ed) !important;
+    color: #fff !important;
+    box-shadow:
+      0 0 0 3px rgba(99,91,255,.14),
+      0 7px 18px rgba(99,91,255,.18) !important;
+  }
+
+  .pulse-long-mobile__channel-row small {
+    width: 60px !important;
+    display: block !important;
+    overflow: hidden !important;
+    color: rgba(255,255,255,.64) !important;
+    font-size: 8.5px !important;
+    font-weight: 700 !important;
+    line-height: 1.15 !important;
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+    text-align: center !important;
+  }
+
+  .pulse-long-mobile > .pulse-long-mobile__section-title {
+    padding-top: 0 !important;
+  }
+
+  .pulse-long-mobile__feed,
+  .pulse-long-watch__next {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 12px !important;
+    display: grid !important;
+    gap: 18px !important;
+  }
+
+  .pulse-long-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 0 10px !important;
+    display: block !important;
+    overflow: hidden !important;
+    border: 1px solid rgba(255,255,255,.07) !important;
+    border-radius: 17px !important;
+    background: #121218 !important;
+    color: #fff !important;
+    box-shadow: 0 8px 26px rgba(0,0,0,.18) !important;
+    text-align: left !important;
+  }
+
+  .pulse-long-card:active {
+    transform: scale(.992) !important;
+  }
+
+  .pulse-long-card__media {
+    position: relative !important;
+    width: 100% !important;
+    aspect-ratio: 16 / 9 !important;
+    display: block !important;
+    overflow: hidden !important;
+    border-radius: 16px 16px 0 0 !important;
+    background:
+      radial-gradient(circle at 30% 30%,rgba(99,91,255,.28),transparent 38%),
+      #181820 !important;
+  }
+
+  .pulse-long-card__media img {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    display: block !important;
+    object-fit: cover !important;
+    object-position: center !important;
+  }
+
+  .pulse-long-card__duration {
+    position: absolute !important;
+    right: 8px !important;
+    bottom: 8px !important;
+    z-index: 3 !important;
+    width: auto !important;
+    min-height: 23px !important;
+    padding: 0 7px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 7px !important;
+    background: rgba(0,0,0,.78) !important;
+    color: #fff !important;
+    font-size: 9px !important;
+    font-weight: 850 !important;
+    line-height: 1 !important;
+  }
+
+  .pulse-long-card__meta {
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 10px 10px 0 !important;
+    display: grid !important;
+    grid-template-columns: 38px minmax(0,1fr) 22px !important;
+    align-items: start !important;
+    gap: 9px !important;
+  }
+
+  .pulse-long-card__avatar {
+    width: 38px !important;
+    height: 38px !important;
+    display: grid !important;
+    place-items: center !important;
+    border: 2px solid rgba(255,255,255,.18) !important;
+    border-radius: 50% !important;
+    background: linear-gradient(145deg,#7267ff,#9c4fe9) !important;
+    color: #fff !important;
+    font-size: 13px !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+  }
+
+  .pulse-long-card__copy {
+    min-width: 0 !important;
+    display: block !important;
+  }
+
+  .pulse-long-card__copy strong {
+    margin: 0 !important;
+    display: -webkit-box !important;
+    overflow: hidden !important;
+    color: #fff !important;
+    font-size: 13px !important;
+    font-weight: 820 !important;
+    line-height: 1.28 !important;
+    white-space: normal !important;
+    text-decoration: none !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 2 !important;
+  }
+
+  .pulse-long-card__copy span {
+    margin: 4px 0 0 !important;
+    display: block !important;
+    overflow: hidden !important;
+    color: rgba(255,255,255,.5) !important;
+    font-size: 9px !important;
+    font-weight: 500 !important;
+    line-height: 1.3 !important;
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .pulse-long-card__meta > svg {
+    width: 20px !important;
+    height: 20px !important;
+    color: rgba(255,255,255,.7) !important;
+  }
+
+  .pulse-long-mobile__empty {
+    margin: 12px !important;
+    padding: 22px !important;
+    border: 1px solid rgba(255,255,255,.08) !important;
+    border-radius: 17px !important;
+    background: #15151b !important;
+    color: rgba(255,255,255,.58) !important;
+    font-size: 11px !important;
+    text-align: center !important;
+  }
+`;
+
 function formatCompact(
   value
 ) {
@@ -525,6 +834,9 @@ export default function PulseLongVideoMobile({
 
     return (
       <section className="pulse-long-watch">
+        <style>
+          {LONG_VIDEO_CRITICAL_CSS}
+        </style>
         <div
           ref={
             playerWrapRef
@@ -881,6 +1193,9 @@ export default function PulseLongVideoMobile({
 
   return (
     <section className="pulse-long-mobile">
+      <style>
+        {LONG_VIDEO_CRITICAL_CSS}
+      </style>
       <div className="pulse-long-mobile__chips">
         {CATEGORIES.map(
           (
