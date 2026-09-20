@@ -1762,6 +1762,9 @@ function Chats({
   const emojiRef =
     useRef(null);
 
+  const attachRef =
+    useRef(null);
+
   const infoPanelRef =
     useRef(null);
 
@@ -1820,6 +1823,39 @@ function Chats({
       );
   }, [
     emojiOpen,
+  ]);
+
+  useEffect(() => {
+    if (!attachOpen) {
+      return;
+    }
+
+    function handleAttachOutside(
+      event
+    ) {
+      if (
+        attachRef.current?.contains(
+          event.target
+        )
+      ) {
+        return;
+      }
+
+      setAttachOpen(false);
+    }
+
+    document.addEventListener(
+      "pointerdown",
+      handleAttachOutside
+    );
+
+    return () =>
+      document.removeEventListener(
+        "pointerdown",
+        handleAttachOutside
+      );
+  }, [
+    attachOpen,
   ]);
 
   useEffect(() => {
@@ -3677,7 +3713,12 @@ function Chats({
                     }
                   />
 
-                  <div className="chat-plus-wrap">
+                  <div
+                    ref={
+                      attachRef
+                    }
+                    className="chat-plus-wrap"
+                  >
 
                     <button
                       className="chat-plus"
