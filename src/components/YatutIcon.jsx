@@ -117,6 +117,31 @@ const ICONS = {
     </>
   ),
 
+  archive: (
+    <>
+      <rect x="3" y="5" width="18" height="4" rx="1.5" />
+      <path d="M5 9v10h14V9" />
+      <path d="M9 13h6" />
+    </>
+  ),
+
+  eyeOff: (
+    <>
+      <path d="M3 3l18 18" />
+      <path d="M10.6 10.7a2 2 0 0 0 2.7 2.7" />
+      <path d="M9.9 4.3A10.7 10.7 0 0 1 12 4c5.2 0 9 4 10 8a13 13 0 0 1-2.1 4.2" />
+      <path d="M6.2 6.2A12.2 12.2 0 0 0 2 12c1 4 4.8 8 10 8a10.7 10.7 0 0 0 3.1-.5" />
+    </>
+  ),
+
+  volumeOff: (
+    <>
+      <path d="M11 5 6 9H3v6h3l5 4V5Z" />
+      <path d="m16 9 5 6" />
+      <path d="m21 9-5 6" />
+    </>
+  ),
+
   settings: (
     <>
       <circle cx="12" cy="12" r="3" />
