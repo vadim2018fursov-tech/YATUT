@@ -1871,3 +1871,449 @@
     min-width: 30px !important;
   }
 }
+
+
+/* =========================================================
+   MOBILE HEADER V7 — STABLE FLEX SEARCH
+   Keeps search visible on every phone width
+========================================================= */
+
+@media (max-width: 767px) {
+  .topbar-inner {
+    width: 100% !important;
+    max-width: 100% !important;
+
+    padding:
+      8px 10px !important;
+
+    display: flex !important;
+    align-items: center !important;
+
+    gap: 7px !important;
+  }
+
+  .brand {
+    flex:
+      0 0 94px !important;
+
+    width: 94px !important;
+    min-width: 94px !important;
+    max-width: 94px !important;
+
+    margin: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+
+    gap: 6px !important;
+
+    overflow: visible !important;
+  }
+
+  .brand-ya {
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    flex: 0 0 44px !important;
+  }
+
+  .brand-tut {
+    display: block !important;
+
+    min-width: 0 !important;
+
+    font-size: 18px !important;
+
+    white-space: nowrap !important;
+  }
+
+  .desktop-search {
+    flex:
+      1 1 auto !important;
+
+    width: auto !important;
+    min-width: 58px !important;
+    max-width: none !important;
+    height: 40px !important;
+
+    margin:
+      0 1px 0 3px !important;
+
+    padding:
+      0 9px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+
+    visibility: visible !important;
+    opacity: 1 !important;
+
+    border:
+      1px solid
+      #e6e8ef !important;
+
+    border-radius:
+      14px !important;
+
+    background:
+      #f3f4f8 !important;
+
+    color:
+      #777d8b !important;
+
+    overflow: hidden !important;
+  }
+
+  .desktop-search-content {
+    width: 100% !important;
+    min-width: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+
+    gap: 5px !important;
+
+    overflow: hidden !important;
+  }
+
+  .desktop-search-content svg {
+    width: 17px !important;
+    height: 17px !important;
+    min-width: 17px !important;
+    flex: 0 0 17px !important;
+  }
+
+  .desktop-search-content > span:last-child {
+    min-width: 0 !important;
+
+    font-size: 0 !important;
+
+    overflow: hidden !important;
+
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .desktop-search-content > span:last-child::after {
+    content: "Пошук";
+
+    font-size:
+      clamp(
+        11px,
+        3vw,
+        13px
+      ) !important;
+
+    font-weight:
+      680 !important;
+  }
+
+  .topbar-actions {
+    flex:
+      0 0 auto !important;
+
+    min-width: 0 !important;
+
+    margin: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+
+    gap: 4px !important;
+  }
+
+  .topbar-actions .icon-button,
+  .topbar-actions .profile-mini {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+
+    flex:
+      0 0 34px !important;
+
+    border-radius:
+      11px !important;
+  }
+
+  .topbar-actions svg {
+    width: 19px !important;
+    height: 19px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .topbar-inner {
+    padding-right: 8px !important;
+    padding-left: 8px !important;
+
+    gap: 5px !important;
+  }
+
+  .brand {
+    flex-basis:
+      86px !important;
+
+    width: 86px !important;
+    min-width: 86px !important;
+    max-width: 86px !important;
+
+    gap: 4px !important;
+  }
+
+  .brand-ya {
+    width: 41px !important;
+    height: 41px !important;
+    min-width: 41px !important;
+    flex-basis: 41px !important;
+  }
+
+  .brand-tut {
+    font-size: 16.5px !important;
+  }
+
+  .desktop-search {
+    min-width: 52px !important;
+    height: 38px !important;
+
+    margin-left: 2px !important;
+
+    padding:
+      0 7px !important;
+
+    border-radius:
+      12px !important;
+  }
+
+  .topbar-actions {
+    gap: 3px !important;
+  }
+
+  .topbar-actions .icon-button,
+  .topbar-actions .profile-mini {
+    width: 31px !important;
+    height: 31px !important;
+    min-width: 31px !important;
+    flex-basis: 31px !important;
+
+    border-radius:
+      10px !important;
+  }
+
+  .topbar-actions svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+}
+
+@media (max-width: 350px) {
+  .brand {
+    flex-basis:
+      79px !important;
+
+    width: 79px !important;
+    min-width: 79px !important;
+    max-width: 79px !important;
+  }
+
+  .brand-ya {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    flex-basis: 38px !important;
+  }
+
+  .brand-tut {
+    font-size: 15.5px !important;
+  }
+
+  .desktop-search {
+    min-width: 46px !important;
+
+    padding:
+      0 6px !important;
+  }
+
+  .desktop-search-content > span:last-child::after {
+    font-size: 10px !important;
+  }
+
+  .topbar-actions .icon-button,
+  .topbar-actions .profile-mini {
+    width: 29px !important;
+    height: 29px !important;
+    min-width: 29px !important;
+    flex-basis: 29px !important;
+  }
+}
+
+/* =========================================================
+   MOBILE NAV V6 — THINNER / ROUNDER GLASS PILL
+========================================================= */
+
+@media (max-width: 767px) {
+  body {
+    padding-bottom:
+      calc(
+        98px +
+        env(
+          safe-area-inset-bottom
+        )
+      ) !important;
+  }
+
+  .mobile-nav {
+    bottom:
+      calc(
+        9px +
+        env(
+          safe-area-inset-bottom
+        )
+      ) !important;
+
+    width:
+      min(
+        520px,
+        calc(
+          100% - 18px
+        )
+      ) !important;
+
+    max-width:
+      calc(
+        100% - 18px
+      ) !important;
+
+    height: 68px !important;
+    min-height: 68px !important;
+
+    padding: 5px !important;
+
+    gap: 2px !important;
+
+    border-radius:
+      34px !important;
+
+    background:
+      rgba(
+        250,
+        249,
+        247,
+        .80
+      ) !important;
+
+    box-shadow:
+      0 13px 32px
+      rgba(
+        30,
+        28,
+        44,
+        .11
+      ),
+      0 2px 8px
+      rgba(
+        30,
+        28,
+        44,
+        .05
+      ),
+      inset 0 1px 0
+      rgba(
+        255,
+        255,
+        255,
+        .95
+      ) !important;
+  }
+
+  .mobile-nav > button,
+  .mobile-nav > button:not(.mobile-create-button),
+  .mobile-nav > .mobile-create-button {
+    height: 58px !important;
+    min-height: 58px !important;
+
+    padding:
+      4px 2px !important;
+
+    gap: 3px !important;
+
+    border-radius:
+      29px !important;
+  }
+
+  .mobile-nav > button > span:first-child,
+  .mobile-nav > button:not(.mobile-create-button) > span:first-child,
+  .mobile-nav > .mobile-create-button > span,
+  .mobile-nav .mobile-profile-avatar {
+    width: 27px !important;
+    height: 27px !important;
+    min-width: 27px !important;
+  }
+
+  .mobile-nav > button svg,
+  .mobile-nav > button:not(.mobile-create-button) svg {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  .mobile-nav > button > small,
+  .mobile-nav > button:not(.mobile-create-button) > small,
+  .mobile-nav > .mobile-create-button > small {
+    font-size:
+      clamp(
+        9px,
+        2.5vw,
+        10.5px
+      ) !important;
+  }
+
+  .mobile-nav > button.active,
+  .mobile-nav > button[aria-current="page"],
+  .mobile-nav > .mobile-create-button.active,
+  .mobile-nav .mobile-pulse-button.active,
+  .mobile-nav .mobile-pulse-button[aria-current="page"] {
+    border-radius:
+      27px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .mobile-nav {
+    width:
+      calc(
+        100% - 14px
+      ) !important;
+
+    max-width:
+      calc(
+        100% - 14px
+      ) !important;
+
+    height: 65px !important;
+    min-height: 65px !important;
+
+    padding: 4px !important;
+
+    border-radius:
+      33px !important;
+  }
+
+  .mobile-nav > button,
+  .mobile-nav > button:not(.mobile-create-button),
+  .mobile-nav > .mobile-create-button {
+    height: 57px !important;
+    min-height: 57px !important;
+
+    border-radius:
+      28px !important;
+  }
+
+  .mobile-nav > button.active,
+  .mobile-nav > button[aria-current="page"],
+  .mobile-nav > .mobile-create-button.active,
+  .mobile-nav .mobile-pulse-button.active,
+  .mobile-nav .mobile-pulse-button[aria-current="page"] {
+    border-radius:
+      26px !important;
+  }
+}
