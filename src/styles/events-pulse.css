@@ -1717,3 +1717,117 @@ p {
     transition: none;
   }
 }
+
+/* =========================================================
+   EVENT ECOSYSTEM BRIDGES
+========================================================= */
+
+.events-pulse-bridges {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 16px 0 22px;
+}
+
+.events-pulse-bridge {
+  min-width: 0;
+  padding: 18px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  border: 1px solid rgba(25, 28, 45, 0.08);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.94);
+  color: #171827;
+  text-align: left;
+  box-shadow: 0 12px 34px rgba(31, 35, 60, 0.07);
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+}
+
+.events-pulse-bridge:hover {
+  transform: translateY(-2px);
+  border-color: rgba(99, 91, 255, 0.2);
+  box-shadow: 0 16px 40px rgba(31, 35, 60, 0.1);
+}
+
+.events-pulse-bridge__icon {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 15px;
+  color: #635bff;
+  background: rgba(99, 91, 255, 0.1);
+}
+
+.events-pulse-bridge > div {
+  min-width: 0;
+}
+
+.events-pulse-bridge small {
+  display: block;
+  margin-bottom: 4px;
+  color: #777d8d;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.09em;
+}
+
+.events-pulse-bridge strong {
+  display: block;
+  color: #171827;
+  font-size: 15px;
+  line-height: 1.25;
+}
+
+.events-pulse-bridge p {
+  margin: 7px 0 0;
+  color: #777d8d;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.events-pulse-bridge--nearby .events-pulse-bridge__icon {
+  color: #0f9f77;
+  background: rgba(15, 159, 119, 0.1);
+}
+
+.events-pulse-bridge--pulse .events-pulse-bridge__icon {
+  color: #e34883;
+  background: rgba(227, 72, 131, 0.1);
+}
+
+.events-pulse-bridge > svg {
+  color: #a0a4b2;
+}
+
+@media (max-width: 1050px) {
+  .events-pulse-bridges {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .events-pulse-bridges {
+    gap: 10px;
+    margin: 12px 0 16px;
+  }
+
+  .events-pulse-bridge {
+    padding: 14px;
+    border-radius: 20px;
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .events-pulse-bridge > svg {
+    display: none;
+  }
+
+  .events-pulse-bridge p {
+    margin-top: 5px;
+  }
+}
