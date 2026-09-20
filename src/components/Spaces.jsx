@@ -696,8 +696,217 @@ function defaultModulesForType(
   return base;
 }
 
+function createDefaultSpacePosts(
+  space = {}
+) {
+  const title =
+    space.title ||
+    space.name ||
+    "Спільнота";
+
+  return [
+    {
+      id:
+        `space-post-welcome-${slugify(
+          title
+        ) || "community"}`,
+      author:
+        title,
+      authorInitial:
+        String(
+          title
+        )
+          .trim()
+          .slice(
+            0,
+            1
+          )
+          .toUpperCase() ||
+        "Я",
+      text:
+        "Ласкаво просимо до простору. Тут зібрані важливі новини, події та розмови спільноти.",
+      createdAt:
+        Date.now() -
+        48 *
+          60 *
+          1000,
+      likes:
+        38,
+      comments:
+        7,
+      pinned:
+        true,
+    },
+
+    {
+      id:
+        `space-post-update-${slugify(
+          title
+        ) || "community"}`,
+      author:
+        "Марія Коваль",
+      authorInitial:
+        "М",
+      text:
+        "Додала нове оновлення для спільноти. Перевірте найближчі події та долучайтеся до обговорення.",
+      createdAt:
+        Date.now() -
+        3 *
+          60 *
+          60 *
+          1000,
+      likes:
+        21,
+      comments:
+        4,
+      pinned:
+        false,
+    },
+  ];
+}
+
 function createDemoSpaces() {
-  return [];
+  return [
+    normalizeSpace({
+      id:
+        "space-yatut-kyiv",
+      title:
+        "ЯТУТ Київ",
+      username:
+        "yatut.kyiv",
+      description:
+        "Міська спільнота про людей, місця, події та все, що відбувається у Києві просто зараз.",
+      type:
+        "city",
+      templateId:
+        "city",
+      scale:
+        "large",
+      privacy:
+        "public",
+      city:
+        "Київ",
+      ownerId:
+        "me",
+      members: [
+        "me",
+        "maria",
+        "sofia",
+        "oleksandr",
+        "anastasia",
+        "max",
+      ],
+      modules:
+        defaultModulesForType(
+          "city"
+        ),
+    }),
+
+    normalizeSpace({
+      id:
+        "space-school-24",
+      title:
+        "Ліцей №24",
+      username:
+        "lyceum24",
+      description:
+        "Учні, батьки та вчителі в одному просторі: розклад, домашні завдання, події й класні чати.",
+      type:
+        "school",
+      templateId:
+        "school",
+      scale:
+        "medium",
+      privacy:
+        "request",
+      city:
+        "Київ",
+      ownerId:
+        "me",
+      members: [
+        "me",
+        "teacher-1",
+        "teacher-2",
+        "student-1",
+        "student-2",
+        "student-3",
+        "parent-1",
+      ],
+      modules:
+        defaultModulesForType(
+          "school"
+        ),
+      school:
+        createDefaultSchool(),
+    }),
+
+    normalizeSpace({
+      id:
+        "space-yatut-team",
+      title:
+        "Команда ЯТУТ",
+      username:
+        "team.yatut",
+      description:
+        "Робочий простір команди: задачі, зустрічі, файли, оголошення та швидка комунікація.",
+      type:
+        "work",
+      templateId:
+        "work",
+      scale:
+        "small",
+      privacy:
+        "private",
+      city:
+        "Київ",
+      ownerId:
+        "me",
+      members: [
+        "me",
+        "maria",
+        "oleksandr",
+        "sofia",
+      ],
+      modules:
+        defaultModulesForType(
+          "work"
+        ),
+    }),
+
+    normalizeSpace({
+      id:
+        "space-creators",
+      title:
+        "Творці України",
+      username:
+        "creators.ua",
+      description:
+        "Спільнота художників, фотографів, авторів відео та інших креаторів.",
+      type:
+        "creative",
+      templateId:
+        "creative",
+      scale:
+        "medium",
+      privacy:
+        "public",
+      city:
+        "Україна",
+      ownerId:
+        "maria",
+      members: [
+        "me",
+        "maria",
+        "sofia",
+        "anastasia",
+        "yulia",
+      ],
+      modules:
+        defaultModulesForType(
+          "creative"
+        ),
+    }),
+  ];
 }
 
 function normalizeSpace(
@@ -776,6 +985,15 @@ function normalizeSpace(
         ? space.modules
         : defaultModulesForType(
             type
+          ),
+
+    posts:
+      Array.isArray(
+        space.posts
+      )
+        ? space.posts
+        : createDefaultSpacePosts(
+            space
           ),
 
     permissions:
@@ -2893,6 +3111,433 @@ function MembersView({
 }
 
 /* =========================================================
+   COMMUNITY FEED
+========================================================= */
+
+function CommunityFeed({
+  space,
+  onUpdate,
+  onOpenChat,
+}) {
+  const [
+    text,
+    setText,
+  ] =
+    useState("");
+
+  const posts =
+    Array.isArray(
+      space.posts
+    )
+      ? space.posts
+      : [];
+
+  function publish() {
+    const clean =
+      text.trim();
+
+    if (!clean) {
+      return;
+    }
+
+    const nextPost = {
+      id:
+        createId(
+          "space-post"
+        ),
+      author:
+        "Вадим",
+      authorInitial:
+        "В",
+      text:
+        clean,
+      createdAt:
+        Date.now(),
+      likes:
+        0,
+      comments:
+        0,
+      pinned:
+        false,
+    };
+
+    onUpdate?.({
+      ...space,
+      posts: [
+        nextPost,
+        ...posts,
+      ],
+      updatedAt:
+        Date.now(),
+    });
+
+    setText("");
+  }
+
+  return (
+    <div className="community-feed">
+      <section className="community-feed-composer">
+        <div className="community-feed-composer__top">
+          <span>
+            В
+          </span>
+
+          <textarea
+            value={
+              text
+            }
+            onChange={(
+              event
+            ) =>
+              setText(
+                event.target.value
+              )
+            }
+            placeholder="Написати у спільноту..."
+            rows={3}
+          />
+        </div>
+
+        <div className="community-feed-composer__bottom">
+          <div>
+            <button
+              type="button"
+            >
+              📷 Фото
+            </button>
+
+            <button
+              type="button"
+            >
+              📎 Файл
+            </button>
+
+            <button
+              type="button"
+            >
+              📊 Опитування
+            </button>
+          </div>
+
+          <button
+            type="button"
+            className="community-feed-publish"
+            disabled={
+              !text.trim()
+            }
+            onClick={
+              publish
+            }
+          >
+            Опублікувати
+          </button>
+        </div>
+      </section>
+
+      {posts.map(
+        (
+          post
+        ) => (
+          <article
+            key={
+              post.id
+            }
+            className="community-feed-post"
+          >
+            {post.pinned && (
+              <div className="community-feed-post__pinned">
+                📌 Закріплено
+              </div>
+            )}
+
+            <header>
+              <span className="community-feed-post__avatar">
+                {
+                  post.authorInitial ||
+                  "Я"
+                }
+              </span>
+
+              <div>
+                <strong>
+                  {
+                    post.author
+                  }
+                </strong>
+
+                <small>
+                  {new Date(
+                    post.createdAt
+                  ).toLocaleTimeString(
+                    "uk-UA",
+                    {
+                      hour:
+                        "2-digit",
+                      minute:
+                        "2-digit",
+                    }
+                  )}
+                </small>
+              </div>
+
+              <button
+                type="button"
+                aria-label="Ще"
+              >
+                •••
+              </button>
+            </header>
+
+            <p>
+              {
+                post.text
+              }
+            </p>
+
+            <div className="community-feed-post__stats">
+              <span>
+                {
+                  post.likes ||
+                  0
+                } вподобань
+              </span>
+
+              <span>
+                {
+                  post.comments ||
+                  0
+                } коментарів
+              </span>
+            </div>
+
+            <footer>
+              <button
+                type="button"
+              >
+                ♡ Подобається
+              </button>
+
+              <button
+                type="button"
+              >
+                💬 Коментар
+              </button>
+
+              <button
+                type="button"
+              >
+                ↗ Поділитися
+              </button>
+            </footer>
+          </article>
+        )
+      )}
+
+      <button
+        type="button"
+        className="community-feed-chat-cta"
+        onClick={
+          onOpenChat
+        }
+      >
+        <span>
+          💬
+        </span>
+
+        <div>
+          <strong>
+            Чат спільноти
+          </strong>
+
+          <small>
+            Перейти до живого обговорення
+          </small>
+        </div>
+
+        <b>
+          →
+        </b>
+      </button>
+    </div>
+  );
+}
+
+/* =========================================================
+   WORKSPACE / COMPANY
+========================================================= */
+
+function WorkModule({
+  onOpenChat,
+}) {
+  return (
+    <div className="community-workspace">
+      <section className="space-info-card">
+        <div className="space-detail-section-head">
+          <div>
+            <span>
+              СЬОГОДНІ
+            </span>
+
+            <h2>
+              Робочий центр
+            </h2>
+          </div>
+
+          <strong>
+            3
+          </strong>
+        </div>
+
+        <div className="community-task-list">
+          <article>
+            <span className="is-high">
+              !
+            </span>
+
+            <div>
+              <strong>
+                Підготувати оновлення мобільної версії
+              </strong>
+
+              <small>
+                До 18:00 · Вадим
+              </small>
+            </div>
+
+            <b>
+              В роботі
+            </b>
+          </article>
+
+          <article>
+            <span>
+              ✓
+            </span>
+
+            <div>
+              <strong>
+                Перевірити нові екрани Спільнот
+              </strong>
+
+              <small>
+                Сьогодні · Команда
+              </small>
+            </div>
+
+            <b>
+              Нове
+            </b>
+          </article>
+
+          <article>
+            <span>
+              ◷
+            </span>
+
+            <div>
+              <strong>
+                Командний дзвінок
+              </strong>
+
+              <small>
+                19:30 · Онлайн
+              </small>
+            </div>
+
+            <b>
+              Зустріч
+            </b>
+          </article>
+        </div>
+      </section>
+
+      <section className="space-info-card">
+        <div className="space-detail-section-head">
+          <div>
+            <span>
+              ШВИДКИЙ ДОСТУП
+            </span>
+
+            <h2>
+              Команда
+            </h2>
+          </div>
+        </div>
+
+        <div className="community-work-actions">
+          <button
+            type="button"
+            onClick={
+              onOpenChat
+            }
+          >
+            <span>
+              💬
+            </span>
+
+            <strong>
+              Чат
+            </strong>
+
+            <small>
+              Команда онлайн
+            </small>
+          </button>
+
+          <button
+            type="button"
+          >
+            <span>
+              📁
+            </span>
+
+            <strong>
+              Файли
+            </strong>
+
+            <small>
+              24 матеріали
+            </small>
+          </button>
+
+          <button
+            type="button"
+          >
+            <span>
+              📅
+            </span>
+
+            <strong>
+              Календар
+            </strong>
+
+            <small>
+              4 події
+            </small>
+          </button>
+
+          <button
+            type="button"
+          >
+            <span>
+              🎥
+            </span>
+
+            <strong>
+              Зустріч
+            </strong>
+
+            <small>
+              Створити дзвінок
+            </small>
+          </button>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+/* =========================================================
    OVERVIEW
 ========================================================= */
 
@@ -2906,6 +3551,32 @@ function Overview({
 
   return (
     <>
+      <section className="community-overview-pinned">
+        <span>
+          📌
+        </span>
+
+        <div>
+          <small>
+            ЗАКРІПЛЕНО
+          </small>
+
+          <strong>
+            Важливе для учасників
+          </strong>
+
+          <p>
+            Правила, актуальні оголошення та головні посилання спільноти.
+          </p>
+        </div>
+
+        <button
+          type="button"
+        >
+          Відкрити
+        </button>
+      </section>
+
       <section className="space-info-card">
         <h2>
           Про простір
@@ -2984,7 +3655,7 @@ function SpaceDetail({
     tab,
     setTab,
   ] = useState(
-    "overview"
+    "feed"
   );
 
   const template =
@@ -2995,9 +3666,16 @@ function SpaceDetail({
   const tabs = [
     {
       id:
+        "feed",
+      title:
+        "Стрічка",
+    },
+
+    {
+      id:
         "overview",
       title:
-        "Головна",
+        "Про спільноту",
     },
 
     {
@@ -3029,6 +3707,18 @@ function SpaceDetail({
               "school",
             title:
               "Школа",
+          },
+        ]
+      : []),
+
+    ...(space.type ===
+    "work"
+      ? [
+          {
+            id:
+              "work",
+            title:
+              "Робота",
           },
         ]
       : []),
@@ -3312,6 +4002,21 @@ function SpaceDetail({
         <div className="space-detail-layout">
           <main>
             {tab ===
+              "feed" && (
+              <CommunityFeed
+                space={
+                  space
+                }
+                onUpdate={
+                  onUpdate
+                }
+                onOpenChat={
+                  openCommunityChat
+                }
+              />
+            )}
+
+            {tab ===
               "overview" && (
               <Overview
                 space={
@@ -3334,6 +4039,15 @@ function SpaceDetail({
               <MembersView
                 space={
                   space
+                }
+              />
+            )}
+
+            {tab ===
+              "work" && (
+              <WorkModule
+                onOpenChat={
+                  openCommunityChat
                 }
               />
             )}
@@ -3866,6 +4580,102 @@ function Spaces({
               ✨
             </b>
           </div>
+        </section>
+
+        <section className="spaces-dashboard">
+          <button
+            type="button"
+            onClick={() =>
+              setTypeFilter(
+                "all"
+              )
+            }
+          >
+            <span>
+              👥
+            </span>
+
+            <div>
+              <strong>
+                {
+                  spaces.length
+                }
+              </strong>
+
+              <small>
+                мої спільноти
+              </small>
+            </div>
+          </button>
+
+          <button
+            type="button"
+            onClick={() =>
+              setTypeFilter(
+                "school"
+              )
+            }
+          >
+            <span>
+              🏫
+            </span>
+
+            <div>
+              <strong>
+                3
+              </strong>
+
+              <small>
+                нові оголошення
+              </small>
+            </div>
+          </button>
+
+          <button
+            type="button"
+            onClick={() =>
+              setTypeFilter(
+                "work"
+              )
+            }
+          >
+            <span>
+              ✅
+            </span>
+
+            <div>
+              <strong>
+                5
+              </strong>
+
+              <small>
+                активних задач
+              </small>
+            </div>
+          </button>
+
+          <button
+            type="button"
+            onClick={() =>
+              onNavigate?.(
+                "events"
+              )
+            }
+          >
+            <span>
+              📅
+            </span>
+
+            <div>
+              <strong>
+                4
+              </strong>
+
+              <small>
+                найближчі події
+              </small>
+            </div>
+          </button>
         </section>
 
         <div className="spaces-controls">
