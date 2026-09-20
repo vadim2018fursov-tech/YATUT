@@ -1823,6 +1823,26 @@ function Chats({
     )
   );
 
+  const [
+    chatListView,
+    setChatListView,
+  ] = useState(
+    "inbox"
+  );
+
+  const [
+    chatActionChatId,
+    setChatActionChatId,
+  ] = useState(null);
+
+  const [
+    chatActionPoint,
+    setChatActionPoint,
+  ] = useState({
+    x: 24,
+    y: 220,
+  });
+
   const imageRef =
     useRef(null);
 
@@ -1849,6 +1869,21 @@ function Chats({
 
   const personTriggerRef =
     useRef(null);
+
+  const chatActionRef =
+    useRef(null);
+
+  const chatLongPressTimerRef =
+    useRef(null);
+
+  const chatLongPressStartRef =
+    useRef({
+      x: 0,
+      y: 0,
+    });
+
+  const chatLongPressTriggeredRef =
+    useRef(false);
 
   const activeChat =
     chats.find(
@@ -1971,6 +2006,41 @@ function Chats({
       );
   }, [
     infoOpen,
+  ]);
+
+  useEffect(() => {
+    if (!chatActionChatId) {
+      return;
+    }
+
+    function handleChatActionOutside(
+      event
+    ) {
+      if (
+        chatActionRef.current?.contains(
+          event.target
+        )
+      ) {
+        return;
+      }
+
+      setChatActionChatId(
+        null
+      );
+    }
+
+    document.addEventListener(
+      "pointerdown",
+      handleChatActionOutside
+    );
+
+    return () =>
+      document.removeEventListener(
+        "pointerdown",
+        handleChatActionOutside
+      );
+  }, [
+    chatActionChatId,
   ]);
 
   /* =======================================================
