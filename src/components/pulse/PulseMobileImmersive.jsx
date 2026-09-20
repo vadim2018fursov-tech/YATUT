@@ -261,13 +261,30 @@ function PulseImmersiveSlide({
 
   return (
     <article className="pulse-immersive__slide">
-      <img
-        className="pulse-immersive__media"
-        src={
-          image
-        }
-        alt=""
-      />
+      {video.video ? (
+        <video
+          className="pulse-immersive__media"
+          src={
+            video.video
+          }
+          poster={
+            image
+          }
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+        />
+      ) : (
+        <img
+          className="pulse-immersive__media"
+          src={
+            image
+          }
+          alt=""
+        />
+      )}
 
       <div className="pulse-immersive__shade" />
 
