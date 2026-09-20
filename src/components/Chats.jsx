@@ -1486,19 +1486,19 @@ function MessageBubble({
             </span>
           )}
 
-          <div className="message-time">
+        </div>
 
-            {formatTime(
-              message.createdAt
-            )}
+        <div className="message-time">
 
-            {mine && (
-              <span>
-                ✓✓
-              </span>
-            )}
+          {formatTime(
+            message.createdAt
+          )}
 
-          </div>
+          {mine && (
+            <span>
+              ✓✓
+            </span>
+          )}
 
         </div>
 
@@ -3059,7 +3059,13 @@ function Chats({
                     }
                   >
 
-                    <div className="chat-header-avatar">
+                    <div
+                      className={`chat-header-avatar ${
+                        activePerson?.online
+                          ? "is-online"
+                          : ""
+                      }`.trim()}
+                    >
                       {chatInitials(
                         activeChat
                       )}
