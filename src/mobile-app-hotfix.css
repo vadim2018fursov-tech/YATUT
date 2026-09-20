@@ -1186,3 +1186,15 @@
     height: 19px !important;
   }
 }
+
+
+/* TOPBAR NOW MOBILE ONLY */
+.topbar-now-button {
+  display: none !important;
+}
+
+@media (max-width: 767px) {
+  .topbar-now-button {
+    display: grid !important;
+  }
+}
