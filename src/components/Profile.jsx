@@ -30,6 +30,7 @@ const DEFAULT_PROFILE = {
   following: 386,
   friends: 214,
   posts: 37,
+  pulseReach: 38400,
   verified: true,
   founder: true,
   earlyUser: true,
@@ -162,6 +163,37 @@ function safeLoadProfile() {
   }
 }
 
+function formatProfileNumber(
+  value
+) {
+  const number =
+    Number(value || 0);
+
+  if (number >= 1000000) {
+    return `${(
+      number /
+      1000000
+    )
+      .toFixed(1)
+      .replace(".", ",")}M`;
+  }
+
+  if (number >= 1000) {
+    return `${(
+      number /
+      1000
+    )
+      .toFixed(
+        number >= 10000
+          ? 1
+          : 0
+      )
+      .replace(".", ",")}K`;
+  }
+
+  return String(number);
+}
+
 function fileToDataUrl(
   file
 ) {
@@ -257,30 +289,42 @@ export default function Profile({
     useMemo(
       () => [
         {
-          label: "Друзів",
+          id: "friends",
+          label: "Друзі",
           value:
-            profile.friends,
+            formatProfileNumber(
+              profile.friends
+            ),
         },
 
         {
+          id: "followers",
           label:
-            "Підписників",
+            "Підписники",
           value:
-            profile.followers,
+            formatProfileNumber(
+              profile.followers
+            ),
         },
 
         {
+          id: "posts",
           label:
-            "Підписок",
+            "Дописи",
           value:
-            profile.following,
+            formatProfileNumber(
+              profile.posts
+            ),
         },
 
         {
+          id: "pulse",
           label:
-            "Дописів",
+            "PULSE",
           value:
-            profile.posts,
+            formatProfileNumber(
+              profile.pulseReach
+            ),
         },
       ],
       [profile]
@@ -317,6 +361,52 @@ export default function Profile({
         "Розвиває спільноту",
     },
   ];
+
+  function handleProfileStat(
+    statId
+  ) {
+    if (
+      statId ===
+      "friends"
+    ) {
+      onNavigate?.(
+        "friends"
+      );
+
+      return;
+    }
+
+    if (
+      statId ===
+      "posts"
+    ) {
+      setActiveTab(
+        "posts"
+      );
+
+      return;
+    }
+
+    if (
+      statId ===
+      "pulse"
+    ) {
+      setActiveTab(
+        "pulse"
+      );
+
+      return;
+    }
+
+    if (
+      statId ===
+      "followers"
+    ) {
+      onNavigate?.(
+        "friends"
+      );
+    }
+  }
 
   /* =======================================================
      STATUS
@@ -691,9 +781,14 @@ export default function Profile({
               ) => (
                 <button
                   key={
-                    item.label
+                    item.id
                   }
                   type="button"
+                  onClick={() =>
+                    handleProfileStat(
+                      item.id
+                    )
+                  }
                 >
                   <strong>
                     {
@@ -739,6 +834,11 @@ export default function Profile({
                 [
                   "about",
                   "Про мене",
+                ],
+
+                [
+                  "pulse",
+                  "PULSE",
                 ],
 
                 [
@@ -999,6 +1099,150 @@ export default function Profile({
                     )}
 
                   </div>
+
+                </div>
+
+              </section>
+            )}
+
+            {/* =================================================
+                PULSE
+            ================================================= */}
+
+            {activeTab ===
+              "pulse" && (
+              <section className="profile-v2-card profile-v2-pulse-tab">
+
+                <div className="profile-v2-pulse-tab__hero">
+
+                  <span className="profile-v2-pulse-tab__icon">
+                    <YatutIcon
+                      name="pulse"
+                      size={24}
+                    />
+                  </span>
+
+                  <div>
+                    <span>
+                      ТВОЯ АКТИВНІСТЬ
+                    </span>
+
+                    <h3>
+                      PULSE профілю
+                    </h3>
+
+                    <p>
+                      Місця, відео,
+                      люди та події,
+                      з якими ти
+                      пов’язаний зараз.
+                    </p>
+                  </div>
+
+                  <strong>
+                    {
+                      formatProfileNumber(
+                        profile.pulseReach
+                      )
+                    }
+                    <small>
+                      охоплення
+                    </small>
+                  </strong>
+
+                </div>
+
+                <div className="profile-v2-pulse-tab__stats">
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      onNavigate?.(
+                        "pulse"
+                      )
+                    }
+                  >
+                    <strong>
+                      18
+                    </strong>
+
+                    <span>
+                      хвиль
+                    </span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      onNavigate?.(
+                        "live"
+                      )
+                    }
+                  >
+                    <strong>
+                      4
+                    </strong>
+
+                    <span>
+                      LIVE
+                    </span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      onNavigate?.(
+                        "cityPulse",
+                        {
+                          cityId:
+                            "kyiv",
+                        }
+                      )
+                    }
+                  >
+                    <strong>
+                      17
+                    </strong>
+
+                    <span>
+                      місць
+                    </span>
+                  </button>
+
+                </div>
+
+                <div className="profile-v2-pulse-tab__actions">
+
+                  <button
+                    type="button"
+                    className="is-primary"
+                    onClick={() =>
+                      onNavigate?.(
+                        "pulse"
+                      )
+                    }
+                  >
+                    Відкрити PULSE
+                    <YatutIcon
+                      name="arrowRight"
+                      size={16}
+                    />
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      onNavigate?.(
+                        "cityPulse",
+                        {
+                          cityId:
+                            "kyiv",
+                        }
+                      )
+                    }
+                  >
+                    Київ зараз
+                  </button>
 
                 </div>
 
