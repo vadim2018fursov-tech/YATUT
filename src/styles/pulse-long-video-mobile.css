@@ -1479,3 +1479,135 @@
       12.5px;
   }
 }
+
+
+/* =========================================================
+   MANUAL FULLSCREEN
+========================================================= */
+
+@media (max-width: 767px) {
+  .pulse-long-watch__fullscreen {
+    position:
+      absolute;
+
+    top:
+      9px;
+
+    right:
+      9px;
+
+    z-index:
+      20;
+
+    width:
+      38px;
+
+    height:
+      38px;
+
+    display:
+      grid;
+
+    place-items:
+      center;
+
+    border:
+      1px solid
+      rgba(
+        255,
+        255,
+        255,
+        .12
+      );
+
+    border-radius:
+      13px;
+
+    background:
+      rgba(
+        10,
+        10,
+        14,
+        .46
+      );
+
+    color:
+      #fff;
+
+    backdrop-filter:
+      blur(
+        10px
+      );
+
+    -webkit-backdrop-filter:
+      blur(
+        10px
+      );
+  }
+
+  .pulse-long-watch__landscape-hint {
+    right:
+      56px;
+  }
+
+  .pulse-long-watch__player-wrap:fullscreen {
+    width:
+      100vw;
+
+    height:
+      100vh;
+
+    aspect-ratio:
+      auto;
+
+    background:
+      #000;
+  }
+
+  .pulse-long-watch__player-wrap:fullscreen
+  .pulse-real-player {
+    width:
+      100%;
+
+    height:
+      100%;
+
+    border-radius:
+      0;
+  }
+
+  .pulse-long-watch__player-wrap:fullscreen
+  .pulse-real-player__video,
+  .pulse-long-watch__player-wrap:fullscreen
+  .pulse-real-player__poster {
+    object-fit:
+      contain;
+  }
+
+  .pulse-long-watch__player-wrap:fullscreen
+  .pulse-long-watch__landscape-hint {
+    display:
+      none;
+  }
+
+  @media (orientation: landscape) {
+    body.pulse-long-video-open
+    .pulse-long-watch__fullscreen {
+      top:
+        calc(
+          8px +
+          env(
+            safe-area-inset-top
+          )
+        );
+
+      right:
+        calc(
+          8px +
+          env(
+            safe-area-inset-right
+          )
+        );
+    }
+  }
+}
