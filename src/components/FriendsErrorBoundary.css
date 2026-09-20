@@ -1,0 +1,200 @@
+.friends-safe-page {
+  width: 100%;
+  min-height: 60vh;
+  padding: 14px 12px 110px;
+  color: #252833;
+}
+
+.friends-safe-hero {
+  padding: 22px 18px;
+  border: 1px solid #e8e7f4;
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 90% 10%, rgba(99,91,255,.12), transparent 32%),
+    linear-gradient(145deg,#fff,#f8f7ff);
+}
+
+.friends-safe-hero > span {
+  color: #635bff;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .12em;
+}
+
+.friends-safe-hero h1 {
+  margin: 7px 0 5px;
+  font-size: 27px;
+  line-height: 1;
+}
+
+.friends-safe-hero p {
+  max-width: 330px;
+  margin: 0;
+  color: #858a96;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.friends-safe-actions {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+
+.friends-safe-actions button {
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: 14px;
+  background: #f0eff5;
+  color: #626773;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.friends-safe-actions button.primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  background: linear-gradient(145deg,#746cff,#635bff);
+  color: #fff;
+}
+
+.friends-safe-list {
+  margin-top: 12px;
+  display: grid;
+  gap: 8px;
+}
+
+.friends-safe-list article {
+  min-height: 68px;
+  padding: 9px 10px;
+  display: grid;
+  grid-template-columns: 48px minmax(0,1fr) 40px;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid #e9eaf0;
+  border-radius: 19px;
+  background: #fff;
+  box-shadow: 0 7px 22px rgba(31,34,49,.05);
+}
+
+.friends-safe-avatar {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: linear-gradient(145deg,#eeebff,#ddd9ff);
+  color: #635bff;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.friends-safe-list article > div {
+  min-width: 0;
+}
+
+.friends-safe-list strong,
+.friends-safe-list small {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.friends-safe-list strong {
+  color: #30333d;
+  font-size: 12px;
+}
+
+.friends-safe-list small {
+  margin-top: 4px;
+  color: #969aa5;
+  font-size: 9px;
+}
+
+.friends-safe-list article > button {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  background: #f0edff;
+  color: #635bff;
+}
+
+@media (max-width: 767px) {
+  .topbar-theme-action {
+    display: grid !important;
+  }
+
+  body.yatut-dark-mode,
+  body.yatut-dark-mode .app,
+  body.yatut-dark-mode .main-content {
+    background: #111218 !important;
+  }
+
+  body.yatut-dark-mode .topbar {
+    border-bottom-color: #292b34 !important;
+    background: rgba(17,18,24,.94) !important;
+  }
+
+  body.yatut-dark-mode .brand-tut {
+    color: #f4f5f7 !important;
+  }
+
+  body.yatut-dark-mode .icon-button {
+    background: #23252d !important;
+    color: #d1d4dc !important;
+  }
+
+  body.yatut-dark-mode .icon-button.active {
+    background: #302c52 !important;
+    color: #b8b1ff !important;
+  }
+
+  body.yatut-dark-mode .profile-mini {
+    background: #302c52 !important;
+    color: #c8c2ff !important;
+  }
+
+  body.yatut-dark-mode .mobile-nav {
+    border-top-color: #292b34 !important;
+    background: rgba(17,18,24,.96) !important;
+  }
+
+  body.yatut-dark-mode .mobile-more-sheet {
+    border-color: #30323c !important;
+    background: linear-gradient(180deg,#202129,#181920) !important;
+  }
+
+  body.yatut-dark-mode .mobile-more-header h2,
+  body.yatut-dark-mode .mobile-more-profile-copy strong,
+  body.yatut-dark-mode .mobile-more-primary strong {
+    color: #f3f4f7 !important;
+  }
+
+  body.yatut-dark-mode .mobile-more-profile,
+  body.yatut-dark-mode .mobile-more-primary > button,
+  body.yatut-dark-mode .mobile-more-secondary {
+    border-color: #30323c !important;
+    background: #23242c !important;
+  }
+
+  body.yatut-dark-mode .friends-safe-page {
+    color: #f3f4f7;
+  }
+
+  body.yatut-dark-mode .friends-safe-hero,
+  body.yatut-dark-mode .friends-safe-list article {
+    border-color: #30323c;
+    background: #202129;
+  }
+
+  body.yatut-dark-mode .friends-safe-hero h1,
+  body.yatut-dark-mode .friends-safe-list strong {
+    color: #f3f4f7;
+  }
+}

@@ -37,6 +37,7 @@ import "./styles/mobile-more-menu.css";
 import Stories from "./components/Stories";
 import Profile from "./components/Profile";
 import Friends from "./components/Friends";
+import FriendsErrorBoundary from "./components/FriendsErrorBoundary";
 import Search from "./components/Search";
 import Chats from "./components/Chats";
 import Spaces from "./components/Spaces";
@@ -2711,6 +2712,8 @@ function TopBar({
   onToggleNotifications,
   mobileMenuOpen,
   onToggleMobileMenu,
+  themeMode,
+  onToggleTheme,
   unreadNotifications,
 }) {
   return (
@@ -2759,45 +2762,28 @@ function TopBar({
         </button>
 
         <div className="topbar-actions">
-          {/* MOBILE SEARCH */}
+          {/* THEME */}
 
           <button
-            className="icon-button mobile-search-action"
-            type="button"
-            onClick={() =>
-              onNavigate(
-                "search"
-              )
-            }
-            aria-label="Пошук"
-            title="Пошук"
-          >
-            <YatutIcon
-              name="search"
-              size={20}
-            />
-          </button>
-
-          {/* NOW */}
-
-          <button
-            className={`icon-button topbar-now-button ${
-              currentPage ===
-              "now"
+            className={`icon-button topbar-theme-action ${
+              themeMode ===
+              "dark"
                 ? "active"
                 : ""
-            }`}
+            }`.trim()}
             type="button"
-            onClick={() =>
-              onNavigate(
-                "now"
-              )
+            onClick={
+              onToggleTheme
             }
-            aria-label="Зараз"
-            title="Зараз"
+            aria-label="Змінити тему"
+            aria-pressed={
+              themeMode ===
+              "dark"
+            }
+            title="Тема"
           >
             <YatutIcon
-              name="now"
+              name="theme"
               size={20}
             />
           </button>
@@ -3253,6 +3239,25 @@ function App() {
     );
 
   const [
+    themeMode,
+    setThemeMode,
+  ] =
+    useState(
+      () => {
+        try {
+          return (
+            localStorage.getItem(
+              "yatut-theme"
+            ) ||
+            "light"
+          );
+        } catch {
+          return "light";
+        }
+      }
+    );
+
+  const [
     unreadNotifications,
     setUnreadNotifications,
   ] =
@@ -3345,6 +3350,33 @@ function App() {
       }
     );
   }
+
+  useEffect(() => {
+    const dark =
+      themeMode ===
+      "dark";
+
+    document.body.classList.toggle(
+      "yatut-dark-mode",
+      dark
+    );
+
+    document.documentElement.style.colorScheme =
+      dark
+        ? "dark"
+        : "light";
+
+    try {
+      localStorage.setItem(
+        "yatut-theme",
+        themeMode
+      );
+    } catch {
+      // Theme still works for the current session.
+    }
+  }, [
+    themeMode,
+  ]);
 
   /* =======================================================
      NAVIGATION
@@ -3672,14 +3704,23 @@ function App() {
 
       case "friends":
         return (
-          <Friends
+          <FriendsErrorBoundary
             onNavigate={
               goToPage
             }
             onOpenChat={
               openPersonChat
             }
-          />
+          >
+            <Friends
+              onNavigate={
+                goToPage
+              }
+              onOpenChat={
+                openPersonChat
+              }
+            />
+          </FriendsErrorBoundary>
         );
 
       case "search":
@@ -3841,6 +3882,20 @@ function App() {
               !previous
           );
         }}
+        themeMode={
+          themeMode
+        }
+        onToggleTheme={() =>
+          setThemeMode(
+            (
+              previous
+            ) =>
+              previous ===
+              "dark"
+                ? "light"
+                : "dark"
+          )
+        }
         unreadNotifications={
           unreadNotifications
         }

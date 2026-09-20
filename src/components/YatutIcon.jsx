@@ -126,6 +126,12 @@ const ICONS = {
     </>
   ),
 
+  theme: (
+    <>
+      <path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9Z" />
+    </>
+  ),
+
   archive: (
     <>
       <rect x="3" y="5" width="18" height="4" rx="1.5" />
