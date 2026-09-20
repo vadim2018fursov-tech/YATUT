@@ -7507,3 +7507,73 @@
       44px !important;
   }
 }
+
+
+/* =========================================================
+   STORY VIEWER V7 — SWIPE DOWN DISMISS FEEDBACK
+========================================================= */
+
+@media (max-width: 700px) {
+  body.story-viewer-open
+  .story-viewer {
+    transform:
+      translate3d(
+        0,
+        var(
+          --story-drag-y,
+          0px
+        ),
+        0
+      )
+      scale(
+        var(
+          --story-drag-scale,
+          1
+        )
+      ) !important;
+
+    transform-origin:
+      center top !important;
+
+    transition:
+      transform
+      180ms
+      cubic-bezier(
+        .2,
+        .75,
+        .25,
+        1
+      ) !important;
+
+    will-change:
+      transform !important;
+  }
+
+  body.story-viewer-open
+  .story-viewer:active {
+    transition:
+      none !important;
+  }
+
+  body.story-viewer-open
+  .story-viewer-media,
+  body.story-viewer-open
+  .story-viewer-shade {
+    border-radius:
+      calc(
+        min(
+          var(
+            --story-drag-y,
+            0px
+          ),
+          180px
+        ) /
+        10
+      ) !important;
+
+    transition:
+      border-radius
+      180ms
+      ease !important;
+  }
+}
