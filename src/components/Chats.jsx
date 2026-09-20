@@ -2420,6 +2420,38 @@ function Chats({
      FILTER
   ======================================================= */
 
+  const archivedCount =
+    chats.filter(
+      (chat) =>
+        chat.archived &&
+        !chat.hidden
+    ).length;
+
+  const hiddenCount =
+    chats.filter(
+      (chat) =>
+        chat.hidden
+    ).length;
+
+  const onlinePeople =
+    useMemo(
+      () =>
+        Object.values(
+          PEOPLE
+        )
+          .filter(
+            (person) =>
+              person.id !==
+                "me" &&
+              person.online
+          )
+          .slice(
+            0,
+            7
+          ),
+      []
+    );
+
   const filteredChats =
     useMemo(() => {
       const query =
@@ -2427,20 +2459,75 @@ function Chats({
           .trim()
           .toLowerCase();
 
+      const source =
+        chats.filter(
+          (chat) => {
+            if (
+              chatListView ===
+              "archive"
+            ) {
+              return (
+                chat.archived &&
+                !chat.hidden
+              );
+            }
+
+            if (
+              chatListView ===
+              "hidden"
+            ) {
+              return Boolean(
+                chat.hidden
+              );
+            }
+
+            return (
+              !chat.archived &&
+              !chat.hidden
+            );
+          }
+        );
+
       if (!query) {
-        return chats;
+        return source;
       }
 
-      return chats.filter(
-        (chat) =>
-          chatTitle(chat)
-            .toLowerCase()
-            .includes(query)
+      return source.filter(
+        (chat) => {
+          const title =
+            chatTitle(
+              chat
+            )
+              .toLowerCase();
+
+          const preview =
+            String(
+              chat.lastMessage ||
+              ""
+            ).toLowerCase();
+
+          return (
+            title.includes(
+              query
+            ) ||
+            preview.includes(
+              query
+            )
+          );
+        }
       );
     }, [
       chats,
       chatSearch,
+      chatListView,
     ]);
+
+  const chatActionChat =
+    chats.find(
+      (chat) =>
+        chat.id ===
+        chatActionChatId
+    ) || null;
 
   const foundMessages =
     useMemo(() => {
@@ -2502,6 +2589,231 @@ function Chats({
         );
       }
     };
+
+  /* =======================================================
+     CHAT LIST MANAGEMENT
+  ======================================================= */
+
+  function clearChatLongPress() {
+    if (
+      chatLongPressTimerRef.current
+    ) {
+      clearTimeout(
+        chatLongPressTimerRef.current
+      );
+
+      chatLongPressTimerRef.current =
+        null;
+    }
+  }
+
+  function startChatLongPress(
+    chat,
+    event
+  ) {
+    if (
+      event.pointerType ===
+        "mouse" &&
+      event.button !== 0
+    ) {
+      return;
+    }
+
+    clearChatLongPress();
+
+    chatLongPressTriggeredRef.current =
+      false;
+
+    chatLongPressStartRef.current = {
+      x:
+        event.clientX,
+      y:
+        event.clientY,
+    };
+
+    const x =
+      event.clientX;
+    const y =
+      event.clientY;
+
+    chatLongPressTimerRef.current =
+      setTimeout(
+        () => {
+          chatLongPressTriggeredRef.current =
+            true;
+
+          setChatActionPoint({
+            x,
+            y,
+          });
+
+          setChatActionChatId(
+            chat.id
+          );
+
+          if (
+            navigator.vibrate
+          ) {
+            navigator.vibrate(
+              10
+            );
+          }
+        },
+        480
+      );
+  }
+
+  function moveChatLongPress(
+    event
+  ) {
+    const start =
+      chatLongPressStartRef.current;
+
+    const distance =
+      Math.hypot(
+        event.clientX -
+          start.x,
+        event.clientY -
+          start.y
+      );
+
+    if (
+      distance >
+      12
+    ) {
+      clearChatLongPress();
+    }
+  }
+
+  function endChatLongPress() {
+    clearChatLongPress();
+  }
+
+  function handleChatItemClick(
+    chat
+  ) {
+    if (
+      chatLongPressTriggeredRef.current
+    ) {
+      chatLongPressTriggeredRef.current =
+        false;
+
+      return;
+    }
+
+    openChat(
+      chat
+    );
+  }
+
+  async function updateChatState(
+    chat,
+    patch
+  ) {
+    if (!chat) {
+      return;
+    }
+
+    const updated = {
+      ...chat,
+      ...patch,
+    };
+
+    await saveChat(
+      updated
+    );
+
+    setChats(
+      (previous) =>
+        previous.map(
+          (item) =>
+            item.id ===
+            chat.id
+              ? updated
+              : item
+        )
+    );
+
+    setChatActionChatId(
+      null
+    );
+  }
+
+  async function toggleArchiveChat(
+    chat
+  ) {
+    await updateChatState(
+      chat,
+      {
+        archived:
+          !chat.archived,
+        hidden: false,
+      }
+    );
+  }
+
+  async function toggleHiddenChat(
+    chat
+  ) {
+    await updateChatState(
+      chat,
+      {
+        hidden:
+          !chat.hidden,
+        archived: false,
+      }
+    );
+  }
+
+  async function toggleMutedChat(
+    chat
+  ) {
+    await updateChatState(
+      chat,
+      {
+        muted:
+          !chat.muted,
+      }
+    );
+  }
+
+  async function removeChatFromList(
+    chat
+  ) {
+    if (!chat) {
+      return;
+    }
+
+    await deleteChat(
+      chat.id
+    );
+
+    setChats(
+      (previous) =>
+        previous.filter(
+          (item) =>
+            item.id !==
+            chat.id
+        )
+    );
+
+    if (
+      activeChatId ===
+      chat.id
+    ) {
+      setActiveChatId(
+        null
+      );
+
+      setMobileDialogOpen(
+        false
+      );
+    }
+
+    setChatActionChatId(
+      null
+    );
+  }
 
   /* =======================================================
      DIRECT CHAT
