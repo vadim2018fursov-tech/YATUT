@@ -5,6 +5,8 @@ import {
   useState,
 } from "react";
 
+import YatutIcon from "./YatutIcon";
+
 import {
   deleteMessage,
   getChat,
@@ -3138,13 +3140,18 @@ function Chats({
                   </button>
 
                   <button
+                    className="chat-more-button"
                     onClick={() =>
                       setInfoOpen(
                         !infoOpen
                       )
                     }
+                    aria-label="Інформація про чат"
                   >
-                    •••
+                    <YatutIcon
+                      name="more"
+                      size={20}
+                    />
                   </button>
 
                 </div>
@@ -3473,49 +3480,168 @@ function Chats({
                           false
                         );
                       }}
+                      aria-label="Додати"
                     >
-                      +
+                      <YatutIcon
+                        name="plus"
+                        size={20}
+                      />
                     </button>
 
                     {attachOpen && (
                       <div className="yatut-attach-popover">
+                        <div className="chat-attach-head">
+                          <div>
+                            <strong>
+                              Додати
+                            </strong>
 
-                        <button
-                          onClick={() =>
-                            imageRef.current?.click()
-                          }
-                        >
-                          🖼️ Фото
-                        </button>
+                            <span>
+                              Надішліть те, чим хочете поділитися
+                            </span>
+                          </div>
 
-                        <button
-                          onClick={() =>
-                            videoRef.current?.click()
-                          }
-                        >
-                          🎥 Відео
-                        </button>
+                          <button
+                            type="button"
+                            className="chat-attach-close"
+                            onClick={() =>
+                              setAttachOpen(
+                                false
+                              )
+                            }
+                            aria-label="Закрити"
+                          >
+                            <YatutIcon
+                              name="close"
+                              size={17}
+                            />
+                          </button>
+                        </div>
 
-                        <button
-                          onClick={() =>
-                            fileRef.current?.click()
-                          }
-                        >
-                          📎 Файл
-                        </button>
+                        <div className="chat-attach-grid">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              imageRef.current?.click()
+                            }
+                          >
+                            <span className="chat-attach-icon violet">
+                              <YatutIcon
+                                name="image"
+                                size={20}
+                              />
+                            </span>
 
-                        <button>
-                          📊 Опитування
-                        </button>
+                            <strong>
+                              Фото
+                            </strong>
 
-                        <button>
-                          📍 Місце
-                        </button>
+                            <small>
+                              З галереї
+                            </small>
+                          </button>
 
-                        <button>
-                          👤 Контакт
-                        </button>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              videoRef.current?.click()
+                            }
+                          >
+                            <span className="chat-attach-icon blue">
+                              <YatutIcon
+                                name="video"
+                                size={20}
+                              />
+                            </span>
 
+                            <strong>
+                              Відео
+                            </strong>
+
+                            <small>
+                              Ролик або кліп
+                            </small>
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() =>
+                              fileRef.current?.click()
+                            }
+                          >
+                            <span className="chat-attach-icon graphite">
+                              <YatutIcon
+                                name="homework"
+                                size={20}
+                              />
+                            </span>
+
+                            <strong>
+                              Файл
+                            </strong>
+
+                            <small>
+                              Документ
+                            </small>
+                          </button>
+
+                          <button
+                            type="button"
+                          >
+                            <span className="chat-attach-icon pink">
+                              <YatutIcon
+                                name="poll"
+                                size={20}
+                              />
+                            </span>
+
+                            <strong>
+                              Опитування
+                            </strong>
+
+                            <small>
+                              Запитайте друзів
+                            </small>
+                          </button>
+
+                          <button
+                            type="button"
+                          >
+                            <span className="chat-attach-icon green">
+                              <YatutIcon
+                                name="pin"
+                                size={20}
+                              />
+                            </span>
+
+                            <strong>
+                              Місце
+                            </strong>
+
+                            <small>
+                              Поділитися точкою
+                            </small>
+                          </button>
+
+                          <button
+                            type="button"
+                          >
+                            <span className="chat-attach-icon orange">
+                              <YatutIcon
+                                name="friends"
+                                size={20}
+                              />
+                            </span>
+
+                            <strong>
+                              Контакт
+                            </strong>
+
+                            <small>
+                              Надіслати профіль
+                            </small>
+                          </button>
+                        </div>
                       </div>
                     )}
 
@@ -3656,13 +3782,18 @@ function Chats({
               </strong>
 
               <button
+                className="chat-info-close"
                 onClick={() =>
                   setInfoOpen(
                     false
                   )
                 }
+                aria-label="Закрити"
               >
-                ×
+                <YatutIcon
+                  name="close"
+                  size={20}
+                />
               </button>
 
             </header>
