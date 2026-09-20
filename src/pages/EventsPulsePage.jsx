@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 
 import {
+  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -333,6 +334,50 @@ export default function EventsPulsePage({
     createRequestKey,
     setCreateRequestKey,
   ] = useState(0);
+
+  useEffect(() => {
+    try {
+      const raw =
+        sessionStorage.getItem(
+          "yatut-open-route-payload"
+        );
+
+      if (!raw) {
+        return;
+      }
+
+      const parsed =
+        JSON.parse(
+          raw
+        );
+
+      const payload =
+        parsed?.payload ||
+        {};
+
+      if (
+        parsed?.route ===
+          "events" &&
+        payload?.createEvent &&
+        payload?.source ===
+          "createHub"
+      ) {
+        setCreateRequestKey(
+          (value) =>
+            value + 1
+        );
+
+        sessionStorage.removeItem(
+          "yatut-open-route-payload"
+        );
+      }
+    } catch (error) {
+      console.warn(
+        "EVENT CREATE ROUTE ERROR:",
+        error
+      );
+    }
+  }, []);
 
   const eventVideos =
     useMemo(
