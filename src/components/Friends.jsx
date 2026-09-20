@@ -413,6 +413,18 @@ export default function Friends({
   ] =
     useState(null);
 
+  const [
+    actionNotice,
+    setActionNotice,
+  ] =
+    useState(null);
+
+  const [
+    removeCandidate,
+    setRemoveCandidate,
+  ] =
+    useState(null);
+
   /* =======================================================
      FRIEND STATE LIVE SYNC
 
@@ -444,6 +456,46 @@ export default function Friends({
       unsubscribe();
     };
   }, []);
+
+  useEffect(() => {
+    if (
+      !actionNotice
+    ) {
+      return undefined;
+    }
+
+    const timer =
+      window.setTimeout(
+        () => {
+          setActionNotice(
+            null
+          );
+        },
+        2200
+      );
+
+    return () => {
+      window.clearTimeout(
+        timer
+      );
+    };
+  }, [
+    actionNotice,
+  ]);
+
+  function showNotice(
+    text,
+    tone = "success"
+  ) {
+    setActionNotice({
+      id:
+        Date.now(),
+
+      text,
+
+      tone,
+    });
+  }
 
   /* =======================================================
      STATUS
@@ -680,35 +732,16 @@ export default function Friends({
         person.id
       );
 
-    /* =====================================================
-       ALREADY FRIEND
-    ===================================================== */
-
     if (
       status ===
       FRIEND_STATUSES.FRIEND
     ) {
-      const confirmed =
-        window.confirm(
-          `Видалити ${person.name} з друзів?`
-        );
-
-      if (
-        !confirmed
-      ) {
-        return;
-      }
-
-      removeFriend(
-        person.id
+      setRemoveCandidate(
+        person
       );
 
       return;
     }
-
-    /* =====================================================
-       INCOMING REQUEST
-    ===================================================== */
 
     if (
       status ===
@@ -718,12 +751,12 @@ export default function Friends({
         person.id
       );
 
+      showNotice(
+        `${person.name} тепер у друзях`
+      );
+
       return;
     }
-
-    /* =====================================================
-       OUTGOING REQUEST
-    ===================================================== */
 
     if (
       status ===
@@ -733,15 +766,20 @@ export default function Friends({
         person.id
       );
 
+      showNotice(
+        "Запит скасовано",
+        "neutral"
+      );
+
       return;
     }
 
-    /* =====================================================
-       NEW REQUEST
-    ===================================================== */
-
     sendFriendRequest(
       person.id
+    );
+
+    showNotice(
+      `Запит для ${person.name} надіслано`
     );
   }
 
@@ -765,6 +803,35 @@ export default function Friends({
 
     declineIncomingFriendRequest(
       person.id
+    );
+
+    showNotice(
+      "Запит відхилено",
+      "neutral"
+    );
+  }
+
+  function confirmRemoveFriend() {
+    if (
+      !removeCandidate?.id
+    ) {
+      return;
+    }
+
+    const name =
+      removeCandidate.name;
+
+    removeFriend(
+      removeCandidate.id
+    );
+
+    setRemoveCandidate(
+      null
+    );
+
+    showNotice(
+      `${name} видалено з друзів`,
+      "neutral"
     );
   }
 
@@ -792,6 +859,18 @@ export default function Friends({
     ) {
       return;
     }
+
+    setSelectedPerson(
+      null
+    );
+
+    setRelationPerson(
+      null
+    );
+
+    setRemoveCandidate(
+      null
+    );
 
     onOpenChat?.(
       person.id
@@ -1429,6 +1508,51 @@ export default function Friends({
         </aside>
       </div>
 
+      {actionNotice && (
+        <div
+          key={
+            actionNotice.id
+          }
+          className={`friends-v2-toast ${actionNotice.tone}`}
+          role="status"
+          aria-live="polite"
+        >
+          <span className="friends-v2-toast-icon">
+            <YatutIcon
+              name={
+                actionNotice.tone ===
+                "success"
+                  ? "friends"
+                  : "close"
+              }
+              size={16}
+            />
+          </span>
+
+          <strong>
+            {
+              actionNotice.text
+            }
+          </strong>
+        </div>
+      )}
+
+      {removeCandidate && (
+        <FriendRemoveModal
+          person={
+            removeCandidate
+          }
+          onClose={() =>
+            setRemoveCandidate(
+              null
+            )
+          }
+          onConfirm={
+            confirmRemoveFriend
+          }
+        />
+      )}
+
       {/* ===================================================
           PROFILE PREVIEW
       =================================================== */}
@@ -1459,6 +1583,11 @@ export default function Friends({
           }}
           onFriend={() =>
             requestFriend(
+              selectedPerson
+            )
+          }
+          onDecline={() =>
+            declineRequest(
               selectedPerson
             )
           }
@@ -1683,12 +1812,12 @@ function PersonCard({
         ================================================= */}
 
         <div
-          className={`friends-v2-person-actions ${
+          className={`friends-v2-person-actions status-${person.friendStatus} ${
             person.friendStatus ===
             FRIEND_STATUSES.INCOMING
               ? "incoming"
               : ""
-          }`}
+          }`.trim()}
         >
           <button
             className={`friend ${
@@ -1722,7 +1851,14 @@ function PersonCard({
                 onDecline
               }
             >
-              Відхилити
+              <YatutIcon
+                name="close"
+                size={15}
+              />
+
+              <span>
+                Відхилити
+              </span>
             </button>
           )}
 
@@ -1739,7 +1875,9 @@ function PersonCard({
               size={17}
             />
 
-            Написати
+            <span>
+              Написати
+            </span>
           </button>
         </div>
       </div>
@@ -1760,7 +1898,7 @@ function getFriendButton(
     case FRIEND_STATUSES.FRIEND:
       return {
         label:
-          "Друзі",
+          "У друзях",
 
         icon:
           "friends",
@@ -1784,10 +1922,10 @@ function getFriendButton(
     case FRIEND_STATUSES.OUTGOING:
       return {
         label:
-          "Запит надіслано",
+          "Скасувати запит",
 
         icon:
-          "friends",
+          "close",
 
         active:
           true,
@@ -1940,6 +2078,7 @@ function PersonPreview({
   onClose,
   onRelation,
   onFriend,
+  onDecline,
   onMessage,
 }) {
   const friendButton =
@@ -2060,7 +2199,9 @@ function PersonPreview({
             />
           </button>
 
-          <div className="friends-v2-preview-actions">
+          <div
+            className={`friends-v2-preview-actions status-${person.friendStatus}`}
+          >
             <button
               className={`primary ${
                 friendButton.active
@@ -2079,12 +2220,35 @@ function PersonPreview({
                 size={17}
               />
 
-              {
-                friendButton.label
-              }
+              <span>
+                {
+                  friendButton.label
+                }
+              </span>
             </button>
 
+            {person.friendStatus ===
+              FRIEND_STATUSES.INCOMING && (
+              <button
+                className="decline"
+                type="button"
+                onClick={
+                  onDecline
+                }
+              >
+                <YatutIcon
+                  name="close"
+                  size={16}
+                />
+
+                <span>
+                  Відхилити
+                </span>
+              </button>
+            )}
+
             <button
+              className="message"
               type="button"
               onClick={
                 onMessage
@@ -2095,9 +2259,82 @@ function PersonPreview({
                 size={17}
               />
 
-              Написати
+              <span>
+                Написати
+              </span>
             </button>
           </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+/* =========================================================
+   REMOVE FRIEND MODAL
+========================================================= */
+
+function FriendRemoveModal({
+  person,
+  onClose,
+  onConfirm,
+}) {
+  return (
+    <div
+      className="friends-v2-action-backdrop"
+      onClick={
+        onClose
+      }
+    >
+      <section
+        className="friends-v2-action-sheet"
+        onClick={(
+          event
+        ) =>
+          event.stopPropagation()
+        }
+      >
+        <div className="friends-v2-action-sheet-icon">
+          <YatutIcon
+            name="friends"
+            size={22}
+          />
+        </div>
+
+        <h3>
+          Керування дружбою
+        </h3>
+
+        <p>
+          Видалити <strong>{person.name}</strong> з друзів?
+          Ви зможете додати цю людину знову пізніше.
+        </p>
+
+        <div>
+          <button
+            type="button"
+            className="secondary"
+            onClick={
+              onClose
+            }
+          >
+            Залишити
+          </button>
+
+          <button
+            type="button"
+            className="danger"
+            onClick={
+              onConfirm
+            }
+          >
+            <YatutIcon
+              name="trash"
+              size={16}
+            />
+
+            Видалити
+          </button>
         </div>
       </section>
     </div>
