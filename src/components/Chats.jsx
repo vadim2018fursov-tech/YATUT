@@ -5,6 +5,8 @@ import {
   useState,
 } from "react";
 
+import { createPortal } from "react-dom";
+
 import YatutIcon from "./YatutIcon";
 
 import {
@@ -2310,6 +2312,26 @@ function Chats({
     storyMoreOpen,
   ]);
 
+  useEffect(() => {
+    if (!storyViewer) {
+      return;
+    }
+
+    document.body.classList.add(
+      "story-viewer-open"
+    );
+
+    return () => {
+      document.body.classList.remove(
+        "story-viewer-open"
+      );
+    };
+  }, [
+    Boolean(
+      storyViewer
+    ),
+  ]);
+
   /* =======================================================
      LOAD CHATS
   ======================================================= */
@@ -4216,7 +4238,9 @@ function Chats({
     <>
       {storyViewer &&
         currentStory &&
-        currentStoryPerson && (
+        currentStoryPerson &&
+        createPortal(
+          (
           <section
             className="story-viewer"
             onTouchStart={
@@ -4545,6 +4569,8 @@ function Chats({
               </div>
             </div>
           </section>
+          ),
+          document.body
         )}
 
       <section
