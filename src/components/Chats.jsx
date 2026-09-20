@@ -907,14 +907,26 @@ function VoiceRecorder({
   };
 
   return (
-    <div className="voice-recorder">
+    <div
+      className={`voice-recorder ${
+        error
+          ? "has-error"
+          : "is-recording"
+      }`.trim()}
+    >
 
       <button
+        type="button"
+        className="voice-cancel-button"
         onClick={
           cancel
         }
+        aria-label="Скасувати запис"
       >
-        ×
+        <YatutIcon
+          name="close"
+          size={18}
+        />
       </button>
 
       <div className="voice-recording-status">
@@ -923,7 +935,9 @@ function VoiceRecorder({
 
         <div>
           <strong>
-            Голосове повідомлення
+            {error
+              ? "Мікрофон недоступний"
+              : "Записуємо"}
           </strong>
 
           <span>
@@ -936,16 +950,23 @@ function VoiceRecorder({
 
       </div>
 
-      <div className="voice-wave">
+      <div
+        className="voice-wave"
+        aria-hidden="true"
+      >
 
         {Array.from({
-          length: 20,
+          length: 18,
         }).map(
           (_, index) => (
             <span
               key={
                 index
               }
+              style={{
+                "--voice-wave-i":
+                  index,
+              }}
             />
           )
         )}
@@ -953,12 +974,18 @@ function VoiceRecorder({
       </div>
 
       <button
+        type="button"
+        className="voice-send-button"
         disabled={
           Boolean(error)
         }
         onClick={send}
+        aria-label="Надіслати голосове"
       >
-        ➤
+        <YatutIcon
+          name="send"
+          size={18}
+        />
       </button>
 
     </div>
