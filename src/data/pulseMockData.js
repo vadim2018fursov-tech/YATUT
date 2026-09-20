@@ -350,6 +350,12 @@ export const pulseVideos = [
     isTrending:
       false,
 
+    category:
+      "Подорожі",
+
+    published:
+      "сьогодні",
+
     recommendationType:
       "friends",
 
@@ -358,6 +364,250 @@ export const pulseVideos = [
 
     video:
       "",
+
+    qualitySources: {
+      auto:
+        "",
+      "1080p":
+        "",
+      "720p":
+        "",
+      "480p":
+        "",
+      "360p":
+        "",
+    },
+  },
+
+  {
+    id:
+      "vlog-kyiv-day",
+
+    type:
+      "vlog",
+
+    category:
+      "Міста",
+
+    title:
+      "Один день у Києві: від Подолу до вечірнього центру",
+
+    description:
+      "Довге відео про місто, людей, каву та місця, куди хочеться повертатися.",
+
+    author:
+      pulseUsers.maria,
+
+    city:
+      "kyiv",
+
+    location: {
+      name:
+        "Київ",
+
+      distance:
+        null,
+    },
+
+    peopleHere:
+      174,
+
+    friendsNearby:
+      8,
+
+    views:
+      184000,
+
+    duration:
+      "18:24",
+
+    published:
+      "2 дні тому",
+
+    isLive:
+      false,
+
+    isMoment:
+      false,
+
+    isTrending:
+      true,
+
+    recommendationType:
+      "forYou",
+
+    thumbnail:
+      "/assets/regions/kyiv/hero.webp",
+
+    video:
+      "",
+
+    qualitySources: {
+      auto:
+        "",
+      "1080p":
+        "",
+      "720p":
+        "",
+      "480p":
+        "",
+      "360p":
+        "",
+    },
+  },
+
+  {
+    id:
+      "vlog-odesa-weekend",
+
+    type:
+      "vlog",
+
+    category:
+      "Подорожі",
+
+    title:
+      "Вікенд в Одесі без плану",
+
+    description:
+      "Море, ранкові прогулянки, локальні заклади та випадкові знайомства.",
+
+    author:
+      pulseUsers.sofia,
+
+    city:
+      "odesa",
+
+    location: {
+      name:
+        "Одеса",
+
+      distance:
+        null,
+    },
+
+    peopleHere:
+      121,
+
+    friendsNearby:
+      5,
+
+    views:
+      127000,
+
+    duration:
+      "24:09",
+
+    published:
+      "4 дні тому",
+
+    isLive:
+      false,
+
+    isMoment:
+      false,
+
+    isTrending:
+      false,
+
+    recommendationType:
+      "friends",
+
+    thumbnail:
+      "/assets/regions/odesa/sidebar.webp",
+
+    video:
+      "",
+
+    qualitySources: {
+      auto:
+        "",
+      "1080p":
+        "",
+      "720p":
+        "",
+      "480p":
+        "",
+      "360p":
+        "",
+    },
+  },
+
+  {
+    id:
+      "vlog-lviv-food",
+
+    type:
+      "vlog",
+
+    category:
+      "Лайфстайл",
+
+    title:
+      "Львів, який не показують у туристичних гайдах",
+
+    description:
+      "Дворики, маленькі кавʼярні, розмови з місцевими та вечірнє місто.",
+
+    author:
+      pulseUsers.anastasia,
+
+    city:
+      "lviv",
+
+    location: {
+      name:
+        "Львів",
+
+      distance:
+        null,
+    },
+
+    peopleHere:
+      96,
+
+    friendsNearby:
+      3,
+
+    views:
+      214000,
+
+    duration:
+      "31:42",
+
+    published:
+      "1 тиждень тому",
+
+    isLive:
+      false,
+
+    isMoment:
+      false,
+
+    isTrending:
+      true,
+
+    recommendationType:
+      "city",
+
+    thumbnail:
+      "/assets/regions/lviv/hero.webp",
+
+    video:
+      "",
+
+    qualitySources: {
+      auto:
+        "",
+      "1080p":
+        "",
+      "720p":
+        "",
+      "480p":
+        "",
+      "360p":
+        "",
+    },
   },
 
   {
