@@ -1027,3 +1027,53 @@
     scroll-behavior: auto;
   }
 }
+
+
+/* =========================================================
+   PULSE MOBILE V2.1 — TABS CLOSER TO HEADER
+========================================================= */
+
+@media (max-width: 767px) {
+  .pulse-immersive__tabs {
+    top: 0 !important;
+
+    margin-bottom:
+      -54px !important;
+
+    padding:
+      6px 10px
+      7px !important;
+  }
+
+  .pulse-immersive__tabs button {
+    min-height:
+      38px !important;
+
+    padding:
+      0 13px !important;
+  }
+
+  .pulse-immersive__top-meta {
+    top: 55px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .pulse-immersive__tabs {
+    padding:
+      5px 8px
+      6px !important;
+  }
+
+  .pulse-immersive__tabs button {
+    min-height:
+      36px !important;
+
+    padding:
+      0 11px !important;
+  }
+
+  .pulse-immersive__top-meta {
+    top: 51px !important;
+  }
+}
