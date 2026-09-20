@@ -7102,3 +7102,210 @@
       ) !important;
   }
 }
+
+
+/* =========================================================
+   STORY VIEWER V5 — EDGE CONTROLS + CLEAN REPLY
+========================================================= */
+
+@media (max-width: 700px) {
+  body.story-viewer-open
+  .story-viewer-header {
+    top:
+      calc(
+        34px +
+        env(
+          safe-area-inset-top
+        )
+      ) !important;
+
+    right:
+      8px !important;
+    left:
+      8px !important;
+
+    display:
+      flex !important;
+    align-items:
+      center !important;
+
+    gap:
+      6px !important;
+  }
+
+  body.story-viewer-open
+  .story-author {
+    order:
+      1 !important;
+
+    width:
+      auto !important;
+    min-width:
+      0 !important;
+
+    margin:
+      0 !important;
+
+    flex:
+      0 0 auto !important;
+  }
+
+  body.story-viewer-open
+  .story-author
+  > div {
+    display:
+      none !important;
+  }
+
+  body.story-viewer-open
+  .story-author-avatar {
+    width:
+      40px !important;
+    height:
+      40px !important;
+    flex:
+      0 0 40px !important;
+
+    margin:
+      0 !important;
+  }
+
+  body.story-viewer-open
+  .story-more-wrap {
+    order:
+      2 !important;
+
+    margin:
+      0 !important;
+
+    flex:
+      0 0 auto !important;
+  }
+
+  body.story-viewer-open
+  .story-more {
+    width:
+      40px !important;
+    height:
+      40px !important;
+
+    margin:
+      0 !important;
+  }
+
+  body.story-viewer-open
+  .story-close {
+    order:
+      3 !important;
+
+    width:
+      40px !important;
+    height:
+      40px !important;
+
+    margin:
+      0 0 0 auto !important;
+  }
+
+  body.story-viewer-open
+  .story-bottom {
+    overflow:
+      visible !important;
+  }
+
+  body.story-viewer-open
+  .story-bottom::before,
+  body.story-viewer-open
+  .story-bottom::after,
+  body.story-viewer-open
+  .story-reply-bar::before,
+  body.story-viewer-open
+  .story-reply-bar::after,
+  body.story-viewer-open
+  .story-reply-bar input::before,
+  body.story-viewer-open
+  .story-reply-bar input::after {
+    content:
+      none !important;
+
+    display:
+      none !important;
+  }
+
+  body.story-viewer-open
+  .story-reply-bar {
+    position:
+      relative !important;
+
+    overflow:
+      hidden !important;
+
+    isolation:
+      isolate !important;
+
+    clip-path:
+      inset(
+        0
+        round
+        999px
+      ) !important;
+  }
+
+  body.story-viewer-open
+  .story-reply-bar
+  > * {
+    position:
+      relative !important;
+
+    z-index:
+      1 !important;
+  }
+
+  body.story-viewer-open
+  .story-hit-zone {
+    background:
+      transparent !important;
+
+    border:
+      0 !important;
+
+    box-shadow:
+      none !important;
+  }
+
+  body.story-viewer-open
+  .story-hit-zone::before,
+  body.story-viewer-open
+  .story-hit-zone::after {
+    content:
+      none !important;
+
+    display:
+      none !important;
+  }
+}
+
+@media (max-width: 390px) {
+  body.story-viewer-open
+  .story-viewer-header {
+    right:
+      6px !important;
+    left:
+      6px !important;
+
+    gap:
+      5px !important;
+  }
+
+  body.story-viewer-open
+  .story-author-avatar,
+  body.story-viewer-open
+  .story-more,
+  body.story-viewer-open
+  .story-close {
+    width:
+      38px !important;
+    height:
+      38px !important;
+  }
+}
