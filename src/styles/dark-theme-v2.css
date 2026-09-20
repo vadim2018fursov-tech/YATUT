@@ -1,0 +1,679 @@
+/* =========================================================
+   YATUT DARK THEME V2
+   Mobile navigation + unified dark surfaces
+========================================================= */
+
+/* ---------------------------------------------------------
+   TOP CREATE / NOTIFICATION PLACEMENT
+--------------------------------------------------------- */
+
+.topbar-create-action {
+  display: none;
+}
+
+.topbar-notification-action {
+  display: grid;
+}
+
+@media (max-width: 767px) {
+  .topbar-notification-action {
+    display: none !important;
+  }
+
+  .topbar-create-action {
+    display: grid !important;
+    border:
+      1px solid
+      rgba(99, 91, 255, .12) !important;
+    background:
+      linear-gradient(
+        145deg,
+        #efedff,
+        #e7e4ff
+      ) !important;
+    color:
+      #635bff !important;
+  }
+
+  .topbar-create-action.active {
+    border-color:
+      rgba(99, 91, 255, .28) !important;
+    background:
+      linear-gradient(
+        145deg,
+        #726aff,
+        #635bff
+      ) !important;
+    color:
+      #fff !important;
+    box-shadow:
+      0 8px 22px
+      rgba(99, 91, 255, .22) !important;
+  }
+}
+
+/* ---------------------------------------------------------
+   MOBILE NAV — NEW INFORMATION ARCHITECTURE
+--------------------------------------------------------- */
+
+@media (max-width: 767px) {
+  .mobile-nav {
+    grid-template-columns:
+      repeat(
+        5,
+        minmax(0, 1fr)
+      ) !important;
+  }
+
+  .mobile-nav > .mobile-nav-item {
+    position:
+      relative !important;
+  }
+
+  .mobile-nav-badge {
+    position:
+      absolute;
+    top:
+      3px;
+    left:
+      calc(50% + 5px);
+    z-index:
+      4;
+
+    min-width:
+      17px;
+    height:
+      17px;
+    padding:
+      0 4px;
+
+    display:
+      grid;
+    place-items:
+      center;
+
+    border:
+      2px solid
+      rgba(255, 255, 255, .96);
+    border-radius:
+      999px;
+
+    color:
+      #fff;
+
+    font-size:
+      8.5px;
+    font-weight:
+      900;
+    line-height:
+      1;
+
+    box-sizing:
+      border-box;
+    pointer-events:
+      none;
+  }
+
+  .mobile-nav-badge.is-chat {
+    background:
+      #635bff;
+  }
+
+  .mobile-nav-badge.is-notification {
+    background:
+      #ff4f8b;
+    box-shadow:
+      0 5px 12px
+      rgba(255, 79, 139, .25);
+  }
+
+  .mobile-chat-center .mobile-nav-icon {
+    color:
+      inherit;
+  }
+
+  .mobile-chat-center.active .mobile-nav-icon {
+    transform:
+      translateY(-1px);
+  }
+
+  .mobile-notification-button.active {
+    color:
+      #ff4f8b !important;
+  }
+
+  .mobile-notification-button.active
+  .mobile-nav-icon {
+    background:
+      #fff0f5 !important;
+    color:
+      #ff4f8b !important;
+  }
+}
+
+/* ---------------------------------------------------------
+   DARK FOUNDATION
+--------------------------------------------------------- */
+
+body.yatut-dark-mode {
+  --dark-page:
+    #12131a;
+  --dark-page-deep:
+    #0f1016;
+  --dark-surface:
+    #1b1d26;
+  --dark-surface-raised:
+    #20222c;
+  --dark-surface-soft:
+    #252733;
+  --dark-border:
+    rgba(255, 255, 255, .085);
+  --dark-text:
+    #f4f5f8;
+  --dark-muted:
+    #9297a5;
+  --dark-violet:
+    #918bff;
+  --dark-violet-soft:
+    #302d50;
+
+  background:
+    var(--dark-page-deep) !important;
+  color:
+    var(--dark-text);
+}
+
+body.yatut-dark-mode .app,
+body.yatut-dark-mode .layout,
+body.yatut-dark-mode .main-content {
+  background:
+    var(--dark-page) !important;
+}
+
+body.yatut-dark-mode .topbar {
+  border-bottom:
+    1px solid
+    var(--dark-border) !important;
+  background:
+    rgba(20, 21, 29, .90) !important;
+  box-shadow:
+    0 8px 30px
+    rgba(0, 0, 0, .12) !important;
+  backdrop-filter:
+    blur(24px)
+    saturate(1.12);
+  -webkit-backdrop-filter:
+    blur(24px)
+    saturate(1.12);
+}
+
+body.yatut-dark-mode .brand-tut {
+  color:
+    var(--dark-text) !important;
+}
+
+body.yatut-dark-mode .topbar-actions
+.icon-button,
+body.yatut-dark-mode .profile-mini {
+  border:
+    1px solid
+    rgba(255, 255, 255, .055) !important;
+  background:
+    #232530 !important;
+  color:
+    #b7bbc7 !important;
+  box-shadow:
+    inset 0 1px 0
+    rgba(255, 255, 255, .035) !important;
+}
+
+body.yatut-dark-mode .topbar-actions
+.icon-button.active,
+body.yatut-dark-mode .profile-mini {
+  background:
+    #302d50 !important;
+  color:
+    #bcb7ff !important;
+}
+
+body.yatut-dark-mode
+.topbar-create-action {
+  border-color:
+    rgba(145, 139, 255, .22) !important;
+  background:
+    linear-gradient(
+      145deg,
+      #353158,
+      #2d2a4a
+    ) !important;
+  color:
+    #c6c1ff !important;
+}
+
+body.yatut-dark-mode
+.topbar-create-action.active {
+  background:
+    linear-gradient(
+      145deg,
+      #746cff,
+      #635bff
+    ) !important;
+  color:
+    #fff !important;
+}
+
+/* ---------------------------------------------------------
+   DARK MOBILE NAV — SEPARATED GLASS CAPSULE
+--------------------------------------------------------- */
+
+@media (max-width: 767px) {
+  body.yatut-dark-mode
+  .mobile-nav {
+    border:
+      1px solid
+      rgba(255, 255, 255, .13) !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(40, 41, 53, .94),
+        rgba(29, 30, 40, .92)
+      ) !important;
+
+    box-shadow:
+      0 20px 52px
+      rgba(0, 0, 0, .42),
+      0 0 0 1px
+      rgba(99, 91, 255, .06),
+      inset 0 1px 0
+      rgba(255, 255, 255, .10) !important;
+
+    backdrop-filter:
+      blur(28px)
+      saturate(1.2) !important;
+    -webkit-backdrop-filter:
+      blur(28px)
+      saturate(1.2) !important;
+  }
+
+  body.yatut-dark-mode
+  .mobile-nav::before {
+    content:
+      "";
+    position:
+      absolute;
+    inset:
+      -1px;
+    z-index:
+      -1;
+    border-radius:
+      inherit;
+    background:
+      radial-gradient(
+        circle at 50% 110%,
+        rgba(99, 91, 255, .22),
+        transparent 46%
+      );
+    pointer-events:
+      none;
+  }
+
+  body.yatut-dark-mode
+  .mobile-nav
+  > button,
+  body.yatut-dark-mode
+  .mobile-nav
+  > button:not(.mobile-create-button) {
+    background:
+      transparent !important;
+    color:
+      #b6bac6 !important;
+    box-shadow:
+      none !important;
+  }
+
+  body.yatut-dark-mode
+  .mobile-nav
+  > button.active,
+  body.yatut-dark-mode
+  .mobile-nav
+  > button[aria-current="page"],
+  body.yatut-dark-mode
+  .mobile-nav
+  .mobile-pulse-button.active,
+  body.yatut-dark-mode
+  .mobile-notification-button.active {
+    border:
+      1px solid
+      rgba(145, 139, 255, .16) !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(61, 57, 96, .96),
+        rgba(45, 42, 73, .96)
+      ) !important;
+
+    color:
+      #d1cdff !important;
+
+    box-shadow:
+      0 8px 22px
+      rgba(0, 0, 0, .20),
+      inset 0 1px 0
+      rgba(255, 255, 255, .065) !important;
+  }
+
+  body.yatut-dark-mode
+  .mobile-notification-button.active {
+    color:
+      #ff86ad !important;
+  }
+
+  body.yatut-dark-mode
+  .mobile-notification-button.active
+  .mobile-nav-icon {
+    background:
+      transparent !important;
+    color:
+      #ff86ad !important;
+  }
+
+  body.yatut-dark-mode
+  .mobile-nav
+  .mobile-profile-avatar {
+    background:
+      transparent !important;
+    color:
+      inherit !important;
+  }
+
+  body.yatut-dark-mode
+  .mobile-nav-badge {
+    border-color:
+      #292b37 !important;
+  }
+}
+
+/* ---------------------------------------------------------
+   HOME — ONE CONTINUOUS DARK LANGUAGE
+--------------------------------------------------------- */
+
+body.yatut-dark-mode .feed-column {
+  background:
+    var(--dark-page) !important;
+}
+
+body.yatut-dark-mode
+.yatut-stories-row {
+  background:
+    transparent !important;
+}
+
+body.yatut-dark-mode
+.yatut-story-circle-name,
+body.yatut-dark-mode
+.yatut-add-story {
+  color:
+    #aeb2bf !important;
+}
+
+body.yatut-dark-mode
+.yatut-story-circle-inner {
+  border-color:
+    #181922 !important;
+  background:
+    #26283a !important;
+}
+
+body.yatut-dark-mode
+.yatut-story-circle-letter {
+  color:
+    #aaa4ff !important;
+}
+
+body.yatut-dark-mode
+.yatut-add-story-avatar {
+  background:
+    linear-gradient(
+      145deg,
+      #353158,
+      #282a3d
+    ) !important;
+  color:
+    #bdb8ff !important;
+}
+
+body.yatut-dark-mode
+.yatut-add-story-avatar i,
+body.yatut-dark-mode
+.yatut-story-presence {
+  border-color:
+    #181922 !important;
+}
+
+body.yatut-dark-mode
+.feed-tabs {
+  border:
+    1px solid
+    var(--dark-border) !important;
+  background:
+    #1b1d26 !important;
+  box-shadow:
+    inset 0 1px 0
+    rgba(255, 255, 255, .035) !important;
+}
+
+body.yatut-dark-mode
+.feed-tab {
+  color:
+    #8e93a0 !important;
+}
+
+body.yatut-dark-mode
+.feed-tab.active {
+  background:
+    linear-gradient(
+      145deg,
+      #353158,
+      #2d2a4a
+    ) !important;
+  color:
+    #c4bfff !important;
+  box-shadow:
+    inset 0 1px 0
+    rgba(255, 255, 255, .04) !important;
+}
+
+body.yatut-dark-mode
+.post-composer,
+body.yatut-dark-mode
+.post-card,
+body.yatut-dark-mode
+.card,
+body.yatut-dark-mode
+.temporary-page {
+  border-color:
+    var(--dark-border) !important;
+  background:
+    var(--dark-surface) !important;
+  box-shadow:
+    0 12px 32px
+    rgba(0, 0, 0, .15),
+    inset 0 1px 0
+    rgba(255, 255, 255, .025) !important;
+}
+
+body.yatut-dark-mode
+.composer-main textarea {
+  background:
+    var(--dark-surface-soft) !important;
+  color:
+    var(--dark-text) !important;
+}
+
+body.yatut-dark-mode
+.composer-main textarea::placeholder {
+  color:
+    #767b89 !important;
+}
+
+body.yatut-dark-mode
+.composer-main .avatar,
+body.yatut-dark-mode
+.post-author .avatar,
+body.yatut-dark-mode
+.comment-avatar {
+  background:
+    #302d50 !important;
+  color:
+    #bbb6ff !important;
+}
+
+body.yatut-dark-mode
+.composer-footer {
+  border-top-color:
+    var(--dark-border) !important;
+}
+
+body.yatut-dark-mode
+.composer-tools button,
+body.yatut-dark-mode
+.post-actions > button {
+  color:
+    #a5a9b5 !important;
+}
+
+body.yatut-dark-mode
+.composer-tools button:hover,
+body.yatut-dark-mode
+.composer-tools button.active,
+body.yatut-dark-mode
+.post-actions > button:hover,
+body.yatut-dark-mode
+.post-actions > button.reaction-active {
+  background:
+    #2d2a48 !important;
+  color:
+    #bcb7ff !important;
+}
+
+body.yatut-dark-mode
+.publish-button {
+  background:
+    linear-gradient(
+      145deg,
+      #746cff,
+      #635bff
+    ) !important;
+  color:
+    #fff !important;
+  box-shadow:
+    0 10px 24px
+    rgba(99, 91, 255, .18) !important;
+}
+
+body.yatut-dark-mode
+.post-name,
+body.yatut-dark-mode
+.post-content p,
+body.yatut-dark-mode
+.comment-bubble strong,
+body.yatut-dark-mode
+.temporary-page h1 {
+  color:
+    var(--dark-text) !important;
+}
+
+body.yatut-dark-mode
+.post-meta,
+body.yatut-dark-mode
+.post-stats,
+body.yatut-dark-mode
+.stat-link,
+body.yatut-dark-mode
+.comment-meta-actions,
+body.yatut-dark-mode
+.temporary-page p {
+  color:
+    var(--dark-muted) !important;
+}
+
+body.yatut-dark-mode
+.post-header,
+body.yatut-dark-mode
+.post-stats,
+body.yatut-dark-mode
+.post-actions,
+body.yatut-dark-mode
+.comments-section {
+  border-color:
+    var(--dark-border) !important;
+}
+
+body.yatut-dark-mode
+.comment-bubble,
+body.yatut-dark-mode
+.comment-input-box,
+body.yatut-dark-mode
+.comments-empty {
+  border-color:
+    var(--dark-border) !important;
+  background:
+    #22242e !important;
+  color:
+    #dfe1e7 !important;
+}
+
+body.yatut-dark-mode
+.comment-input-box textarea {
+  color:
+    var(--dark-text) !important;
+}
+
+body.yatut-dark-mode
+.comment-input-box textarea::placeholder {
+  color:
+    #767b89 !important;
+}
+
+body.yatut-dark-mode
+.post-delete-button,
+body.yatut-dark-mode
+.post-menu-button {
+  color:
+    #9ea3af !important;
+}
+
+/* ---------------------------------------------------------
+   MOBILE DARK PAGE SPACING / SEPARATION
+--------------------------------------------------------- */
+
+@media (max-width: 767px) {
+  body.yatut-dark-mode
+  .main-content {
+    min-height:
+      100dvh;
+  }
+
+  body.yatut-dark-mode
+  .feed-column {
+    padding-bottom:
+      8px;
+  }
+
+  body.yatut-dark-mode
+  .post-composer,
+  body.yatut-dark-mode
+  .post-card {
+    border:
+      1px solid
+      var(--dark-border) !important;
+  }
+
+  body.yatut-dark-mode
+  .post-composer {
+    margin-top:
+      2px;
+  }
+}

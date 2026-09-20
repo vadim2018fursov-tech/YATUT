@@ -34,6 +34,7 @@ import "./mobile-app-hotfix.css";
 import "./styles/chat-conversation-mobile.css";
 import "./styles/pulse-long-video-mobile.css";
 import "./styles/mobile-more-menu.css";
+import "./styles/dark-theme-v2.css";
 
 import Stories from "./components/Stories";
 import Profile from "./components/Profile";
@@ -181,15 +182,15 @@ const MOBILE_NAV = [
   },
 
   {
-    id: "create",
-    icon: "Я",
-    title: "Створити",
-  },
-
-  {
     id: "chats",
     icon: "chats",
     title: "Чати",
+  },
+
+  {
+    id: "notifications",
+    icon: "bell",
+    title: "Сповіщення",
   },
 
   {
@@ -3656,10 +3657,10 @@ function TopBar({
             />
           </button>
 
-          {/* NOTIFICATIONS */}
+          {/* DESKTOP NOTIFICATIONS */}
 
           <button
-            className={`icon-button ${
+            className={`icon-button topbar-notification-action ${
               notificationOpen
                 ? "active"
                 : ""
@@ -3688,6 +3689,46 @@ function TopBar({
                   : unreadNotifications}
               </span>
             )}
+          </button>
+
+          {/* MOBILE CREATE */}
+
+          <button
+            className={`icon-button topbar-create-action ${
+              [
+                "create",
+                "createMedia",
+                "creatorStudio",
+              ].includes(
+                currentPage
+              )
+                ? "active"
+                : ""
+            }`.trim()}
+            type="button"
+            onClick={() =>
+              onNavigate(
+                "create"
+              )
+            }
+            aria-label="Створити"
+            aria-current={
+              [
+                "create",
+                "createMedia",
+                "creatorStudio",
+              ].includes(
+                currentPage
+              )
+                ? "page"
+                : undefined
+            }
+            title="Створити"
+          >
+            <YatutIcon
+              name="plus"
+              size={21}
+            />
           </button>
 
           {/* MOBILE MENU */}
@@ -3862,72 +3903,43 @@ function MobileNavigation({
   currentPage,
   onNavigate,
   unreadChatMessages,
+  notificationOpen,
+  unreadNotifications,
+  onToggleNotifications,
 }) {
   return (
-    <nav className="mobile-nav">
+    <nav
+      className="mobile-nav"
+      aria-label="Головна навігація"
+    >
       {MOBILE_NAV.map(
         (
           item
         ) => {
-          if (
+          const isNotifications =
             item.id ===
-            "create"
-          ) {
-            return (
-              <button
-                key={
-                  item.id
-                }
-                className={`mobile-create-button ${
-                  [
-                    "create",
-                    "createMedia",
-                    "creatorStudio",
-                  ].includes(
-                    currentPage
-                  )
-                    ? "active"
-                    : ""
-                }`.trim()}
-                type="button"
-                aria-current={
-                  [
-                    "create",
-                    "createMedia",
-                    "creatorStudio",
-                  ].includes(
-                    currentPage
-                  )
-                    ? "page"
-                    : undefined
-                }
-                onClick={() =>
-                  onNavigate(
-                    "create"
-                  )
-                }
-              >
-                <span>
-                  Я
-                </span>
-
-                <small>
-                  Створити
-                </small>
-              </button>
-            );
-          }
+            "notifications";
 
           const active =
-            currentPage ===
-            item.id;
+            isNotifications
+              ? notificationOpen
+              : currentPage ===
+                item.id;
+
+          const badgeValue =
+            item.id ===
+            "chats"
+              ? unreadChatMessages
+              : isNotifications
+              ? unreadNotifications
+              : 0;
 
           return (
             <button
               key={
                 item.id
               }
-              className={`${
+              className={`mobile-nav-item ${
                 active
                   ? "active"
                   : ""
@@ -3936,21 +3948,45 @@ function MobileNavigation({
                 "pulse"
                   ? "mobile-pulse-button"
                   : ""
+              } ${
+                item.id ===
+                "chats"
+                  ? "mobile-chat-center"
+                  : ""
+              } ${
+                isNotifications
+                  ? "mobile-notification-button"
+                  : ""
               }`.trim()}
               type="button"
               aria-current={
+                !isNotifications &&
                 active
                   ? "page"
                   : undefined
               }
-              onClick={() =>
+              aria-expanded={
+                isNotifications
+                  ? notificationOpen
+                  : undefined
+              }
+              data-notification-trigger={
+                isNotifications
+                  ? ""
+                  : undefined
+              }
+              onClick={() => {
+                if (
+                  isNotifications
+                ) {
+                  onToggleNotifications?.();
+
+                  return;
+                }
+
                 onNavigate(
                   item.id
-                )
-              }
-              style={{
-                position:
-                  "relative",
+                );
               }}
             >
               {item.id ===
@@ -3959,80 +3995,36 @@ function MobileNavigation({
                   В
                 </span>
               ) : (
-                <span>
+                <span className="mobile-nav-icon">
                   <YatutIcon
                     name={
                       item.icon
                     }
-                    size={21}
+                    size={
+                      item.id ===
+                      "chats"
+                        ? 22
+                        : 21
+                    }
                   />
                 </span>
               )}
 
-              {item.id ===
-                "chats" &&
-                unreadChatMessages >
-                  0 && (
-                  <span
-                    style={{
-                      position:
-                        "absolute",
-
-                      top:
-                        3,
-
-                      left:
-                        "calc(50% + 5px)",
-
-                      minWidth:
-                        17,
-
-                      height:
-                        17,
-
-                      padding:
-                        "0 4px",
-
-                      display:
-                        "grid",
-
-                      placeItems:
-                        "center",
-
-                      border:
-                        "2px solid #fff",
-
-                      borderRadius:
-                        999,
-
-                      background:
-                        "#635BFF",
-
-                      color:
-                        "#fff",
-
-                      fontSize:
-                        9,
-
-                      fontWeight:
-                        900,
-
-                      lineHeight:
-                        1,
-
-                      boxSizing:
-                        "border-box",
-
-                      pointerEvents:
-                        "none",
-                    }}
-                  >
-                    {unreadChatMessages >
-                    9
-                      ? "9+"
-                      : unreadChatMessages}
-                  </span>
-                )}
+              {badgeValue >
+                0 && (
+                <span
+                  className={`mobile-nav-badge ${
+                    isNotifications
+                      ? "is-notification"
+                      : "is-chat"
+                  }`.trim()}
+                >
+                  {badgeValue >
+                  9
+                    ? "9+"
+                    : badgeValue}
+                </span>
+              )}
 
               <small>
                 {
@@ -4917,6 +4909,24 @@ function App() {
           unreadChatMessages={
             unreadChatMessages
           }
+          notificationOpen={
+            notificationsOpen
+          }
+          unreadNotifications={
+            unreadNotifications
+          }
+          onToggleNotifications={() => {
+            setMobileMenuOpen(
+              false
+            );
+
+            setNotificationsOpen(
+              (
+                previous
+              ) =>
+                !previous
+            );
+          }}
         />
       )}
     </div>
