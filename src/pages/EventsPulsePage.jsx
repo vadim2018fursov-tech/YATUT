@@ -2,6 +2,8 @@ import {
   Activity,
   ArrowRight,
   CalendarDays,
+  Compass,
+  Plus,
   Clock3,
   Eye,
   MapPin,
@@ -12,6 +14,7 @@ import {
 
 import {
   useMemo,
+  useState,
 } from "react";
 
 import Events from "../components/Events";
@@ -327,6 +330,11 @@ function PulseEventCard({
 export default function EventsPulsePage({
   onNavigate,
 }) {
+  const [
+    createRequestKey,
+    setCreateRequestKey,
+  ] = useState(0);
+
   const eventVideos =
     useMemo(
       () => {
@@ -469,6 +477,22 @@ export default function EventsPulsePage({
               type="button"
               className="is-primary"
               onClick={() =>
+                setCreateRequestKey(
+                  (value) =>
+                    value + 1
+                )
+              }
+            >
+              <Plus
+                size={17}
+              />
+
+              Створити подію
+            </button>
+
+            <button
+              type="button"
+              onClick={() =>
                 onNavigate?.(
                   "live"
                 )
@@ -479,21 +503,6 @@ export default function EventsPulsePage({
               />
 
               LIVE зараз
-            </button>
-
-            <button
-              type="button"
-              onClick={() =>
-                onNavigate?.(
-                  "pulse"
-                )
-              }
-            >
-              <Activity
-                size={17}
-              />
-
-              Відкрити PULSE
             </button>
           </div>
         </div>
@@ -597,6 +606,114 @@ export default function EventsPulsePage({
             </small>
           </div>
         </article>
+      </section>
+
+      {/* =================================================
+          YATUT EVENT ECOSYSTEM
+      ================================================= */}
+
+      <section className="events-pulse-bridges">
+        <button
+          type="button"
+          className="events-pulse-bridge events-pulse-bridge--communities"
+          onClick={() =>
+            onNavigate?.(
+              "communities"
+            )
+          }
+        >
+          <span className="events-pulse-bridge__icon">
+            <Users
+              size={21}
+            />
+          </span>
+
+          <div>
+            <small>
+              СПІЛЬНОТИ
+            </small>
+
+            <strong>
+              Подія починається зі своїх
+            </strong>
+
+            <p>
+              Створюй зустрічі від імені спільнот і збирай учасників в одному просторі.
+            </p>
+          </div>
+
+          <ArrowRight
+            size={18}
+          />
+        </button>
+
+        <button
+          type="button"
+          className="events-pulse-bridge events-pulse-bridge--nearby"
+          onClick={() =>
+            onNavigate?.(
+              "nearby"
+            )
+          }
+        >
+          <span className="events-pulse-bridge__icon">
+            <Compass
+              size={21}
+            />
+          </span>
+
+          <div>
+            <small>
+              ПОРУЧ
+            </small>
+
+            <strong>
+              Знайди, що відбувається поряд
+            </strong>
+
+            <p>
+              Події стають частиною живої карти міста разом із місцями, людьми та активностями.
+            </p>
+          </div>
+
+          <ArrowRight
+            size={18}
+          />
+        </button>
+
+        <button
+          type="button"
+          className="events-pulse-bridge events-pulse-bridge--pulse"
+          onClick={() =>
+            onNavigate?.(
+              "pulse"
+            )
+          }
+        >
+          <span className="events-pulse-bridge__icon">
+            <Activity
+              size={21}
+            />
+          </span>
+
+          <div>
+            <small>
+              PULSE
+            </small>
+
+            <strong>
+              Побач подію наживо
+            </strong>
+
+            <p>
+              LIVE, кліпи й відео з місця показують атмосферу ще до того, як ти приєднаєшся.
+            </p>
+          </div>
+
+          <ArrowRight
+            size={18}
+          />
+        </button>
       </section>
 
       {/* =================================================
@@ -896,6 +1013,9 @@ export default function EventsPulsePage({
         <Events
           onNavigate={
             onNavigate
+          }
+          createRequestKey={
+            createRequestKey
           }
         />
       </section>
