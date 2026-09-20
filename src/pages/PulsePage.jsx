@@ -15,7 +15,6 @@ import PulseWave from "../components/pulse/PulseWave";
 
 import PulseMobileHeader from "../components/pulse/PulseMobileHeader";
 import PulseMobileTabs from "../components/pulse/PulseMobileTabs";
-import PulseMobileNav from "../components/pulse/PulseMobileNav";
 
 import {
   pulseRecommendations,
@@ -444,11 +443,6 @@ export default function PulsePage({
         />
       </div>
 
-      <PulseMobileNav
-        onNavigate={
-          onNavigate
-        }
-      />
     </>
   );
 }
