@@ -7,6 +7,8 @@ import {
 
 import "./App.css";
 import "./styles/global-create.css";
+import "./styles/spaces-premium.css";
+import "./styles/community-events.css";
 import "./styles/now-page-v2.css";
 import "./styles/pulse-tokens.css";
 import "./styles/pulse-page.css";
