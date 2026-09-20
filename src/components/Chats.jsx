@@ -3308,10 +3308,22 @@ function Chats({
   function handleStoryTouchStart(
     event
   ) {
-    storyTouchStartRef.current =
-      event.touches?.[0]
-        ?.clientX ??
-      null;
+    const touch =
+      event.touches?.[0];
+
+    if (!touch) {
+      storyTouchStartRef.current =
+        null;
+
+      return;
+    }
+
+    storyTouchStartRef.current = {
+      x:
+        touch.clientX,
+      y:
+        touch.clientY,
+    };
   }
 
   function handleStoryTouchEnd(
@@ -3320,34 +3332,66 @@ function Chats({
     const start =
       storyTouchStartRef.current;
 
-    const end =
-      event.changedTouches?.[0]
-        ?.clientX;
+    const touch =
+      event.changedTouches?.[0];
 
     storyTouchStartRef.current =
       null;
 
     if (
-      start == null ||
-      end == null
+      !start ||
+      !touch
     ) {
       return;
     }
 
-    const delta =
-      end - start;
+    const deltaX =
+      touch.clientX -
+      start.x;
 
-    if (
+    const deltaY =
+      touch.clientY -
+      start.y;
+
+    const horizontalDistance =
       Math.abs(
-        delta
-      ) <
-      45
+        deltaX
+      );
+
+    const verticalDistance =
+      Math.abs(
+        deltaY
+      );
+
+    if (
+      deltaY >
+        72 &&
+      verticalDistance >
+        horizontalDistance *
+          1.15
     ) {
+      storySuppressTapRef.current =
+        true;
+
+      closeStory();
+
       return;
     }
 
     if (
-      delta >
+      horizontalDistance <
+        45 ||
+      horizontalDistance <=
+        verticalDistance
+    ) {
+      return;
+    }
+
+    storySuppressTapRef.current =
+      true;
+
+    if (
+      deltaX >
       0
     ) {
       goToPreviousStory();
