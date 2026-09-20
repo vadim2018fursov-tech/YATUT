@@ -3547,8 +3547,12 @@ function Chats({
                     !newChatOpen
                   )
                 }
+                aria-label="Новий чат"
               >
-                +
+                <YatutIcon
+                  name="edit"
+                  size={18}
+                />
               </button>
 
               {newChatOpen && (
@@ -3564,7 +3568,22 @@ function Chats({
                       );
                     }}
                   >
-                    👥 Нова група
+                    <span className="create-chat-avatar group-create">
+                      <YatutIcon
+                        name="friends"
+                        size={17}
+                      />
+                    </span>
+
+                    <div>
+                      <strong>
+                        Нова група
+                      </strong>
+
+                      <small>
+                        Створити спільний чат
+                      </small>
+                    </div>
                   </button>
 
                   {Object.values(
@@ -3621,7 +3640,10 @@ function Chats({
 
           <label className="chat-search">
 
-            🔎
+            <YatutIcon
+              name="search"
+              size={18}
+            />
 
             <input
               value={
@@ -3633,81 +3655,431 @@ function Chats({
                     .value
                 )
               }
-              placeholder="Пошук у чатах"
+              placeholder="Пошук"
             />
 
           </label>
 
-          <div className="chat-items">
+          <section className="chat-activities-mobile">
 
-            {filteredChats.map(
-              (chat) => (
+            <div className="chat-mobile-section-title">
+              Активні
+            </div>
+
+            <div className="chat-activity-row">
+
+              {onlinePeople.map(
+                (person) => (
+                  <button
+                    key={
+                      person.id
+                    }
+                    type="button"
+                    onClick={() =>
+                      createDirectChat(
+                        person.id
+                      )
+                    }
+                  >
+                    <span className="chat-activity-avatar">
+                      {
+                        person.initials
+                      }
+
+                      <i />
+                    </span>
+
+                    <small>
+                      {
+                        person.name.split(
+                          " "
+                        )[0]
+                      }
+                    </small>
+                  </button>
+                )
+              )}
+
+            </div>
+
+          </section>
+
+          <div className="chat-list-section-head">
+
+            <strong>
+              {chatListView ===
+              "archive"
+                ? "Архів"
+                : chatListView ===
+                  "hidden"
+                ? "Приховані"
+                : "Повідомлення"}
+            </strong>
+
+            <div className="chat-list-view-switch">
+
+              <button
+                type="button"
+                className={
+                  chatListView ===
+                  "inbox"
+                    ? "active"
+                    : ""
+                }
+                onClick={() => {
+                  setChatListView(
+                    "inbox"
+                  );
+                  setChatActionChatId(
+                    null
+                  );
+                }}
+              >
+                Усі
+              </button>
+
+              {(archivedCount >
+                0 ||
+                chatListView ===
+                  "archive") && (
                 <button
-                  key={chat.id}
-                  className={`chat-item ${
-                    activeChatId ===
-                    chat.id
+                  type="button"
+                  className={
+                    chatListView ===
+                    "archive"
                       ? "active"
                       : ""
-                  }`}
-                  onClick={() =>
-                    openChat(
-                      chat
-                    )
                   }
+                  onClick={() => {
+                    setChatListView(
+                      "archive"
+                    );
+                    setChatActionChatId(
+                      null
+                    );
+                  }}
                 >
+                  Архів
+                </button>
+              )}
 
-                  <div
-                    className={`chat-avatar ${
-                      chat.type ===
-                      "group"
-                        ? "group"
+              {(hiddenCount >
+                0 ||
+                chatListView ===
+                  "hidden") && (
+                <button
+                  type="button"
+                  className={
+                    chatListView ===
+                    "hidden"
+                      ? "active"
+                      : ""
+                  }
+                  onClick={() => {
+                    setChatListView(
+                      "hidden"
+                    );
+                    setChatActionChatId(
+                      null
+                    );
+                  }}
+                >
+                  Приховані
+                </button>
+              )}
+
+            </div>
+
+          </div>
+
+          <div className="chat-items">
+
+            {filteredChats.length ? (
+              filteredChats.map(
+                (chat) => (
+                  <button
+                    key={
+                      chat.id
+                    }
+                    className={`chat-item ${
+                      activeChatId ===
+                      chat.id
+                        ? "active"
                         : ""
-                    }`}
+                    } ${
+                      chatActionChatId ===
+                      chat.id
+                        ? "context-open"
+                        : ""
+                    } ${
+                      chat.muted
+                        ? "is-muted"
+                        : ""
+                    }`.trim()}
+                    onClick={() =>
+                      handleChatItemClick(
+                        chat
+                      )
+                    }
+                    onPointerDown={(event) =>
+                      startChatLongPress(
+                        chat,
+                        event
+                      )
+                    }
+                    onPointerMove={
+                      moveChatLongPress
+                    }
+                    onPointerUp={
+                      endChatLongPress
+                    }
+                    onPointerCancel={
+                      endChatLongPress
+                    }
+                    onPointerLeave={(event) => {
+                      if (
+                        event.pointerType ===
+                        "mouse"
+                      ) {
+                        endChatLongPress();
+                      }
+                    }}
+                    onContextMenu={(event) => {
+                      event.preventDefault();
+
+                      setChatActionPoint({
+                        x:
+                          event.clientX,
+                        y:
+                          event.clientY,
+                      });
+
+                      setChatActionChatId(
+                        chat.id
+                      );
+                    }}
                   >
-                    {chatInitials(
-                      chat
-                    )}
 
-                    {chat.personId &&
-                      PEOPLE[
-                        chat.personId
-                      ]?.online && (
-                        <span />
-                      )}
-                  </div>
-
-                  <div className="chat-item-content">
-
-                    <strong>
-                      {chatTitle(
+                    <div
+                      className={`chat-avatar ${
+                        chat.type ===
+                        "group"
+                          ? "group"
+                          : ""
+                      } ${
+                        chat.personId &&
+                        PEOPLE[
+                          chat.personId
+                        ]?.online
+                          ? "is-online"
+                          : ""
+                      }`.trim()}
+                    >
+                      {chatInitials(
                         chat
                       )}
-                    </strong>
-
-                    <p>
-                      {chat.communityId &&
-                        "👥 "}
-                      {chat.lastMessage ||
-                        "Діалог"}
-                    </p>
-
-                  </div>
-
-                  {chat.unread >
-                    0 && (
-                    <div className="chat-unread">
-                      {
-                        chat.unread
-                      }
                     </div>
-                  )}
 
-                </button>
+                    <div className="chat-item-content">
+
+                      <strong>
+                        {chatTitle(
+                          chat
+                        )}
+                      </strong>
+
+                      <p>
+                        {chat.communityId &&
+                          "Спільнота · "}
+                        {chat.lastMessage ||
+                          "Діалог"}
+                      </p>
+
+                    </div>
+
+                    <div className="chat-item-meta">
+
+                      <time>
+                        {formatChatListTime(
+                          chat.updatedAt
+                        )}
+                      </time>
+
+                      {chat.muted && (
+                        <span className="chat-muted-indicator">
+                          <YatutIcon
+                            name="volumeOff"
+                            size={13}
+                          />
+                        </span>
+                      )}
+
+                      {chat.unread >
+                        0 && (
+                        <span className="chat-unread">
+                          {
+                            chat.unread
+                          }
+                        </span>
+                      )}
+
+                    </div>
+
+                  </button>
+                )
               )
+            ) : (
+              <div className="chat-list-empty">
+                <YatutIcon
+                  name={
+                    chatListView ===
+                    "archive"
+                      ? "archive"
+                      : chatListView ===
+                        "hidden"
+                      ? "eyeOff"
+                      : "chats"
+                  }
+                  size={24}
+                />
+
+                <strong>
+                  {chatListView ===
+                  "archive"
+                    ? "Архів порожній"
+                    : chatListView ===
+                      "hidden"
+                    ? "Немає прихованих чатів"
+                    : "Чатів поки немає"}
+                </strong>
+
+                <span>
+                  Утримуйте чат, щоб керувати ним.
+                </span>
+              </div>
             )}
 
           </div>
+
+          {chatActionChat && (
+            <div
+              ref={
+                chatActionRef
+              }
+              className="chat-list-action-popover"
+              style={{
+                "--chat-action-x":
+                  `${chatActionPoint.x}px`,
+                "--chat-action-y":
+                  `${chatActionPoint.y}px`,
+              }}
+            >
+
+              <div className="chat-list-action-head">
+
+                <span className="chat-list-action-avatar">
+                  {chatInitials(
+                    chatActionChat
+                  )}
+                </span>
+
+                <div>
+                  <strong>
+                    {chatTitle(
+                      chatActionChat
+                    )}
+                  </strong>
+
+                  <small>
+                    Керування чатом
+                  </small>
+                </div>
+
+              </div>
+
+              <div className="chat-list-action-separator" />
+
+              <button
+                type="button"
+                onClick={() =>
+                  toggleArchiveChat(
+                    chatActionChat
+                  )
+                }
+              >
+                <span>
+                  <YatutIcon
+                    name="archive"
+                    size={17}
+                  />
+                </span>
+
+                {chatActionChat.archived
+                  ? "Повернути з архіву"
+                  : "Перемістити в архів"}
+              </button>
+
+              <button
+                type="button"
+                onClick={() =>
+                  toggleHiddenChat(
+                    chatActionChat
+                  )
+                }
+              >
+                <span>
+                  <YatutIcon
+                    name="eyeOff"
+                    size={17}
+                  />
+                </span>
+
+                {chatActionChat.hidden
+                  ? "Показати чат"
+                  : "Приховати"}
+              </button>
+
+              <button
+                type="button"
+                onClick={() =>
+                  toggleMutedChat(
+                    chatActionChat
+                  )
+                }
+              >
+                <span>
+                  <YatutIcon
+                    name="volumeOff"
+                    size={17}
+                  />
+                </span>
+
+                {chatActionChat.muted
+                  ? "Увімкнути сповіщення"
+                  : "Вимкнути сповіщення"}
+              </button>
+
+              <button
+                type="button"
+                className="danger"
+                onClick={() =>
+                  removeChatFromList(
+                    chatActionChat
+                  )
+                }
+              >
+                <span>
+                  <YatutIcon
+                    name="trash"
+                    size={17}
+                  />
+                </span>
+
+                Видалити чат
+              </button>
+
+            </div>
+          )}
 
         </aside>
 
