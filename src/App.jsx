@@ -91,9 +91,9 @@ const MAIN_NAV = [
   },
 
   {
-    id: "pulse",
-    icon: "pulse",
-    title: "PULSE",
+    id: "now",
+    icon: "now",
+    title: "Зараз",
   },
 
   {
@@ -167,9 +167,9 @@ const MOBILE_NAV = [
   },
 
   {
-    id: "now",
-    icon: "now",
-    title: "Зараз",
+    id: "pulse",
+    icon: "pulse",
+    title: "PULSE",
   },
 
   {
