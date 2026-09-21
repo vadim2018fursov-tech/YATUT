@@ -465,6 +465,11 @@ export default function NearbyCoordinatePicker({
     setSearchError,
   ] = useState("");
 
+  const [
+    selectedAddress,
+    setSelectedAddress,
+  ] = useState("");
+
   useEffect(() => {
     const element =
       stageRef.current;
@@ -782,6 +787,11 @@ export default function NearbyCoordinatePicker({
       17
     );
 
+    setSelectedAddress(
+      result.name ||
+      ""
+    );
+
     setSearchResults(
       []
     );
@@ -852,6 +862,14 @@ export default function NearbyCoordinatePicker({
         zoom
       )
     );
+
+    if (
+      selectedAddress
+    ) {
+      setSelectedAddress(
+        ""
+      );
+    }
   }
 
   function endPan(
@@ -1162,6 +1180,9 @@ export default function NearbyCoordinatePicker({
                     7
                   )
                 ),
+              address:
+                selectedAddress ||
+                null,
             })
           }
         >
