@@ -3397,6 +3397,16 @@ export default function Profile({
               finalProfile
             );
 
+            window.dispatchEvent(
+              new CustomEvent(
+                "yatut:profile-updated",
+                {
+                  detail:
+                    finalProfile,
+                }
+              )
+            );
+
             setEditing(
               false
             );
