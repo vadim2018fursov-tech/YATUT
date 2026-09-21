@@ -54,6 +54,7 @@ import MobileMoreMenu from "./components/MobileMoreMenu";
 import AuthPage from "./components/AuthPage";
 import Onboarding from "./components/Onboarding";
 import AdminCenter from "./components/AdminCenter";
+import AccountRestriction from "./components/AccountRestriction";
 
 import NowPage from "./pages/NowPage";
 import PulsePage from "./pages/PulsePage";
@@ -136,6 +137,11 @@ import {
   syncBackendSavedDelta,
   syncBackendSavedItems,
 } from "./services/savedBackendService";
+
+import {
+  acknowledgeMyWarning,
+  getMyAccountAccessState,
+} from "./services/accountAccessService";
 
 /* =========================================================
    YATUT APP
@@ -5299,6 +5305,33 @@ function App() {
     );
 
   const [
+    accountAccessReady,
+    setAccountAccessReady,
+  ] =
+    useState(
+      !authBackendConfigured
+    );
+
+  const [
+    accountAccessState,
+    setAccountAccessState,
+  ] =
+    useState({
+      status:
+        "active",
+      block:
+        null,
+      warning:
+        null,
+    });
+
+  const [
+    accountAccessBusy,
+    setAccountAccessBusy,
+  ] =
+    useState(false);
+
+  const [
     shellProfile,
     setShellProfile,
   ] =
@@ -5464,6 +5497,140 @@ function App() {
     authSession?.user?.id,
     authSession?.access_token,
   ]);
+
+  /* =======================================================
+     ACCOUNT ACCESS STATE
+  ======================================================= */
+
+  useEffect(() => {
+    if (
+      !authSession?.user?.id
+    ) {
+      setAccountAccessReady(
+        !authBackendConfigured
+      );
+
+      setAccountAccessState({
+        status:
+          "active",
+        block:
+          null,
+        warning:
+          null,
+      });
+
+      return undefined;
+    }
+
+    let active =
+      true;
+
+    async function refreshAccess() {
+      try {
+        const next =
+          await getMyAccountAccessState(
+            authSession
+          );
+
+        if (
+          active
+        ) {
+          setAccountAccessState(
+            next
+          );
+
+          setAccountAccessReady(
+            true
+          );
+        }
+      } catch (
+        error
+      ) {
+        console.warn(
+          "ACCOUNT ACCESS STATE ERROR:",
+          error
+        );
+
+        if (
+          active
+        ) {
+          setAccountAccessReady(
+            true
+          );
+        }
+      }
+    }
+
+    setAccountAccessReady(
+      false
+    );
+
+    refreshAccess();
+
+    const timer =
+      window.setInterval(
+        refreshAccess,
+        30 * 1000
+      );
+
+    return () => {
+      active =
+        false;
+
+      window.clearInterval(
+        timer
+      );
+    };
+  }, [
+    authBackendConfigured,
+    authSession?.user?.id,
+    authSession?.access_token,
+  ]);
+
+  async function handleWarningAcknowledge() {
+    const sanctionId =
+      accountAccessState
+        ?.warning
+        ?.id;
+
+    if (
+      !sanctionId ||
+      accountAccessBusy
+    ) {
+      return;
+    }
+
+    try {
+      setAccountAccessBusy(
+        true
+      );
+
+      await acknowledgeMyWarning(
+        authSession,
+        sanctionId
+      );
+
+      const next =
+        await getMyAccountAccessState(
+          authSession
+        );
+
+      setAccountAccessState(
+        next
+      );
+    } catch (
+      error
+    ) {
+      console.warn(
+        "WARNING ACKNOWLEDGE ERROR:",
+        error
+      );
+    } finally {
+      setAccountAccessBusy(
+        false
+      );
+    }
+  }
 
   /* =======================================================
      ONBOARDING STATE
@@ -6030,6 +6197,19 @@ function App() {
       setAuthSession(
         null
       );
+
+      setAccountAccessReady(
+        !authBackendConfigured
+      );
+
+      setAccountAccessState({
+        status:
+          "active",
+        block:
+          null,
+        warning:
+          null,
+      });
 
       replaceNotifications(
         []
@@ -7642,6 +7822,55 @@ function App() {
       <AuthPage
         onAuthenticated={
           handleAuthenticated
+        }
+      />
+    );
+  }
+
+  if (
+    authBackendConfigured &&
+    authSession &&
+    !accountAccessReady
+  ) {
+    return (
+      <div className="auth-loading">
+        <div>
+          <div className="auth-brand-mark">
+            Я
+          </div>
+
+          <strong>
+            ЯТУТ
+          </strong>
+        </div>
+      </div>
+    );
+  }
+
+  if (
+    authBackendConfigured &&
+    authSession &&
+    [
+      "blocked",
+      "warning",
+    ].includes(
+      accountAccessState
+        ?.status
+    )
+  ) {
+    return (
+      <AccountRestriction
+        state={
+          accountAccessState
+        }
+        busy={
+          accountAccessBusy
+        }
+        onAcknowledge={
+          handleWarningAcknowledge
+        }
+        onSignOut={
+          handleSignOut
         }
       />
     );
