@@ -33,6 +33,10 @@ import {
   consumeCommunityEventContext,
 } from "../storage/communityEventBridge";
 
+import {
+  shareYatutItem,
+} from "../utils/shareYatutItem";
+
 /* =========================================================
    PEOPLE
 ========================================================= */
@@ -2261,49 +2265,18 @@ function Events({
   async function shareEvent(
     event
   ) {
-    const url =
-      `${window.location.origin}${window.location.pathname}#event=${encodeURIComponent(
-        event.id
-      )}`;
+    await shareYatutItem({
+      title:
+        event.title ||
+        "Подія у ЯТУТ",
 
-    try {
-      if (
-        navigator.share
-      ) {
-        await navigator.share({
-          title:
-            event.title,
+      text:
+        event.description ||
+        "Подія у ЯТУТ",
 
-          text:
-            event.description ||
-            "Подія у ЯТУТ",
-
-          url,
-        });
-
-        return;
-      }
-
-      await navigator.clipboard.writeText(
-        url
-      );
-
-      window.alert(
-        "Посилання на подію скопійовано"
-      );
-    } catch (
-      error
-    ) {
-      if (
-        error?.name !==
-        "AbortError"
-      ) {
-        console.warn(
-          "EVENT SHARE ERROR:",
-          error
-        );
-      }
-    }
+      path:
+        `#event=${encodeURIComponent(event.id)}`,
+    });
   }
 
   function openNormalCreator() {
