@@ -403,6 +403,10 @@ export default function Settings({
     setSettings(
       DEFAULT_SETTINGS
     );
+
+    onThemeChange?.(
+      DEFAULT_SETTINGS.appearance
+    );
   }
 
   return (
