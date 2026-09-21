@@ -38,6 +38,70 @@ export function isAuthBackendConfigured() {
   );
 }
 
+export function normalizeUsername(
+  value
+) {
+  return String(
+    value ||
+    ""
+  )
+    .trim()
+    .replace(
+      /^@/,
+      ""
+    )
+    .toLowerCase();
+}
+
+export function isValidUsername(
+  value
+) {
+  return /^[a-z0-9._]{3,30}$/.test(
+    normalizeUsername(
+      value
+    )
+  );
+}
+
+export async function checkUsernameAvailable(
+  value
+) {
+  const username =
+    normalizeUsername(
+      value
+    );
+
+  if (
+    !isValidUsername(
+      username
+    )
+  ) {
+    return false;
+  }
+
+  const response =
+    await fetch(
+      `${SUPABASE_URL}/rest/v1/rpc/check_username_available`,
+      {
+        method:
+          "POST",
+        headers:
+          authHeaders(),
+        body:
+          JSON.stringify({
+            candidate:
+              username,
+          }),
+      }
+    );
+
+  return Boolean(
+    await parseResponse(
+      response
+    )
+  );
+}
+
 export async function getAuthCapabilities() {
   if (
     !isAuthBackendConfigured()
@@ -575,6 +639,32 @@ export async function signUp({
   fullName,
   username,
 }) {
+  const normalizedUsername =
+    normalizeUsername(
+      username
+    );
+
+  if (
+    !isValidUsername(
+      normalizedUsername
+    )
+  ) {
+    throw new Error(
+      "Username має містити 3–30 символів: латинські літери, цифри, крапка або _."
+    );
+  }
+
+  const available =
+    await checkUsernameAvailable(
+      normalizedUsername
+    );
+
+  if (!available) {
+    throw new Error(
+      "Цей username вже зайнятий."
+    );
+  }
+
   const response =
     await fetch(
       `${SUPABASE_URL}/auth/v1/signup`,
@@ -590,7 +680,7 @@ export async function signUp({
               full_name:
                 fullName,
               username:
-                username,
+                normalizedUsername,
             },
           }),
       }
