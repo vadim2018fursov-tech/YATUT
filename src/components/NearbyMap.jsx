@@ -410,7 +410,9 @@ function tileSet(
 
 export default function NearbyMap({
   places = [],
+  events = [],
   onOpenPlace,
+  onOpenEvent,
 }) {
   const stageRef =
     useRef(null);
@@ -428,40 +430,93 @@ export default function NearbyMap({
       520,
   });
 
-  const validPlaces =
+  const validMarkers =
     useMemo(
-      () =>
-        places.filter(
-          (
-            place
-          ) =>
-            Number.isFinite(
-              Number(
-                place.latitude
+      () => [
+        ...places
+          .filter(
+            (
+              place
+            ) =>
+              Number.isFinite(
+                Number(
+                  place.latitude
+                )
+              ) &&
+              Number.isFinite(
+                Number(
+                  place.longitude
+                )
               )
-            ) &&
-            Number.isFinite(
-              Number(
-                place.longitude
+          )
+          .map(
+            (
+              place
+            ) => ({
+              ...place,
+              markerType:
+                "place",
+              latitude:
+                Number(
+                  place.latitude
+                ),
+              longitude:
+                Number(
+                  place.longitude
+                ),
+            })
+          ),
+        ...events
+          .filter(
+            (
+              event
+            ) =>
+              Number.isFinite(
+                Number(
+                  event.latitude
+                )
+              ) &&
+              Number.isFinite(
+                Number(
+                  event.longitude
+                )
               )
-            )
-        ),
+          )
+          .map(
+            (
+              event
+            ) => ({
+              ...event,
+              markerType:
+                "event",
+              latitude:
+                Number(
+                  event.latitude
+                ),
+              longitude:
+                Number(
+                  event.longitude
+                ),
+            })
+          ),
+      ],
       [
         places,
+        events,
       ]
     );
 
   const calculatedCenter =
     useMemo(() => {
       if (
-        !validPlaces.length
+        !validMarkers.length
       ) {
         return null;
       }
 
       return {
         latitude:
-          validPlaces.reduce(
+          validMarkers.reduce(
             (
               sum,
               place
@@ -472,9 +527,9 @@ export default function NearbyMap({
               ),
             0
           ) /
-          validPlaces.length,
+          validMarkers.length,
         longitude:
-          validPlaces.reduce(
+          validMarkers.reduce(
             (
               sum,
               place
@@ -485,10 +540,10 @@ export default function NearbyMap({
               ),
             0
           ) /
-          validPlaces.length,
+          validMarkers.length,
       };
     }, [
-      validPlaces,
+      validMarkers,
     ]);
 
   const [
@@ -595,28 +650,14 @@ export default function NearbyMap({
     useMemo(
       () =>
         clusterMarkers(
-          validPlaces.map(
-            (
-              place
-            ) => ({
-              ...place,
-              latitude:
-                Number(
-                  place.latitude
-                ),
-              longitude:
-                Number(
-                  place.longitude
-                ),
-            })
-          ),
+          validMarkers,
           center,
           zoom,
           size.width,
           size.height
         ),
       [
-        validPlaces,
+        validMarkers,
         center,
         zoom,
         size.width,
@@ -717,7 +758,7 @@ export default function NearbyMap({
   }
 
   if (
-    !validPlaces.length ||
+    !validMarkers.length ||
     !center
   ) {
     return (
@@ -734,7 +775,7 @@ export default function NearbyMap({
         </h3>
 
         <p>
-          Місце зʼявиться тут, коли для нього будуть збережені координати.
+          Точка зʼявиться тут, коли місце або подія матимуть перевірені координати.
         </p>
       </section>
     );
@@ -810,7 +851,11 @@ export default function NearbyMap({
                   className={`nearby-map-marker ${
                     many
                       ? "is-cluster"
-                      : ""
+                      : cluster.markers[0]
+                          ?.markerType ===
+                        "event"
+                      ? "is-event"
+                      : "is-place"
                   }`}
                   style={{
                     left:
@@ -831,10 +876,23 @@ export default function NearbyMap({
                         cluster.id
                       );
                     } else {
-                      onOpenPlace?.(
+                      const marker =
                         cluster
-                          .markers[0]
-                      );
+                          .markers[0];
+
+                      if (
+                        marker
+                          ?.markerType ===
+                        "event"
+                      ) {
+                        onOpenEvent?.(
+                          marker
+                        );
+                      } else {
+                        onOpenPlace?.(
+                          marker
+                        );
+                      }
                     }
                   }}
                 >
@@ -868,7 +926,7 @@ export default function NearbyMap({
                       .markers
                       .length
                   }{" "}
-                  місця
+                  точок
                 </strong>
 
                 <button
@@ -893,11 +951,20 @@ export default function NearbyMap({
                         place.id
                       }
                       type="button"
-                      onClick={() =>
-                        onOpenPlace?.(
-                          place
-                        )
-                      }
+                      onClick={() => {
+                        if (
+                          place.markerType ===
+                          "event"
+                        ) {
+                          onOpenEvent?.(
+                            place
+                          );
+                        } else {
+                          onOpenPlace?.(
+                            place
+                          );
+                        }
+                      }}
                     >
                       <strong>
                         {
@@ -906,10 +973,15 @@ export default function NearbyMap({
                       </strong>
 
                       <span>
-                        {
-                          place.address ||
-                          place.city
-                        }
+                        {place.markerType ===
+                        "event"
+                          ? `Подія · ${
+                              place.place ||
+                              place.city ||
+                              "Місце"
+                            }`
+                          : place.address ||
+                            place.city}
                       </span>
                     </button>
                   )
