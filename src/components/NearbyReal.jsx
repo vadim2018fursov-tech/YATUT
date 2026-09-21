@@ -823,7 +823,7 @@ export default function NearbyReal({
             }
           >
             <YatutIcon
-              name="list"
+              name="menuGrid"
               size={15}
             />
             Список
