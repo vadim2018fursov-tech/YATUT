@@ -859,6 +859,52 @@ export function subscribeSavedRealtime({
 }
 
 
+export function subscribeCommunitiesRealtime({
+  session,
+  onChange,
+  onStatus,
+}) {
+  if (
+    !session?.access_token ||
+    !session?.user?.id
+  ) {
+    return {
+      updateAccessToken:
+        () => {},
+      close:
+        () => {},
+    };
+  }
+
+  return createRealtimeChannel({
+    session,
+    topic:
+      `communities:${session.user.id}`,
+    changes: [
+      {
+        event:
+          "*",
+        schema:
+          "public",
+        table:
+          "communities",
+      },
+      {
+        event:
+          "*",
+        schema:
+          "public",
+        table:
+          "community_members",
+      },
+    ],
+    onPostgresChange:
+      onChange,
+    onStatus,
+  });
+}
+
+
 export function subscribeStoriesRealtime({
   session,
   onChange,
