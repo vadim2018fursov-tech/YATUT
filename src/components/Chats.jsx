@@ -3026,24 +3026,6 @@ function Chats({
 
             stored = [
               ...backendChats,
-              ...stored.filter(
-                (
-                  chat
-                ) =>
-                  !backendIds.has(
-                    chat.id
-                  ) &&
-                  !demoIds.has(
-                    chat.id
-                  ) &&
-                  (
-                    chat.type ===
-                      "group" ||
-                    Boolean(
-                      chat.communityId
-                    )
-                  )
-              ),
             ];
 
             for (
@@ -3326,36 +3308,22 @@ function Chats({
           );
 
         setChats(
-          (
-            previous
-          ) =>
-            [
-              ...backendChats,
-              ...previous.filter(
-                (
-                  chat
-                ) =>
-                  !backendIds.has(
-                    chat.id
-                  ) &&
-                  !demoIds.has(
-                    chat.id
-                  )
-              ),
-            ].sort(
-              (
-                left,
-                right
-              ) =>
-                Number(
-                  right.updatedAt ||
-                  0
-                ) -
-                Number(
-                  left.updatedAt ||
-                  0
-                )
-            )
+          [
+            ...backendChats,
+          ].sort(
+            (
+              left,
+              right
+            ) =>
+              Number(
+                right.updatedAt ||
+                0
+              ) -
+              Number(
+                left.updatedAt ||
+                0
+              )
+          )
         );
       } catch (
         error
@@ -3862,36 +3830,22 @@ function Chats({
           );
 
         setChats(
-          (
-            previous
-          ) =>
-            [
-              ...backendChats,
-              ...previous.filter(
-                (
-                  chat
-                ) =>
-                  !backendIds.has(
-                    chat.id
-                  ) &&
-                  !demoIds.has(
-                    chat.id
-                  )
-              ),
-            ].sort(
-              (
-                left,
-                right
-              ) =>
-                Number(
-                  right.updatedAt ||
-                  0
-                ) -
-                Number(
-                  left.updatedAt ||
-                  0
-                )
-            )
+          [
+            ...backendChats,
+          ].sort(
+            (
+              left,
+              right
+            ) =>
+              Number(
+                right.updatedAt ||
+                0
+              ) -
+              Number(
+                left.updatedAt ||
+                0
+              )
+          )
         );
       } catch (
         error
