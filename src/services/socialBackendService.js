@@ -503,6 +503,154 @@ export async function getBackendUserProfile(
   };
 }
 
+export async function getBackendConnectionPeople(
+  session,
+  mode
+) {
+  if (
+    !session?.user?.id
+  ) {
+    return [];
+  }
+
+  const isFollowers =
+    mode ===
+    "followers";
+
+  const url =
+    new URL(
+      `${SUPABASE_URL}/rest/v1/follows`
+    );
+
+  url.searchParams.set(
+    isFollowers
+      ? "following_id"
+      : "follower_id",
+    `eq.${session.user.id}`
+  );
+
+  url.searchParams.set(
+    "select",
+    "follower_id,following_id,created_at"
+  );
+
+  url.searchParams.set(
+    "order",
+    "created_at.desc"
+  );
+
+  const response =
+    await fetch(
+      url,
+      {
+        headers:
+          headers(
+            session
+          ),
+      }
+    );
+
+  const rows =
+    await parseResponse(
+      response
+    );
+
+  const ids =
+    (
+      Array.isArray(
+        rows
+      )
+        ? rows
+        : []
+    )
+      .map(
+        (
+          row
+        ) =>
+          isFollowers
+            ? row.follower_id
+            : row.following_id
+      )
+      .filter(
+        Boolean
+      );
+
+  if (
+    ids.length ===
+    0
+  ) {
+    return [];
+  }
+
+  const profilesUrl =
+    new URL(
+      `${SUPABASE_URL}/rest/v1/profiles`
+    );
+
+  profilesUrl.searchParams.set(
+    "id",
+    `in.(${[
+      ...new Set(
+        ids
+      ),
+    ].join(",")})`
+  );
+
+  profilesUrl.searchParams.set(
+    "select",
+    "id,username,full_name,avatar_url,cover_url,bio,city,country,status,verified,created_at"
+  );
+
+  const profilesResponse =
+    await fetch(
+      profilesUrl,
+      {
+        headers:
+          headers(
+            session
+          ),
+      }
+    );
+
+  const profiles =
+    await parseResponse(
+      profilesResponse
+    );
+
+  const byId =
+    new Map(
+      (
+        Array.isArray(
+          profiles
+        )
+          ? profiles
+          : []
+      ).map(
+        (
+          profile
+        ) => [
+          profile.id,
+          personFromProfile(
+            profile
+          ),
+        ]
+      )
+    );
+
+  return ids
+    .map(
+      (
+        id
+      ) =>
+        byId.get(
+          id
+        )
+    )
+    .filter(
+      Boolean
+    );
+}
+
 export async function getBackendFollowState(
   session,
   personId
@@ -700,6 +848,36 @@ export async function getBackendRelationships(
     `eq.${userId}`
   );
 
+  const followingUrl =
+    new URL(
+      `${SUPABASE_URL}/rest/v1/follows`
+    );
+
+  followingUrl.searchParams.set(
+    "select",
+    "follower_id,following_id"
+  );
+
+  followingUrl.searchParams.set(
+    "follower_id",
+    `eq.${userId}`
+  );
+
+  const followersUrl =
+    new URL(
+      `${SUPABASE_URL}/rest/v1/follows`
+    );
+
+  followersUrl.searchParams.set(
+    "select",
+    "follower_id,following_id"
+  );
+
+  followersUrl.searchParams.set(
+    "following_id",
+    `eq.${userId}`
+  );
+
   const requestsUrl =
     new URL(
       `${SUPABASE_URL}/rest/v1/friend_requests`
@@ -739,6 +917,8 @@ export async function getBackendRelationships(
     friendshipsResponse,
     requestsResponse,
     blocksResponse,
+    followingResponse,
+    followersResponse,
   ] =
     await Promise.all([
       fetch(
@@ -768,12 +948,32 @@ export async function getBackendRelationships(
             ),
         }
       ),
+      fetch(
+        followingUrl,
+        {
+          headers:
+            headers(
+              session
+            ),
+        }
+      ),
+      fetch(
+        followersUrl,
+        {
+          headers:
+            headers(
+              session
+            ),
+        }
+      ),
     ]);
 
   const [
     friendships,
     requests,
     blocks,
+    followingRows,
+    followerRows,
   ] =
     await Promise.all([
       parseResponse(
@@ -784,6 +984,12 @@ export async function getBackendRelationships(
       ),
       parseResponse(
         blocksResponse
+      ),
+      parseResponse(
+        followingResponse
+      ),
+      parseResponse(
+        followersResponse
       ),
     ]);
 
@@ -854,6 +1060,72 @@ export async function getBackendRelationships(
           false,
         requestId:
           row.id,
+      };
+    }
+  );
+
+  (
+    Array.isArray(
+      followingRows
+    )
+      ? followingRows
+      : []
+  ).forEach(
+    (
+      row
+    ) => {
+      const personId =
+        row.following_id;
+
+      relationships[
+        personId
+      ] = {
+        ...(
+          relationships[
+            personId
+          ] ||
+          {
+            friendStatus:
+              "none",
+            blocked:
+              false,
+          }
+        ),
+        following:
+          true,
+      };
+    }
+  );
+
+  (
+    Array.isArray(
+      followerRows
+    )
+      ? followerRows
+      : []
+  ).forEach(
+    (
+      row
+    ) => {
+      const personId =
+        row.follower_id;
+
+      relationships[
+        personId
+      ] = {
+        ...(
+          relationships[
+            personId
+          ] ||
+          {
+            friendStatus:
+              "none",
+            blocked:
+              false,
+          }
+        ),
+        follower:
+          true,
       };
     }
   );
