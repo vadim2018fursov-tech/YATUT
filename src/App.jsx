@@ -166,6 +166,7 @@ const ROUTE_TITLES = {
   friends: "Друзі · ЯТУТ",
   search: "Пошук · ЯТУТ",
   chats: "Чати · ЯТУТ",
+  notifications: "Сповіщення · ЯТУТ",
   communities: "Спільноти · ЯТУТ",
   events: "Події · ЯТУТ",
   profile: "Профіль · ЯТУТ",
@@ -340,6 +341,7 @@ function routeFromLocation() {
     now: "now",
     friends: "friends",
     saved: "saved",
+    notifications: "notifications",
   };
 
   return simple[first]
@@ -420,6 +422,7 @@ function routeToUrl(page, payload = null) {
     case "business":
       return payload?.businessId ? `/business/${encode(payload.businessId)}` : "/business";
     case "saved": return "/saved";
+    case "notifications": return "/notifications";
     case "settings":
       return payload?.section ? `/settings/${encode(payload.section)}` : "/settings";
     default: return "/";
@@ -4942,10 +4945,8 @@ function MobileNavigation({
             "notifications";
 
           const active =
-            isNotifications
-              ? notificationOpen
-              : currentPage ===
-                item.id;
+            currentPage ===
+            item.id;
 
           const badgeValue =
             item.id ===
@@ -4981,34 +4982,15 @@ function MobileNavigation({
               }`.trim()}
               type="button"
               aria-current={
-                !isNotifications &&
                 active
                   ? "page"
                   : undefined
               }
-              aria-expanded={
-                isNotifications
-                  ? notificationOpen
-                  : undefined
-              }
-              data-notification-trigger={
-                isNotifications
-                  ? ""
-                  : undefined
-              }
-              onClick={() => {
-                if (
-                  isNotifications
-                ) {
-                  onToggleNotifications?.();
-
-                  return;
-                }
-
+              onClick={() =>
                 onNavigate(
                   item.id
-                );
-              }}
+                )
+              }
             >
               {item.id ===
               "profile" ? (
