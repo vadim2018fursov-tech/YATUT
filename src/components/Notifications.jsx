@@ -24,6 +24,18 @@ import {
   resolveNotificationPayload,
 } from "../storage/notificationActionService";
 
+import {
+  deleteBackendNotification,
+  deleteBackendNotifications,
+  markAllBackendNotificationsRead,
+  markBackendNotificationRead,
+} from "../services/notificationBackendService";
+
+import {
+  acceptBackendFriendRequest,
+  declineBackendFriendRequest,
+} from "../services/socialBackendService";
+
 /* =========================================================
    YATUT NOTIFICATIONS V2
 ========================================================= */
@@ -266,6 +278,7 @@ export default function Notifications({
   open,
   onClose,
   onNavigate,
+  authSession = null,
 }) {
   const [
     notifications,
@@ -538,6 +551,25 @@ export default function Notifications({
       markNotificationRead(
         notification.id
       );
+
+      if (
+        notification.backend &&
+        authSession?.user?.id
+      ) {
+        markBackendNotificationRead(
+          authSession,
+          notification.id
+        ).catch(
+          (
+            error
+          ) => {
+            console.warn(
+              "BACKEND NOTIFICATION READ ERROR:",
+              error
+            );
+          }
+        );
+      }
     }
 
     const resolvedPayload =
@@ -603,10 +635,44 @@ export default function Notifications({
     );
 
     try {
-      await executeNotificationAction(
-        notification,
-        action
-      );
+      if (
+        notification.backend &&
+        authSession?.user?.id &&
+        notification.type ===
+          "friend_request"
+      ) {
+        if (
+          action ===
+          "accept"
+        ) {
+          await acceptBackendFriendRequest(
+            authSession,
+            notification.authorId
+          );
+        } else if (
+          action ===
+          "decline"
+        ) {
+          await declineBackendFriendRequest(
+            authSession,
+            notification.authorId
+          );
+        }
+
+        await deleteBackendNotification(
+          authSession,
+          notification.id
+        );
+
+        removeNotification(
+          notification.id
+        );
+      } else {
+        await executeNotificationAction(
+          notification,
+          action
+        );
+      }
     } catch (error) {
       console.error(
         "NOTIFICATION ACTION ERROR:",
@@ -623,15 +689,43 @@ export default function Notifications({
      DELETE
   ======================================================= */
 
-  function deleteNotification(
+  async function deleteNotification(
     event,
     notificationId
   ) {
     event.stopPropagation();
 
-    removeNotification(
-      notificationId
-    );
+    const notification =
+      notifications.find(
+        (
+          item
+        ) =>
+          item.id ===
+          notificationId
+      );
+
+    try {
+      if (
+        notification?.backend &&
+        authSession?.user?.id
+      ) {
+        await deleteBackendNotification(
+          authSession,
+          notificationId
+        );
+      }
+
+      removeNotification(
+        notificationId
+      );
+    } catch (
+      error
+    ) {
+      console.warn(
+        "BACKEND NOTIFICATION DELETE ERROR:",
+        error
+      );
+    }
 
     setMenuId(
       null
@@ -642,7 +736,7 @@ export default function Notifications({
      CLEAR READ
   ======================================================= */
 
-  function clearReadNotifications() {
+  async function clearReadNotifications() {
     const read =
       notifications.filter(
         (
@@ -651,15 +745,36 @@ export default function Notifications({
           notification.read
       );
 
-    read.forEach(
-      (
-        notification
-      ) => {
-        removeNotification(
-          notification.id
+    try {
+      if (
+        authSession?.user?.id
+      ) {
+        await deleteBackendNotifications(
+          authSession,
+          {
+            readOnly:
+              true,
+          }
         );
       }
-    );
+
+      read.forEach(
+        (
+          notification
+        ) => {
+          removeNotification(
+            notification.id
+          );
+        }
+      );
+    } catch (
+      error
+    ) {
+      console.warn(
+        "BACKEND READ NOTIFICATIONS CLEAR ERROR:",
+        error
+      );
+    }
 
     setHeaderMenuOpen(
       false
@@ -670,7 +785,7 @@ export default function Notifications({
      CLEAR ALL
   ======================================================= */
 
-  function clearAllNotifications() {
+  async function clearAllNotifications() {
     const confirmed =
       window.confirm(
         "Видалити всі сповіщення?"
@@ -682,19 +797,57 @@ export default function Notifications({
       return;
     }
 
-    notifications.forEach(
-      (
-        notification
-      ) => {
-        removeNotification(
-          notification.id
+    try {
+      if (
+        authSession?.user?.id
+      ) {
+        await deleteBackendNotifications(
+          authSession
         );
       }
-    );
+
+      notifications.forEach(
+        (
+          notification
+        ) => {
+          removeNotification(
+            notification.id
+          );
+        }
+      );
+    } catch (
+      error
+    ) {
+      console.warn(
+        "BACKEND NOTIFICATIONS CLEAR ERROR:",
+        error
+      );
+    }
 
     setHeaderMenuOpen(
       false
     );
+  }
+
+  async function markAllRead() {
+    try {
+      if (
+        authSession?.user?.id
+      ) {
+        await markAllBackendNotificationsRead(
+          authSession
+        );
+      }
+
+      markAllNotificationsRead();
+    } catch (
+      error
+    ) {
+      console.warn(
+        "BACKEND NOTIFICATIONS READ ALL ERROR:",
+        error
+      );
+    }
   }
 
   if (!open) {
@@ -741,8 +894,8 @@ export default function Notifications({
             <button
               className="notifications-read-all"
               type="button"
-              onClick={() =>
-                markAllNotificationsRead()
+              onClick={
+                markAllRead
               }
             >
               Прочитати всі
