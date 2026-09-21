@@ -393,6 +393,136 @@ export async function uploadPostMedia(
   };
 }
 
+export async function uploadStoryMedia(
+  session,
+  file
+) {
+  if (
+    !session?.user?.id ||
+    !file
+  ) {
+    return null;
+  }
+
+  const mime =
+    String(
+      file.type ||
+      ""
+    );
+
+  if (
+    !mime.startsWith(
+      "image/"
+    ) &&
+    !mime.startsWith(
+      "video/"
+    )
+  ) {
+    throw new Error(
+      "До історії можна додати фото або відео."
+    );
+  }
+
+  if (
+    file.size >
+    100 *
+      1024 *
+      1024
+  ) {
+    throw new Error(
+      "Файл історії має бути до 100 МБ."
+    );
+  }
+
+  const extension =
+    extensionForFile(
+      file
+    );
+
+  const path =
+    `${session.user.id}/story-${Date.now()}-${randomPart()}.${extension}`;
+
+  await uploadObject({
+    session,
+    bucket:
+      "story-media",
+    path,
+    file,
+  });
+
+  return {
+    path,
+    mimeType:
+      mime ||
+      "application/octet-stream",
+    mediaType:
+      mime.startsWith(
+        "video/"
+      )
+        ? "video"
+        : "image",
+  };
+}
+
+export async function createStoryMediaSignedUrl(
+  session,
+  path,
+  expiresIn = 3600
+) {
+  if (
+    !path
+  ) {
+    return null;
+  }
+
+  const response =
+    await fetch(
+      `${SUPABASE_URL}/storage/v1/object/sign/story-media/${encodeStoragePath(
+        path
+      )}`,
+      {
+        method:
+          "POST",
+        headers: {
+          ...authHeaders(
+            session
+          ),
+          "Content-Type":
+            "application/json",
+        },
+        body:
+          JSON.stringify({
+            expiresIn,
+          }),
+      }
+    );
+
+  const data =
+    await parseResponse(
+      response
+    );
+
+  const signed =
+    data?.signedURL ||
+    data?.signedUrl ||
+    data?.signed_url ||
+    null;
+
+  if (!signed) {
+    return null;
+  }
+
+  if (
+    /^https?:\/\//i.test(
+      signed
+    )
+  ) {
+    return signed;
+  }
+
+  return `${SUPABASE_URL}/storage/v1${signed.startsWith("/") ? "" : "/"}${signed}`;
+}
+
 export async function uploadChatMedia(
   session,
   conversationId,
