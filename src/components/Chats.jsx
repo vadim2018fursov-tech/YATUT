@@ -2273,6 +2273,73 @@ function Chats({
   const newChatTriggerRef =
     useRef(null);
 
+  useEffect(() => {
+    const viewport =
+      window.visualViewport;
+
+    function syncVisualViewport() {
+      const height =
+        viewport?.height ||
+        window.innerHeight;
+
+      document.documentElement.style.setProperty(
+        "--yatut-visual-viewport-height",
+        `${Math.round(
+          height
+        )}px`
+      );
+    }
+
+    syncVisualViewport();
+
+    viewport?.addEventListener(
+      "resize",
+      syncVisualViewport
+    );
+
+    viewport?.addEventListener(
+      "scroll",
+      syncVisualViewport
+    );
+
+    window.addEventListener(
+      "orientationchange",
+      syncVisualViewport
+    );
+
+    window.addEventListener(
+      "resize",
+      syncVisualViewport
+    );
+
+    return () => {
+      viewport?.removeEventListener(
+        "resize",
+        syncVisualViewport
+      );
+
+      viewport?.removeEventListener(
+        "scroll",
+        syncVisualViewport
+      );
+
+      window.removeEventListener(
+        "orientationchange",
+        syncVisualViewport
+      );
+
+      window.removeEventListener(
+        "resize",
+        syncVisualViewport
+      );
+
+      document.documentElement.style.removeProperty(
+        "--yatut-visual-viewport-height"
+      );
+    };
+  }, []);
+
+
   const chatActionRef =
     useRef(null);
 
