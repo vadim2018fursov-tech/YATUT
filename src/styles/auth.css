@@ -258,3 +258,45 @@
     font-size: 27px;
   }
 }
+
+
+.auth-forgot-link,
+.auth-back-link {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #655eff;
+  font: inherit;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.auth-forgot-link {
+  justify-self: end;
+  margin-top: -4px;
+  font-size: 13px;
+}
+
+.auth-back-link {
+  display: inline-flex;
+  align-items: center;
+  margin: -4px 0 18px;
+  font-size: 13px;
+}
+
+.auth-forgot-link:hover,
+.auth-back-link:hover {
+  text-decoration: underline;
+}
+
+.auth-forgot-link:focus-visible,
+.auth-back-link:focus-visible {
+  outline: 3px solid rgba(101, 94, 255, .18);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+.yatut-dark-mode .auth-forgot-link,
+.yatut-dark-mode .auth-back-link {
+  color: #9d95ff;
+}
