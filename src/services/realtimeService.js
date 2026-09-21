@@ -1076,3 +1076,57 @@ export function subscribeStoriesRealtime({
     onStatus,
   });
 }
+
+
+export function subscribeEventsRealtime({
+  session,
+  onChange,
+  onStatus,
+}) {
+  if (
+    !session?.access_token ||
+    !session?.user?.id
+  ) {
+    return {
+      updateAccessToken:
+        () => {},
+      close:
+        () => {},
+    };
+  }
+
+  return createRealtimeChannel({
+    session,
+    topic:
+      `events:${session.user.id}`,
+    changes: [
+      {
+        event:
+          "*",
+        schema:
+          "public",
+        table:
+          "events",
+      },
+      {
+        event:
+          "*",
+        schema:
+          "public",
+        table:
+          "event_participants",
+      },
+      {
+        event:
+          "*",
+        schema:
+          "public",
+        table:
+          "event_likes",
+      },
+    ],
+    onPostgresChange:
+      onChange,
+    onStatus,
+  });
+}
