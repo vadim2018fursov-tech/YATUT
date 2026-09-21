@@ -43,6 +43,10 @@ import {
 } from "../services/communityFeedBackendService";
 
 import {
+  openBackendCommunityChat,
+} from "../services/chatBackendService";
+
+import {
   subscribeCommunitiesRealtime,
   subscribeCommunityFeedRealtime,
 } from "../services/realtimeService";
@@ -5071,12 +5075,63 @@ function SpaceDetail({
       : []),
   ];
 
-  function openCommunityChat() {
+  async function openCommunityChat() {
     if (
       space.backend &&
       !isMember
     ) {
       return;
+    }
+
+    if (
+      space.backend &&
+      space.backendId &&
+      authSession?.user?.id
+    ) {
+      try {
+        const chat =
+          await openBackendCommunityChat(
+            authSession,
+            space.backendId
+          );
+
+        if (
+          !chat?.id
+        ) {
+          throw new Error(
+            "Community chat was not created."
+          );
+        }
+
+        sessionStorage.setItem(
+          "yatut-open-chat-id",
+          chat.id
+        );
+
+        sessionStorage.removeItem(
+          "yatut-open-chat-payload"
+        );
+
+        onNavigate?.(
+          "chats"
+        );
+
+        return;
+      } catch (
+        error
+      ) {
+        console.warn(
+          "COMMUNITY CHAT OPEN ERROR:",
+          error
+        );
+
+        window.alert(
+          error?.message ||
+          "Не вдалося відкрити чат спільноти."
+        );
+
+        return;
+      }
     }
 
     sessionStorage.setItem(
