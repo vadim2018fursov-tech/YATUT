@@ -7,6 +7,11 @@ import "./FeaturePages.css";
 
 import YatutIcon from "./YatutIcon";
 
+import {
+  loadBackendSettings,
+  saveBackendSettings,
+} from "../services/settingsBackendService";
+
 /* =========================================================
    YATUT SETTINGS V1
 ========================================================= */
@@ -146,6 +151,146 @@ export default function Settings({
     setSavedState,
   ] =
     useState(false);
+
+  const [
+    backendSettingsReady,
+    setBackendSettingsReady,
+  ] =
+    useState(
+      !authSession?.user?.id
+    );
+
+  useEffect(() => {
+    if (
+      !authSession?.user?.id
+    ) {
+      setBackendSettingsReady(
+        true
+      );
+
+      return undefined;
+    }
+
+    let active =
+      true;
+
+    setBackendSettingsReady(
+      false
+    );
+
+    loadBackendSettings(
+      authSession
+    )
+      .then(
+        (
+          remote
+        ) => {
+          if (
+            !active
+          ) {
+            return;
+          }
+
+          if (
+            remote &&
+            typeof remote ===
+              "object"
+          ) {
+            setSettings(
+              (
+                previous
+              ) => ({
+                ...previous,
+                ...remote,
+                notifications: {
+                  ...previous.notifications,
+                  ...(
+                    remote.notifications ||
+                    {}
+                  ),
+                },
+                security: {
+                  ...previous.security,
+                  ...(
+                    remote.security ||
+                    {}
+                  ),
+                },
+              })
+            );
+          }
+
+          setBackendSettingsReady(
+            true
+          );
+        }
+      )
+      .catch(
+        (
+          error
+        ) => {
+          console.warn(
+            "BACKEND SETTINGS LOAD ERROR:",
+            error
+          );
+
+          if (
+            active
+          ) {
+            setBackendSettingsReady(
+              true
+            );
+          }
+        }
+      );
+
+    return () => {
+      active =
+        false;
+    };
+  }, [
+    authSession?.user?.id,
+  ]);
+
+  useEffect(() => {
+    if (
+      !authSession?.user?.id ||
+      !backendSettingsReady
+    ) {
+      return undefined;
+    }
+
+    const timer =
+      window.setTimeout(
+        () => {
+          saveBackendSettings(
+            authSession,
+            settings
+          ).catch(
+            (
+              error
+            ) => {
+              console.warn(
+                "BACKEND SETTINGS SAVE ERROR:",
+                error
+              );
+            }
+          );
+        },
+        450
+      );
+
+    return () => {
+      window.clearTimeout(
+        timer
+      );
+    };
+  }, [
+    settings,
+    backendSettingsReady,
+    authSession?.user?.id,
+    authSession?.access_token,
+  ]);
 
   useEffect(() => {
     try {
