@@ -65,6 +65,7 @@ function categoryForType(
     [
       "friend_request",
       "friend_accepted",
+      "follow",
     ].includes(
       type
     )
