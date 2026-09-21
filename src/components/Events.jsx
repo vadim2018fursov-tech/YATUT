@@ -285,6 +285,10 @@ function EventCard({
   onToggleGoing,
   onShare,
 }) {
+  const cancelled =
+    event.status ===
+    "cancelled";
+
   const going =
     event.attendees?.includes(
       "me"
@@ -1511,8 +1515,12 @@ function EventDetail({
   onDelete,
   onShare,
   onInviteFriends,
+  onEdit,
+  onCancel,
+  onRemoveParticipant,
   backendMode = false,
   backendInviteCandidates = [],
+  backendParticipants = [],
 }) {
   const going =
     event.attendees?.includes(
@@ -1641,6 +1649,18 @@ function EventDetail({
         Назад до подій
       </button>
 
+      {cancelled && (
+        <div className="event-cancelled-banner">
+          <strong>
+            Подію скасовано
+          </strong>
+
+          <span>
+            Організатор скасував цю подію. Нові участі та запрошення вимкнені.
+          </span>
+        </div>
+      )}
+
       <div
         className={`event-detail-cover ${
           event.cover
@@ -1764,14 +1784,22 @@ function EventDetail({
               <strong>
                 {
                   event.backend
-                    ? event.goingCount || 0
+                    ? backendParticipants.filter(
+                        (
+                          person
+                        ) =>
+                          person.status ===
+                          "going"
+                      ).length
                     : attendees.length
                 }
               </strong>
             </div>
 
-            <div className="event-attendees">
-                  {attendees.map(
+            <div className="event-attendees event-attendees--managed">
+              {(backendMode
+                ? backendParticipants
+                : attendees.map(
                     (id) => {
                       const person =
                         PEOPLE[id] || {
@@ -1781,41 +1809,101 @@ function EventDetail({
                             "?",
                         };
 
-                      return (
-                        <div
-                          key={
-                            id
-                          }
-                          className="event-attendee"
-                        >
-                          <span>
-                            {person.avatar ? (
-                              <img
-                                src={
-                                  person.avatar
-                                }
-                                alt=""
-                              />
-                            ) : (
-                              person.initials
-                            )}
-                          </span>
-
-                          <strong>
-                            {id ===
-                            "me"
-                              ? "Ви"
-                              : person.name}
-                          </strong>
-                        </div>
-                      );
+                      return {
+                        id,
+                        name:
+                          id === "me"
+                            ? "Ви"
+                            : person.name,
+                        initials:
+                          person.initials,
+                        avatar:
+                          person.avatar ||
+                          null,
+                        status:
+                          "going",
+                        isOwner:
+                          id ===
+                          "me",
+                      };
                     }
-                  )}
+                  )
+              ).map(
+                (
+                  person
+                ) => (
+                  <div
+                    key={
+                      person.id
+                    }
+                    className="event-attendee event-attendee--managed"
+                  >
+                    <span>
+                      {person.avatar ? (
+                        <img
+                          src={
+                            person.avatar
+                          }
+                          alt=""
+                        />
+                      ) : (
+                        person.initials
+                      )}
+                    </span>
+
+                    <div className="event-attendee__copy">
+                      <strong>
+                        {
+                          person.name
+                        }
+                      </strong>
+
+                      <small>
+                        {person.isOwner
+                          ? "Організатор"
+                          : person.status ===
+                            "going"
+                          ? "Йде"
+                          : "Цікавиться"}
+                      </small>
+                    </div>
+
+                    {backendMode &&
+                      event.organizerId ===
+                        "me" &&
+                      !person.isOwner && (
+                      <button
+                        type="button"
+                        className="event-attendee-remove"
+                        onClick={() =>
+                          onRemoveParticipant?.(
+                            event.id,
+                            person.id
+                          )
+                        }
+                      >
+                        Прибрати
+                      </button>
+                    )}
+                  </div>
+                )
+              )}
+
+              {backendMode &&
+                backendParticipants.length ===
+                  0 && (
+                <div className="event-attendees-empty">
+                  Учасників ще немає.
                 </div>
+              )}
+            </div>
 
                 <button
                   type="button"
                   className="event-invite-button"
+                  disabled={
+                    cancelled
+                  }
                   onClick={() =>
                     setInviteOpen(
                       (
@@ -1980,6 +2068,9 @@ function EventDetail({
 
             <button
               type="button"
+              disabled={
+                cancelled
+              }
               className={`event-status-main ${
                 going
                   ? "active"
@@ -2002,6 +2093,9 @@ function EventDetail({
 
             <button
               type="button"
+              disabled={
+                cancelled
+              }
               className={`event-status-secondary ${
                 interested
                   ? "active"
@@ -2113,17 +2207,50 @@ function EventDetail({
 
           {event.organizerId ===
             "me" && (
-            <button
-              type="button"
-              className="event-delete-button"
-              onClick={() =>
-                onDelete(
-                  event.id
-                )
-              }
-            >
-              Видалити подію
-            </button>
+            <div className="event-owner-actions">
+              {!cancelled && (
+                <>
+                  <button
+                    type="button"
+                    className="event-owner-edit"
+                    onClick={() =>
+                      onEdit?.(
+                        event
+                      )
+                    }
+                  >
+                    <Pencil
+                      size={14}
+                    />
+                    Редагувати
+                  </button>
+
+                  <button
+                    type="button"
+                    className="event-owner-cancel"
+                    onClick={() =>
+                      onCancel?.(
+                        event
+                      )
+                    }
+                  >
+                    Скасувати подію
+                  </button>
+                </>
+              )}
+
+              <button
+                type="button"
+                className="event-delete-button"
+                onClick={() =>
+                  onDelete(
+                    event.id
+                  )
+                }
+              >
+                Видалити назавжди
+              </button>
+            </div>
           )}
         </aside>
       </div>
