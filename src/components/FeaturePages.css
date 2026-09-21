@@ -6319,9 +6319,9 @@ body.yatut-dark-mode
 
 .nearby-place-detail-body > header {
   display: grid;
-  grid-template-columns: minmax(0,1fr) auto auto;
+  grid-template-columns: minmax(0,1fr) repeat(3, auto);
   align-items: start;
-  gap: 10px;
+  gap: 8px;
 }
 
 .nearby-place-detail-body > header > div > span,
@@ -7593,4 +7593,44 @@ body.yatut-dark-mode
 
 .yatut-dark-mode .nearby-coordinate-picker__search-note a {
   color: #bcb8ff;
+}
+
+
+.nearby-place-edit-button,
+.nearby-place-route-button {
+  min-height: 40px;
+}
+
+.nearby-place-edit-button {
+  min-width: 145px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.nearby-place-edit-modal {
+  width: min(760px, calc(100vw - 28px));
+}
+
+.nearby-place-edit-modal .nearby-coordinate-picker {
+  margin-top: 4px;
+}
+
+@media (max-width: 900px) {
+  .nearby-place-detail-body > header {
+    grid-template-columns: minmax(0,1fr) auto;
+  }
+
+  .nearby-place-detail-body > header > div:first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 700px) {
+  .nearby-place-edit-button,
+  .nearby-place-route-button {
+    min-width: 0;
+  }
 }
