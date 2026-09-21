@@ -24831,3 +24831,16 @@ body.yatut-dark-mode .composer-poll-option input {
   object-fit: cover;
   border-radius: inherit;
 }
+
+
+.suggestion-person .avatar {
+  overflow: hidden;
+}
+
+.suggestion-person .avatar > img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  border-radius: inherit;
+}
