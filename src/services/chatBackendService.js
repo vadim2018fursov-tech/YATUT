@@ -172,7 +172,7 @@ async function getConversation(
 
   url.searchParams.set(
     "select",
-    "id,type,title,created_by,created_at,updated_at,community_id"
+    "id,type,title,created_by,created_at,updated_at,community_id,event_id"
   );
 
   url.searchParams.set(
@@ -470,6 +470,9 @@ async function chatFromConversation(
       conversation.type,
     communityId:
       conversation.community_id ||
+      null,
+    eventId:
+      conversation.event_id ||
       null,
     communityName:
       conversation.community_id
@@ -820,6 +823,58 @@ export async function openBackendCommunityChat(
           JSON.stringify({
             target_community_id:
               communityId,
+          }),
+      }
+    );
+
+  const conversationId =
+    await parseResponse(
+      response
+    );
+
+  if (
+    !conversationId
+  ) {
+    return null;
+  }
+
+  const conversation =
+    await getConversation(
+      session,
+      conversationId
+    );
+
+  return chatFromConversation(
+    session,
+    conversation
+  );
+}
+
+export async function openBackendEventChat(
+  session,
+  eventId
+) {
+  if (
+    !session?.user?.id ||
+    !eventId
+  ) {
+    return null;
+  }
+
+  const response =
+    await fetch(
+      `${SUPABASE_URL}/rest/v1/rpc/get_or_create_event_conversation`,
+      {
+        method:
+          "POST",
+        headers:
+          headers(
+            session
+          ),
+        body:
+          JSON.stringify({
+            target_event_id:
+              eventId,
           }),
       }
     );
