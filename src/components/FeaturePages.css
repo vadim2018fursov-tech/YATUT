@@ -7403,3 +7403,171 @@ body.yatut-dark-mode
     width: 100%;
   }
 }
+
+
+.nearby-coordinate-picker__search {
+  padding: 10px 12px;
+  display: grid;
+  gap: 7px;
+  border-bottom: 1px solid #eceef3;
+  background: #fbfbfd;
+}
+
+.nearby-coordinate-picker__search > div:first-child {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: auto minmax(0,1fr) auto;
+  align-items: center;
+  gap: 7px;
+  padding: 0 7px 0 10px;
+  border: 1px solid #dde0e7;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.nearby-coordinate-picker__search > div:first-child > svg {
+  color: #8b909b;
+}
+
+.nearby-coordinate-picker__search input {
+  width: 100%;
+  min-width: 0;
+  height: 42px;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #343743;
+  font: inherit;
+  font-size: 9px;
+}
+
+.nearby-coordinate-picker__search > div:first-child > button {
+  min-height: 32px;
+  padding: 0 10px;
+  border-radius: 9px;
+  background: #635bff;
+  color: #fff;
+  font-size: 8px;
+  font-weight: 850;
+}
+
+.nearby-coordinate-picker__search > div:first-child > button:disabled {
+  opacity: .48;
+  cursor: not-allowed;
+}
+
+.nearby-coordinate-picker__results {
+  max-height: 190px;
+  overflow-y: auto;
+  padding: 4px;
+  display: grid;
+  gap: 3px;
+  border: 1px solid #e2e4ea;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.nearby-coordinate-picker__results > button {
+  width: 100%;
+  min-width: 0;
+  padding: 8px 9px;
+  display: grid;
+  grid-template-columns: auto minmax(0,1fr);
+  align-items: start;
+  gap: 8px;
+  border-radius: 9px;
+  color: #4a4e5a;
+  text-align: left;
+}
+
+.nearby-coordinate-picker__results > button:hover {
+  background: #f5f5f8;
+}
+
+.nearby-coordinate-picker__results > button > svg {
+  margin-top: 2px;
+  color: #635bff;
+}
+
+.nearby-coordinate-picker__results span {
+  min-width: 0;
+  display: block;
+}
+
+.nearby-coordinate-picker__results strong,
+.nearby-coordinate-picker__results small {
+  display: block;
+}
+
+.nearby-coordinate-picker__results strong {
+  overflow: hidden;
+  color: #343743;
+  font-size: 8px;
+  line-height: 1.4;
+  text-overflow: ellipsis;
+}
+
+.nearby-coordinate-picker__results small {
+  margin-top: 2px;
+  color: #9a9ea8;
+  font-size: 7px;
+}
+
+.nearby-coordinate-picker__search-error {
+  margin: 0;
+  padding: 8px 10px;
+  border-radius: 9px;
+  background: rgba(239,68,68,.07);
+  color: #be4545;
+  font-size: 8px;
+  line-height: 1.45;
+}
+
+.nearby-coordinate-picker__search-note {
+  color: #9a9ea8;
+  font-size: 7px;
+  line-height: 1.4;
+}
+
+.yatut-dark-mode .nearby-coordinate-picker__search {
+  border-color: rgba(255,255,255,.07);
+  background: rgba(255,255,255,.025);
+}
+
+.yatut-dark-mode .nearby-coordinate-picker__search > div:first-child,
+.yatut-dark-mode .nearby-coordinate-picker__results {
+  border-color: rgba(255,255,255,.07);
+  background: #1e202a;
+}
+
+.yatut-dark-mode .nearby-coordinate-picker__search input,
+.yatut-dark-mode .nearby-coordinate-picker__results strong {
+  color: #f4f4f8;
+}
+
+.yatut-dark-mode .nearby-coordinate-picker__results > button {
+  color: #d8dae2;
+}
+
+.yatut-dark-mode .nearby-coordinate-picker__results > button:hover {
+  background: rgba(255,255,255,.05);
+}
+
+@media (max-width: 560px) {
+  .nearby-coordinate-picker__search {
+    padding: 9px;
+  }
+
+  .nearby-coordinate-picker__search > div:first-child {
+    grid-template-columns: auto minmax(0,1fr);
+    padding-right: 8px;
+  }
+
+  .nearby-coordinate-picker__search > div:first-child > button {
+    grid-column: 1 / -1;
+    width: 100%;
+    min-height: 35px;
+    margin-bottom: 7px;
+  }
+}
