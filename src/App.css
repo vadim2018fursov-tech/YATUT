@@ -24844,3 +24844,206 @@ body.yatut-dark-mode .composer-poll-option input {
   object-fit: cover;
   border-radius: inherit;
 }
+
+
+/* =========================================================
+   FIRST-RUN HOME GUIDANCE
+========================================================= */
+
+.home-start-card {
+  padding: 17px;
+  display: grid;
+  grid-template-columns:
+    46px
+    minmax(
+      0,
+      1fr
+    )
+    auto;
+  align-items: center;
+  gap: 13px;
+  border:
+    1px solid
+    rgba(
+      99,
+      91,
+      255,
+      .14
+    );
+  border-radius: 20px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(
+        99,
+        91,
+        255,
+        .08
+      ),
+      rgba(
+        255,
+        255,
+        255,
+        .96
+      )
+    );
+}
+
+.home-start-card__icon {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background:
+    #eeecff;
+  color:
+    #635bff;
+}
+
+.home-start-card__copy {
+  min-width: 0;
+}
+
+.home-start-card__copy > span {
+  display: block;
+  margin-bottom: 3px;
+  color:
+    #7770df;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .1em;
+}
+
+.home-start-card__copy > strong {
+  display: block;
+  color:
+    #343743;
+  font-size: 14px;
+}
+
+.home-start-card__copy > p {
+  max-width: 520px;
+  margin: 5px 0 0;
+  color:
+    #858a96;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.home-start-card__actions {
+  display: flex;
+  gap: 7px;
+}
+
+.home-start-card__actions button {
+  min-height: 39px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border:
+    1px solid
+    #e5e5ee;
+  border-radius: 12px;
+  background: #ffffff;
+  color:
+    #555966;
+  font-size: 10px;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.home-start-card__actions
+button.is-primary {
+  border-color:
+    transparent;
+  background:
+    linear-gradient(
+      145deg,
+      #746cff,
+      #635bff
+    );
+  color:
+    #ffffff;
+}
+
+@media (max-width: 767px) {
+  .home-start-card {
+    margin:
+      0 10px;
+    grid-template-columns:
+      42px
+      minmax(
+        0,
+        1fr
+      );
+    gap: 11px;
+    border-radius: 18px;
+  }
+
+  .home-start-card__icon {
+    width: 42px;
+    height: 42px;
+  }
+
+  .home-start-card__actions {
+    grid-column:
+      1 / -1;
+    width: 100%;
+  }
+
+  .home-start-card__actions button {
+    flex: 1 1 0;
+  }
+}
+
+.yatut-dark-mode .home-start-card {
+  border-color:
+    rgba(
+      145,
+      139,
+      255,
+      .15
+    );
+  background:
+    linear-gradient(
+      135deg,
+      rgba(
+        99,
+        91,
+        255,
+        .12
+      ),
+      rgba(
+        25,
+        27,
+        36,
+        .96
+      )
+    );
+}
+
+.yatut-dark-mode .home-start-card__copy > strong {
+  color: #f5f5fa;
+}
+
+.yatut-dark-mode .home-start-card__actions button:not(.is-primary) {
+  border-color:
+    rgba(
+      255,
+      255,
+      255,
+      .08
+    );
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .05
+    );
+  color:
+    #d8d9e2;
+}
