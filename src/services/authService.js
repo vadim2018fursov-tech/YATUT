@@ -782,6 +782,10 @@ export async function updateMyProfile(
     status:
       profile?.status ||
       "Я тут",
+    status_text:
+      profile?.statusText ||
+      profile?.status_text ||
+      "",
     avatar_url:
       profile?.avatar ||
       null,
