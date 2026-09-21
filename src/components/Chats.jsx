@@ -28,6 +28,10 @@ import {
   sendBackendMessage,
 } from "../services/chatBackendService";
 
+import {
+  subscribeChatRealtime,
+} from "../services/realtimeService";
+
 /* =========================================================
    PEOPLE
 ========================================================= */
@@ -2087,6 +2091,26 @@ function Chats({
   );
 
   const [
+    remoteTyping,
+    setRemoteTyping,
+  ] =
+    useState(false);
+
+  const [
+    remoteOnline,
+    setRemoteOnline,
+  ] =
+    useState(false);
+
+  const [
+    realtimeStatus,
+    setRealtimeStatus,
+  ] =
+    useState(
+      "idle"
+    );
+
+  const [
     chatListView,
     setChatListView,
   ] = useState(
@@ -2208,6 +2232,18 @@ function Chats({
 
   const chatLongPressTriggeredRef =
     useRef(false);
+
+  const realtimeChannelRef =
+    useRef(null);
+
+  const typingSendTimerRef =
+    useRef(null);
+
+  const typingStopTimerRef =
+    useRef(null);
+
+  const remoteTypingTimerRef =
+    useRef(null);
 
   const activeChat =
     chats.find(
@@ -3182,42 +3218,254 @@ function Chats({
       !activeChat?.backend ||
       !authSession?.user?.id
     ) {
+      setRemoteTyping(
+        false
+      );
+
+      setRemoteOnline(
+        false
+      );
+
+      setRealtimeStatus(
+        "idle"
+      );
+
       return undefined;
     }
 
     let active =
       true;
 
-    const refresh =
-      async () => {
-        try {
-          const latest =
-            await loadBackendMessages(
-              authSession,
-              activeChat.id
-            );
+    async function refreshMessages() {
+      try {
+        const latest =
+          await loadBackendMessages(
+            authSession,
+            activeChat.id
+          );
 
-          if (
-            active
-          ) {
-            setMessages(
-              latest
-            );
-          }
-        } catch (
-          error
+        if (
+          active
         ) {
-          console.warn(
-            "BACKEND CHAT REFRESH ERROR:",
-            error
+          setMessages(
+            latest
           );
         }
-      };
+      } catch (
+        error
+      ) {
+        console.warn(
+          "BACKEND REALTIME MESSAGE REFRESH ERROR:",
+          error
+        );
+      }
+    }
 
-    const timer =
+    async function refreshChatList() {
+      try {
+        const backendChats =
+          await listBackendChats(
+            authSession
+          );
+
+        if (
+          !active
+        ) {
+          return;
+        }
+
+        const backendIds =
+          new Set(
+            backendChats.map(
+              (
+                chat
+              ) =>
+                chat.id
+            )
+          );
+
+        const demoIds =
+          new Set(
+            DEMO_CHATS.map(
+              (
+                chat
+              ) =>
+                chat.id
+            )
+          );
+
+        setChats(
+          (
+            previous
+          ) =>
+            [
+              ...backendChats,
+              ...previous.filter(
+                (
+                  chat
+                ) =>
+                  !backendIds.has(
+                    chat.id
+                  ) &&
+                  !demoIds.has(
+                    chat.id
+                  )
+              ),
+            ].sort(
+              (
+                left,
+                right
+              ) =>
+                Number(
+                  right.updatedAt ||
+                  0
+                ) -
+                Number(
+                  left.updatedAt ||
+                  0
+                )
+            )
+        );
+      } catch (
+        error
+      ) {
+        console.warn(
+          "BACKEND REALTIME CHAT LIST ERROR:",
+          error
+        );
+      }
+    }
+
+    const channel =
+      subscribeChatRealtime({
+        session:
+          authSession,
+        conversationId:
+          activeChat.id,
+        onChange:
+          () => {
+            refreshMessages();
+            refreshChatList();
+          },
+        onTyping:
+          (
+            payload
+          ) => {
+            if (
+              payload?.userId !==
+              activeChat.personId
+            ) {
+              return;
+            }
+
+            const typing =
+              Boolean(
+                payload.typing
+              );
+
+            setRemoteTyping(
+              typing
+            );
+
+            if (
+              remoteTypingTimerRef.current
+            ) {
+              window.clearTimeout(
+                remoteTypingTimerRef.current
+              );
+            }
+
+            if (
+              typing
+            ) {
+              remoteTypingTimerRef.current =
+                window.setTimeout(
+                  () =>
+                    setRemoteTyping(
+                      false
+                    ),
+                  2800
+                );
+            }
+          },
+        onPresence:
+          (
+            eventName,
+            payload
+          ) => {
+            const personId =
+              activeChat.personId;
+
+            if (
+              !personId
+            ) {
+              return;
+            }
+
+            if (
+              eventName ===
+              "presence_state"
+            ) {
+              setRemoteOnline(
+                Boolean(
+                  payload?.[
+                    personId
+                  ]
+                )
+              );
+
+              return;
+            }
+
+            if (
+              payload?.joins?.[
+                personId
+              ]
+            ) {
+              setRemoteOnline(
+                true
+              );
+            }
+
+            if (
+              payload?.leaves?.[
+                personId
+              ]
+            ) {
+              setRemoteOnline(
+                false
+              );
+
+              setRemoteTyping(
+                false
+              );
+            }
+          },
+        onStatus:
+          (
+            status
+          ) => {
+            if (
+              active
+            ) {
+              setRealtimeStatus(
+                status
+              );
+            }
+          },
+      });
+
+    realtimeChannelRef.current =
+      channel;
+
+    // Slow safety refresh only; normal delivery is WebSocket-based.
+    const fallbackTimer =
       window.setInterval(
-        refresh,
-        2500
+        () => {
+          refreshMessages();
+          refreshChatList();
+        },
+        15000
       );
 
     return () => {
@@ -3225,13 +3473,44 @@ function Chats({
         false;
 
       window.clearInterval(
-        timer
+        fallbackTimer
+      );
+
+      channel.close();
+
+      if (
+        realtimeChannelRef.current ===
+        channel
+      ) {
+        realtimeChannelRef.current =
+          null;
+      }
+
+      if (
+        remoteTypingTimerRef.current
+      ) {
+        window.clearTimeout(
+          remoteTypingTimerRef.current
+        );
+
+        remoteTypingTimerRef.current =
+          null;
+      }
+
+      setRemoteTyping(
+        false
+      );
+
+      setRemoteOnline(
+        false
       );
     };
   }, [
     activeChat?.id,
     activeChat?.backend,
-    authSession,
+    activeChat?.personId,
+    authSession?.user?.id,
+    authSession?.access_token,
   ]);
 
   useEffect(() => {
@@ -3323,7 +3602,7 @@ function Chats({
     const timer =
       window.setInterval(
         refreshChats,
-        4000
+        15000
       );
 
     return () => {
@@ -3336,6 +3615,87 @@ function Chats({
     };
   }, [
     authSession,
+  ]);
+
+  useEffect(() => {
+    if (
+      !activeChat?.backend ||
+      !authSession?.user?.id ||
+      editing
+    ) {
+      return undefined;
+    }
+
+    if (
+      typingSendTimerRef.current
+    ) {
+      window.clearTimeout(
+        typingSendTimerRef.current
+      );
+    }
+
+    if (
+      typingStopTimerRef.current
+    ) {
+      window.clearTimeout(
+        typingStopTimerRef.current
+      );
+    }
+
+    const typing =
+      Boolean(
+        draft.trim()
+      );
+
+    typingSendTimerRef.current =
+      window.setTimeout(
+        () => {
+          realtimeChannelRef.current
+            ?.sendTyping(
+              typing
+            );
+        },
+        180
+      );
+
+    if (
+      typing
+    ) {
+      typingStopTimerRef.current =
+        window.setTimeout(
+          () => {
+            realtimeChannelRef.current
+              ?.sendTyping(
+                false
+              );
+          },
+          1600
+        );
+    }
+
+    return () => {
+      if (
+        typingSendTimerRef.current
+      ) {
+        window.clearTimeout(
+          typingSendTimerRef.current
+        );
+      }
+
+      if (
+        typingStopTimerRef.current
+      ) {
+        window.clearTimeout(
+          typingStopTimerRef.current
+        );
+      }
+    };
+  }, [
+    draft,
+    editing,
+    activeChat?.id,
+    activeChat?.backend,
+    authSession?.user?.id,
   ]);
 
   useEffect(() => {
@@ -6260,7 +6620,11 @@ function Chats({
 
                     <div
                       className={`chat-header-avatar ${
-                        activePerson?.online
+                        (
+                          activeChat.backend
+                            ? remoteOnline
+                            : activePerson?.online
+                        )
                           ? "is-online"
                           : ""
                       }`.trim()}
@@ -6288,9 +6652,19 @@ function Chats({
                                 ?.length ||
                               0
                             } учасників`
-                          : activePerson
-                              ?.online
+                          : remoteTyping
+                          ? "Друкує…"
+                          : (
+                              activeChat.backend
+                                ? remoteOnline
+                                : activePerson
+                                    ?.online
+                            )
                           ? "Онлайн"
+                          : activeChat.backend &&
+                            realtimeStatus ===
+                              "connecting"
+                          ? "Підключення…"
                           : "Був(ла) нещодавно"}
                       </span>
 
@@ -7033,7 +7407,11 @@ function Chats({
 
               <div
                 className={`chat-info-avatar ${
-                  activePerson?.online
+                  (
+                    activeChat.backend
+                      ? remoteOnline
+                      : activePerson?.online
+                  )
                     ? "is-online"
                     : ""
                 }`.trim()}
