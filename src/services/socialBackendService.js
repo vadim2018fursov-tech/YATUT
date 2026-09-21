@@ -435,6 +435,28 @@ export async function getBackendUserProfile(
       profile
     );
 
+  let stats =
+    null;
+
+  try {
+    stats =
+      await callRpc(
+        session,
+        "get_profile_social_stats",
+        {
+          target_user_id:
+            personId,
+        }
+      );
+  } catch (
+    error
+  ) {
+    console.warn(
+      "PROFILE SOCIAL STATS ERROR:",
+      error
+    );
+  }
+
   return {
     ...person,
     country:
@@ -444,23 +466,55 @@ export async function getBackendUserProfile(
       profile.status ||
       "",
     friendsCount:
-      Array.isArray(
-        friends
-      )
-        ? friends.length
-        : 0,
+      Number(
+        stats?.friendsCount ??
+        (
+          Array.isArray(
+            friends
+          )
+            ? friends.length
+            : 0
+        )
+      ),
     followersCount:
-      Array.isArray(
-        followers
-      )
-        ? followers.length
-        : 0,
+      Number(
+        stats?.followersCount ??
+        (
+          Array.isArray(
+            followers
+          )
+            ? followers.length
+            : 0
+        )
+      ),
     followingCount:
-      Array.isArray(
-        following
-      )
-        ? following.length
-        : 0,
+      Number(
+        stats?.followingCount ??
+        (
+          Array.isArray(
+            following
+          )
+            ? following.length
+            : 0
+        )
+      ),
+    mutual:
+      Number(
+        stats?.mutualCount ??
+        person.mutual ??
+        0
+      ),
+    postsCount:
+      Number(
+        stats?.postsCount ??
+        (
+          Array.isArray(
+            posts
+          )
+            ? posts.length
+            : 0
+        )
+      ),
     posts:
       (
         Array.isArray(
