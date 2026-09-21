@@ -502,11 +502,27 @@ export default function NearbyReal({
     placeId,
     decision
   ) {
+    const note =
+      window.prompt(
+        decision ===
+          "approved"
+          ? "Коментар до схвалення (необов’язково):"
+          : "Причина відхилення (необов’язково):",
+        ""
+      );
+
+    if (
+      note === null
+    ) {
+      return;
+    }
+
     try {
       await moderateNearbyPlace(
         authSession,
         placeId,
-        decision
+        decision,
+        note
       );
 
       await Promise.all([
