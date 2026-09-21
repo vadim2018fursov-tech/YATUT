@@ -14,8 +14,10 @@ import {
 } from "../storage/savedService";
 
 import {
+  deleteNearbyPlace,
   deleteNearbyPlaceReview,
   loadNearbyPlaceDetail,
+  loadNearbyPlaceHistory,
   saveNearbyPlaceReview,
   updateNearbyPlace,
 } from "../services/nearbyBackendService";
@@ -129,9 +131,57 @@ export default function NearbyPlaceDetail({
   ] = useState(false);
 
   const [
+    history,
+    setHistory,
+  ] = useState([]);
+
+  const [
+    historyLoading,
+    setHistoryLoading,
+  ] = useState(false);
+
+  const [
+    deletingPlace,
+    setDeletingPlace,
+  ] = useState(false);
+
+  const [
     editOpen,
     setEditOpen,
   ] = useState(false);
+
+  async function refreshHistory() {
+    try {
+      setHistoryLoading(
+        true
+      );
+
+      const rows =
+        await loadNearbyPlaceHistory(
+          authSession,
+          placeId
+        );
+
+      setHistory(
+        rows
+      );
+    } catch (
+      error
+    ) {
+      console.warn(
+        "NEARBY PLACE HISTORY ERROR:",
+        error
+      );
+
+      setHistory(
+        []
+      );
+    } finally {
+      setHistoryLoading(
+        false
+      );
+    }
+  }
 
   async function refresh() {
     try {
@@ -191,6 +241,20 @@ export default function NearbyPlaceDetail({
   ]);
 
   useEffect(() => {
+    if (
+      detail?.place?.ownSubmission ||
+      detail?.canModerate
+    ) {
+      refreshHistory();
+    }
+  }, [
+    detail?.place?.ownSubmission,
+    detail?.canModerate,
+    placeId,
+    authSession?.access_token,
+  ]);
+
+  useEffect(() => {
     const unsubscribe =
       subscribeSavedItems(
         () => {
@@ -209,6 +273,51 @@ export default function NearbyPlaceDetail({
   }, [
     placeId,
   ]);
+
+  async function removePlace() {
+    if (
+      deletingPlace
+    ) {
+      return;
+    }
+
+    const confirmed =
+      window.confirm(
+        "Видалити це місце назавжди? Відгуки та збереження цього місця також буде видалено."
+      );
+
+    if (
+      !confirmed
+    ) {
+      return;
+    }
+
+    try {
+      setDeletingPlace(
+        true
+      );
+
+      await deleteNearbyPlace(
+        authSession,
+        placeId
+      );
+
+      await onUpdated?.();
+
+      onBack?.();
+    } catch (
+      error
+    ) {
+      window.alert(
+        error?.message ||
+        "Не вдалося видалити місце."
+      );
+    } finally {
+      setDeletingPlace(
+        false
+      );
+    }
+  }
 
   async function submitReview() {
     if (
@@ -262,6 +371,8 @@ export default function NearbyPlaceDetail({
       );
 
       await refresh();
+
+      await refreshHistory();
 
       await onUpdated?.();
 
@@ -674,6 +785,144 @@ export default function NearbyPlaceDetail({
             savePlaceChanges
           }
         />
+      )}
+
+      {(place.ownSubmission ||
+        detail?.canModerate) && (
+        <section className="nearby-place-history">
+          <header>
+            <div>
+              <span>
+                ІСТОРІЯ
+              </span>
+
+              <h2>
+                Зміни та модерація
+              </h2>
+            </div>
+
+            <strong>
+              {history.length}
+            </strong>
+          </header>
+
+          {historyLoading ? (
+            <p className="nearby-real-empty">
+              Завантажуємо історію...
+            </p>
+          ) : history.length ? (
+            <div className="nearby-place-history-list">
+              {history.map(
+                (
+                  item
+                ) => {
+                  const labels = {
+                    created:
+                      "Місце створено",
+                    edited:
+                      "Дані змінено",
+                    approved:
+                      "Місце схвалено",
+                    rejected:
+                      "Місце відхилено",
+                    reopened:
+                      "Повторна модерація",
+                    deleted:
+                      "Місце видалено",
+                  };
+
+                  return (
+                    <article
+                      key={
+                        item.id
+                      }
+                      className="nearby-place-history-item"
+                    >
+                      <div className={`nearby-place-history-dot is-${item.action}`} />
+
+                      <div>
+                        <header>
+                          <strong>
+                            {
+                              labels[
+                                item.action
+                              ] ||
+                              "Зміна"
+                            }
+                          </strong>
+
+                          <small>
+                            {
+                              formatReviewDate(
+                                item.createdAt
+                              )
+                            }
+                          </small>
+                        </header>
+
+                        <p>
+                          {
+                            item.actorName ||
+                            "Система"
+                          }
+                        </p>
+
+                        {item.note && (
+                          <blockquote>
+                            {
+                              item.note
+                            }
+                          </blockquote>
+                        )}
+                      </div>
+                    </article>
+                  );
+                }
+              )}
+            </div>
+          ) : (
+            <p className="nearby-real-empty">
+              Історія ще порожня.
+            </p>
+          )}
+        </section>
+      )}
+
+      {place.ownSubmission && (
+        <section className="nearby-place-danger-zone">
+          <div>
+            <span>
+              НЕБЕЗПЕЧНА ЗОНА
+            </span>
+
+            <h2>
+              Видалити місце
+            </h2>
+
+            <p>
+              Місце зникне з «Поруч», карти та «Збереженого». Відгуки буде видалено, а події залишаться, але втратять прив’язку до цієї точки.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            disabled={
+              deletingPlace
+            }
+            onClick={
+              removePlace
+            }
+          >
+            <YatutIcon
+              name="trash"
+              size={16}
+            />
+
+            {deletingPlace
+              ? "Видаляємо..."
+              : "Видалити назавжди"}
+          </button>
+        </section>
       )}
 
       <section className="nearby-place-reviews">
