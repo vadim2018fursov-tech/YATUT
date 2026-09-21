@@ -1296,10 +1296,20 @@ function NotificationItem({
     >
       <div className="notification-avatar-area">
         <div className="notification-avatar">
-          {
+          {notification.authorAvatar ? (
+            <img
+              src={
+                notification.authorAvatar
+              }
+              alt={
+                notification.authorName ||
+                ""
+              }
+            />
+          ) : (
             notification.authorInitial ||
             "Я"
-          }
+          )}
         </div>
 
         {!notification.read && (
