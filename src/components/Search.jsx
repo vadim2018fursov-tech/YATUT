@@ -1673,7 +1673,11 @@ function Search({
               !social
                 ?.relationships?.[
                   person.id
-                ]?.blockedByThem
+                ]?.blockedByThem &&
+              !social
+                ?.relationships?.[
+                  person.id
+                ]?.blocked
           );
         }
 
