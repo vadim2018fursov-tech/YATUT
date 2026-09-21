@@ -2997,26 +2997,6 @@ function Chats({
                 authSession
               );
 
-            const backendIds =
-              new Set(
-                backendChats.map(
-                  (
-                    chat
-                  ) =>
-                    chat.id
-                )
-              );
-
-            const demoIds =
-              new Set(
-                DEMO_CHATS.map(
-                  (
-                    chat
-                  ) =>
-                    chat.id
-                )
-              );
-
             stored = [
               ...backendChats,
             ];
@@ -4034,26 +4014,6 @@ function Chats({
           ) {
             return;
           }
-
-          const backendIds =
-            new Set(
-              backendChats.map(
-                (
-                  chat
-                ) =>
-                  chat.id
-              )
-            );
-
-          const demoIds =
-            new Set(
-              DEMO_CHATS.map(
-                (
-                  chat
-                ) =>
-                  chat.id
-              )
-            );
 
           setChats(
             [
