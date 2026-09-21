@@ -1599,8 +1599,17 @@ function CommentItem({
     >
       <div className="comment-row">
         <div className="comment-avatar">
-          {comment.authorInitial ||
-            "К"}
+          {comment.authorAvatar ? (
+            <img
+              src={
+                comment.authorAvatar
+              }
+              alt=""
+            />
+          ) : (
+            comment.authorInitial ||
+            "К"
+          )}
         </div>
 
         <div className="comment-body">
@@ -1677,8 +1686,17 @@ function CommentItem({
                       }
                     >
                       <div className="comment-avatar">
-                        {reply.authorInitial ||
-                          "К"}
+                        {reply.authorAvatar ? (
+                          <img
+                            src={
+                              reply.authorAvatar
+                            }
+                            alt=""
+                          />
+                        ) : (
+                          reply.authorInitial ||
+                          "К"
+                        )}
                       </div>
 
                       <div className="comment-body">
@@ -1955,8 +1973,17 @@ function PostCard({
       <header className="post-header">
         <div className="post-author">
           <div className="avatar">
-            {post.authorInitial ||
-              "Я"}
+            {post.authorAvatar ? (
+              <img
+                src={
+                  post.authorAvatar
+                }
+                alt=""
+              />
+            ) : (
+              post.authorInitial ||
+              "Я"
+            )}
           </div>
 
           <div>
@@ -6620,6 +6647,12 @@ function App() {
           <Home
             onNavigate={
               goToPage
+            }
+            authSession={
+              authSession
+            }
+            viewerProfile={
+              shellProfile
             }
           />
         );
