@@ -4138,6 +4138,62 @@ function Home({
         }
       />
 
+      {authSession?.user?.id &&
+        !feedLoading &&
+        backendFriendIds.size === 0 && (
+        <section className="home-start-card">
+          <div className="home-start-card__icon">
+            <YatutIcon
+              name="friends"
+              size={22}
+            />
+          </div>
+
+          <div className="home-start-card__copy">
+            <span>
+              ПОЧАТОК У ЯТУТ
+            </span>
+
+            <strong>
+              Знайдіть перших людей
+            </strong>
+
+            <p>
+              Додайте друзів — і стрічка «Друзі», особисті чати та спільні активності почнуть наповнюватися реальним контентом.
+            </p>
+          </div>
+
+          <div className="home-start-card__actions">
+            <button
+              type="button"
+              className="is-primary"
+              onClick={() =>
+                onNavigate?.(
+                  "search"
+                )
+              }
+            >
+              <YatutIcon
+                name="search"
+                size={15}
+              />
+              Знайти людей
+            </button>
+
+            <button
+              type="button"
+              onClick={() =>
+                onNavigate?.(
+                  "friends"
+                )
+              }
+            >
+              Друзі
+            </button>
+          </div>
+        </section>
+      )}
+
       {feedLoading && (
         <div className="card empty-card">
           Оновлюємо стрічку ЯТУТ…
