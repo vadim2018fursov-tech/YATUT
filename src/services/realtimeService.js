@@ -613,6 +613,61 @@ export function subscribeChatRealtime({
   };
 }
 
+export function subscribeChatListRealtime({
+  session,
+  onChange,
+  onStatus,
+}) {
+  if (
+    !session?.access_token ||
+    !session?.user?.id
+  ) {
+    return {
+      updateAccessToken:
+        () => {},
+      close:
+        () => {},
+    };
+  }
+
+  return createRealtimeChannel({
+    session,
+    topic:
+      `chat-list:${session.user.id}`,
+    changes: [
+      {
+        event:
+          "*",
+        schema:
+          "public",
+        table:
+          "messages",
+      },
+      {
+        event:
+          "*",
+        schema:
+          "public",
+        table:
+          "conversation_members",
+        filter:
+          `user_id=eq.${session.user.id}`,
+      },
+      {
+        event:
+          "UPDATE",
+        schema:
+          "public",
+        table:
+          "conversations",
+      },
+    ],
+    onPostgresChange:
+      onChange,
+    onStatus,
+  });
+}
+
 export function subscribeFeedRealtime({
   session,
   onChange,
