@@ -49,6 +49,10 @@ import {
   subscribeEventsRealtime,
 } from "../services/realtimeService";
 
+import {
+  openBackendEventChat,
+} from "../services/chatBackendService";
+
 /* =========================================================
    PEOPLE
 ========================================================= */
@@ -2451,9 +2455,38 @@ function Events({
     if (
       authSession?.user?.id
     ) {
-      window.alert(
-        "Обговорення події підключимо до серверного групового чату наступним кроком."
-      );
+      try {
+        const chat =
+          await openBackendEventChat(
+            authSession,
+            event.id
+          );
+
+        if (!chat?.id) {
+          return;
+        }
+
+        sessionStorage.setItem(
+          "yatut-open-chat-id",
+          chat.id
+        );
+
+        onNavigate?.(
+          "chats"
+        );
+      } catch (
+        error
+      ) {
+        console.warn(
+          "EVENT DISCUSSION ERROR:",
+          error
+        );
+
+        window.alert(
+          error?.message ||
+          "Не вдалося відкрити обговорення."
+        );
+      }
 
       return;
     }
