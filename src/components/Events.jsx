@@ -46,6 +46,7 @@ import {
   loadBackendEventParticipants,
   loadBackendEvents,
   loadEventInviteCandidates,
+  loadEventPlaceOptions,
   removeBackendEventParticipant,
   setBackendEventParticipation,
   toggleBackendEventLike,
@@ -596,6 +597,7 @@ function CreateEventModal({
   onCreate,
   communityContext = null,
   backendMode = false,
+  nearbyPlaces = [],
 }) {
   const imageInputRef =
     useRef(null);
@@ -637,6 +639,11 @@ function CreateEventModal({
   const [
     place,
     setPlace,
+  ] = useState("");
+
+  const [
+    nearbyPlaceId,
+    setNearbyPlaceId,
   ] = useState("");
 
   const [
@@ -766,6 +773,10 @@ function CreateEventModal({
           city,
 
           place,
+
+          nearbyPlaceId:
+            nearbyPlaceId ||
+            null,
 
           date,
 
@@ -1098,6 +1109,83 @@ function CreateEventModal({
             </label>
           </div>
 
+          {backendMode &&
+            nearbyPlaces.length > 0 && (
+            <label className="event-field event-nearby-place-field">
+              <span>
+                Прив’язати до місця з Поруч
+              </span>
+
+              <select
+                value={
+                  nearbyPlaceId
+                }
+                onChange={(
+                  event
+                ) => {
+                  const id =
+                    event.target.value;
+
+                  setNearbyPlaceId(
+                    id
+                  );
+
+                  const selected =
+                    nearbyPlaces.find(
+                      (
+                        item
+                      ) =>
+                        item.id ===
+                        id
+                    );
+
+                  if (
+                    selected
+                  ) {
+                    setCity(
+                      selected.city ||
+                      city
+                    );
+
+                    setPlace(
+                      selected.address ||
+                      selected.title ||
+                      ""
+                    );
+                  }
+                }}
+              >
+                <option value="">
+                  Не прив’язувати
+                </option>
+
+                {nearbyPlaces.map(
+                  (
+                    item
+                  ) => (
+                    <option
+                      key={
+                        item.id
+                      }
+                      value={
+                        item.id
+                      }
+                    >
+                      {item.title}
+                      {item.address
+                        ? ` · ${item.address}`
+                        : ""}
+                    </option>
+                  )
+                )}
+              </select>
+
+              <small>
+                Прив’язана подія з’явиться на карті «Поруч» за реальними координатами цього місця.
+              </small>
+            </label>
+          )}
+
           <label className="event-field">
             <span>
               Місце
@@ -1205,6 +1293,7 @@ function EditEventModal({
   event,
   onClose,
   onSave,
+  nearbyPlaces = [],
 }) {
   const [
     title,
@@ -1243,6 +1332,14 @@ function EditEventModal({
     setPlace,
   ] = useState(
     event.place ||
+    ""
+  );
+
+  const [
+    nearbyPlaceId,
+    setNearbyPlaceId,
+  ] = useState(
+    event.nearbyPlaceId ||
     ""
   );
 
@@ -1288,6 +1385,9 @@ function EditEventModal({
         category,
         city,
         place,
+        nearbyPlaceId:
+          nearbyPlaceId ||
+          null,
         date,
         time,
       });
@@ -1418,6 +1518,82 @@ function EditEventModal({
             </label>
           </div>
 
+          {nearbyPlaces.length > 0 && (
+            <label className="event-field event-nearby-place-field">
+              <span>
+                Прив’язати до місця з Поруч
+              </span>
+
+              <select
+                value={
+                  nearbyPlaceId
+                }
+                onChange={(
+                  input
+                ) => {
+                  const id =
+                    input.target.value;
+
+                  setNearbyPlaceId(
+                    id
+                  );
+
+                  const selected =
+                    nearbyPlaces.find(
+                      (
+                        item
+                      ) =>
+                        item.id ===
+                        id
+                    );
+
+                  if (
+                    selected
+                  ) {
+                    setCity(
+                      selected.city ||
+                      city
+                    );
+
+                    setPlace(
+                      selected.address ||
+                      selected.title ||
+                      ""
+                    );
+                  }
+                }}
+              >
+                <option value="">
+                  Не прив’язувати
+                </option>
+
+                {nearbyPlaces.map(
+                  (
+                    item
+                  ) => (
+                    <option
+                      key={
+                        item.id
+                      }
+                      value={
+                        item.id
+                      }
+                    >
+                      {item.title}
+                      {item.address
+                        ? ` · ${item.address}`
+                        : ""}
+                    </option>
+                  )
+                )}
+              </select>
+
+              <small>
+                Координати беруться з одобреного місця у «Поруч».
+              </small>
+            </label>
+          )}
+
           <label className="event-field">
             <span>
               Місце
@@ -1427,11 +1603,15 @@ function EditEventModal({
               value={place}
               onChange={(
                 input
-              ) =>
+              ) => {
                 setPlace(
                   input.target.value
-                )
-              }
+                );
+
+                setNearbyPlaceId(
+                  ""
+                );
+              }}
             />
           </label>
 
@@ -2331,11 +2511,53 @@ function Events({
   ] = useState(null);
 
   const [
+    eventPlaceOptions,
+    setEventPlaceOptions,
+  ] = useState([]);
+
+  const [
     activeTab,
     setActiveTab,
   ] = useState(
     "for-you"
   );
+
+  useEffect(() => {
+    if (
+      !authSession?.user?.id
+    ) {
+      setEventPlaceOptions(
+        []
+      );
+
+      return;
+    }
+
+    loadEventPlaceOptions(
+      authSession,
+      null
+    )
+      .then(
+        setEventPlaceOptions
+      )
+      .catch(
+        (
+          error
+        ) => {
+          console.warn(
+            "EVENT PLACE OPTIONS ERROR:",
+            error
+          );
+
+          setEventPlaceOptions(
+            []
+          );
+        }
+      );
+  }, [
+    authSession?.user?.id,
+    authSession?.access_token,
+  ]);
 
   /* =======================================================
      COMMUNITY → EVENTS BRIDGE
@@ -3845,6 +4067,9 @@ function Events({
           onSave={
             saveEventChanges
           }
+          nearbyPlaces={
+            eventPlaceOptions
+          }
         />
       )}
 
@@ -3863,6 +4088,9 @@ function Events({
             Boolean(
               authSession?.user?.id
             )
+          }
+          nearbyPlaces={
+            eventPlaceOptions
           }
         />
       )}
