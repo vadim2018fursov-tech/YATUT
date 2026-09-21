@@ -4669,6 +4669,42 @@ function App() {
     );
   }
 
+  useEffect(() => {
+    if (
+      !authSession ||
+      currentPage !==
+        "auth"
+    ) {
+      return;
+    }
+
+    setCurrentPage(
+      "home"
+    );
+
+    setRouteRevision(
+      (
+        previous
+      ) =>
+        previous +
+        1
+    );
+
+    window.history.replaceState(
+      {
+        yatut:
+          true,
+        page:
+          "home",
+      },
+      "",
+      "/"
+    );
+  }, [
+    authSession,
+    currentPage,
+  ]);
+
   async function handleSignOut() {
     try {
       await signOut();
