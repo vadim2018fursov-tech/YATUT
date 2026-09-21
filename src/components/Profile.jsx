@@ -416,6 +416,15 @@ export default function Profile({
       }
 
       if (
+        payload?.action ===
+        "edit"
+      ) {
+        setEditing(
+          true
+        );
+      }
+
+      if (
         payload?.postId
       ) {
         setActiveTab(
