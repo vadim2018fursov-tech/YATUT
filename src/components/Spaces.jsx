@@ -3135,6 +3135,7 @@ function CommunityFeed({
   space,
   onUpdate,
   onOpenChat,
+  initialPostId = null,
 }) {
   const [
     text,
@@ -3160,6 +3161,41 @@ function CommunityFeed({
     )
       ? space.posts
       : [];
+
+  useEffect(() => {
+    if (
+      !initialPostId
+    ) {
+      return undefined;
+    }
+
+    const timer =
+      window.setTimeout(
+        () => {
+          const element =
+            document.getElementById(
+              `community-post-${initialPostId}`
+            );
+
+          element?.scrollIntoView({
+            behavior:
+              "smooth",
+
+            block:
+              "center",
+          });
+        },
+        120
+      );
+
+    return () =>
+      window.clearTimeout(
+        timer
+      );
+  }, [
+    initialPostId,
+    posts.length,
+  ]);
 
   function publish() {
     const clean =
@@ -3434,6 +3470,7 @@ function CommunityFeed({
           post
         ) => (
           <article
+            id={`community-post-${post.id}`}
             key={
               post.id
             }
@@ -4001,6 +4038,7 @@ function SpaceDetail({
   onEdit,
   onUpdate,
   onDelete,
+  initialPostId = null,
 }) {
   const [
     tab,
@@ -4008,6 +4046,18 @@ function SpaceDetail({
   ] = useState(
     "feed"
   );
+
+  useEffect(() => {
+    if (
+      initialPostId
+    ) {
+      setTab(
+        "feed"
+      );
+    }
+  }, [
+    initialPostId,
+  ]);
 
   const template =
     templateForSpace(
@@ -4364,6 +4414,9 @@ function SpaceDetail({
                 onOpenChat={
                   openCommunityChat
                 }
+                initialPostId={
+                  initialPostId
+                }
               />
             )}
 
@@ -4629,6 +4682,13 @@ function Spaces({
   );
 
   const [
+    pendingSpacePostId,
+    setPendingSpacePostId,
+  ] = useState(
+    null
+  );
+
+  const [
     engineOpen,
     setEngineOpen,
   ] = useState(
@@ -4677,6 +4737,11 @@ function Spaces({
           mergeAcceptedCommunityInvites(
             previous
           )
+      );
+
+      setPendingSpacePostId(
+        payload?.postId ||
+        null
       );
 
       setActiveSpaceId(
@@ -4998,10 +5063,14 @@ function Spaces({
           space={
             activeSpace
           }
-          onBack={() =>
+          onBack={() => {
+            setPendingSpacePostId(
+              null
+            );
+
             setActiveSpaceId(
               null
-            )
+            );
           }
           onNavigate={
             onNavigate
@@ -5018,6 +5087,9 @@ function Spaces({
             deleteSpace(
               activeSpace
             )
+          }
+          initialPostId={
+            pendingSpacePostId
           }
         />
 
