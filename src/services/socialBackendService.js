@@ -331,7 +331,7 @@ export async function getBackendUserProfile(
 
   postsUrl.searchParams.set(
     "select",
-    "id,text,media_url,media_type,location_text,visibility,shares_count,created_at"
+    "id,text,media_url,media_type,location_text,visibility,shares_count,event_id,created_at"
   );
 
   postsUrl.searchParams.set(
@@ -554,6 +554,9 @@ export async function getBackendUserProfile(
               post.shares_count ||
               0
             ),
+          eventId:
+            post.event_id ||
+            null,
           createdAt:
             Date.parse(
               post.created_at
