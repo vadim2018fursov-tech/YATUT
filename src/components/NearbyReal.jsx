@@ -370,16 +370,22 @@ export default function NearbyReal({
           {
             status:
               overrides.status ??
-              moderationStatus ||
-              null,
+              (
+                moderationStatus ||
+                null
+              ),
             city:
               overrides.city ??
-              moderationCity ||
-              null,
+              (
+                moderationCity ||
+                null
+              ),
             search:
               overrides.search ??
-              moderationSearch ||
-              null,
+              (
+                moderationSearch ||
+                null
+              ),
           }
         );
 
@@ -612,6 +618,128 @@ export default function NearbyReal({
         "Не вдалося виконати модерацію."
       );
     }
+  }
+
+  async function bulkModerateSelected(
+    decision
+  ) {
+    if (
+      !selectedModerationIds
+        .length
+    ) {
+      return;
+    }
+
+    const note =
+      window.prompt(
+        decision ===
+          "approved"
+          ? `Коментар для ${selectedModerationIds.length} місць (необов’язково):`
+          : `Причина відхилення для ${selectedModerationIds.length} місць:`,
+        ""
+      );
+
+    if (
+      note === null
+    ) {
+      return;
+    }
+
+    try {
+      const processed =
+        await bulkModerateNearbyPlaces(
+          authSession,
+          selectedModerationIds,
+          decision,
+          note
+        );
+
+      setSelectedModerationIds(
+        []
+      );
+
+      await Promise.all([
+        refreshModerationQueue(),
+        refresh(),
+      ]);
+
+      if (
+        processed <
+        1
+      ) {
+        window.alert(
+          "Жодне місце не потребувало модерації."
+        );
+      }
+    } catch (
+      error
+    ) {
+      window.alert(
+        error?.message ||
+        "Не вдалося виконати масову модерацію."
+      );
+    }
+  }
+
+  function toggleModerationSelection(
+    placeId
+  ) {
+    setSelectedModerationIds(
+      (
+        current
+      ) =>
+        current.includes(
+          placeId
+        )
+          ? current.filter(
+              (
+                id
+              ) =>
+                id !==
+                placeId
+            )
+          : [
+              ...current,
+              placeId,
+            ]
+    );
+  }
+
+  function selectAllVisiblePending() {
+    const pendingIds =
+      adminDashboard.places
+        .filter(
+          (
+            place
+          ) =>
+            place.status ===
+            "pending"
+        )
+        .map(
+          (
+            place
+          ) =>
+            place.id
+        );
+
+    const allSelected =
+      pendingIds.length >
+        0 &&
+      pendingIds.every(
+        (
+          id
+        ) =>
+          selectedModerationIds
+            .includes(
+              id
+            )
+      );
+
+    setSelectedModerationIds(
+      allSelected
+        ? []
+        : pendingIds
+    );
   }
 
   const tabs =
