@@ -306,7 +306,14 @@ function EventCard({
       );
 
   return (
-    <article className="event-card">
+    <article
+      className={`event-card ${
+        event.status ===
+        "cancelled"
+          ? "is-cancelled"
+          : ""
+      }`}
+    >
       <button
         type="button"
         className="event-card-cover-button"
@@ -357,6 +364,13 @@ function EventCard({
       </button>
 
       <div className="event-card-content">
+        {event.status ===
+          "cancelled" && (
+          <div className="event-cancelled-chip">
+            СКАСОВАНО
+          </div>
+        )}
+
         {event.communityName && (
           <div className="event-community-chip">
             <Users
@@ -471,6 +485,10 @@ function EventCard({
                 going
                   ? "going"
                   : ""
+              }
+              disabled={
+                event.status ===
+                "cancelled"
               }
               onClick={() =>
                 onToggleGoing(
