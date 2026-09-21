@@ -262,6 +262,55 @@ export default function NearbyReal({
     authSession?.access_token,
   ]);
 
+  async function refreshModerationQueue() {
+    if (
+      !feed.canModerate
+    ) {
+      setModerationQueue(
+        []
+      );
+
+      return;
+    }
+
+    try {
+      setModerationLoading(
+        true
+      );
+
+      const rows =
+        await loadNearbyModerationQueue(
+          authSession
+        );
+
+      setModerationQueue(
+        rows
+      );
+    } catch (
+      error
+    ) {
+      console.warn(
+        "NEARBY MODERATION LOAD ERROR:",
+        error
+      );
+    } finally {
+      setModerationLoading(
+        false
+      );
+    }
+  }
+
+  useEffect(() => {
+    if (
+      feed.canModerate
+    ) {
+      refreshModerationQueue();
+    }
+  }, [
+    feed.canModerate,
+    authSession?.access_token,
+  ]);
+
   function usePreciseLocation() {
     if (
       !navigator.geolocation
@@ -356,7 +405,8 @@ export default function NearbyReal({
             coordinates
               ?.longitude ??
             null,
-        }
+        },
+        placeImageFile
       );
 
       setPlaceDraft({
@@ -371,6 +421,10 @@ export default function NearbyReal({
         websiteUrl:
           "",
       });
+
+      setPlaceImageFile(
+        null
+      );
 
       setAddOpen(
         false
@@ -390,6 +444,42 @@ export default function NearbyReal({
       );
     }
   }
+
+  async function moderatePlace(
+    placeId,
+    decision
+  ) {
+    try {
+      await moderateNearbyPlace(
+        authSession,
+        placeId,
+        decision
+      );
+
+      await Promise.all([
+        refreshModerationQueue(),
+        refresh(),
+      ]);
+    } catch (
+      error
+    ) {
+      window.alert(
+        error?.message ||
+        "Не вдалося виконати модерацію."
+      );
+    }
+  }
+
+  const tabs =
+    feed.canModerate
+      ? [
+          ...BASE_TABS,
+          [
+            "moderation",
+            `Модерація (${moderationQueue.length})`,
+          ],
+        ]
+      : BASE_TABS;
 
   const query =
     search
@@ -484,6 +574,30 @@ export default function NearbyReal({
         query,
       ]
     );
+
+  if (
+    selectedPlaceId
+  ) {
+    return (
+      <NearbyPlaceDetail
+        authSession={
+          authSession
+        }
+        placeId={
+          selectedPlaceId
+        }
+        onBack={() => {
+          setSelectedPlaceId(
+            null
+          );
+
+          onNavigate?.(
+            "nearby"
+          );
+        }}
+      />
+    );
+  }
 
   return (
     <section className="feature-page nearby-page nearby-real">
@@ -633,7 +747,7 @@ export default function NearbyReal({
       </label>
 
       <nav className="feature-tabs nearby-tabs">
-        {TABS.map(
+        {tabs.map(
           ([
             id,
             title,
@@ -843,6 +957,32 @@ export default function NearbyReal({
                     placeholder="Адреса"
                   />
 
+                  <label className="nearby-place-photo-input">
+                    <span>
+                      Фото місця
+                    </span>
+
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(
+                        event
+                      ) =>
+                        setPlaceImageFile(
+                          event.target.files
+                            ?.[0] ||
+                          null
+                        )
+                      }
+                    />
+
+                    <small>
+                      {placeImageFile
+                        ? placeImageFile.name
+                        : "JPEG, PNG, WebP, HEIC до 10 МБ"}
+                    </small>
+                  </label>
+
                   <textarea
                     value={placeDraft.description}
                     onChange={(
@@ -889,13 +1029,60 @@ export default function NearbyReal({
                     ) => (
                       <article
                         key={place.id}
-                        className="nearby-place-card"
+                        className="nearby-place-card nearby-place-card--real"
+                        role="button"
+                        tabIndex={0}
+                        onClick={() => {
+                          setSelectedPlaceId(
+                            place.id
+                          );
+
+                          onNavigate?.(
+                            "nearby",
+                            {
+                              placeId:
+                                place.id,
+                            }
+                          );
+                        }}
+                        onKeyDown={(
+                          event
+                        ) => {
+                          if (
+                            event.key ===
+                              "Enter" ||
+                            event.key ===
+                              " "
+                          ) {
+                            event.preventDefault();
+                            setSelectedPlaceId(
+                              place.id
+                            );
+
+                            onNavigate?.(
+                              "nearby",
+                              {
+                                placeId:
+                                  place.id,
+                              }
+                            );
+                          }
+                        }}
                       >
                         <div className="nearby-place-cover">
-                          <YatutIcon
-                            name="pin"
-                            size={26}
-                          />
+                          {place.imageUrl ? (
+                            <img
+                              src={
+                                place.imageUrl
+                              }
+                              alt=""
+                            />
+                          ) : (
+                            <YatutIcon
+                              name="pin"
+                              size={26}
+                            />
+                          )}
                         </div>
 
                         <section>
@@ -931,6 +1118,21 @@ export default function NearbyReal({
                             }
                           </p>
 
+                          <div className="nearby-place-card-rating">
+                            <strong>
+                              {place.averageRating
+                                ? `★ ${place.averageRating}`
+                                : "Без оцінок"}
+                            </strong>
+
+                            <span>
+                              {Number(
+                                place.reviewCount ||
+                                0
+                              )} відгуків
+                            </span>
+                          </div>
+
                           {place.status ===
                             "pending" && (
                             <small className="nearby-place-pending">
@@ -945,6 +1147,127 @@ export default function NearbyReal({
               ) : (
                 <p className="nearby-real-empty">
                   Реальних місць у цьому місті поки немає. Можна додати перше.
+                </p>
+              )}
+            </section>
+          )}
+
+          {tab ===
+            "moderation" &&
+            feed.canModerate && (
+            <section className="nearby-real-section nearby-moderation-section">
+              <header>
+                <div>
+                  <span>
+                    МОДЕРАЦІЯ
+                  </span>
+
+                  <h2>
+                    Нові місця
+                  </h2>
+                </div>
+
+                <strong>
+                  {
+                    moderationQueue.length
+                  }
+                </strong>
+              </header>
+
+              {moderationLoading ? (
+                <p className="nearby-real-empty">
+                  Завантажуємо чергу...
+                </p>
+              ) : moderationQueue.length ? (
+                <div className="nearby-moderation-list">
+                  {moderationQueue.map(
+                    (
+                      place
+                    ) => (
+                      <article
+                        key={
+                          place.id
+                        }
+                        className="nearby-moderation-card"
+                      >
+                        <div className="nearby-moderation-card__media">
+                          {place.imageUrl ? (
+                            <img
+                              src={
+                                place.imageUrl
+                              }
+                              alt=""
+                            />
+                          ) : (
+                            <YatutIcon
+                              name="pin"
+                              size={24}
+                            />
+                          )}
+                        </div>
+
+                        <div className="nearby-moderation-card__body">
+                          <span>
+                            {
+                              place.category ||
+                              "Місце"
+                            }
+                          </span>
+
+                          <h3>
+                            {
+                              place.title
+                            }
+                          </h3>
+
+                          <p>
+                            {
+                              place.address ||
+                              place.city
+                            }
+                          </p>
+
+                          <small>
+                            Додав: {
+                              place.creatorName
+                            }
+                          </small>
+                        </div>
+
+                        <div className="nearby-moderation-card__actions">
+                          <button
+                            type="button"
+                            className="approve"
+                            onClick={() =>
+                              moderatePlace(
+                                place.id,
+                                "approved"
+                              )
+                            }
+                          >
+                            Схвалити
+                          </button>
+
+                          <button
+                            type="button"
+                            className="reject"
+                            onClick={() =>
+                              moderatePlace(
+                                place.id,
+                                "rejected"
+                              )
+                            }
+                          >
+                            Відхилити
+                          </button>
+                        </div>
+                      </article>
+                    )
+                  )}
+                </div>
+              ) : (
+                <p className="nearby-real-empty">
+                  Черга модерації порожня.
                 </p>
               )}
             </section>
