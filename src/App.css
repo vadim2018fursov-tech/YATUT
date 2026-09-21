@@ -25117,3 +25117,67 @@ button.is-primary {
     width: 100%;
   }
 }
+
+
+.global-search-empty-actions {
+  width: 100%;
+  max-width: 330px;
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.global-search-empty-actions button {
+  min-height: 40px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 12px;
+  background:
+    linear-gradient(
+      145deg,
+      #746cff,
+      #635bff
+    );
+  color: #ffffff;
+  font: inherit;
+  font-size: 10px;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.global-search-empty-actions button.secondary {
+  border:
+    1px solid
+    #e3e5ec;
+  background: #ffffff;
+  color: #5c606c;
+}
+
+.yatut-dark-mode .global-search-empty-actions button.secondary {
+  border-color:
+    rgba(
+      255,
+      255,
+      255,
+      .08
+    );
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .05
+    );
+  color: #dedfea;
+}
+
+@media (max-width: 420px) {
+  .global-search-empty-actions {
+    flex-direction: column;
+  }
+
+  .global-search-empty-actions button {
+    width: 100%;
+  }
+}
