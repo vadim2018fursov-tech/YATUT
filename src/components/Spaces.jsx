@@ -4186,26 +4186,18 @@ function SpaceDetail({
     );
   }
 
-  function shareSpace() {
-    const url =
-      `${window.location.origin}${window.location.pathname}#space=${encodeURIComponent(
-        space.id
-      )}`;
+  async function shareSpace() {
+    await shareYatutItem({
+      title:
+        `${space.title} · ЯТУТ`,
 
-    navigator.clipboard
-      ?.writeText(
-        url
-      )
-      .then(
-        () => {
-          window.alert(
-            "Посилання скопійовано"
-          );
-        }
-      )
-      .catch(
-        () => {}
-      );
+      text:
+        space.description ||
+        "Спільнота у ЯТУТ",
+
+      path:
+        `#space=${encodeURIComponent(space.id)}`,
+    });
   }
 
   return (
