@@ -1,15 +1,26 @@
 {
   "name": "ЯТУТ",
   "short_name": "ЯТУТ",
+  "id": "/",
   "description": "Соціальна мережа про людей, місця, події та життя поруч.",
   "lang": "uk",
+  "dir": "ltr",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "orientation": "portrait-primary",
+  "display_override": [
+    "standalone",
+    "minimal-ui",
+    "browser"
+  ],
+  "orientation": "any",
   "background_color": "#f7f7fb",
   "theme_color": "#6b61ff",
-  "categories": ["social", "lifestyle"],
+  "categories": [
+    "social",
+    "lifestyle"
+  ],
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "/yatut-icon.svg",
@@ -30,9 +41,19 @@
       "url": "/chats"
     },
     {
+      "name": "Сповіщення",
+      "short_name": "Сповіщення",
+      "url": "/notifications"
+    },
+    {
       "name": "PULSE",
       "short_name": "PULSE",
       "url": "/pulse"
+    },
+    {
+      "name": "Створити",
+      "short_name": "Створити",
+      "url": "/create"
     }
   ]
 }
