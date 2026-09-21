@@ -666,6 +666,34 @@ const DEMO_POSTS = [
   },
 ];
 
+function authenticatedWelcomePosts() {
+  return DEMO_POSTS
+    .filter(
+      (
+        post
+      ) =>
+        post.authorId ===
+        "yatut"
+    )
+    .map(
+      (
+        post
+      ) => ({
+        ...post,
+        liked:
+          false,
+        likes:
+          0,
+        comments:
+          [],
+        shares:
+          0,
+        system:
+          true,
+      })
+    );
+}
+
 /* =========================================================
    HELPERS
 ========================================================= */
@@ -2292,13 +2320,7 @@ function Home({
     useState(
       () =>
         authSession?.user?.id
-          ? DEMO_POSTS.filter(
-              (
-                post
-              ) =>
-                post.authorId ===
-                "yatut"
-            )
+          ? authenticatedWelcomePosts()
           : safeLoadPosts()
     );
 
@@ -2354,13 +2376,7 @@ function Home({
       ]);
 
     const welcomePosts =
-      DEMO_POSTS.filter(
-        (
-          post
-        ) =>
-          post.authorId ===
-          "yatut"
-      );
+      authenticatedWelcomePosts();
 
     setPosts([
       ...backendPosts,
