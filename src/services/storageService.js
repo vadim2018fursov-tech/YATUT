@@ -320,6 +320,71 @@ export async function uploadProfileImage(
   );
 }
 
+export async function uploadCommunityImage(
+  session,
+  file,
+  kind = "cover"
+) {
+  if (
+    !session?.user?.id ||
+    !file
+  ) {
+    return null;
+  }
+
+  const mime =
+    String(
+      file.type ||
+      ""
+    );
+
+  if (
+    !mime.startsWith(
+      "image/"
+    )
+  ) {
+    throw new Error(
+      "Для спільноти можна завантажити лише зображення."
+    );
+  }
+
+  if (
+    file.size >
+    10 *
+      1024 *
+      1024
+  ) {
+    throw new Error(
+      "Зображення спільноти має бути до 10 МБ."
+    );
+  }
+
+  const extension =
+    extensionForFile(
+      file
+    );
+
+  const path =
+    `${session.user.id}/${kind}-${Date.now()}-${randomPart()}.${extension}`;
+
+  await uploadObject({
+    session,
+    bucket:
+      "community-media",
+    path,
+    file,
+  });
+
+  return {
+    url:
+      publicUrl(
+        "community-media",
+        path
+      ),
+    path,
+  };
+}
+
 export async function uploadPostMedia(
   session,
   file
