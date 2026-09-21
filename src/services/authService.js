@@ -64,7 +64,8 @@ export function isValidUsername(
 }
 
 export async function checkUsernameAvailable(
-  value
+  value,
+  session = null
 ) {
   const username =
     normalizeUsername(
@@ -86,7 +87,10 @@ export async function checkUsernameAvailable(
         method:
           "POST",
         headers:
-          authHeaders(),
+          authHeaders(
+            session?.access_token ||
+            null
+          ),
         body:
           JSON.stringify({
             candidate:
@@ -860,7 +864,8 @@ export async function updateMyProfile(
 
   const available =
     await checkUsernameAvailable(
-      username
+      username,
+      session
     );
 
   if (!available) {
