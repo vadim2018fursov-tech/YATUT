@@ -34,6 +34,11 @@ import {
   subscribeChatRealtime,
 } from "../services/realtimeService";
 
+import {
+  deleteStorageObject,
+  uploadChatMedia,
+} from "../services/storageService";
+
 /* =========================================================
    PEOPLE
 ========================================================= */
@@ -5081,6 +5086,19 @@ function Chats({
     }
 
     if (
+      file.size >
+      50 *
+        1024 *
+        1024
+    ) {
+      showChatToast(
+        "Файл має бути до 50 МБ"
+      );
+
+      return;
+    }
+
+    if (
       attachment?.url
     ) {
       URL.revokeObjectURL(
@@ -5204,17 +5222,21 @@ function Chats({
         activeChat.backend &&
         authSession?.user?.id
       ) {
-        if (
-          attachment
-        ) {
-          showChatToast(
-            "Фото й файли у хмарних чатах — наступний модуль"
-          );
-
-          return;
-        }
-
         try {
+          let uploaded =
+            null;
+
+          if (
+            attachment?.file
+          ) {
+            uploaded =
+              await uploadChatMedia(
+                authSession,
+                activeChat.id,
+                attachment.file
+              );
+          }
+
           const backendMessage =
             await sendBackendMessage(
               authSession,
@@ -5222,11 +5244,21 @@ function Chats({
               {
                 text,
                 kind:
+                  attachment?.type ||
                   "text",
                 replyToId:
                   replyTo?.backend
                     ? replyTo.id
                     : null,
+                mediaPath:
+                  uploaded?.path ||
+                  null,
+                fileName:
+                  uploaded?.fileName ||
+                  null,
+                mimeType:
+                  uploaded?.mimeType ||
+                  null,
               }
             );
 
@@ -5244,13 +5276,16 @@ function Chats({
 
             await updatePreview(
               activeChat,
-              text
+              previewText(
+                backendMessage
+              )
             );
           }
 
           setDraft("");
           setReplyTo(null);
           setEmojiOpen(false);
+          removeAttachment();
         } catch (
           error
         ) {
@@ -5260,6 +5295,7 @@ function Chats({
           );
 
           showChatToast(
+            error?.message ||
             "Не вдалося надіслати повідомлення"
           );
         }
@@ -5361,13 +5397,98 @@ function Chats({
         activeChat.backend &&
         authSession?.user?.id
       ) {
-        setVoiceOpen(
-          false
-        );
+        try {
+          const voiceFile =
+            new File(
+              [
+                blob,
+              ],
+              `voice-${Date.now()}.webm`,
+              {
+                type:
+                  blob.type ||
+                  "audio/webm",
+              }
+            );
 
-        showChatToast(
-          "Голосові у хмарних чатах — наступний модуль"
-        );
+          const uploaded =
+            await uploadChatMedia(
+              authSession,
+              activeChat.id,
+              voiceFile
+            );
+
+          const backendMessage =
+            await sendBackendMessage(
+              authSession,
+              activeChat.id,
+              {
+                text:
+                  "",
+                kind:
+                  "audio",
+                replyToId:
+                  replyTo?.backend
+                    ? replyTo.id
+                    : null,
+                mediaPath:
+                  uploaded?.path ||
+                  null,
+                fileName:
+                  uploaded?.fileName ||
+                  voiceFile.name,
+                mimeType:
+                  uploaded?.mimeType ||
+                  voiceFile.type,
+                durationMs:
+                  Math.round(
+                    Number(
+                      duration ||
+                      0
+                    ) *
+                      1000
+                  ),
+              }
+            );
+
+          if (
+            backendMessage
+          ) {
+            setMessages(
+              (
+                previous
+              ) => [
+                ...previous,
+                backendMessage,
+              ]
+            );
+
+            await updatePreview(
+              activeChat,
+              "🎙 Голосове"
+            );
+          }
+
+          setVoiceOpen(
+            false
+          );
+
+          setReplyTo(
+            null
+          );
+        } catch (
+          error
+        ) {
+          console.warn(
+            "BACKEND VOICE SEND ERROR:",
+            error
+          );
+
+          showChatToast(
+            error?.message ||
+            "Не вдалося надіслати голосове"
+          );
+        }
 
         return;
       }
@@ -5444,6 +5565,25 @@ function Chats({
           authSession,
           message.id
         );
+
+        if (
+          message.mediaPath
+        ) {
+          deleteStorageObject(
+            authSession,
+            "chat-media",
+            message.mediaPath
+          ).catch(
+            (
+              error
+            ) => {
+              console.warn(
+                "CHAT MEDIA DELETE ERROR:",
+                error
+              );
+            }
+          );
+        }
       } else {
         await deleteMessage(
           message.id
