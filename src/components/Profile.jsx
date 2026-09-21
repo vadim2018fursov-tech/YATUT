@@ -864,7 +864,7 @@ export default function Profile({
         "",
 
       path:
-        `#profile-post=${encodeURIComponent(post.id)}`,
+        `/profile/posts/${encodeURIComponent(post.id)}`,
     });
   }
 
