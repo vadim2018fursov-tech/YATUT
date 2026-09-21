@@ -426,3 +426,80 @@ export async function deleteNearbyPlace(
     }
   );
 }
+
+
+export async function loadNearbyAdminDashboard(
+  session,
+  {
+    status = null,
+    city = null,
+    search = null,
+  } = {}
+) {
+  const data =
+    await rpc(
+      session,
+      "get_nearby_admin_dashboard",
+      {
+        status_filter:
+          status ||
+          null,
+        city_filter:
+          city ||
+          null,
+        search_query:
+          search ||
+          null,
+      }
+    );
+
+  return {
+    stats:
+      data?.stats ||
+      {
+        total: 0,
+        pending: 0,
+        approved: 0,
+        rejected: 0,
+        cities: 0,
+      },
+    cities:
+      Array.isArray(
+        data?.cities
+      )
+        ? data.cities
+        : [],
+    places:
+      Array.isArray(
+        data?.places
+      )
+        ? data.places
+        : [],
+  };
+}
+
+export async function bulkModerateNearbyPlaces(
+  session,
+  placeIds,
+  decision,
+  moderationNote = ""
+) {
+  const result =
+    await rpc(
+      session,
+      "bulk_moderate_nearby_places",
+      {
+        target_place_ids:
+          placeIds,
+        decision,
+        moderation_note:
+          moderationNote ||
+          null,
+      }
+    );
+
+  return Number(
+    result ||
+    0
+  );
+}
