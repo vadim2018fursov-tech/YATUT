@@ -90,6 +90,7 @@ import {
 
 import {
   getAuthSession,
+  getMyProfile,
   isAuthBackendConfigured,
   signOut,
   subscribeAuthState,
@@ -922,6 +923,7 @@ function highlightElement(
 function PostComposer({
   onPublish,
   onNavigate,
+  viewerProfile = null,
 }) {
   const [
     text,
@@ -1177,7 +1179,17 @@ function PostComposer({
           }
           aria-label="Відкрити профіль"
         >
-          В
+          {viewerProfile?.avatar ? (
+            <img
+              src={
+                viewerProfile.avatar
+              }
+              alt=""
+            />
+          ) : (
+            viewerProfile?.initial ||
+            "Я"
+          )}
         </button>
 
         <textarea
@@ -1736,6 +1748,7 @@ function PostComments({
   onAddReply,
   onToggleCommentLike,
   onToggleReplyLike,
+  viewerProfile = null,
 }) {
   const [
     draft,
@@ -1848,7 +1861,17 @@ function PostComments({
 
       <div className="comment-composer">
         <div className="comment-avatar">
-          В
+          {viewerProfile?.avatar ? (
+            <img
+              src={
+                viewerProfile.avatar
+              }
+              alt=""
+            />
+          ) : (
+            viewerProfile?.initial ||
+            "Я"
+          )}
         </div>
 
         <div className="comment-input-box">
@@ -1919,6 +1942,7 @@ function PostCard({
   onVotePoll,
   onShare,
   onToggleSaved,
+  viewerProfile = null,
 }) {
   return (
     <article
@@ -2191,6 +2215,9 @@ function PostCard({
           onToggleReplyLike={
             onToggleReplyLike
           }
+          viewerProfile={
+            viewerProfile
+          }
         />
       )}
     </article>
@@ -2204,6 +2231,7 @@ function PostCard({
 function Home({
   onNavigate,
   authSession = null,
+  viewerProfile = null,
 }) {
   const [
     feedTab,
@@ -4043,6 +4071,9 @@ function Home({
         onNavigate={
           onNavigate
         }
+        viewerProfile={
+          viewerProfile
+        }
       />
 
       {feedLoading && (
@@ -4109,6 +4140,9 @@ function Home({
                   togglePostSaved(
                     post
                   )
+                }
+                viewerProfile={
+                  viewerProfile
                 }
               />
             )
@@ -4482,6 +4516,7 @@ function TopBar({
   themeMode,
   onToggleTheme,
   unreadNotifications,
+  viewerProfile = null,
 }) {
   return (
     <header className="topbar">
@@ -4665,7 +4700,17 @@ function TopBar({
             }
             aria-label="Мій профіль"
           >
-            В
+            {viewerProfile?.avatar ? (
+              <img
+                src={
+                  viewerProfile.avatar
+                }
+                alt=""
+              />
+            ) : (
+              viewerProfile?.initial ||
+              "Я"
+            )}
           </button>
         </div>
       </div>
@@ -4680,6 +4725,7 @@ function TopBar({
 function LeftSidebar({
   currentPage,
   onNavigate,
+  viewerProfile = null,
 }) {
   return (
     <aside className="left-sidebar">
@@ -4775,16 +4821,28 @@ function LeftSidebar({
           }
         >
           <div className="avatar">
-            В
+            {viewerProfile?.avatar ? (
+              <img
+                src={
+                  viewerProfile.avatar
+                }
+                alt=""
+              />
+            ) : (
+              viewerProfile?.initial ||
+              "Я"
+            )}
           </div>
 
           <div>
             <strong>
-              Вадим
+              {viewerProfile?.name ||
+                "Користувач ЯТУТ"}
             </strong>
 
             <span>
-              @vadim
+              @{viewerProfile?.username ||
+                "user"}
             </span>
           </div>
         </button>
@@ -4804,6 +4862,7 @@ function MobileNavigation({
   notificationOpen,
   unreadNotifications,
   onToggleNotifications,
+  viewerProfile = null,
 }) {
   return (
     <nav
@@ -4890,7 +4949,17 @@ function MobileNavigation({
               {item.id ===
               "profile" ? (
                 <span className="mobile-profile-avatar">
-                  В
+                  {viewerProfile?.avatar ? (
+                    <img
+                      src={
+                        viewerProfile.avatar
+                      }
+                      alt=""
+                    />
+                  ) : (
+                    viewerProfile?.initial ||
+                    "Я"
+                  )}
                 </span>
               ) : (
                 <span className="mobile-nav-icon">
@@ -5028,6 +5097,144 @@ function App() {
     useState(
       !authBackendConfigured
     );
+
+  const [
+    shellProfile,
+    setShellProfile,
+  ] =
+    useState(null);
+
+  useEffect(() => {
+    if (
+      !authSession?.user?.id
+    ) {
+      setShellProfile(
+        null
+      );
+
+      return undefined;
+    }
+
+    let active =
+      true;
+
+    function normalizeProfile(
+      profile = {}
+    ) {
+      const fallbackName =
+        authSession.user
+          ?.user_metadata
+          ?.full_name ||
+        authSession.user.email
+          ?.split("@")[0] ||
+        "Користувач ЯТУТ";
+
+      const name =
+        profile.name ||
+        profile.full_name ||
+        fallbackName;
+
+      return {
+        name,
+        username:
+          profile.username ||
+          authSession.user
+            ?.user_metadata
+            ?.username ||
+          authSession.user.email
+            ?.split("@")[0] ||
+          "user",
+        avatar:
+          profile.avatar ||
+          profile.avatar_url ||
+          null,
+        initial:
+          name
+            .trim()
+            .charAt(0)
+            .toUpperCase() ||
+          "Я",
+      };
+    }
+
+    setShellProfile(
+      normalizeProfile()
+    );
+
+    const refresh =
+      () =>
+        getMyProfile(
+          authSession
+        )
+          .then(
+            (
+              profile
+            ) => {
+              if (
+                active &&
+                profile
+              ) {
+                setShellProfile(
+                  normalizeProfile(
+                    profile
+                  )
+                );
+              }
+            }
+          )
+          .catch(
+            (
+              error
+            ) => {
+              console.warn(
+                "SHELL PROFILE LOAD ERROR:",
+                error
+              );
+            }
+          );
+
+    refresh();
+
+    function handleProfileUpdated(
+      event
+    ) {
+      if (
+        !active
+      ) {
+        return;
+      }
+
+      if (
+        event?.detail
+      ) {
+        setShellProfile(
+          normalizeProfile(
+            event.detail
+          )
+        );
+      } else {
+        refresh();
+      }
+    }
+
+    window.addEventListener(
+      "yatut:profile-updated",
+      handleProfileUpdated
+    );
+
+    return () => {
+      active =
+        false;
+
+      window.removeEventListener(
+        "yatut:profile-updated",
+        handleProfileUpdated
+      );
+    };
+  }, [
+    authSession?.user?.id,
+    authSession?.access_token,
+  ]);
 
   const [
     themeMode,
@@ -6144,6 +6351,9 @@ function App() {
             authSession={
               authSession
             }
+            viewerProfile={
+              shellProfile
+            }
           />
         );
 
@@ -6543,6 +6753,9 @@ function App() {
         unreadNotifications={
           unreadNotifications
         }
+        viewerProfile={
+          shellProfile
+        }
       />
 
       <Notifications
@@ -6565,6 +6778,9 @@ function App() {
       <MobileMoreMenu
         open={
           mobileMenuOpen
+        }
+        viewerProfile={
+          shellProfile
         }
         currentPage={
           currentPage
@@ -6597,6 +6813,9 @@ function App() {
           }
           onNavigate={
             goToPage
+          }
+          viewerProfile={
+            shellProfile
           }
         />
 
@@ -6638,6 +6857,9 @@ function App() {
           }
           unreadNotifications={
             unreadNotifications
+          }
+          viewerProfile={
+            shellProfile
           }
           onToggleNotifications={() => {
             setMobileMenuOpen(
