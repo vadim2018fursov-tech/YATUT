@@ -1195,9 +1195,26 @@ export default function NearbyReal({
                         onChange={(
                           next
                         ) => {
-                          setPlaceCoordinates(
-                            next
-                          );
+                          setPlaceCoordinates({
+                            latitude:
+                              next.latitude,
+                            longitude:
+                              next.longitude,
+                          });
+
+                          if (
+                            next.address
+                          ) {
+                            setPlaceDraft(
+                              (
+                                current
+                              ) => ({
+                                ...current,
+                                address:
+                                  next.address,
+                              })
+                            );
+                          }
 
                           setCoordinatePickerOpen(
                             false
