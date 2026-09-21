@@ -24,6 +24,7 @@ import {
   acceptBackendFriendRequest,
   cancelBackendFriendRequest,
   declineBackendFriendRequest,
+  getBackendFollowGraph,
   getBackendRelationships,
   removeBackendFriend,
   searchBackendProfiles,
@@ -381,6 +382,22 @@ const TABS = [
 
   {
     id:
+      "followers",
+
+    label:
+      "Підписники",
+  },
+
+  {
+    id:
+      "following",
+
+    label:
+      "Підписки",
+  },
+
+  {
+    id:
       "nearby",
 
     label:
@@ -457,6 +474,15 @@ export default function Friends({
     useState({});
 
   const [
+    backendFollowGraph,
+    setBackendFollowGraph,
+  ] =
+    useState({
+      followers: [],
+      following: [],
+    });
+
+  const [
     backendLoading,
     setBackendLoading,
   ] =
@@ -476,6 +502,7 @@ export default function Friends({
     const [
       peopleResult,
       relationshipsResult,
+      followGraphResult,
     ] =
       await Promise.all([
         searchBackendProfiles(
@@ -483,6 +510,9 @@ export default function Friends({
           ""
         ),
         getBackendRelationships(
+          authSession
+        ),
+        getBackendFollowGraph(
           authSession
         ),
       ]);
@@ -493,6 +523,10 @@ export default function Friends({
 
     setBackendRelationships(
       relationshipsResult
+    );
+
+    setBackendFollowGraph(
+      followGraphResult
     );
   }
 
@@ -751,6 +785,18 @@ export default function Friends({
               friends:
                 status ===
                 FRIEND_STATUSES.FRIEND,
+              follower:
+                backendFollowGraph
+                  .followers
+                  .includes(
+                    person.id
+                  ),
+              following:
+                backendFollowGraph
+                  .following
+                  .includes(
+                    person.id
+                  ),
             };
           }
         );
@@ -759,6 +805,7 @@ export default function Friends({
         friendState,
         backendPeople,
         backendRelationships,
+        backendFollowGraph,
         authSession?.user?.id,
       ]
     );
@@ -767,10 +814,33 @@ export default function Friends({
     function openFromPayload(
       payload
     ) {
+      if (
+        payload?.tab &&
+        TABS.some(
+          (
+            tab
+          ) =>
+            tab.id ===
+            payload.tab
+        )
+      ) {
+        setActiveTab(
+          payload.tab
+        );
+      }
+
       const personId =
         payload?.personId;
 
       if (!personId) {
+        try {
+          sessionStorage.removeItem(
+            "yatut-open-route-payload"
+          );
+        } catch {
+          // No-op.
+        }
+
         return;
       }
 
@@ -922,6 +992,22 @@ export default function Friends({
 
             if (
               activeTab ===
+                "followers" &&
+              !person.follower
+            ) {
+              return false;
+            }
+
+            if (
+              activeTab ===
+                "following" &&
+              !person.following
+            ) {
+              return false;
+            }
+
+            if (
+              activeTab ===
                 "nearby" &&
               !person.nearby
             ) {
@@ -988,6 +1074,20 @@ export default function Friends({
                 FRIEND_STATUSES.FRIEND
           ).length,
 
+        followers:
+          authSession?.user?.id
+            ? backendFollowGraph
+                .followers
+                .length
+            : 0,
+
+        following:
+          authSession?.user?.id
+            ? backendFollowGraph
+                .following
+                .length
+            : 0,
+
         nearby:
           people.filter(
             (
@@ -1041,6 +1141,7 @@ export default function Friends({
         people,
         friendState,
         backendRelationships,
+        backendFollowGraph,
         authSession?.user?.id,
       ]
     );
@@ -1713,6 +1814,22 @@ export default function Friends({
 
             if (
               tab.id ===
+              "followers"
+            ) {
+              count =
+                stats.followers;
+            }
+
+            if (
+              tab.id ===
+              "following"
+            ) {
+              count =
+                stats.following;
+            }
+
+            if (
+              tab.id ===
               "requests"
             ) {
               count =
@@ -1806,6 +1923,14 @@ export default function Friends({
                 {activeTab ===
                   "suggestions" &&
                   "Можливо, ви знайомі"}
+
+                {activeTab ===
+                  "followers" &&
+                  "Ваші підписники"}
+
+                {activeTab ===
+                  "following" &&
+                  "Ваші підписки"}
 
                 {activeTab ===
                   "nearby" &&
