@@ -371,10 +371,18 @@ async function consumeOAuthCallback() {
       user,
     });
 
+  const callbackType =
+    params.get(
+      "type"
+    );
+
   window.history.replaceState(
     {},
     "",
-    "/"
+    callbackType ===
+      "recovery"
+      ? "/auth/reset"
+      : "/"
   );
 
   return session;
@@ -446,6 +454,90 @@ export async function getAuthSession() {
 
     throw error;
   }
+}
+
+export async function requestPasswordReset(
+  email
+) {
+  const redirectTo =
+    `${window.location.origin}/auth/reset`;
+
+  const url =
+    new URL(
+      `${SUPABASE_URL}/auth/v1/recover`
+    );
+
+  url.searchParams.set(
+    "redirect_to",
+    redirectTo
+  );
+
+  const response =
+    await fetch(
+      url,
+      {
+        method:
+          "POST",
+        headers:
+          authHeaders(),
+        body:
+          JSON.stringify({
+            email:
+              String(
+                email ||
+                ""
+              ).trim(),
+          }),
+      }
+    );
+
+  await parseResponse(
+    response
+  );
+
+  return true;
+}
+
+export async function updatePassword(
+  password
+) {
+  const session =
+    readStoredSession();
+
+  if (
+    !session?.access_token
+  ) {
+    throw new Error(
+      "Посилання для відновлення недійсне або вже застаріло. Запросіть нове."
+    );
+  }
+
+  const response =
+    await fetch(
+      `${SUPABASE_URL}/auth/v1/user`,
+      {
+        method:
+          "PUT",
+        headers:
+          authHeaders(
+            session.access_token
+          ),
+        body:
+          JSON.stringify({
+            password,
+          }),
+      }
+    );
+
+  const user =
+    await parseResponse(
+      response
+    );
+
+  return saveSession({
+    ...session,
+    user,
+  });
 }
 
 export async function signInWithPassword({
