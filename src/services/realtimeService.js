@@ -692,3 +692,116 @@ export function subscribeNotificationsRealtime({
     onStatus,
   });
 }
+
+
+export function subscribeSocialGraphRealtime({
+  session,
+  onChange,
+  onStatus,
+}) {
+  if (
+    !session?.access_token ||
+    !session?.user?.id
+  ) {
+    return {
+      updateAccessToken:
+        () => {},
+      close:
+        () => {},
+    };
+  }
+
+  const userId =
+    session.user.id;
+
+  return createRealtimeChannel({
+    session,
+    topic:
+      `social:${userId}`,
+    changes: [
+      {
+        event:
+          "*",
+        schema:
+          "public",
+        table:
+          "friend_requests",
+        filter:
+          `sender_id=eq.${userId}`,
+      },
+      {
+        event:
+          "*",
+        schema:
+          "public",
+        table:
+          "friend_requests",
+        filter:
+          `receiver_id=eq.${userId}`,
+      },
+      {
+        event:
+          "*",
+        schema:
+          "public",
+        table:
+          "friendships",
+        filter:
+          `user_id=eq.${userId}`,
+      },
+      {
+        event:
+          "*",
+        schema:
+          "public",
+        table:
+          "friendships",
+        filter:
+          `friend_id=eq.${userId}`,
+      },
+      {
+        event:
+          "*",
+        schema:
+          "public",
+        table:
+          "follows",
+        filter:
+          `follower_id=eq.${userId}`,
+      },
+      {
+        event:
+          "*",
+        schema:
+          "public",
+        table:
+          "follows",
+        filter:
+          `following_id=eq.${userId}`,
+      },
+      {
+        event:
+          "*",
+        schema:
+          "public",
+        table:
+          "blocks",
+        filter:
+          `blocker_id=eq.${userId}`,
+      },
+      {
+        event:
+          "*",
+        schema:
+          "public",
+        table:
+          "blocks",
+        filter:
+          `blocked_id=eq.${userId}`,
+      },
+    ],
+    onPostgresChange:
+      onChange,
+    onStatus,
+  });
+}
