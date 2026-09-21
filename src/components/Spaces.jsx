@@ -27,7 +27,16 @@ import {
 } from "../services/communityBackendService";
 
 import {
+  addBackendCommunityComment,
+  createBackendCommunityPost,
+  loadBackendCommunityFeed,
+  toggleBackendCommunityPostLike,
+  toggleBackendCommunityPostPin,
+} from "../services/communityFeedBackendService";
+
+import {
   subscribeCommunitiesRealtime,
+  subscribeCommunityFeedRealtime,
 } from "../services/realtimeService";
 
 /* =========================================================
@@ -3154,6 +3163,7 @@ function CommunityFeed({
   space,
   onUpdate,
   onOpenChat,
+  authSession = null,
   initialPostId = null,
 }) {
   const [
@@ -3161,6 +3171,12 @@ function CommunityFeed({
     setText,
   ] =
     useState("");
+
+  const [
+    backendPosts,
+    setBackendPosts,
+  ] =
+    useState([]);
 
   const [
     feedCommentOpen,
@@ -3174,12 +3190,170 @@ function CommunityFeed({
   ] =
     useState({});
 
+  const usesBackendFeed =
+    Boolean(
+      space.backend &&
+      space.backendId &&
+      authSession?.user?.id
+    );
+
+  const memberRole =
+    usesBackendFeed
+      ? space.memberRoles?.[
+          authSession.user.id
+        ] ||
+        (
+          space.ownerId ===
+          authSession.user.id
+            ? "owner"
+            : null
+        )
+      : "owner";
+
+  const canParticipate =
+    !usesBackendFeed ||
+    Boolean(
+      memberRole
+    );
+
+  const canManage =
+    !usesBackendFeed ||
+    [
+      "owner",
+      "admin",
+      "moderator",
+    ].includes(
+      memberRole
+    );
+
+  const viewerName =
+    authSession?.user
+      ?.user_metadata
+      ?.full_name ||
+    authSession?.user
+      ?.email
+      ?.split("@")[0] ||
+    "Ви";
+
+  const viewerInitial =
+    viewerName
+      .trim()
+      .charAt(0)
+      .toUpperCase() ||
+    "Я";
+
   const posts =
-    Array.isArray(
-      space.posts
-    )
-      ? space.posts
-      : [];
+    usesBackendFeed
+      ? backendPosts
+      : (
+          Array.isArray(
+            space.posts
+          )
+            ? space.posts
+            : []
+        );
+
+  useEffect(() => {
+    if (
+      !usesBackendFeed
+    ) {
+      setBackendPosts(
+        []
+      );
+
+      return undefined;
+    }
+
+    let active =
+      true;
+
+    let refreshTimer =
+      null;
+
+    async function refresh() {
+      try {
+        const next =
+          await loadBackendCommunityFeed(
+            authSession,
+            space.backendId
+          );
+
+        if (
+          active
+        ) {
+          setBackendPosts(
+            next
+          );
+        }
+      } catch (
+        error
+      ) {
+        console.warn(
+          "COMMUNITY FEED LOAD ERROR:",
+          error
+        );
+      }
+    }
+
+    refresh();
+
+    const channel =
+      subscribeCommunityFeedRealtime({
+        session:
+          authSession,
+        communityId:
+          space.backendId,
+        onChange:
+          () => {
+            if (
+              refreshTimer
+            ) {
+              window.clearTimeout(
+                refreshTimer
+              );
+            }
+
+            refreshTimer =
+              window.setTimeout(
+                refresh,
+                100
+              );
+          },
+        onStatus:
+          (
+            status
+          ) => {
+            if (
+              status ===
+              "error"
+            ) {
+              console.warn(
+                "COMMUNITY FEED REALTIME DEGRADED"
+              );
+            }
+          },
+      });
+
+    return () => {
+      active =
+        false;
+
+      if (
+        refreshTimer
+      ) {
+        window.clearTimeout(
+          refreshTimer
+        );
+      }
+
+      channel.close();
+    };
+  }, [
+    usesBackendFeed,
+    space.backendId,
+    authSession?.user?.id,
+    authSession?.access_token,
+  ]);
 
   useEffect(() => {
     if (
@@ -3216,11 +3390,54 @@ function CommunityFeed({
     posts.length,
   ]);
 
-  function publish() {
+  async function publish() {
     const clean =
       text.trim();
 
-    if (!clean) {
+    if (
+      !clean ||
+      !canParticipate
+    ) {
+      return;
+    }
+
+    if (
+      usesBackendFeed
+    ) {
+      try {
+        await createBackendCommunityPost(
+          authSession,
+          space.backendId,
+          clean
+        );
+
+        const next =
+          await loadBackendCommunityFeed(
+            authSession,
+            space.backendId
+          );
+
+        setBackendPosts(
+          next
+        );
+
+        setText(
+          ""
+        );
+      } catch (
+        error
+      ) {
+        console.warn(
+          "COMMUNITY POST CREATE ERROR:",
+          error
+        );
+
+        window.alert(
+          error?.message ||
+          "Не вдалося опублікувати допис."
+        );
+      }
+
       return;
     }
 
@@ -3230,9 +3447,9 @@ function CommunityFeed({
           "space-post"
         ),
       author:
-        "Вадим",
+        viewerName,
       authorInitial:
-        "В",
+        viewerInitial,
       text:
         clean,
       createdAt:
@@ -3283,9 +3500,59 @@ function CommunityFeed({
     });
   }
 
-  function togglePostLike(
+  async function togglePostLike(
     postId
   ) {
+    const target =
+      posts.find(
+        (
+          post
+        ) =>
+          post.id ===
+          postId
+      );
+
+    if (
+      !target ||
+      !canParticipate
+    ) {
+      return;
+    }
+
+    if (
+      usesBackendFeed
+    ) {
+      try {
+        await toggleBackendCommunityPostLike(
+          authSession,
+          space.backendId,
+          postId,
+          Boolean(
+            target.liked
+          )
+        );
+
+        const next =
+          await loadBackendCommunityFeed(
+            authSession,
+            space.backendId
+          );
+
+        setBackendPosts(
+          next
+        );
+      } catch (
+        error
+      ) {
+        console.warn(
+          "COMMUNITY POST LIKE ERROR:",
+          error
+        );
+      }
+
+      return;
+    }
+
     updatePost(
       postId,
       (
@@ -3318,9 +3585,45 @@ function CommunityFeed({
     );
   }
 
-  function togglePostPinned(
+  async function togglePostPinned(
     postId
   ) {
+    if (
+      !canManage
+    ) {
+      return;
+    }
+
+    if (
+      usesBackendFeed
+    ) {
+      try {
+        await toggleBackendCommunityPostPin(
+          authSession,
+          postId
+        );
+
+        const next =
+          await loadBackendCommunityFeed(
+            authSession,
+            space.backendId
+          );
+
+        setBackendPosts(
+          next
+        );
+      } catch (
+        error
+      ) {
+        console.warn(
+          "COMMUNITY POST PIN ERROR:",
+          error
+        );
+      }
+
+      return;
+    }
+
     updatePost(
       postId,
       (
@@ -3334,7 +3637,7 @@ function CommunityFeed({
     );
   }
 
-  function addFeedComment(
+  async function addFeedComment(
     postId
   ) {
     const value =
@@ -3345,47 +3648,82 @@ function CommunityFeed({
         ""
       ).trim();
 
-    if (!value) {
+    if (
+      !value ||
+      !canParticipate
+    ) {
       return;
     }
 
-    updatePost(
-      postId,
-      (
-        post
-      ) => ({
-        ...post,
+    if (
+      usesBackendFeed
+    ) {
+      try {
+        await addBackendCommunityComment(
+          authSession,
+          space.backendId,
+          postId,
+          value
+        );
 
-        comments:
-          Number(
-            post.comments ||
-              0
-          ) + 1,
+        const next =
+          await loadBackendCommunityFeed(
+            authSession,
+            space.backendId
+          );
 
-        commentItems: [
-          ...(
-            post.commentItems ||
-            []
-          ),
+        setBackendPosts(
+          next
+        );
+      } catch (
+        error
+      ) {
+        console.warn(
+          "COMMUNITY COMMENT ERROR:",
+          error
+        );
 
-          {
-            id:
-              createId(
-                "space-comment"
-              ),
+        return;
+      }
+    } else {
+      updatePost(
+        postId,
+        (
+          post
+        ) => ({
+          ...post,
 
-            author:
-              "Вадим",
+          comments:
+            Number(
+              post.comments ||
+                0
+            ) + 1,
 
-            text:
-              value,
+          commentItems: [
+            ...(
+              post.commentItems ||
+              []
+            ),
 
-            createdAt:
-              Date.now(),
-          },
-        ],
-      })
-    );
+            {
+              id:
+                createId(
+                  "space-comment"
+                ),
+
+              author:
+                viewerName,
+
+              text:
+                value,
+
+              createdAt:
+                Date.now(),
+            },
+          ],
+        })
+      );
+    }
 
     setFeedCommentDraft(
       (
@@ -3420,7 +3758,9 @@ function CommunityFeed({
       <section className="community-feed-composer">
         <div className="community-feed-composer__top">
           <span>
-            В
+            {
+              viewerInitial
+            }
           </span>
 
           <textarea
@@ -3434,7 +3774,14 @@ function CommunityFeed({
                 event.target.value
               )
             }
-            placeholder="Написати у спільноту..."
+            placeholder={
+              canParticipate
+                ? "Написати у спільноту..."
+                : "Лише учасники можуть публікувати"
+            }
+            disabled={
+              !canParticipate
+            }
             rows={3}
           />
         </div>
@@ -3473,6 +3820,7 @@ function CommunityFeed({
             type="button"
             className="community-feed-publish"
             disabled={
+              !canParticipate ||
               !text.trim()
             }
             onClick={
@@ -3503,10 +3851,17 @@ function CommunityFeed({
 
             <header>
               <span className="community-feed-post__avatar">
-                {
+                {post.authorAvatar ? (
+                  <img
+                    src={
+                      post.authorAvatar
+                    }
+                    alt=""
+                  />
+                ) : (
                   post.authorInitial ||
                   "Я"
-                }
+                )}
               </span>
 
               <div>
@@ -3531,26 +3886,28 @@ function CommunityFeed({
                 </small>
               </div>
 
-              <button
-                type="button"
-                className={
-                  post.pinned
-                    ? "is-active"
-                    : ""
-                }
-                aria-label={
-                  post.pinned
-                    ? "Відкріпити допис"
-                    : "Закріпити допис"
-                }
-                onClick={() =>
-                  togglePostPinned(
-                    post.id
-                  )
-                }
-              >
-                📌
-              </button>
+              {canManage && (
+                <button
+                  type="button"
+                  className={
+                    post.pinned
+                      ? "is-active"
+                      : ""
+                  }
+                  aria-label={
+                    post.pinned
+                      ? "Відкріпити допис"
+                      : "Закріпити допис"
+                  }
+                  onClick={() =>
+                    togglePostPinned(
+                      post.id
+                    )
+                  }
+                >
+                  📌
+                </button>
+              )}
             </header>
 
             <p>
@@ -3582,6 +3939,9 @@ function CommunityFeed({
                   post.liked
                     ? "is-active"
                     : ""
+                }
+                disabled={
+                  !canParticipate
                 }
                 onClick={() =>
                   togglePostLike(
@@ -3685,7 +4045,14 @@ function CommunityFeed({
                         })
                       )
                     }
-                    placeholder="Написати коментар..."
+                    placeholder={
+                      canParticipate
+                        ? "Написати коментар..."
+                        : "Коментувати можуть учасники"
+                    }
+                    disabled={
+                      !canParticipate
+                    }
                     onKeyDown={(
                       event
                     ) => {
@@ -3705,6 +4072,7 @@ function CommunityFeed({
                   <button
                     type="button"
                     disabled={
+                      !canParticipate ||
                       !(
                         feedCommentDraft[
                           post.id
@@ -4057,6 +4425,7 @@ function SpaceDetail({
   onEdit,
   onUpdate,
   onDelete,
+  authSession = null,
   currentUserId = null,
   initialPostId = null,
 }) {
@@ -4447,6 +4816,9 @@ function SpaceDetail({
                 }
                 onOpenChat={
                   openCommunityChat
+                }
+                authSession={
+                  authSession
                 }
                 initialPostId={
                   initialPostId
@@ -5449,6 +5821,9 @@ function Spaces({
             deleteSpace(
               activeSpace
             )
+          }
+          authSession={
+            authSession
           }
           currentUserId={
             authSession?.user?.id ||
