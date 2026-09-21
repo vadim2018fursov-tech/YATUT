@@ -1643,6 +1643,9 @@ function Search({
         onOpenChat={
           onOpenChat
         }
+        authSession={
+          authSession
+        }
       />
     );
   }
