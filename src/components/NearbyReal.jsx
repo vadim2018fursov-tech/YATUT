@@ -639,6 +639,12 @@ export default function NearbyReal({
         placeId={
           selectedPlaceId
         }
+        nearbyPlaces={
+          feed.places
+        }
+        onUpdated={
+          refresh
+        }
         onBack={() => {
           setSelectedPlaceId(
             null
