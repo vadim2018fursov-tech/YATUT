@@ -2007,6 +2007,7 @@ function PostCard({
   onVotePoll,
   onShare,
   onToggleSaved,
+  onNavigate,
   viewerProfile = null,
 }) {
   return (
@@ -2078,6 +2079,44 @@ function PostCard({
             post.text
           }
         </div>
+      )}
+
+      {post.eventId && (
+        <button
+          type="button"
+          className="post-event-link"
+          onClick={() =>
+            onNavigate?.(
+              "events",
+              {
+                eventId:
+                  post.eventId,
+              }
+            )
+          }
+        >
+          <span className="post-event-link__icon">
+            <YatutIcon
+              name="events"
+              size={18}
+            />
+          </span>
+
+          <span>
+            <small>
+              ПОДІЯ ЯТУТ
+            </small>
+
+            <strong>
+              Відкрити подію
+            </strong>
+          </span>
+
+          <YatutIcon
+            name="arrowRight"
+            size={16}
+          />
+        </button>
       )}
 
       {post.media && (
@@ -4258,6 +4297,9 @@ function Home({
                   togglePostSaved(
                     post
                   )
+                }
+                onNavigate={
+                  onNavigate
                 }
                 viewerProfile={
                   viewerProfile
