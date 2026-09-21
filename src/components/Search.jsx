@@ -1663,30 +1663,26 @@ function Search({
   const searchablePeople =
     useMemo(
       () => {
-        const backendIds =
-          new Set(
-            backendPeople.map(
-              (
-                person
-              ) =>
-                person.id
-            )
-          );
-
-        return [
-          ...backendPeople,
-          ...PEOPLE.filter(
+        if (
+          authSession?.user?.id
+        ) {
+          return backendPeople.filter(
             (
               person
             ) =>
-              !backendIds.has(
-                person.id
-              )
-          ),
-        ];
+              !social
+                ?.relationships?.[
+                  person.id
+                ]?.blockedByThem
+          );
+        }
+
+        return PEOPLE;
       },
       [
         backendPeople,
+        social,
+        authSession?.user?.id,
       ]
     );
 
