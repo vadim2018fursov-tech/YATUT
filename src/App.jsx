@@ -7156,6 +7156,9 @@ function App() {
             onNavigate={
               goToPage
             }
+            authSession={
+              authSession
+            }
           />
         );
 
