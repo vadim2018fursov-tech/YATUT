@@ -25047,3 +25047,73 @@ button.is-primary {
   color:
     #d8d9e2;
 }
+
+
+.chat-list-empty-actions {
+  width: 100%;
+  max-width: 260px;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 7px;
+}
+
+.chat-list-empty-actions button {
+  min-height: 38px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 0;
+  border-radius: 12px;
+  background:
+    linear-gradient(
+      145deg,
+      #746cff,
+      #635bff
+    );
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.chat-list-empty-actions button.secondary {
+  border:
+    1px solid
+    #e4e5ec;
+  background:
+    #ffffff;
+  color:
+    #5f6370;
+}
+
+.yatut-dark-mode .chat-list-empty-actions button.secondary {
+  border-color:
+    rgba(
+      255,
+      255,
+      255,
+      .08
+    );
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .06
+    );
+  color:
+    #dedfea;
+}
+
+@media (max-width: 420px) {
+  .chat-list-empty-actions {
+    flex-direction: column;
+  }
+
+  .chat-list-empty-actions button {
+    width: 100%;
+  }
+}
