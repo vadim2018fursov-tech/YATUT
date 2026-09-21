@@ -299,7 +299,8 @@ export async function loadNearbyModerationQueue(
 export async function moderateNearbyPlace(
   session,
   placeId,
-  decision
+  decision,
+  moderationNote = ""
 ) {
   await rpc(
     session,
@@ -308,6 +309,9 @@ export async function moderateNearbyPlace(
       target_place_id:
         placeId,
       decision,
+      moderation_note:
+        moderationNote ||
+        null,
     }
   );
 }
@@ -385,4 +389,40 @@ export async function updateNearbyPlace(
   }
 
   return status;
+}
+
+
+export async function loadNearbyPlaceHistory(
+  session,
+  placeId
+) {
+  const rows =
+    await rpc(
+      session,
+      "get_nearby_place_history",
+      {
+        target_place_id:
+          placeId,
+      }
+    );
+
+  return Array.isArray(
+    rows
+  )
+    ? rows
+    : [];
+}
+
+export async function deleteNearbyPlace(
+  session,
+  placeId
+) {
+  await rpc(
+    session,
+    "delete_my_nearby_place",
+    {
+      target_place_id:
+        placeId,
+    }
+  );
 }
