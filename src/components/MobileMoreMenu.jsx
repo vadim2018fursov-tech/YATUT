@@ -65,6 +65,7 @@ export default function MobileMoreMenu({
   currentPage,
   onClose,
   onNavigate,
+  viewerProfile = null,
 }) {
   const [
     dragY,
@@ -248,16 +249,28 @@ export default function MobileMoreMenu({
             }
           >
             <span className="mobile-more-profile-avatar">
-              В
+              {viewerProfile?.avatar ? (
+                <img
+                  src={
+                    viewerProfile.avatar
+                  }
+                  alt=""
+                />
+              ) : (
+                viewerProfile?.initial ||
+                "Я"
+              )}
             </span>
 
             <span className="mobile-more-profile-copy">
               <strong>
-                Вадим
+                {viewerProfile?.name ||
+                  "Користувач ЯТУТ"}
               </strong>
 
               <small>
-                @vadim
+                @{viewerProfile?.username ||
+                  "user"}
               </small>
             </span>
 
