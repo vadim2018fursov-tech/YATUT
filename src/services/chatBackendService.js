@@ -1,12 +1,12 @@
+import {
+  createChatMediaSignedUrl,
+} from "./storageService";
+
 const SUPABASE_URL =
   "https://yqskwqahmkeiconsrhoy.supabase.co";
 
 const SUPABASE_KEY =
   "sb_publishable_v5dIgaWnA2cHe3d15jsoOQ_ub6gsx4W";
-
-import {
-  createChatMediaSignedUrl,
-} from "./storageService";
 
 function headers(
   session,
