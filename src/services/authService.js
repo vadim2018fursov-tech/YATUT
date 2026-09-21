@@ -38,6 +38,67 @@ export function isAuthBackendConfigured() {
   );
 }
 
+export async function getAuthCapabilities() {
+  if (
+    !isAuthBackendConfigured()
+  ) {
+    return {
+      email: false,
+      google: false,
+      facebook: false,
+    };
+  }
+
+  try {
+    const response =
+      await fetch(
+        `${SUPABASE_URL}/auth/v1/settings`,
+        {
+          headers: {
+            apikey:
+              SUPABASE_ANON_KEY,
+          },
+        }
+      );
+
+    const data =
+      await parseResponse(
+        response
+      );
+
+    const external =
+      data?.external ||
+      {};
+
+    return {
+      email:
+        external.email !==
+        false,
+      google:
+        Boolean(
+          external.google
+        ),
+      facebook:
+        Boolean(
+          external.facebook
+        ),
+    };
+  } catch (
+    error
+  ) {
+    console.warn(
+      "AUTH CAPABILITIES ERROR:",
+      error
+    );
+
+    return {
+      email: true,
+      google: false,
+      facebook: false,
+    };
+  }
+}
+
 function emitAuthChange(
   session
 ) {
