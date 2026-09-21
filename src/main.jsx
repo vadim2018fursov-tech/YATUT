@@ -54,6 +54,45 @@ window.addEventListener(
   syncDeviceClasses
 );
 
+function syncVisualViewportRoot() {
+  const viewport =
+    window.visualViewport;
+
+  const height =
+    viewport?.height ||
+    window.innerHeight;
+
+  document.documentElement.style.setProperty(
+    "--yatut-visual-viewport-height",
+    `${Math.round(
+      height
+    )}px`
+  );
+}
+
+syncVisualViewportRoot();
+
+window.visualViewport?.addEventListener(
+  "resize",
+  syncVisualViewportRoot
+);
+
+window.visualViewport?.addEventListener(
+  "scroll",
+  syncVisualViewportRoot
+);
+
+window.addEventListener(
+  "resize",
+  syncVisualViewportRoot
+);
+
+window.addEventListener(
+  "orientationchange",
+  syncVisualViewportRoot
+);
+
+
 createRoot(
   document.getElementById("root")
 ).render(
