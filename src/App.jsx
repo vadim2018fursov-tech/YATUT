@@ -3977,7 +3977,11 @@ function Home({
 
   return (
     <div className="feed-column">
-      <Stories />
+      <Stories
+        authSession={
+          authSession
+        }
+      />
 
       <nav className="feed-tabs">
         <button
