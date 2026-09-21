@@ -1569,6 +1569,7 @@ function MessageBubble({
     "me";
 
   const sender =
+    message.sender ||
     PEOPLE[
       message.senderId
     ];
