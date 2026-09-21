@@ -24797,3 +24797,13 @@ body.yatut-dark-mode .composer-poll-option input {
   background: rgba(255,255,255,.055);
   border-color: rgba(255,255,255,.09);
 }
+
+
+.yatut-story-avatar img,
+.yatut-story-viewer-avatar img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  border-radius: inherit;
+}
