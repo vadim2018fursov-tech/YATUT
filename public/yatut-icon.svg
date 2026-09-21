@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="ЯТУТ">
+  <defs>
+    <linearGradient id="g" x1="64" y1="42" x2="454" y2="470" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#655eff"/>
+      <stop offset="1" stop-color="#861fff"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="116" fill="url(#g)"/>
+  <rect x="22" y="22" width="468" height="468" rx="98" fill="none" stroke="#fff" stroke-opacity=".16" stroke-width="8"/>
+  <text x="247" y="357" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif" font-size="300" font-weight="800" fill="#fff">Я</text>
+</svg>
