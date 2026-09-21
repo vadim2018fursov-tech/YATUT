@@ -72,6 +72,13 @@ from public, anon, authenticated;
 grant execute on function private.nearby_distance_km(double precision,double precision,double precision,double precision)
 to postgres, service_role;
 
+alter function private.nearby_distance_km(
+  double precision,
+  double precision,
+  double precision,
+  double precision
+) set search_path = pg_catalog;
+
 create or replace function public.get_nearby_feed(
   search_city text default null,
   user_lat double precision default null,
