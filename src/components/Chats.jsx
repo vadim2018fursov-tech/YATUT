@@ -39,6 +39,15 @@ import {
   uploadChatMedia,
 } from "../services/storageService";
 
+import {
+  loadBackendSettings,
+} from "../services/settingsBackendService";
+
+import {
+  getBackendRelationships,
+  setBackendBlocked,
+} from "../services/socialBackendService";
+
 /* =========================================================
    PEOPLE
 ========================================================= */
@@ -2138,6 +2147,14 @@ function Chats({
     );
 
   const [
+    shareLiveActivity,
+    setShareLiveActivity,
+  ] =
+    useState(
+      false
+    );
+
+  const [
     chatListView,
     setChatListView,
   ] = useState(
@@ -2288,6 +2305,93 @@ function Chats({
         null
       : null;
 
+  useEffect(() => {
+    if (
+      !authSession?.user?.id ||
+      !activeChat?.backend ||
+      !activeChat?.personId
+    ) {
+      setShareLiveActivity(
+        false
+      );
+
+      return undefined;
+    }
+
+    let active =
+      true;
+
+    Promise.all([
+      loadBackendSettings(
+        authSession
+      ),
+      getBackendRelationships(
+        authSession
+      ),
+    ])
+      .then(
+        ([
+          settings,
+          relationships,
+        ]) => {
+          if (
+            !active
+          ) {
+            return;
+          }
+
+          const visibility =
+            settings?.onlineVisibility ||
+            "friends";
+
+          const relation =
+            relationships?.[
+              activeChat.personId
+            ];
+
+          setShareLiveActivity(
+            visibility ===
+              "everyone" ||
+            (
+              visibility ===
+                "friends" &&
+              relation?.friendStatus ===
+                "friends"
+            )
+          );
+        }
+      )
+      .catch(
+        (
+          error
+        ) => {
+          console.warn(
+            "CHAT PRIVACY LOAD ERROR:",
+            error
+          );
+
+          if (
+            active
+          ) {
+            setShareLiveActivity(
+              false
+            );
+          }
+        }
+      );
+
+    return () => {
+      active =
+        false;
+    };
+  }, [
+    authSession?.user?.id,
+    authSession?.access_token,
+    activeChat?.id,
+    activeChat?.backend,
+    activeChat?.personId,
+  ]);
+
   function showChatToast(
     text
   ) {
@@ -2331,18 +2435,62 @@ function Chats({
     const blocked =
       !activeChat.blocked;
 
-    await updateChatState(
-      activeChat,
-      {
-        blocked,
+    try {
+      if (
+        activeChat.backend &&
+        activeChat.personId &&
+        authSession?.user?.id
+      ) {
+        await setBackendBlocked(
+          authSession,
+          activeChat.personId,
+          blocked
+        );
       }
-    );
 
-    showChatToast(
-      blocked
-        ? "Користувача заблоковано"
-        : "Користувача розблоковано"
-    );
+      await updateChatState(
+        activeChat,
+        {
+          blocked,
+        }
+      );
+
+      setChats(
+        (
+          previous
+        ) =>
+          previous.map(
+            (
+              chat
+            ) =>
+              chat.id ===
+              activeChat.id
+                ? {
+                    ...chat,
+                    blocked,
+                  }
+                : chat
+          )
+      );
+
+      showChatToast(
+        blocked
+          ? "Користувача заблоковано"
+          : "Користувача розблоковано"
+      );
+    } catch (
+      error
+    ) {
+      console.warn(
+        "CHAT BLOCK ERROR:",
+        error
+      );
+
+      showChatToast(
+        error?.message ||
+        "Не вдалося змінити блокування"
+      );
+    }
   }
 
   function openActiveCommunity() {
@@ -3483,6 +3631,8 @@ function Chats({
           authSession,
         conversationId:
           activeChat.id,
+        sharePresence:
+          shareLiveActivity,
         onChange:
           (
             change
@@ -3673,6 +3823,7 @@ function Chats({
     activeChat?.personId,
     authSession?.user?.id,
     authSession?.access_token,
+    shareLiveActivity,
   ]);
 
   useEffect(() => {
@@ -3783,6 +3934,7 @@ function Chats({
     if (
       !activeChat?.backend ||
       !authSession?.user?.id ||
+      !shareLiveActivity ||
       editing
     ) {
       return undefined;
@@ -3858,6 +4010,7 @@ function Chats({
     activeChat?.id,
     activeChat?.backend,
     authSession?.user?.id,
+    shareLiveActivity,
   ]);
 
   useEffect(() => {
