@@ -1,4 +1,10 @@
 -- ЯТУТ backend foundation
+-- IMPORTANT:
+-- This file is the original bootstrap schema and is NOT a complete snapshot
+-- of the current production database. Production has evolved through Supabase
+-- migrations. New database changes must be added under supabase/migrations/.
+-- Do not use this file alone to recreate production YATUT.
+--
 -- Run in Supabase SQL editor / migration runner.
 
 create extension if not exists pgcrypto;
