@@ -102,11 +102,13 @@ export default function MobileMoreMenu({
   }
 
   function navigate(
-    page
+    page,
+    payload = null
   ) {
     onClose?.();
     onNavigate?.(
-      page
+      page,
+      payload
     );
   }
 
@@ -281,7 +283,11 @@ export default function MobileMoreMenu({
               type="button"
               onClick={() =>
                 navigate(
-                  "profile"
+                  "profile",
+                  {
+                    action:
+                      "edit",
+                  }
                 )
               }
             >
