@@ -6319,9 +6319,9 @@ body.yatut-dark-mode
 
 .nearby-place-detail-body > header {
   display: grid;
-  grid-template-columns: minmax(0,1fr) auto;
+  grid-template-columns: minmax(0,1fr) auto auto;
   align-items: start;
-  gap: 18px;
+  gap: 10px;
 }
 
 .nearby-place-detail-body > header > div > span,
@@ -6634,7 +6634,8 @@ body.yatut-dark-mode
     grid-template-columns: 1fr;
   }
 
-  .nearby-place-detail-body > header > button {
+  .nearby-place-detail-body > header > button,
+  .nearby-place-detail-body > header > a {
     width: 100%;
   }
 
@@ -7570,4 +7571,26 @@ body.yatut-dark-mode
     min-height: 35px;
     margin-bottom: 7px;
   }
+}
+
+
+.nearby-place-route-button {
+  min-width: 140px;
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.nearby-coordinate-picker__search-note a {
+  color: #7169e8;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.yatut-dark-mode .nearby-coordinate-picker__search-note a {
+  color: #bcb8ff;
 }
