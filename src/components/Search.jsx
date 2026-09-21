@@ -22,6 +22,16 @@ import {
   subscribeFriends,
 } from "../storage/friendService";
 
+import {
+  acceptBackendFriendRequest,
+  cancelBackendFriendRequest,
+  declineBackendFriendRequest,
+  getBackendRelationships,
+  removeBackendFriend,
+  searchBackendProfiles,
+  sendBackendFriendRequest,
+} from "../services/socialBackendService";
+
 /* =========================================================
    PEOPLE
 ========================================================= */
@@ -678,6 +688,7 @@ function searchFriendStatus(
 function Search({
   onOpenChat,
   onNavigate,
+  authSession = null,
 }) {
   const [
     query,
@@ -712,6 +723,18 @@ function Search({
     "КПІ",
     "Фотографія",
   ]);
+
+  const [
+    backendPeople,
+    setBackendPeople,
+  ] =
+    useState([]);
+
+  const [
+    backendLoading,
+    setBackendLoading,
+  ] =
+    useState(false);
 
   useEffect(() => {
     let mounted =
@@ -823,6 +846,99 @@ function Search({
       unsubscribe();
     };
   }, []);
+
+  useEffect(() => {
+    if (
+      !authSession?.user?.id
+    ) {
+      setBackendPeople(
+        []
+      );
+
+      return undefined;
+    }
+
+    let cancelled =
+      false;
+
+    const timer =
+      window.setTimeout(
+        async () => {
+          try {
+            setBackendLoading(
+              true
+            );
+
+            const [
+              people,
+              relationships,
+            ] =
+              await Promise.all([
+                searchBackendProfiles(
+                  authSession,
+                  query
+                ),
+                getBackendRelationships(
+                  authSession
+                ),
+              ]);
+
+            if (
+              cancelled
+            ) {
+              return;
+            }
+
+            setBackendPeople(
+              people
+            );
+
+            setSocial(
+              (current) => ({
+                ...(current || {
+                  id:
+                    "me-social",
+                }),
+                relationships: {
+                  ...(current
+                    ?.relationships ||
+                    {}),
+                  ...relationships,
+                },
+              })
+            );
+          } catch (
+            error
+          ) {
+            console.warn(
+              "BACKEND PEOPLE LOAD ERROR:",
+              error
+            );
+          } finally {
+            if (
+              !cancelled
+            ) {
+              setBackendLoading(
+                false
+              );
+            }
+          }
+        },
+        220
+      );
+
+    return () => {
+      cancelled =
+        true;
+
+      window.clearTimeout(
+        timer
+      );
+    };
+  }, [
+    authSession,
+    query,
+  ]);
 
   /* =======================================================
      ROUTE PAYLOAD
@@ -991,6 +1107,130 @@ function Search({
       personId,
       action
     ) => {
+      const backendPerson =
+        backendPeople.some(
+          (
+            person
+          ) =>
+            person.id ===
+            personId
+        );
+
+      if (
+        backendPerson &&
+        authSession?.user?.id
+      ) {
+        try {
+          if (
+            action ===
+            "send"
+          ) {
+            await sendBackendFriendRequest(
+              authSession,
+              personId
+            );
+          } else if (
+            action ===
+            "cancel"
+          ) {
+            await cancelBackendFriendRequest(
+              authSession,
+              personId
+            );
+          } else if (
+            action ===
+            "accept"
+          ) {
+            await acceptBackendFriendRequest(
+              authSession,
+              personId
+            );
+          } else if (
+            action ===
+            "reject"
+          ) {
+            await declineBackendFriendRequest(
+              authSession,
+              personId
+            );
+          } else if (
+            action ===
+            "remove"
+          ) {
+            await removeBackendFriend(
+              authSession,
+              personId
+            );
+          }
+
+          const relationships =
+            await getBackendRelationships(
+              authSession
+            );
+
+          setSocial(
+            (
+              current
+            ) => ({
+              ...(current || {
+                id:
+                  "me-social",
+              }),
+              relationships: {
+                ...(current
+                  ?.relationships ||
+                  {}),
+                [personId]: {
+                  friendStatus:
+                    "none",
+                  following:
+                    false,
+                  follower:
+                    false,
+                  blocked:
+                    false,
+                },
+                ...relationships,
+              },
+            })
+          );
+
+          const notices = {
+            send:
+              "Запит у друзі надіслано",
+            cancel:
+              "Запит скасовано",
+            accept:
+              "Ви тепер друзі 🎉",
+            reject:
+              "Запит відхилено",
+            remove:
+              "Користувача видалено з друзів",
+          };
+
+          showNotice(
+            notices[
+              action
+            ] ||
+            "Готово"
+          );
+        } catch (
+          error
+        ) {
+          console.warn(
+            "BACKEND FRIEND ACTION ERROR:",
+            error
+          );
+
+          showNotice(
+            error?.message ||
+            "Не вдалося виконати дію"
+          );
+        }
+
+        return;
+      }
+
       if (
         action ===
         "send"
@@ -1202,10 +1442,40 @@ function Search({
       );
   };
 
+  const searchablePeople =
+    useMemo(
+      () => {
+        const backendIds =
+          new Set(
+            backendPeople.map(
+              (
+                person
+              ) =>
+                person.id
+            )
+          );
+
+        return [
+          ...backendPeople,
+          ...PEOPLE.filter(
+            (
+              person
+            ) =>
+              !backendIds.has(
+                person.id
+              )
+          ),
+        ];
+      },
+      [
+        backendPeople,
+      ]
+    );
+
   const filteredPeople =
     useMemo(
       () =>
-        PEOPLE.filter(
+        searchablePeople.filter(
           (
             person
           ) =>
@@ -1222,6 +1492,7 @@ function Search({
         ),
       [
         query,
+        searchablePeople,
       ]
     );
 
@@ -1336,7 +1607,7 @@ function Search({
     openedPerson
   ) {
     const person =
-      PEOPLE.find(
+      searchablePeople.find(
         (
           item
         ) =>
@@ -1453,6 +1724,14 @@ function Search({
         )}
 
       </div>
+
+      {backendLoading && (
+        <div className="search-result-summary">
+          <span>
+            Шукаємо людей у ЯТУТ…
+          </span>
+        </div>
+      )}
 
       {/* TABS */}
 
