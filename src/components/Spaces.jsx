@@ -5322,7 +5322,13 @@ function SpaceDetail({
             </span>
           </div>
 
-          <div className="community-detail-actions">
+          <div
+            className={`community-detail-actions ${
+              !isMember
+                ? "is-nonmember"
+                : ""
+            }`.trim()}
+          >
             {isMember && (
               <button
                 type="button"
@@ -6030,7 +6036,37 @@ function Spaces({
           active
         ) {
           setSpaces(
-            remoteSpaces
+            (
+              previous
+            ) => {
+              const remoteIds =
+                new Set(
+                  remoteSpaces.map(
+                    (
+                      space
+                    ) =>
+                      space.id
+                  )
+                );
+
+              const sharedVisible =
+                previous.filter(
+                  (
+                    space
+                  ) =>
+                    space.backend &&
+                    !remoteIds.has(
+                      space.id
+                    ) &&
+                    space.privacy !==
+                      "private"
+                );
+
+              return [
+                ...remoteSpaces,
+                ...sharedVisible,
+              ];
+            }
           );
         }
       } catch (
