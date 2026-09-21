@@ -111,6 +111,10 @@ import {
   subscribeFeedRealtime,
 } from "./services/realtimeService";
 
+import {
+  uploadPostMedia,
+} from "./services/storageService";
+
 /* =========================================================
    YATUT APP
 ========================================================= */
@@ -931,6 +935,12 @@ function PostComposer({
     useState(null);
 
   const [
+    mediaFile,
+    setMediaFile,
+  ] =
+    useState(null);
+
+  const [
     publishing,
     setPublishing,
   ] =
@@ -983,6 +993,19 @@ function PostComposer({
       return;
     }
 
+    if (
+      file.size >
+      100 *
+        1024 *
+        1024
+    ) {
+      window.alert(
+        "Файл має бути до 100 МБ."
+      );
+
+      return;
+    }
+
     try {
       const dataUrl =
         await fileToDataUrl(
@@ -991,6 +1014,10 @@ function PostComposer({
 
       setMedia(
         dataUrl
+      );
+
+      setMediaFile(
+        file
       );
 
       setMediaType(
@@ -1050,6 +1077,8 @@ function PostComposer({
 
         media,
 
+        mediaFile,
+
         mediaType,
 
         location:
@@ -1092,6 +1121,10 @@ function PostComposer({
       );
 
       setMediaType(
+        null
+      );
+
+      setMediaFile(
         null
       );
 
@@ -2724,6 +2757,7 @@ function Home({
   async function publishPost({
     text,
     media,
+    mediaFile,
     mediaType,
     location,
     poll,
@@ -2731,28 +2765,53 @@ function Home({
     if (
       authSession?.user?.id
     ) {
-      if (
-        media
-      ) {
-        window.alert(
-          "Текст допису буде опубліковано. Фото та відео підключимо до Supabase Storage на наступному етапі."
-        );
-      }
+      let uploadedMedia =
+        null;
 
-      await createBackendPost(
-        authSession,
-        {
-          text,
-          media,
-          mediaType,
-          location,
-          poll,
-          visibility:
-            "public",
+      try {
+        if (
+          mediaFile
+        ) {
+          uploadedMedia =
+            await uploadPostMedia(
+              authSession,
+              mediaFile
+            );
         }
-      );
 
-      await refreshBackendFeed();
+        await createBackendPost(
+          authSession,
+          {
+            text,
+            media:
+              uploadedMedia?.url ||
+              null,
+            mediaType:
+              uploadedMedia?.mediaType ||
+              mediaType,
+            location,
+            poll,
+            visibility:
+              "public",
+          }
+        );
+
+        await refreshBackendFeed();
+      } catch (
+        error
+      ) {
+        console.warn(
+          "BACKEND POST PUBLISH ERROR:",
+          error
+        );
+
+        window.alert(
+          error?.message ||
+          "Не вдалося опублікувати допис."
+        );
+
+        throw error;
+      }
 
       return;
     }
