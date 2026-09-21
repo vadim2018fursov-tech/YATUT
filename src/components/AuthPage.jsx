@@ -6,8 +6,11 @@ import {
 import "../styles/auth.css";
 
 import {
+  checkUsernameAvailable,
   getAuthCapabilities,
   isAuthBackendConfigured,
+  isValidUsername,
+  normalizeUsername,
   requestPasswordReset,
   signInWithOAuth,
   signInWithPassword,
@@ -73,6 +76,15 @@ export default function AuthPage({
       facebook: false,
     });
 
+  const [
+    usernameStatus,
+    setUsernameStatus,
+  ] =
+    useState({
+      state: "idle",
+      text: "",
+    });
+
   useEffect(() => {
     let active =
       true;
@@ -95,6 +107,116 @@ export default function AuthPage({
         false;
     };
   }, []);
+
+  /* =======================================================
+     USERNAME AVAILABILITY
+  ======================================================= */
+
+  useEffect(() => {
+    if (
+      mode !== "register"
+    ) {
+      setUsernameStatus({
+        state: "idle",
+        text: "",
+      });
+
+      return undefined;
+    }
+
+    const username =
+      normalizeUsername(
+        form.username
+      );
+
+    if (!username) {
+      setUsernameStatus({
+        state: "idle",
+        text: "",
+      });
+
+      return undefined;
+    }
+
+    if (
+      !isValidUsername(
+        username
+      )
+    ) {
+      setUsernameStatus({
+        state: "invalid",
+        text:
+          "3–30 символів: латинські літери, цифри, крапка або _.",
+      });
+
+      return undefined;
+    }
+
+    let active =
+      true;
+
+    setUsernameStatus({
+      state: "checking",
+      text:
+        "Перевіряємо username…",
+    });
+
+    const timer =
+      window.setTimeout(
+        async () => {
+          try {
+            const available =
+              await checkUsernameAvailable(
+                username
+              );
+
+            if (!active) {
+              return;
+            }
+
+            setUsernameStatus({
+              state:
+                available
+                  ? "available"
+                  : "taken",
+              text:
+                available
+                  ? "@" + username + " вільний"
+                  : "@" + username + " вже зайнятий",
+            });
+          } catch (
+            error
+          ) {
+            if (!active) {
+              return;
+            }
+
+            console.warn(
+              "USERNAME AVAILABILITY ERROR:",
+              error
+            );
+
+            setUsernameStatus({
+              state: "idle",
+              text: "",
+            });
+          }
+        },
+        320
+      );
+
+    return () => {
+      active =
+        false;
+
+      window.clearTimeout(
+        timer
+      );
+    };
+  }, [
+    mode,
+    form.username,
+  ]);
 
   function patch(
     key,
@@ -179,6 +301,32 @@ export default function AuthPage({
         mode ===
         "register"
       ) {
+        const username =
+          normalizeUsername(
+            form.username
+          );
+
+        if (
+          !isValidUsername(
+            username
+          )
+        ) {
+          throw new Error(
+            "Username має містити 3–30 символів: латинські літери, цифри, крапка або _."
+          );
+        }
+
+        const available =
+          await checkUsernameAvailable(
+            username
+          );
+
+        if (!available) {
+          throw new Error(
+            "Цей username вже зайнятий."
+          );
+        }
+
         const result =
           await signUp({
             email:
@@ -187,13 +335,7 @@ export default function AuthPage({
               form.password,
             fullName:
               form.fullName.trim(),
-            username:
-              form.username
-                .trim()
-                .replace(
-                  /^@/,
-                  ""
-                ),
+            username,
           });
 
         if (
@@ -437,8 +579,25 @@ export default function AuthPage({
                   placeholder="@username"
                   autoCapitalize="none"
                   autoCorrect="off"
+                  minLength={3}
+                  maxLength={31}
+                  spellCheck={false}
                   required
+                  aria-describedby="auth-username-status"
                 />
+
+                <small
+                  id="auth-username-status"
+                  className={
+                    "auth-username-status " +
+                    usernameStatus.state
+                  }
+                >
+                  {
+                    usernameStatus.text ||
+                    "Латиниця, цифри, крапка або _"
+                  }
+                </small>
               </label>
             </>
           )}
@@ -551,7 +710,18 @@ export default function AuthPage({
             type="submit"
             disabled={
               busy ||
-              !configured
+              !configured ||
+              (
+                mode ===
+                  "register" &&
+                [
+                  "invalid",
+                  "checking",
+                  "taken",
+                ].includes(
+                  usernameStatus.state
+                )
+              )
             }
           >
             {busy
