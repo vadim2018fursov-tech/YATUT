@@ -3967,3 +3967,75 @@ button:disabled {
       16px;
   }
 }
+
+
+/* =========================================================
+   REAL COMMUNITY MEMBERSHIP
+========================================================= */
+
+.space-member-row > span {
+  overflow: hidden;
+  flex: 0 0 auto;
+}
+
+.space-member-row > span > img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  border-radius: inherit;
+}
+
+.community-request-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.community-request-actions button {
+  min-height: 34px;
+  padding: 0 11px;
+  border-radius: 10px;
+  border: 1px solid var(--border, #e7e9f0);
+  background: var(--surface, #fff);
+  color: var(--text, #151827);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.community-request-actions button:first-child {
+  background: var(--primary, #6557ff);
+  border-color: transparent;
+  color: #fff;
+}
+
+.community-request-actions button:disabled,
+.community-detail-actions button:disabled {
+  opacity: .55;
+  cursor: default;
+}
+
+@media (max-width: 760px) {
+  .community-detail-actions.is-nonmember {
+    grid-template-columns:
+      44px
+      minmax(0, 1fr);
+  }
+
+  .community-request-actions {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 7px;
+  }
+
+  .community-request-actions button {
+    flex: 1 1 0;
+  }
+
+  .space-member-row {
+    flex-wrap: wrap;
+  }
+}
