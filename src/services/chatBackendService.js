@@ -864,6 +864,56 @@ export async function loadBackendMessages(
         !row.deleted_at
     );
 
+  const senderIds =
+    [
+      ...new Set(
+        visibleRows
+          .map(
+            (
+              row
+            ) =>
+              row.sender_id
+          )
+          .filter(
+            (
+              id
+            ) =>
+              id &&
+              id !==
+                session.user.id
+          )
+      ),
+    ];
+
+  const senderProfiles =
+    new Map(
+      (
+        await Promise.all(
+          senderIds.map(
+            async (
+              id
+            ) => [
+              id,
+              await getProfile(
+                session,
+                id
+              ),
+            ]
+          )
+        )
+      ).filter(
+        (
+          [
+            ,
+            profile,
+          ]
+        ) =>
+          Boolean(
+            profile
+          )
+      )
+    );
+
   return Promise.all(
     visibleRows.map(
       async (
@@ -902,6 +952,14 @@ export async function loadBackendMessages(
             session.user.id
               ? "me"
               : row.sender_id,
+          sender:
+            row.sender_id ===
+            session.user.id
+              ? null
+              : senderProfiles.get(
+                  row.sender_id
+                ) ||
+                null,
           type:
             row.kind ===
             "audio"
