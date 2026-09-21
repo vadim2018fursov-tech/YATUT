@@ -587,13 +587,37 @@ function UserProfile({
           </p>
         )}
 
+        {person.status && (
+          <div className="profile-online-chip">
+            <span>
+              ●
+            </span>
+
+            <strong>
+              {
+                person.status
+              }
+            </strong>
+
+            {person.statusText && (
+              <small>
+                {
+                  person.statusText
+                }
+              </small>
+            )}
+          </div>
+        )}
+
         <div className="other-profile-meta">
-          <span>
-            📍{" "}
-            {
-              person.city
-            }
-          </span>
+          {person.city && (
+            <span>
+              📍{" "}
+              {
+                person.city
+              }
+            </span>
+          )}
 
           {person.mutual >
             0 && (
