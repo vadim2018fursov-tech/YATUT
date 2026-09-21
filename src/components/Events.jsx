@@ -37,6 +37,18 @@ import {
   shareYatutItem,
 } from "../utils/shareYatutItem";
 
+import {
+  createBackendEvent,
+  deleteBackendEvent,
+  loadBackendEvents,
+  setBackendEventParticipation,
+  toggleBackendEventLike,
+} from "../services/eventBackendService";
+
+import {
+  subscribeEventsRealtime,
+} from "../services/realtimeService";
+
 /* =========================================================
    PEOPLE
 ========================================================= */
@@ -399,9 +411,12 @@ function EventCard({
           </div>
 
           <span>
-            {friendIds.length >
-            0
-              ? `${friendIds.length} знайомих вже йдуть`
+            {event.backend
+              ? event.goingCount > 0
+                ? event.goingCount + " учасників вже йдуть"
+                : "Будьте серед перших"
+              : friendIds.length > 0
+              ? friendIds.length + " знайомих вже йдуть"
               : "Будьте серед перших"}
           </span>
         </div>
@@ -1124,6 +1139,7 @@ function EventDetail({
   onDelete,
   onShare,
   onInviteFriends,
+  backendMode = false,
 }) {
   const going =
     event.attendees?.includes(
@@ -1353,71 +1369,77 @@ function EventDetail({
 
               <strong>
                 {
-                  attendees.length
+                  event.backend
+                    ? event.goingCount || 0
+                    : attendees.length
                 }
               </strong>
             </div>
 
-            <div className="event-attendees">
-              {attendees.map(
-                (id) => {
-                  const person =
-                    PEOPLE[id] || {
-                      name:
-                        "Користувач",
-                      initials:
-                        "?",
-                    };
+            {!backendMode && (
+              <>
+                <div className="event-attendees">
+                  {attendees.map(
+                    (id) => {
+                      const person =
+                        PEOPLE[id] || {
+                          name:
+                            "Користувач",
+                          initials:
+                            "?",
+                        };
 
-                  return (
-                    <div
-                      key={
-                        id
-                      }
-                      className="event-attendee"
-                    >
-                      <span>
-                        {
-                          person.initials
-                        }
-                      </span>
+                      return (
+                        <div
+                          key={
+                            id
+                          }
+                          className="event-attendee"
+                        >
+                          <span>
+                            {
+                              person.initials
+                            }
+                          </span>
 
-                      <strong>
-                        {id ===
-                        "me"
-                          ? "Ви"
-                          : person.name}
-                      </strong>
-                    </div>
-                  );
-                }
-              )}
-            </div>
+                          <strong>
+                            {id ===
+                            "me"
+                              ? "Ви"
+                              : person.name}
+                          </strong>
+                        </div>
+                      );
+                    }
+                  )}
+                </div>
 
-            <button
-              type="button"
-              className="event-invite-button"
-              onClick={() =>
-                setInviteOpen(
-                  (
-                    value
-                  ) =>
-                    !value
-                )
-              }
-            >
-              <Users
-                size={15}
-              />
+                <button
+                  type="button"
+                  className="event-invite-button"
+                  onClick={() =>
+                    setInviteOpen(
+                      (
+                        value
+                      ) =>
+                        !value
+                    )
+                  }
+                >
+                  <Users
+                    size={15}
+                  />
 
-              {inviteOpen
-                ? "Закрити"
-                : invitedIds.length
-                ? `Запрошено ${invitedIds.length}`
-                : "Запросити друзів"}
-            </button>
+                  {inviteOpen
+                    ? "Закрити"
+                    : invitedIds.length
+                    ? "Запрошено " + invitedIds.length
+                    : "Запросити друзів"}
+                </button>
+              </>
+            )}
 
-            {inviteOpen && (
+            {!backendMode && inviteOpen && (
               <div className="event-invite-panel">
                 <div className="event-invite-panel__head">
                   <div>
@@ -1531,8 +1553,10 @@ function EventDetail({
               <div>
                 <strong>
                   {
-                    event.attendees
-                      ?.length || 0
+                    event.backend
+                      ? event.goingCount || 0
+                      : event.attendees
+                          ?.length || 0
                   }
                 </strong>
 
@@ -1544,8 +1568,10 @@ function EventDetail({
               <div>
                 <strong>
                   {
-                    event.interested
-                      ?.length || 0
+                    event.backend
+                      ? event.interestedCount || 0
+                      : event.interested
+                          ?.length || 0
                   }
                 </strong>
 
@@ -1715,13 +1741,16 @@ function EventDetail({
 function Events({
   onNavigate,
   createRequestKey = 0,
+  authSession = null,
 }) {
   const [
     events,
     setEvents,
   ] = useState(
     () =>
-      loadEvents()
+      authSession?.user?.id
+        ? []
+        : loadEvents()
   );
 
   const [
@@ -1868,10 +1897,109 @@ function Events({
   ======================================================= */
 
   useEffect(() => {
+    if (
+      authSession?.user?.id
+    ) {
+      return undefined;
+    }
+
     return subscribeEvents(
       setEvents
     );
-  }, []);
+  }, [
+    authSession?.user?.id,
+  ]);
+
+  useEffect(() => {
+    if (
+      !authSession?.user?.id
+    ) {
+      return undefined;
+    }
+
+    let active =
+      true;
+
+    let refreshTimer =
+      null;
+
+    async function refresh() {
+      try {
+        const next =
+          await loadBackendEvents(
+            authSession
+          );
+
+        if (active) {
+          setEvents(
+            next
+          );
+        }
+      } catch (
+        error
+      ) {
+        console.warn(
+          "EVENTS BACKEND LOAD ERROR:",
+          error
+        );
+      }
+    }
+
+    refresh();
+
+    const channel =
+      subscribeEventsRealtime({
+        session:
+          authSession,
+        onChange:
+          () => {
+            if (
+              refreshTimer
+            ) {
+              window.clearTimeout(
+                refreshTimer
+              );
+            }
+
+            refreshTimer =
+              window.setTimeout(
+                refresh,
+                100
+              );
+          },
+        onStatus:
+          (
+            status
+          ) => {
+            if (
+              status ===
+              "error"
+            ) {
+              console.warn(
+                "EVENTS REALTIME DEGRADED"
+              );
+            }
+          },
+      });
+
+    return () => {
+      active =
+        false;
+
+      if (
+        refreshTimer
+      ) {
+        window.clearTimeout(
+          refreshTimer
+        );
+      }
+
+      channel.close();
+    };
+  }, [
+    authSession?.user?.id,
+    authSession?.access_token,
+  ]);
 
   /* =======================================================
      HUB → EVENT CREATOR
@@ -1977,6 +2105,25 @@ function Events({
       activeTab,
     ]);
 
+  async function refreshBackendEvents() {
+    if (
+      !authSession?.user?.id
+    ) {
+      return [];
+    }
+
+    const next =
+      await loadBackendEvents(
+        authSession
+      );
+
+    setEvents(
+      next
+    );
+
+    return next;
+  }
+
   function updateEvents(
     updater
   ) {
@@ -1999,9 +2146,31 @@ function Events({
     );
   }
 
-  function toggleLike(
+  async function toggleLike(
     eventId
   ) {
+    if (
+      authSession?.user?.id
+    ) {
+      try {
+        await toggleBackendEventLike(
+          authSession,
+          eventId
+        );
+
+        await refreshBackendEvents();
+      } catch (
+        error
+      ) {
+        console.warn(
+          "EVENT LIKE ERROR:",
+          error
+        );
+      }
+
+      return;
+    }
+
     updateEvents(
       (previous) =>
         previous.map(
@@ -2038,9 +2207,47 @@ function Events({
     );
   }
 
-  function toggleGoing(
+  async function toggleGoing(
     eventId
   ) {
+    if (
+      authSession?.user?.id
+    ) {
+      const target =
+        events.find(
+          (event) =>
+            event.id ===
+            eventId
+        );
+
+      const current =
+        target?.attendees
+          ?.includes(
+            "me"
+          );
+
+      try {
+        await setBackendEventParticipation(
+          authSession,
+          eventId,
+          current
+            ? null
+            : "going"
+        );
+
+        await refreshBackendEvents();
+      } catch (
+        error
+      ) {
+        console.warn(
+          "EVENT GOING ERROR:",
+          error
+        );
+      }
+
+      return;
+    }
+
     updateEvents(
       (previous) =>
         previous.map(
@@ -2084,9 +2291,47 @@ function Events({
     );
   }
 
-  function toggleInterested(
+  async function toggleInterested(
     eventId
   ) {
+    if (
+      authSession?.user?.id
+    ) {
+      const target =
+        events.find(
+          (event) =>
+            event.id ===
+            eventId
+        );
+
+      const current =
+        target?.interested
+          ?.includes(
+            "me"
+          );
+
+      try {
+        await setBackendEventParticipation(
+          authSession,
+          eventId,
+          current
+            ? null
+            : "interested"
+        );
+
+        await refreshBackendEvents();
+      } catch (
+        error
+      ) {
+        console.warn(
+          "EVENT INTEREST ERROR:",
+          error
+        );
+      }
+
+      return;
+    }
+
     updateEvents(
       (previous) =>
         previous.map(
@@ -2133,6 +2378,49 @@ function Events({
   async function createNewEvent(
     newEvent
   ) {
+    if (
+      authSession?.user?.id
+    ) {
+      try {
+        const created =
+          await createBackendEvent(
+            authSession,
+            newEvent
+          );
+
+        const next =
+          await refreshBackendEvents();
+
+        setCreateOpen(
+          false
+        );
+
+        setCommunityContext(
+          null
+        );
+
+        setActiveEventId(
+          created?.id ||
+          next[0]?.id ||
+          null
+        );
+      } catch (
+        error
+      ) {
+        console.warn(
+          "EVENT CREATE ERROR:",
+          error
+        );
+
+        window.alert(
+          error?.message ||
+          "Не вдалося створити подію."
+        );
+      }
+
+      return;
+    }
+
     updateEvents(
       (previous) => [
         newEvent,
@@ -2160,6 +2448,16 @@ function Events({
   async function openDiscussion(
     event
   ) {
+    if (
+      authSession?.user?.id
+    ) {
+      window.alert(
+        "Обговорення події підключимо до серверного групового чату наступним кроком."
+      );
+
+      return;
+    }
+
     const latestEvent =
       events.find(
         (item) =>
@@ -2187,7 +2485,7 @@ function Events({
     );
   }
 
-  function deleteEvent(
+  async function deleteEvent(
     eventId
   ) {
     const target =
@@ -2210,6 +2508,37 @@ function Events({
       return;
     }
 
+    if (
+      authSession?.user?.id
+    ) {
+      try {
+        await deleteBackendEvent(
+          authSession,
+          eventId
+        );
+
+        await refreshBackendEvents();
+
+        setActiveEventId(
+          null
+        );
+      } catch (
+        error
+      ) {
+        console.warn(
+          "EVENT DELETE ERROR:",
+          error
+        );
+
+        window.alert(
+          error?.message ||
+          "Не вдалося видалити подію."
+        );
+      }
+
+      return;
+    }
+
     updateEvents(
       (previous) =>
         previous.filter(
@@ -2228,6 +2557,12 @@ function Events({
     eventId,
     personIds
   ) {
+    if (
+      authSession?.user?.id
+    ) {
+      return;
+    }
+
     updateEvents(
       (
         previous
@@ -2332,6 +2667,11 @@ function Events({
         }
         onInviteFriends={
           inviteFriends
+        }
+        backendMode={
+          Boolean(
+            authSession?.user?.id
+          )
         }
       />
     );
