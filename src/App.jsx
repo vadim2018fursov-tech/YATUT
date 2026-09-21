@@ -73,8 +73,10 @@ import {
 
 import {
   createSavedPost,
+  getSavedItems,
   isSaved,
   removeSavedItem,
+  replaceSavedItems,
   subscribeSavedItems,
   toggleSaved,
 } from "./storage/savedService";
@@ -113,6 +115,7 @@ import {
 import {
   subscribeFeedRealtime,
   subscribeNotificationsRealtime,
+  subscribeSavedRealtime,
   subscribeSocialGraphRealtime,
 } from "./services/realtimeService";
 
@@ -125,6 +128,11 @@ import {
   uploadPostMedia,
 } from "./services/storageService";
 
+import {
+  loadBackendSavedItems,
+  syncBackendSavedItems,
+} from "./services/savedBackendService";
+
 /* =========================================================
    YATUT APP
 ========================================================= */
@@ -134,6 +142,9 @@ const HOME_STORAGE_KEY =
 
 const SETTINGS_STORAGE_KEY =
   "yatut-settings-v1";
+
+const SAVED_OWNER_KEY =
+  "yatut-saved-owner-v1";
 
 /* =========================================================
    URL ROUTER
@@ -5722,6 +5733,408 @@ function App() {
   }
 
   /* =======================================================
+     CROSS-DEVICE SAVED SYNC
+  ======================================================= */
+
+  useEffect(() => {
+    if (
+      !authReady
+    ) {
+      return undefined;
+    }
+
+    const userId =
+      authSession?.user?.id;
+
+    if (
+      !userId
+    ) {
+      try {
+        if (
+          localStorage.getItem(
+            SAVED_OWNER_KEY
+          )
+        ) {
+          replaceSavedItems(
+            []
+          );
+        }
+      } catch (
+        error
+      ) {
+        console.warn(
+          "SAVED SIGN-OUT CLEANUP ERROR:",
+          error
+        );
+      }
+
+      return undefined;
+    }
+
+    let active =
+      true;
+
+    let initialized =
+      false;
+
+    let applyingRemote =
+      false;
+
+    let pushTimer =
+      null;
+
+    let refreshTimer =
+      null;
+
+    function itemKey(
+      item
+    ) {
+      return `${
+        item?.type ||
+        ""
+      }:${
+        item?.sourceId ||
+        ""
+      }`;
+    }
+
+    function mergeSaved(
+      remoteItems,
+      localItems
+    ) {
+      const merged =
+        new Map();
+
+      [
+        ...(
+          Array.isArray(
+            remoteItems
+          )
+            ? remoteItems
+            : []
+        ),
+        ...(
+          Array.isArray(
+            localItems
+          )
+            ? localItems
+            : []
+        ),
+      ].forEach(
+        (
+          item
+        ) => {
+          if (
+            !item?.type ||
+            !item?.sourceId
+          ) {
+            return;
+          }
+
+          const key =
+            itemKey(
+              item
+            );
+
+          const previous =
+            merged.get(
+              key
+            );
+
+          if (
+            !previous ||
+            Number(
+              item.updatedAt ||
+              item.savedAt ||
+              0
+            ) >=
+              Number(
+                previous.updatedAt ||
+                previous.savedAt ||
+                0
+              )
+          ) {
+            merged.set(
+              key,
+              item
+            );
+          }
+        }
+      );
+
+      return [
+        ...merged.values(),
+      ].sort(
+        (
+          left,
+          right
+        ) =>
+          Number(
+            right.savedAt ||
+            0
+          ) -
+          Number(
+            left.savedAt ||
+            0
+          )
+      );
+    }
+
+    async function bootstrap() {
+      try {
+        let localItems =
+          getSavedItems();
+
+        const previousOwner =
+          localStorage.getItem(
+            SAVED_OWNER_KEY
+          );
+
+        if (
+          previousOwner &&
+          previousOwner !==
+            userId
+        ) {
+          applyingRemote =
+            true;
+
+          replaceSavedItems(
+            []
+          );
+
+          applyingRemote =
+            false;
+
+          localItems =
+            [];
+        }
+
+        const remoteItems =
+          await loadBackendSavedItems(
+            authSession
+          );
+
+        if (
+          !active
+        ) {
+          return;
+        }
+
+        const merged =
+          mergeSaved(
+            remoteItems,
+            localItems
+          );
+
+        applyingRemote =
+          true;
+
+        replaceSavedItems(
+          merged
+        );
+
+        applyingRemote =
+          false;
+
+        localStorage.setItem(
+          SAVED_OWNER_KEY,
+          userId
+        );
+
+        await syncBackendSavedItems(
+          authSession,
+          merged
+        );
+
+        if (
+          active
+        ) {
+          initialized =
+            true;
+        }
+      } catch (
+        error
+      ) {
+        console.warn(
+          "SAVED BACKEND BOOTSTRAP ERROR:",
+          error
+        );
+
+        if (
+          active
+        ) {
+          initialized =
+            true;
+        }
+      }
+    }
+
+    async function refreshFromBackend() {
+      if (
+        !initialized ||
+        !active
+      ) {
+        return;
+      }
+
+      try {
+        const remoteItems =
+          await loadBackendSavedItems(
+            authSession
+          );
+
+        if (
+          !active
+        ) {
+          return;
+        }
+
+        applyingRemote =
+          true;
+
+        replaceSavedItems(
+          remoteItems
+        );
+
+        applyingRemote =
+          false;
+
+        localStorage.setItem(
+          SAVED_OWNER_KEY,
+          userId
+        );
+      } catch (
+        error
+      ) {
+        console.warn(
+          "SAVED REALTIME REFRESH ERROR:",
+          error
+        );
+
+        applyingRemote =
+          false;
+      }
+    }
+
+    const unsubscribeLocal =
+      subscribeSavedItems(
+        (
+          items
+        ) => {
+          if (
+            !initialized ||
+            applyingRemote
+          ) {
+            return;
+          }
+
+          if (
+            pushTimer
+          ) {
+            window.clearTimeout(
+              pushTimer
+            );
+          }
+
+          pushTimer =
+            window.setTimeout(
+              () => {
+                syncBackendSavedItems(
+                  authSession,
+                  items
+                ).catch(
+                  (
+                    error
+                  ) => {
+                    console.warn(
+                      "SAVED BACKEND PUSH ERROR:",
+                      error
+                    );
+                  }
+                );
+              },
+              120
+            );
+        }
+      );
+
+    const channel =
+      subscribeSavedRealtime({
+        session:
+          authSession,
+        onChange:
+          () => {
+            if (
+              !initialized
+            ) {
+              return;
+            }
+
+            if (
+              refreshTimer
+            ) {
+              window.clearTimeout(
+                refreshTimer
+              );
+            }
+
+            refreshTimer =
+              window.setTimeout(
+                refreshFromBackend,
+                120
+              );
+          },
+        onStatus:
+          (
+            status
+          ) => {
+            if (
+              status ===
+              "error"
+            ) {
+              console.warn(
+                "SAVED REALTIME DEGRADED"
+              );
+            }
+          },
+      });
+
+    bootstrap();
+
+    return () => {
+      active =
+        false;
+
+      initialized =
+        false;
+
+      unsubscribeLocal();
+
+      if (
+        pushTimer
+      ) {
+        window.clearTimeout(
+          pushTimer
+        );
+      }
+
+      if (
+        refreshTimer
+      ) {
+        window.clearTimeout(
+          refreshTimer
+        );
+      }
+
+      channel.close();
+    };
+  }, [
+    authReady,
+    authSession?.user?.id,
+    authSession?.access_token,
+  ]);
+
+  /* =======================================================
      LIVE NOTIFICATION SYNC
   ======================================================= */
 
@@ -6741,6 +7154,9 @@ function App() {
           <Saved
             onNavigate={
               goToPage
+            }
+            authSession={
+              authSession
             }
           />
         );
