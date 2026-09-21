@@ -741,6 +741,60 @@ export async function openBackendDirectChat(
   );
 }
 
+export async function createBackendGroupChat(
+  session,
+  title,
+  memberIds
+) {
+  if (
+    !session?.user?.id
+  ) {
+    return null;
+  }
+
+  const response =
+    await fetch(
+      `${SUPABASE_URL}/rest/v1/rpc/create_group_conversation`,
+      {
+        method:
+          "POST",
+        headers:
+          headers(
+            session
+          ),
+        body:
+          JSON.stringify({
+            group_title:
+              title,
+            member_ids:
+              memberIds,
+          }),
+      }
+    );
+
+  const conversationId =
+    await parseResponse(
+      response
+    );
+
+  if (
+    !conversationId
+  ) {
+    return null;
+  }
+
+  const conversation =
+    await getConversation(
+      session,
+      conversationId
+    );
+
+  return chatFromConversation(
+    session,
+    conversation
+  );
+}
+
 export async function openBackendCommunityChat(
   session,
   communityId
