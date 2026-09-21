@@ -67,6 +67,10 @@ import CreateMediaPage from "./pages/CreateMediaPage";
 import YatutIcon from "./components/YatutIcon";
 
 import {
+  shareYatutItem,
+} from "./utils/shareYatutItem";
+
+import {
   createSavedPost,
   isSaved,
   removeSavedItem,
@@ -3039,30 +3043,63 @@ function Home({
     };
   });
 
-  function sharePost(
+  async function sharePost(
     postId
   ) {
+    const post =
+      posts.find(
+        (
+          item
+        ) =>
+          item.id ===
+          postId
+      );
+
+    if (!post) {
+      return;
+    }
+
+    const result =
+      await shareYatutItem({
+        title:
+          `Допис ${post.authorName || "ЯТУТ"} у ЯТУТ`,
+
+        text:
+          post.text ||
+          "",
+
+        path:
+          `#post=${encodeURIComponent(post.id)}`,
+      });
+
+    if (
+      !result?.shared &&
+      !result?.copied
+    ) {
+      return;
+    }
+
     setPosts(
       (
         previous
       ) =>
         previous.map(
           (
-            post
+            item
           ) =>
-            post.id ===
+            item.id ===
             postId
               ? {
-                  ...post,
+                  ...item,
 
                   shares:
                     Number(
-                      post.shares ||
+                      item.shares ||
                         0
                     ) +
                     1,
                 }
-              : post
+              : item
         )
     );
   }
@@ -4604,6 +4641,115 @@ function App() {
         "auto",
     });
   }
+
+  /* =======================================================
+     SHARED LINK BRIDGE
+  ======================================================= */
+
+  useEffect(() => {
+    function openSharedLink() {
+      const rawHash =
+        window.location.hash
+          ?.replace(
+            /^#/,
+            ""
+          )
+          .trim();
+
+      if (!rawHash) {
+        return;
+      }
+
+      const params =
+        new URLSearchParams(
+          rawHash
+        );
+
+      const spaceId =
+        params.get(
+          "space"
+        );
+
+      if (spaceId) {
+        goToPage(
+          "communities",
+          {
+            communityId:
+              spaceId,
+
+            postId:
+              params.get(
+                "post"
+              ) ||
+              null,
+          }
+        );
+
+        return;
+      }
+
+      const eventId =
+        params.get(
+          "event"
+        );
+
+      if (eventId) {
+        goToPage(
+          "events",
+          {
+            eventId,
+          }
+        );
+
+        return;
+      }
+
+      const profilePostId =
+        params.get(
+          "profile-post"
+        );
+
+      if (profilePostId) {
+        goToPage(
+          "profile",
+          {
+            postId:
+              profilePostId,
+          }
+        );
+
+        return;
+      }
+
+      const postId =
+        params.get(
+          "post"
+        );
+
+      if (postId) {
+        goToPage(
+          "home",
+          {
+            postId,
+          }
+        );
+      }
+    }
+
+    openSharedLink();
+
+    window.addEventListener(
+      "hashchange",
+      openSharedLink
+    );
+
+    return () => {
+      window.removeEventListener(
+        "hashchange",
+        openSharedLink
+      );
+    };
+  }, []);
 
   /* =======================================================
      OPEN PERSON CHAT
