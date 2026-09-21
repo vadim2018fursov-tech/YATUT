@@ -40,6 +40,7 @@ export const NOTIFICATION_TYPES = {
   MENTION: "mention",
   FRIEND_REQUEST: "friend_request",
   FRIEND_ACCEPTED: "friend_accepted",
+  FOLLOW: "follow",
   MESSAGE: "message",
   COMMUNITY: "community",
   COMMUNITY_INVITE:
@@ -678,6 +679,7 @@ function notificationPreferenceKey(
 
     case NOTIFICATION_TYPES.FRIEND_REQUEST:
     case NOTIFICATION_TYPES.FRIEND_ACCEPTED:
+    case NOTIFICATION_TYPES.FOLLOW:
       return "friends";
 
     case NOTIFICATION_TYPES.COMMUNITY:
