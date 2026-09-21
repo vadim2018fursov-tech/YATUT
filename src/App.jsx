@@ -130,6 +130,7 @@ import {
 
 import {
   loadBackendSavedItems,
+  syncBackendSavedDelta,
   syncBackendSavedItems,
 } from "./services/savedBackendService";
 
@@ -5786,6 +5787,15 @@ function App() {
     let refreshTimer =
       null;
 
+    let lastLocalItems =
+      [];
+
+    let pendingPrevious =
+      null;
+
+    let pendingNext =
+      null;
+
     function itemKey(
       item
     ) {
@@ -5933,6 +5943,9 @@ function App() {
           merged
         );
 
+        lastLocalItems =
+          merged;
+
         applyingRemote =
           false;
 
@@ -5996,6 +6009,9 @@ function App() {
           remoteItems
         );
 
+        lastLocalItems =
+          remoteItems;
+
         applyingRemote =
           false;
 
@@ -6022,11 +6038,32 @@ function App() {
           items
         ) => {
           if (
-            !initialized ||
             applyingRemote
+          ) {
+            lastLocalItems =
+              items;
+
+            return;
+          }
+
+          if (
+            !initialized
           ) {
             return;
           }
+
+          if (
+            !pendingPrevious
+          ) {
+            pendingPrevious =
+              lastLocalItems;
+          }
+
+          pendingNext =
+            items;
+
+          lastLocalItems =
+            items;
 
           if (
             pushTimer
@@ -6039,9 +6076,24 @@ function App() {
           pushTimer =
             window.setTimeout(
               () => {
-                syncBackendSavedItems(
+                const previous =
+                  pendingPrevious ||
+                  [];
+
+                const next =
+                  pendingNext ||
+                  lastLocalItems;
+
+                pendingPrevious =
+                  null;
+
+                pendingNext =
+                  null;
+
+                syncBackendSavedDelta(
                   authSession,
-                  items
+                  previous,
+                  next
                 ).catch(
                   (
                     error
