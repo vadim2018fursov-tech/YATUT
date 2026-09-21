@@ -18,6 +18,11 @@ import {
   shareYatutItem,
 } from "../utils/shareYatutItem";
 
+import {
+  getMyProfile,
+  updateMyProfile,
+} from "../services/authService";
+
 const PROFILE_STORAGE_KEY = "yatut-profile-v2";
 const PROFILE_POSTS_STORAGE_KEY = "yatut-profile-posts-v2";
 
@@ -167,15 +172,75 @@ const DEFAULT_PROFILE_POSTS = [
    HELPERS
 ========================================================= */
 
-function safeLoadProfilePosts() {
+function profileStorageKey(
+  base,
+  userId
+) {
+  return userId
+    ? `${base}:${userId}`
+    : base;
+}
+
+function profileDefaultsForUser(
+  user
+) {
+  if (
+    !user?.id
+  ) {
+    return DEFAULT_PROFILE;
+  }
+
+  const metadata =
+    user.user_metadata ||
+    {};
+
+  return {
+    ...DEFAULT_PROFILE,
+    name:
+      metadata.full_name ||
+      user.email
+        ?.split("@")[0] ||
+      "Користувач ЯТУТ",
+    username:
+      metadata.username ||
+      user.email
+        ?.split("@")[0] ||
+      "user",
+    bio: "",
+    city: "",
+    country: "Україна",
+    work: "",
+    education: "",
+    status: "Я тут",
+    statusText: "",
+    followers: 0,
+    following: 0,
+    friends: 0,
+    posts: 0,
+    pulseReach: 0,
+    verified: false,
+    founder: false,
+    earlyUser: true,
+    interests: [],
+  };
+}
+
+function safeLoadProfilePosts(
+  userId = null
+) {
   try {
     const raw =
       localStorage.getItem(
-        PROFILE_POSTS_STORAGE_KEY
+        profileStorageKey(
+          PROFILE_POSTS_STORAGE_KEY,
+          userId
+        )
       );
 
     if (!raw) {
-      return DEFAULT_PROFILE_POSTS;
+      return userId
+        ? []
+        : DEFAULT_PROFILE_POSTS;
     }
 
     const parsed =
@@ -189,22 +254,32 @@ function safeLoadProfilePosts() {
   }
 }
 
-function safeLoadProfile() {
+function safeLoadProfile(
+  user = null
+) {
+  const defaults =
+    profileDefaultsForUser(
+      user
+    );
+
   try {
     const raw =
       localStorage.getItem(
-        PROFILE_STORAGE_KEY
+        profileStorageKey(
+          PROFILE_STORAGE_KEY,
+          user?.id
+        )
       );
 
     if (!raw) {
-      return DEFAULT_PROFILE;
+      return defaults;
     }
 
     const parsed =
       JSON.parse(raw);
 
     return {
-      ...DEFAULT_PROFILE,
+      ...defaults,
       ...(parsed || {}),
 
       interests:
@@ -212,7 +287,7 @@ function safeLoadProfile() {
           parsed?.interests
         )
           ? parsed.interests
-          : DEFAULT_PROFILE.interests,
+          : defaults.interests,
     };
   } catch (error) {
     console.warn(
@@ -292,13 +367,18 @@ function fileToDataUrl(
 export default function Profile({
   onNavigate,
   onOpenChat,
+  authSession = null,
 }) {
   const [
     profile,
     setProfile,
   ] =
     useState(
-      safeLoadProfile
+      () =>
+        safeLoadProfile(
+          authSession?.user ||
+          null
+        )
     );
 
   const [
@@ -326,7 +406,11 @@ export default function Profile({
     setProfilePosts,
   ] =
     useState(
-      safeLoadProfilePosts
+      () =>
+        safeLoadProfilePosts(
+          authSession?.user?.id ||
+          null
+        )
     );
 
   const [
@@ -366,7 +450,11 @@ export default function Profile({
   useEffect(() => {
     try {
       localStorage.setItem(
-        PROFILE_STORAGE_KEY,
+        profileStorageKey(
+          PROFILE_STORAGE_KEY,
+          authSession?.user?.id ||
+          null
+        ),
 
         JSON.stringify(
           profile
@@ -378,12 +466,19 @@ export default function Profile({
         error
       );
     }
-  }, [profile]);
+  }, [
+    profile,
+    authSession?.user?.id,
+  ]);
 
   useEffect(() => {
     try {
       localStorage.setItem(
-        PROFILE_POSTS_STORAGE_KEY,
+        profileStorageKey(
+          PROFILE_POSTS_STORAGE_KEY,
+          authSession?.user?.id ||
+          null
+        ),
         JSON.stringify(
           profilePosts
         )
@@ -394,7 +489,78 @@ export default function Profile({
         error
       );
     }
-  }, [profilePosts]);
+  }, [
+    profilePosts,
+    authSession?.user?.id,
+  ]);
+
+  useEffect(() => {
+    if (
+      !authSession?.user?.id
+    ) {
+      return undefined;
+    }
+
+    let mounted =
+      true;
+
+    getMyProfile(
+      authSession
+    )
+      .then(
+        (remote) => {
+          if (
+            !mounted ||
+            !remote
+          ) {
+            return;
+          }
+
+          setProfile(
+            (previous) => ({
+              ...previous,
+              name:
+                remote.full_name ||
+                previous.name,
+              username:
+                remote.username ||
+                previous.username,
+              bio:
+                remote.bio ??
+                previous.bio,
+              city:
+                remote.city ??
+                previous.city,
+              country:
+                remote.country ??
+                previous.country,
+              status:
+                remote.status ??
+                previous.status,
+              verified:
+                Boolean(
+                  remote.verified
+                ),
+            })
+          );
+        }
+      )
+      .catch(
+        (error) => {
+          console.warn(
+            "REMOTE PROFILE LOAD ERROR:",
+            error
+          );
+        }
+      );
+
+    return () => {
+      mounted =
+        false;
+    };
+  }, [
+    authSession,
+  ]);
 
   /* =======================================================
      PROFILE ROUTE PAYLOAD
@@ -2655,6 +2821,22 @@ export default function Profile({
             setEditing(
               false
             );
+
+            if (
+              authSession?.user?.id
+            ) {
+              updateMyProfile(
+                authSession,
+                nextProfile
+              ).catch(
+                (error) => {
+                  console.warn(
+                    "REMOTE PROFILE SAVE ERROR:",
+                    error
+                  );
+                }
+              );
+            }
           }}
         />
       )}
