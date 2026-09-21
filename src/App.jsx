@@ -84,6 +84,7 @@ import {
   getUnreadCount,
   ingestNotificationEvent,
   markNotificationRead,
+  replaceNotifications,
   subscribeNotifications,
 } from "./storage/notificationService";
 
@@ -109,7 +110,13 @@ import {
 
 import {
   subscribeFeedRealtime,
+  subscribeNotificationsRealtime,
 } from "./services/realtimeService";
+
+import {
+  loadBackendNotifications,
+  markBackendNotificationRead,
+} from "./services/notificationBackendService";
 
 import {
   uploadPostMedia,
@@ -5326,6 +5333,10 @@ function App() {
         null
       );
 
+      replaceNotifications(
+        []
+      );
+
       setCurrentPage(
         "auth"
       );
@@ -5388,6 +5399,99 @@ function App() {
     };
   }, []);
 
+  useEffect(() => {
+    if (
+      !authSession?.user?.id
+    ) {
+      return undefined;
+    }
+
+    let active =
+      true;
+
+    let refreshTimer =
+      null;
+
+    async function refreshNotifications() {
+      try {
+        const next =
+          await loadBackendNotifications(
+            authSession
+          );
+
+        if (
+          active
+        ) {
+          replaceNotifications(
+            next
+          );
+        }
+      } catch (
+        error
+      ) {
+        console.warn(
+          "BACKEND NOTIFICATIONS LOAD ERROR:",
+          error
+        );
+      }
+    }
+
+    refreshNotifications();
+
+    const channel =
+      subscribeNotificationsRealtime({
+        session:
+          authSession,
+        onChange:
+          () => {
+            if (
+              refreshTimer
+            ) {
+              window.clearTimeout(
+                refreshTimer
+              );
+            }
+
+            refreshTimer =
+              window.setTimeout(
+                refreshNotifications,
+                100
+              );
+          },
+        onStatus:
+          (
+            status
+          ) => {
+            if (
+              status ===
+              "error"
+            ) {
+              console.warn(
+                "NOTIFICATIONS REALTIME DEGRADED"
+              );
+            }
+          },
+      });
+
+    return () => {
+      active =
+        false;
+
+      if (
+        refreshTimer
+      ) {
+        window.clearTimeout(
+          refreshTimer
+        );
+      }
+
+      channel.close();
+    };
+  }, [
+    authSession?.user?.id,
+    authSession?.access_token,
+  ]);
+
   /* =======================================================
      MARK MESSAGE NOTIFICATIONS READ
   ======================================================= */
@@ -5410,6 +5514,25 @@ function App() {
         markNotificationRead(
           notification.id
         );
+
+        if (
+          notification.backend &&
+          authSession?.user?.id
+        ) {
+          markBackendNotificationRead(
+            authSession,
+            notification.id
+          ).catch(
+            (
+              error
+            ) => {
+              console.warn(
+                "BACKEND MESSAGE NOTIFICATION READ ERROR:",
+                error
+              );
+            }
+          );
+        }
       }
     );
   }
@@ -6426,6 +6549,9 @@ function App() {
         }
         onNavigate={
           goToPage
+        }
+        authSession={
+          authSession
         }
       />
 
