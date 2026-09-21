@@ -211,7 +211,6 @@ function profileDefaultsForUser(
     {};
 
   return {
-    ...DEFAULT_PROFILE,
     name:
       metadata.full_name ||
       user.email
@@ -227,6 +226,12 @@ function profileDefaultsForUser(
     country: "Україна",
     work: "",
     education: "",
+    website: "",
+    instagram: "",
+    telegram: "",
+    birthday: "",
+    cover: "",
+    avatar: "",
     status: "Я тут",
     statusText: "",
     followers: 0,
@@ -236,7 +241,8 @@ function profileDefaultsForUser(
     pulseReach: 0,
     verified: false,
     founder: false,
-    earlyUser: true,
+    earlyUser: false,
+    online: true,
     interests: [],
   };
 }
@@ -592,6 +598,14 @@ export default function Profile({
                     socialProfile?.verified ??
                     remote?.verified
                   ),
+                founder:
+                  Boolean(
+                    remote?.founder
+                  ),
+                earlyUser:
+                  Boolean(
+                    remote?.early_user
+                  ),
                 friends:
                   Number(
                     socialProfile?.friendsCount ??
@@ -906,37 +920,104 @@ export default function Profile({
       [profile]
     );
 
-  const reputation = [
-    {
-      label:
-        "Надійність",
+  const earnedAchievements =
+    useMemo(
+      () =>
+        ACHIEVEMENTS.filter(
+          (
+            item
+          ) => {
+            if (
+              item.id ===
+              "founder"
+            ) {
+              return Boolean(
+                profile.founder
+              );
+            }
 
-      value: 96,
+            if (
+              item.id ===
+              "verified"
+            ) {
+              return Boolean(
+                profile.verified
+              );
+            }
 
-      text:
-        "Високий рівень довіри",
-    },
+            if (
+              item.id ===
+              "early"
+            ) {
+              return Boolean(
+                profile.earlyUser
+              );
+            }
 
-    {
-      label:
-        "Активність",
+            return false;
+          }
+        ),
+      [
+        profile.founder,
+        profile.verified,
+        profile.earlyUser,
+      ]
+    );
 
-      value: 88,
-
-      text:
-        "Регулярно у ЯТУТ",
-    },
-
-    {
-      label:
-        "Вклад",
-
-      value: 92,
-
-      text:
-        "Розвиває спільноту",
-    },
-  ];
+  const reputation =
+    authSession?.user?.id
+      ? [
+          {
+            label:
+              "Надійність",
+            value:
+              0,
+            text:
+              "Ще немає достатньо даних",
+          },
+          {
+            label:
+              "Активність",
+            value:
+              0,
+            text:
+              "Зʼявиться після активності у ЯТУТ",
+          },
+          {
+            label:
+              "Вклад",
+            value:
+              0,
+            text:
+              "Зʼявиться після участі у спільнотах",
+          },
+        ]
+      : [
+          {
+            label:
+              "Надійність",
+            value:
+              96,
+            text:
+              "Високий рівень довіри",
+          },
+          {
+            label:
+              "Активність",
+            value:
+              88,
+            text:
+              "Регулярно у ЯТУТ",
+          },
+          {
+            label:
+              "Вклад",
+            value:
+              92,
+            text:
+              "Розвиває спільноту",
+          },
+        ];
 
   function handleProfileStat(
     statId
@@ -3062,7 +3143,7 @@ export default function Profile({
 
                   <strong className="profile-v2-achievement-count">
                     {
-                      ACHIEVEMENTS.length
+                      earnedAchievements.length
                     }
                   </strong>
 
@@ -3070,19 +3151,25 @@ export default function Profile({
 
                 <div className="profile-v2-achievements-grid">
 
-                  {ACHIEVEMENTS.map(
-                    (
-                      item
-                    ) => (
-                      <Achievement
-                        key={
-                          item.id
-                        }
-                        item={
-                          item
-                        }
-                      />
+                  {earnedAchievements.length > 0 ? (
+                    earnedAchievements.map(
+                      (
+                        item
+                      ) => (
+                        <Achievement
+                          key={
+                            item.id
+                          }
+                          item={
+                            item
+                          }
+                        />
+                      )
                     )
+                  ) : (
+                    <p className="profile-v2-empty-note">
+                      Перші досягнення зʼявляться тут після активності у ЯТУТ.
+                    </p>
                   )}
 
                 </div>
@@ -3124,20 +3211,44 @@ export default function Profile({
 
                 <PulseItem
                   label="Переглядів профілю"
-                  value="+128"
-                  detail="за 7 днів"
+                  value={
+                    authSession?.user?.id
+                      ? "0"
+                      : "+128"
+                  }
+                  detail={
+                    authSession?.user?.id
+                      ? "дані ще накопичуються"
+                      : "за 7 днів"
+                  }
                 />
 
                 <PulseItem
                   label="Нових зв’язків"
-                  value="+14"
-                  detail="цього тижня"
+                  value={
+                    authSession?.user?.id
+                      ? "0"
+                      : "+14"
+                  }
+                  detail={
+                    authSession?.user?.id
+                      ? "ще немає нових звʼязків"
+                      : "цього тижня"
+                  }
                 />
 
                 <PulseItem
                   label="Людей поруч"
-                  value="7"
-                  detail="у вашому колі"
+                  value={
+                    authSession?.user?.id
+                      ? "0"
+                      : "7"
+                  }
+                  detail={
+                    authSession?.user?.id
+                      ? "ще немає даних"
+                      : "у вашому колі"
+                  }
                 />
 
               </div>
@@ -3247,7 +3358,7 @@ export default function Profile({
 
               <div className="profile-v2-badge-row">
 
-                {ACHIEVEMENTS
+                {earnedAchievements
                   .slice(
                     0,
                     4
