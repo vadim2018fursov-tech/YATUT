@@ -217,6 +217,29 @@ function mapEvent(
     communityAvatar:
       row.community_avatar ||
       null,
+    nearbyPlaceId:
+      row.nearby_place_id ||
+      null,
+    latitude:
+      Number.isFinite(
+        Number(
+          row.event_latitude
+        )
+      )
+        ? Number(
+            row.event_latitude
+          )
+        : null,
+    longitude:
+      Number.isFinite(
+        Number(
+          row.event_longitude
+        )
+      )
+        ? Number(
+            row.event_longitude
+          )
+        : null,
     organizerId:
       row.creator_id ===
       session?.user?.id
@@ -348,6 +371,9 @@ export async function createBackendEvent(
           Boolean(
             publishToFeed
           ),
+        target_nearby_place_id:
+          event.nearbyPlaceId ||
+          null,
       }
     );
 
@@ -576,6 +602,9 @@ export async function updateBackendEvent(
         null,
       event_starts_at:
         startsAt.toISOString(),
+      target_nearby_place_id:
+        event.nearbyPlaceId ||
+        null,
     }
   );
 }
@@ -681,5 +710,74 @@ export async function removeBackendEventParticipant(
       target_user_id:
         userId,
     }
+  );
+}
+
+
+export async function loadEventPlaceOptions(
+  session,
+  city = null
+) {
+  if (
+    !session?.user?.id
+  ) {
+    return [];
+  }
+
+  const rows =
+    await rpc(
+      session,
+      "get_event_place_options",
+      {
+        search_city:
+          city ||
+          null,
+      }
+    );
+
+  return (
+    Array.isArray(
+      rows
+    )
+      ? rows
+      : []
+  ).map(
+    (
+      row
+    ) => ({
+      id:
+        row.id,
+      title:
+        row.title,
+      address:
+        row.address ||
+        "",
+      city:
+        row.city ||
+        "",
+      latitude:
+        Number.isFinite(
+          Number(
+            row.latitude
+          )
+        )
+          ? Number(
+              row.latitude
+            )
+          : null,
+      longitude:
+        Number.isFinite(
+          Number(
+            row.longitude
+          )
+        )
+          ? Number(
+              row.longitude
+            )
+          : null,
+      imageUrl:
+        row.image_url ||
+        null,
+    })
   );
 }
