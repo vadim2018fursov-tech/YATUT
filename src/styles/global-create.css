@@ -1945,3 +1945,166 @@ button {
     min-height: 104px;
   }
 }
+
+
+/* =========================================================
+   CROSS-DEVICE CREATE
+========================================================= */
+
+@media (max-width: 767px), (hover: none) and (pointer: coarse) and (max-width: 900px) {
+  .yatut-create-page,
+  .yatut-media-create {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    padding:
+      0
+      clamp(
+        10px,
+        3vw,
+        16px
+      )
+      calc(
+        104px +
+        max(
+          env(safe-area-inset-bottom),
+          0px
+        )
+      ) !important;
+    overflow-x: hidden !important;
+  }
+
+  .yatut-create-header,
+  .yatut-media-create__header {
+    margin-right:
+      calc(
+        -1 *
+        clamp(
+          10px,
+          3vw,
+          16px
+        )
+      ) !important;
+    margin-left:
+      calc(
+        -1 *
+        clamp(
+          10px,
+          3vw,
+          16px
+        )
+      ) !important;
+  }
+
+  .yatut-create-grid--quick,
+  .yatut-create-grid--pulse {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(
+          0,
+          1fr
+        )
+      ) !important;
+  }
+
+  .yatut-media-create__workspace {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .yatut-media-create__preview,
+  .yatut-media-create__settings {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .yatut-media-create__preview {
+    min-height:
+      clamp(
+        290px,
+        72vw,
+        420px
+      ) !important;
+  }
+
+  .yatut-media-field input,
+  .yatut-media-field textarea {
+    font-size: 16px !important;
+  }
+
+  .yatut-global-mobile-create {
+    right:
+      calc(
+        clamp(
+          10px,
+          3vw,
+          16px
+        ) +
+        max(
+          env(safe-area-inset-right),
+          0px
+        )
+      ) !important;
+
+    bottom:
+      calc(
+        clamp(
+          10px,
+          3vw,
+          18px
+        ) +
+        max(
+          env(safe-area-inset-bottom),
+          0px
+        )
+      ) !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .yatut-create-grid--quick,
+  .yatut-create-grid--pulse {
+    grid-template-columns:
+      1fr !important;
+  }
+
+  .yatut-create-card--quick,
+  .yatut-create-card--pulse {
+    min-height: 104px !important;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 900px) and (pointer: coarse) {
+  .yatut-create-page,
+  .yatut-media-create {
+    padding-right: 16px !important;
+    padding-left: 16px !important;
+  }
+
+  .yatut-create-grid--quick,
+  .yatut-create-grid--pulse {
+    grid-template-columns:
+      repeat(
+        3,
+        minmax(
+          0,
+          1fr
+        )
+      ) !important;
+  }
+
+  .yatut-media-create__workspace {
+    display: grid !important;
+    grid-template-columns:
+      minmax(
+        0,
+        1.25fr
+      )
+      minmax(
+        260px,
+        .75fr
+      ) !important;
+    gap: 14px !important;
+  }
+}
