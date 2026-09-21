@@ -17,6 +17,43 @@ document.documentElement.classList.toggle(
   )
 );
 
+const coarsePointer =
+  window.matchMedia?.(
+    "(hover: none) and (pointer: coarse)"
+  );
+
+function syncDeviceClasses() {
+  document.documentElement.classList.toggle(
+    "yatut-coarse-pointer",
+    Boolean(
+      coarsePointer?.matches
+    )
+  );
+
+  document.documentElement.classList.toggle(
+    "yatut-landscape",
+    window.innerWidth >
+      window.innerHeight
+  );
+}
+
+syncDeviceClasses();
+
+coarsePointer?.addEventListener?.(
+  "change",
+  syncDeviceClasses
+);
+
+window.addEventListener(
+  "orientationchange",
+  syncDeviceClasses
+);
+
+window.addEventListener(
+  "resize",
+  syncDeviceClasses
+);
+
 createRoot(
   document.getElementById("root")
 ).render(
