@@ -5071,7 +5071,7 @@ function Spaces({
             setActiveSpaceId(
               null
             );
-          }
+          }}
           onNavigate={
             onNavigate
           }
