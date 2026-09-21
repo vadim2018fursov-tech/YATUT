@@ -385,6 +385,72 @@ export async function uploadCommunityImage(
   };
 }
 
+export async function uploadEventCover(
+  session,
+  eventId,
+  file
+) {
+  if (
+    !session?.user?.id ||
+    !eventId ||
+    !file
+  ) {
+    return null;
+  }
+
+  const mime =
+    String(
+      file.type ||
+      ""
+    );
+
+  if (
+    !mime.startsWith(
+      "image/"
+    )
+  ) {
+    throw new Error(
+      "Обкладинка події має бути зображенням."
+    );
+  }
+
+  if (
+    file.size >
+    10 *
+      1024 *
+      1024
+  ) {
+    throw new Error(
+      "Обкладинка події має бути до 10 МБ."
+    );
+  }
+
+  const extension =
+    extensionForFile(
+      file
+    );
+
+  const path =
+    `${session.user.id}/events/${eventId}-${Date.now()}-${randomPart()}.${extension}`;
+
+  await uploadObject({
+    session,
+    bucket:
+      "post-media",
+    path,
+    file,
+  });
+
+  return {
+    url:
+      publicUrl(
+        "post-media",
+        path
+      ),
+    path,
+  };
+}
+
 export async function uploadPostMedia(
   session,
   file
