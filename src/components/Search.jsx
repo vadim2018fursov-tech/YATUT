@@ -34,6 +34,10 @@ import {
   setBackendBlocked,
 } from "../services/socialBackendService";
 
+import {
+  subscribeSocialGraphRealtime,
+} from "../services/realtimeService";
+
 /* =========================================================
    PEOPLE
 ========================================================= */
@@ -940,6 +944,100 @@ function Search({
   }, [
     authSession,
     query,
+  ]);
+
+  useEffect(() => {
+    if (
+      !authSession?.user?.id
+    ) {
+      return undefined;
+    }
+
+    let active =
+      true;
+
+    let timer =
+      null;
+
+    const refreshRelations =
+      async () => {
+        try {
+          const relationships =
+            await getBackendRelationships(
+              authSession
+            );
+
+          if (
+            !active
+          ) {
+            return;
+          }
+
+          setSocial(
+            (
+              current
+            ) => ({
+              ...(current || {
+                id:
+                  "me-social",
+              }),
+              relationships: {
+                ...(current
+                  ?.relationships ||
+                  {}),
+                ...relationships,
+              },
+            })
+          );
+        } catch (
+          error
+        ) {
+          console.warn(
+            "SEARCH SOCIAL REALTIME ERROR:",
+            error
+          );
+        }
+      };
+
+    const channel =
+      subscribeSocialGraphRealtime({
+        session:
+          authSession,
+        onChange:
+          () => {
+            if (
+              timer
+            ) {
+              window.clearTimeout(
+                timer
+              );
+            }
+
+            timer =
+              window.setTimeout(
+                refreshRelations,
+                90
+              );
+          },
+      });
+
+    return () => {
+      active =
+        false;
+
+      if (
+        timer
+      ) {
+        window.clearTimeout(
+          timer
+        );
+      }
+
+      channel.close();
+    };
+  }, [
+    authSession?.user?.id,
+    authSession?.access_token,
   ]);
 
   /* =======================================================
