@@ -592,6 +592,17 @@ export default function Notifications({
               resolvedPayload,
           })
         );
+
+        if (
+          notification.route ===
+            "chats" &&
+          resolvedPayload.conversationId
+        ) {
+          sessionStorage.setItem(
+            "yatut-open-chat-id",
+            resolvedPayload.conversationId
+          );
+        }
       } catch (error) {
         console.warn(
           "NOTIFICATION ROUTE PAYLOAD ERROR:",
