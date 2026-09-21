@@ -1330,14 +1330,17 @@ export function createSavedPlace(
       place.location,
 
     distance:
-      place.distance,
+      place.distance ??
+      place.distanceKm,
 
     rating:
       place.rating,
 
     image:
       place.cover ??
-      place.image,
+      place.image ??
+      place.imageUrl ??
+      null,
 
     route:
       "nearby",
