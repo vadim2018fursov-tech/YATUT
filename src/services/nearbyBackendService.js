@@ -1,3 +1,7 @@
+import {
+  uploadNearbyPlaceImage,
+} from "./storageService";
+
 const SUPABASE_URL =
   "https://yqskwqahmkeiconsrhoy.supabase.co";
 
@@ -145,46 +149,165 @@ export async function loadNearbyFeed(
       )
         ? data.communities
         : [],
+    canModerate:
+      Boolean(
+        data?.canModerate
+      ),
   };
 }
 
 export async function submitNearbyPlace(
   session,
-  place
+  place,
+  imageFile = null
+) {
+  const placeId =
+    await rpc(
+      session,
+      "submit_nearby_place",
+      {
+        place_title:
+          place.title,
+        place_category:
+          place.category ||
+          "other",
+        place_description:
+          place.description ||
+          "",
+        place_address:
+          place.address ||
+          null,
+        place_city:
+          place.city ||
+          null,
+        place_latitude:
+          Number.isFinite(
+            place.latitude
+          )
+            ? place.latitude
+            : null,
+        place_longitude:
+          Number.isFinite(
+            place.longitude
+          )
+            ? place.longitude
+            : null,
+        place_website_url:
+          place.websiteUrl ||
+          null,
+      }
+    );
+
+  if (
+    placeId &&
+    imageFile
+  ) {
+    const uploaded =
+      await uploadNearbyPlaceImage(
+        session,
+        placeId,
+        imageFile
+      );
+
+    if (
+      uploaded?.url
+    ) {
+      await rpc(
+        session,
+        "set_nearby_place_image",
+        {
+          target_place_id:
+            placeId,
+          place_image_url:
+            uploaded.url,
+        }
+      );
+    }
+  }
+
+  return placeId;
+}
+
+export async function loadNearbyPlaceDetail(
+  session,
+  placeId
 ) {
   return rpc(
     session,
-    "submit_nearby_place",
+    "get_nearby_place_detail",
     {
-      place_title:
-        place.title,
-      place_category:
-        place.category ||
-        "other",
-      place_description:
-        place.description ||
+      target_place_id:
+        placeId,
+    }
+  );
+}
+
+export async function saveNearbyPlaceReview(
+  session,
+  placeId,
+  rating,
+  text
+) {
+  return rpc(
+    session,
+    "upsert_nearby_place_review",
+    {
+      target_place_id:
+        placeId,
+      review_rating:
+        Number(
+          rating
+        ),
+      review_text:
+        text ||
         "",
-      place_address:
-        place.address ||
-        null,
-      place_city:
-        place.city ||
-        null,
-      place_latitude:
-        Number.isFinite(
-          place.latitude
-        )
-          ? place.latitude
-          : null,
-      place_longitude:
-        Number.isFinite(
-          place.longitude
-        )
-          ? place.longitude
-          : null,
-      place_website_url:
-        place.websiteUrl ||
-        null,
+    }
+  );
+}
+
+export async function deleteNearbyPlaceReview(
+  session,
+  placeId
+) {
+  return rpc(
+    session,
+    "delete_my_nearby_place_review",
+    {
+      target_place_id:
+        placeId,
+    }
+  );
+}
+
+export async function loadNearbyModerationQueue(
+  session
+) {
+  const rows =
+    await rpc(
+      session,
+      "get_nearby_moderation_queue",
+      {}
+    );
+
+  return Array.isArray(
+    rows
+  )
+    ? rows
+    : [];
+}
+
+export async function moderateNearbyPlace(
+  session,
+  placeId,
+  decision
+) {
+  await rpc(
+    session,
+    "moderate_nearby_place",
+    {
+      target_place_id:
+        placeId,
+      decision,
     }
   );
 }
