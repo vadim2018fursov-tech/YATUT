@@ -385,6 +385,72 @@ export async function uploadCommunityImage(
   };
 }
 
+export async function uploadNearbyPlaceImage(
+  session,
+  placeId,
+  file
+) {
+  if (
+    !session?.user?.id ||
+    !placeId ||
+    !file
+  ) {
+    return null;
+  }
+
+  const mime =
+    String(
+      file.type ||
+      ""
+    );
+
+  if (
+    !mime.startsWith(
+      "image/"
+    )
+  ) {
+    throw new Error(
+      "Фото місця має бути зображенням."
+    );
+  }
+
+  if (
+    file.size >
+    10 *
+      1024 *
+      1024
+  ) {
+    throw new Error(
+      "Фото місця має бути до 10 МБ."
+    );
+  }
+
+  const extension =
+    extensionForFile(
+      file
+    );
+
+  const path =
+    `${session.user.id}/nearby/${placeId}-${Date.now()}-${randomPart()}.${extension}`;
+
+  await uploadObject({
+    session,
+    bucket:
+      "post-media",
+    path,
+    file,
+  });
+
+  return {
+    url:
+      publicUrl(
+        "post-media",
+        path
+      ),
+    path,
+  };
+}
+
 export async function uploadEventCover(
   session,
   eventId,
