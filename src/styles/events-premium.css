@@ -3562,3 +3562,16 @@ button > b {
     width: 100%;
   }
 }
+
+
+.event-nearby-place-field small {
+  display: block;
+  margin-top: 5px;
+  color: #969aa5;
+  font-size: 8px;
+  line-height: 1.4;
+}
+
+.yatut-dark-mode .event-nearby-place-field small {
+  color: #a8abb6;
+}
