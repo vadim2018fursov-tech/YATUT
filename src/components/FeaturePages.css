@@ -7634,3 +7634,215 @@ body.yatut-dark-mode
     min-width: 0;
   }
 }
+
+
+/* =========================================================
+   NEARBY HISTORY / DELETE
+========================================================= */
+
+.nearby-place-history,
+.nearby-place-danger-zone {
+  padding: 18px;
+  border: 1px solid #e1e3e9;
+  border-radius: 20px;
+  background: #fff;
+}
+
+.nearby-place-history > header {
+  margin-bottom: 13px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.nearby-place-history > header span,
+.nearby-place-danger-zone span {
+  color: #7169e8;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .09em;
+}
+
+.nearby-place-history > header h2,
+.nearby-place-danger-zone h2 {
+  margin: 4px 0 0;
+  font-size: 17px;
+}
+
+.nearby-place-history > header > strong {
+  min-width: 34px;
+  height: 34px;
+  padding: 0 8px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: #eceaff;
+  color: #635bff;
+  font-size: 9px;
+}
+
+.nearby-place-history-list {
+  display: grid;
+  gap: 8px;
+}
+
+.nearby-place-history-item {
+  padding: 11px 12px;
+  display: grid;
+  grid-template-columns: 12px minmax(0,1fr);
+  gap: 10px;
+  border: 1px solid #eceef3;
+  border-radius: 14px;
+  background: #fbfbfd;
+}
+
+.nearby-place-history-dot {
+  width: 10px;
+  height: 10px;
+  margin-top: 4px;
+  border-radius: 50%;
+  background: #9da1ab;
+  box-shadow: 0 0 0 4px rgba(157,161,171,.1);
+}
+
+.nearby-place-history-dot.is-created,
+.nearby-place-history-dot.is-edited {
+  background: #635bff;
+  box-shadow: 0 0 0 4px rgba(99,91,255,.1);
+}
+
+.nearby-place-history-dot.is-approved {
+  background: #22a85a;
+  box-shadow: 0 0 0 4px rgba(34,168,90,.1);
+}
+
+.nearby-place-history-dot.is-rejected,
+.nearby-place-history-dot.is-deleted {
+  background: #df4b4b;
+  box-shadow: 0 0 0 4px rgba(223,75,75,.1);
+}
+
+.nearby-place-history-dot.is-reopened {
+  background: #e7a21a;
+  box-shadow: 0 0 0 4px rgba(231,162,26,.12);
+}
+
+.nearby-place-history-item > div:last-child {
+  min-width: 0;
+}
+
+.nearby-place-history-item header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.nearby-place-history-item header strong {
+  font-size: 10px;
+}
+
+.nearby-place-history-item header small,
+.nearby-place-history-item p {
+  color: #969aa5;
+  font-size: 8px;
+}
+
+.nearby-place-history-item p {
+  margin: 3px 0 0;
+}
+
+.nearby-place-history-item blockquote {
+  margin: 7px 0 0;
+  padding: 8px 10px;
+  border-left: 3px solid #d8d5ff;
+  border-radius: 7px;
+  background: #f7f6ff;
+  color: #666b77;
+  font-size: 8px;
+  line-height: 1.45;
+}
+
+.nearby-place-danger-zone {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  border-color: rgba(239,68,68,.15);
+  background: rgba(239,68,68,.035);
+}
+
+.nearby-place-danger-zone > div {
+  min-width: 0;
+}
+
+.nearby-place-danger-zone span {
+  color: #c94b4b;
+}
+
+.nearby-place-danger-zone p {
+  max-width: 680px;
+  margin: 6px 0 0;
+  color: #8d7277;
+  font-size: 9px;
+  line-height: 1.5;
+}
+
+.nearby-place-danger-zone > button {
+  min-height: 40px;
+  padding: 0 13px;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-radius: 11px;
+  background: rgba(239,68,68,.1);
+  color: #c94b4b;
+  font-size: 8px;
+  font-weight: 850;
+}
+
+.nearby-place-danger-zone > button:disabled {
+  opacity: .5;
+}
+
+.yatut-dark-mode .nearby-place-history,
+.yatut-dark-mode .nearby-place-danger-zone {
+  border-color: rgba(255,255,255,.07);
+  background: #191b24;
+}
+
+.yatut-dark-mode .nearby-place-history-item {
+  border-color: rgba(255,255,255,.06);
+  background: rgba(255,255,255,.035);
+}
+
+.yatut-dark-mode .nearby-place-history > header h2,
+.yatut-dark-mode .nearby-place-danger-zone h2,
+.yatut-dark-mode .nearby-place-history-item header strong {
+  color: #f4f4f8;
+}
+
+.yatut-dark-mode .nearby-place-history-item blockquote {
+  border-color: rgba(188,184,255,.45);
+  background: rgba(99,91,255,.08);
+  color: #c9cbd4;
+}
+
+.yatut-dark-mode .nearby-place-danger-zone {
+  border-color: rgba(248,113,113,.14);
+  background: rgba(239,68,68,.06);
+}
+
+@media (max-width: 700px) {
+  .nearby-place-danger-zone {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .nearby-place-danger-zone > button {
+    width: 100%;
+  }
+}
