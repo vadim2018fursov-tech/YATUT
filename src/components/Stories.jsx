@@ -15,6 +15,22 @@ import {
   saveStory,
 } from "../storage/database";
 
+import {
+  createBackendStory,
+  deleteBackendStory,
+  loadBackendStories,
+  markBackendStoryViewed,
+} from "../services/storyBackendService";
+
+import {
+  openBackendDirectChat,
+  sendBackendMessage,
+} from "../services/chatBackendService";
+
+import {
+  subscribeStoriesRealtime,
+} from "../services/realtimeService";
+
 /* =========================================================
    DEMO STORIES
 ========================================================= */
@@ -151,7 +167,9 @@ function timeAgo(
    STORIES
 ========================================================= */
 
-function Stories() {
+function Stories({
+  authSession = null,
+}) {
   const [
     stories,
     setStories,
@@ -218,14 +236,43 @@ function Stories() {
   const autoNextRef =
     useRef(null);
 
+  const currentOwnerId =
+    authSession?.user?.id ||
+    "me";
+
   /* =======================================================
      LOAD
   ======================================================= */
 
   useEffect(() => {
+    let active =
+      true;
+
+    let refreshTimer =
+      null;
+
     const load =
       async () => {
         try {
+          if (
+            authSession?.user?.id
+          ) {
+            const saved =
+              await loadBackendStories(
+                authSession
+              );
+
+            if (
+              active
+            ) {
+              setStories(
+                saved
+              );
+            }
+
+            return;
+          }
+
           let saved =
             await getStories();
 
@@ -247,9 +294,13 @@ function Stories() {
             ];
           }
 
-          setStories(
-            saved
-          );
+          if (
+            active
+          ) {
+            setStories(
+              saved
+            );
+          }
         } catch (
           error
         ) {
@@ -258,18 +309,73 @@ function Stories() {
             error
           );
 
-          setStories(
-            DEMO_STORIES
-          );
+          if (
+            active &&
+            !authSession?.user?.id
+          ) {
+            setStories(
+              DEMO_STORIES
+            );
+          }
         } finally {
-          setLoading(
-            false
-          );
+          if (
+            active
+          ) {
+            setLoading(
+              false
+            );
+          }
         }
       };
 
+    setLoading(
+      true
+    );
+
     load();
-  }, []);
+
+    const channel =
+      authSession?.user?.id
+        ? subscribeStoriesRealtime({
+            session:
+              authSession,
+            onChange:
+              () => {
+                if (
+                  refreshTimer
+                ) {
+                  window.clearTimeout(
+                    refreshTimer
+                  );
+                }
+
+                refreshTimer =
+                  window.setTimeout(
+                    load,
+                    100
+                  );
+              },
+          })
+        : null;
+
+    return () => {
+      active =
+        false;
+
+      if (
+        refreshTimer
+      ) {
+        window.clearTimeout(
+          refreshTimer
+        );
+      }
+
+      channel?.close();
+    };
+  }, [
+    authSession?.user?.id,
+    authSession?.access_token,
+  ]);
 
   /* =======================================================
      GROUP / SORT
@@ -290,14 +396,14 @@ function Stories() {
     visibleStories.filter(
       (story) =>
         story.ownerId ===
-        "me"
+        currentOwnerId
     );
 
   const friendStories =
     visibleStories.filter(
       (story) =>
         story.ownerId !==
-        "me"
+        currentOwnerId
     );
 
   const viewerStory =
@@ -306,6 +412,57 @@ function Stories() {
           viewerIndex
         ]
       : null;
+
+  useEffect(() => {
+    if (
+      !viewerStory?.backend ||
+      !authSession?.user?.id ||
+      viewerStory.ownerId ===
+        authSession.user.id ||
+      viewerStory.viewed
+    ) {
+      return;
+    }
+
+    markBackendStoryViewed(
+      authSession,
+      viewerStory.id
+    )
+      .then(
+        () => {
+          setStories(
+            (
+              previous
+            ) =>
+              previous.map(
+                (
+                  story
+                ) =>
+                  story.id ===
+                  viewerStory.id
+                    ? {
+                        ...story,
+                        viewed:
+                          true,
+                      }
+                    : story
+              )
+          );
+        }
+      )
+      .catch(
+        (error) => {
+          console.warn(
+            "STORY VIEW ERROR:",
+            error
+          );
+        }
+      );
+  }, [
+    viewerStory?.id,
+    viewerStory?.viewed,
+    authSession?.user?.id,
+  ]);
 
   /* =======================================================
      BODY LOCK
@@ -571,6 +728,61 @@ function Stories() {
         return;
       }
 
+      if (
+        authSession?.user?.id
+      ) {
+        try {
+          await createBackendStory(
+            authSession,
+            {
+              type:
+                creatorMode,
+              text:
+                creatorMode ===
+                "text"
+                  ? text.trim()
+                  : text.trim(),
+              background:
+                selectedBackground,
+              file:
+                media?.file ||
+                null,
+              visibility:
+                "friends",
+            }
+          );
+
+          const saved =
+            await loadBackendStories(
+              authSession
+            );
+
+          setStories(
+            saved
+          );
+
+          closeCreator();
+
+          showToast(
+            "Історію опубліковано ✨"
+          );
+        } catch (
+          error
+        ) {
+          console.error(
+            "SAVE BACKEND STORY ERROR:",
+            error
+          );
+
+          showToast(
+            error?.message ||
+            "Не вдалося опублікувати історію"
+          );
+        }
+
+        return;
+      }
+
       const now =
         Date.now();
 
@@ -648,15 +860,25 @@ function Stories() {
       if (
         !viewerStory ||
         viewerStory.ownerId !==
-          "me"
+          currentOwnerId
       ) {
         return;
       }
 
       try {
-        await deleteStory(
-          viewerStory.id
-        );
+        if (
+          viewerStory.backend &&
+          authSession?.user?.id
+        ) {
+          await deleteBackendStory(
+            authSession,
+            viewerStory
+          );
+        } else {
+          await deleteStory(
+            viewerStory.id
+          );
+        }
 
         setStories(
           (previous) =>
@@ -703,6 +925,12 @@ function Stories() {
   const viewerMediaUrl =
     useMemo(() => {
       if (
+        viewerStory?.media
+      ) {
+        return viewerStory.media;
+      }
+
+      if (
         !viewerStory
           ?.mediaBlob
       ) {
@@ -714,12 +942,16 @@ function Stories() {
       );
     }, [
       viewerStory?.id,
+      viewerStory?.media,
     ]);
 
   useEffect(() => {
     return () => {
       if (
-        viewerMediaUrl
+        viewerMediaUrl &&
+        viewerMediaUrl.startsWith(
+          "blob:"
+        )
       ) {
         URL.revokeObjectURL(
           viewerMediaUrl
@@ -729,6 +961,65 @@ function Stories() {
   }, [
     viewerMediaUrl,
   ]);
+
+  async function sendStoryMessage(
+    textValue
+  ) {
+    const clean =
+      String(
+        textValue ||
+        ""
+      ).trim();
+
+    if (
+      !clean ||
+      !viewerStory
+    ) {
+      return false;
+    }
+
+    if (
+      viewerStory.backend &&
+      authSession?.user?.id
+    ) {
+      try {
+        const chat =
+          await openBackendDirectChat(
+            authSession,
+            viewerStory.ownerId
+          );
+
+        await sendBackendMessage(
+          authSession,
+          chat.id,
+          {
+            text:
+              clean,
+            kind:
+              "text",
+          }
+        );
+
+        return true;
+      } catch (
+        error
+      ) {
+        console.warn(
+          "STORY MESSAGE ERROR:",
+          error
+        );
+
+        showToast(
+          error?.message ||
+          "Не вдалося надіслати відповідь"
+        );
+
+        return false;
+      }
+    }
+
+    return true;
+  }
 
   /* =======================================================
      CREATOR PORTAL
@@ -1204,7 +1495,7 @@ function Stories() {
                 <div className="yatut-story-top-actions">
 
                   {viewerStory.ownerId ===
-                    "me" && (
+                    currentOwnerId && (
                     <button
                       onClick={
                         removeCurrentStory
@@ -1250,7 +1541,7 @@ function Stories() {
               {/* FOOTER */}
 
               {viewerStory.ownerId !==
-                "me" && (
+                currentOwnerId && (
                 <footer className="yatut-story-viewer-footer">
 
                   <div className="yatut-story-reply">
@@ -1275,12 +1566,26 @@ function Stories() {
                             "Enter" &&
                           reply.trim()
                         ) {
-                          showToast(
-                            "Відповідь надіслано 💬"
-                          );
+                          event.preventDefault();
 
-                          setReply(
-                            ""
+                          sendStoryMessage(
+                            `↩ Відповідь на історію\n${reply.trim()}`
+                          ).then(
+                            (
+                              sent
+                            ) => {
+                              if (
+                                sent
+                              ) {
+                                showToast(
+                                  "Відповідь надіслано 💬"
+                                );
+
+                                setReply(
+                                  ""
+                                );
+                              }
+                            }
                           );
                         }
                       }}
@@ -1309,12 +1614,24 @@ function Stories() {
                           return;
                         }
 
-                        showToast(
-                          "Відповідь надіслано 💬"
-                        );
+                        sendStoryMessage(
+                          `↩ Відповідь на історію\n${reply.trim()}`
+                        ).then(
+                          (
+                            sent
+                          ) => {
+                            if (
+                              sent
+                            ) {
+                              showToast(
+                                "Відповідь надіслано 💬"
+                              );
 
-                        setReply(
-                          ""
+                              setReply(
+                                ""
+                              );
+                            }
+                          }
                         );
                       }}
                     >
@@ -1342,14 +1659,26 @@ function Stories() {
                               emoji
                             }
                             onClick={() => {
-                              showToast(
-                                `${emoji} Реакцію надіслано`
+                              sendStoryMessage(
+                                `${emoji} Реакція на історію`
+                              ).then(
+                                (
+                                  sent
+                                ) => {
+                                  if (
+                                    sent
+                                  ) {
+                                    showToast(
+                                      `${emoji} Реакцію надіслано`
+                                    );
+                                  }
+                                }
                               );
 
                               setReactionOpen(
                                 false
                               );
-                            }}
+                            }
                           >
                             {
                               emoji
