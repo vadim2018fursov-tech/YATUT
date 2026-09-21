@@ -5773,3 +5773,119 @@ body.yatut-dark-mode
     margin-left: -14px !important;
   }
 }
+
+
+/* =========================================================
+   REAL-DATA PLACEHOLDER
+========================================================= */
+
+.feature-real-state {
+  min-height: 360px;
+  padding: clamp(24px, 5vw, 48px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 1px solid rgba(99, 91, 255, .14);
+  border-radius: 24px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(99, 91, 255, .07),
+      rgba(255, 255, 255, .97)
+    );
+  text-align: center;
+}
+
+.feature-real-state__icon {
+  width: 62px;
+  height: 62px;
+  margin-bottom: 4px;
+  display: grid;
+  place-items: center;
+  border-radius: 19px;
+  background: #eeecff;
+  color: #635bff;
+}
+
+.feature-real-state > span {
+  color: #7169e8;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .12em;
+}
+
+.feature-real-state h2 {
+  margin: 2px 0 0;
+  font-size: clamp(22px, 4vw, 30px);
+}
+
+.feature-real-state p {
+  max-width: 590px;
+  margin: 0;
+  color: #858a96;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.feature-real-state__actions {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.feature-real-state__actions button {
+  min-height: 43px;
+  padding: 0 15px;
+  border-radius: 13px;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.feature-secondary-button {
+  border: 1px solid #e4e5ec;
+  background: #ffffff;
+  color: #5d616e;
+}
+
+.yatut-dark-mode .feature-real-state {
+  border-color: rgba(145, 139, 255, .15);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(99, 91, 255, .12),
+      rgba(25, 27, 36, .97)
+    );
+}
+
+.yatut-dark-mode .feature-real-state h2 {
+  color: #f5f5fa;
+}
+
+.yatut-dark-mode .feature-secondary-button {
+  border-color: rgba(255, 255, 255, .08);
+  background: rgba(255, 255, 255, .05);
+  color: #dedfea;
+}
+
+@media (max-width: 560px) {
+  .feature-real-state {
+    min-height: 310px;
+    margin: 0 10px;
+    border-radius: 20px;
+  }
+
+  .feature-real-state__actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .feature-real-state__actions button {
+    width: 100%;
+  }
+}
