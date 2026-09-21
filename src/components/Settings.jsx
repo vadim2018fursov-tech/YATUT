@@ -116,7 +116,10 @@ function loadSettings() {
   }
 }
 
-export default function Settings() {
+export default function Settings({
+  themeMode = "light",
+  onThemeChange,
+}) {
   const [
     section,
     setSection,
@@ -138,12 +141,16 @@ export default function Settings() {
     useState(false);
 
   useEffect(() => {
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify(
-        settings
-      )
-    );
+    try {
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(
+          settings
+        )
+      );
+    } catch {
+      // Settings still work for the current session.
+    }
 
     setSavedState(
       true
@@ -164,6 +171,127 @@ export default function Settings() {
       );
   }, [settings]);
 
+  useEffect(() => {
+    if (
+      ![
+        "light",
+        "dark",
+        "system",
+      ].includes(
+        themeMode
+      )
+    ) {
+      return;
+    }
+
+    setSettings(
+      (previous) =>
+        previous.appearance ===
+        themeMode
+          ? previous
+          : {
+              ...previous,
+              appearance:
+                themeMode,
+            }
+    );
+  }, [
+    themeMode,
+  ]);
+
+  useEffect(() => {
+    function applyRoutePayload(
+      payload
+    ) {
+      const requestedSection =
+        payload?.section;
+
+      const exists =
+        SECTIONS.some(
+          (item) =>
+            item.id ===
+            requestedSection
+        );
+
+      if (
+        exists
+      ) {
+        setSection(
+          requestedSection
+        );
+      }
+
+      try {
+        sessionStorage.removeItem(
+          "yatut-open-route-payload"
+        );
+      } catch {
+        // No-op.
+      }
+    }
+
+    try {
+      const raw =
+        sessionStorage.getItem(
+          "yatut-open-route-payload"
+        );
+
+      if (
+        raw
+      ) {
+        const parsed =
+          JSON.parse(
+            raw
+          );
+
+        if (
+          parsed?.route ===
+          "settings"
+        ) {
+          applyRoutePayload(
+            parsed.payload ||
+            {}
+          );
+        }
+      }
+    } catch (
+      error
+    ) {
+      console.warn(
+        "SETTINGS ROUTE PAYLOAD ERROR:",
+        error
+      );
+    }
+
+    function handleRoute(
+      event
+    ) {
+      if (
+        event?.detail?.route !==
+        "settings"
+      ) {
+        return;
+      }
+
+      applyRoutePayload(
+        event.detail.payload ||
+        {}
+      );
+    }
+
+    window.addEventListener(
+      "yatut:route-payload",
+      handleRoute
+    );
+
+    return () => {
+      window.removeEventListener(
+        "yatut:route-payload",
+        handleRoute
+      );
+    };
+  }, []);
+
   function patch(
     values
   ) {
@@ -172,6 +300,19 @@ export default function Settings() {
         ...previous,
         ...values,
       })
+    );
+  }
+
+  function updateAppearance(
+    value
+  ) {
+    patch({
+      appearance:
+        value,
+    });
+
+    onThemeChange?.(
+      value
     );
   }
 
@@ -392,12 +533,11 @@ export default function Settings() {
                   onChange={(
                     event
                   ) =>
-                    patch({
-                      appearance:
-                        event
-                          .target
-                          .value,
-                    })
+                    updateAppearance(
+                      event
+                        .target
+                        .value
+                    )
                   }
                 >
                   <option value="system">
