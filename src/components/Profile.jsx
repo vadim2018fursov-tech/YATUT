@@ -975,7 +975,11 @@ export default function Profile({
       "followers"
     ) {
       onNavigate?.(
-        "friends"
+        "friends",
+        {
+          tab:
+            "followers",
+        }
       );
     }
   }
