@@ -173,8 +173,10 @@ export default function NearbyReal({
           {
             city:
               overrides.city ??
-              city ||
-              null,
+              (
+                city ||
+                null
+              ),
             latitude:
               overrides.coordinates
                 ?.latitude ??
