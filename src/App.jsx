@@ -4666,9 +4666,21 @@ function TopBar({
                 : ""
             }`}
             type="button"
-            onClick={
-              onToggleNotifications
-            }
+            onClick={() => {
+              if (
+                window.matchMedia?.(
+                  "(max-width: 767px)"
+                )?.matches
+              ) {
+                onNavigate(
+                  "notifications"
+                );
+
+                return;
+              }
+
+              onToggleNotifications?.();
+            }}
             aria-label="Сповіщення"
             aria-expanded={
               notificationOpen
