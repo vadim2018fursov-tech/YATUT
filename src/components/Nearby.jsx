@@ -578,6 +578,7 @@ function formatMembers(
 
 export default function Nearby({
   onNavigate,
+  authSession = null,
 }) {
   const [
     tab,
@@ -1206,6 +1207,84 @@ export default function Nearby({
       behavior:
         "auto",
     });
+  }
+
+  if (
+    authSession?.user?.id
+  ) {
+    return (
+      <section className="feature-page nearby-page">
+        <header className="feature-hero nearby-hero">
+          <div>
+            <span>
+              ЯТУТ ПОРУЧ
+            </span>
+
+            <h1>
+              Поруч готується
+            </h1>
+
+            <p>
+              Ми не показуємо вигадані місця, людей чи відстані. Реальний локальний пошук зʼявиться після підключення серверних даних і приватної геолокації.
+            </p>
+          </div>
+
+          <div className="feature-hero-icon">
+            <YatutIcon
+              name="nearby"
+              size={34}
+            />
+          </div>
+        </header>
+
+        <section className="feature-real-state">
+          <div className="feature-real-state__icon">
+            <YatutIcon
+              name="nearby"
+              size={28}
+            />
+          </div>
+
+          <span>
+            REAL DATA ONLY
+          </span>
+
+          <h2>
+            Жодних demo-точок на карті
+          </h2>
+
+          <p>
+            Поки backend «Поруч» не підключений, ЯТУТ не буде видавати тестові кавʼярні, людей чи події за справжні.
+          </p>
+
+          <div className="feature-real-state__actions">
+            <button
+              type="button"
+              className="feature-primary-button"
+              onClick={() =>
+                onNavigate?.(
+                  "search"
+                )
+              }
+            >
+              Знайти людей
+            </button>
+
+            <button
+              type="button"
+              className="feature-secondary-button"
+              onClick={() =>
+                onNavigate?.(
+                  "communities"
+                )
+              }
+            >
+              Спільноти
+            </button>
+          </div>
+        </section>
+      </section>
+    );
   }
 
   /* =======================================================
