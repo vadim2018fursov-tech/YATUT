@@ -542,6 +542,16 @@ export function subscribeChatRealtime({
           filter:
             `conversation_id=eq.${conversationId}`,
         },
+        {
+          event:
+            "UPDATE",
+          schema:
+            "public",
+          table:
+            "conversation_members",
+          filter:
+            `conversation_id=eq.${conversationId}`,
+        },
       ],
       onPostgresChange:
         onChange,
