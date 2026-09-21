@@ -28,8 +28,10 @@ import {
   declineBackendFriendRequest,
   getBackendRelationships,
   removeBackendFriend,
+  reportBackendUser,
   searchBackendProfiles,
   sendBackendFriendRequest,
+  setBackendBlocked,
 } from "../services/socialBackendService";
 
 /* =========================================================
@@ -1373,6 +1375,77 @@ function Search({
       personId,
       blocked
     ) => {
+      const backendPerson =
+        backendPeople.some(
+          (
+            person
+          ) =>
+            person.id ===
+            personId
+        );
+
+      if (
+        backendPerson &&
+        authSession?.user?.id
+      ) {
+        try {
+          await setBackendBlocked(
+            authSession,
+            personId,
+            blocked
+          );
+
+          const relationships =
+            await getBackendRelationships(
+              authSession
+            );
+
+          setSocial(
+            (
+              current
+            ) => ({
+              ...(current || {
+                id:
+                  "me-social",
+              }),
+              relationships: {
+                ...(current
+                  ?.relationships ||
+                  {}),
+                [personId]: {
+                  friendStatus:
+                    "none",
+                  following:
+                    false,
+                  follower:
+                    false,
+                  blocked:
+                    Boolean(
+                      blocked
+                    ),
+                },
+                ...relationships,
+              },
+            })
+          );
+
+          showNotice(
+            blocked
+              ? "Користувача заблоковано"
+              : "Користувача розблоковано"
+          );
+        } catch (
+          error
+        ) {
+          showNotice(
+            error?.message ||
+            "Не вдалося змінити блокування"
+          );
+        }
+
+        return;
+      }
+
       await updateRelation(
         personId,
         blocked
@@ -1386,6 +1459,53 @@ function Search({
           : {
               blocked: false,
             }
+      );
+    };
+
+  const reportUser =
+    async (
+      personId
+    ) => {
+      const backendPerson =
+        backendPeople.some(
+          (
+            person
+          ) =>
+            person.id ===
+            personId
+        );
+
+      if (
+        backendPerson &&
+        authSession?.user?.id
+      ) {
+        try {
+          await reportBackendUser(
+            authSession,
+            personId,
+            {
+              reason:
+                "profile",
+            }
+          );
+
+          showNotice(
+            "Скаргу надіслано на розгляд"
+          );
+        } catch (
+          error
+        ) {
+          showNotice(
+            error?.message ||
+            "Не вдалося надіслати скаргу"
+          );
+        }
+
+        return;
+      }
+
+      showNotice(
+        "Скаргу створено"
       );
     };
 
@@ -1639,6 +1759,9 @@ function Search({
         }
         onBlock={
           setBlocked
+        }
+        onReport={
+          reportUser
         }
         onOpenChat={
           onOpenChat
