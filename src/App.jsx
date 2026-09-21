@@ -106,12 +106,14 @@ import {
 } from "./services/feedBackendService";
 
 import {
+  getBackendFriendPeople,
   getBackendRelationships,
 } from "./services/socialBackendService";
 
 import {
   subscribeFeedRealtime,
   subscribeNotificationsRealtime,
+  subscribeSocialGraphRealtime,
 } from "./services/realtimeService";
 
 import {
@@ -4275,6 +4277,7 @@ function Home({
 function RightSidebar({
   onNavigate,
   onOpenChat,
+  friends = [],
 }) {
   return (
     <aside className="right-sidebar">
@@ -4385,7 +4388,7 @@ function RightSidebar({
       <section className="right-card">
         <header className="right-card-header">
           <span>
-            ЛЮДИ ОНЛАЙН
+            ВАШІ ДРУЗІ
           </span>
 
           <button
@@ -4403,65 +4406,87 @@ function RightSidebar({
           </button>
         </header>
 
-        <button
-          className="suggestion-person"
-          type="button"
-          onClick={() =>
-            onOpenChat(
-              "maria"
+        {friends.length ? (
+          friends
+            .slice(
+              0,
+              3
             )
-          }
-        >
-          <div className="avatar">
-            М
-          </div>
+            .map(
+              (
+                person
+              ) => (
+                <button
+                  key={
+                    person.id
+                  }
+                  className="suggestion-person"
+                  type="button"
+                  onClick={() =>
+                    onOpenChat(
+                      person.id
+                    )
+                  }
+                >
+                  <div className="avatar">
+                    {person.avatar ? (
+                      <img
+                        src={
+                          person.avatar
+                        }
+                        alt=""
+                      />
+                    ) : (
+                      person.initial ||
+                      person.initials ||
+                      "Я"
+                    )}
+                  </div>
 
-          <div>
-            <strong>
-              Марія Коваль
-            </strong>
+                  <div>
+                    <strong>
+                      {
+                        person.name
+                      }
+                    </strong>
 
-            <small>
-              онлайн · написати
-            </small>
-          </div>
-        </button>
-
-        <button
-          className="suggestion-person"
-          type="button"
-          onClick={() =>
-            onOpenChat(
-              "oleksandr"
+                    <small>
+                      {person.city
+                        ? `${person.city} · написати`
+                        : "Відкрити чат"}
+                    </small>
+                  </div>
+                </button>
+              )
             )
-          }
-        >
-          <div className="avatar">
-            О
-          </div>
+        ) : (
+          <button
+            className="right-see-all"
+            type="button"
+            onClick={() =>
+              onNavigate(
+                "search"
+              )
+            }
+          >
+            Знайти друзів
+          </button>
+        )}
 
-          <div>
-            <strong>
-              Олександр Бондар
-            </strong>
-
-            <small>
-              онлайн · написати
-            </small>
-          </div>
-        </button>
-
-        <button
-          className="right-see-all"
-          type="button"
-          onClick={() =>
-            onNavigate(
-              "friends"
-            )
-          }
-        >
-          Усі друзі
-        </button>
+        {friends.length >
+          0 && (
+          <button
+            className="right-see-all"
+            type="button"
+            onClick={() =>
+              onNavigate(
+                "friends"
+              )
+            }
+          >
+            Усі друзі
+          </button>
+        )}
       </section>
 
       <section className="right-card">
@@ -5257,6 +5282,102 @@ function App() {
         "yatut:profile-updated",
         handleProfileUpdated
       );
+    };
+  }, [
+    authSession?.user?.id,
+    authSession?.access_token,
+  ]);
+
+  const [
+    sidebarFriends,
+    setSidebarFriends,
+  ] =
+    useState([]);
+
+  useEffect(() => {
+    if (
+      !authSession?.user?.id
+    ) {
+      setSidebarFriends(
+        []
+      );
+
+      return undefined;
+    }
+
+    let active =
+      true;
+
+    let refreshTimer =
+      null;
+
+    const refresh =
+      () =>
+        getBackendFriendPeople(
+          authSession,
+          6
+        )
+          .then(
+            (
+              people
+            ) => {
+              if (
+                active
+              ) {
+                setSidebarFriends(
+                  people
+                );
+              }
+            }
+          )
+          .catch(
+            (
+              error
+            ) => {
+              console.warn(
+                "SIDEBAR FRIENDS LOAD ERROR:",
+                error
+              );
+            }
+          );
+
+    refresh();
+
+    const channel =
+      subscribeSocialGraphRealtime({
+        session:
+          authSession,
+        onChange:
+          () => {
+            if (
+              refreshTimer
+            ) {
+              window.clearTimeout(
+                refreshTimer
+              );
+            }
+
+            refreshTimer =
+              window.setTimeout(
+                refresh,
+                100
+              );
+          },
+      });
+
+    return () => {
+      active =
+        false;
+
+      if (
+        refreshTimer
+      ) {
+        window.clearTimeout(
+          refreshTimer
+        );
+      }
+
+      channel.close();
     };
   }, [
     authSession?.user?.id,
@@ -6869,6 +6990,9 @@ function App() {
             }
             onOpenChat={
               openPersonChat
+            }
+            friends={
+              sidebarFriends
             }
           />
         )}
