@@ -4986,3 +4986,30 @@ strong {
   object-fit: cover;
   border-radius: inherit;
 }
+
+
+.friends-v2-empty-action {
+  min-height: 42px;
+  margin-top: 16px;
+  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 0;
+  border-radius: 13px;
+  background:
+    linear-gradient(
+      145deg,
+      #746cff,
+      #635bff
+    );
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.friends-v2-empty-action:hover {
+  transform: translateY(-1px);
+}
