@@ -5,13 +5,16 @@ import {
 } from "react";
 
 import YatutIcon from "./YatutIcon";
+import NearbyPlaceDetail from "./NearbyPlaceDetail";
 
 import {
   loadNearbyFeed,
+  loadNearbyModerationQueue,
+  moderateNearbyPlace,
   submitNearbyPlace,
 } from "../services/nearbyBackendService";
 
-const TABS = [
+const BASE_TABS = [
   ["all", "Для вас"],
   ["events", "Події"],
   ["places", "Місця"],
@@ -157,6 +160,37 @@ export default function NearbyReal({
   const [
     submitting,
     setSubmitting,
+  ] = useState(false);
+
+  const [
+    placeImageFile,
+    setPlaceImageFile,
+  ] = useState(null);
+
+  const [
+    selectedPlaceId,
+    setSelectedPlaceId,
+  ] = useState(() => {
+    const parts =
+      window.location.pathname
+        .split("/")
+        .filter(Boolean);
+
+    return parts[0] ===
+      "nearby" &&
+      parts[1]
+      ? parts[1]
+      : null;
+  });
+
+  const [
+    moderationQueue,
+    setModerationQueue,
+  ] = useState([]);
+
+  const [
+    moderationLoading,
+    setModerationLoading,
   ] = useState(false);
 
   async function refresh(
