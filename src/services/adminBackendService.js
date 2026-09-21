@@ -1,14 +1,15 @@
-import {
-  supabaseUrl,
-  supabaseAnonKey,
-} from "./supabaseConfig";
+const SUPABASE_URL =
+  "https://yqskwqahmkeiconsrhoy.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_v5dIgaWnA2cHe3d15jsoOQ_ub6gsx4W";
 
 function headers(
   session
 ) {
   return {
     apikey:
-      supabaseAnonKey,
+      SUPABASE_KEY,
     Authorization:
       `Bearer ${session?.access_token}`,
     "Content-Type":
@@ -22,8 +23,8 @@ async function rpc(
   body = {}
 ) {
   if (
-    !supabaseUrl ||
-    !supabaseAnonKey ||
+    !SUPABASE_URL ||
+    !SUPABASE_KEY ||
     !session?.access_token
   ) {
     throw new Error(
@@ -33,7 +34,7 @@ async function rpc(
 
   const response =
     await fetch(
-      `${supabaseUrl}/rest/v1/rpc/${name}`,
+      `${SUPABASE_URL}/rest/v1/rpc/${name}`,
       {
         method:
           "POST",
