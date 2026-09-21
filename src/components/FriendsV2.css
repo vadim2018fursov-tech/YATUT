@@ -4976,3 +4976,13 @@ body.yatut-dark-mode
 strong {
   color: #f2f3f6;
 }
+
+
+.friends-v2-person-avatar img,
+.friends-v2-preview-avatar img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  border-radius: inherit;
+}
