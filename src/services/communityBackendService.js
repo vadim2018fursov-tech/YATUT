@@ -71,6 +71,33 @@ async function parseResponse(
   return data;
 }
 
+async function callRpc(
+  session,
+  name,
+  body = {}
+) {
+  const response =
+    await fetch(
+      `${SUPABASE_URL}/rest/v1/rpc/${name}`,
+      {
+        method:
+          "POST",
+        headers:
+          headers(
+            session
+          ),
+        body:
+          JSON.stringify(
+            body
+          ),
+      }
+    );
+
+  return parseResponse(
+    response
+  );
+}
+
 function isUuid(
   value
 ) {
@@ -908,6 +935,580 @@ export async function saveBackendCommunity(
   return mapCommunity(
     row,
     members
+  );
+}
+
+export async function getBackendCommunityMembershipState(
+  session,
+  communityId
+) {
+  if (
+    !session?.user?.id ||
+    !communityId
+  ) {
+    return {
+      role: null,
+      requestId: null,
+      requestStatus: null,
+    };
+  }
+
+  const memberUrl =
+    new URL(
+      `${SUPABASE_URL}/rest/v1/community_members`
+    );
+
+  memberUrl.searchParams.set(
+    "community_id",
+    `eq.${communityId}`
+  );
+
+  memberUrl.searchParams.set(
+    "user_id",
+    `eq.${session.user.id}`
+  );
+
+  memberUrl.searchParams.set(
+    "select",
+    "role"
+  );
+
+  memberUrl.searchParams.set(
+    "limit",
+    "1"
+  );
+
+  const requestUrl =
+    new URL(
+      `${SUPABASE_URL}/rest/v1/community_join_requests`
+    );
+
+  requestUrl.searchParams.set(
+    "community_id",
+    `eq.${communityId}`
+  );
+
+  requestUrl.searchParams.set(
+    "requester_id",
+    `eq.${session.user.id}`
+  );
+
+  requestUrl.searchParams.set(
+    "select",
+    "id,status,updated_at"
+  );
+
+  requestUrl.searchParams.set(
+    "order",
+    "updated_at.desc"
+  );
+
+  requestUrl.searchParams.set(
+    "limit",
+    "1"
+  );
+
+  const [
+    memberResponse,
+    requestResponse,
+  ] =
+    await Promise.all([
+      fetch(
+        memberUrl,
+        {
+          headers:
+            headers(
+              session
+            ),
+        }
+      ),
+      fetch(
+        requestUrl,
+        {
+          headers:
+            headers(
+              session
+            ),
+        }
+      ),
+    ]);
+
+  const [
+    memberRows,
+    requestRows,
+  ] =
+    await Promise.all([
+      parseResponse(
+        memberResponse
+      ),
+      parseResponse(
+        requestResponse
+      ),
+    ]);
+
+  const member =
+    Array.isArray(
+      memberRows
+    )
+      ? memberRows[0] ||
+        null
+      : null;
+
+  const request =
+    Array.isArray(
+      requestRows
+    )
+      ? requestRows[0] ||
+        null
+      : null;
+
+  return {
+    role:
+      member?.role ||
+      null,
+    requestId:
+      request?.id ||
+      null,
+    requestStatus:
+      request?.status ||
+      null,
+  };
+}
+
+export async function loadBackendCommunityMembers(
+  session,
+  communityId
+) {
+  if (
+    !session?.user?.id ||
+    !communityId
+  ) {
+    return [];
+  }
+
+  const rows =
+    await loadMembers(
+      session,
+      [
+        communityId,
+      ]
+    );
+
+  const ids =
+    [
+      ...new Set(
+        rows
+          .map(
+            (
+              row
+            ) =>
+              row.user_id
+          )
+          .filter(
+            Boolean
+          )
+      ),
+    ];
+
+  let profiles =
+    [];
+
+  if (
+    ids.length
+  ) {
+    const profileUrl =
+      new URL(
+        `${SUPABASE_URL}/rest/v1/profiles`
+      );
+
+    profileUrl.searchParams.set(
+      "id",
+      `in.(${ids.join(",")})`
+    );
+
+    profileUrl.searchParams.set(
+      "select",
+      "id,username,full_name,avatar_url,verified"
+    );
+
+    const profileResponse =
+      await fetch(
+        profileUrl,
+        {
+          headers:
+            headers(
+              session
+            ),
+        }
+      );
+
+    const data =
+      await parseResponse(
+        profileResponse
+      );
+
+    profiles =
+      Array.isArray(
+        data
+      )
+        ? data
+        : [];
+  }
+
+  const byId =
+    new Map(
+      profiles.map(
+        (
+          profile
+        ) => [
+          profile.id,
+          profile,
+        ]
+      )
+    );
+
+  return rows
+    .map(
+      (
+        row
+      ) => {
+        const profile =
+          byId.get(
+            row.user_id
+          );
+
+        const name =
+          profile?.full_name ||
+          profile?.username ||
+          (
+            row.user_id ===
+              session.user.id
+              ? session.user
+                  ?.user_metadata
+                  ?.full_name ||
+                session.user.email
+                  ?.split("@")[0] ||
+                "Ви"
+              : "Учасник ЯТУТ"
+          );
+
+        return {
+          id:
+            row.user_id,
+          role:
+            row.role ||
+            "member",
+          joinedAt:
+            timestamp(
+              row.joined_at
+            ),
+          name,
+          username:
+            profile?.username ||
+            "",
+          avatar:
+            profile?.avatar_url ||
+            null,
+          verified:
+            Boolean(
+              profile?.verified
+            ),
+          initial:
+            name
+              .trim()
+              .charAt(0)
+              .toUpperCase() ||
+            "Я",
+        };
+      }
+    )
+    .sort(
+      (
+        left,
+        right
+      ) => {
+        const priority = {
+          owner: 0,
+          admin: 1,
+          moderator: 2,
+          member: 3,
+        };
+
+        return (
+          (
+            priority[
+              left.role
+            ] ??
+            9
+          ) -
+          (
+            priority[
+              right.role
+            ] ??
+            9
+          )
+        );
+      }
+    );
+}
+
+export async function loadBackendCommunityJoinRequests(
+  session,
+  communityId
+) {
+  if (
+    !session?.user?.id ||
+    !communityId
+  ) {
+    return [];
+  }
+
+  const url =
+    new URL(
+      `${SUPABASE_URL}/rest/v1/community_join_requests`
+    );
+
+  url.searchParams.set(
+    "community_id",
+    `eq.${communityId}`
+  );
+
+  url.searchParams.set(
+    "status",
+    "eq.pending"
+  );
+
+  url.searchParams.set(
+    "select",
+    "id,requester_id,created_at"
+  );
+
+  url.searchParams.set(
+    "order",
+    "created_at.asc"
+  );
+
+  const response =
+    await fetch(
+      url,
+      {
+        headers:
+          headers(
+            session
+          ),
+      }
+    );
+
+  const rows =
+    await parseResponse(
+      response
+    );
+
+  const safeRows =
+    Array.isArray(
+      rows
+    )
+      ? rows
+      : [];
+
+  const ids =
+    [
+      ...new Set(
+        safeRows
+          .map(
+            (
+              row
+            ) =>
+              row.requester_id
+          )
+          .filter(
+            Boolean
+          )
+      ),
+    ];
+
+  let profiles =
+    [];
+
+  if (
+    ids.length
+  ) {
+    const profileUrl =
+      new URL(
+        `${SUPABASE_URL}/rest/v1/profiles`
+      );
+
+    profileUrl.searchParams.set(
+      "id",
+      `in.(${ids.join(",")})`
+    );
+
+    profileUrl.searchParams.set(
+      "select",
+      "id,username,full_name,avatar_url,verified"
+    );
+
+    const profileResponse =
+      await fetch(
+        profileUrl,
+        {
+          headers:
+            headers(
+              session
+            ),
+        }
+      );
+
+    const data =
+      await parseResponse(
+        profileResponse
+      );
+
+    profiles =
+      Array.isArray(
+        data
+      )
+        ? data
+        : [];
+  }
+
+  const byId =
+    new Map(
+      profiles.map(
+        (
+          profile
+        ) => [
+          profile.id,
+          profile,
+        ]
+      )
+    );
+
+  return safeRows.map(
+    (
+      row
+    ) => {
+      const profile =
+        byId.get(
+          row.requester_id
+        );
+
+      const name =
+        profile?.full_name ||
+        profile?.username ||
+        "Користувач ЯТУТ";
+
+      return {
+        id:
+          row.id,
+        requesterId:
+          row.requester_id,
+        createdAt:
+          timestamp(
+            row.created_at
+          ),
+        name,
+        username:
+          profile?.username ||
+          "",
+        avatar:
+          profile?.avatar_url ||
+          null,
+        verified:
+          Boolean(
+            profile?.verified
+          ),
+        initial:
+          name
+            .trim()
+            .charAt(0)
+            .toUpperCase() ||
+          "Я",
+      };
+    }
+  );
+}
+
+export async function joinBackendCommunity(
+  session,
+  communityId
+) {
+  return Boolean(
+    await callRpc(
+      session,
+      "join_public_community",
+      {
+        target_community_id:
+          communityId,
+      }
+    )
+  );
+}
+
+export async function requestBackendCommunityJoin(
+  session,
+  communityId
+) {
+  return callRpc(
+    session,
+    "request_community_membership",
+    {
+      target_community_id:
+        communityId,
+    }
+  );
+}
+
+export async function cancelBackendCommunityJoinRequest(
+  session,
+  communityId
+) {
+  return Boolean(
+    await callRpc(
+      session,
+      "cancel_community_join_request",
+      {
+        target_community_id:
+          communityId,
+      }
+    )
+  );
+}
+
+export async function leaveBackendCommunity(
+  session,
+  communityId
+) {
+  return Boolean(
+    await callRpc(
+      session,
+      "leave_community",
+      {
+        target_community_id:
+          communityId,
+      }
+    )
+  );
+}
+
+export async function respondBackendCommunityJoinRequest(
+  session,
+  requestId,
+  accept
+) {
+  return Boolean(
+    await callRpc(
+      session,
+      "respond_community_join_request",
+      {
+        target_request_id:
+          requestId,
+        accept_request:
+          Boolean(
+            accept
+          ),
+      }
+    )
   );
 }
 
