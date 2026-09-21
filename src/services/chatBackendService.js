@@ -566,6 +566,100 @@ export async function openBackendDirectChat(
   );
 }
 
+export async function markBackendChatRead(
+  session,
+  conversationId
+) {
+  const response =
+    await fetch(
+      `${SUPABASE_URL}/rest/v1/rpc/mark_conversation_read`,
+      {
+        method:
+          "POST",
+        headers:
+          headers(
+            session
+          ),
+        body:
+          JSON.stringify({
+            target_conversation_id:
+              conversationId,
+          }),
+      }
+    );
+
+  return parseResponse(
+    response
+  );
+}
+
+export async function getBackendOtherReadAt(
+  session,
+  conversationId
+) {
+  if (
+    !session?.user?.id
+  ) {
+    return null;
+  }
+
+  const url =
+    new URL(
+      `${SUPABASE_URL}/rest/v1/conversation_members`
+    );
+
+  url.searchParams.set(
+    "conversation_id",
+    `eq.${conversationId}`
+  );
+
+  url.searchParams.set(
+    "user_id",
+    `neq.${session.user.id}`
+  );
+
+  url.searchParams.set(
+    "select",
+    "last_read_at"
+  );
+
+  url.searchParams.set(
+    "limit",
+    "1"
+  );
+
+  const response =
+    await fetch(
+      url,
+      {
+        headers:
+          headers(
+            session
+          ),
+      }
+    );
+
+  const rows =
+    await parseResponse(
+      response
+    );
+
+  const value =
+    Array.isArray(
+      rows
+    )
+      ? rows[0]
+          ?.last_read_at ||
+        null
+      : null;
+
+  return value
+    ? Date.parse(
+        value
+      )
+    : null;
+}
+
 export async function loadBackendMessages(
   session,
   conversationId
