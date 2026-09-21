@@ -301,6 +301,38 @@ export default function NearbyPlaceDetail({
       ? detail.reviews
       : [];
 
+  const routeDestination =
+    Number.isFinite(
+      Number(
+        place.latitude
+      )
+    ) &&
+    Number.isFinite(
+      Number(
+        place.longitude
+      )
+    )
+      ? `${Number(
+          place.latitude
+        )},${Number(
+          place.longitude
+        )}`
+      : [
+          place.address,
+          place.city,
+        ]
+          .filter(
+            Boolean
+          )
+          .join(", ");
+
+  const routeUrl =
+    routeDestination
+      ? `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+          routeDestination
+        )}`
+      : null;
+
   return (
     <section className="feature-page nearby-page nearby-place-detail-real">
       <button
@@ -385,6 +417,24 @@ export default function NearbyPlaceDetail({
                 ? "Збережено"
                 : "Зберегти"}
             </button>
+
+            {routeUrl && (
+              <a
+                className="feature-primary-button nearby-place-route-button"
+                href={
+                  routeUrl
+                }
+                target="_blank"
+                rel="noreferrer"
+              >
+                <YatutIcon
+                  name="pin"
+                  size={16}
+                />
+
+                Відкрити маршрут
+              </a>
+            )}
           </header>
 
           <div className="nearby-place-detail-meta">
