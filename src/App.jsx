@@ -1,4 +1,5 @@
 import {
+  Fragment,
   useEffect,
   useMemo,
   useRef,
@@ -87,6 +88,9 @@ import {
 
 const HOME_STORAGE_KEY =
   "yatut-home-posts-v7";
+
+const SETTINGS_STORAGE_KEY =
+  "yatut-settings-v1";
 
 /* =========================================================
    MAIN NAVIGATION
@@ -4053,6 +4057,12 @@ function App() {
     );
 
   const [
+    routeRevision,
+    setRouteRevision,
+  ] =
+    useState(0);
+
+  const [
     chatPersonId,
     setChatPersonId,
   ] =
@@ -4111,14 +4121,67 @@ function App() {
     useState(
       () => {
         try {
-          return (
+          const storedTheme =
             localStorage.getItem(
               "yatut-theme"
-            ) ||
-            "light"
-          );
+            );
+
+          if (
+            [
+              "light",
+              "dark",
+              "system",
+            ].includes(
+              storedTheme
+            )
+          ) {
+            return storedTheme;
+          }
+
+          const rawSettings =
+            localStorage.getItem(
+              SETTINGS_STORAGE_KEY
+            );
+
+          const settings =
+            rawSettings
+              ? JSON.parse(
+                  rawSettings
+                )
+              : null;
+
+          const appearance =
+            settings?.appearance;
+
+          return [
+            "light",
+            "dark",
+            "system",
+          ].includes(
+            appearance
+          )
+            ? appearance
+            : "light";
         } catch {
           return "light";
+        }
+      }
+    );
+
+  const [
+    systemPrefersDark,
+    setSystemPrefersDark,
+  ] =
+    useState(
+      () => {
+        try {
+          return Boolean(
+            window.matchMedia?.(
+              "(prefers-color-scheme: dark)"
+            )?.matches
+          );
+        } catch {
+          return false;
         }
       }
     );
@@ -4218,17 +4281,106 @@ function App() {
   }
 
   useEffect(() => {
-    const dark =
-      themeMode ===
-      "dark";
+    let media = null;
 
+    try {
+      media =
+        window.matchMedia?.(
+          "(prefers-color-scheme: dark)"
+        ) ||
+        null;
+    } catch {
+      media = null;
+    }
+
+    if (!media) {
+      return undefined;
+    }
+
+    const syncSystemTheme =
+      () =>
+        setSystemPrefersDark(
+          Boolean(
+            media.matches
+          )
+        );
+
+    syncSystemTheme();
+
+    media.addEventListener?.(
+      "change",
+      syncSystemTheme
+    );
+
+    return () => {
+      media.removeEventListener?.(
+        "change",
+        syncSystemTheme
+      );
+    };
+  }, []);
+
+  const themeIsDark =
+    themeMode ===
+      "dark" ||
+    (
+      themeMode ===
+        "system" &&
+      systemPrefersDark
+    );
+
+  function setThemePreference(
+    mode
+  ) {
+    const nextMode =
+      [
+        "light",
+        "dark",
+        "system",
+      ].includes(
+        mode
+      )
+        ? mode
+        : "light";
+
+    setThemeMode(
+      nextMode
+    );
+
+    try {
+      const rawSettings =
+        localStorage.getItem(
+          SETTINGS_STORAGE_KEY
+        );
+
+      const settings =
+        rawSettings
+          ? JSON.parse(
+              rawSettings
+            )
+          : {};
+
+      localStorage.setItem(
+        SETTINGS_STORAGE_KEY,
+        JSON.stringify({
+          ...settings,
+          appearance:
+            nextMode,
+        })
+      );
+    } catch {
+      // Settings synchronization is optional for this session.
+    }
+  }
+
+  useEffect(() => {
     document.body.classList.toggle(
       "yatut-dark-mode",
-      dark
+      themeIsDark
     );
 
     document.documentElement.style.colorScheme =
-      dark
+      themeIsDark
         ? "dark"
         : "light";
 
@@ -4241,6 +4393,7 @@ function App() {
       // Theme still works for the current session.
     }
   }, [
+    themeIsDark,
     themeMode,
   ]);
 
@@ -4254,6 +4407,21 @@ function App() {
   ) {
     if (!page) {
       return;
+    }
+
+    if (
+      payload !==
+        null &&
+      payload !==
+        undefined
+    ) {
+      setRouteRevision(
+        (
+          previous
+        ) =>
+          previous +
+          1
+      );
     }
 
     if (
@@ -4728,7 +4896,14 @@ function App() {
 
       case "settings":
         return (
-          <Settings />
+          <Settings
+            themeMode={
+              themeMode
+            }
+            onThemeChange={
+              setThemePreference
+            }
+          />
         );
 
       default:
@@ -4810,17 +4985,15 @@ function App() {
           );
         }}
         themeMode={
-          themeMode
+          themeIsDark
+            ? "dark"
+            : "light"
         }
         onToggleTheme={() =>
-          setThemeMode(
-            (
-              previous
-            ) =>
-              previous ===
-              "dark"
-                ? "light"
-                : "dark"
+          setThemePreference(
+            themeIsDark
+              ? "light"
+              : "dark"
           )
         }
         unreadNotifications={
@@ -4881,9 +5054,13 @@ function App() {
         />
 
         <main className="main-content">
-          {
-            renderPage()
-          }
+          <Fragment
+            key={`${currentPage}-${routeRevision}`}
+          >
+            {
+              renderPage()
+            }
+          </Fragment>
         </main>
 
         {showRightSidebar && (
