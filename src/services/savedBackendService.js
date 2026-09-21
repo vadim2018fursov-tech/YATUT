@@ -181,9 +181,6 @@ export async function syncBackendSavedItems(
     return;
   }
 
-  const userId =
-    session.user.id;
-
   const normalized =
     (
       Array.isArray(
@@ -191,126 +188,13 @@ export async function syncBackendSavedItems(
       )
         ? items
         : []
-    )
-      .filter(
-        (
-          item
-        ) =>
-          item?.type &&
-          item?.sourceId
-      );
-
-  const currentUrl =
-    new URL(
-      `${SUPABASE_URL}/rest/v1/saved_items`
-    );
-
-  currentUrl.searchParams.set(
-    "user_id",
-    `eq.${userId}`
-  );
-
-  currentUrl.searchParams.set(
-    "select",
-    "item_type,source_id"
-  );
-
-  const currentResponse =
-    await fetch(
-      currentUrl,
-      {
-        headers:
-          headers(
-            session
-          ),
-      }
-    );
-
-  const currentRows =
-    await parseResponse(
-      currentResponse
-    );
-
-  const wanted =
-    new Set(
-      normalized.map(
-        (
-          item
-        ) =>
-          rowKey(
-            item.type,
-            item.sourceId
-          )
-      )
-    );
-
-  const stale =
-    (
-      Array.isArray(
-        currentRows
-      )
-        ? currentRows
-        : []
     ).filter(
       (
-        row
+        item
       ) =>
-        !wanted.has(
-          rowKey(
-            row.item_type,
-            row.source_id
-          )
-        )
+        item?.type &&
+        item?.sourceId
     );
-
-  if (
-    stale.length
-  ) {
-    await Promise.all(
-      stale.map(
-        async (
-          row
-        ) => {
-          const url =
-            new URL(
-              `${SUPABASE_URL}/rest/v1/saved_items`
-            );
-
-          url.searchParams.set(
-            "user_id",
-            `eq.${userId}`
-          );
-
-          url.searchParams.set(
-            "item_type",
-            `eq.${row.item_type}`
-          );
-
-          url.searchParams.set(
-            "source_id",
-            `eq.${row.source_id}`
-          );
-
-          const response =
-            await fetch(
-              url,
-              {
-                method:
-                  "DELETE",
-                headers:
-                  headers(
-                    session
-                  ),
-              }
-            );
-
-          await parseResponse(
-            response
-          );
-        }
-      )
-    );
-  }
 
   if (
     !normalized.length
@@ -327,7 +211,7 @@ export async function syncBackendSavedItems(
         item
       ) => ({
         user_id:
-          userId,
+          session.user.id,
         item_type:
           String(
             item.type
@@ -375,3 +259,189 @@ export async function syncBackendSavedItems(
     response
   );
 }
+
+export async function syncBackendSavedDelta(
+  session,
+  previousItems = [],
+  nextItems = []
+) {
+  if (
+    !session?.user?.id
+  ) {
+    return;
+  }
+
+  const previousMap =
+    new Map(
+      (
+        Array.isArray(
+          previousItems
+        )
+          ? previousItems
+          : []
+      )
+        .filter(
+          (
+            item
+          ) =>
+            item?.type &&
+            item?.sourceId
+        )
+        .map(
+          (
+            item
+          ) => [
+            rowKey(
+              item.type,
+              item.sourceId
+            ),
+            item,
+          ]
+        )
+    );
+
+  const nextMap =
+    new Map(
+      (
+        Array.isArray(
+          nextItems
+        )
+          ? nextItems
+          : []
+      )
+        .filter(
+          (
+            item
+          ) =>
+            item?.type &&
+            item?.sourceId
+        )
+        .map(
+          (
+            item
+          ) => [
+            rowKey(
+              item.type,
+              item.sourceId
+            ),
+            item,
+          ]
+        )
+    );
+
+  const removed =
+    [
+      ...previousMap.entries(),
+    ].filter(
+      ([
+        key,
+      ]) =>
+        !nextMap.has(
+          key
+        )
+    );
+
+  const changed =
+    [
+      ...nextMap.entries(),
+    ]
+      .filter(
+        ([
+          key,
+          item,
+        ]) => {
+          const previous =
+            previousMap.get(
+              key
+            );
+
+          if (
+            !previous
+          ) {
+            return true;
+          }
+
+          return (
+            Number(
+              item.updatedAt ||
+              item.savedAt ||
+              0
+            ) !==
+              Number(
+                previous.updatedAt ||
+                previous.savedAt ||
+                0
+              ) ||
+            JSON.stringify(
+              item
+            ) !==
+              JSON.stringify(
+                previous
+              )
+          );
+        }
+      )
+      .map(
+        ([
+          ,
+          item,
+        ]) =>
+          item
+      );
+
+  await Promise.all(
+    removed.map(
+      async ([
+        ,
+        item,
+      ]) => {
+        const url =
+          new URL(
+            `${SUPABASE_URL}/rest/v1/saved_items`
+          );
+
+        url.searchParams.set(
+          "user_id",
+          `eq.${session.user.id}`
+        );
+
+        url.searchParams.set(
+          "item_type",
+          `eq.${item.type}`
+        );
+
+        url.searchParams.set(
+          "source_id",
+          `eq.${item.sourceId}`
+        );
+
+        const response =
+          await fetch(
+            url,
+            {
+              method:
+                "DELETE",
+              headers:
+                headers(
+                  session
+                ),
+            }
+          );
+
+        await parseResponse(
+          response
+        );
+      }
+    )
+  );
+
+  if (
+    changed.length
+  ) {
+    await syncBackendSavedItems(
+      session,
+      changed
+    );
+  }
+}
+
