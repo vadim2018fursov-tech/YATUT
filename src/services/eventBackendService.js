@@ -199,6 +199,15 @@ function mapEvent(
     visibility:
       row.visibility ||
       "public",
+    status:
+      row.status ||
+      "scheduled",
+    cancelledAt:
+      row.cancelled_at
+        ? Date.parse(
+            row.cancelled_at
+          )
+        : null,
     communityId:
       row.community_id ||
       null,
@@ -524,5 +533,153 @@ export async function inviteBackendEventFriends(
       }
     ) ||
     0
+  );
+}
+
+
+export async function updateBackendEvent(
+  session,
+  eventId,
+  event
+) {
+  if (
+    !session?.user?.id ||
+    !eventId
+  ) {
+    return;
+  }
+
+  const startsAt =
+    new Date(
+      `${event.date}T${event.time || "00:00"}:00`
+    );
+
+  await rpc(
+    session,
+    "update_event",
+    {
+      target_event_id:
+        eventId,
+      event_title:
+        event.title,
+      event_description:
+        event.description ||
+        "",
+      event_category:
+        event.category ||
+        "other",
+      event_city:
+        event.city ||
+        null,
+      event_place:
+        event.place ||
+        null,
+      event_starts_at:
+        startsAt.toISOString(),
+    }
+  );
+}
+
+export async function cancelBackendEvent(
+  session,
+  eventId
+) {
+  await rpc(
+    session,
+    "cancel_event",
+    {
+      target_event_id:
+        eventId,
+    }
+  );
+}
+
+export async function loadBackendEventParticipants(
+  session,
+  eventId
+) {
+  if (
+    !session?.user?.id ||
+    !eventId
+  ) {
+    return [];
+  }
+
+  const rows =
+    await rpc(
+      session,
+      "get_event_participants",
+      {
+        target_event_id:
+          eventId,
+      }
+    );
+
+  return (
+    Array.isArray(
+      rows
+    )
+      ? rows
+      : []
+  ).map(
+    (
+      row
+    ) => {
+      const name =
+        row.full_name ||
+        row.username ||
+        "Користувач";
+
+      return {
+        id:
+          row.user_id,
+        name,
+        username:
+          row.username ||
+          "user",
+        avatar:
+          row.avatar_url ||
+          null,
+        city:
+          row.city ||
+          "",
+        initials:
+          name
+            .trim()
+            .charAt(0)
+            .toUpperCase() ||
+          "?",
+        status:
+          row.participation_status ||
+          "interested",
+        joinedAt:
+          row.joined_at
+            ? Date.parse(
+                row.joined_at
+              )
+            : null,
+        isOwner:
+          Boolean(
+            row.is_owner
+          ),
+      };
+    }
+  );
+}
+
+export async function removeBackendEventParticipant(
+  session,
+  eventId,
+  userId
+) {
+  await rpc(
+    session,
+    "remove_event_participant",
+    {
+      target_event_id:
+        eventId,
+      target_user_id:
+        userId,
+    }
   );
 }
