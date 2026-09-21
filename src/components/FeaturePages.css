@@ -7046,3 +7046,42 @@ body.yatut-dark-mode
     right: 10px;
   }
 }
+
+
+.nearby-map-marker.is-event {
+  background: #ff4f8b;
+  box-shadow:
+    0 8px 20px rgba(205,55,111,.27);
+}
+
+.nearby-map-legend-items {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nearby-map-legend-items > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #5f6470;
+  font-size: 8px;
+  font-weight: 800;
+}
+
+.nearby-map-legend-dot.is-event {
+  background: #ff4f8b;
+  box-shadow: 0 0 0 1px #ffc7db;
+}
+
+.event-nearby-place-field small {
+  display: block;
+  margin-top: 5px;
+  color: #969aa5;
+  font-size: 8px;
+  line-height: 1.4;
+}
+
+.yatut-dark-mode .nearby-map-legend-items > span {
+  color: #c8cad3;
+}
