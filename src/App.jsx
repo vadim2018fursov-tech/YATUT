@@ -4638,6 +4638,60 @@ function App() {
     authBackendConfigured,
   ]);
 
+  useEffect(() => {
+    if (
+      !authBackendConfigured ||
+      !authSession
+    ) {
+      return undefined;
+    }
+
+    let active =
+      true;
+
+    const timer =
+      window.setInterval(
+        () => {
+          getAuthSession()
+            .then(
+              (session) => {
+                if (
+                  active &&
+                  session
+                ) {
+                  setAuthSession(
+                    session
+                  );
+                }
+              }
+            )
+            .catch(
+              (error) => {
+                console.warn(
+                  "AUTH REFRESH ERROR:",
+                  error
+                );
+              }
+            );
+        },
+        45 * 1000
+      );
+
+    return () => {
+      active =
+        false;
+
+      window.clearInterval(
+        timer
+      );
+    };
+  }, [
+    authBackendConfigured,
+    Boolean(
+      authSession
+    ),
+  ]);
+
   function handleAuthenticated(
     session
   ) {
