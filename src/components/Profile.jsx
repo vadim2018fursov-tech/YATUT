@@ -23,6 +23,10 @@ import {
   updateMyProfile,
 } from "../services/authService";
 
+import {
+  uploadProfileImage,
+} from "../services/storageService";
+
 const PROFILE_STORAGE_KEY = "yatut-profile-v2";
 const PROFILE_POSTS_STORAGE_KEY = "yatut-profile-posts-v2";
 
@@ -537,6 +541,12 @@ export default function Profile({
               status:
                 remote.status ??
                 previous.status,
+              avatar:
+                remote.avatar_url ??
+                previous.avatar,
+              cover:
+                remote.cover_url ??
+                previous.cover,
               verified:
                 Boolean(
                   remote.verified
@@ -2811,32 +2821,90 @@ export default function Profile({
               false
             )
           }
-          onSave={(
+          onSave={async (
             nextProfile
           ) => {
+            const {
+              _avatarFile,
+              _coverFile,
+              ...cleanProfile
+            } =
+              nextProfile;
+
+            let finalProfile =
+              cleanProfile;
+
+            if (
+              authSession?.user?.id
+            ) {
+              try {
+                const [
+                  avatarUrl,
+                  coverUrl,
+                ] =
+                  await Promise.all([
+                    _avatarFile
+                      ? uploadProfileImage(
+                          authSession,
+                          _avatarFile,
+                          "avatar"
+                        )
+                      : Promise.resolve(
+                          cleanProfile.avatar ||
+                          null
+                        ),
+                    _coverFile
+                      ? uploadProfileImage(
+                          authSession,
+                          _coverFile,
+                          "cover"
+                        )
+                      : Promise.resolve(
+                          cleanProfile.cover ||
+                          null
+                        ),
+                  ]);
+
+                finalProfile = {
+                  ...cleanProfile,
+                  avatar:
+                    avatarUrl ||
+                    cleanProfile.avatar ||
+                    "",
+                  cover:
+                    coverUrl ||
+                    cleanProfile.cover ||
+                    "",
+                };
+
+                await updateMyProfile(
+                  authSession,
+                  finalProfile
+                );
+              } catch (
+                error
+              ) {
+                console.warn(
+                  "REMOTE PROFILE SAVE ERROR:",
+                  error
+                );
+
+                window.alert(
+                  error?.message ||
+                  "Не вдалося зберегти фото профілю."
+                );
+
+                return;
+              }
+            }
+
             setProfile(
-              nextProfile
+              finalProfile
             );
 
             setEditing(
               false
             );
-
-            if (
-              authSession?.user?.id
-            ) {
-              updateMyProfile(
-                authSession,
-                nextProfile
-              ).catch(
-                (error) => {
-                  console.warn(
-                    "REMOTE PROFILE SAVE ERROR:",
-                    error
-                  );
-                }
-              );
-            }
           }}
         />
       )}
@@ -2980,6 +3048,24 @@ function EditProfileModal({
   const coverInputRef =
     useRef(null);
 
+  const [
+    avatarFile,
+    setAvatarFile,
+  ] =
+    useState(null);
+
+  const [
+    coverFile,
+    setCoverFile,
+  ] =
+    useState(null);
+
+  const [
+    saving,
+    setSaving,
+  ] =
+    useState(false);
+
   /* =======================================================
      IMAGE
   ======================================================= */
@@ -3008,6 +3094,19 @@ function EditProfileModal({
             dataUrl,
         })
       );
+
+      if (
+        field ===
+        "avatar"
+      ) {
+        setAvatarFile(
+          file
+        );
+      } else {
+        setCoverFile(
+          file
+        );
+      }
     } catch (error) {
       console.error(
         "PROFILE IMAGE ERROR:",
@@ -3040,36 +3139,58 @@ function EditProfileModal({
      SUBMIT
   ======================================================= */
 
-  function submit(
+  async function submit(
     event
   ) {
     event.preventDefault();
 
-    onSave({
-      ...profile,
-      ...draft,
+    if (
+      saving
+    ) {
+      return;
+    }
 
-      name:
-        draft.name
-          ?.trim() ||
-        profile.name,
+    try {
+      setSaving(
+        true
+      );
 
-      username:
-        draft.username
-          ?.trim()
-          .replace(
-            /^@/,
-            ""
-          ) ||
-        profile.username,
+      await onSave({
+        ...profile,
+        ...draft,
 
-      interests:
-        Array.isArray(
-          draft.interests
-        )
-          ? draft.interests
-          : [],
-    });
+        name:
+          draft.name
+            ?.trim() ||
+          profile.name,
+
+        username:
+          draft.username
+            ?.trim()
+            .replace(
+              /^@/,
+              ""
+            ) ||
+          profile.username,
+
+        interests:
+          Array.isArray(
+            draft.interests
+          )
+            ? draft.interests
+            : [],
+
+        _avatarFile:
+          avatarFile,
+
+        _coverFile:
+          coverFile,
+      });
+    } finally {
+      setSaving(
+        false
+      );
+    }
   }
 
   /* =======================================================
@@ -3477,8 +3598,13 @@ function EditProfileModal({
           <button
             className="profile-v2-edit-save"
             type="submit"
+            disabled={
+              saving
+            }
           >
-            Зберегти
+            {saving
+              ? "Зберігаємо…"
+              : "Зберегти"}
           </button>
 
         </footer>
