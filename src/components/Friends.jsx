@@ -31,6 +31,10 @@ import {
   sendBackendFriendRequest,
 } from "../services/socialBackendService";
 
+import {
+  subscribeSocialGraphRealtime,
+} from "../services/realtimeService";
+
 /* =========================================================
    YATUT FRIENDS V2
 ========================================================= */
@@ -551,21 +555,21 @@ export default function Friends({
     let active =
       true;
 
-    setBackendLoading(
-      true
-    );
+    let refreshTimer =
+      null;
 
-    refreshBackendPeople()
-      .catch(
-        (error) => {
+    const refresh =
+      async () => {
+        try {
+          await refreshBackendPeople();
+        } catch (
+          error
+        ) {
           console.warn(
-            "FRIENDS BACKEND LOAD ERROR:",
+            "FRIENDS BACKEND REFRESH ERROR:",
             error
           );
-        }
-      )
-      .finally(
-        () => {
+        } finally {
           if (
             active
           ) {
@@ -574,31 +578,72 @@ export default function Friends({
             );
           }
         }
-      );
+      };
 
-    const timer =
+    setBackendLoading(
+      true
+    );
+
+    refresh();
+
+    const channel =
+      subscribeSocialGraphRealtime({
+        session:
+          authSession,
+        onChange:
+          () => {
+            if (
+              refreshTimer
+            ) {
+              window.clearTimeout(
+                refreshTimer
+              );
+            }
+
+            refreshTimer =
+              window.setTimeout(
+                refresh,
+                90
+              );
+          },
+        onStatus:
+          (
+            status
+          ) => {
+            if (
+              status ===
+              "error"
+            ) {
+              console.warn(
+                "FRIENDS REALTIME DEGRADED"
+              );
+            }
+          },
+      });
+
+    const fallbackTimer =
       window.setInterval(
-        () => {
-          refreshBackendPeople()
-            .catch(
-              (error) => {
-                console.warn(
-                  "FRIENDS BACKEND REFRESH ERROR:",
-                  error
-                );
-              }
-            );
-        },
-        12000
+        refresh,
+        60000
       );
 
     return () => {
       active =
         false;
 
+      if (
+        refreshTimer
+      ) {
+        window.clearTimeout(
+          refreshTimer
+        );
+      }
+
       window.clearInterval(
-        timer
+        fallbackTimer
       );
+
+      channel.close();
     };
   }, [
     authSession?.user?.id,
