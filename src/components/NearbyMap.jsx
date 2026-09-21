@@ -1,5 +1,7 @@
 import {
+  useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 
@@ -31,9 +33,20 @@ function worldPoint(
     TILE_SIZE *
     2 ** zoom;
 
+  const safeLatitude =
+    clamp(
+      Number(
+        latitude
+      ),
+      -85.05112878,
+      85.05112878
+    );
+
   const x =
     (
-      longitude +
+      Number(
+        longitude
+      ) +
       180
     ) /
     360 *
@@ -41,7 +54,7 @@ function worldPoint(
 
   const sin =
     Math.sin(
-      latitude *
+      safeLatitude *
       Math.PI /
       180
     );
@@ -69,6 +82,56 @@ function worldPoint(
   return {
     x,
     y,
+  };
+}
+
+function worldToLatLng(
+  x,
+  y,
+  zoom
+) {
+  const scale =
+    TILE_SIZE *
+    2 ** zoom;
+
+  const longitude =
+    x /
+      scale *
+      360 -
+    180;
+
+  const n =
+    Math.PI -
+    2 *
+      Math.PI *
+      y /
+      scale;
+
+  const latitude =
+    180 /
+      Math.PI *
+      Math.atan(
+        Math.sinh(
+          n
+        )
+      );
+
+  return {
+    latitude:
+      clamp(
+        latitude,
+        -85.05112878,
+        85.05112878
+      ),
+    longitude:
+      (
+        (
+          longitude +
+          540
+        ) %
+        360
+      ) -
+      180,
   };
 }
 
@@ -126,15 +189,15 @@ function clusterMarkers(
           marker
         ) =>
           marker.x >
-            -40 &&
+            -50 &&
           marker.x <
             width +
-              40 &&
+              50 &&
           marker.y >
-            -40 &&
+            -50 &&
           marker.y <
             height +
-              40
+              50
       );
 
   const buckets =
@@ -147,10 +210,10 @@ function clusterMarkers(
       const key =
         `${Math.round(
           marker.x /
-            52
+            54
         )}:${Math.round(
           marker.y /
-            52
+            54
         )}`;
 
       const bucket =
@@ -220,7 +283,11 @@ function tileSet(
   height
 ) {
   if (
-    !center
+    !center ||
+    width <=
+      0 ||
+    height <=
+      0
   ) {
     return [];
   }
@@ -345,6 +412,22 @@ export default function NearbyMap({
   places = [],
   onOpenPlace,
 }) {
+  const stageRef =
+    useRef(null);
+
+  const dragRef =
+    useRef(null);
+
+  const [
+    size,
+    setSize,
+  ] = useState({
+    width:
+      900,
+    height:
+      520,
+  });
+
   const validPlaces =
     useMemo(
       () =>
@@ -368,7 +451,7 @@ export default function NearbyMap({
       ]
     );
 
-  const initialCenter =
+  const calculatedCenter =
     useMemo(() => {
       if (
         !validPlaces.length
@@ -409,6 +492,13 @@ export default function NearbyMap({
     ]);
 
   const [
+    center,
+    setCenter,
+  ] = useState(
+    calculatedCenter
+  );
+
+  const [
     zoom,
     setZoom,
   ] = useState(
@@ -420,24 +510,84 @@ export default function NearbyMap({
     setActiveClusterId,
   ] = useState(null);
 
-  const width =
-    900;
+  useEffect(() => {
+    if (
+      calculatedCenter
+    ) {
+      setCenter(
+        calculatedCenter
+      );
+    }
+  }, [
+    calculatedCenter
+      ?.latitude,
+    calculatedCenter
+      ?.longitude,
+  ]);
 
-  const height =
-    520;
+  useEffect(() => {
+    const element =
+      stageRef.current;
+
+    if (
+      !element
+    ) {
+      return;
+    }
+
+    const update =
+      () => {
+        const rect =
+          element.getBoundingClientRect();
+
+        setSize({
+          width:
+            Math.max(
+              280,
+              Math.round(
+                rect.width
+              )
+            ),
+          height:
+            Math.max(
+              320,
+              Math.round(
+                rect.height
+              )
+            ),
+        });
+      };
+
+    update();
+
+    const observer =
+      new ResizeObserver(
+        update
+      );
+
+    observer.observe(
+      element
+    );
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   const tiles =
     useMemo(
       () =>
         tileSet(
-          initialCenter,
+          center,
           zoom,
-          width,
-          height
+          size.width,
+          size.height
         ),
       [
-        initialCenter,
+        center,
         zoom,
+        size.width,
+        size.height,
       ]
     );
 
@@ -460,15 +610,17 @@ export default function NearbyMap({
                 ),
             })
           ),
-          initialCenter,
+          center,
           zoom,
-          width,
-          height
+          size.width,
+          size.height
         ),
       [
         validPlaces,
-        initialCenter,
+        center,
         zoom,
+        size.width,
+        size.height,
       ]
     );
 
@@ -482,8 +634,91 @@ export default function NearbyMap({
     ) ||
     null;
 
+  function beginPan(
+    event
+  ) {
+    if (
+      event.button !==
+      0 ||
+      !center
+    ) {
+      return;
+    }
+
+    event.currentTarget
+      .setPointerCapture?.(
+        event.pointerId
+      );
+
+    dragRef.current = {
+      pointerId:
+        event.pointerId,
+      x:
+        event.clientX,
+      y:
+        event.clientY,
+      centerPoint:
+        worldPoint(
+          center.latitude,
+          center.longitude,
+          zoom
+        ),
+    };
+  }
+
+  function movePan(
+    event
+  ) {
+    const drag =
+      dragRef.current;
+
+    if (
+      !drag ||
+      drag.pointerId !==
+        event.pointerId
+    ) {
+      return;
+    }
+
+    const dx =
+      event.clientX -
+      drag.x;
+
+    const dy =
+      event.clientY -
+      drag.y;
+
+    setCenter(
+      worldToLatLng(
+        drag.centerPoint.x -
+          dx,
+        drag.centerPoint.y -
+          dy,
+        zoom
+      )
+    );
+
+    setActiveClusterId(
+      null
+    );
+  }
+
+  function endPan(
+    event
+  ) {
+    if (
+      dragRef.current
+        ?.pointerId ===
+      event.pointerId
+    ) {
+      dragRef.current =
+        null;
+    }
+  }
+
   if (
-    !validPlaces.length
+    !validPlaces.length ||
+    !center
   ) {
     return (
       <section className="nearby-map-empty">
@@ -508,15 +743,29 @@ export default function NearbyMap({
   return (
     <section className="nearby-map-shell">
       <div
+        ref={
+          stageRef
+        }
         className="nearby-map-stage"
-        style={{
-          "--nearby-map-width":
-            `${width}px`,
-          "--nearby-map-height":
-            `${height}px`,
-        }}
       >
-        <div className="nearby-map-canvas">
+        <div
+          className="nearby-map-canvas"
+          onPointerDown={
+            beginPan
+          }
+          onPointerMove={
+            movePan
+          }
+          onPointerUp={
+            endPan
+          }
+          onPointerCancel={
+            endPan
+          }
+          onPointerLeave={
+            endPan
+          }
+        >
           {tiles.map(
             (
               tile
@@ -569,6 +818,11 @@ export default function NearbyMap({
                     top:
                       cluster.y,
                   }}
+                  onPointerDown={(
+                    event
+                  ) =>
+                    event.stopPropagation()
+                  }
                   onClick={() => {
                     if (
                       many
@@ -599,7 +853,14 @@ export default function NearbyMap({
           )}
 
           {activeCluster && (
-            <div className="nearby-map-popover">
+            <div
+              className="nearby-map-popover"
+              onPointerDown={(
+                event
+              ) =>
+                event.stopPropagation()
+              }
+            >
               <header>
                 <strong>
                   {
@@ -657,7 +918,14 @@ export default function NearbyMap({
             </div>
           )}
 
-          <div className="nearby-map-controls">
+          <div
+            className="nearby-map-controls"
+            onPointerDown={(
+              event
+            ) =>
+              event.stopPropagation()
+            }
+          >
             <button
               type="button"
               aria-label="Збільшити масштаб"
@@ -697,6 +965,25 @@ export default function NearbyMap({
             >
               −
             </button>
+
+            <button
+              type="button"
+              className="nearby-map-reset"
+              aria-label="Повернути карту до всіх місць"
+              onClick={() => {
+                setCenter(
+                  calculatedCenter
+                );
+                setZoom(
+                  DEFAULT_ZOOM
+                );
+                setActiveClusterId(
+                  null
+                );
+              }}
+            >
+              ◎
+            </button>
           </div>
 
           <a
@@ -704,8 +991,13 @@ export default function NearbyMap({
             href="https://www.openstreetmap.org/copyright"
             target="_blank"
             rel="noreferrer"
+            onPointerDown={(
+              event
+            ) =>
+              event.stopPropagation()
+            }
           >
-            © OpenStreetMap
+            © OpenStreetMap contributors
           </a>
         </div>
       </div>
