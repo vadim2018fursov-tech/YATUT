@@ -864,6 +864,62 @@ export default function NearbyReal({
             Завантажуємо «Поруч»
           </h2>
         </section>
+      ) : viewMode === "map" &&
+        tab !== "moderation" ? (
+        <div className="nearby-map-view">
+          <NearbyMap
+            places={
+              places
+            }
+            events={
+              events
+            }
+            onOpenPlace={(
+              place
+            ) => {
+              setSelectedPlaceId(
+                place.id
+              );
+
+              onNavigate?.(
+                "nearby",
+                {
+                  placeId:
+                    place.id,
+                }
+              );
+            }}
+            onOpenEvent={(
+              event
+            ) =>
+              onNavigate?.(
+                "events",
+                {
+                  eventId:
+                    event.id,
+                }
+              )
+            }
+          />
+
+          <div className="nearby-map-legend">
+            <div className="nearby-map-legend-items">
+              <span>
+                <i className="nearby-map-legend-dot" />
+                Місця
+              </span>
+
+              <span>
+                <i className="nearby-map-legend-dot is-event" />
+                Події
+              </span>
+            </div>
+
+            <small>
+              На карту потрапляють лише точки з перевіреними координатами. Події без прив’язки до місця залишаються у списку.
+            </small>
+          </div>
+        </div>
       ) : (
         <div className="nearby-real-content">
           {(tab === "all" ||
