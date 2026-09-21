@@ -724,11 +724,15 @@ function Search({
   const [
     recentSearches,
     setRecentSearches,
-  ] = useState([
-    "Київ",
-    "КПІ",
-    "Фотографія",
-  ]);
+  ] = useState(
+    authSession?.user?.id
+      ? []
+      : [
+          "Київ",
+          "КПІ",
+          "Фотографія",
+        ]
+  );
 
   const [
     backendPeople,
@@ -741,6 +745,11 @@ function Search({
     setBackendLoading,
   ] =
     useState(false);
+
+  const backendMode =
+    Boolean(
+      authSession?.user?.id
+    );
 
   useEffect(() => {
     let mounted =
@@ -1607,6 +1616,51 @@ function Search({
       );
     };
 
+  async function inviteToYatut() {
+    const inviteUrl =
+      window.location.origin;
+
+    const inviteText =
+      "Приєднуйся до мене у ЯТУТ.";
+
+    try {
+      if (
+        navigator.share
+      ) {
+        await navigator.share({
+          title:
+            "ЯТУТ",
+          text:
+            inviteText,
+          url:
+            inviteUrl,
+        });
+
+        return;
+      }
+
+      await navigator.clipboard?.writeText(
+        inviteUrl
+      );
+
+      showNotice(
+        "Посилання на ЯТУТ скопійовано"
+      );
+    } catch (
+      error
+    ) {
+      if (
+        error?.name !==
+        "AbortError"
+      ) {
+        console.warn(
+          "INVITE SHARE ERROR:",
+          error
+        );
+      }
+    }
+  }
+
   const applySearch = (
     value
   ) => {
@@ -1715,7 +1769,9 @@ function Search({
     );
 
   const filteredSchools =
-    SCHOOLS.filter(
+    backendMode
+      ? []
+      : SCHOOLS.filter(
       (
         item
       ) =>
@@ -1726,7 +1782,9 @@ function Search({
     );
 
   const filteredUniversities =
-    UNIVERSITIES.filter(
+    backendMode
+      ? []
+      : UNIVERSITIES.filter(
       (
         item
       ) =>
@@ -1737,7 +1795,9 @@ function Search({
     );
 
   const filteredWork =
-    WORKS.filter(
+    backendMode
+      ? []
+      : WORKS.filter(
       (
         item
       ) =>
@@ -1748,7 +1808,9 @@ function Search({
     );
 
   const filteredCities =
-    CITIES.filter(
+    backendMode
+      ? []
+      : CITIES.filter(
       (
         item
       ) =>
@@ -1759,7 +1821,9 @@ function Search({
     );
 
   const filteredInterests =
-    INTERESTS.filter(
+    backendMode
+      ? []
+      : INTERESTS.filter(
       (
         item
       ) =>
@@ -1769,7 +1833,9 @@ function Search({
     );
 
   const filteredEvents =
-    EVENTS.filter(
+    backendMode
+      ? []
+      : EVENTS.filter(
       (
         item
       ) =>
@@ -1780,7 +1846,9 @@ function Search({
     );
 
   const filteredCommunities =
-    COMMUNITIES.filter(
+    backendMode
+      ? []
+      : COMMUNITIES.filter(
       (
         item
       ) =>
@@ -1790,7 +1858,9 @@ function Search({
     );
 
   const filteredBusinesses =
-    BUSINESSES.filter(
+    backendMode
+      ? []
+      : BUSINESSES.filter(
       (
         item
       ) =>
@@ -1933,7 +2003,11 @@ function Search({
               );
             }
           }}
-          placeholder="Імʼя, школа, університет, робота, місто..."
+          placeholder={
+            backendMode
+              ? "Імʼя або @username..."
+              : "Імʼя, школа, університет, робота, місто..."
+          }
         />
 
         {query && (
@@ -1961,7 +2035,20 @@ function Search({
 
       <div className="global-search-tabs">
 
-        {TABS.map(
+        {(backendMode
+          ? TABS.filter(
+              (
+                tab
+              ) =>
+                [
+                  "all",
+                  "people",
+                ].includes(
+                  tab.id
+                )
+            )
+          : TABS
+        ).map(
           (
             tab
           ) => (
@@ -2777,13 +2864,48 @@ function Search({
               </div>
 
               <h3>
-                Нічого не знайдено
+                {
+                  backendMode &&
+                  !query.trim()
+                    ? "Поки що тут тихо"
+                    : "Нічого не знайдено"
+                }
               </h3>
 
               <p>
-                Спробуйте імʼя, місто, школу,
-                університет, компанію або інтерес.
+                {
+                  backendMode
+                    ? query.trim()
+                      ? "Перевірте імʼя або @username. Якщо людини ще немає у ЯТУТ — запросіть її."
+                      : "У ЯТУТ поки небагато людей. Запросіть друзів і почніть будувати своє коло."
+                    : "Спробуйте імʼя, місто, школу, університет, компанію або інтерес."
+                }
               </p>
+
+              {backendMode && (
+                <div className="global-search-empty-actions">
+                  <button
+                    type="button"
+                    onClick={
+                      inviteToYatut
+                    }
+                  >
+                    Запросити друга
+                  </button>
+
+                  {query && (
+                    <button
+                      type="button"
+                      className="secondary"
+                      onClick={() =>
+                        setQuery("")
+                      }
+                    >
+                      Очистити пошук
+                    </button>
+                  )}
+                </div>
+              )}
             </div>
           )}
 
@@ -2799,114 +2921,178 @@ function Search({
             </span>
 
             <h3>
-              Ваші звʼязки
+              {
+                backendMode
+                  ? "Люди у ЯТУТ"
+                  : "Ваші звʼязки"
+              }
             </h3>
 
-            <button
-              onClick={() =>
-                setActiveTab(
-                  "people"
-                )
-              }
-            >
-              <span>
-                👥
-              </span>
+            {backendMode ? (
+              <>
+                <button
+                  onClick={() => {
+                    setActiveTab(
+                      "people"
+                    );
+                    setQuery("");
+                  }}
+                >
+                  <span>
+                    👥
+                  </span>
 
-              <div>
-                <strong>
-                  Друзі друзів
-                </strong>
+                  <div>
+                    <strong>
+                      Усі люди
+                    </strong>
 
-                <small>
-                  124 можливі знайомства
-                </small>
-              </div>
+                    <small>
+                      {
+                        backendPeople.length
+                      } доступних профілів
+                    </small>
+                  </div>
 
-              <b>
-                ›
-              </b>
-            </button>
+                  <b>
+                    ›
+                  </b>
+                </button>
 
-            <button
-              onClick={() =>
-                applySearch(
-                  "Київ"
-                )
-              }
-            >
-              <span>
-                📍
-              </span>
+                <button
+                  onClick={
+                    inviteToYatut
+                  }
+                >
+                  <span>
+                    ✨
+                  </span>
 
-              <div>
-                <strong>
-                  Люди у Києві
-                </strong>
+                  <div>
+                    <strong>
+                      Запросити друга
+                    </strong>
 
-                <small>
-                  Поруч із вами
-                </small>
-              </div>
+                    <small>
+                      Поділитися посиланням на ЯТУТ
+                    </small>
+                  </div>
 
-              <b>
-                ›
-              </b>
-            </button>
+                  <b>
+                    ›
+                  </b>
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={() =>
+                    setActiveTab(
+                      "people"
+                    )
+                  }
+                >
+                  <span>
+                    👥
+                  </span>
 
-            <button
-              onClick={() =>
-                setActiveTab(
-                  "schools"
-                )
-              }
-            >
-              <span>
-                🏫
-              </span>
+                  <div>
+                    <strong>
+                      Друзі друзів
+                    </strong>
 
-              <div>
-                <strong>
-                  Однокласники
-                </strong>
+                    <small>
+                      124 можливі знайомства
+                    </small>
+                  </div>
 
-                <small>
-                  Знайти людей зі школи
-                </small>
-              </div>
+                  <b>
+                    ›
+                  </b>
+                </button>
 
-              <b>
-                ›
-              </b>
-            </button>
+                <button
+                  onClick={() =>
+                    applySearch(
+                      "Київ"
+                    )
+                  }
+                >
+                  <span>
+                    📍
+                  </span>
 
-            <button
-              onClick={() =>
-                setActiveTab(
-                  "work"
-                )
-              }
-            >
-              <span>
-                💼
-              </span>
+                  <div>
+                    <strong>
+                      Люди у Києві
+                    </strong>
 
-              <div>
-                <strong>
-                  Колеги
-                </strong>
+                    <small>
+                      Поруч із вами
+                    </small>
+                  </div>
 
-                <small>
-                  Поточна та минула робота
-                </small>
-              </div>
+                  <b>
+                    ›
+                  </b>
+                </button>
 
-              <b>
-                ›
-              </b>
-            </button>
+                <button
+                  onClick={() =>
+                    setActiveTab(
+                      "schools"
+                    )
+                  }
+                >
+                  <span>
+                    🏫
+                  </span>
+
+                  <div>
+                    <strong>
+                      Однокласники
+                    </strong>
+
+                    <small>
+                      Знайти людей зі школи
+                    </small>
+                  </div>
+
+                  <b>
+                    ›
+                  </b>
+                </button>
+
+                <button
+                  onClick={() =>
+                    setActiveTab(
+                      "work"
+                    )
+                  }
+                >
+                  <span>
+                    💼
+                  </span>
+
+                  <div>
+                    <strong>
+                      Колеги
+                    </strong>
+
+                    <small>
+                      Поточна та минула робота
+                    </small>
+                  </div>
+
+                  <b>
+                    ›
+                  </b>
+                </button>
+              </>
+            )}
           </div>
 
+          {!backendMode && (
           <div className="search-side-card">
             <span className="search-side-label">
               НЕДАВНІ
@@ -2945,6 +3131,7 @@ function Search({
 
             </div>
           </div>
+          )}
 
           <div className="search-connection-card">
             <div>
