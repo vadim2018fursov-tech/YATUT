@@ -959,6 +959,14 @@ export function subscribeCommunitiesRealtime({
         table:
           "community_members",
       },
+      {
+        event:
+          "*",
+        schema:
+          "public",
+        table:
+          "community_join_requests",
+      },
     ],
     onPostgresChange:
       onChange,
