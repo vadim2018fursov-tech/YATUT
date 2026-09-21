@@ -6264,7 +6264,19 @@ function Spaces({
           .trim()
           .toLowerCase();
 
-      return spaces.filter(
+      const source =
+        authSession?.user?.id
+          ? spaces.filter(
+              (
+                space
+              ) =>
+                Boolean(
+                  space.backend
+                )
+            )
+          : spaces;
+
+      return source.filter(
         (
           space
         ) => {
@@ -6303,6 +6315,7 @@ function Spaces({
       spaces,
       query,
       typeFilter,
+      authSession?.user?.id,
     ]);
 
   async function refreshCommunity(
