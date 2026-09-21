@@ -7423,6 +7423,9 @@ function App() {
             onNavigate={
               goToPage
             }
+            authSession={
+              authSession
+            }
           />
         );
 
@@ -7447,6 +7450,9 @@ function App() {
             onNavigate={
               goToPage
             }
+            authSession={
+              authSession
+            }
           />
         );
 
@@ -7455,6 +7461,9 @@ function App() {
           <Business
             onNavigate={
               goToPage
+            }
+            authSession={
+              authSession
             }
           />
         );
