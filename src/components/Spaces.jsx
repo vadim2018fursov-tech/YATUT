@@ -5804,9 +5804,11 @@ function Spaces({
     setSpaces,
   ] = useState(
     () =>
-      mergeAcceptedCommunityInvites(
-        loadSpaces()
-      )
+      authSession?.user?.id
+        ? []
+        : mergeAcceptedCommunityInvites(
+            loadSpaces()
+          )
   );
 
   const [
@@ -5862,6 +5864,7 @@ function Spaces({
       }
 
       const resolvedId =
+        !authSession?.user?.id &&
         requestedId ===
         "kyiv-today"
           ? "space-yatut-kyiv"
@@ -6001,6 +6004,12 @@ function Spaces({
     function syncSpaces(
       incoming
     ) {
+      if (
+        authSession?.user?.id
+      ) {
+        return;
+      }
+
       const merged =
         mergeAcceptedCommunityInvites(
           Array.isArray(incoming)
