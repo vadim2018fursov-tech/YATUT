@@ -279,6 +279,7 @@ export default function Notifications({
   onClose,
   onNavigate,
   authSession = null,
+  pageMode = false,
 }) {
   const [
     notifications,
@@ -344,7 +345,10 @@ export default function Notifications({
   ======================================================= */
 
   useEffect(() => {
-    if (!open) {
+    if (
+      !open ||
+      pageMode
+    ) {
       return undefined;
     }
 
@@ -373,6 +377,7 @@ export default function Notifications({
   }, [
     open,
     onClose,
+    pageMode,
   ]);
 
   /* =======================================================
@@ -380,7 +385,10 @@ export default function Notifications({
   ======================================================= */
 
   useEffect(() => {
-    if (!open) {
+    if (
+      !open ||
+      pageMode
+    ) {
       return undefined;
     }
 
@@ -861,7 +869,10 @@ export default function Notifications({
     }
   }
 
-  if (!open) {
+  if (
+    !open &&
+    !pageMode
+  ) {
     return null;
   }
 
@@ -870,7 +881,11 @@ export default function Notifications({
       ref={
         panelRef
       }
-      className="notifications-panel notifications-v2"
+      className={`notifications-panel notifications-v2 ${
+        pageMode
+          ? "notifications-page"
+          : ""
+      }`.trim()}
       aria-label="Сповіщення"
     >
       {/* ===================================================
@@ -971,10 +986,18 @@ export default function Notifications({
             onClick={
               onClose
             }
-            aria-label="Закрити сповіщення"
+            aria-label={
+              pageMode
+                ? "Назад"
+                : "Закрити сповіщення"
+            }
           >
             <YatutIcon
-              name="close"
+              name={
+                pageMode
+                  ? "arrowLeft"
+                  : "close"
+              }
               size={19}
             />
           </button>
