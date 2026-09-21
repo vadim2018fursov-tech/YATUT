@@ -4,6 +4,7 @@ import {
 } from "react";
 
 import YatutIcon from "./YatutIcon";
+import NearbyPlaceEditModal from "./NearbyPlaceEditModal";
 
 import {
   createSavedPlace,
@@ -16,6 +17,7 @@ import {
   deleteNearbyPlaceReview,
   loadNearbyPlaceDetail,
   saveNearbyPlaceReview,
+  updateNearbyPlace,
 } from "../services/nearbyBackendService";
 
 function formatReviewDate(
@@ -86,6 +88,8 @@ function Stars({
 export default function NearbyPlaceDetail({
   authSession,
   placeId,
+  nearbyPlaces = [],
+  onUpdated,
   onBack,
 }) {
   const [
@@ -122,6 +126,11 @@ export default function NearbyPlaceDetail({
   const [
     savingReview,
     setSavingReview,
+  ] = useState(false);
+
+  const [
+    editOpen,
+    setEditOpen,
   ] = useState(false);
 
   async function refresh() {
@@ -231,6 +240,50 @@ export default function NearbyPlaceDetail({
     } finally {
       setSavingReview(
         false
+      );
+    }
+  }
+
+  async function savePlaceChanges(
+    changes,
+    imageFile
+  ) {
+    try {
+      const nextStatus =
+        await updateNearbyPlace(
+          authSession,
+          placeId,
+          changes,
+          imageFile
+        );
+
+      setEditOpen(
+        false
+      );
+
+      await refresh();
+
+      await onUpdated?.();
+
+      if (
+        nextStatus ===
+        "pending"
+      ) {
+        window.alert(
+          "Зміни збережено. Місце знову очікує модерації."
+        );
+      }
+    } catch (
+      error
+    ) {
+      console.warn(
+        "NEARBY PLACE UPDATE ERROR:",
+        error
+      );
+
+      window.alert(
+        error?.message ||
+        "Не вдалося оновити місце."
       );
     }
   }
@@ -385,6 +438,25 @@ export default function NearbyPlaceDetail({
                 }
               </p>
             </div>
+
+            {place.ownSubmission && (
+              <button
+                type="button"
+                className="feature-secondary-button nearby-place-edit-button"
+                onClick={() =>
+                  setEditOpen(
+                    true
+                  )
+                }
+              >
+                <YatutIcon
+                  name="settings"
+                  size={16}
+                />
+
+                Редагувати місце
+              </button>
+            )}
 
             <button
               type="button"
@@ -583,6 +655,25 @@ export default function NearbyPlaceDetail({
               : "Опублікувати відгук"}
           </button>
         </section>
+      )}
+
+      {editOpen && (
+        <NearbyPlaceEditModal
+          place={
+            place
+          }
+          nearbyPlaces={
+            nearbyPlaces
+          }
+          onClose={() =>
+            setEditOpen(
+              false
+            )
+          }
+          onSave={
+            savePlaceChanges
+          }
+        />
       )}
 
       <section className="nearby-place-reviews">
