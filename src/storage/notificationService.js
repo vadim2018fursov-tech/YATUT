@@ -651,6 +651,18 @@ export function getUnreadCount() {
   ).length;
 }
 
+export function replaceNotifications(
+  notifications
+) {
+  return saveNotifications(
+    Array.isArray(
+      notifications
+    )
+      ? notifications
+      : []
+  );
+}
+
 /* =========================================================
    SETTINGS BRIDGE
 ========================================================= */
