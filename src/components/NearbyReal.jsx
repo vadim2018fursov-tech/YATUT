@@ -7,6 +7,7 @@ import {
 import YatutIcon from "./YatutIcon";
 import NearbyPlaceDetail from "./NearbyPlaceDetail";
 import NearbyMap from "./NearbyMap";
+import NearbyCoordinatePicker from "./NearbyCoordinatePicker";
 
 import {
   loadNearbyFeed,
@@ -167,6 +168,16 @@ export default function NearbyReal({
     placeImageFile,
     setPlaceImageFile,
   ] = useState(null);
+
+  const [
+    placeCoordinates,
+    setPlaceCoordinates,
+  ] = useState(null);
+
+  const [
+    coordinatePickerOpen,
+    setCoordinatePickerOpen,
+  ] = useState(false);
 
   const [
     selectedPlaceId,
@@ -432,11 +443,11 @@ export default function NearbyReal({
             feed.city ||
             null,
           latitude:
-            coordinates
+            placeCoordinates
               ?.latitude ??
             null,
           longitude:
-            coordinates
+            placeCoordinates
               ?.longitude ??
             null,
         },
@@ -458,6 +469,14 @@ export default function NearbyReal({
 
       setPlaceImageFile(
         null
+      );
+
+      setPlaceCoordinates(
+        null
+      );
+
+      setCoordinatePickerOpen(
+        false
       );
 
       setAddOpen(
@@ -1091,6 +1110,103 @@ export default function NearbyReal({
                     placeholder="Адреса"
                   />
 
+                  <div className="nearby-place-coordinate-field">
+                    <div>
+                      <span>
+                        Точка на карті
+                      </span>
+
+                      <strong>
+                        {placeCoordinates
+                          ? `${placeCoordinates.latitude.toFixed(
+                              5
+                            )}, ${placeCoordinates.longitude.toFixed(
+                              5
+                            )}`
+                          : "Координати ще не вибрані"}
+                      </strong>
+
+                      <small>
+                        Геолокація акаунта не потрібна — точку можна поставити вручну.
+                      </small>
+                    </div>
+
+                    <div className="nearby-place-coordinate-actions">
+                      <button
+                        type="button"
+                        className="feature-secondary-button"
+                        onClick={() =>
+                          setCoordinatePickerOpen(
+                            (
+                              value
+                            ) =>
+                              !value
+                          )
+                        }
+                      >
+                        <YatutIcon
+                          name="pin"
+                          size={14}
+                        />
+
+                        {placeCoordinates
+                          ? "Змінити точку"
+                          : "Вибрати на карті"}
+                      </button>
+
+                      {placeCoordinates && (
+                        <button
+                          type="button"
+                          className="nearby-place-coordinate-clear"
+                          onClick={() =>
+                            setPlaceCoordinates(
+                              null
+                            )
+                          }
+                        >
+                          Очистити
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  {coordinatePickerOpen && (
+                    <div className="nearby-place-coordinate-picker-wrap">
+                      <NearbyCoordinatePicker
+                        value={
+                          placeCoordinates
+                        }
+                        city={
+                          city ||
+                          feed.city ||
+                          ""
+                        }
+                        nearbyPlaces={
+                          feed.places
+                        }
+                        userCoordinates={
+                          coordinates
+                        }
+                        onClose={() =>
+                          setCoordinatePickerOpen(
+                            false
+                          )
+                        }
+                        onChange={(
+                          next
+                        ) => {
+                          setPlaceCoordinates(
+                            next
+                          );
+
+                          setCoordinatePickerOpen(
+                            false
+                          );
+                        }}
+                      />
+                    </div>
+                  )}
+
                   <label className="nearby-place-photo-input">
                     <span>
                       Фото місця
@@ -1149,7 +1265,7 @@ export default function NearbyReal({
                     </button>
 
                     <small>
-                      Звичайні користувачі надсилають місце на модерацію. Точні координати додаються лише якщо ви самі увімкнули геолокацію.
+                      Звичайні користувачі надсилають місце на модерацію. Координати можна поставити вручну на карті або використати геолокацію лише за власним дозволом.
                     </small>
                   </div>
                 </div>
