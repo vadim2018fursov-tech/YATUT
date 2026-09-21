@@ -575,6 +575,10 @@ export default function Profile({
                   socialProfile?.status ??
                   remote?.status ??
                   previous.status,
+                statusText:
+                  socialProfile?.statusText ??
+                  remote?.status_text ??
+                  previous.statusText,
                 avatar:
                   socialProfile?.avatar ??
                   remote?.avatar_url ??
@@ -988,25 +992,51 @@ export default function Profile({
      STATUS
   ======================================================= */
 
-  function updateStatus(
+  async function updateStatus(
     status,
     statusText
   ) {
+    const nextProfile = {
+      ...profile,
+      status,
+      statusText,
+    };
+
     setProfile(
-      (
-        previous
-      ) => ({
-        ...previous,
-
-        status,
-
-        statusText,
-      })
+      nextProfile
     );
 
     setStatusOpen(
       false
     );
+
+    window.dispatchEvent(
+      new CustomEvent(
+        "yatut:profile-updated",
+        {
+          detail:
+            nextProfile,
+        }
+      )
+    );
+
+    if (
+      authSession?.user?.id
+    ) {
+      try {
+        await updateMyProfile(
+          authSession,
+          nextProfile
+        );
+      } catch (
+        error
+      ) {
+        console.warn(
+          "PROFILE STATUS SAVE ERROR:",
+          error
+        );
+      }
+    }
   }
 
   async function publishProfilePost() {
