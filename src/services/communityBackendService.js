@@ -140,6 +140,33 @@ function mapCommunity(
           Boolean
         );
 
+  const memberRoles =
+    Object.fromEntries(
+      (
+        Array.isArray(
+          members
+        )
+          ? members
+          : []
+      )
+        .filter(
+          (
+            member
+          ) =>
+            member.community_id ===
+            row.id
+        )
+        .map(
+          (
+            member
+          ) => [
+            member.user_id,
+            member.role ||
+            "member",
+          ]
+        )
+    );
+
   return {
     ...data,
     id:
@@ -194,6 +221,7 @@ function mapCommunity(
       row.owner_id,
     members:
       normalizedMembers,
+    memberRoles,
     modules:
       Array.isArray(
         row.modules
