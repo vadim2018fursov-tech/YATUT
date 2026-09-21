@@ -652,3 +652,43 @@ export function subscribeFeedRealtime({
     onStatus,
   });
 }
+
+
+export function subscribeNotificationsRealtime({
+  session,
+  onChange,
+  onStatus,
+}) {
+  if (
+    !session?.access_token ||
+    !session?.user?.id
+  ) {
+    return {
+      updateAccessToken:
+        () => {},
+      close:
+        () => {},
+    };
+  }
+
+  return createRealtimeChannel({
+    session,
+    topic:
+      `notifications:${session.user.id}`,
+    changes: [
+      {
+        event:
+          "*",
+        schema:
+          "public",
+        table:
+          "notifications",
+        filter:
+          `user_id=eq.${session.user.id}`,
+      },
+    ],
+    onPostgresChange:
+      onChange,
+    onStatus,
+  });
+}
