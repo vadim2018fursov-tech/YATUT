@@ -97,6 +97,265 @@ const SETTINGS_STORAGE_KEY =
   "yatut-settings-v1";
 
 /* =========================================================
+   URL ROUTER
+========================================================= */
+
+const ROUTE_TITLES = {
+  home: "ЯТУТ",
+  now: "Зараз · ЯТУТ",
+  pulse: "PULSE · ЯТУТ",
+  clips: "Кліпи · PULSE · ЯТУТ",
+  watch: "Відео · PULSE · ЯТУТ",
+  live: "LIVE · PULSE · ЯТУТ",
+  cityPulse: "Місто · PULSE · ЯТУТ",
+  create: "Створити · ЯТУТ",
+  createMedia: "Створити медіа · ЯТУТ",
+  creatorStudio: "Студія автора · ЯТУТ",
+  creator: "Автор · ЯТУТ",
+  friends: "Друзі · ЯТУТ",
+  search: "Пошук · ЯТУТ",
+  chats: "Чати · ЯТУТ",
+  communities: "Спільноти · ЯТУТ",
+  events: "Події · ЯТУТ",
+  profile: "Профіль · ЯТУТ",
+  nearby: "Поруч · ЯТУТ",
+  business: "Бізнес · ЯТУТ",
+  saved: "Збережене · ЯТУТ",
+  settings: "Налаштування · ЯТУТ",
+};
+
+function decodeRoutePart(value) {
+  try {
+    return decodeURIComponent(value || "");
+  } catch {
+    return value || "";
+  }
+}
+
+function routeFromLocation() {
+  const url = new URL(window.location.href);
+  const parts = url.pathname
+    .split("/")
+    .filter(Boolean)
+    .map(decodeRoutePart);
+  const first = parts[0] || "";
+  const query = url.searchParams;
+
+  if (!first) return { page: "home", payload: null };
+
+  if (first === "posts" && parts[1]) {
+    return {
+      page: "home",
+      payload: {
+        postId: parts[1],
+        commentId: query.get("comment") || null,
+        openComments: query.get("comments") === "1",
+      },
+    };
+  }
+
+  if (first === "people" && parts[1]) {
+    return { page: "friends", payload: { personId: parts[1] } };
+  }
+
+  if (first === "pulse") {
+    if (parts[1] === "clips") {
+      return { page: "clips", payload: parts[2] ? { videoId: parts[2] } : null };
+    }
+    if (parts[1] === "watch") {
+      return { page: "watch", payload: parts[2] ? { videoId: parts[2] } : null };
+    }
+    if (parts[1] === "live") {
+      return { page: "live", payload: parts[2] ? { videoId: parts[2] } : null };
+    }
+    if (parts[1] === "city") {
+      return { page: "cityPulse", payload: { cityId: parts[2] || "kyiv" } };
+    }
+    return { page: "pulse", payload: null };
+  }
+
+  if (first === "chats") {
+    const chatId = parts[1] || query.get("chat");
+    const personId = query.get("person");
+    return {
+      page: "chats",
+      payload:
+        chatId || personId
+          ? { chatId: chatId || null, personId: personId || null }
+          : null,
+    };
+  }
+
+  if (first === "communities") {
+    return {
+      page: "communities",
+      payload:
+        parts[1] || query.get("post")
+          ? {
+              communityId: parts[1] || null,
+              postId: query.get("post") || null,
+            }
+          : null,
+    };
+  }
+
+  if (first === "events") {
+    if (parts[1]) return { page: "events", payload: { eventId: parts[1] } };
+    if (query.get("create") === "1") {
+      return {
+        page: "events",
+        payload: {
+          createEvent: true,
+          communityId: query.get("community") || null,
+        },
+      };
+    }
+    return { page: "events", payload: null };
+  }
+
+  if (first === "profile") {
+    if (parts[1] === "posts" && parts[2]) {
+      return { page: "profile", payload: { postId: parts[2] } };
+    }
+    const tab = query.get("tab");
+    const edit = query.get("edit") === "1";
+    return {
+      page: "profile",
+      payload: tab || edit ? { tab: tab || null, action: edit ? "edit" : null } : null,
+    };
+  }
+
+  if (first === "nearby") {
+    return { page: "nearby", payload: parts[1] ? { placeId: parts[1] } : null };
+  }
+
+  if (first === "business") {
+    return {
+      page: "business",
+      payload: parts[1] ? { businessId: parts[1] } : null,
+    };
+  }
+
+  if (first === "creator" && parts[1]) {
+    return { page: "creator", payload: { creatorId: parts[1] } };
+  }
+
+  if (first === "create") {
+    if (parts[1] === "media") {
+      return {
+        page: "createMedia",
+        payload: { type: parts[2] || "video" },
+      };
+    }
+    return { page: "create", payload: null };
+  }
+
+  if (first === "studio") return { page: "creatorStudio", payload: null };
+
+  if (first === "search") {
+    const search = query.get("q");
+    const tab = query.get("tab");
+    return {
+      page: "search",
+      payload: search || tab ? { query: search || "", tab: tab || "all" } : null,
+    };
+  }
+
+  if (first === "settings") {
+    return {
+      page: "settings",
+      payload: parts[1] ? { section: parts[1] } : null,
+    };
+  }
+
+  const simple = {
+    now: "now",
+    friends: "friends",
+    saved: "saved",
+  };
+
+  return simple[first]
+    ? { page: simple[first], payload: null }
+    : { page: "home", payload: null };
+}
+
+function routeToUrl(page, payload = null) {
+  const encode = (value) => encodeURIComponent(String(value));
+
+  switch (page) {
+    case "home": {
+      if (!payload?.postId) return "/";
+      const params = new URLSearchParams();
+      if (payload.commentId) params.set("comment", payload.commentId);
+      if (payload.openComments) params.set("comments", "1");
+      const suffix = params.toString();
+      return `/posts/${encode(payload.postId)}${suffix ? `?${suffix}` : ""}`;
+    }
+    case "now": return "/now";
+    case "pulse": return "/pulse";
+    case "clips":
+      return payload?.videoId ? `/pulse/clips/${encode(payload.videoId)}` : "/pulse/clips";
+    case "watch":
+      return payload?.videoId ? `/pulse/watch/${encode(payload.videoId)}` : "/pulse/watch";
+    case "live":
+      return payload?.videoId ? `/pulse/live/${encode(payload.videoId)}` : "/pulse/live";
+    case "cityPulse":
+      return `/pulse/city/${encode(payload?.cityId || "kyiv")}`;
+    case "create": return "/create";
+    case "createMedia":
+      return `/create/media/${encode(payload?.type || "video")}`;
+    case "creatorStudio": return "/studio";
+    case "creator":
+      return `/creator/${encode(payload?.creatorId || payload?.personId || payload?.authorId || "maria")}`;
+    case "friends":
+      return payload?.personId ? `/people/${encode(payload.personId)}` : "/friends";
+    case "search": {
+      const params = new URLSearchParams();
+      if (payload?.query || payload?.search) params.set("q", payload.query || payload.search);
+      if (payload?.tab && payload.tab !== "all") params.set("tab", payload.tab);
+      const suffix = params.toString();
+      return `/search${suffix ? `?${suffix}` : ""}`;
+    }
+    case "chats": {
+      const chatId = payload?.chatId;
+      const personId = typeof payload === "string" ? payload : payload?.personId;
+      const params = new URLSearchParams();
+      if (personId) params.set("person", personId);
+      const suffix = params.toString();
+      return `/chats${chatId ? `/${encode(chatId)}` : ""}${suffix ? `?${suffix}` : ""}`;
+    }
+    case "communities": {
+      const communityId = payload?.communityId || payload?.spaceId;
+      const params = new URLSearchParams();
+      if (payload?.postId) params.set("post", payload.postId);
+      const suffix = params.toString();
+      return `/communities${communityId ? `/${encode(communityId)}` : ""}${suffix ? `?${suffix}` : ""}`;
+    }
+    case "events":
+      if (payload?.eventId) return `/events/${encode(payload.eventId)}`;
+      if (payload?.createEvent) {
+        const params = new URLSearchParams({ create: "1" });
+        if (payload.communityId) params.set("community", payload.communityId);
+        return `/events?${params.toString()}`;
+      }
+      return "/events";
+    case "profile":
+      if (payload?.postId) return `/profile/posts/${encode(payload.postId)}`;
+      if (payload?.action === "edit") return "/profile?edit=1";
+      if (payload?.tab) return `/profile?tab=${encode(payload.tab)}`;
+      return "/profile";
+    case "nearby":
+      return payload?.placeId ? `/nearby/${encode(payload.placeId)}` : "/nearby";
+    case "business":
+      return payload?.businessId ? `/business/${encode(payload.businessId)}` : "/business";
+    case "saved": return "/saved";
+    case "settings":
+      return payload?.section ? `/settings/${encode(payload.section)}` : "/settings";
+    default: return "/";
+  }
+}
+
+/* =========================================================
    MAIN NAVIGATION
 ========================================================= */
 
@@ -3069,7 +3328,7 @@ function Home({
           "",
 
         path:
-          `#post=${encodeURIComponent(post.id)}`,
+          `/posts/${encodeURIComponent(post.id)}`,
       });
 
     if (
@@ -4090,7 +4349,9 @@ function App() {
     setCurrentPage,
   ] =
     useState(
-      "home"
+      () =>
+        routeFromLocation()
+          .page
     );
 
   const [
@@ -4434,17 +4695,49 @@ function App() {
     themeMode,
   ]);
 
+  useEffect(() => {
+    document.title =
+      ROUTE_TITLES[
+        currentPage
+      ] ||
+      "ЯТУТ";
+
+    document
+      .querySelector(
+        'meta[name="theme-color"]'
+      )
+      ?.setAttribute(
+        "content",
+        themeIsDark
+          ? "#0d0d14"
+          : "#f7f7fb"
+      );
+  }, [
+    currentPage,
+    themeIsDark,
+  ]);
+
   /* =======================================================
      NAVIGATION
   ======================================================= */
 
   function goToPage(
     page,
-    payload = null
+    payload = null,
+    options = {}
   ) {
     if (!page) {
       return;
     }
+
+    const {
+      updateHistory =
+        true,
+      replaceHistory =
+        false,
+      scroll =
+        true,
+    } = options;
 
     if (
       payload !==
@@ -4626,21 +4919,95 @@ function App() {
       );
     }
 
+    if (
+      updateHistory
+    ) {
+      const targetUrl =
+        routeToUrl(
+          page,
+          payload
+        );
+
+      const currentUrl =
+        `${window.location.pathname}${window.location.search}${window.location.hash}`;
+
+      if (
+        targetUrl &&
+        targetUrl !==
+          currentUrl
+      ) {
+        window.history[
+          replaceHistory
+            ? "replaceState"
+            : "pushState"
+        ](
+          {
+            yatut:
+              true,
+            page,
+            payload,
+          },
+          "",
+          targetUrl
+        );
+      }
+    }
+
     setCurrentPage(
       page
     );
 
-    window.scrollTo({
-      top:
-        0,
+    if (
+      scroll
+    ) {
+      window.scrollTo({
+        top:
+          0,
 
-      left:
-        0,
+        left:
+          0,
 
-      behavior:
-        "auto",
-    });
+        behavior:
+          "auto",
+      });
+    }
   }
+
+  /* =======================================================
+     BROWSER HISTORY
+  ======================================================= */
+
+  useEffect(() => {
+    function applyLocation() {
+      const route =
+        routeFromLocation();
+
+      goToPage(
+        route.page,
+        route.payload,
+        {
+          updateHistory:
+            false,
+          scroll:
+            false,
+        }
+      );
+    }
+
+    applyLocation();
+
+    window.addEventListener(
+      "popstate",
+      applyLocation
+    );
+
+    return () => {
+      window.removeEventListener(
+        "popstate",
+        applyLocation
+      );
+    };
+  }, []);
 
   /* =======================================================
      SHARED LINK BRIDGE
@@ -4682,6 +5049,10 @@ function App() {
                 "post"
               ) ||
               null,
+          },
+          {
+            replaceHistory:
+              true,
           }
         );
 
@@ -4698,6 +5069,10 @@ function App() {
           "events",
           {
             eventId,
+          },
+          {
+            replaceHistory:
+              true,
           }
         );
 
@@ -4715,6 +5090,10 @@ function App() {
           {
             postId:
               profilePostId,
+          },
+          {
+            replaceHistory:
+              true,
           }
         );
 
@@ -4731,6 +5110,10 @@ function App() {
           "home",
           {
             postId,
+          },
+          {
+            replaceHistory:
+              true,
           }
         );
       }
@@ -4764,35 +5147,12 @@ function App() {
       return;
     }
 
-    setNotificationsOpen(
-      false
+    goToPage(
+      "chats",
+      {
+        personId,
+      }
     );
-
-    /*
-      Переход в чат из Friends/Profile также считается
-      просмотром message-уведомлений.
-    */
-
-    markChatNotificationsRead();
-
-    setChatPersonId(
-      personId
-    );
-
-    setCurrentPage(
-      "chats"
-    );
-
-    window.scrollTo({
-      top:
-        0,
-
-      left:
-        0,
-
-      behavior:
-        "auto",
-    });
   }
 
   /* =======================================================
