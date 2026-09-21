@@ -2941,3 +2941,12 @@ body.yatut-dark-mode .notification-action-status {
   background: #1d3b32;
   color: #85d8b7;
 }
+
+
+.notification-avatar img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  border-radius: inherit;
+}
