@@ -7085,3 +7085,321 @@ body.yatut-dark-mode
 .yatut-dark-mode .nearby-map-legend-items > span {
   color: #c8cad3;
 }
+
+
+/* =========================================================
+   NEARBY COORDINATE PICKER
+========================================================= */
+
+.nearby-place-coordinate-field {
+  min-height: 76px;
+  padding: 10px 11px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border: 1px solid #dfe2e8;
+  border-radius: 13px;
+  background: #fff;
+}
+
+.nearby-place-coordinate-field > div:first-child {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.nearby-place-coordinate-field span {
+  color: #635bff;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .05em;
+}
+
+.nearby-place-coordinate-field strong {
+  font-size: 10px;
+  color: #343743;
+}
+
+.nearby-place-coordinate-field small {
+  color: #969aa5;
+  font-size: 7px;
+  line-height: 1.4;
+}
+
+.nearby-place-coordinate-actions {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nearby-place-coordinate-actions .feature-secondary-button {
+  min-height: 36px;
+  white-space: nowrap;
+}
+
+.nearby-place-coordinate-clear {
+  min-height: 34px;
+  padding: 0 8px;
+  border-radius: 9px;
+  color: #c94b4b;
+  font-size: 8px;
+  font-weight: 800;
+}
+
+.nearby-place-coordinate-picker-wrap {
+  grid-column: 1 / -1 !important;
+}
+
+.nearby-coordinate-picker {
+  overflow: hidden;
+  border: 1px solid #dedfe6;
+  border-radius: 17px;
+  background: #fff;
+}
+
+.nearby-coordinate-picker > header {
+  padding: 13px 14px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  border-bottom: 1px solid #eceef3;
+}
+
+.nearby-coordinate-picker > header > div {
+  min-width: 0;
+}
+
+.nearby-coordinate-picker > header span {
+  color: #635bff;
+  font-size: 7px;
+  font-weight: 900;
+  letter-spacing: .09em;
+}
+
+.nearby-coordinate-picker > header h3 {
+  margin: 3px 0;
+  font-size: 13px;
+}
+
+.nearby-coordinate-picker > header p {
+  margin: 0;
+  color: #8b909b;
+  font-size: 8px;
+  line-height: 1.5;
+}
+
+.nearby-coordinate-picker > header > button {
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  border-radius: 9px;
+  color: #777c88;
+  font-size: 18px;
+}
+
+.nearby-coordinate-picker__stage {
+  position: relative;
+  height: 390px;
+  overflow: hidden;
+  background: #e9edf0;
+  touch-action: none;
+  cursor: grab;
+  user-select: none;
+}
+
+.nearby-coordinate-picker__stage:active {
+  cursor: grabbing;
+}
+
+.nearby-coordinate-picker__tile {
+  position: absolute;
+  width: 256px;
+  height: 256px;
+  max-width: none;
+  pointer-events: none;
+  user-select: none;
+}
+
+.nearby-coordinate-picker__shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(99,91,255,.02),
+      rgba(23,24,39,.035)
+    );
+}
+
+.nearby-coordinate-picker__pin {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  top: 50%;
+  width: 44px;
+  height: 44px;
+  transform:
+    translate(-50%, -100%)
+    rotate(-45deg);
+  display: grid;
+  place-items: center;
+  border: 4px solid #fff;
+  border-radius: 50% 50% 50% 11px;
+  background: #635bff;
+  color: #fff;
+  box-shadow:
+    0 12px 30px rgba(54,46,170,.32);
+  pointer-events: none;
+}
+
+.nearby-coordinate-picker__pin svg {
+  transform: rotate(45deg);
+}
+
+.nearby-coordinate-picker__pin::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 9px);
+  width: 9px;
+  height: 4px;
+  transform:
+    translateX(-50%)
+    rotate(45deg);
+  border-radius: 50%;
+  background: rgba(23,24,39,.24);
+  filter: blur(1px);
+}
+
+.nearby-coordinate-picker__controls {
+  position: absolute;
+  z-index: 7;
+  top: 12px;
+  right: 12px;
+  overflow: hidden;
+  display: grid;
+  border: 1px solid rgba(23,24,39,.11);
+  border-radius: 11px;
+  background: rgba(255,255,255,.96);
+  box-shadow: 0 7px 20px rgba(29,31,46,.12);
+}
+
+.nearby-coordinate-picker__controls button {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  color: #404451;
+  font-size: 20px;
+  font-weight: 750;
+}
+
+.nearby-coordinate-picker__controls button + button {
+  border-top: 1px solid #eceef3;
+}
+
+.nearby-coordinate-picker__attribution {
+  position: absolute;
+  z-index: 7;
+  right: 6px;
+  bottom: 5px;
+  padding: 3px 6px;
+  border-radius: 5px;
+  background: rgba(255,255,255,.83);
+  color: #5f6571;
+  font-size: 7px;
+  text-decoration: none;
+}
+
+.nearby-coordinate-picker > footer {
+  padding: 11px 13px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-top: 1px solid #eceef3;
+}
+
+.nearby-coordinate-picker > footer > div {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.nearby-coordinate-picker > footer strong {
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+.nearby-coordinate-picker > footer span {
+  color: #969aa5;
+  font-size: 7px;
+}
+
+.yatut-dark-mode .nearby-place-coordinate-field,
+.yatut-dark-mode .nearby-coordinate-picker {
+  border-color: rgba(255,255,255,.07);
+  background: #191b24;
+}
+
+.yatut-dark-mode .nearby-place-coordinate-field strong,
+.yatut-dark-mode .nearby-coordinate-picker > header h3,
+.yatut-dark-mode .nearby-coordinate-picker > footer strong {
+  color: #f4f4f8;
+}
+
+.yatut-dark-mode .nearby-coordinate-picker > header,
+.yatut-dark-mode .nearby-coordinate-picker > footer {
+  border-color: rgba(255,255,255,.07);
+}
+
+.yatut-dark-mode .nearby-coordinate-picker__controls {
+  border-color: rgba(255,255,255,.08);
+  background: rgba(25,27,36,.96);
+}
+
+.yatut-dark-mode .nearby-coordinate-picker__controls button {
+  color: #f3f3f8;
+}
+
+.yatut-dark-mode .nearby-coordinate-picker__controls button + button {
+  border-color: rgba(255,255,255,.07);
+}
+
+@media (max-width: 560px) {
+  .nearby-place-coordinate-field {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .nearby-place-coordinate-actions {
+    width: 100%;
+  }
+
+  .nearby-place-coordinate-actions .feature-secondary-button {
+    flex: 1;
+  }
+
+  .nearby-coordinate-picker {
+    border-radius: 14px;
+  }
+
+  .nearby-coordinate-picker__stage {
+    height: 330px;
+  }
+
+  .nearby-coordinate-picker > footer {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .nearby-coordinate-picker > footer .feature-primary-button {
+    width: 100%;
+  }
+}
