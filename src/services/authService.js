@@ -1,8 +1,14 @@
+const DEFAULT_SUPABASE_URL =
+  "https://yqskwqahmkeiconsrhoy.supabase.co";
+
+const DEFAULT_SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_v5dIgaWnA2cHe3d15jsoOQ_ub6gsx4W";
+
 const SUPABASE_URL =
   String(
     import.meta.env
       .VITE_SUPABASE_URL ||
-      ""
+      DEFAULT_SUPABASE_URL
   )
     .trim()
     .replace(
@@ -13,8 +19,10 @@ const SUPABASE_URL =
 const SUPABASE_ANON_KEY =
   String(
     import.meta.env
-      .VITE_SUPABASE_ANON_KEY ||
-      ""
+      .VITE_SUPABASE_PUBLISHABLE_KEY ||
+      import.meta.env
+        .VITE_SUPABASE_ANON_KEY ||
+      DEFAULT_SUPABASE_PUBLISHABLE_KEY
   ).trim();
 
 const SESSION_KEY =
