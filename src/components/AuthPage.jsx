@@ -8,9 +8,11 @@ import "../styles/auth.css";
 import {
   getAuthCapabilities,
   isAuthBackendConfigured,
+  requestPasswordReset,
   signInWithOAuth,
   signInWithPassword,
   signUp,
+  updatePassword,
 } from "../services/authService";
 
 export default function AuthPage({
@@ -24,7 +26,11 @@ export default function AuthPage({
     setMode,
   ] =
     useState(
-      "login"
+      () =>
+        window.location.pathname ===
+        "/auth/reset"
+          ? "reset"
+          : "login"
     );
 
   const [
@@ -36,6 +42,7 @@ export default function AuthPage({
       username: "",
       email: "",
       password: "",
+      confirmPassword: "",
     });
 
   const [
@@ -119,6 +126,55 @@ export default function AuthPage({
     setBusy(true);
 
     try {
+      if (
+        mode ===
+        "forgot"
+      ) {
+        await requestPasswordReset(
+          form.email.trim()
+        );
+
+        setMessage(
+          "Ми надіслали лист для відновлення пароля. Перевірте пошту та відкрийте посилання з листа."
+        );
+
+        return;
+      }
+
+      if (
+        mode ===
+        "reset"
+      ) {
+        if (
+          form.password.length <
+          8
+        ) {
+          throw new Error(
+            "Пароль має містити щонайменше 8 символів."
+          );
+        }
+
+        if (
+          form.password !==
+          form.confirmPassword
+        ) {
+          throw new Error(
+            "Паролі не співпадають."
+          );
+        }
+
+        const session =
+          await updatePassword(
+            form.password
+          );
+
+        onAuthenticated?.(
+          session
+        );
+
+        return;
+      }
+
       if (
         mode ===
         "register"
@@ -234,14 +290,26 @@ export default function AuthPage({
           {mode ===
           "login"
             ? "З поверненням"
-            : "Створити акаунт"}
+            : mode ===
+              "register"
+            ? "Створити акаунт"
+            : mode ===
+              "forgot"
+            ? "Відновити пароль"
+            : "Новий пароль"}
         </h1>
 
         <p className="auth-lead">
           {mode ===
           "login"
             ? "Увійдіть, щоб продовжити у ЯТУТ."
-            : "Ваш профіль, друзі, чати та PULSE будуть привʼязані до одного акаунта."}
+            : mode ===
+              "register"
+            ? "Ваш профіль, друзі, чати та PULSE будуть привʼязані до одного акаунта."
+            : mode ===
+              "forgot"
+            ? "Вкажіть email акаунта. Ми надішлемо посилання для зміни пароля."
+            : "Введіть новий пароль для вашого акаунта ЯТУТ."}
         </p>
 
         {!configured && (
@@ -253,7 +321,9 @@ export default function AuthPage({
           </div>
         )}
 
-        <div className="auth-tabs">
+        {(mode === "login" ||
+          mode === "register") && (
+          <div className="auth-tabs">
           <button
             type="button"
             className={
@@ -292,6 +362,29 @@ export default function AuthPage({
             Реєстрація
           </button>
         </div>
+        )}
+
+        {(mode === "forgot" ||
+          mode === "reset") && (
+          <button
+            className="auth-back-link"
+            type="button"
+            onClick={() => {
+              setMode(
+                "login"
+              );
+              setError("");
+              setMessage("");
+              window.history.replaceState(
+                {},
+                "",
+                "/auth"
+              );
+            }}
+          >
+            ← Повернутися до входу
+          </button>
+        )}
 
         <form
           className="auth-form"
@@ -350,7 +443,9 @@ export default function AuthPage({
             </>
           )}
 
-          <label className="auth-field">
+          {mode !==
+            "reset" && (
+            <label className="auth-field">
             <span>
               Email
             </span>
@@ -373,8 +468,11 @@ export default function AuthPage({
               required
             />
           </label>
+          )}
 
-          <label className="auth-field">
+          {mode !==
+            "forgot" && (
+            <label className="auth-field">
             <span>
               Пароль
             </span>
@@ -402,6 +500,51 @@ export default function AuthPage({
               required
             />
           </label>
+          )}
+
+          {mode ===
+            "login" && (
+            <button
+              className="auth-forgot-link"
+              type="button"
+              onClick={() => {
+                setMode(
+                  "forgot"
+                );
+                setError("");
+                setMessage("");
+              }}
+            >
+              Забули пароль?
+            </button>
+          )}
+
+          {mode ===
+            "reset" && (
+            <label className="auth-field">
+              <span>
+                Повторіть пароль
+              </span>
+
+              <input
+                type="password"
+                value={
+                  form.confirmPassword
+                }
+                onChange={(
+                  event
+                ) =>
+                  patch(
+                    "confirmPassword",
+                    event.target.value
+                  )
+                }
+                autoComplete="new-password"
+                minLength={8}
+                required
+              />
+            </label>
+          )}
 
           <button
             className="auth-primary"
@@ -416,15 +559,26 @@ export default function AuthPage({
               : mode ===
                 "login"
               ? "Увійти"
-              : "Створити акаунт"}
+              : mode ===
+                "register"
+              ? "Створити акаунт"
+              : mode ===
+                "forgot"
+              ? "Надіслати посилання"
+              : "Зберегти новий пароль"}
           </button>
         </form>
 
-        <div className="auth-divider">
-          або
-        </div>
+        {(mode ===
+          "login" ||
+          mode ===
+            "register") && (
+          <>
+            <div className="auth-divider">
+              або
+            </div>
 
-        <div className="auth-socials">
+            <div className="auth-socials">
           <button
             className="auth-social"
             type="button"
@@ -462,9 +616,13 @@ export default function AuthPage({
               ? "Facebook"
               : "Facebook · скоро"}
           </button>
-        </div>
+            </div>
+          </>
+        )}
 
         {configured &&
+          (mode === "login" ||
+            mode === "register") &&
           !providers.google &&
           !providers.facebook && (
           <div className="auth-message">
