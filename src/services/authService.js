@@ -782,6 +782,12 @@ export async function updateMyProfile(
     status:
       profile?.status ||
       "Я тут",
+    avatar_url:
+      profile?.avatar ||
+      null,
+    cover_url:
+      profile?.cover ||
+      null,
     updated_at:
       new Date().toISOString(),
   };
