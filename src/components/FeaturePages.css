@@ -5889,3 +5889,328 @@ body.yatut-dark-mode
     width: 100%;
   }
 }
+
+
+/* =========================================================
+   NEARBY REAL MODE
+========================================================= */
+
+.nearby-real {
+  min-width: 0;
+}
+
+.nearby-real-toolbar {
+  margin: 16px 0 12px;
+  display: grid;
+  grid-template-columns:
+    minmax(170px, 1.4fr)
+    minmax(140px, .8fr)
+    auto
+    auto;
+  gap: 8px;
+  align-items: end;
+}
+
+.nearby-real-toolbar > label {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.nearby-real-toolbar > label > span {
+  color: #8e929c;
+  font-size: 8px;
+  font-weight: 800;
+}
+
+.nearby-real-toolbar input,
+.nearby-real-toolbar select,
+.nearby-place-submit input,
+.nearby-place-submit textarea {
+  width: 100%;
+  min-height: 42px;
+  padding: 0 11px;
+  border: 1px solid #e1e3e9;
+  border-radius: 12px;
+  outline: 0;
+  background: #ffffff;
+  color: #343743;
+  font: inherit;
+  font-size: 10px;
+}
+
+.nearby-place-submit textarea {
+  min-height: 88px;
+  padding-top: 10px;
+  resize: vertical;
+}
+
+.nearby-real-location {
+  min-height: 42px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1px solid #dedfe7;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #606572;
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.nearby-real-search {
+  margin-bottom: 10px;
+}
+
+.nearby-real-content {
+  display: grid;
+  gap: 14px;
+}
+
+.nearby-real-section {
+  padding: 15px;
+  border: 1px solid #e4e6ec;
+  border-radius: 19px;
+  background: #ffffff;
+}
+
+.nearby-real-section > header {
+  margin-bottom: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.nearby-real-section > header > div:first-child {
+  min-width: 0;
+}
+
+.nearby-real-section > header span {
+  display: block;
+  color: #7169e8;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .09em;
+}
+
+.nearby-real-section > header h2 {
+  margin: 3px 0 0;
+  color: #292c38;
+  font-size: 17px;
+}
+
+.nearby-real-section > header > strong,
+.nearby-real-section-actions > strong {
+  min-width: 34px;
+  height: 34px;
+  padding: 0 8px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: #eceaff;
+  color: #635bff;
+  font-size: 9px;
+}
+
+.nearby-real-section-actions {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.nearby-real-section-actions button {
+  min-height: 34px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 10px;
+  background: #635bff;
+  color: #ffffff;
+  font-size: 8px;
+  font-weight: 850;
+}
+
+.nearby-real-list {
+  display: grid;
+  gap: 7px;
+}
+
+.nearby-real-item {
+  width: 100%;
+  min-height: 78px;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: auto minmax(0,1fr) auto;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid #eceef3;
+  border-radius: 14px;
+  background: #fbfbfd;
+  color: inherit;
+  text-align: left;
+}
+
+.nearby-real-item > div {
+  min-width: 0;
+}
+
+.nearby-real-item strong,
+.nearby-real-item p,
+.nearby-real-item small {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nearby-real-item strong {
+  font-size: 11px;
+}
+
+.nearby-real-item p {
+  margin: 3px 0 0;
+  color: #858a96;
+  font-size: 9px;
+}
+
+.nearby-real-item small {
+  margin-top: 3px;
+  color: #9a9ea9;
+  font-size: 8px;
+}
+
+.nearby-real-empty {
+  margin: 0;
+  padding: 18px;
+  border-radius: 14px;
+  background: #f7f7fb;
+  color: #8d919c;
+  font-size: 10px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.nearby-place-submit {
+  margin-bottom: 12px;
+  padding: 12px;
+  display: grid;
+  grid-template-columns:
+    minmax(0,1fr)
+    minmax(0,.7fr);
+  gap: 8px;
+  border: 1px solid rgba(99,91,255,.14);
+  border-radius: 14px;
+  background: rgba(99,91,255,.045);
+}
+
+.nearby-place-submit textarea,
+.nearby-place-submit > div {
+  grid-column: 1 / -1;
+}
+
+.nearby-place-submit > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nearby-place-submit > div small {
+  color: #8b8f9a;
+  font-size: 8px;
+  line-height: 1.45;
+}
+
+.nearby-place-pending {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 4px 7px;
+  border-radius: 7px;
+  background: rgba(245,158,11,.1);
+  color: #aa6800;
+  font-size: 7px;
+  font-weight: 800;
+}
+
+.yatut-dark-mode .nearby-real-toolbar input,
+.yatut-dark-mode .nearby-real-toolbar select,
+.yatut-dark-mode .nearby-place-submit input,
+.yatut-dark-mode .nearby-place-submit textarea,
+.yatut-dark-mode .nearby-real-location,
+.yatut-dark-mode .nearby-real-section {
+  border-color: rgba(255,255,255,.07);
+  background: #191b24;
+  color: #f3f3f8;
+}
+
+.yatut-dark-mode .nearby-real-item,
+.yatut-dark-mode .nearby-real-empty {
+  border-color: rgba(255,255,255,.06);
+  background: rgba(255,255,255,.035);
+}
+
+.yatut-dark-mode .nearby-real-section > header h2 {
+  color: #f5f5fa;
+}
+
+.yatut-dark-mode .nearby-place-submit {
+  border-color: rgba(145,139,255,.14);
+  background: rgba(99,91,255,.08);
+}
+
+@media (max-width: 780px) {
+  .nearby-real-toolbar {
+    grid-template-columns:
+      minmax(0,1fr)
+      minmax(120px,.65fr);
+  }
+
+  .nearby-real-toolbar > button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 560px) {
+  .nearby-real-toolbar {
+    grid-template-columns: 1fr;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .nearby-real-search,
+  .nearby-real .nearby-tabs,
+  .nearby-real-content {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .nearby-real-section {
+    padding: 12px;
+    border-radius: 17px;
+  }
+
+  .nearby-place-submit {
+    grid-template-columns: 1fr;
+  }
+
+  .nearby-place-submit > * {
+    grid-column: 1 !important;
+  }
+
+  .nearby-place-submit > div {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .nearby-real-section > header {
+    align-items: flex-start;
+  }
+
+  .nearby-real-section-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
