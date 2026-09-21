@@ -582,6 +582,84 @@ export function subscribeAuthState(
   };
 }
 
+export async function updateMyProfile(
+  session,
+  profile
+) {
+  if (
+    !session?.user?.id
+  ) {
+    return null;
+  }
+
+  const body = {
+    username:
+      String(
+        profile?.username ||
+        ""
+      )
+        .trim()
+        .replace(
+          /^@/,
+          ""
+        ),
+    full_name:
+      String(
+        profile?.name ||
+        profile?.full_name ||
+        ""
+      ).trim(),
+    bio:
+      profile?.bio ||
+      "",
+    city:
+      profile?.city ||
+      null,
+    country:
+      profile?.country ||
+      null,
+    status:
+      profile?.status ||
+      "Я тут",
+    updated_at:
+      new Date().toISOString(),
+  };
+
+  const response =
+    await fetch(
+      `${SUPABASE_URL}/rest/v1/profiles?id=eq.${encodeURIComponent(
+        session.user.id
+      )}`,
+      {
+        method:
+          "PATCH",
+        headers: {
+          ...authHeaders(
+            session.access_token
+          ),
+          Prefer:
+            "return=representation",
+        },
+        body:
+          JSON.stringify(
+            body
+          ),
+      }
+    );
+
+  const rows =
+    await parseResponse(
+      response
+    );
+
+  return Array.isArray(
+    rows
+  )
+    ? rows[0] ||
+        null
+    : null;
+}
+
 export async function getMyProfile(
   session
 ) {
