@@ -6214,3 +6214,460 @@ body.yatut-dark-mode
     align-items: stretch;
   }
 }
+
+
+/* =========================================================
+   NEARBY PLACE DETAILS / REVIEWS / MODERATION
+========================================================= */
+
+.nearby-place-card--real {
+  cursor: pointer;
+  transition:
+    transform .16s ease,
+    box-shadow .16s ease;
+}
+
+.nearby-place-card--real:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(29,31,46,.07);
+}
+
+.nearby-place-cover img,
+.nearby-place-detail-cover img,
+.nearby-moderation-card__media img,
+.nearby-place-review-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.nearby-place-card-rating {
+  margin-top: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.nearby-place-card-rating strong {
+  color: #e09400;
+  font-size: 8px;
+}
+
+.nearby-place-card-rating span {
+  color: #9a9ea8;
+  font-size: 7px;
+}
+
+.nearby-place-photo-input {
+  min-height: 66px;
+  padding: 9px 11px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  border: 1px dashed #d9dbe4;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.nearby-place-photo-input > span {
+  color: #5d6270;
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.nearby-place-photo-input input {
+  min-height: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  font-size: 8px !important;
+}
+
+.nearby-place-photo-input small {
+  color: #969aa5;
+  font-size: 7px;
+}
+
+.nearby-place-detail-real {
+  display: grid;
+  gap: 12px;
+}
+
+.nearby-place-detail-card {
+  overflow: hidden;
+  border: 1px solid #e1e3e9;
+  border-radius: 22px;
+  background: #fff;
+}
+
+.nearby-place-detail-cover {
+  height: 300px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 75% 15%, rgba(255,79,139,.18), transparent 34%),
+    linear-gradient(135deg,#f0efff,#f8f8fc);
+  color: #635bff;
+}
+
+.nearby-place-detail-body {
+  padding: 20px;
+}
+
+.nearby-place-detail-body > header {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) auto;
+  align-items: start;
+  gap: 18px;
+}
+
+.nearby-place-detail-body > header > div > span,
+.nearby-place-review-panel > header span,
+.nearby-place-reviews > header span {
+  color: #7169e8;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .09em;
+}
+
+.nearby-place-detail-body h1 {
+  margin: 5px 0 6px;
+  font-size: 25px;
+  letter-spacing: -.5px;
+}
+
+.nearby-place-detail-body p {
+  max-width: 720px;
+  margin: 0;
+  color: #7e838f;
+  font-size: 10px;
+  line-height: 1.55;
+}
+
+.nearby-place-detail-body > header > button {
+  min-width: 120px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.nearby-place-detail-meta {
+  margin: 18px 0 0;
+  display: grid;
+  grid-template-columns: repeat(4,minmax(0,1fr));
+  gap: 8px;
+}
+
+.nearby-place-detail-meta > div {
+  min-height: 65px;
+  padding: 11px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  border: 1px solid #eceef3;
+  border-radius: 13px;
+  background: #fafafd;
+}
+
+.nearby-place-detail-meta strong {
+  color: #999da8;
+  font-size: 7px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+.nearby-place-detail-meta span,
+.nearby-place-detail-meta a {
+  color: #343743;
+  font-size: 10px;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.nearby-place-review-panel,
+.nearby-place-reviews {
+  padding: 18px;
+  border: 1px solid #e1e3e9;
+  border-radius: 20px;
+  background: #fff;
+}
+
+.nearby-place-review-panel > header,
+.nearby-place-reviews > header {
+  margin-bottom: 13px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.nearby-place-review-panel h2,
+.nearby-place-reviews h2 {
+  margin: 4px 0 0;
+  font-size: 17px;
+}
+
+.nearby-place-review-panel > header > button {
+  color: #c94b4b;
+  font-size: 8px;
+  font-weight: 800;
+}
+
+.nearby-place-stars {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.nearby-place-stars button {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  color: #d6d8df;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.nearby-place-stars button.active {
+  color: #f2a900;
+}
+
+.nearby-place-stars button:disabled {
+  opacity: 1;
+  cursor: default;
+}
+
+.nearby-place-review-panel textarea {
+  width: 100%;
+  min-height: 105px;
+  margin: 12px 0 10px;
+  padding: 11px 12px;
+  border: 1px solid #e1e3e9;
+  border-radius: 13px;
+  outline: 0;
+  resize: vertical;
+  background: #fbfbfd;
+  color: #343743;
+  font: inherit;
+  font-size: 10px;
+}
+
+.nearby-place-reviews > header > strong {
+  min-width: 34px;
+  height: 34px;
+  padding: 0 8px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: #eceaff;
+  color: #635bff;
+  font-size: 9px;
+}
+
+.nearby-place-review-list {
+  display: grid;
+  gap: 8px;
+}
+
+.nearby-place-review {
+  padding: 12px;
+  display: grid;
+  grid-template-columns: 38px minmax(0,1fr);
+  gap: 10px;
+  border: 1px solid #eceef3;
+  border-radius: 14px;
+  background: #fbfbfd;
+}
+
+.nearby-place-review-avatar {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #eceaff;
+  color: #635bff;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.nearby-place-review > div:last-child > header {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.nearby-place-review > div:last-child > header strong {
+  font-size: 10px;
+}
+
+.nearby-place-review > div:last-child > header small {
+  color: #9a9ea8;
+  font-size: 7px;
+}
+
+.nearby-place-review .nearby-place-stars button {
+  width: 16px;
+  height: 18px;
+  font-size: 14px;
+}
+
+.nearby-place-review p {
+  margin: 5px 0 0;
+  color: #737884;
+  font-size: 9px;
+  line-height: 1.5;
+}
+
+.nearby-moderation-list {
+  display: grid;
+  gap: 8px;
+}
+
+.nearby-moderation-card {
+  padding: 10px;
+  display: grid;
+  grid-template-columns: 74px minmax(0,1fr) auto;
+  align-items: center;
+  gap: 11px;
+  border: 1px solid #eceef3;
+  border-radius: 15px;
+  background: #fbfbfd;
+}
+
+.nearby-moderation-card__media {
+  width: 74px;
+  height: 74px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #eceaff;
+  color: #635bff;
+}
+
+.nearby-moderation-card__body {
+  min-width: 0;
+}
+
+.nearby-moderation-card__body > span {
+  color: #7169e8;
+  font-size: 7px;
+  font-weight: 900;
+}
+
+.nearby-moderation-card__body h3 {
+  margin: 3px 0;
+  font-size: 12px;
+}
+
+.nearby-moderation-card__body p,
+.nearby-moderation-card__body small {
+  margin: 0;
+  color: #8b909b;
+  font-size: 8px;
+}
+
+.nearby-moderation-card__actions {
+  display: flex;
+  gap: 6px;
+}
+
+.nearby-moderation-card__actions button {
+  min-height: 34px;
+  padding: 0 10px;
+  border-radius: 9px;
+  font-size: 8px;
+  font-weight: 850;
+}
+
+.nearby-moderation-card__actions .approve {
+  background: rgba(34,197,94,.1);
+  color: #159449;
+}
+
+.nearby-moderation-card__actions .reject {
+  background: rgba(239,68,68,.09);
+  color: #c94b4b;
+}
+
+.yatut-dark-mode .nearby-place-photo-input,
+.yatut-dark-mode .nearby-place-detail-card,
+.yatut-dark-mode .nearby-place-review-panel,
+.yatut-dark-mode .nearby-place-reviews {
+  border-color: rgba(255,255,255,.07);
+  background: #191b24;
+}
+
+.yatut-dark-mode .nearby-place-detail-meta > div,
+.yatut-dark-mode .nearby-place-review,
+.yatut-dark-mode .nearby-moderation-card,
+.yatut-dark-mode .nearby-place-review-panel textarea {
+  border-color: rgba(255,255,255,.06);
+  background: rgba(255,255,255,.035);
+}
+
+.yatut-dark-mode .nearby-place-detail-body h1,
+.yatut-dark-mode .nearby-place-detail-meta span,
+.yatut-dark-mode .nearby-place-detail-meta a,
+.yatut-dark-mode .nearby-place-review-panel h2,
+.yatut-dark-mode .nearby-place-reviews h2 {
+  color: #f4f4f8;
+}
+
+@media (max-width: 700px) {
+  .nearby-place-detail-cover {
+    height: 210px;
+  }
+
+  .nearby-place-detail-body {
+    padding: 14px;
+  }
+
+  .nearby-place-detail-body > header {
+    grid-template-columns: 1fr;
+  }
+
+  .nearby-place-detail-body > header > button {
+    width: 100%;
+  }
+
+  .nearby-place-detail-meta {
+    grid-template-columns: repeat(2,minmax(0,1fr));
+  }
+
+  .nearby-moderation-card {
+    grid-template-columns: 58px minmax(0,1fr);
+  }
+
+  .nearby-moderation-card__media {
+    width: 58px;
+    height: 58px;
+  }
+
+  .nearby-moderation-card__actions {
+    grid-column: 1 / -1;
+  }
+
+  .nearby-moderation-card__actions button {
+    flex: 1;
+  }
+}
+
+@media (max-width: 420px) {
+  .nearby-place-detail-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .nearby-place-review-panel,
+  .nearby-place-reviews {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+}
