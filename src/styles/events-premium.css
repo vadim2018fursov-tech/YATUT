@@ -3390,3 +3390,175 @@ button > b {
 .yatut-dark-mode .event-backend-note span {
   color: #aeb1bd;
 }
+
+
+/* =========================================================
+   EVENT MANAGEMENT
+========================================================= */
+
+.event-cancelled-banner {
+  margin: 0 0 12px;
+  padding: 13px 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  border: 1px solid rgba(239, 68, 68, .18);
+  border-radius: 14px;
+  background: rgba(239, 68, 68, .07);
+}
+
+.event-cancelled-banner strong {
+  color: #c73d3d;
+  font-size: 12px;
+}
+
+.event-cancelled-banner span {
+  color: #8c6670;
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+.event-cancelled-chip {
+  width: max-content;
+  margin-bottom: 8px;
+  padding: 5px 8px;
+  border-radius: 8px;
+  background: rgba(239, 68, 68, .1);
+  color: #c73d3d;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .08em;
+}
+
+.event-card.is-cancelled {
+  opacity: .78;
+}
+
+.event-card.is-cancelled .event-card-cover {
+  filter: saturate(.55);
+}
+
+.event-owner-actions {
+  display: grid;
+  gap: 8px;
+}
+
+.event-owner-actions > button {
+  min-height: 42px;
+  padding: 0 13px;
+  border-radius: 12px !important;
+  font-size: 9px;
+  font-weight: 850;
+}
+
+.event-owner-edit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  background: #eceaff !important;
+  color: #635bff !important;
+}
+
+.event-owner-cancel {
+  background: rgba(245, 158, 11, .1) !important;
+  color: #b36b00 !important;
+}
+
+.event-attendees--managed {
+  display: grid;
+  gap: 8px;
+}
+
+.event-attendee--managed {
+  min-width: 0;
+  padding: 8px 9px;
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid #ececf2;
+  border-radius: 12px;
+  background: #fafafe;
+}
+
+.event-attendee__copy {
+  min-width: 0;
+}
+
+.event-attendee__copy strong,
+.event-attendee__copy small {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.event-attendee__copy small {
+  margin-top: 2px;
+  color: #9296a1;
+  font-size: 9px;
+}
+
+.event-attendee-remove {
+  min-height: 30px;
+  padding: 0 9px;
+  border-radius: 9px !important;
+  background: rgba(239, 68, 68, .08) !important;
+  color: #c94b4b !important;
+  font-size: 8px;
+  font-weight: 800;
+}
+
+.event-attendees-empty {
+  padding: 13px;
+  border-radius: 12px;
+  background: #f7f7fb;
+  color: #8d919b;
+  font-size: 10px;
+  text-align: center;
+}
+
+.event-status-main:disabled,
+.event-status-secondary:disabled,
+.event-invite-button:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+.yatut-dark-mode .event-cancelled-banner {
+  border-color: rgba(248, 113, 113, .18);
+  background: rgba(239, 68, 68, .1);
+}
+
+.yatut-dark-mode .event-cancelled-banner strong,
+.yatut-dark-mode .event-cancelled-chip {
+  color: #ff9292;
+}
+
+.yatut-dark-mode .event-attendee--managed {
+  border-color: rgba(255, 255, 255, .07);
+  background: rgba(255, 255, 255, .035);
+}
+
+.yatut-dark-mode .event-attendees-empty {
+  background: rgba(255, 255, 255, .04);
+  color: #a9acb7;
+}
+
+.yatut-dark-mode .event-owner-edit {
+  background: rgba(99, 91, 255, .13) !important;
+  color: #bcb8ff !important;
+}
+
+@media (max-width: 560px) {
+  .event-attendee--managed {
+    grid-template-columns: 32px minmax(0, 1fr);
+  }
+
+  .event-attendee-remove {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+}
