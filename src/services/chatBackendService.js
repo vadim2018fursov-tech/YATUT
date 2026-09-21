@@ -172,7 +172,7 @@ async function getConversation(
 
   url.searchParams.set(
     "select",
-    "id,type,title,created_by,created_at,updated_at"
+    "id,type,title,created_by,created_at,updated_at,community_id"
   );
 
   url.searchParams.set(
@@ -256,6 +256,65 @@ async function getOtherMemberId(
         ?.user_id ||
         null
     : null;
+}
+
+async function getConversationMemberIds(
+  session,
+  conversationId
+) {
+  const url =
+    new URL(
+      `${SUPABASE_URL}/rest/v1/conversation_members`
+    );
+
+  url.searchParams.set(
+    "conversation_id",
+    `eq.${conversationId}`
+  );
+
+  url.searchParams.set(
+    "select",
+    "user_id,role"
+  );
+
+  url.searchParams.set(
+    "order",
+    "joined_at.asc"
+  );
+
+  const response =
+    await fetch(
+      url,
+      {
+        headers:
+          headers(
+            session
+          ),
+      }
+    );
+
+  const rows =
+    await parseResponse(
+      response
+    );
+
+  return (
+    Array.isArray(
+      rows
+    )
+      ? rows
+      : []
+  ).map(
+    (
+      row
+    ) => ({
+      id:
+        row.user_id,
+      role:
+        row.role ||
+        "member",
+    })
+  );
 }
 
 async function getLatestMessage(
@@ -387,6 +446,15 @@ async function chatFromConversation(
     }
   }
 
+  const groupMembers =
+    conversation.type ===
+      "group"
+      ? await getConversationMemberIds(
+          session,
+          conversation.id
+        )
+      : [];
+
   const latest =
     await getLatestMessage(
       session,
@@ -400,6 +468,32 @@ async function chatFromConversation(
       true,
     type:
       conversation.type,
+    communityId:
+      conversation.community_id ||
+      null,
+    communityName:
+      conversation.community_id
+        ? conversation.title ||
+          "Спільнота"
+        : null,
+    members:
+      groupMembers.map(
+        (
+          member
+        ) =>
+          member.id
+      ),
+    memberRoles:
+      Object.fromEntries(
+        groupMembers.map(
+          (
+            member
+          ) => [
+            member.id,
+            member.role,
+          ]
+        )
+      ),
     personId,
     person,
     title:
@@ -557,6 +651,58 @@ export async function openBackendDirectChat(
     await parseResponse(
       response
     );
+
+  const conversation =
+    await getConversation(
+      session,
+      conversationId
+    );
+
+  return chatFromConversation(
+    session,
+    conversation
+  );
+}
+
+export async function openBackendCommunityChat(
+  session,
+  communityId
+) {
+  if (
+    !session?.user?.id ||
+    !communityId
+  ) {
+    return null;
+  }
+
+  const response =
+    await fetch(
+      `${SUPABASE_URL}/rest/v1/rpc/get_or_create_community_conversation`,
+      {
+        method:
+          "POST",
+        headers:
+          headers(
+            session
+          ),
+        body:
+          JSON.stringify({
+            target_community_id:
+              communityId,
+          }),
+      }
+    );
+
+  const conversationId =
+    await parseResponse(
+      response
+    );
+
+  if (
+    !conversationId
+  ) {
+    return null;
+  }
 
   const conversation =
     await getConversation(
