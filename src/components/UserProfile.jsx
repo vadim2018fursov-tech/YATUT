@@ -16,6 +16,7 @@ function UserProfile({
   onFriendAction,
   onFollow,
   onBlock,
+  onReport,
   onOpenChat,
   authSession = null,
 }) {
@@ -240,6 +241,25 @@ function UserProfile({
       2200
     );
   };
+
+  async function handleReport() {
+    try {
+      await onReport?.(
+        person.id
+      );
+
+      showNotice(
+        "Скаргу надіслано"
+      );
+    } catch (
+      error
+    ) {
+      showNotice(
+        error?.message ||
+        "Не вдалося надіслати скаргу"
+      );
+    }
+  }
 
   const renderFriendButton =
     () => {
@@ -509,9 +529,7 @@ function UserProfile({
 
                 <button
                   onClick={() => {
-                    showNotice(
-                      "Скаргу створено"
-                    );
+                    handleReport();
 
                     setMenuOpen(
                       false
@@ -962,10 +980,8 @@ function UserProfile({
             </button>
 
             <button
-              onClick={() =>
-                showNotice(
-                  "Скаргу створено"
-                )
+              onClick={
+                handleReport
               }
             >
               ⚠️ Поскаржитися
