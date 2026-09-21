@@ -512,6 +512,7 @@ export function subscribeChatRealtime({
   onTyping,
   onPresence,
   onStatus,
+  sharePresence = true,
 }) {
   if (
     !session?.access_token ||
@@ -809,6 +810,46 @@ export function subscribeSocialGraphRealtime({
           "blocks",
         filter:
           `blocked_id=eq.${userId}`,
+      },
+    ],
+    onPostgresChange:
+      onChange,
+    onStatus,
+  });
+}
+
+
+export function subscribeSavedRealtime({
+  session,
+  onChange,
+  onStatus,
+}) {
+  if (
+    !session?.access_token ||
+    !session?.user?.id
+  ) {
+    return {
+      updateAccessToken:
+        () => {},
+      close:
+        () => {},
+    };
+  }
+
+  return createRealtimeChannel({
+    session,
+    topic:
+      `saved:${session.user.id}`,
+    changes: [
+      {
+        event:
+          "*",
+        schema:
+          "public",
+        table:
+          "saved_items",
+        filter:
+          `user_id=eq.${session.user.id}`,
       },
     ],
     onPostgresChange:
