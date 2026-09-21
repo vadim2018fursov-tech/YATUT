@@ -21,10 +21,12 @@ function createRealtimeChannel({
   topic,
   changes = [],
   presence = false,
+  trackPresence = presence,
   onPostgresChange,
   onBroadcast,
   onPresence,
   onStatus,
+  sharePresence = true,
 }) {
   let socket =
     null;
@@ -205,7 +207,8 @@ function createRealtimeChannel({
         );
 
         if (
-          presence
+          presence &&
+          trackPresence
         ) {
           rawSend(
             "presence",
@@ -531,6 +534,8 @@ export function subscribeChatRealtime({
         `chat:${conversationId}`,
       presence:
         true,
+      trackPresence:
+        sharePresence,
       changes: [
         {
           event:
@@ -578,6 +583,12 @@ export function subscribeChatRealtime({
     sendTyping(
       typing
     ) {
+      if (
+        !sharePresence
+      ) {
+        return false;
+      }
+
       return channel.broadcast(
         "typing",
         {
