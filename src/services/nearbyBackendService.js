@@ -311,3 +311,78 @@ export async function moderateNearbyPlace(
     }
   );
 }
+
+
+export async function updateNearbyPlace(
+  session,
+  placeId,
+  place,
+  imageFile = null
+) {
+  const status =
+    await rpc(
+      session,
+      "update_my_nearby_place",
+      {
+        target_place_id:
+          placeId,
+        place_title:
+          place.title,
+        place_category:
+          place.category ||
+          "other",
+        place_description:
+          place.description ||
+          "",
+        place_address:
+          place.address ||
+          null,
+        place_city:
+          place.city ||
+          null,
+        place_latitude:
+          Number.isFinite(
+            place.latitude
+          )
+            ? place.latitude
+            : null,
+        place_longitude:
+          Number.isFinite(
+            place.longitude
+          )
+            ? place.longitude
+            : null,
+        place_website_url:
+          place.websiteUrl ||
+          null,
+      }
+    );
+
+  if (
+    imageFile
+  ) {
+    const uploaded =
+      await uploadNearbyPlaceImage(
+        session,
+        placeId,
+        imageFile
+      );
+
+    if (
+      uploaded?.url
+    ) {
+      await rpc(
+        session,
+        "set_nearby_place_image",
+        {
+          target_place_id:
+            placeId,
+          place_image_url:
+            uploaded.url,
+        }
+      );
+    }
+  }
+
+  return status;
+}
