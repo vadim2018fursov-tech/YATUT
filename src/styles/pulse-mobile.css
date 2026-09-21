@@ -1123,3 +1123,89 @@
     transition: none;
   }
 }
+
+/* =========================================================
+   CROSS-DEVICE PULSE MOBILE SHELL
+========================================================= */
+
+@media (max-width: 767px), (hover: none) and (pointer: coarse) and (max-width: 900px) {
+  .premium-page-pulse,
+  .pulse-page,
+  .pulse-mobile-immersive {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .pulse-mobile-header {
+    min-height:
+      calc(
+        64px +
+        max(
+          env(safe-area-inset-top),
+          0px
+        )
+      ) !important;
+
+    padding-top:
+      calc(
+        9px +
+        max(
+          env(safe-area-inset-top),
+          0px
+        )
+      ) !important;
+  }
+
+  .premium-page-pulse,
+  .pulse-page {
+    padding-bottom:
+      calc(
+        92px +
+        max(
+          env(safe-area-inset-bottom),
+          0px
+        )
+      ) !important;
+  }
+
+  .pulse-mobile-tabs,
+  .pulse-mobile-nav {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .pulse-mobile-nav {
+    padding-bottom:
+      calc(
+        7px +
+        max(
+          env(safe-area-inset-bottom),
+          0px
+        )
+      ) !important;
+  }
+
+  .pulse-video-player,
+  .pulse-mobile-immersive,
+  .pulse-long-video-mobile {
+    max-height:
+      var(
+        --yatut-visual-viewport-height,
+        100dvh
+      ) !important;
+  }
+}
+
+@supports not (height: 100dvh) {
+  @media (max-width: 767px), (hover: none) and (pointer: coarse) and (max-width: 900px) {
+    .pulse-video-player,
+    .pulse-mobile-immersive,
+    .pulse-long-video-mobile {
+      max-height:
+        var(
+          --yatut-visual-viewport-height,
+          100vh
+        ) !important;
+    }
+  }
+}
