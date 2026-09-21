@@ -573,6 +573,7 @@ function createInitials(
 
 export default function Business({
   onNavigate,
+  authSession = null,
 }) {
   const [
     search,
@@ -987,6 +988,84 @@ export default function Business({
       behavior:
         "auto",
     });
+  }
+
+  if (
+    authSession?.user?.id
+  ) {
+    return (
+      <section className="feature-page business-page">
+        <header className="feature-hero business-hero">
+          <div>
+            <span>
+              ЯТУТ BUSINESS
+            </span>
+
+            <h1>
+              Бізнес-каталог готується
+            </h1>
+
+            <p>
+              Реальні компанії, майстри, послуги, рейтинги та бізнес-чати зʼявляться після підключення серверного каталогу.
+            </p>
+          </div>
+
+          <div className="feature-hero-icon">
+            <YatutIcon
+              name="business"
+              size={34}
+            />
+          </div>
+        </header>
+
+        <section className="feature-real-state">
+          <div className="feature-real-state__icon">
+            <YatutIcon
+              name="business"
+              size={28}
+            />
+          </div>
+
+          <span>
+            REAL DATA ONLY
+          </span>
+
+          <h2>
+            Без вигаданих рейтингів і компаній
+          </h2>
+
+          <p>
+            Demo-бізнеси більше не показуються авторизованим користувачам. Наступний етап — окремі бізнес-профілі в Supabase, власники, послуги, підписки та модерація.
+          </p>
+
+          <div className="feature-real-state__actions">
+            <button
+              type="button"
+              className="feature-primary-button"
+              onClick={() =>
+                onNavigate?.(
+                  "communities"
+                )
+              }
+            >
+              Створити спільноту
+            </button>
+
+            <button
+              type="button"
+              className="feature-secondary-button"
+              onClick={() =>
+                onNavigate?.(
+                  "home"
+                )
+              }
+            >
+              На головну
+            </button>
+          </div>
+        </section>
+      </section>
+    );
   }
 
   /* =======================================================
