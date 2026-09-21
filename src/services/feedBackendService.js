@@ -218,6 +218,9 @@ function groupComments(
         author.username,
       authorInitial:
         author.initial,
+      authorAvatar:
+        author.avatar ||
+        null,
       text:
         row.text ||
         "",
