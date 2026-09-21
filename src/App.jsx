@@ -53,6 +53,7 @@ import Notifications from "./components/Notifications";
 import MobileMoreMenu from "./components/MobileMoreMenu";
 import AuthPage from "./components/AuthPage";
 import Onboarding from "./components/Onboarding";
+import AdminCenter from "./components/AdminCenter";
 
 import NowPage from "./pages/NowPage";
 import PulsePage from "./pages/PulsePage";
@@ -176,6 +177,7 @@ const ROUTE_TITLES = {
   business: "Бізнес · ЯТУТ",
   saved: "Збережене · ЯТУТ",
   settings: "Налаштування · ЯТУТ",
+  admin: "Адмін · ЯТУТ",
   auth: "Вхід · ЯТУТ",
 };
 
@@ -339,6 +341,13 @@ function routeFromLocation() {
     };
   }
 
+  if (first === "admin") {
+    return {
+      page: "admin",
+      payload: null,
+    };
+  }
+
   const simple = {
     now: "now",
     friends: "friends",
@@ -427,6 +436,8 @@ function routeToUrl(page, payload = null) {
     case "notifications": return "/notifications";
     case "settings":
       return payload?.section ? `/settings/${encode(payload.section)}` : "/settings";
+    case "admin":
+      return "/admin";
     default: return "/";
   }
 }
@@ -508,6 +519,13 @@ const SECONDARY_NAV = [
     id: "settings",
     icon: "settings",
     title: "Налаштування",
+  },
+
+  {
+    id: "admin",
+    icon: "profile",
+    title: "Адмін",
+    founderOnly: true,
   },
 ];
 
@@ -4966,7 +4984,15 @@ function LeftSidebar({
 
         <div className="nav-separator" />
 
-        {SECONDARY_NAV.map(
+        {SECONDARY_NAV
+          .filter(
+            (
+              item
+            ) =>
+              !item.founderOnly ||
+              viewerProfile?.founder
+          )
+          .map(
           (
             item
           ) => (
@@ -5353,6 +5379,10 @@ function App() {
             .charAt(0)
             .toUpperCase() ||
           "Я",
+        founder:
+          Boolean(
+            profile.founder
+          ),
       };
     }
 
