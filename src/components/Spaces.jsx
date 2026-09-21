@@ -4057,6 +4057,7 @@ function SpaceDetail({
   onEdit,
   onUpdate,
   onDelete,
+  currentUserId = null,
   initialPostId = null,
 }) {
   const [
@@ -4081,6 +4082,20 @@ function SpaceDetail({
   const template =
     templateForSpace(
       space
+    );
+
+  const isOwner =
+    Boolean(
+      currentUserId
+    ) &&
+    (
+      space.ownerId ===
+        currentUserId ||
+      (
+        !space.backend &&
+        space.ownerId ===
+          "me"
+      )
     );
 
   const tabs = [
@@ -4143,19 +4158,23 @@ function SpaceDetail({
         ]
       : []),
 
-    {
-      id:
-        "permissions",
-      title:
-        "Права",
-    },
+    ...(isOwner
+      ? [
+          {
+            id:
+              "permissions",
+            title:
+              "Права",
+          },
 
-    {
-      id:
-        "admin",
-      title:
-        "Адмін",
-    },
+          {
+            id:
+              "admin",
+            title:
+              "Адмін",
+          },
+        ]
+      : []),
   ];
 
   function openCommunityChat() {
@@ -4327,21 +4346,25 @@ function SpaceDetail({
               ↗
             </button>
 
-            <button
-              type="button"
-              className="community-owner-badge"
-              onClick={
-                onEdit
-              }
-            >
-              ✏️ Редагувати
-            </button>
+            {isOwner && (
+              <button
+                type="button"
+                className="community-owner-badge"
+                onClick={
+                  onEdit
+                }
+              >
+                ✏️ Редагувати
+              </button>
+            )}
           </div>
         </div>
 
-        <span className="space-detail-owner">
-          👑 Власник
-        </span>
+        {isOwner && (
+          <span className="space-detail-owner">
+            👑 Власник
+          </span>
+        )}
       </header>
 
       <nav className="space-detail-nav">
@@ -5426,6 +5449,10 @@ function Spaces({
             deleteSpace(
               activeSpace
             )
+          }
+          currentUserId={
+            authSession?.user?.id ||
+            null
           }
           initialPostId={
             pendingSpacePostId
