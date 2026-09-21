@@ -94,6 +94,23 @@ import {
   subscribeAuthState,
 } from "./services/authService";
 
+import {
+  addBackendComment,
+  createBackendPost,
+  deleteBackendPost,
+  incrementBackendShare,
+  loadBackendFeed,
+  toggleBackendPostLike,
+} from "./services/feedBackendService";
+
+import {
+  getBackendRelationships,
+} from "./services/socialBackendService";
+
+import {
+  subscribeFeedRealtime,
+} from "./services/realtimeService";
+
 /* =========================================================
    YATUT APP
 ========================================================= */
@@ -2146,6 +2163,7 @@ function PostCard({
 
 function Home({
   onNavigate,
+  authSession = null,
 }) {
   const [
     feedTab,
@@ -2161,7 +2179,15 @@ function Home({
   ] =
     useState(
       () =>
-        safeLoadPosts()
+        authSession?.user?.id
+          ? DEMO_POSTS.filter(
+              (
+                post
+              ) =>
+                post.authorId ===
+                "yatut"
+            )
+          : safeLoadPosts()
     );
 
   const [
@@ -2176,12 +2202,203 @@ function Home({
   ] =
     useState(0);
 
+  const [
+    backendFriendIds,
+    setBackendFriendIds,
+  ] =
+    useState(
+      () =>
+        new Set()
+    );
+
+  const [
+    feedLoading,
+    setFeedLoading,
+  ] =
+    useState(
+      Boolean(
+        authSession?.user?.id
+      )
+    );
+
+  async function refreshBackendFeed() {
+    if (
+      !authSession?.user?.id
+    ) {
+      return;
+    }
+
+    const [
+      backendPosts,
+      relationships,
+    ] =
+      await Promise.all([
+        loadBackendFeed(
+          authSession
+        ),
+        getBackendRelationships(
+          authSession
+        ),
+      ]);
+
+    const welcomePosts =
+      DEMO_POSTS.filter(
+        (
+          post
+        ) =>
+          post.authorId ===
+          "yatut"
+      );
+
+    setPosts([
+      ...backendPosts,
+      ...welcomePosts.filter(
+        (
+          welcome
+        ) =>
+          !backendPosts.some(
+            (
+              post
+            ) =>
+              post.id ===
+              welcome.id
+          )
+      ),
+    ]);
+
+    setBackendFriendIds(
+      new Set(
+        Object.entries(
+          relationships ||
+          {}
+        )
+          .filter(
+            ([
+              ,
+              relation,
+            ]) =>
+              relation
+                ?.friendStatus ===
+              "friends"
+          )
+          .map(
+            ([
+              personId,
+            ]) =>
+              personId
+          )
+      )
+    );
+  }
+
   useEffect(() => {
+    if (
+      authSession?.user?.id
+    ) {
+      return;
+    }
+
     safeSavePosts(
       posts
     );
   }, [
     posts,
+    authSession?.user?.id,
+  ]);
+
+  useEffect(() => {
+    if (
+      !authSession?.user?.id
+    ) {
+      return undefined;
+    }
+
+    let active =
+      true;
+
+    let refreshTimer =
+      null;
+
+    const refresh =
+      async () => {
+        try {
+          setFeedLoading(
+            true
+          );
+
+          await refreshBackendFeed();
+        } catch (
+          error
+        ) {
+          console.warn(
+            "BACKEND FEED LOAD ERROR:",
+            error
+          );
+        } finally {
+          if (
+            active
+          ) {
+            setFeedLoading(
+              false
+            );
+          }
+        }
+      };
+
+    refresh();
+
+    const channel =
+      subscribeFeedRealtime({
+        session:
+          authSession,
+        onChange:
+          () => {
+            if (
+              refreshTimer
+            ) {
+              window.clearTimeout(
+                refreshTimer
+              );
+            }
+
+            refreshTimer =
+              window.setTimeout(
+                refresh,
+                120
+              );
+          },
+        onStatus:
+          (
+            status
+          ) => {
+            if (
+              status ===
+              "error"
+            ) {
+              console.warn(
+                "FEED REALTIME DEGRADED"
+              );
+            }
+          },
+      });
+
+    return () => {
+      active =
+        false;
+
+      if (
+        refreshTimer
+      ) {
+        window.clearTimeout(
+          refreshTimer
+        );
+      }
+
+      channel.close();
+    };
+  }, [
+    authSession?.user?.id,
+    authSession?.access_token,
   ]);
 
   useEffect(() => {
@@ -2436,6 +2653,21 @@ function Home({
           feedTab ===
           "friends"
         ) {
+          if (
+            authSession?.user?.id
+          ) {
+            return posts.filter(
+              (
+                post
+              ) =>
+                post.authorId ===
+                  authSession.user.id ||
+                backendFriendIds.has(
+                  post.authorId
+                )
+            );
+          }
+
           return posts.filter(
             (
               post
@@ -2449,6 +2681,23 @@ function Home({
           feedTab ===
           "following"
         ) {
+          if (
+            authSession?.user?.id
+          ) {
+            return posts.filter(
+              (
+                post
+              ) =>
+                post.authorId ===
+                  "yatut" ||
+                post.authorId ===
+                  authSession.user.id ||
+                backendFriendIds.has(
+                  post.authorId
+                )
+            );
+          }
+
           return posts.filter(
             (
               post
@@ -2467,6 +2716,8 @@ function Home({
       [
         feedTab,
         posts,
+        authSession?.user?.id,
+        backendFriendIds,
       ]
     );
 
@@ -2477,6 +2728,35 @@ function Home({
     location,
     poll,
   }) {
+    if (
+      authSession?.user?.id
+    ) {
+      if (
+        media
+      ) {
+        window.alert(
+          "Текст допису буде опубліковано. Фото та відео підключимо до Supabase Storage на наступному етапі."
+        );
+      }
+
+      await createBackendPost(
+        authSession,
+        {
+          text,
+          media,
+          mediaType,
+          location,
+          poll,
+          visibility:
+            "public",
+        }
+      );
+
+      await refreshBackendFeed();
+
+      return;
+    }
+
     const post = {
       id:
         createId(
@@ -2538,9 +2818,81 @@ function Home({
     );
   }
 
-  function toggleLike(
+  async function toggleLike(
     postId
   ) {
+    const current =
+      posts.find(
+        (
+          post
+        ) =>
+          post.id ===
+          postId
+      );
+
+    if (!current) {
+      return;
+    }
+
+    if (
+      current.backend &&
+      authSession?.user?.id
+    ) {
+      const nextLiked =
+        !current.liked;
+
+      setPosts(
+        (
+          previous
+        ) =>
+          previous.map(
+            (
+              post
+            ) =>
+              post.id ===
+              postId
+                ? {
+                    ...post,
+                    liked:
+                      nextLiked,
+                    likes:
+                      Math.max(
+                        0,
+                        Number(
+                          post.likes ||
+                          0
+                        ) +
+                          (
+                            nextLiked
+                              ? 1
+                              : -1
+                          )
+                      ),
+                  }
+                : post
+          )
+      );
+
+      try {
+        await toggleBackendPostLike(
+          authSession,
+          postId,
+          current.liked
+        );
+      } catch (
+        error
+      ) {
+        console.warn(
+          "BACKEND POST LIKE ERROR:",
+          error
+        );
+
+        await refreshBackendFeed();
+      }
+
+      return;
+    }
+
     setPosts(
       (
         previous
@@ -2583,7 +2935,7 @@ function Home({
     );
   }
 
-  function deletePost(
+  async function deletePost(
     postId
   ) {
     const confirmed =
@@ -2595,6 +2947,36 @@ function Home({
       !confirmed
     ) {
       return;
+    }
+
+    const target =
+      posts.find(
+        (
+          post
+        ) =>
+          post.id ===
+          postId
+      );
+
+    if (
+      target?.backend &&
+      authSession?.user?.id
+    ) {
+      try {
+        await deleteBackendPost(
+          authSession,
+          postId
+        );
+      } catch (
+        error
+      ) {
+        console.warn(
+          "BACKEND POST DELETE ERROR:",
+          error
+        );
+
+        return;
+      }
     }
 
     setPosts(
@@ -2633,10 +3015,43 @@ function Home({
     );
   }
 
-  function addComment(
+  async function addComment(
     postId,
     text
   ) {
+    const targetPost =
+      posts.find(
+        (
+          post
+        ) =>
+          post.id ===
+          postId
+      );
+
+    if (
+      targetPost?.backend &&
+      authSession?.user?.id
+    ) {
+      try {
+        await addBackendComment(
+          authSession,
+          postId,
+          text
+        );
+
+        await refreshBackendFeed();
+      } catch (
+        error
+      ) {
+        console.warn(
+          "BACKEND COMMENT ERROR:",
+          error
+        );
+      }
+
+      return;
+    }
+
     const comment = {
       id:
         createId(
@@ -2692,11 +3107,45 @@ function Home({
     );
   }
 
-  function addReply(
+  async function addReply(
     postId,
     commentId,
     text
   ) {
+    const targetPost =
+      posts.find(
+        (
+          post
+        ) =>
+          post.id ===
+          postId
+      );
+
+    if (
+      targetPost?.backend &&
+      authSession?.user?.id
+    ) {
+      try {
+        await addBackendComment(
+          authSession,
+          postId,
+          text,
+          commentId
+        );
+
+        await refreshBackendFeed();
+      } catch (
+        error
+      ) {
+        console.warn(
+          "BACKEND REPLY ERROR:",
+          error
+        );
+      }
+
+      return;
+    }
+
     const reply = {
       id:
         createId(
@@ -3366,6 +3815,51 @@ function Home({
       return;
     }
 
+    if (
+      post.backend &&
+      authSession?.user?.id
+    ) {
+      try {
+        const count =
+          await incrementBackendShare(
+            authSession,
+            postId
+          );
+
+        setPosts(
+          (
+            previous
+          ) =>
+            previous.map(
+              (
+                item
+              ) =>
+                item.id ===
+                postId
+                  ? {
+                      ...item,
+                      shares:
+                        Number(
+                          count ||
+                          item.shares ||
+                          0
+                        ),
+                    }
+                  : item
+            )
+        );
+      } catch (
+        error
+      ) {
+        console.warn(
+          "BACKEND SHARE COUNT ERROR:",
+          error
+        );
+      }
+
+      return;
+    }
+
     setPosts(
       (
         previous
@@ -3480,6 +3974,12 @@ function Home({
           onNavigate
         }
       />
+
+      {feedLoading && (
+        <div className="card empty-card">
+          Оновлюємо стрічку ЯТУТ…
+        </div>
+      )}
 
       <div
         className="feed"
@@ -5454,6 +5954,9 @@ function App() {
           <Home
             onNavigate={
               goToPage
+            }
+            authSession={
+              authSession
             }
           />
         );
