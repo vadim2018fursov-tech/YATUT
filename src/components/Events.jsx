@@ -566,6 +566,7 @@ function CreateEventModal({
   onClose,
   onCreate,
   communityContext = null,
+  backendMode = false,
 }) {
   const imageInputRef =
     useRef(null);
@@ -809,7 +810,24 @@ function CreateEventModal({
             }
           />
 
-          <div className="event-photo-field">
+          {backendMode ? (
+            <div className="event-backend-note">
+              <ImagePlus
+                size={20}
+              />
+
+              <div>
+                <strong>
+                  Обкладинки — наступним кроком
+                </strong>
+
+                <span>
+                  Фото підключимо через Supabase Storage, щоб воно реально зберігалося між пристроями.
+                </span>
+              </div>
+            </div>
+          ) : (
+<div className="event-photo-field">
             <div className="event-photo-label">
               <div>
                 <strong>
@@ -893,6 +911,7 @@ function CreateEventModal({
               }
             />
           </div>
+          )}
 
           <label className="event-field">
             <span>
@@ -1065,35 +1084,53 @@ function CreateEventModal({
             />
           </label>
 
-          <button
-            type="button"
-            className={`event-feed-toggle ${
-              publishToFeed
-                ? "active"
-                : ""
-            }`}
-            onClick={() =>
-              setPublishToFeed(
-                !publishToFeed
-              )
-            }
-          >
-            <span>
-              {publishToFeed
-                ? "✓"
-                : ""}
-            </span>
+          {backendMode ? (
+            <div className="event-backend-note">
+              <Sparkles
+                size={20}
+              />
 
-            <div>
-              <strong>
-                Опублікувати у стрічці
-              </strong>
+              <div>
+                <strong>
+                  Публікація у стрічці — скоро
+                </strong>
 
-              <small>
-                Друзі побачать нову подію у ЯТУТ
-              </small>
+                <span>
+                  Сама подія вже серверна. Автоматичний пост у загальній стрічці підключимо окремо.
+                </span>
+              </div>
             </div>
-          </button>
+          ) : (
+            <button
+              type="button"
+              className={`event-feed-toggle ${
+                publishToFeed
+                  ? "active"
+                  : ""
+              }`}
+              onClick={() =>
+                setPublishToFeed(
+                  !publishToFeed
+                )
+              }
+            >
+              <span>
+                {publishToFeed
+                  ? "✓"
+                  : ""}
+              </span>
+
+              <div>
+                <strong>
+                  Опублікувати у стрічці
+                </strong>
+
+                <small>
+                  Друзі побачать нову подію у ЯТУТ
+                </small>
+              </div>
+            </button>
+          )}
         </div>
 
         <footer className="event-create-footer">
@@ -2775,7 +2812,16 @@ function Events({
           </label>
 
           <nav className="events-tabs">
-            {FILTER_TABS.map(
+            {(authSession?.user?.id
+              ? FILTER_TABS.filter(
+                  (
+                    tab
+                  ) =>
+                    tab.id !==
+                    "friends"
+                )
+              : FILTER_TABS
+            ).map(
               (tab) => (
                 <button
                   key={
@@ -2902,9 +2948,12 @@ function Events({
                       ) =>
                         sum +
                         (
-                          event.attendees
-                            ?.length ||
-                          0
+                          event.backend
+                            ? event.goingCount ||
+                              0
+                            : event.attendees
+                                ?.length ||
+                              0
                         ),
                       0
                     )}
@@ -2972,7 +3021,9 @@ function Events({
               </strong>
 
               <p>
-                Створи подію, запроси друзів і продовжуйте спілкування у чаті ЯТУТ.
+                {authSession?.user?.id
+                  ? "Створи подію, збери учасників і продовжуйте спілкування у серверному чаті ЯТУТ."
+                  : "Створи подію, запроси друзів і продовжуйте спілкування у чаті ЯТУТ."}
               </p>
 
               <button
@@ -2998,6 +3049,11 @@ function Events({
           }
           onCreate={
             createNewEvent
+          }
+          backendMode={
+            Boolean(
+              authSession?.user?.id
+            )
           }
         />
       )}
