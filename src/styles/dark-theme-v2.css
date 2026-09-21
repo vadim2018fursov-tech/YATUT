@@ -677,3 +677,218 @@ body.yatut-dark-mode
       2px;
   }
 }
+
+
+/* ---------------------------------------------------------
+   DARK MOBILE PAGES + MESSENGER
+--------------------------------------------------------- */
+
+@media (max-width: 767px), (hover: none) and (pointer: coarse) and (max-width: 900px) {
+  body.yatut-dark-mode .global-search-page,
+  body.yatut-dark-mode .friends-v2-page,
+  body.yatut-dark-mode .spaces-page,
+  body.yatut-dark-mode .space-detail-page,
+  body.yatut-dark-mode .profile-v2-page,
+  body.yatut-dark-mode
+  .feature-page:has(.settings-layout) {
+    background:
+      var(--dark-page) !important;
+  }
+
+  body.yatut-dark-mode .global-search-box,
+  body.yatut-dark-mode .search-section,
+  body.yatut-dark-mode .search-person-card,
+  body.yatut-dark-mode .friends-v2-summary-item,
+  body.yatut-dark-mode .friends-v2-now-strip,
+  body.yatut-dark-mode .space-card,
+  body.yatut-dark-mode .spaces-dashboard button,
+  body.yatut-dark-mode .settings-section,
+  body.yatut-dark-mode .profile-v3-mobile-card,
+  body.yatut-dark-mode .profile-v2-card {
+    border-color:
+      var(--dark-border) !important;
+
+    background:
+      var(--dark-surface) !important;
+
+    color:
+      var(--dark-text) !important;
+
+    box-shadow:
+      none !important;
+  }
+
+  body.yatut-dark-mode .global-search-tabs,
+  body.yatut-dark-mode .friends-v2-tabs,
+  body.yatut-dark-mode .settings-sidebar,
+  body.yatut-dark-mode .profile-v2-tabs {
+    background:
+      rgba(
+        18,
+        19,
+        26,
+        .94
+      ) !important;
+
+    border-color:
+      var(--dark-border) !important;
+
+    backdrop-filter:
+      blur(18px);
+    -webkit-backdrop-filter:
+      blur(18px);
+  }
+
+  body.yatut-dark-mode .global-search-box input,
+  body.yatut-dark-mode .friends-v2-search input,
+  body.yatut-dark-mode .settings-row select,
+  body.yatut-dark-mode .chat-search input,
+  body.yatut-dark-mode
+  .messenger.mobile-dialog-open
+  .chat-composer textarea {
+    color:
+      var(--dark-text) !important;
+  }
+
+  body.yatut-dark-mode
+  .messenger.mobile-dialog-open,
+  body.yatut-dark-mode
+  .messenger.mobile-dialog-open
+  .chat-dialog,
+  body.yatut-dark-mode
+  .messenger:not(.mobile-dialog-open),
+  body.yatut-dark-mode
+  .messenger:not(.mobile-dialog-open)
+  .chat-list {
+    background:
+      var(--dark-page) !important;
+  }
+
+  body.yatut-dark-mode
+  .messenger.mobile-dialog-open
+  .chat-dialog-header,
+  body.yatut-dark-mode
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode),
+  body.yatut-dark-mode
+  .messenger:not(.mobile-dialog-open)
+  .chat-list-header {
+    border-color:
+      var(--dark-border) !important;
+
+    background:
+      rgba(
+        27,
+        29,
+        38,
+        .95
+      ) !important;
+
+    color:
+      var(--dark-text) !important;
+
+    box-shadow:
+      none !important;
+
+    backdrop-filter:
+      blur(20px);
+    -webkit-backdrop-filter:
+      blur(20px);
+  }
+
+  body.yatut-dark-mode
+  .messenger.mobile-dialog-open
+  .chat-messages {
+    background:
+      linear-gradient(
+        180deg,
+        #171820,
+        #12131a
+      ) !important;
+  }
+
+  body.yatut-dark-mode
+  .messenger.mobile-dialog-open
+  .chat-composer textarea,
+  body.yatut-dark-mode
+  .messenger:not(.mobile-dialog-open)
+  .chat-search,
+  body.yatut-dark-mode
+  .messenger.mobile-dialog-open
+  .chat-plus,
+  body.yatut-dark-mode
+  .messenger.mobile-dialog-open
+  .chat-mobile-back,
+  body.yatut-dark-mode
+  .messenger.mobile-dialog-open
+  .chat-call-actions button:last-child {
+    border-color:
+      var(--dark-border) !important;
+
+    background:
+      var(--dark-surface-soft) !important;
+
+    color:
+      var(--dark-text) !important;
+  }
+
+  body.yatut-dark-mode
+  .messenger.mobile-dialog-open
+  .yatut-attach-popover,
+  body.yatut-dark-mode
+  .messenger.mobile-dialog-open
+  .message-action-menu,
+  body.yatut-dark-mode
+  .messenger.mobile-dialog-open.chat-info-open
+  .chat-info-panel {
+    border-color:
+      rgba(
+        145,
+        139,
+        255,
+        .15
+      ) !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(
+          37,
+          39,
+          51,
+          .985
+        ),
+        rgba(
+          27,
+          29,
+          38,
+          .985
+        )
+      ) !important;
+
+    color:
+      var(--dark-text) !important;
+
+    box-shadow:
+      0 20px 54px
+      rgba(
+        0,
+        0,
+        0,
+        .34
+      ) !important;
+  }
+
+  body.yatut-dark-mode
+  .messenger.mobile-dialog-open
+  .chat-attach-grid > button {
+    border-color:
+      var(--dark-border) !important;
+
+    background:
+      var(--dark-surface-raised) !important;
+
+    color:
+      var(--dark-text) !important;
+  }
+}
