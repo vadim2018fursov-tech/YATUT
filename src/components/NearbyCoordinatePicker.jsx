@@ -1004,7 +1004,14 @@ export default function NearbyCoordinatePicker({
         )}
 
         <small className="nearby-coordinate-picker__search-note">
-          Пошук виконується лише після натискання кнопки або Enter — без автопідказок.
+          Пошук виконується лише після натискання кнопки або Enter — без автопідказок. Дані пошуку:{" "}
+          <a
+            href="https://www.openstreetmap.org/copyright"
+            target="_blank"
+            rel="noreferrer"
+          >
+            OpenStreetMap / Nominatim
+          </a>.
         </small>
       </div>
 
