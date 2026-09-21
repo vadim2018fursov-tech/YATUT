@@ -482,36 +482,13 @@ export async function sendBackendFriendRequest(
   session,
   personId
 ) {
-  const response =
-    await fetch(
-      `${SUPABASE_URL}/rest/v1/friend_requests?on_conflict=sender_id,receiver_id`,
-      {
-        method:
-          "POST",
-        headers:
-          headers(
-            session,
-            {
-              Prefer:
-                "resolution=merge-duplicates,return=representation",
-            }
-          ),
-        body:
-          JSON.stringify({
-            sender_id:
-              session.user.id,
-            receiver_id:
-              personId,
-            status:
-              "pending",
-            updated_at:
-              new Date().toISOString(),
-          }),
-      }
-    );
-
-  return parseResponse(
-    response
+  return callRpc(
+    session,
+    "send_friend_request",
+    {
+      receiver_user_id:
+        personId,
+    }
   );
 }
 
