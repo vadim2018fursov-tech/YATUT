@@ -577,6 +577,102 @@ export async function toggleBackendFollow(
   );
 }
 
+export async function getBackendFollowGraph(
+  session
+) {
+  if (
+    !session?.user?.id
+  ) {
+    return {
+      followers: [],
+      following: [],
+    };
+  }
+
+  const userId =
+    session.user.id;
+
+  const url =
+    new URL(
+      `${SUPABASE_URL}/rest/v1/follows`
+    );
+
+  url.searchParams.set(
+    "select",
+    "follower_id,following_id"
+  );
+
+  url.searchParams.set(
+    "or",
+    `(follower_id.eq.${userId},following_id.eq.${userId})`
+  );
+
+  const response =
+    await fetch(
+      url,
+      {
+        headers:
+          headers(
+            session
+          ),
+      }
+    );
+
+  const rows =
+    await parseResponse(
+      response
+    );
+
+  const followers =
+    [];
+
+  const following =
+    [];
+
+  (
+    Array.isArray(
+      rows
+    )
+      ? rows
+      : []
+  ).forEach(
+    (
+      row
+    ) => {
+      if (
+        row.following_id ===
+        userId
+      ) {
+        followers.push(
+          row.follower_id
+        );
+      }
+
+      if (
+        row.follower_id ===
+        userId
+      ) {
+        following.push(
+          row.following_id
+        );
+      }
+    }
+  );
+
+  return {
+    followers: [
+      ...new Set(
+        followers
+      ),
+    ],
+    following: [
+      ...new Set(
+        following
+      ),
+    ],
+  };
+}
+
 export async function getBackendRelationships(
   session
 ) {
