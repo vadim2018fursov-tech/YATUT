@@ -132,6 +132,25 @@ function personFromProfile(
     avatar:
       profile.avatar_url ||
       null,
+    cover:
+      profile.cover_url ||
+      null,
+    initial:
+      name
+        .trim()
+        .charAt(0)
+        .toUpperCase() ||
+      "Я",
+    nearby:
+      false,
+    distance:
+      null,
+    relation:
+      profile.city
+        ? `ЯТУТ • ${profile.city}`
+        : "Користувач ЯТУТ",
+    common:
+      [],
   };
 }
 
@@ -152,7 +171,7 @@ export async function searchBackendProfiles(
 
   url.searchParams.set(
     "select",
-    "id,username,full_name,avatar_url,bio,city,country,status,verified,created_at"
+    "id,username,full_name,avatar_url,cover_url,bio,city,country,status,verified,created_at"
   );
 
   url.searchParams.set(
@@ -215,6 +234,346 @@ export async function searchBackendProfiles(
       : []
   ).map(
     personFromProfile
+  );
+}
+
+export async function getBackendUserProfile(
+  session,
+  personId
+) {
+  if (
+    !session?.user?.id ||
+    !personId
+  ) {
+    return null;
+  }
+
+  const profileUrl =
+    new URL(
+      `${SUPABASE_URL}/rest/v1/profiles`
+    );
+
+  profileUrl.searchParams.set(
+    "id",
+    `eq.${personId}`
+  );
+
+  profileUrl.searchParams.set(
+    "select",
+    "id,username,full_name,avatar_url,cover_url,bio,city,country,status,verified,created_at"
+  );
+
+  profileUrl.searchParams.set(
+    "limit",
+    "1"
+  );
+
+  const friendsUrl =
+    new URL(
+      `${SUPABASE_URL}/rest/v1/friendships`
+    );
+
+  friendsUrl.searchParams.set(
+    "user_id",
+    `eq.${personId}`
+  );
+
+  friendsUrl.searchParams.set(
+    "select",
+    "friend_id"
+  );
+
+  const followersUrl =
+    new URL(
+      `${SUPABASE_URL}/rest/v1/follows`
+    );
+
+  followersUrl.searchParams.set(
+    "following_id",
+    `eq.${personId}`
+  );
+
+  followersUrl.searchParams.set(
+    "select",
+    "follower_id"
+  );
+
+  const followingUrl =
+    new URL(
+      `${SUPABASE_URL}/rest/v1/follows`
+    );
+
+  followingUrl.searchParams.set(
+    "follower_id",
+    `eq.${personId}`
+  );
+
+  followingUrl.searchParams.set(
+    "select",
+    "following_id"
+  );
+
+  const postsUrl =
+    new URL(
+      `${SUPABASE_URL}/rest/v1/posts`
+    );
+
+  postsUrl.searchParams.set(
+    "author_id",
+    `eq.${personId}`
+  );
+
+  postsUrl.searchParams.set(
+    "select",
+    "id,text,media_url,media_type,location_text,visibility,shares_count,created_at"
+  );
+
+  postsUrl.searchParams.set(
+    "order",
+    "created_at.desc"
+  );
+
+  postsUrl.searchParams.set(
+    "limit",
+    "20"
+  );
+
+  const [
+    profileResponse,
+    friendsResponse,
+    followersResponse,
+    followingResponse,
+    postsResponse,
+  ] =
+    await Promise.all([
+      fetch(
+        profileUrl,
+        {
+          headers:
+            headers(
+              session
+            ),
+        }
+      ),
+      fetch(
+        friendsUrl,
+        {
+          headers:
+            headers(
+              session
+            ),
+        }
+      ),
+      fetch(
+        followersUrl,
+        {
+          headers:
+            headers(
+              session
+            ),
+        }
+      ),
+      fetch(
+        followingUrl,
+        {
+          headers:
+            headers(
+              session
+            ),
+        }
+      ),
+      fetch(
+        postsUrl,
+        {
+          headers:
+            headers(
+              session
+            ),
+        }
+      ),
+    ]);
+
+  const [
+    profileRows,
+    friends,
+    followers,
+    following,
+    posts,
+  ] =
+    await Promise.all([
+      parseResponse(
+        profileResponse
+      ),
+      parseResponse(
+        friendsResponse
+      ),
+      parseResponse(
+        followersResponse
+      ),
+      parseResponse(
+        followingResponse
+      ),
+      parseResponse(
+        postsResponse
+      ),
+    ]);
+
+  const profile =
+    Array.isArray(
+      profileRows
+    )
+      ? profileRows[0] ||
+        null
+      : null;
+
+  if (!profile) {
+    return null;
+  }
+
+  const person =
+    personFromProfile(
+      profile
+    );
+
+  return {
+    ...person,
+    country:
+      profile.country ||
+      "",
+    status:
+      profile.status ||
+      "",
+    friendsCount:
+      Array.isArray(
+        friends
+      )
+        ? friends.length
+        : 0,
+    followersCount:
+      Array.isArray(
+        followers
+      )
+        ? followers.length
+        : 0,
+    followingCount:
+      Array.isArray(
+        following
+      )
+        ? following.length
+        : 0,
+    posts:
+      (
+        Array.isArray(
+          posts
+        )
+          ? posts
+          : []
+      ).map(
+        (
+          post
+        ) => ({
+          id:
+            post.id,
+          text:
+            post.text ||
+            "",
+          media:
+            post.media_url ||
+            null,
+          mediaType:
+            post.media_type ||
+            null,
+          location:
+            post.location_text ||
+            null,
+          visibility:
+            post.visibility ||
+            "public",
+          shares:
+            Number(
+              post.shares_count ||
+              0
+            ),
+          createdAt:
+            Date.parse(
+              post.created_at
+            ),
+        })
+      ),
+  };
+}
+
+export async function getBackendFollowState(
+  session,
+  personId
+) {
+  if (
+    !session?.user?.id ||
+    !personId
+  ) {
+    return false;
+  }
+
+  const url =
+    new URL(
+      `${SUPABASE_URL}/rest/v1/follows`
+    );
+
+  url.searchParams.set(
+    "follower_id",
+    `eq.${session.user.id}`
+  );
+
+  url.searchParams.set(
+    "following_id",
+    `eq.${personId}`
+  );
+
+  url.searchParams.set(
+    "select",
+    "following_id"
+  );
+
+  url.searchParams.set(
+    "limit",
+    "1"
+  );
+
+  const response =
+    await fetch(
+      url,
+      {
+        headers:
+          headers(
+            session
+          ),
+      }
+    );
+
+  const rows =
+    await parseResponse(
+      response
+    );
+
+  return Boolean(
+    Array.isArray(
+      rows
+    ) &&
+    rows.length
+  );
+}
+
+export async function toggleBackendFollow(
+  session,
+  personId
+) {
+  return callRpc(
+    session,
+    "toggle_follow",
+    {
+      target_user_id:
+        personId,
+    }
   );
 }
 
