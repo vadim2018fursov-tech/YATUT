@@ -4,6 +4,10 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
   "sb_publishable_v5dIgaWnA2cHe3d15jsoOQ_ub6gsx4W";
 
+import {
+  createChatMediaSignedUrl,
+} from "./storageService";
+
 function headers(
   session,
   extra = {}
@@ -676,7 +680,7 @@ export async function loadBackendMessages(
 
   url.searchParams.set(
     "select",
-    "id,conversation_id,sender_id,body,kind,reply_to,created_at,edited_at,deleted_at"
+    "id,conversation_id,sender_id,body,kind,reply_to,media_path,file_name,mime_type,duration_ms,created_at,edited_at,deleted_at"
   );
 
   url.searchParams.set(
@@ -700,69 +704,114 @@ export async function loadBackendMessages(
       response
     );
 
-  return (
-    Array.isArray(
-      rows
-    )
-      ? rows
-      : []
-  )
-    .filter(
+  const visibleRows =
+    (
+      Array.isArray(
+        rows
+      )
+        ? rows
+        : []
+    ).filter(
       (
         row
       ) =>
         !row.deleted_at
-    )
-    .map(
-      (
-        row
-      ) => ({
-        id:
-          row.id,
-        chatId:
-          row.conversation_id,
-        senderId:
-          row.sender_id ===
-          session.user.id
-            ? "me"
-            : row.sender_id,
-        type:
-          row.kind ===
-          "audio"
-            ? "voice"
-            : row.kind,
-        text:
-          row.body ||
-          "",
-        createdAt:
-          Date.parse(
-            row.created_at
-          ),
-        edited:
-          Boolean(
-            row.edited_at
-          ),
-        editedAt:
-          row.edited_at
-            ? Date.parse(
-                row.edited_at
-              )
-            : null,
-        pinned:
-          false,
-        myReaction:
-          null,
-        replyTo:
-          row.reply_to
-            ? {
-                id:
-                  row.reply_to,
-              }
-            : null,
-        backend:
-          true,
-      })
     );
+
+  return Promise.all(
+    visibleRows.map(
+      async (
+        row
+      ) => {
+        let fileUrl =
+          null;
+
+        if (
+          row.media_path
+        ) {
+          try {
+            fileUrl =
+              await createChatMediaSignedUrl(
+                session,
+                row.media_path,
+                3600
+              );
+          } catch (
+            error
+          ) {
+            console.warn(
+              "CHAT MEDIA URL ERROR:",
+              error
+            );
+          }
+        }
+
+        return {
+          id:
+            row.id,
+          chatId:
+            row.conversation_id,
+          senderId:
+            row.sender_id ===
+            session.user.id
+              ? "me"
+              : row.sender_id,
+          type:
+            row.kind ===
+            "audio"
+              ? "voice"
+              : row.kind,
+          text:
+            row.body ||
+            "",
+          fileUrl,
+          mediaPath:
+            row.media_path ||
+            null,
+          fileName:
+            row.file_name ||
+            null,
+          mimeType:
+            row.mime_type ||
+            null,
+          voiceDuration:
+            row.duration_ms
+              ? Math.round(
+                  row.duration_ms /
+                  1000
+                )
+              : null,
+          createdAt:
+            Date.parse(
+              row.created_at
+            ),
+          edited:
+            Boolean(
+              row.edited_at
+            ),
+          editedAt:
+            row.edited_at
+              ? Date.parse(
+                  row.edited_at
+                )
+              : null,
+          pinned:
+            false,
+          myReaction:
+            null,
+          replyTo:
+            row.reply_to
+              ? {
+                  id:
+                    row.reply_to,
+                }
+              : null,
+          backend:
+            true,
+        };
+      }
+    )
+  );
 }
 
 export async function sendBackendMessage(
@@ -772,6 +821,10 @@ export async function sendBackendMessage(
     text = "",
     kind = "text",
     replyToId = null,
+    mediaPath = null,
+    fileName = null,
+    mimeType = null,
+    durationMs = null,
   } = {}
 ) {
   const response =
@@ -799,6 +852,14 @@ export async function sendBackendMessage(
             kind,
             reply_to:
               replyToId,
+            media_path:
+              mediaPath,
+            file_name:
+              fileName,
+            mime_type:
+              mimeType,
+            duration_ms:
+              durationMs,
           }),
       }
     );
@@ -820,6 +881,29 @@ export async function sendBackendMessage(
     return null;
   }
 
+  let fileUrl =
+    null;
+
+  if (
+    row.media_path
+  ) {
+    try {
+      fileUrl =
+        await createChatMediaSignedUrl(
+          session,
+          row.media_path,
+          3600
+        );
+    } catch (
+      error
+    ) {
+      console.warn(
+        "CHAT MEDIA URL ERROR:",
+        error
+      );
+    }
+  }
+
   return {
     id:
       row.id,
@@ -835,6 +919,23 @@ export async function sendBackendMessage(
     text:
       row.body ||
       "",
+    fileUrl,
+    mediaPath:
+      row.media_path ||
+      null,
+    fileName:
+      row.file_name ||
+      null,
+    mimeType:
+      row.mime_type ||
+      null,
+    voiceDuration:
+      row.duration_ms
+        ? Math.round(
+            row.duration_ms /
+            1000
+          )
+        : null,
     createdAt:
       Date.parse(
         row.created_at
