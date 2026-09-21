@@ -20,6 +20,16 @@ import {
   subscribeFriends,
 } from "../storage/friendService";
 
+import {
+  acceptBackendFriendRequest,
+  cancelBackendFriendRequest,
+  declineBackendFriendRequest,
+  getBackendRelationships,
+  removeBackendFriend,
+  searchBackendProfiles,
+  sendBackendFriendRequest,
+} from "../services/socialBackendService";
+
 /* =========================================================
    YATUT FRIENDS V2
 ========================================================= */
@@ -385,6 +395,7 @@ const TABS = [
 export default function Friends({
   onNavigate,
   onOpenChat,
+  authSession = null,
 }) {
   const [
     activeTab,
@@ -433,6 +444,58 @@ export default function Friends({
   ] =
     useState(null);
 
+  const [
+    backendPeople,
+    setBackendPeople,
+  ] =
+    useState([]);
+
+  const [
+    backendRelationships,
+    setBackendRelationships,
+  ] =
+    useState({});
+
+  const [
+    backendLoading,
+    setBackendLoading,
+  ] =
+    useState(
+      Boolean(
+        authSession?.user?.id
+      )
+    );
+
+  async function refreshBackendPeople() {
+    if (
+      !authSession?.user?.id
+    ) {
+      return;
+    }
+
+    const [
+      peopleResult,
+      relationshipsResult,
+    ] =
+      await Promise.all([
+        searchBackendProfiles(
+          authSession,
+          ""
+        ),
+        getBackendRelationships(
+          authSession
+        ),
+      ]);
+
+    setBackendPeople(
+      peopleResult
+    );
+
+    setBackendRelationships(
+      relationshipsResult
+    );
+  }
+
   /* =======================================================
      FRIEND STATE LIVE SYNC
 
@@ -443,6 +506,70 @@ export default function Friends({
 
      Friends обновляется автоматически.
   ======================================================= */
+
+  useEffect(() => {
+    if (
+      !authSession?.user?.id
+    ) {
+      return undefined;
+    }
+
+    let active =
+      true;
+
+    setBackendLoading(
+      true
+    );
+
+    refreshBackendPeople()
+      .catch(
+        (error) => {
+          console.warn(
+            "FRIENDS BACKEND LOAD ERROR:",
+            error
+          );
+        }
+      )
+      .finally(
+        () => {
+          if (
+            active
+          ) {
+            setBackendLoading(
+              false
+            );
+          }
+        }
+      );
+
+    const timer =
+      window.setInterval(
+        () => {
+          refreshBackendPeople()
+            .catch(
+              (error) => {
+                console.warn(
+                  "FRIENDS BACKEND REFRESH ERROR:",
+                  error
+                );
+              }
+            );
+        },
+        12000
+      );
+
+    return () => {
+      active =
+        false;
+
+      window.clearInterval(
+        timer
+      );
+    };
+  }, [
+    authSession?.user?.id,
+    authSession?.access_token,
+  ]);
 
   useEffect(() => {
     setFriendState(
@@ -513,6 +640,38 @@ export default function Friends({
     personId
   ) {
     if (
+      authSession?.user?.id
+    ) {
+      const status =
+        backendRelationships[
+          personId
+        ]?.friendStatus;
+
+      if (
+        status ===
+        "friends"
+      ) {
+        return FRIEND_STATUSES.FRIEND;
+      }
+
+      if (
+        status ===
+        "incoming"
+      ) {
+        return FRIEND_STATUSES.INCOMING;
+      }
+
+      if (
+        status ===
+        "outgoing"
+      ) {
+        return FRIEND_STATUSES.OUTGOING;
+      }
+
+      return FRIEND_STATUSES.NONE;
+    }
+
+    if (
       friendState.friends.includes(
         personId
       )
@@ -553,26 +712,54 @@ export default function Friends({
 
   const people =
     useMemo(
-      () =>
-        PEOPLE.map(
+      () => {
+        const source =
+          authSession?.user?.id
+            ? backendPeople
+            : PEOPLE;
+
+        return source.map(
           (
             person
-          ) => ({
-            ...person,
-
-            friendStatus:
+          ) => {
+            const status =
               getStatus(
                 person.id
-              ),
+              );
 
-            friends:
-              friendState.friends.includes(
-                person.id
-              ),
-          })
-        ),
+            return {
+              ...person,
+              initial:
+                person.initial ||
+                person.initials ||
+                person.name
+                  ?.charAt(0)
+                  ?.toUpperCase() ||
+                "Я",
+              relation:
+                person.relation ||
+                person.reason ||
+                "Користувач ЯТУТ",
+              common:
+                Array.isArray(
+                  person.common
+                )
+                  ? person.common
+                  : [],
+              friendStatus:
+                status,
+              friends:
+                status ===
+                FRIEND_STATUSES.FRIEND,
+            };
+          }
+        );
+      },
       [
         friendState,
+        backendPeople,
+        backendRelationships,
+        authSession?.user?.id,
       ]
     );
 
@@ -819,18 +1006,42 @@ export default function Friends({
           ).length,
 
         incoming:
-          friendState
-            .incomingRequests
-            .length,
+          authSession?.user?.id
+            ? Object.values(
+                backendRelationships
+              ).filter(
+                (
+                  relation
+                ) =>
+                  relation
+                    ?.friendStatus ===
+                  "incoming"
+              ).length
+            : friendState
+                .incomingRequests
+                .length,
 
         outgoing:
-          friendState
-            .outgoingRequests
-            .length,
+          authSession?.user?.id
+            ? Object.values(
+                backendRelationships
+              ).filter(
+                (
+                  relation
+                ) =>
+                  relation
+                    ?.friendStatus ===
+                  "outgoing"
+              ).length
+            : friendState
+                .outgoingRequests
+                .length,
       }),
       [
         people,
         friendState,
+        backendRelationships,
+        authSession?.user?.id,
       ]
     );
 
@@ -891,7 +1102,7 @@ export default function Friends({
      SEND REQUEST
   ======================================================= */
 
-  function requestFriend(
+  async function requestFriend(
     person
   ) {
     if (
@@ -901,9 +1112,80 @@ export default function Friends({
     }
 
     const status =
-      getFriendStatus(
+      getStatus(
         person.id
       );
+
+    if (
+      person.backend &&
+      authSession?.user?.id
+    ) {
+      try {
+        if (
+          status ===
+          FRIEND_STATUSES.FRIEND
+        ) {
+          setRemoveCandidate(
+            person
+          );
+
+          return;
+        }
+
+        if (
+          status ===
+          FRIEND_STATUSES.INCOMING
+        ) {
+          await acceptBackendFriendRequest(
+            authSession,
+            person.id
+          );
+
+          showNotice(
+            `${person.name} тепер у друзях`
+          );
+        } else if (
+          status ===
+          FRIEND_STATUSES.OUTGOING
+        ) {
+          await cancelBackendFriendRequest(
+            authSession,
+            person.id
+          );
+
+          showNotice(
+            "Запит скасовано",
+            "neutral"
+          );
+        } else {
+          await sendBackendFriendRequest(
+            authSession,
+            person.id
+          );
+
+          showNotice(
+            `Запит для ${person.name} надіслано`
+          );
+        }
+
+        await refreshBackendPeople();
+      } catch (
+        error
+      ) {
+        console.warn(
+          "FRIENDS BACKEND ACTION ERROR:",
+          error
+        );
+
+        showNotice(
+          error?.message ||
+          "Не вдалося виконати дію",
+          "neutral"
+        );
+      }
+
+      return;
+    }
 
     if (
       status ===
@@ -956,7 +1238,7 @@ export default function Friends({
     );
   }
 
-  function declineRequest(
+  async function declineRequest(
     person
   ) {
     if (
@@ -966,11 +1248,40 @@ export default function Friends({
     }
 
     if (
-      getFriendStatus(
+      getStatus(
         person.id
       ) !==
       FRIEND_STATUSES.INCOMING
     ) {
+      return;
+    }
+
+    if (
+      person.backend &&
+      authSession?.user?.id
+    ) {
+      try {
+        await declineBackendFriendRequest(
+          authSession,
+          person.id
+        );
+
+        await refreshBackendPeople();
+
+        showNotice(
+          "Запит відхилено",
+          "neutral"
+        );
+      } catch (
+        error
+      ) {
+        showNotice(
+          error?.message ||
+          "Не вдалося відхилити запит",
+          "neutral"
+        );
+      }
+
       return;
     }
 
@@ -984,19 +1295,46 @@ export default function Friends({
     );
   }
 
-  function confirmRemoveFriend() {
+  async function confirmRemoveFriend() {
     if (
       !removeCandidate?.id
     ) {
       return;
     }
 
-    const name =
-      removeCandidate.name;
+    const candidate =
+      removeCandidate;
 
-    removeFriend(
-      removeCandidate.id
-    );
+    const name =
+      candidate.name;
+
+    if (
+      candidate.backend &&
+      authSession?.user?.id
+    ) {
+      try {
+        await removeBackendFriend(
+          authSession,
+          candidate.id
+        );
+
+        await refreshBackendPeople();
+      } catch (
+        error
+      ) {
+        showNotice(
+          error?.message ||
+          "Не вдалося видалити з друзів",
+          "neutral"
+        );
+
+        return;
+      }
+    } else {
+      removeFriend(
+        candidate.id
+      );
+    }
 
     setRemoveCandidate(
       null
@@ -1485,6 +1823,15 @@ export default function Friends({
               }
             </b>
           </header>
+
+          {backendLoading &&
+            authSession?.user?.id && (
+            <div className="friends-v2-empty">
+              <p>
+                Оновлюємо ваше коло ЯТУТ…
+              </p>
+            </div>
+          )}
 
           {visiblePeople.length >
           0 ? (
@@ -2034,9 +2381,18 @@ function PersonCard({
           }`}
         >
           <span className="friends-v2-person-avatar">
-            {
+            {person.avatar ? (
+              <img
+                src={
+                  person.avatar
+                }
+                alt={
+                  person.name
+                }
+              />
+            ) : (
               person.initial
-            }
+            )}
           </span>
         </span>
 
@@ -2494,9 +2850,18 @@ function PersonPreview({
 
         <div className="friends-v2-preview-content">
           <div className="friends-v2-preview-avatar">
-            {
+            {person.avatar ? (
+              <img
+                src={
+                  person.avatar
+                }
+                alt={
+                  person.name
+                }
+              />
+            ) : (
               person.initial
-            }
+            )}
 
             {person.online && (
               <i />
