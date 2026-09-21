@@ -300,3 +300,24 @@
 .yatut-dark-mode .auth-back-link {
   color: #9d95ff;
 }
+
+
+.auth-username-status {
+  min-height: 16px;
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--muted, #858897);
+}
+
+.auth-username-status.available {
+  color: #1f9d62;
+}
+
+.auth-username-status.taken,
+.auth-username-status.invalid {
+  color: #dc3b3b;
+}
+
+.auth-username-status.checking {
+  color: #655eff;
+}
