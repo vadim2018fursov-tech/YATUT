@@ -5439,6 +5439,27 @@ function App() {
         false
       );
 
+      if (
+        nextPage ===
+        "profile"
+      ) {
+        try {
+          sessionStorage.setItem(
+            "yatut-open-route-payload",
+            JSON.stringify({
+              route:
+                "profile",
+              payload: {
+                action:
+                  "edit",
+              },
+            })
+          );
+        } catch {
+          // No-op.
+        }
+      }
+
       setCurrentPage(
         nextPage
       );
