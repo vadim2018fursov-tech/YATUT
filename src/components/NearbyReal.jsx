@@ -10,8 +10,9 @@ import NearbyMap from "./NearbyMap";
 import NearbyCoordinatePicker from "./NearbyCoordinatePicker";
 
 import {
+  bulkModerateNearbyPlaces,
+  loadNearbyAdminDashboard,
   loadNearbyFeed,
-  loadNearbyModerationQueue,
   moderateNearbyPlace,
   submitNearbyPlace,
 } from "../services/nearbyBackendService";
@@ -196,14 +197,44 @@ export default function NearbyReal({
   });
 
   const [
-    moderationQueue,
-    setModerationQueue,
-  ] = useState([]);
+    adminDashboard,
+    setAdminDashboard,
+  ] = useState({
+    stats: {
+      total: 0,
+      pending: 0,
+      approved: 0,
+      rejected: 0,
+      cities: 0,
+    },
+    cities: [],
+    places: [],
+  });
 
   const [
     moderationLoading,
     setModerationLoading,
   ] = useState(false);
+
+  const [
+    moderationStatus,
+    setModerationStatus,
+  ] = useState("pending");
+
+  const [
+    moderationCity,
+    setModerationCity,
+  ] = useState("");
+
+  const [
+    moderationSearch,
+    setModerationSearch,
+  ] = useState("");
+
+  const [
+    selectedModerationIds,
+    setSelectedModerationIds,
+  ] = useState([]);
 
   const [
     viewMode,
@@ -307,13 +338,23 @@ export default function NearbyReal({
     authSession?.access_token,
   ]);
 
-  async function refreshModerationQueue() {
+  async function refreshModerationQueue(
+    overrides = {}
+  ) {
     if (
       !feed.canModerate
     ) {
-      setModerationQueue(
-        []
-      );
+      setAdminDashboard({
+        stats: {
+          total: 0,
+          pending: 0,
+          approved: 0,
+          rejected: 0,
+          cities: 0,
+        },
+        cities: [],
+        places: [],
+      });
 
       return;
     }
@@ -323,13 +364,47 @@ export default function NearbyReal({
         true
       );
 
-      const rows =
-        await loadNearbyModerationQueue(
-          authSession
+      const next =
+        await loadNearbyAdminDashboard(
+          authSession,
+          {
+            status:
+              overrides.status ??
+              moderationStatus ||
+              null,
+            city:
+              overrides.city ??
+              moderationCity ||
+              null,
+            search:
+              overrides.search ??
+              moderationSearch ||
+              null,
+          }
         );
 
-      setModerationQueue(
-        rows
+      setAdminDashboard(
+        next
+      );
+
+      setSelectedModerationIds(
+        (
+          current
+        ) =>
+          current.filter(
+            (
+              id
+            ) =>
+              next.places.some(
+                (
+                  place
+                ) =>
+                  place.id ===
+                  id &&
+                  place.status ===
+                  "pending"
+              )
+          )
       );
     } catch (
       error
@@ -545,7 +620,11 @@ export default function NearbyReal({
           ...BASE_TABS,
           [
             "moderation",
-            `Модерація (${moderationQueue.length})`,
+            `Модерація (${Number(
+              adminDashboard.stats
+                ?.pending ||
+              0
+            )})`,
           ],
         ]
       : BASE_TABS;
