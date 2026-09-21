@@ -837,6 +837,35 @@ export function subscribeAuthState(
   };
 }
 
+export async function completeMyOnboarding(
+  session
+) {
+  if (
+    !session?.user?.id
+  ) {
+    return null;
+  }
+
+  const response =
+    await fetch(
+      `${SUPABASE_URL}/rest/v1/rpc/complete_my_onboarding`,
+      {
+        method:
+          "POST",
+        headers:
+          authHeaders(
+            session.access_token
+          ),
+        body:
+          JSON.stringify({}),
+      }
+    );
+
+  return parseResponse(
+    response
+  );
+}
+
 export async function updateMyProfile(
   session,
   profile
