@@ -6,6 +6,7 @@ import {
 
 import YatutIcon from "./YatutIcon";
 import NearbyPlaceDetail from "./NearbyPlaceDetail";
+import NearbyMap from "./NearbyMap";
 
 import {
   loadNearbyFeed,
@@ -192,6 +193,39 @@ export default function NearbyReal({
     moderationLoading,
     setModerationLoading,
   ] = useState(false);
+
+  const [
+    viewMode,
+    setViewMode,
+  ] = useState(() =>
+    localStorage.getItem(
+      "yatut-nearby-view-v1"
+    ) === "map"
+      ? "map"
+      : "list"
+  );
+
+  function changeViewMode(
+    mode
+  ) {
+    const next =
+      mode === "map"
+        ? "map"
+        : "list";
+
+    setViewMode(
+      next
+    );
+
+    try {
+      localStorage.setItem(
+        "yatut-nearby-view-v1",
+        next
+      );
+    } catch {
+      // local preference only
+    }
+  }
 
   async function refresh(
     overrides = {}
@@ -772,6 +806,50 @@ export default function NearbyReal({
           )
         )}
       </nav>
+
+      {tab !== "moderation" && (
+        <div className="nearby-view-toggle">
+          <button
+            type="button"
+            className={
+              viewMode === "list"
+                ? "active"
+                : ""
+            }
+            onClick={() =>
+              changeViewMode(
+                "list"
+              )
+            }
+          >
+            <YatutIcon
+              name="list"
+              size={15}
+            />
+            Список
+          </button>
+
+          <button
+            type="button"
+            className={
+              viewMode === "map"
+                ? "active"
+                : ""
+            }
+            onClick={() =>
+              changeViewMode(
+                "map"
+              )
+            }
+          >
+            <YatutIcon
+              name="pin"
+              size={15}
+            />
+            Карта
+          </button>
+        </div>
+      )}
 
       {loading ? (
         <section className="feature-real-state">
