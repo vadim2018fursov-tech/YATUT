@@ -31,6 +31,7 @@ import {
 } from "../services/chatBackendService";
 
 import {
+  subscribeChatListRealtime,
   subscribeChatRealtime,
 } from "../services/realtimeService";
 
@@ -3209,6 +3210,148 @@ function Chats({
     load();
   }, [
     authSession,
+  ]);
+
+  useEffect(() => {
+    if (
+      !authSession?.user?.id
+    ) {
+      return undefined;
+    }
+
+    let active =
+      true;
+
+    let refreshTimer =
+      null;
+
+    async function refreshBackendChatList() {
+      try {
+        const backendChats =
+          await listBackendChats(
+            authSession
+          );
+
+        if (
+          !active
+        ) {
+          return;
+        }
+
+        const backendIds =
+          new Set(
+            backendChats.map(
+              (
+                chat
+              ) =>
+                chat.id
+            )
+          );
+
+        const demoIds =
+          new Set(
+            DEMO_CHATS.map(
+              (
+                chat
+              ) =>
+                chat.id
+            )
+          );
+
+        setChats(
+          (
+            previous
+          ) =>
+            [
+              ...backendChats,
+              ...previous.filter(
+                (
+                  chat
+                ) =>
+                  !backendIds.has(
+                    chat.id
+                  ) &&
+                  !demoIds.has(
+                    chat.id
+                  )
+              ),
+            ].sort(
+              (
+                left,
+                right
+              ) =>
+                Number(
+                  right.updatedAt ||
+                  0
+                ) -
+                Number(
+                  left.updatedAt ||
+                  0
+                )
+            )
+        );
+      } catch (
+        error
+      ) {
+        console.warn(
+          "BACKEND CHAT LIST REALTIME ERROR:",
+          error
+        );
+      }
+    }
+
+    const channel =
+      subscribeChatListRealtime({
+        session:
+          authSession,
+        onChange:
+          () => {
+            if (
+              refreshTimer
+            ) {
+              window.clearTimeout(
+                refreshTimer
+              );
+            }
+
+            refreshTimer =
+              window.setTimeout(
+                refreshBackendChatList,
+                80
+              );
+          },
+        onStatus:
+          (
+            status
+          ) => {
+            if (
+              status ===
+              "error"
+            ) {
+              console.warn(
+                "CHAT LIST REALTIME DEGRADED"
+              );
+            }
+          },
+      });
+
+    return () => {
+      active =
+        false;
+
+      if (
+        refreshTimer
+      ) {
+        window.clearTimeout(
+          refreshTimer
+        );
+      }
+
+      channel.close();
+    };
+  }, [
+    authSession?.user?.id,
+    authSession?.access_token,
   ]);
 
   /* =======================================================
