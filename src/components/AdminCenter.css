@@ -524,3 +524,391 @@
     grid-column: 2;
   }
 }
+
+
+.admin-user-list {
+  display: grid;
+  gap: 7px;
+}
+
+.admin-user-row {
+  min-height: 64px;
+  padding: 8px 9px;
+  display: grid;
+  grid-template-columns: minmax(0,1fr) auto auto;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid #eceef3;
+  border-radius: 13px;
+  background: #fbfbfd;
+}
+
+.admin-user-row__profile {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: auto minmax(0,1fr);
+  align-items: center;
+  gap: 9px;
+  text-align: left;
+}
+
+.admin-user-row__profile > div:last-child {
+  min-width: 0;
+}
+
+.admin-user-row__profile strong,
+.admin-user-row__profile small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-user-row__profile strong {
+  color: #343743;
+  font-size: 9px;
+}
+
+.admin-user-row__profile small {
+  margin-top: 3px;
+  color: #9499a3;
+  font-size: 8px;
+}
+
+.admin-user-row__reports {
+  color: #777c88;
+  font-size: 8px;
+  font-weight: 800;
+}
+
+.admin-user-row__sanctions {
+  min-height: 34px;
+  padding: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-radius: 9px;
+  background: rgba(99,91,255,.09);
+  color: #635bff;
+  font-size: 8px;
+  font-weight: 850;
+}
+
+.admin-user-row__sanctions:disabled {
+  opacity: .35;
+  cursor: not-allowed;
+}
+
+.admin-sanctions-backdrop {
+  position: fixed;
+  z-index: 1200;
+  inset: 0;
+  padding: 18px;
+  display: grid;
+  place-items: center;
+  background: rgba(12,14,20,.52);
+  backdrop-filter: blur(5px);
+}
+
+.admin-sanctions-modal {
+  width: min(720px, 100%);
+  max-height: min(820px, calc(100vh - 36px));
+  overflow-y: auto;
+  border: 1px solid #e2e4ea;
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 28px 90px rgba(20,22,32,.24);
+}
+
+.admin-sanctions-modal > header {
+  padding: 16px 18px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  border-bottom: 1px solid #eceef3;
+}
+
+.admin-sanctions-modal > header span,
+.admin-sanctions-history > header span {
+  color: #7169e8;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .08em;
+}
+
+.admin-sanctions-modal > header h2 {
+  margin: 4px 0 2px;
+  font-size: 18px;
+}
+
+.admin-sanctions-modal > header p {
+  margin: 0;
+  color: #9499a3;
+  font-size: 8px;
+}
+
+.admin-sanctions-modal > header > button {
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  border-radius: 9px;
+  color: #707581;
+  font-size: 20px;
+}
+
+.admin-sanctions-create {
+  padding: 14px 18px;
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 9px;
+  border-bottom: 1px solid #eceef3;
+}
+
+.admin-sanctions-create label {
+  display: grid;
+  gap: 5px;
+}
+
+.admin-sanctions-create label > span {
+  color: #858a96;
+  font-size: 8px;
+  font-weight: 800;
+}
+
+.admin-sanctions-create select,
+.admin-sanctions-create textarea {
+  width: 100%;
+  border: 1px solid #dde0e7;
+  border-radius: 11px;
+  outline: 0;
+  background: #fbfbfd;
+  color: #343743;
+  font: inherit;
+  font-size: 9px;
+}
+
+.admin-sanctions-create select {
+  min-height: 40px;
+  padding: 0 10px;
+}
+
+.admin-sanctions-create textarea {
+  min-height: 100px;
+  padding: 10px;
+  resize: vertical;
+}
+
+.admin-sanctions-reason {
+  grid-column: 1 / -1;
+}
+
+.admin-sanctions-submit {
+  grid-column: 1 / -1;
+  min-height: 40px;
+  border-radius: 11px;
+  background: #635bff;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 850;
+}
+
+.admin-sanctions-submit:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+.admin-sanctions-history {
+  padding: 15px 18px 18px;
+}
+
+.admin-sanctions-history > header {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.admin-sanctions-history > header h3 {
+  margin: 3px 0 0;
+  font-size: 14px;
+}
+
+.admin-sanctions-history > header > strong {
+  min-width: 32px;
+  height: 32px;
+  padding: 0 7px;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  background: #eceaff;
+  color: #635bff;
+  font-size: 8px;
+}
+
+.admin-sanction-row {
+  padding: 11px;
+  display: grid;
+  grid-template-columns: 34px minmax(0,1fr) auto;
+  gap: 10px;
+  border: 1px solid #eceef3;
+  border-radius: 13px;
+  background: #fbfbfd;
+}
+
+.admin-sanction-row + .admin-sanction-row {
+  margin-top: 7px;
+}
+
+.admin-sanction-row__icon {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: #eceaff;
+  color: #635bff;
+}
+
+.admin-sanction-row.is-warning .admin-sanction-row__icon {
+  background: rgba(245,158,11,.1);
+  color: #a86800;
+}
+
+.admin-sanction-row.is-temporary_block .admin-sanction-row__icon,
+.admin-sanction-row.is-permanent_block .admin-sanction-row__icon {
+  background: rgba(239,68,68,.09);
+  color: #c94b4b;
+}
+
+.admin-sanction-row > div:nth-child(2) > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.admin-sanction-row > div:nth-child(2) > header strong {
+  font-size: 9px;
+}
+
+.admin-sanction-row > div:nth-child(2) > header span {
+  color: #9398a2;
+  font-size: 7px;
+  font-weight: 800;
+}
+
+.admin-sanction-row > div:nth-child(2) > header span.active {
+  color: #c94b4b;
+}
+
+.admin-sanction-row p {
+  margin: 5px 0;
+  color: #6f7480;
+  font-size: 8px;
+  line-height: 1.45;
+}
+
+.admin-sanction-row small {
+  display: block;
+  color: #9ba0aa;
+  font-size: 7px;
+}
+
+.admin-sanction-row blockquote {
+  margin: 7px 0 0;
+  padding: 7px 9px;
+  border-left: 3px solid #d9d6ff;
+  border-radius: 7px;
+  background: #f7f6ff;
+  color: #6d717d;
+  font-size: 8px;
+}
+
+.admin-sanction-row > button {
+  align-self: center;
+  min-height: 32px;
+  padding: 0 9px;
+  border-radius: 8px;
+  background: rgba(239,68,68,.08);
+  color: #c94b4b;
+  font-size: 8px;
+  font-weight: 850;
+}
+
+.yatut-dark-mode .admin-user-row,
+.yatut-dark-mode .admin-sanctions-modal,
+.yatut-dark-mode .admin-sanction-row {
+  border-color: rgba(255,255,255,.07);
+  background: #191b24;
+}
+
+.yatut-dark-mode .admin-user-row__profile strong,
+.yatut-dark-mode .admin-sanctions-modal > header h2,
+.yatut-dark-mode .admin-sanctions-history > header h3,
+.yatut-dark-mode .admin-sanction-row > div:nth-child(2) > header strong {
+  color: #f4f4f8;
+}
+
+.yatut-dark-mode .admin-sanctions-modal > header,
+.yatut-dark-mode .admin-sanctions-create {
+  border-color: rgba(255,255,255,.07);
+}
+
+.yatut-dark-mode .admin-sanctions-create select,
+.yatut-dark-mode .admin-sanctions-create textarea {
+  border-color: rgba(255,255,255,.07);
+  background: rgba(255,255,255,.035);
+  color: #f4f4f8;
+}
+
+.yatut-dark-mode .admin-sanction-row blockquote {
+  border-color: rgba(188,184,255,.4);
+  background: rgba(99,91,255,.08);
+  color: #c9cbd3;
+}
+
+@media (max-width: 620px) {
+  .admin-user-row {
+    grid-template-columns: minmax(0,1fr) auto;
+  }
+
+  .admin-user-row__reports {
+    grid-column: 1;
+    padding-left: 47px;
+  }
+
+  .admin-user-row__sanctions {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+
+  .admin-sanctions-backdrop {
+    padding: 8px;
+  }
+
+  .admin-sanctions-modal {
+    max-height: calc(100vh - 16px);
+    border-radius: 17px;
+  }
+
+  .admin-sanctions-create {
+    grid-template-columns: 1fr;
+    padding: 12px;
+  }
+
+  .admin-sanctions-reason,
+  .admin-sanctions-submit {
+    grid-column: auto;
+  }
+
+  .admin-sanction-row {
+    grid-template-columns: 32px minmax(0,1fr);
+  }
+
+  .admin-sanction-row > button {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+}
