@@ -320,7 +320,7 @@ export async function loadBackendFeed(
 
   postsUrl.searchParams.set(
     "select",
-    "id,author_id,text,media_url,media_type,location_text,visibility,poll,shares_count,created_at,updated_at"
+    "id,author_id,text,media_url,media_type,location_text,visibility,poll,shares_count,event_id,created_at,updated_at"
   );
 
   postsUrl.searchParams.set(
@@ -588,6 +588,9 @@ export async function loadBackendFeed(
         poll:
           row.poll ||
           null,
+        eventId:
+          row.event_id ||
+          null,
         liked:
           reactions.some(
             (
@@ -652,6 +655,7 @@ export async function createBackendPost(
     location = null,
     poll = null,
     visibility = "public",
+    eventId = null,
   }
 ) {
   const safeVisibility =
@@ -711,6 +715,9 @@ export async function createBackendPost(
               safeVisibility,
             poll:
               poll ||
+              null,
+            event_id:
+              eventId ||
               null,
           }),
       }
