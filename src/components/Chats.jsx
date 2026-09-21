@@ -19,6 +19,15 @@ import {
   saveMessage,
 } from "../storage/database";
 
+import {
+  deleteBackendMessage,
+  editBackendMessage,
+  listBackendChats,
+  loadBackendMessages,
+  openBackendDirectChat,
+  sendBackendMessage,
+} from "../services/chatBackendService";
+
 /* =========================================================
    PEOPLE
 ========================================================= */
@@ -400,6 +409,9 @@ function chatTitle(chat) {
   return (
     PEOPLE[chat.personId]
       ?.name ||
+    chat.person
+      ?.name ||
+    chat.title ||
     "Користувач"
   );
 }
@@ -427,6 +439,9 @@ function chatInitials(
   return (
     PEOPLE[chat.personId]
       ?.initials ||
+    chat.person
+      ?.initials ||
+    chat.initials ||
     "?"
   );
 }
@@ -1957,6 +1972,7 @@ function MessageBubble({
 function Chats({
   initialPersonId = null,
   onNavigate,
+  authSession = null,
 }) {
   const [
     chats,
@@ -2204,7 +2220,9 @@ function Chats({
     activeChat?.personId
       ? PEOPLE[
           activeChat.personId
-        ]
+        ] ||
+        activeChat.person ||
+        null
       : null;
 
   function showChatToast(
@@ -2639,6 +2657,57 @@ function Chats({
             await getChats();
 
           if (
+            authSession?.user?.id
+          ) {
+            const backendChats =
+              await listBackendChats(
+                authSession
+              );
+
+            const backendIds =
+              new Set(
+                backendChats.map(
+                  (
+                    chat
+                  ) =>
+                    chat.id
+                )
+              );
+
+            const demoIds =
+              new Set(
+                DEMO_CHATS.map(
+                  (
+                    chat
+                  ) =>
+                    chat.id
+                )
+              );
+
+            stored = [
+              ...backendChats,
+              ...stored.filter(
+                (
+                  chat
+                ) =>
+                  !backendIds.has(
+                    chat.id
+                  ) &&
+                  !demoIds.has(
+                    chat.id
+                  )
+              ),
+            ];
+
+            for (
+              const chat of
+              backendChats
+            ) {
+              await saveChat(
+                chat
+              );
+            }
+          } else if (
             stored.length ===
             0
           ) {
@@ -2750,7 +2819,49 @@ function Chats({
                     initialPersonId
               );
 
-            if (!chat) {
+            const backendTarget =
+              Boolean(
+                authSession
+                  ?.user?.id
+              ) &&
+              /^[0-9a-f]{8}-[0-9a-f-]{27,}$/i.test(
+                initialPersonId
+              );
+
+            if (
+              backendTarget
+            ) {
+              chat =
+                await openBackendDirectChat(
+                  authSession,
+                  initialPersonId
+                );
+
+              if (
+                chat
+              ) {
+                await saveChat(
+                  chat
+                );
+
+                stored = [
+                  chat,
+                  ...stored.filter(
+                    (
+                      item
+                    ) =>
+                      item.id !==
+                      chat.id
+                  ),
+                ];
+
+                setChats(
+                  stored
+                );
+              }
+            } else if (
+              !chat
+            ) {
               chat = {
                 id:
                   `chat-${initialPersonId}`,
@@ -2784,16 +2895,20 @@ function Chats({
               );
             }
 
-            setActiveChatId(
-              chat.id
-            );
+            if (
+              chat
+            ) {
+              setActiveChatId(
+                chat.id
+              );
 
-            setMobileDialogOpen(
-              true
-            );
+              setMobileDialogOpen(
+                true
+              );
 
-            requestHandled =
-              true;
+              requestHandled =
+                true;
+            }
           }
 
           if (
@@ -2813,7 +2928,9 @@ function Chats({
       };
 
     load();
-  }, []);
+  }, [
+    authSession,
+  ]);
 
   /* =======================================================
      PERSON AFTER ALREADY MOUNTED
@@ -2821,8 +2938,7 @@ function Chats({
 
   useEffect(() => {
     if (
-      !initialPersonId ||
-      chats.length === 0
+      !initialPersonId
     ) {
       return;
     }
@@ -2838,7 +2954,64 @@ function Chats({
                 initialPersonId
           );
 
-        if (!chat) {
+        const backendTarget =
+          Boolean(
+            authSession
+              ?.user?.id
+          ) &&
+          /^[0-9a-f]{8}-[0-9a-f-]{27,}$/i.test(
+            initialPersonId
+          );
+
+        if (
+          backendTarget
+        ) {
+          try {
+            chat =
+              await openBackendDirectChat(
+                authSession,
+                initialPersonId
+              );
+
+            if (
+              chat
+            ) {
+              await saveChat(
+                chat
+              );
+
+              setChats(
+                (
+                  previous
+                ) => [
+                  chat,
+                  ...previous.filter(
+                    (
+                      item
+                    ) =>
+                      item.id !==
+                      chat.id
+                  ),
+                ]
+              );
+            }
+          } catch (
+            error
+          ) {
+            console.warn(
+              "BACKEND CHAT OPEN ERROR:",
+              error
+            );
+
+            showChatToast(
+              "Не вдалося відкрити чат"
+            );
+
+            return;
+          }
+        } else if (
+          !chat
+        ) {
           chat = {
             id:
               `chat-${initialPersonId}`,
@@ -2864,18 +3037,23 @@ function Chats({
           );
         }
 
-        setActiveChatId(
-          chat.id
-        );
+        if (
+          chat
+        ) {
+          setActiveChatId(
+            chat.id
+          );
 
-        setMobileDialogOpen(
-          true
-        );
+          setMobileDialogOpen(
+            true
+          );
+        }
       };
 
     open();
   }, [
     initialPersonId,
+    authSession,
   ]);
 
   /* =======================================================
@@ -2894,11 +3072,18 @@ function Chats({
 
         try {
           let stored =
-            await getMessages(
-              activeChatId
-            );
+            activeChat?.backend &&
+            authSession?.user?.id
+              ? await loadBackendMessages(
+                  authSession,
+                  activeChatId
+                )
+              : await getMessages(
+                  activeChatId
+                );
 
           if (
+            !activeChat?.backend &&
             activeChatId ===
               "chat-maria" &&
             stored.length ===
@@ -2988,6 +3173,169 @@ function Chats({
     load();
   }, [
     activeChatId,
+    activeChat?.backend,
+    authSession,
+  ]);
+
+  useEffect(() => {
+    if (
+      !activeChat?.backend ||
+      !authSession?.user?.id
+    ) {
+      return undefined;
+    }
+
+    let active =
+      true;
+
+    const refresh =
+      async () => {
+        try {
+          const latest =
+            await loadBackendMessages(
+              authSession,
+              activeChat.id
+            );
+
+          if (
+            active
+          ) {
+            setMessages(
+              latest
+            );
+          }
+        } catch (
+          error
+        ) {
+          console.warn(
+            "BACKEND CHAT REFRESH ERROR:",
+            error
+          );
+        }
+      };
+
+    const timer =
+      window.setInterval(
+        refresh,
+        2500
+      );
+
+    return () => {
+      active =
+        false;
+
+      window.clearInterval(
+        timer
+      );
+    };
+  }, [
+    activeChat?.id,
+    activeChat?.backend,
+    authSession,
+  ]);
+
+  useEffect(() => {
+    if (
+      !authSession?.user?.id
+    ) {
+      return undefined;
+    }
+
+    let active =
+      true;
+
+    const refreshChats =
+      async () => {
+        try {
+          const backendChats =
+            await listBackendChats(
+              authSession
+            );
+
+          if (
+            !active
+          ) {
+            return;
+          }
+
+          const backendIds =
+            new Set(
+              backendChats.map(
+                (
+                  chat
+                ) =>
+                  chat.id
+              )
+            );
+
+          const demoIds =
+            new Set(
+              DEMO_CHATS.map(
+                (
+                  chat
+                ) =>
+                  chat.id
+              )
+            );
+
+          setChats(
+            (
+              previous
+            ) =>
+              [
+                ...backendChats,
+                ...previous.filter(
+                  (
+                    chat
+                  ) =>
+                    !backendIds.has(
+                      chat.id
+                    ) &&
+                    !demoIds.has(
+                      chat.id
+                    )
+                ),
+              ].sort(
+                (
+                  left,
+                  right
+                ) =>
+                  Number(
+                    right.updatedAt ||
+                    0
+                  ) -
+                  Number(
+                    left.updatedAt ||
+                    0
+                  )
+              )
+          );
+        } catch (
+          error
+        ) {
+          console.warn(
+            "BACKEND CHAT LIST REFRESH ERROR:",
+            error
+          );
+        }
+      };
+
+    const timer =
+      window.setInterval(
+        refreshChats,
+        4000
+      );
+
+    return () => {
+      active =
+        false;
+
+      window.clearInterval(
+        timer
+      );
+    };
+  }, [
+    authSession,
   ]);
 
   useEffect(() => {
@@ -4286,11 +4634,22 @@ function Chats({
             Date.now(),
         };
 
-        await saveMessage(
-          cleanMessage(
-            updated
-          )
-        );
+        if (
+          activeChat.backend &&
+          authSession?.user?.id
+        ) {
+          await editBackendMessage(
+            authSession,
+            updated.id,
+            text
+          );
+        } else {
+          await saveMessage(
+            cleanMessage(
+              updated
+            )
+          );
+        }
 
         setMessages(
           (previous) =>
@@ -4321,6 +4680,73 @@ function Chats({
         !text &&
         !attachment
       ) {
+        return;
+      }
+
+      if (
+        activeChat.backend &&
+        authSession?.user?.id
+      ) {
+        if (
+          attachment
+        ) {
+          showChatToast(
+            "Фото й файли у хмарних чатах — наступний модуль"
+          );
+
+          return;
+        }
+
+        try {
+          const backendMessage =
+            await sendBackendMessage(
+              authSession,
+              activeChat.id,
+              {
+                text,
+                kind:
+                  "text",
+                replyToId:
+                  replyTo?.backend
+                    ? replyTo.id
+                    : null,
+              }
+            );
+
+          if (
+            backendMessage
+          ) {
+            setMessages(
+              (
+                previous
+              ) => [
+                ...previous,
+                backendMessage,
+              ]
+            );
+
+            await updatePreview(
+              activeChat,
+              text
+            );
+          }
+
+          setDraft("");
+          setReplyTo(null);
+          setEmojiOpen(false);
+        } catch (
+          error
+        ) {
+          console.warn(
+            "BACKEND MESSAGE SEND ERROR:",
+            error
+          );
+
+          showChatToast(
+            "Не вдалося надіслати повідомлення"
+          );
+        }
+
         return;
       }
 
@@ -4414,6 +4840,21 @@ function Chats({
         return;
       }
 
+      if (
+        activeChat.backend &&
+        authSession?.user?.id
+      ) {
+        setVoiceOpen(
+          false
+        );
+
+        showChatToast(
+          "Голосові у хмарних чатах — наступний модуль"
+        );
+
+        return;
+      }
+
       const message = {
         id: createId(),
         chatId:
@@ -4477,9 +4918,20 @@ function Chats({
 
   const removeMessage =
     async (message) => {
-      await deleteMessage(
-        message.id
-      );
+      if (
+        activeChat?.backend &&
+        authSession?.user?.id &&
+        message.backend
+      ) {
+        await deleteBackendMessage(
+          authSession,
+          message.id
+        );
+      } else {
+        await deleteMessage(
+          message.id
+        );
+      }
 
       if (
         message.fileUrl
@@ -4508,6 +4960,16 @@ function Chats({
       id,
       emoji
     ) => {
+      if (
+        activeChat?.backend
+      ) {
+        showChatToast(
+          "Реакції у хмарних чатах — наступний модуль"
+        );
+
+        return;
+      }
+
       const message =
         messages.find(
           (item) =>
@@ -4551,6 +5013,16 @@ function Chats({
 
   const togglePin =
     async (message) => {
+      if (
+        activeChat?.backend
+      ) {
+        showChatToast(
+          "Закріплення у хмарних чатах — наступний модуль"
+        );
+
+        return;
+      }
+
       const newValue =
         !message.pinned;
 
