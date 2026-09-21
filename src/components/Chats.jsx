@@ -44,6 +44,10 @@ import {
 } from "../services/settingsBackendService";
 
 import {
+  getBackendFriendPeople,
+} from "../services/socialBackendService";
+
+import {
   getBackendRelationships,
   setBackendBlocked,
 } from "../services/socialBackendService";
@@ -2017,6 +2021,11 @@ function Chats({
   ] = useState(null);
 
   const [
+    backendPeople,
+    setBackendPeople,
+  ] = useState([]);
+
+  const [
     messages,
     setMessages,
   ] = useState([]);
@@ -2856,6 +2865,57 @@ function Chats({
     ),
   ]);
 
+  useEffect(() => {
+    if (
+      !authSession?.user?.id
+    ) {
+      setBackendPeople(
+        []
+      );
+
+      return undefined;
+    }
+
+    let active =
+      true;
+
+    getBackendFriendPeople(
+      authSession,
+      20
+    )
+      .then(
+        (
+          people
+        ) => {
+          if (
+            active
+          ) {
+            setBackendPeople(
+              people
+            );
+          }
+        }
+      )
+      .catch(
+        (
+          error
+        ) => {
+          console.warn(
+            "CHAT FRIEND PEOPLE LOAD ERROR:",
+            error
+          );
+        }
+      );
+
+    return () => {
+      active =
+        false;
+    };
+  }, [
+    authSession?.user?.id,
+    authSession?.access_token,
+  ]);
+
   /* =======================================================
      LOAD CHATS
   ======================================================= */
@@ -2906,6 +2966,13 @@ function Chats({
                   ) &&
                   !demoIds.has(
                     chat.id
+                  ) &&
+                  (
+                    chat.type ===
+                      "group" ||
+                    Boolean(
+                      chat.communityId
+                    )
                   )
               ),
             ];
@@ -4042,8 +4109,17 @@ function Chats({
 
   const onlinePeople =
     useMemo(
-      () =>
-        Object.values(
+      () => {
+        if (
+          authSession?.user?.id
+        ) {
+          return backendPeople.slice(
+            0,
+            7
+          );
+        }
+
+        return Object.values(
           PEOPLE
         )
           .filter(
@@ -4055,22 +4131,35 @@ function Chats({
           .slice(
             0,
             7
-          ),
-      []
+          );
+      },
+      [
+        authSession?.user?.id,
+        backendPeople,
+      ]
     );
 
   const storyPeople =
     useMemo(
-      () =>
-        Object.values(
+      () => {
+        if (
+          authSession?.user?.id
+        ) {
+          return [];
+        }
+
+        return Object.values(
           PEOPLE
         ).filter(
           (person) =>
             STORY_SETS[
               person.id
             ]?.length
-        ),
-      []
+        );
+      },
+      [
+        authSession?.user?.id,
+      ]
     );
 
   const currentStoryPerson =
@@ -5072,15 +5161,74 @@ function Chats({
               personId
         );
 
-      if (!chat) {
+      const backendTarget =
+        Boolean(
+          authSession?.user?.id
+        ) &&
+        /^[0-9a-f]{8}-[0-9a-f-]{27,}$/i.test(
+          personId
+        );
+
+      if (
+        backendTarget
+      ) {
+        try {
+          chat =
+            await openBackendDirectChat(
+              authSession,
+              personId
+            );
+
+          if (
+            chat
+          ) {
+            await saveChat(
+              chat
+            );
+
+            setChats(
+              (
+                previous
+              ) => [
+                chat,
+                ...previous.filter(
+                  (
+                    item
+                  ) =>
+                    item.id !==
+                    chat.id
+                ),
+              ]
+            );
+          }
+        } catch (
+          error
+        ) {
+          console.warn(
+            "DIRECT CHAT CREATE ERROR:",
+            error
+          );
+
+          showChatToast(
+            error?.message ||
+            "Не вдалося відкрити чат"
+          );
+
+          return;
+        }
+      } else if (
+        !chat
+      ) {
         chat = {
           id:
             `chat-${personId}`,
-          type: "direct",
+          type:
+            "direct",
           personId,
           updatedAt:
             Date.now(),
-          unread: 0,
+          unread:
+            0,
           lastMessage:
             "Новий діалог",
         };
@@ -5090,11 +5238,19 @@ function Chats({
         );
 
         setChats(
-          (previous) => [
+          (
+            previous
+          ) => [
             chat,
             ...previous,
           ]
         );
+      }
+
+      if (
+        !chat
+      ) {
+        return;
       }
 
       setActiveChatId(
@@ -6480,50 +6636,65 @@ function Chats({
                     </div>
                   </button>
 
-                  {Object.values(
-                    PEOPLE
-                  )
-                    .filter(
-                      (person) =>
-                        person.id !==
-                        "me"
-                    )
-                    .map(
-                      (person) => (
-                        <button
-                          key={
+                  {(
+                    authSession?.user?.id
+                      ? backendPeople
+                      : Object.values(
+                          PEOPLE
+                        ).filter(
+                          (
+                            person
+                          ) =>
+                            person.id !==
+                            "me"
+                        )
+                  ).map(
+                    (
+                      person
+                    ) => (
+                      <button
+                        key={
+                          person.id
+                        }
+                        onClick={() =>
+                          createDirectChat(
                             person.id
-                          }
-                          onClick={() =>
-                            createDirectChat(
-                              person.id
-                            )
-                          }
-                        >
-                          <span className="create-chat-avatar">
+                          )
+                        }
+                      >
+                        <span className="create-chat-avatar">
+                          {person.avatar ? (
+                            <img
+                              src={
+                                person.avatar
+                              }
+                              alt=""
+                            />
+                          ) : (
+                            person.initials ||
+                            person.initial ||
+                            "Я"
+                          )}
+                        </span>
+
+                        <div>
+                          <strong>
                             {
-                              person.initials
+                              person.name
                             }
-                          </span>
+                          </strong>
 
-                          <div>
-                            <strong>
-                              {
-                                person.name
-                              }
-                            </strong>
+                          <small>
+                            @
+                            {
+                              person.username
+                            }
+                          </small>
+                        </div>
 
-                            <small>
-                              @
-                              {
-                                person.username
-                              }
-                            </small>
-                          </div>
-
-                        </button>
-                      )
-                    )}
+                      </button>
+                    )
+                  )}
 
                 </div>
               )}
@@ -6557,7 +6728,9 @@ function Chats({
           <section className="chat-activities-mobile">
 
             <div className="chat-mobile-section-title">
-              Активні
+              {authSession?.user?.id
+                ? "Друзі"
+                : "Активні"}
             </div>
 
             <div className="chat-activity-row">
@@ -6591,7 +6764,9 @@ function Chats({
                             alt=""
                           />
                         ) : (
-                          person.initials
+                          person.initials ||
+                          person.initial ||
+                          "Я"
                         )}
                       </span>
                     </span>
@@ -6782,15 +6957,21 @@ function Chats({
                           : ""
                       }`.trim()}
                     >
-                      {chat.personId &&
-                      PEOPLE[
-                        chat.personId
-                      ]?.avatar ? (
+                      {(
+                        chat.person?.avatar ||
+                        (
+                          chat.personId &&
+                          PEOPLE[
+                            chat.personId
+                          ]?.avatar
+                        )
+                      ) ? (
                         <img
                           src={
+                            chat.person?.avatar ||
                             PEOPLE[
                               chat.personId
-                            ].avatar
+                            ]?.avatar
                           }
                           alt=""
                         />
@@ -6899,15 +7080,21 @@ function Chats({
               <div className="chat-list-action-head">
 
                 <span className="chat-list-action-avatar">
-                  {chatActionChat.personId &&
-                  PEOPLE[
-                    chatActionChat.personId
-                  ]?.avatar ? (
+                  {(
+                    chatActionChat.person?.avatar ||
+                    (
+                      chatActionChat.personId &&
+                      PEOPLE[
+                        chatActionChat.personId
+                      ]?.avatar
+                    )
+                  ) ? (
                     <img
                       src={
+                        chatActionChat.person?.avatar ||
                         PEOPLE[
                           chatActionChat.personId
-                        ].avatar
+                        ]?.avatar
                       }
                       alt=""
                     />
