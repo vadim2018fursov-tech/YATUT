@@ -40,7 +40,9 @@ import {
 import {
   createBackendEvent,
   deleteBackendEvent,
+  inviteBackendEventFriends,
   loadBackendEvents,
+  loadEventInviteCandidates,
   setBackendEventParticipation,
   toggleBackendEventLike,
 } from "../services/eventBackendService";
@@ -620,6 +622,11 @@ function CreateEventModal({
   );
 
   const [
+    coverFile,
+    setCoverFile,
+  ] = useState(null);
+
+  const [
     publishToFeed,
     setPublishToFeed,
   ] = useState(true);
@@ -670,6 +677,14 @@ function CreateEventModal({
       )
     ) {
       return;
+    }
+
+    if (
+      backendMode
+    ) {
+      setCoverFile(
+        file
+      );
     }
 
     const reader =
@@ -753,9 +768,17 @@ function CreateEventModal({
       await onCreate?.(
         newEvent,
         {
-          publishToFeed,
+          publishToFeed:
+            communityContext
+              ? false
+              : publishToFeed,
 
           communityContext,
+
+          coverFile:
+            backendMode
+              ? coverFile
+              : null,
         }
       );
     } finally {
@@ -810,24 +833,7 @@ function CreateEventModal({
             }
           />
 
-          {backendMode ? (
-            <div className="event-backend-note">
-              <ImagePlus
-                size={20}
-              />
-
-              <div>
-                <strong>
-                  Обкладинки — наступним кроком
-                </strong>
-
-                <span>
-                  Фото підключимо через Supabase Storage, щоб воно реально зберігалося між пристроями.
-                </span>
-              </div>
-            </div>
-          ) : (
-<div className="event-photo-field">
+          <div className="event-photo-field">
             <div className="event-photo-label">
               <div>
                 <strong>
@@ -887,11 +893,14 @@ function CreateEventModal({
 
                   <button
                     type="button"
-                    onClick={() =>
+                    onClick={() => {
                       setCover(
                         null
-                      )
-                    }
+                      );
+                      setCoverFile(
+                        null
+                      );
+                    }}
                   >
                     Видалити
                   </button>
@@ -911,7 +920,6 @@ function CreateEventModal({
               }
             />
           </div>
-          )}
 
           <label className="event-field">
             <span>
@@ -1084,7 +1092,7 @@ function CreateEventModal({
             />
           </label>
 
-          {backendMode ? (
+          {communityContext ? (
             <div className="event-backend-note">
               <Sparkles
                 size={20}
@@ -1092,11 +1100,11 @@ function CreateEventModal({
 
               <div>
                 <strong>
-                  Публікація у стрічці — скоро
+                  Подія спільноти
                 </strong>
 
                 <span>
-                  Сама подія вже серверна. Автоматичний пост у загальній стрічці підключимо окремо.
+                  Вона залишиться всередині спільноти й не потрапить у загальну стрічку.
                 </span>
               </div>
             </div>
@@ -1126,7 +1134,7 @@ function CreateEventModal({
                 </strong>
 
                 <small>
-                  Друзі побачать нову подію у ЯТУТ
+                  Створити повʼязаний допис про подію
                 </small>
               </div>
             </button>
@@ -1181,6 +1189,7 @@ function EventDetail({
   onShare,
   onInviteFriends,
   backendMode = false,
+  backendInviteCandidates = [],
 }) {
   const going =
     event.attendees?.includes(
@@ -1206,26 +1215,47 @@ function EventDetail({
   ] = useState([]);
 
   const invitedIds =
-    Array.isArray(
-      event.invited
-    )
+    backendMode
+      ? backendInviteCandidates
+          .filter(
+            (
+              person
+            ) =>
+              [
+                "pending",
+                "accepted",
+              ].includes(
+                person.inviteStatus
+              )
+          )
+          .map(
+            (
+              person
+            ) =>
+              person.id
+          )
+      : Array.isArray(
+          event.invited
+        )
       ? event.invited
       : [];
 
   const inviteCandidates =
-    Object.values(
-      PEOPLE
-    ).filter(
-      (
-        person
-      ) =>
-        person.id !==
-          "me" &&
-        !event.attendees
-          ?.includes(
-            person.id
-          )
-    );
+    backendMode
+      ? backendInviteCandidates
+      : Object.values(
+          PEOPLE
+        ).filter(
+          (
+            person
+          ) =>
+            person.id !==
+              "me" &&
+            !event.attendees
+              ?.includes(
+                person.id
+              )
+        );
 
   function toggleInvite(
     personId
@@ -1417,9 +1447,7 @@ function EventDetail({
               </strong>
             </div>
 
-            {!backendMode && (
-              <>
-                <div className="event-attendees">
+            <div className="event-attendees">
                   {attendees.map(
                     (id) => {
                       const person =
@@ -1438,9 +1466,16 @@ function EventDetail({
                           className="event-attendee"
                         >
                           <span>
-                            {
+                            {person.avatar ? (
+                              <img
+                                src={
+                                  person.avatar
+                                }
+                                alt=""
+                              />
+                            ) : (
                               person.initials
-                            }
+                            )}
                           </span>
 
                           <strong>
@@ -1477,10 +1512,8 @@ function EventDetail({
                     ? "Запрошено " + invitedIds.length
                     : "Запросити друзів"}
                 </button>
-              </>
-            )}
 
-            {!backendMode && inviteOpen && (
+            {inviteOpen && (
               <div className="event-invite-panel">
                 <div className="event-invite-panel__head">
                   <div>
@@ -1815,6 +1848,11 @@ function Events({
   ] = useState("");
 
   const [
+    backendInviteCandidates,
+    setBackendInviteCandidates,
+  ] = useState([]);
+
+  const [
     activeTab,
     setActiveTab,
   ] = useState(
@@ -2075,6 +2113,36 @@ function Events({
         activeEventId
     ) ||
     null;
+
+  useEffect(() => {
+    if (
+      !authSession?.user?.id ||
+      !activeEventId
+    ) {
+      setBackendInviteCandidates(
+        []
+      );
+
+      return;
+    }
+
+    refreshInviteCandidates(
+      activeEventId
+    ).catch(
+      (
+        error
+      ) => {
+        console.warn(
+          "EVENT INVITE CANDIDATES ERROR:",
+          error
+        );
+      }
+    );
+  }, [
+    activeEventId,
+    authSession?.user?.id,
+    authSession?.access_token,
+  ]);
 
   const filteredEvents =
     useMemo(() => {
@@ -2416,8 +2484,36 @@ function Events({
     );
   }
 
+  async function refreshInviteCandidates(
+    eventId
+  ) {
+    if (
+      !authSession?.user?.id ||
+      !eventId
+    ) {
+      setBackendInviteCandidates(
+        []
+      );
+
+      return [];
+    }
+
+    const next =
+      await loadEventInviteCandidates(
+        authSession,
+        eventId
+      );
+
+    setBackendInviteCandidates(
+      next
+    );
+
+    return next;
+  }
+
   async function createNewEvent(
-    newEvent
+    newEvent,
+    options = {}
   ) {
     if (
       authSession?.user?.id
@@ -2426,7 +2522,8 @@ function Events({
         const created =
           await createBackendEvent(
             authSession,
-            newEvent
+            newEvent,
+            options
           );
 
         const next =
@@ -2623,13 +2720,37 @@ function Events({
     );
   }
 
-  function inviteFriends(
+  async function inviteFriends(
     eventId,
     personIds
   ) {
     if (
       authSession?.user?.id
     ) {
+      try {
+        await inviteBackendEventFriends(
+          authSession,
+          eventId,
+          personIds
+        );
+
+        await refreshInviteCandidates(
+          eventId
+        );
+      } catch (
+        error
+      ) {
+        console.warn(
+          "EVENT INVITE ERROR:",
+          error
+        );
+
+        window.alert(
+          error?.message ||
+          "Не вдалося надіслати запрошення."
+        );
+      }
+
       return;
     }
 
@@ -2742,6 +2863,9 @@ function Events({
           Boolean(
             authSession?.user?.id
           )
+        }
+        backendInviteCandidates={
+          backendInviteCandidates
         }
       />
     );
