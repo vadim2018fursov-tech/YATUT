@@ -843,17 +843,34 @@ export async function updateMyProfile(
     return null;
   }
 
+  const username =
+    normalizeUsername(
+      profile?.username
+    );
+
+  if (
+    !isValidUsername(
+      username
+    )
+  ) {
+    throw new Error(
+      "Username має містити 3–30 символів: латинські літери, цифри, крапка або _."
+    );
+  }
+
+  const available =
+    await checkUsernameAvailable(
+      username
+    );
+
+  if (!available) {
+    throw new Error(
+      "Цей username вже зайнятий."
+    );
+  }
+
   const body = {
-    username:
-      String(
-        profile?.username ||
-        ""
-      )
-        .trim()
-        .replace(
-          /^@/,
-          ""
-        ),
+    username,
     full_name:
       String(
         profile?.name ||
