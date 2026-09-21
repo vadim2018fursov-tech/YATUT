@@ -489,75 +489,21 @@ export default function EventsPulsePage({
     authSession?.user?.id
   ) {
     return (
-      <section className="feature-page">
-        <header className="feature-hero">
-          <div>
-            <span>
-              ЯТУТ ПОДІЇ
-            </span>
-
-            <h1>
-              Події переходять на real data
-            </h1>
-
-            <p>
-              Авторизовані користувачі більше не бачать тестові події, LIVE-лічильники чи вигадані числа учасників як справжні дані.
-            </p>
-          </div>
-
-          <div className="feature-hero-icon">
-            <CalendarDays
-              size={34}
-            />
-          </div>
-        </header>
-
-        <section className="feature-real-state">
-          <div className="feature-real-state__icon">
-            <CalendarDays
-              size={28}
-            />
-          </div>
-
-          <span>
-            REAL DATA ONLY
-          </span>
-
-          <h2>
-            Серверні події — наступний етап
-          </h2>
-
-          <p>
-            У Supabase ще немає таблиць подій, тому створення та каталог подій тимчасово не видаються за production-функцію. Спільноти й чати вже працюють із сервером.
-          </p>
-
-          <div className="feature-real-state__actions">
-            <button
-              type="button"
-              className="feature-primary-button"
-              onClick={() =>
-                onNavigate?.(
-                  "communities"
-                )
-              }
-            >
-              Відкрити спільноти
-            </button>
-
-            <button
-              type="button"
-              className="feature-secondary-button"
-              onClick={() =>
-                onNavigate?.(
-                  "pulse"
-                )
-              }
-            >
-              Перейти в PULSE
-            </button>
-          </div>
+      <div className="events-pulse-page events-pulse-page--backend">
+        <section className="events-pulse-existing">
+          <Events
+            onNavigate={
+              onNavigate
+            }
+            createRequestKey={
+              createRequestKey
+            }
+            authSession={
+              authSession
+            }
+          />
         </section>
-      </section>
+      </div>
     );
   }
 
@@ -1136,6 +1082,9 @@ export default function EventsPulsePage({
           }
           createRequestKey={
             createRequestKey
+          }
+          authSession={
+            authSession
           }
         />
       </section>
