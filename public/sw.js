@@ -1,11 +1,14 @@
 const CACHE_NAME =
-  "yatut-shell-v1";
+  "yatut-shell-v2";
 
 const APP_SHELL = [
   "/",
   "/manifest.webmanifest",
   "/yatut-icon.svg",
   "/favicon.svg",
+  "/notifications",
+  "/chats",
+  "/pulse",
 ];
 
 self.addEventListener(
