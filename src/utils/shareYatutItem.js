@@ -6,7 +6,10 @@ export async function shareYatutItem({
 } = {}) {
   const url =
     path
-      ? `${window.location.origin}${window.location.pathname}${path}`
+      ? new URL(
+          path,
+          `${window.location.origin}/`
+        ).toString()
       : window.location.href;
 
   try {
