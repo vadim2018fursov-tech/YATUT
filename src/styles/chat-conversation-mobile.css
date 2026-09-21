@@ -8119,3 +8119,321 @@
       none !important;
   }
 }
+
+
+/* =========================================================
+   CROSS-DEVICE MOBILE VIEWPORT HARDENING
+   iOS / Android / PWA / dynamic browser chrome
+========================================================= */
+
+@media (max-width: 767px), (hover: none) and (pointer: coarse) and (max-width: 900px) {
+  :root {
+    --yatut-mobile-safe-bottom:
+      max(
+        env(safe-area-inset-bottom),
+        0px
+      );
+    --yatut-mobile-safe-top:
+      max(
+        env(safe-area-inset-top),
+        0px
+      );
+  }
+
+  body:has(.messenger.mobile-dialog-open) {
+    overscroll-behavior: none !important;
+    touch-action: manipulation;
+  }
+
+  .messenger.mobile-dialog-open {
+    width: 100% !important;
+    max-width: 100% !important;
+
+    height:
+      var(
+        --yatut-visual-viewport-height,
+        100dvh
+      ) !important;
+
+    min-height:
+      var(
+        --yatut-visual-viewport-height,
+        100dvh
+      ) !important;
+
+    max-height:
+      var(
+        --yatut-visual-viewport-height,
+        100dvh
+      ) !important;
+
+    inset:
+      0
+      0
+      auto
+      0 !important;
+
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  @supports not (height: 100dvh) {
+    .messenger.mobile-dialog-open {
+      height:
+        var(
+          --yatut-visual-viewport-height,
+          100vh
+        ) !important;
+
+      min-height:
+        var(
+          --yatut-visual-viewport-height,
+          100vh
+        ) !important;
+
+      max-height:
+        var(
+          --yatut-visual-viewport-height,
+          100vh
+        ) !important;
+    }
+  }
+
+  .messenger.mobile-dialog-open .chat-dialog {
+    height: 100% !important;
+    max-height: 100% !important;
+  }
+
+  .messenger.mobile-dialog-open .chat-dialog-header {
+    padding-top:
+      calc(
+        9px +
+        var(
+          --yatut-mobile-safe-top
+        )
+      ) !important;
+  }
+
+  .messenger.mobile-dialog-open .chat-messages {
+    min-height: 0 !important;
+    flex: 1 1 0 !important;
+
+    padding-bottom:
+      clamp(
+        16px,
+        3.6vw,
+        24px
+      ) !important;
+
+    scroll-padding-bottom:
+      96px !important;
+
+    -webkit-overflow-scrolling:
+      touch;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode) {
+    width:
+      calc(
+        100% -
+        clamp(
+          14px,
+          3vw,
+          22px
+        )
+      ) !important;
+
+    margin-right:
+      auto !important;
+    margin-left:
+      auto !important;
+
+    margin-bottom:
+      calc(
+        clamp(
+          8px,
+          2vw,
+          14px
+        ) +
+        var(
+          --yatut-mobile-safe-bottom
+        )
+      ) !important;
+
+    flex:
+      0 0 auto !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-composer textarea {
+    font-size: 16px !important;
+    line-height: 1.3 !important;
+
+    touch-action:
+      manipulation;
+  }
+
+  .messenger.mobile-dialog-open
+  .yatut-attach-popover {
+    right:
+      clamp(
+        8px,
+        3vw,
+        16px
+      ) !important;
+
+    left:
+      clamp(
+        8px,
+        3vw,
+        16px
+      ) !important;
+
+    width: auto !important;
+    max-width: none !important;
+
+    bottom:
+      calc(
+        88px +
+        var(
+          --yatut-mobile-safe-bottom
+        )
+      ) !important;
+  }
+
+  .messenger.mobile-dialog-open.chat-info-open
+  .chat-info-panel {
+    max-height:
+      calc(
+        var(
+          --yatut-visual-viewport-height,
+          100dvh
+        ) -
+        120px -
+        var(
+          --yatut-mobile-safe-top
+        )
+      ) !important;
+  }
+
+  .messenger:not(.mobile-dialog-open) {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .messenger:not(.mobile-dialog-open)
+  .chat-list {
+    min-height:
+      calc(
+        var(
+          --yatut-visual-viewport-height,
+          100dvh
+        ) -
+        64px
+      ) !important;
+
+    padding-bottom:
+      calc(
+        86px +
+        var(
+          --yatut-mobile-safe-bottom
+        )
+      ) !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .messenger.mobile-dialog-open
+  .chat-dialog-person {
+    max-width:
+      calc(
+        100% -
+        104px
+      ) !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-header-avatar {
+    width: 38px !important;
+    height: 38px !important;
+    flex-basis: 38px !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode) {
+    width:
+      calc(
+        100% -
+        10px
+      ) !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode)
+  .chat-plus,
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode)
+  .chat-send {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    flex-basis: 36px !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-composer textarea {
+    padding-right: 6px !important;
+    padding-left: 6px !important;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 900px) and (pointer: coarse) {
+  .messenger.mobile-dialog-open
+  .chat-dialog-person {
+    max-width: 420px !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .message-shell,
+  .messenger.mobile-dialog-open
+  .message-row > div {
+    max-width:
+      min(
+        72vw,
+        620px
+      ) !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode) {
+    width:
+      min(
+        760px,
+        calc(
+          100% -
+          28px
+        )
+      ) !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .yatut-attach-popover {
+    right: 50% !important;
+    left: auto !important;
+
+    width:
+      min(
+        620px,
+        calc(
+          100% -
+          32px
+        )
+      ) !important;
+
+    transform:
+      translateX(
+        50%
+      );
+  }
+}
