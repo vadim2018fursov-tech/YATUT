@@ -1687,7 +1687,7 @@ function Stories({
                               setReactionOpen(
                                 false
                               );
-                            }
+                            }}
                           >
                             {
                               emoji
