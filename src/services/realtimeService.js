@@ -805,3 +805,51 @@ export function subscribeSocialGraphRealtime({
     onStatus,
   });
 }
+
+
+export function subscribeStoriesRealtime({
+  session,
+  onChange,
+  onStatus,
+}) {
+  if (
+    !session?.access_token ||
+    !session?.user?.id
+  ) {
+    return {
+      updateAccessToken:
+        () => {},
+      close:
+        () => {},
+    };
+  }
+
+  return createRealtimeChannel({
+    session,
+    topic:
+      `stories:${session.user.id}`,
+    changes: [
+      {
+        event:
+          "*",
+        schema:
+          "public",
+        table:
+          "stories",
+      },
+      {
+        event:
+          "*",
+        schema:
+          "public",
+        table:
+          "story_views",
+        filter:
+          `user_id=eq.${session.user.id}`,
+      },
+    ],
+    onPostgresChange:
+      onChange,
+    onStatus,
+  });
+}
