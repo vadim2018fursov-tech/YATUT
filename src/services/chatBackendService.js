@@ -521,6 +521,59 @@ async function chatFromConversation(
   };
 }
 
+async function getMyConversationState(
+  session
+) {
+  const response =
+    await fetch(
+      `${SUPABASE_URL}/rest/v1/rpc/get_my_conversation_state`,
+      {
+        method:
+          "POST",
+        headers:
+          headers(
+            session
+          ),
+        body:
+          "{}",
+      }
+    );
+
+  const rows =
+    await parseResponse(
+      response
+    );
+
+  return new Map(
+    (
+      Array.isArray(
+        rows
+      )
+        ? rows
+        : []
+    ).map(
+      (
+        row
+      ) => [
+        row.conversation_id,
+        {
+          unread:
+            Number(
+              row.unread_count ||
+              0
+            ),
+          lastReadAt:
+            row.last_read_at
+              ? Date.parse(
+                  row.last_read_at
+                )
+              : null,
+        },
+      ]
+    )
+  );
+}
+
 export async function listBackendChats(
   session
 ) {
@@ -579,6 +632,11 @@ export async function listBackendChats(
       ),
     ];
 
+  const conversationState =
+    await getMyConversationState(
+      session
+    );
+
   const conversations =
     await Promise.all(
       ids.map(
@@ -607,7 +665,26 @@ export async function listBackendChats(
         )
     );
 
-  return chats
+  const enrichedChats =
+    chats.map(
+      (
+        chat
+      ) => ({
+        ...chat,
+        unread:
+          conversationState.get(
+            chat.id
+          )?.unread ||
+          0,
+        lastReadAt:
+          conversationState.get(
+            chat.id
+          )?.lastReadAt ||
+          null,
+      })
+    );
+
+  return enrichedChats
     .filter(Boolean)
     .sort(
       (
@@ -770,12 +847,7 @@ export async function getBackendOtherReadAt(
 
   url.searchParams.set(
     "select",
-    "last_read_at"
-  );
-
-  url.searchParams.set(
-    "limit",
-    "1"
+    "user_id,last_read_at"
   );
 
   const response =
@@ -794,18 +866,42 @@ export async function getBackendOtherReadAt(
       response
     );
 
-  const value =
+  const others =
     Array.isArray(
       rows
     )
-      ? rows[0]
-          ?.last_read_at ||
-        null
-      : null;
+      ? rows
+      : [];
 
-  return value
-    ? Date.parse(
-        value
+  if (
+    !others.length ||
+    others.some(
+      (
+        row
+      ) =>
+        !row.last_read_at
+    )
+  ) {
+    return null;
+  }
+
+  const times =
+    others
+      .map(
+        (
+          row
+        ) =>
+          Date.parse(
+            row.last_read_at
+          )
+      )
+      .filter(
+        Number.isFinite
+      );
+
+  return times.length
+    ? Math.min(
+        ...times
       )
     : null;
 }
