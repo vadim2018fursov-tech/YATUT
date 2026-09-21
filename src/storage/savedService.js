@@ -506,6 +506,44 @@ function emitSavedChange(
 }
 
 /* =========================================================
+   REPLACE SNAPSHOT
+
+   Використовується backend-sync шаром, щоб локальний кеш
+   точно відповідав поточному акаунту.
+========================================================= */
+
+export function replaceSavedItems(
+  items = []
+) {
+  const normalized =
+    safeArray(
+      items
+    )
+      .map(
+        (
+          item
+        ) => {
+          try {
+            return normalizeSavedItem(
+              item
+            );
+          } catch {
+            return null;
+          }
+        }
+      )
+      .filter(
+        Boolean
+      );
+
+  writeStorage(
+    normalized
+  );
+
+  return normalized;
+}
+
+/* =========================================================
    GET ALL
 ========================================================= */
 
