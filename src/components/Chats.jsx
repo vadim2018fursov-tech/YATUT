@@ -20,6 +20,7 @@ import {
 } from "../storage/database";
 
 import {
+  createBackendGroupChat,
   deleteBackendMessage,
   editBackendMessage,
   getBackendOtherReadAt,
@@ -1173,6 +1174,7 @@ function VoiceRecorder({
 function GroupModal({
   onClose,
   onCreate,
+  people = [],
 }) {
   const [
     title,
@@ -1183,15 +1185,6 @@ function GroupModal({
     selected,
     setSelected,
   ] = useState([]);
-
-  const people =
-    Object.values(
-      PEOPLE
-    ).filter(
-      (person) =>
-        person.id !==
-        "me"
-    );
 
   const toggle = (
     id
@@ -3287,26 +3280,6 @@ function Chats({
           return;
         }
 
-        const backendIds =
-          new Set(
-            backendChats.map(
-              (
-                chat
-              ) =>
-                chat.id
-            )
-          );
-
-        const demoIds =
-          new Set(
-            DEMO_CHATS.map(
-              (
-                chat
-              ) =>
-                chat.id
-            )
-          );
-
         setChats(
           [
             ...backendChats,
@@ -3809,26 +3782,6 @@ function Chats({
           return;
         }
 
-        const backendIds =
-          new Set(
-            backendChats.map(
-              (
-                chat
-              ) =>
-                chat.id
-            )
-          );
-
-        const demoIds =
-          new Set(
-            DEMO_CHATS.map(
-              (
-                chat
-              ) =>
-                chat.id
-            )
-          );
-
         setChats(
           [
             ...backendChats,
@@ -4103,36 +4056,22 @@ function Chats({
             );
 
           setChats(
-            (
-              previous
-            ) =>
-              [
-                ...backendChats,
-                ...previous.filter(
-                  (
-                    chat
-                  ) =>
-                    !backendIds.has(
-                      chat.id
-                    ) &&
-                    !demoIds.has(
-                      chat.id
-                    )
-                ),
-              ].sort(
-                (
-                  left,
-                  right
-                ) =>
-                  Number(
-                    right.updatedAt ||
-                    0
-                  ) -
-                  Number(
-                    left.updatedAt ||
-                    0
-                  )
-              )
+            [
+              ...backendChats,
+            ].sort(
+              (
+                left,
+                right
+              ) =>
+                Number(
+                  right.updatedAt ||
+                  0
+                ) -
+                Number(
+                  left.updatedAt ||
+                  0
+                )
+            )
           );
         } catch (
           error
@@ -5440,6 +5379,79 @@ function Chats({
       title,
       members,
     }) => {
+      if (
+        authSession?.user?.id
+      ) {
+        try {
+          const memberIds =
+            members.filter(
+              (id) =>
+                id !==
+                "me"
+            );
+
+          const chat =
+            await createBackendGroupChat(
+              authSession,
+              title,
+              memberIds
+            );
+
+          if (!chat) {
+            throw new Error(
+              "Не вдалося створити групу"
+            );
+          }
+
+          await saveChat(
+            chat
+          );
+
+          setChats(
+            (previous) => [
+              chat,
+              ...previous.filter(
+                (item) =>
+                  item.id !==
+                  chat.id
+              ),
+            ]
+          );
+
+          setActiveChatId(
+            chat.id
+          );
+
+          setMessages(
+            []
+          );
+
+          setGroupOpen(
+            false
+          );
+
+          setMobileDialogOpen(
+            true
+          );
+
+          return;
+        } catch (
+          error
+        ) {
+          console.warn(
+            "BACKEND GROUP CREATE ERROR:",
+            error
+          );
+
+          showChatToast(
+            error?.message ||
+            "Не вдалося створити групу"
+          );
+
+          return;
+        }
+      }
+
       const now =
         Date.now();
 
@@ -8449,6 +8461,17 @@ function Chats({
 
       {groupOpen && (
         <GroupModal
+          people={
+            authSession?.user?.id
+              ? backendPeople
+              : Object.values(
+                  PEOPLE
+                ).filter(
+                  (person) =>
+                    person.id !==
+                    "me"
+                )
+          }
           onClose={() =>
             setGroupOpen(false)
           }
