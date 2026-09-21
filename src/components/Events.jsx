@@ -2303,6 +2303,16 @@ function Events({
   ] = useState([]);
 
   const [
+    backendParticipants,
+    setBackendParticipants,
+  ] = useState([]);
+
+  const [
+    editEventTarget,
+    setEditEventTarget,
+  ] = useState(null);
+
+  const [
     activeTab,
     setActiveTab,
   ] = useState(
@@ -2573,17 +2583,26 @@ function Events({
         []
       );
 
+      setBackendParticipants(
+        []
+      );
+
       return;
     }
 
-    refreshInviteCandidates(
-      activeEventId
-    ).catch(
+    Promise.all([
+      refreshInviteCandidates(
+        activeEventId
+      ),
+      refreshParticipants(
+        activeEventId
+      ),
+    ]).catch(
       (
         error
       ) => {
         console.warn(
-          "EVENT INVITE CANDIDATES ERROR:",
+          "EVENT DETAIL DATA ERROR:",
           error
         );
       }
@@ -2934,6 +2953,33 @@ function Events({
     );
   }
 
+  async function refreshParticipants(
+    eventId
+  ) {
+    if (
+      !authSession?.user?.id ||
+      !eventId
+    ) {
+      setBackendParticipants(
+        []
+      );
+
+      return [];
+    }
+
+    const next =
+      await loadBackendEventParticipants(
+        authSession,
+        eventId
+      );
+
+    setBackendParticipants(
+      next
+    );
+
+    return next;
+  }
+
   async function refreshInviteCandidates(
     eventId
   ) {
@@ -3100,6 +3146,149 @@ function Events({
     onNavigate?.(
       "chats"
     );
+  }
+
+  async function saveEventChanges(
+    changes
+  ) {
+    const target =
+      editEventTarget;
+
+    if (
+      !target ||
+      !authSession?.user?.id
+    ) {
+      return;
+    }
+
+    try {
+      await updateBackendEvent(
+        authSession,
+        target.id,
+        changes
+      );
+
+      await refreshBackendEvents();
+
+      await refreshParticipants(
+        target.id
+      );
+
+      setEditEventTarget(
+        null
+      );
+    } catch (
+      error
+    ) {
+      console.warn(
+        "EVENT UPDATE ERROR:",
+        error
+      );
+
+      window.alert(
+        error?.message ||
+        "Не вдалося оновити подію."
+      );
+    }
+  }
+
+  async function cancelEvent(
+    event
+  ) {
+    if (
+      !event ||
+      !authSession?.user?.id
+    ) {
+      return;
+    }
+
+    const confirmed =
+      window.confirm(
+        `Скасувати подію «${event.title}»? Учасники отримають сповіщення.`
+      );
+
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      await cancelBackendEvent(
+        authSession,
+        event.id
+      );
+
+      await refreshBackendEvents();
+
+      await refreshParticipants(
+        event.id
+      );
+
+      await refreshInviteCandidates(
+        event.id
+      );
+    } catch (
+      error
+    ) {
+      console.warn(
+        "EVENT CANCEL ERROR:",
+        error
+      );
+
+      window.alert(
+        error?.message ||
+        "Не вдалося скасувати подію."
+      );
+    }
+  }
+
+  async function removeParticipant(
+    eventId,
+    userId
+  ) {
+    const person =
+      backendParticipants.find(
+        (
+          item
+        ) =>
+          item.id ===
+          userId
+      );
+
+    const confirmed =
+      window.confirm(
+        `Прибрати ${person?.name || "учасника"} з події?`
+      );
+
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      await removeBackendEventParticipant(
+        authSession,
+        eventId,
+        userId
+      );
+
+      await Promise.all([
+        refreshParticipants(
+          eventId
+        ),
+        refreshBackendEvents(),
+      ]);
+    } catch (
+      error
+    ) {
+      console.warn(
+        "EVENT PARTICIPANT REMOVE ERROR:",
+        error
+      );
+
+      window.alert(
+        error?.message ||
+        "Не вдалося змінити список учасників."
+      );
+    }
   }
 
   async function deleteEvent(
@@ -3309,6 +3498,15 @@ function Events({
         onInviteFriends={
           inviteFriends
         }
+        onEdit={
+          setEditEventTarget
+        }
+        onCancel={
+          cancelEvent
+        }
+        onRemoveParticipant={
+          removeParticipant
+        }
         backendMode={
           Boolean(
             authSession?.user?.id
@@ -3316,6 +3514,9 @@ function Events({
         }
         backendInviteCandidates={
           backendInviteCandidates
+        }
+        backendParticipants={
+          backendParticipants
         }
       />
     );
@@ -3612,6 +3813,22 @@ function Events({
           </aside>
         </div>
       </section>
+
+      {editEventTarget && (
+        <EditEventModal
+          event={
+            editEventTarget
+          }
+          onClose={() =>
+            setEditEventTarget(
+              null
+            )
+          }
+          onSave={
+            saveEventChanges
+          }
+        />
+      )}
 
       {createOpen && (
         <CreateEventModal
