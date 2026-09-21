@@ -624,9 +624,25 @@ export async function getBackendRelationships(
     `(sender_id.eq.${userId},receiver_id.eq.${userId})`
   );
 
+  const blocksUrl =
+    new URL(
+      `${SUPABASE_URL}/rest/v1/blocks`
+    );
+
+  blocksUrl.searchParams.set(
+    "select",
+    "blocker_id,blocked_id"
+  );
+
+  blocksUrl.searchParams.set(
+    "or",
+    `(blocker_id.eq.${userId},blocked_id.eq.${userId})`
+  );
+
   const [
     friendshipsResponse,
     requestsResponse,
+    blocksResponse,
   ] =
     await Promise.all([
       fetch(
@@ -647,11 +663,21 @@ export async function getBackendRelationships(
             ),
         }
       ),
+      fetch(
+        blocksUrl,
+        {
+          headers:
+            headers(
+              session
+            ),
+        }
+      ),
     ]);
 
   const [
     friendships,
     requests,
+    blocks,
   ] =
     await Promise.all([
       parseResponse(
@@ -659,6 +685,9 @@ export async function getBackendRelationships(
       ),
       parseResponse(
         requestsResponse
+      ),
+      parseResponse(
+        blocksResponse
       ),
     ]);
 
@@ -733,7 +762,97 @@ export async function getBackendRelationships(
     }
   );
 
+  (
+    Array.isArray(
+      blocks
+    )
+      ? blocks
+      : []
+  ).forEach(
+    (
+      row
+    ) => {
+      const iBlocked =
+        row.blocker_id ===
+        userId;
+
+      const personId =
+        iBlocked
+          ? row.blocked_id
+          : row.blocker_id;
+
+      relationships[
+        personId
+      ] = {
+        ...(
+          relationships[
+            personId
+          ] ||
+          {
+            friendStatus:
+              "none",
+            following:
+              false,
+            follower:
+              false,
+          }
+        ),
+        blocked:
+          iBlocked,
+        blockedByThem:
+          !iBlocked,
+        friendStatus:
+          "none",
+        following:
+          false,
+        follower:
+          false,
+      };
+    }
+  );
+
   return relationships;
+}
+
+export async function setBackendBlocked(
+  session,
+  personId,
+  blocked
+) {
+  return callRpc(
+    session,
+    "set_user_blocked",
+    {
+      target_user_id:
+        personId,
+      should_block:
+        Boolean(
+          blocked
+        ),
+    }
+  );
+}
+
+export async function reportBackendUser(
+  session,
+  personId,
+  {
+    reason = "profile",
+    details = "",
+  } = {}
+) {
+  return callRpc(
+    session,
+    "report_user",
+    {
+      target_user_id:
+        personId,
+      report_reason:
+        reason,
+      report_details:
+        details,
+    }
+  );
 }
 
 async function findPendingRequest(
