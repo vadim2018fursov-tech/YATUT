@@ -3392,7 +3392,7 @@ function CommunityFeed({
         "",
 
       path:
-        `#space=${encodeURIComponent(space.id)}&post=${encodeURIComponent(post.id)}`,
+        `/communities/${encodeURIComponent(space.id)}?post=${encodeURIComponent(post.id)}`,
     });
   }
 
@@ -4196,7 +4196,7 @@ function SpaceDetail({
         "Спільнота у ЯТУТ",
 
       path:
-        `#space=${encodeURIComponent(space.id)}`,
+        `/communities/${encodeURIComponent(space.id)}`,
     });
   }
 
