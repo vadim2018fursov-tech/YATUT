@@ -5532,3 +5532,244 @@ body.yatut-dark-mode
   box-shadow:
     none;
 }
+
+
+/* =========================================================
+   CROSS-DEVICE FEATURE PAGES
+   Android / iOS / PWA / foldables / touch tablets
+========================================================= */
+
+@media (max-width: 767px), (hover: none) and (pointer: coarse) and (max-width: 900px) {
+  .feature-page,
+  .nearby-page,
+  .business-page,
+  .business-detail-page,
+  .saved-page {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    padding-bottom:
+      calc(
+        98px +
+        max(
+          env(safe-area-inset-bottom),
+          0px
+        )
+      ) !important;
+    overflow-x: hidden !important;
+  }
+
+  .feature-hero {
+    width: 100% !important;
+    margin: 0 !important;
+    min-height:
+      clamp(
+        148px,
+        28vw,
+        190px
+      ) !important;
+    padding:
+      clamp(
+        18px,
+        4vw,
+        26px
+      ) !important;
+    border-radius:
+      0 0
+      24px 24px !important;
+  }
+
+  .feature-hero h1 {
+    font-size:
+      clamp(
+        25px,
+        7vw,
+        34px
+      ) !important;
+    line-height: 1.05 !important;
+  }
+
+  .feature-hero p {
+    max-width: 86% !important;
+    font-size:
+      clamp(
+        11px,
+        2.9vw,
+        13px
+      ) !important;
+    line-height: 1.45 !important;
+  }
+
+  .feature-hero-icon {
+    width:
+      clamp(
+        48px,
+        13vw,
+        64px
+      ) !important;
+    height:
+      clamp(
+        48px,
+        13vw,
+        64px
+      ) !important;
+    flex-basis:
+      clamp(
+        48px,
+        13vw,
+        64px
+      ) !important;
+  }
+
+  .feature-tabs,
+  .business-category-row {
+    width: 100% !important;
+    display: flex !important;
+    gap: 7px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+  }
+
+  .feature-tabs::-webkit-scrollbar,
+  .business-category-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  .feature-tabs > button,
+  .business-category-row > button {
+    flex: 0 0 auto !important;
+    min-width: max-content !important;
+    min-height: 39px !important;
+    scroll-snap-align: start;
+  }
+
+  .nearby-toolbar,
+  .saved-toolbar {
+    grid-template-columns:
+      1fr !important;
+  }
+
+  .nearby-live-strip {
+    display: grid !important;
+    grid-template-columns:
+      minmax(0, 1fr)
+      auto !important;
+    gap: 10px !important;
+  }
+
+  .nearby-live-strip__stats {
+    grid-column:
+      1 / -1;
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .nearby-live-strip__stats::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nearby-people-grid,
+  .nearby-place-grid,
+  .nearby-community-grid,
+  .business-grid {
+    grid-template-columns:
+      1fr !important;
+    gap: 9px !important;
+  }
+
+  .nearby-person-card,
+  .nearby-list-card,
+  .nearby-community-card,
+  .nearby-place-card,
+  .business-card,
+  .saved-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    border-radius: 18px !important;
+  }
+
+  .business-dashboard,
+  .saved-summary {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(
+          0,
+          1fr
+        )
+      ) !important;
+    gap: 8px !important;
+  }
+
+  .saved-list {
+    gap: 8px !important;
+  }
+
+  .saved-card-v2 {
+    min-height: 0 !important;
+  }
+
+  .saved-card-actions {
+    width: 100%;
+  }
+
+  .business-profile-header {
+    border-radius:
+      0 0
+      24px 24px !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .feature-hero {
+    min-height: 142px !important;
+  }
+
+  .business-dashboard,
+  .saved-summary {
+    grid-template-columns:
+      1fr !important;
+  }
+
+  .nearby-live-strip {
+    grid-template-columns:
+      1fr !important;
+  }
+
+  .nearby-live-strip__action {
+    width: 100% !important;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 900px) and (pointer: coarse) {
+  .nearby-people-grid,
+  .nearby-place-grid,
+  .nearby-community-grid,
+  .business-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(
+          0,
+          1fr
+        )
+      ) !important;
+  }
+
+  .feature-page,
+  .nearby-page,
+  .business-page,
+  .saved-page {
+    padding-right: 14px !important;
+    padding-left: 14px !important;
+  }
+
+  .feature-hero {
+    margin-right: -14px !important;
+    margin-left: -14px !important;
+  }
+}
