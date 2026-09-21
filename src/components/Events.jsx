@@ -2275,7 +2275,7 @@ function Events({
         "Подія у ЯТУТ",
 
       path:
-        `#event=${encodeURIComponent(event.id)}`,
+        `/events/${encodeURIComponent(event.id)}`,
     });
   }
 
