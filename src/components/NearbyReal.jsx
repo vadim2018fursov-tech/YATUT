@@ -1651,121 +1651,572 @@ export default function NearbyReal({
           {tab ===
             "moderation" &&
             feed.canModerate && (
-            <section className="nearby-real-section nearby-moderation-section">
-              <header>
-                <div>
-                  <span>
-                    МОДЕРАЦІЯ
-                  </span>
+            <section className="nearby-admin">
+              <div className="nearby-admin-stats">
+                {[
+                  [
+                    "total",
+                    "Усього",
+                    adminDashboard.stats
+                      ?.total,
+                  ],
+                  [
+                    "pending",
+                    "Очікують",
+                    adminDashboard.stats
+                      ?.pending,
+                  ],
+                  [
+                    "approved",
+                    "Схвалено",
+                    adminDashboard.stats
+                      ?.approved,
+                  ],
+                  [
+                    "rejected",
+                    "Відхилено",
+                    adminDashboard.stats
+                      ?.rejected,
+                  ],
+                  [
+                    "cities",
+                    "Міст",
+                    adminDashboard.stats
+                      ?.cities,
+                  ],
+                ].map(
+                  ([
+                    key,
+                    label,
+                    value,
+                  ]) => (
+                    <button
+                      key={
+                        key
+                      }
+                      type="button"
+                      className={`nearby-admin-stat ${
+                        moderationStatus ===
+                          key
+                          ? "active"
+                          : ""
+                      }`}
+                      onClick={() => {
+                        if (
+                          [
+                            "pending",
+                            "approved",
+                            "rejected",
+                          ].includes(
+                            key
+                          )
+                        ) {
+                          setModerationStatus(
+                            key
+                          );
 
-                  <h2>
-                    Нові місця
-                  </h2>
-                </div>
+                          refreshModerationQueue({
+                            status:
+                              key,
+                          });
+                        } else if (
+                          key ===
+                          "total"
+                        ) {
+                          setModerationStatus(
+                            ""
+                          );
 
-                <strong>
-                  {
-                    moderationQueue.length
-                  }
-                </strong>
-              </header>
-
-              {moderationLoading ? (
-                <p className="nearby-real-empty">
-                  Завантажуємо чергу...
-                </p>
-              ) : moderationQueue.length ? (
-                <div className="nearby-moderation-list">
-                  {moderationQueue.map(
-                    (
-                      place
-                    ) => (
-                      <article
-                        key={
-                          place.id
+                          refreshModerationQueue({
+                            status:
+                              null,
+                          });
                         }
-                        className="nearby-moderation-card"
-                      >
-                        <div className="nearby-moderation-card__media">
-                          {place.imageUrl ? (
-                            <img
-                              src={
-                                place.imageUrl
-                              }
-                              alt=""
-                            />
-                          ) : (
-                            <YatutIcon
-                              name="pin"
-                              size={24}
-                            />
-                          )}
-                        </div>
+                      }}
+                    >
+                      <span>
+                        {label}
+                      </span>
 
-                        <div className="nearby-moderation-card__body">
-                          <span>
-                            {
-                              place.category ||
-                              "Місце"
-                            }
-                          </span>
+                      <strong>
+                        {Number(
+                          value ||
+                          0
+                        )}
+                      </strong>
+                    </button>
+                  )
+                )}
+              </div>
 
-                          <h3>
-                            {
-                              place.title
-                            }
-                          </h3>
+              <section className="nearby-admin-panel">
+                <header className="nearby-admin-header">
+                  <div>
+                    <span>
+                      ADMIN · ПОРУЧ
+                    </span>
 
-                          <p>
-                            {
-                              place.address ||
-                              place.city
-                            }
-                          </p>
+                    <h2>
+                      Модерація місць
+                    </h2>
 
-                          <small>
-                            Додав: {
-                              place.creatorName
-                            }
-                          </small>
-                        </div>
+                    <p>
+                      Перевірка заявок, історії рішень та стану локального каталогу.
+                    </p>
+                  </div>
 
-                        <div className="nearby-moderation-card__actions">
-                          <button
-                            type="button"
-                            className="approve"
-                            onClick={() =>
-                              moderatePlace(
-                                place.id,
-                                "approved"
-                              )
-                            }
-                          >
-                            Схвалити
-                          </button>
+                  <button
+                    type="button"
+                    className="feature-secondary-button"
+                    onClick={() =>
+                      refreshModerationQueue()
+                    }
+                  >
+                    Оновити
+                  </button>
+                </header>
 
-                          <button
-                            type="button"
-                            className="reject"
-                            onClick={() =>
-                              moderatePlace(
-                                place.id,
-                                "rejected"
-                              )
-                            }
-                          >
-                            Відхилити
-                          </button>
-                        </div>
-                      </article>
-                    )
-                  )}
+                <div className="nearby-admin-filters">
+                  <label className="nearby-admin-search">
+                    <YatutIcon
+                      name="search"
+                      size={16}
+                    />
+
+                    <input
+                      value={
+                        moderationSearch
+                      }
+                      onChange={(
+                        event
+                      ) =>
+                        setModerationSearch(
+                          event.target.value
+                        )
+                      }
+                      onKeyDown={(
+                        event
+                      ) => {
+                        if (
+                          event.key ===
+                          "Enter"
+                        ) {
+                          refreshModerationQueue({
+                            search:
+                              moderationSearch,
+                          });
+                        }
+                      }}
+                      placeholder="Назва, адреса, категорія, автор..."
+                    />
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        refreshModerationQueue({
+                          search:
+                            moderationSearch,
+                        })
+                      }
+                    >
+                      Знайти
+                    </button>
+                  </label>
+
+                  <select
+                    value={
+                      moderationStatus
+                    }
+                    onChange={(
+                      event
+                    ) => {
+                      const value =
+                        event.target.value;
+
+                      setModerationStatus(
+                        value
+                      );
+
+                      refreshModerationQueue({
+                        status:
+                          value ||
+                          null,
+                      });
+                    }}
+                  >
+                    <option value="">
+                      Усі статуси
+                    </option>
+                    <option value="pending">
+                      Очікують
+                    </option>
+                    <option value="approved">
+                      Схвалено
+                    </option>
+                    <option value="rejected">
+                      Відхилено
+                    </option>
+                  </select>
+
+                  <select
+                    value={
+                      moderationCity
+                    }
+                    onChange={(
+                      event
+                    ) => {
+                      const value =
+                        event.target.value;
+
+                      setModerationCity(
+                        value
+                      );
+
+                      refreshModerationQueue({
+                        city:
+                          value ||
+                          null,
+                      });
+                    }}
+                  >
+                    <option value="">
+                      Усі міста
+                    </option>
+
+                    {adminDashboard.cities.map(
+                      (
+                        item
+                      ) => (
+                        <option
+                          key={
+                            item.city
+                          }
+                          value={
+                            item.city
+                          }
+                        >
+                          {item.city} · {item.count}
+                        </option>
+                      )
+                    )}
+                  </select>
                 </div>
-              ) : (
-                <p className="nearby-real-empty">
-                  Черга модерації порожня.
-                </p>
-              )}
+
+                {selectedModerationIds.length >
+                  0 && (
+                  <div className="nearby-admin-bulk">
+                    <strong>
+                      Вибрано: {
+                        selectedModerationIds.length
+                      }
+                    </strong>
+
+                    <div>
+                      <button
+                        type="button"
+                        className="approve"
+                        onClick={() =>
+                          bulkModerateSelected(
+                            "approved"
+                          )
+                        }
+                      >
+                        Схвалити вибрані
+                      </button>
+
+                      <button
+                        type="button"
+                        className="reject"
+                        onClick={() =>
+                          bulkModerateSelected(
+                            "rejected"
+                          )
+                        }
+                      >
+                        Відхилити вибрані
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setSelectedModerationIds(
+                            []
+                          )
+                        }
+                      >
+                        Скасувати вибір
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                <div className="nearby-admin-table-head">
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={
+                        adminDashboard.places
+                          .filter(
+                            (
+                              place
+                            ) =>
+                              place.status ===
+                              "pending"
+                          )
+                          .length >
+                          0 &&
+                        adminDashboard.places
+                          .filter(
+                            (
+                              place
+                            ) =>
+                              place.status ===
+                              "pending"
+                          )
+                          .every(
+                            (
+                              place
+                            ) =>
+                              selectedModerationIds.includes(
+                                place.id
+                              )
+                          )
+                      }
+                      onChange={
+                        selectAllVisiblePending
+                      }
+                    />
+
+                    <span>
+                      Вибрати pending
+                    </span>
+                  </label>
+
+                  <small>
+                    Показано {
+                      adminDashboard.places.length
+                    } місць
+                  </small>
+                </div>
+
+                {moderationLoading ? (
+                  <p className="nearby-real-empty">
+                    Завантажуємо адмін-панель...
+                  </p>
+                ) : adminDashboard.places
+                    .length ? (
+                  <div className="nearby-admin-list">
+                    {adminDashboard.places.map(
+                      (
+                        place
+                      ) => (
+                        <article
+                          key={
+                            place.id
+                          }
+                          className={`nearby-admin-card is-${place.status}`}
+                        >
+                          <label className="nearby-admin-card__check">
+                            <input
+                              type="checkbox"
+                              disabled={
+                                place.status !==
+                                "pending"
+                              }
+                              checked={
+                                selectedModerationIds.includes(
+                                  place.id
+                                )
+                              }
+                              onChange={() =>
+                                toggleModerationSelection(
+                                  place.id
+                                )
+                              }
+                            />
+                          </label>
+
+                          <button
+                            type="button"
+                            className="nearby-admin-card__media"
+                            onClick={() =>
+                              setSelectedPlaceId(
+                                place.id
+                              )
+                            }
+                          >
+                            {place.imageUrl ? (
+                              <img
+                                src={
+                                  place.imageUrl
+                                }
+                                alt=""
+                              />
+                            ) : (
+                              <YatutIcon
+                                name="pin"
+                                size={24}
+                              />
+                            )}
+                          </button>
+
+                          <div className="nearby-admin-card__body">
+                            <div className="nearby-admin-card__top">
+                              <span className={`nearby-admin-status is-${place.status}`}>
+                                {place.status ===
+                                "approved"
+                                  ? "СХВАЛЕНО"
+                                  : place.status ===
+                                    "rejected"
+                                  ? "ВІДХИЛЕНО"
+                                  : "ОЧІКУЄ"}
+                              </span>
+
+                              <small>
+                                {
+                                  eventDate(
+                                    place.updatedAt ||
+                                    place.createdAt
+                                  )
+                                }
+                              </small>
+                            </div>
+
+                            <h3>
+                              {
+                                place.title
+                              }
+                            </h3>
+
+                            <p>
+                              {
+                                place.address ||
+                                place.city
+                              }
+                            </p>
+
+                            <div className="nearby-admin-card__meta">
+                              <span>
+                                {
+                                  place.category ||
+                                  "other"
+                                }
+                              </span>
+
+                              <span>
+                                Автор: {
+                                  place.creatorName
+                                }
+                              </span>
+
+                              <span>
+                                {
+                                  Number(
+                                    place.reviewCount ||
+                                    0
+                                  )
+                                } відгуків
+                              </span>
+
+                              <span>
+                                {
+                                  Number(
+                                    place.linkedEvents ||
+                                    0
+                                  )
+                                } подій
+                              </span>
+                            </div>
+
+                            {place.lastModeration && (
+                              <div className="nearby-admin-last-decision">
+                                <strong>
+                                  {place.lastModeration
+                                    .action ===
+                                  "approved"
+                                    ? "Останнє схвалення"
+                                    : "Останнє відхилення"}
+                                </strong>
+
+                                <span>
+                                  {
+                                    place.lastModeration
+                                      .actorName
+                                  } · {
+                                    eventDate(
+                                      place.lastModeration
+                                        .createdAt
+                                    )
+                                  }
+                                </span>
+
+                                {place.lastModeration
+                                  .note && (
+                                  <p>
+                                    {
+                                      place.lastModeration
+                                        .note
+                                    }
+                                  </p>
+                                )}
+                              </div>
+                            )}
+                          </div>
+
+                          <div className="nearby-admin-card__actions">
+                            <button
+                              type="button"
+                              className="open"
+                              onClick={() =>
+                                setSelectedPlaceId(
+                                  place.id
+                                )
+                              }
+                            >
+                              Відкрити
+                            </button>
+
+                            {place.status ===
+                              "pending" && (
+                              <>
+                                <button
+                                  type="button"
+                                  className="approve"
+                                  onClick={() =>
+                                    moderatePlace(
+                                      place.id,
+                                      "approved"
+                                    )
+                                  }
+                                >
+                                  Схвалити
+                                </button>
+
+                                <button
+                                  type="button"
+                                  className="reject"
+                                  onClick={() =>
+                                    moderatePlace(
+                                      place.id,
+                                      "rejected"
+                                    )
+                                  }
+                                >
+                                  Відхилити
+                                </button>
+                              </>
+                            )}
+                          </div>
+                        </article>
+                      )
+                    )}
+                  </div>
+                ) : (
+                  <p className="nearby-real-empty">
+                    За цими фільтрами місць немає.
+                  </p>
+                )}
+              </section>
             </section>
           )}
 
