@@ -55,6 +55,11 @@ const DEFAULT_SETTINGS = {
 
 const SECTIONS = [
   {
+    id: "account",
+    title: "Акаунт",
+    icon: "friends",
+  },
+  {
     id: "general",
     title: "Основне",
     icon: "settings",
@@ -119,6 +124,8 @@ function loadSettings() {
 export default function Settings({
   themeMode = "light",
   onThemeChange,
+  authSession = null,
+  onSignOut,
 }) {
   const [
     section,
@@ -490,6 +497,65 @@ export default function Settings({
         </aside>
 
         <main className="settings-content">
+          {section ===
+            "account" && (
+            <SettingsSection
+              eyebrow="АКАУНТ"
+              title="Ваш акаунт ЯТУТ"
+              text="Сесія, email та керування входом."
+            >
+              <div className="settings-data-card">
+                <div>
+                  <YatutIcon
+                    name="friends"
+                    size={25}
+                  />
+                </div>
+
+                <section>
+                  <strong>
+                    {
+                      authSession?.user?.user_metadata?.full_name ||
+                      authSession?.user?.email ||
+                      "Локальний режим"
+                    }
+                  </strong>
+
+                  <p>
+                    {authSession?.user?.email
+                      ? `Ви увійшли як ${authSession.user.email}`
+                      : "Backend ще не підключений, тому ЯТУТ працює як локальний прототип."}
+                  </p>
+                </section>
+
+                {authSession && (
+                  <button
+                    className="feature-danger-button"
+                    type="button"
+                    onClick={
+                      onSignOut
+                    }
+                  >
+                    Вийти
+                  </button>
+                )}
+              </div>
+
+              {authSession?.user?.id && (
+                <SettingsRow
+                  title="ID акаунта"
+                  text="Технічний ідентифікатор користувача у backend."
+                >
+                  <code>
+                    {
+                      authSession.user.id
+                    }
+                  </code>
+                </SettingsRow>
+              )}
+            </SettingsSection>
+          )}
+
           {section ===
             "general" && (
             <SettingsSection
