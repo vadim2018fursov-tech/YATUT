@@ -24,6 +24,18 @@ import {
 } from "../services/authService";
 
 import {
+  getBackendUserProfile,
+} from "../services/socialBackendService";
+
+import {
+  addBackendComment,
+  createBackendPost,
+  deleteBackendPost,
+  loadBackendFeed,
+  toggleBackendPostLike,
+} from "../services/feedBackendService";
+
+import {
   uploadProfileImage,
 } from "../services/storageService";
 
@@ -508,50 +520,191 @@ export default function Profile({
     let mounted =
       true;
 
-    getMyProfile(
-      authSession
-    )
+    Promise.all([
+      getMyProfile(
+        authSession
+      ),
+      getBackendUserProfile(
+        authSession,
+        authSession.user.id
+      ),
+      loadBackendFeed(
+        authSession
+      ),
+    ])
       .then(
-        (remote) => {
+        ([
+          remote,
+          socialProfile,
+          feed,
+        ]) => {
           if (
-            !mounted ||
-            !remote
+            !mounted
           ) {
             return;
           }
 
-          setProfile(
-            (previous) => ({
-              ...previous,
-              name:
-                remote.full_name ||
-                previous.name,
-              username:
-                remote.username ||
-                previous.username,
-              bio:
-                remote.bio ??
-                previous.bio,
-              city:
-                remote.city ??
-                previous.city,
-              country:
-                remote.country ??
-                previous.country,
-              status:
-                remote.status ??
-                previous.status,
-              avatar:
-                remote.avatar_url ??
-                previous.avatar,
-              cover:
-                remote.cover_url ??
-                previous.cover,
-              verified:
-                Boolean(
-                  remote.verified
-                ),
-            })
+          if (
+            remote ||
+            socialProfile
+          ) {
+            setProfile(
+              (previous) => ({
+                ...previous,
+                name:
+                  socialProfile?.name ||
+                  remote?.full_name ||
+                  previous.name,
+                username:
+                  socialProfile?.username ||
+                  remote?.username ||
+                  previous.username,
+                bio:
+                  socialProfile?.bio ??
+                  remote?.bio ??
+                  previous.bio,
+                city:
+                  socialProfile?.city ??
+                  remote?.city ??
+                  previous.city,
+                country:
+                  socialProfile?.country ??
+                  remote?.country ??
+                  previous.country,
+                status:
+                  socialProfile?.status ??
+                  remote?.status ??
+                  previous.status,
+                avatar:
+                  socialProfile?.avatar ??
+                  remote?.avatar_url ??
+                  previous.avatar,
+                cover:
+                  socialProfile?.cover ??
+                  remote?.cover_url ??
+                  previous.cover,
+                verified:
+                  Boolean(
+                    socialProfile?.verified ??
+                    remote?.verified
+                  ),
+                friends:
+                  Number(
+                    socialProfile?.friendsCount ??
+                    previous.friends ??
+                    0
+                  ),
+                followers:
+                  Number(
+                    socialProfile?.followersCount ??
+                    previous.followers ??
+                    0
+                  ),
+                following:
+                  Number(
+                    socialProfile?.followingCount ??
+                    previous.following ??
+                    0
+                  ),
+                posts:
+                  Number(
+                    socialProfile?.posts?.length ??
+                    previous.posts ??
+                    0
+                  ),
+              })
+            );
+          }
+
+          const ownPosts =
+            (
+              Array.isArray(
+                feed
+              )
+                ? feed
+                : []
+            )
+              .filter(
+                (
+                  post
+                ) =>
+                  post.authorId ===
+                  authSession.user.id
+              )
+              .map(
+                (
+                  post
+                ) => ({
+                  id:
+                    post.id,
+                  backend:
+                    true,
+                  type:
+                    "own",
+                  text:
+                    post.text ||
+                    "",
+                  media:
+                    post.media ||
+                    null,
+                  mediaType:
+                    post.mediaType ||
+                    null,
+                  createdAt:
+                    post.createdAt,
+                  meta:
+                    new Date(
+                      post.createdAt
+                    ).toLocaleDateString(
+                      "uk-UA",
+                      {
+                        day:
+                          "numeric",
+                        month:
+                          "short",
+                      }
+                    ),
+                  liked:
+                    Boolean(
+                      post.liked
+                    ),
+                  likes:
+                    Number(
+                      post.likes ||
+                      0
+                    ),
+                  comments:
+                    Array.isArray(
+                      post.comments
+                    )
+                      ? post.comments.length
+                      : 0,
+                  commentItems:
+                    (
+                      Array.isArray(
+                        post.comments
+                      )
+                        ? post.comments
+                        : []
+                    ).map(
+                      (
+                        comment
+                      ) => ({
+                        id:
+                          comment.id,
+                        author:
+                          comment.authorName ||
+                          "Користувач",
+                        text:
+                          comment.text ||
+                          "",
+                      })
+                    ),
+                })
+              );
+
+          setProfilePosts(
+            ownPosts
           );
         }
       )
@@ -852,11 +1005,129 @@ export default function Profile({
     );
   }
 
-  function publishProfilePost() {
+  async function publishProfilePost() {
     const text =
       newPostText.trim();
 
     if (!text) {
+      return;
+    }
+
+    if (
+      authSession?.user?.id
+    ) {
+      try {
+        await createBackendPost(
+          authSession,
+          {
+            text,
+            visibility:
+              "public",
+          }
+        );
+
+        const feed =
+          await loadBackendFeed(
+            authSession
+          );
+
+        const ownPosts =
+          feed
+            .filter(
+              (
+                item
+              ) =>
+                item.authorId ===
+                authSession.user.id
+            )
+            .map(
+              (
+                item
+              ) => ({
+                id:
+                  item.id,
+                backend:
+                  true,
+                type:
+                  "own",
+                text:
+                  item.text ||
+                  "",
+                media:
+                  item.media ||
+                  null,
+                mediaType:
+                  item.mediaType ||
+                  null,
+                createdAt:
+                  item.createdAt,
+                meta:
+                  "щойно",
+                liked:
+                  Boolean(
+                    item.liked
+                  ),
+                likes:
+                  Number(
+                    item.likes ||
+                    0
+                  ),
+                comments:
+                  Array.isArray(
+                    item.comments
+                  )
+                    ? item.comments.length
+                    : 0,
+                commentItems:
+                  (
+                    Array.isArray(
+                      item.comments
+                    )
+                      ? item.comments
+                      : []
+                  ).map(
+                    (
+                      comment
+                    ) => ({
+                      id:
+                        comment.id,
+                      author:
+                        comment.authorName ||
+                        "Користувач",
+                      text:
+                        comment.text ||
+                        "",
+                    })
+                  ),
+              })
+            );
+
+        setProfilePosts(
+          ownPosts
+        );
+
+        setNewPostText(
+          ""
+        );
+
+        setProfile(
+          (
+            current
+          ) => ({
+            ...current,
+            posts:
+              ownPosts.length,
+          })
+        );
+      } catch (
+        error
+      ) {
+        console.warn(
+          "PROFILE POST CREATE ERROR:",
+          error
+        );
+      }
+
       return;
     }
 
@@ -895,9 +1166,75 @@ export default function Profile({
     );
   }
 
-  function toggleProfilePostLike(
+  async function toggleProfilePostLike(
     postId
   ) {
+    const target =
+      profilePosts.find(
+        (
+          post
+        ) =>
+          post.id ===
+          postId
+      );
+
+    if (
+      target?.backend &&
+      authSession?.user?.id
+    ) {
+      const nextLiked =
+        !target.liked;
+
+      setProfilePosts(
+        (
+          current
+        ) =>
+          current.map(
+            (
+              post
+            ) =>
+              post.id ===
+              postId
+                ? {
+                    ...post,
+                    liked:
+                      nextLiked,
+                    likes:
+                      Math.max(
+                        0,
+                        Number(
+                          post.likes ||
+                          0
+                        ) +
+                          (
+                            nextLiked
+                              ? 1
+                              : -1
+                          )
+                      ),
+                  }
+                : post
+          )
+      );
+
+      try {
+        await toggleBackendPostLike(
+          authSession,
+          postId,
+          target.liked
+        );
+      } catch (
+        error
+      ) {
+        console.warn(
+          "PROFILE POST LIKE ERROR:",
+          error
+        );
+      }
+
+      return;
+    }
+
     setProfilePosts(
       (
         current
@@ -958,7 +1295,7 @@ export default function Profile({
     );
   }
 
-  function addProfileComment(
+  async function addProfileComment(
     postId
   ) {
     const text =
@@ -970,6 +1307,85 @@ export default function Profile({
       ).trim();
 
     if (!text) {
+      return;
+    }
+
+    const target =
+      profilePosts.find(
+        (
+          post
+        ) =>
+          post.id ===
+          postId
+      );
+
+    if (
+      target?.backend &&
+      authSession?.user?.id
+    ) {
+      try {
+        const created =
+          await addBackendComment(
+            authSession,
+            postId,
+            text
+          );
+
+        setProfilePosts(
+          (
+            current
+          ) =>
+            current.map(
+              (
+                post
+              ) =>
+                post.id ===
+                postId
+                  ? {
+                      ...post,
+                      comments:
+                        Number(
+                          post.comments ||
+                          0
+                        ) +
+                        1,
+                      commentItems: [
+                        ...(
+                          post.commentItems ||
+                          []
+                        ),
+                        {
+                          id:
+                            created?.id ||
+                            `profile-comment-${Date.now()}`,
+                          author:
+                            profile.name,
+                          text,
+                        },
+                      ],
+                    }
+                  : post
+            )
+        );
+
+        setProfileCommentDrafts(
+          (
+            current
+          ) => ({
+            ...current,
+            [postId]:
+              "",
+          })
+        );
+      } catch (
+        error
+      ) {
+        console.warn(
+          "PROFILE COMMENT ERROR:",
+          error
+        );
+      }
+
       return;
     }
 
@@ -1097,9 +1513,39 @@ export default function Profile({
     );
   }
 
-  function removeProfilePost(
+  async function removeProfilePost(
     postId
   ) {
+    const target =
+      profilePosts.find(
+        (
+          post
+        ) =>
+          post.id ===
+          postId
+      );
+
+    if (
+      target?.backend &&
+      authSession?.user?.id
+    ) {
+      try {
+        await deleteBackendPost(
+          authSession,
+          postId
+        );
+      } catch (
+        error
+      ) {
+        console.warn(
+          "PROFILE POST DELETE ERROR:",
+          error
+        );
+
+        return;
+      }
+    }
+
     setProfilePosts(
       (
         current
@@ -2071,6 +2517,51 @@ export default function Profile({
                           post.text
                         }
                       </p>
+
+                      {post.media &&
+                        post.mediaType ===
+                          "image" && (
+                        <img
+                          src={
+                            post.media
+                          }
+                          alt=""
+                          style={{
+                            width:
+                              "100%",
+                            maxHeight:
+                              560,
+                            objectFit:
+                              "cover",
+                            borderRadius:
+                              18,
+                            marginTop:
+                              12,
+                          }}
+                        />
+                      )}
+
+                      {post.media &&
+                        post.mediaType ===
+                          "video" && (
+                        <video
+                          src={
+                            post.media
+                          }
+                          controls
+                          playsInline
+                          style={{
+                            width:
+                              "100%",
+                            maxHeight:
+                              620,
+                            borderRadius:
+                              18,
+                            marginTop:
+                              12,
+                          }}
+                        />
+                      )}
 
                       <footer>
 
