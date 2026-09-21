@@ -3189,3 +3189,165 @@ button > b {
       11px;
   }
 }
+
+
+/* =========================================================
+   CROSS-DEVICE EVENTS
+========================================================= */
+
+@media (max-width: 767px), (hover: none) and (pointer: coarse) and (max-width: 900px) {
+  .events-page,
+  .event-detail-page {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding-bottom:
+      calc(
+        98px +
+        max(
+          env(safe-area-inset-bottom),
+          0px
+        )
+      ) !important;
+    overflow-x: hidden !important;
+  }
+
+  .events-hero {
+    min-height:
+      clamp(
+        168px,
+        30vw,
+        215px
+      ) !important;
+    padding:
+      clamp(
+        18px,
+        4vw,
+        24px
+      ) !important;
+    border-radius:
+      0 0
+      24px 24px !important;
+  }
+
+  .events-hero h1 {
+    max-width: 78% !important;
+    font-size:
+      clamp(
+        25px,
+        7vw,
+        32px
+      ) !important;
+    line-height: 1.05 !important;
+  }
+
+  .events-hero p {
+    max-width: 72% !important;
+    font-size:
+      clamp(
+        10px,
+        2.8vw,
+        12px
+      ) !important;
+    line-height: 1.45 !important;
+  }
+
+  .events-controls {
+    padding:
+      0
+      clamp(
+        10px,
+        3vw,
+        16px
+      ) !important;
+  }
+
+  .events-tabs {
+    display: flex !important;
+    gap: 7px !important;
+    overflow-x: auto !important;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .events-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .events-tabs button {
+    flex: 0 0 auto !important;
+    min-width: max-content !important;
+  }
+
+  .event-card {
+    margin:
+      0
+      clamp(
+        8px,
+        2.5vw,
+        14px
+      )
+      9px !important;
+    border: 1px solid #e6e7ee !important;
+    border-radius: 18px !important;
+    overflow: hidden !important;
+  }
+
+  .event-card-cover {
+    min-height:
+      clamp(
+        164px,
+        42vw,
+        220px
+      ) !important;
+  }
+
+  .event-card-footer > div {
+    grid-template-columns:
+      repeat(
+        3,
+        minmax(
+          0,
+          1fr
+        )
+      ) !important;
+  }
+
+  .event-create-modal {
+    max-height:
+      calc(
+        var(
+          --yatut-visual-viewport-height,
+          100dvh
+        ) -
+        max(
+          env(safe-area-inset-top),
+          0px
+        )
+      ) !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .event-card-footer > div {
+    grid-template-columns:
+      1fr 1fr !important;
+  }
+
+  .event-card-footer > div button:last-child {
+    grid-column:
+      1 / -1;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 900px) and (pointer: coarse) {
+  .events-list {
+    padding:
+      0 14px !important;
+  }
+
+  .event-card {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+  }
+}
