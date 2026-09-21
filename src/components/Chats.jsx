@@ -7193,8 +7193,51 @@ function Chats({
                 </strong>
 
                 <span>
-                  Утримуйте чат, щоб керувати ним.
+                  {
+                    chatListView === "inbox" &&
+                    authSession?.user?.id
+                      ? "Додайте друзів і почніть першу розмову."
+                      : "Утримуйте чат, щоб керувати ним."
+                  }
                 </span>
+
+                {chatListView === "inbox" &&
+                  authSession?.user?.id && (
+                  <div className="chat-list-empty-actions">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        onNavigate?.(
+                          "search"
+                        )
+                      }
+                    >
+                      <YatutIcon
+                        name="search"
+                        size={15}
+                      />
+                      Знайти людей
+                    </button>
+
+                    {backendPeople.length >= 2 && (
+                      <button
+                        type="button"
+                        className="secondary"
+                        onClick={() =>
+                          setGroupOpen(
+                            true
+                          )
+                        }
+                      >
+                        <YatutIcon
+                          name="friends"
+                          size={15}
+                        />
+                        Нова група
+                      </button>
+                    )}
+                  </div>
+                )}
               </div>
             )}
 
