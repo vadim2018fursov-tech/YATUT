@@ -859,6 +859,68 @@ export function subscribeSavedRealtime({
 }
 
 
+export function subscribeCommunityFeedRealtime({
+  session,
+  communityId,
+  onChange,
+  onStatus,
+}) {
+  if (
+    !session?.access_token ||
+    !session?.user?.id ||
+    !communityId
+  ) {
+    return {
+      updateAccessToken:
+        () => {},
+      close:
+        () => {},
+    };
+  }
+
+  return createRealtimeChannel({
+    session,
+    topic:
+      `community-feed:${communityId}`,
+    changes: [
+      {
+        event:
+          "*",
+        schema:
+          "public",
+        table:
+          "community_posts",
+        filter:
+          `community_id=eq.${communityId}`,
+      },
+      {
+        event:
+          "*",
+        schema:
+          "public",
+        table:
+          "community_post_reactions",
+        filter:
+          `community_id=eq.${communityId}`,
+      },
+      {
+        event:
+          "*",
+        schema:
+          "public",
+        table:
+          "community_post_comments",
+        filter:
+          `community_id=eq.${communityId}`,
+      },
+    ],
+    onPostgresChange:
+      onChange,
+    onStatus,
+  });
+}
+
+
 export function subscribeCommunitiesRealtime({
   session,
   onChange,
