@@ -1471,9 +1471,18 @@ function Stories({
                 <div className="yatut-story-viewer-user">
 
                   <div className="yatut-story-viewer-avatar">
-                    {
+                    {viewerStory.avatar ? (
+                      <img
+                        src={
+                          viewerStory.avatar
+                        }
+                        alt={
+                          viewerStory.ownerName
+                        }
+                      />
+                    ) : (
                       viewerStory.initials
-                    }
+                    )}
                   </div>
 
                   <div>
@@ -1780,9 +1789,18 @@ function Stories({
                   }`}
                 >
                   <div className="yatut-story-avatar">
-                    {
+                    {story.avatar ? (
+                      <img
+                        src={
+                          story.avatar
+                        }
+                        alt={
+                          story.ownerName
+                        }
+                      />
+                    ) : (
                       story.initials
-                    }
+                    )}
                   </div>
                 </div>
 
