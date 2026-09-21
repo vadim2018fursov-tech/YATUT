@@ -2056,13 +2056,44 @@ export default function Friends({
               </div>
 
               <h3>
-                Нічого не знайдено
+                {
+                  authSession?.user?.id &&
+                  !search.trim() &&
+                  activeTab === "all"
+                    ? "Знайдіть перших людей"
+                    : "Нічого не знайдено"
+                }
               </h3>
 
               <p>
-                Спробуйте змінити пошук
-                або вибрати іншу вкладку.
+                {
+                  authSession?.user?.id &&
+                  !search.trim() &&
+                  activeTab === "all"
+                    ? "Пошукайте друзів за імʼям або username і почніть збирати своє коло ЯТУТ."
+                    : "Спробуйте змінити пошук або вибрати іншу вкладку."
+                }
               </p>
+
+              {authSession?.user?.id &&
+                !search.trim() &&
+                activeTab === "all" && (
+                <button
+                  type="button"
+                  className="friends-v2-empty-action"
+                  onClick={() =>
+                    onNavigate?.(
+                      "search"
+                    )
+                  }
+                >
+                  <YatutIcon
+                    name="search"
+                    size={16}
+                  />
+                  Знайти людей
+                </button>
+              )}
             </div>
           )}
         </main>
