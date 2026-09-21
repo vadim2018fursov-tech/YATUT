@@ -8,6 +8,7 @@ import {
 import {
   CalendarDays,
   Check,
+  Pencil,
   ChevronLeft,
   Clock3,
   Heart,
@@ -38,13 +39,17 @@ import {
 } from "../utils/shareYatutItem";
 
 import {
+  cancelBackendEvent,
   createBackendEvent,
   deleteBackendEvent,
   inviteBackendEventFriends,
+  loadBackendEventParticipants,
   loadBackendEvents,
   loadEventInviteCandidates,
+  removeBackendEventParticipant,
   setBackendEventParticipation,
   toggleBackendEventLike,
+  updateBackendEvent,
 } from "../services/eventBackendService";
 
 import {
@@ -1167,6 +1172,324 @@ function CreateEventModal({
             {submitting
               ? "Створюємо..."
               : "Створити подію"}
+          </button>
+        </footer>
+      </section>
+    </div>
+  );
+}
+
+function EditEventModal({
+  event,
+  onClose,
+  onSave,
+}) {
+  const [
+    title,
+    setTitle,
+  ] = useState(
+    event.title ||
+    ""
+  );
+
+  const [
+    description,
+    setDescription,
+  ] = useState(
+    event.description ||
+    ""
+  );
+
+  const [
+    category,
+    setCategory,
+  ] = useState(
+    event.category ||
+    "other"
+  );
+
+  const [
+    city,
+    setCity,
+  ] = useState(
+    event.city ||
+    ""
+  );
+
+  const [
+    place,
+    setPlace,
+  ] = useState(
+    event.place ||
+    ""
+  );
+
+  const [
+    date,
+    setDate,
+  ] = useState(
+    event.date ||
+    ""
+  );
+
+  const [
+    time,
+    setTime,
+  ] = useState(
+    event.time ||
+    ""
+  );
+
+  const [
+    saving,
+    setSaving,
+  ] = useState(false);
+
+  async function submit() {
+    if (
+      !title.trim() ||
+      !date ||
+      saving
+    ) {
+      return;
+    }
+
+    try {
+      setSaving(
+        true
+      );
+
+      await onSave?.({
+        title:
+          title.trim(),
+        description,
+        category,
+        city,
+        place,
+        date,
+        time,
+      });
+    } finally {
+      setSaving(
+        false
+      );
+    }
+  }
+
+  return (
+    <div
+      className="event-modal-backdrop"
+      onMouseDown={
+        onClose
+      }
+    >
+      <section
+        className="event-create-modal"
+        onMouseDown={(
+          click
+        ) =>
+          click.stopPropagation()
+        }
+      >
+        <header className="event-create-header">
+          <div>
+            <span>
+              КЕРУВАННЯ ПОДІЄЮ
+            </span>
+
+            <h2>
+              Редагувати подію
+            </h2>
+          </div>
+
+          <button
+            type="button"
+            onClick={
+              onClose
+            }
+          >
+            <X size={20} />
+          </button>
+        </header>
+
+        <div className="event-create-body">
+          <label className="event-field">
+            <span>
+              Назва *
+            </span>
+
+            <input
+              value={title}
+              onChange={(
+                input
+              ) =>
+                setTitle(
+                  input.target.value
+                )
+              }
+            />
+          </label>
+
+          <label className="event-field">
+            <span>
+              Опис
+            </span>
+
+            <textarea
+              value={description}
+              onChange={(
+                input
+              ) =>
+                setDescription(
+                  input.target.value
+                )
+              }
+            />
+          </label>
+
+          <div className="event-field-row">
+            <label className="event-field">
+              <span>
+                Категорія
+              </span>
+
+              <select
+                value={category}
+                onChange={(
+                  input
+                ) =>
+                  setCategory(
+                    input.target.value
+                  )
+                }
+              >
+                {CATEGORIES.map(
+                  (
+                    item
+                  ) => (
+                    <option
+                      key={item.id}
+                      value={item.id}
+                    >
+                      {item.emoji} {item.label}
+                    </option>
+                  )
+                )}
+              </select>
+            </label>
+
+            <label className="event-field">
+              <span>
+                Місто
+              </span>
+
+              <input
+                value={city}
+                onChange={(
+                  input
+                ) =>
+                  setCity(
+                    input.target.value
+                  )
+                }
+              />
+            </label>
+          </div>
+
+          <label className="event-field">
+            <span>
+              Місце
+            </span>
+
+            <input
+              value={place}
+              onChange={(
+                input
+              ) =>
+                setPlace(
+                  input.target.value
+                )
+              }
+            />
+          </label>
+
+          <div className="event-field-row">
+            <label className="event-field">
+              <span>
+                Дата *
+              </span>
+
+              <input
+                type="date"
+                value={date}
+                onChange={(
+                  input
+                ) =>
+                  setDate(
+                    input.target.value
+                  )
+                }
+              />
+            </label>
+
+            <label className="event-field">
+              <span>
+                Час
+              </span>
+
+              <input
+                type="time"
+                value={time}
+                onChange={(
+                  input
+                ) =>
+                  setTime(
+                    input.target.value
+                  )
+                }
+              />
+            </label>
+          </div>
+
+          <div className="event-backend-note">
+            <CalendarDays
+              size={20}
+            />
+
+            <div>
+              <strong>
+                Учасники отримають сповіщення
+              </strong>
+
+              <span>
+                Якщо зміниться назва, дата, час або місце, ЯТУТ автоматично повідомить учасників.
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <footer className="event-create-footer">
+          <button
+            type="button"
+            className="event-create-cancel"
+            onClick={onClose}
+          >
+            Скасувати
+          </button>
+
+          <button
+            type="button"
+            className="event-create-submit"
+            disabled={
+              !title.trim() ||
+              !date ||
+              saving
+            }
+            onClick={submit}
+          >
+            {saving
+              ? "Зберігаємо..."
+              : "Зберегти зміни"}
           </button>
         </footer>
       </section>
