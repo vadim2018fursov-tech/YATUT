@@ -58,6 +58,12 @@ const SECONDARY_ITEMS = [
     icon: "settings",
     title: "Налаштування",
   },
+  {
+    id: "admin",
+    icon: "profile",
+    title: "Адмін",
+    founderOnly: true,
+  },
 ];
 
 export default function MobileMoreMenu({
@@ -357,7 +363,15 @@ export default function MobileMoreMenu({
         </div>
 
         <div className="mobile-more-secondary">
-          {SECONDARY_ITEMS.map(
+          {SECONDARY_ITEMS
+            .filter(
+              (
+                item
+              ) =>
+                !item.founderOnly ||
+                viewerProfile?.founder
+            )
+            .map(
             (
               item
             ) => (
