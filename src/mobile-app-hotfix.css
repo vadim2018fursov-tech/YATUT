@@ -3219,3 +3219,314 @@
     margin-left: 10px !important;
   }
 }
+
+
+/* =========================================================
+   UNIVERSAL MOBILE APP SHELL
+   Capability-based: phones, Android, iOS, foldables, tablets
+========================================================= */
+
+@media (max-width: 767px), (hover: none) and (pointer: coarse) and (max-width: 900px) {
+  :root {
+    --yatut-safe-top:
+      max(
+        env(safe-area-inset-top),
+        0px
+      );
+    --yatut-safe-right:
+      max(
+        env(safe-area-inset-right),
+        0px
+      );
+    --yatut-safe-bottom:
+      max(
+        env(safe-area-inset-bottom),
+        0px
+      );
+    --yatut-safe-left:
+      max(
+        env(safe-area-inset-left),
+        0px
+      );
+  }
+
+  html,
+  body,
+  #root,
+  .app {
+    min-height:
+      var(
+        --yatut-visual-viewport-height,
+        100dvh
+      );
+  }
+
+  body {
+    padding-bottom:
+      calc(
+        76px +
+        var(
+          --yatut-safe-bottom
+        )
+      ) !important;
+
+    overscroll-behavior-y:
+      contain;
+  }
+
+  .topbar {
+    min-height:
+      calc(
+        64px +
+        var(
+          --yatut-safe-top
+        )
+      ) !important;
+
+    padding-top:
+      var(
+        --yatut-safe-top
+      ) !important;
+  }
+
+  .topbar-inner {
+    min-height:
+      64px !important;
+
+    padding-right:
+      calc(
+        10px +
+        var(
+          --yatut-safe-right
+        )
+      ) !important;
+
+    padding-left:
+      calc(
+        10px +
+        var(
+          --yatut-safe-left
+        )
+      ) !important;
+  }
+
+  .main-content {
+    padding-bottom:
+      calc(
+        104px +
+        var(
+          --yatut-safe-bottom
+        )
+      ) !important;
+  }
+
+  .mobile-nav {
+    right:
+      calc(
+        8px +
+        var(
+          --yatut-safe-right
+        )
+      ) !important;
+
+    bottom:
+      calc(
+        8px +
+        var(
+          --yatut-safe-bottom
+        )
+      ) !important;
+
+    left:
+      calc(
+        8px +
+        var(
+          --yatut-safe-left
+        )
+      ) !important;
+
+    width: auto !important;
+    max-width: none !important;
+
+    padding:
+      7px
+      clamp(
+        5px,
+        1.8vw,
+        10px
+      ) !important;
+
+    border-radius:
+      24px !important;
+
+    box-sizing:
+      border-box;
+  }
+
+  .mobile-nav > button {
+    min-width: 0 !important;
+    touch-action:
+      manipulation;
+  }
+
+  button,
+  [role="button"],
+  a,
+  input,
+  textarea,
+  select {
+    -webkit-tap-highlight-color:
+      transparent;
+  }
+
+  input,
+  textarea,
+  select {
+    max-width: 100%;
+  }
+}
+
+@supports not (height: 100dvh) {
+  @media (max-width: 767px), (hover: none) and (pointer: coarse) and (max-width: 900px) {
+    html,
+    body,
+    #root,
+    .app {
+      min-height:
+        var(
+          --yatut-visual-viewport-height,
+          100vh
+        );
+    }
+  }
+}
+
+html.yatut-standalone {
+  overscroll-behavior:
+    none;
+}
+
+html.yatut-standalone body {
+  min-height: 100dvh;
+}
+
+html.yatut-standalone .topbar {
+  -webkit-user-select:
+    none;
+  user-select:
+    none;
+}
+
+@media (orientation: landscape) and (max-height: 560px) and (pointer: coarse) {
+  body {
+    padding-bottom:
+      calc(
+        62px +
+        var(
+          --yatut-safe-bottom,
+          0px
+        )
+      ) !important;
+  }
+
+  .topbar {
+    min-height:
+      calc(
+        54px +
+        var(
+          --yatut-safe-top,
+          0px
+        )
+      ) !important;
+  }
+
+  .topbar-inner {
+    min-height:
+      54px !important;
+    padding-top:
+      5px !important;
+    padding-bottom:
+      5px !important;
+  }
+
+  .brand-ya {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+  }
+
+  .mobile-nav {
+    bottom:
+      calc(
+        5px +
+        var(
+          --yatut-safe-bottom,
+          0px
+        )
+      ) !important;
+
+    min-height:
+      56px !important;
+  }
+
+  .mobile-nav > button {
+    min-height:
+      48px !important;
+  }
+
+  .mobile-nav > button > small {
+    display:
+      none !important;
+  }
+
+  .mobile-create-button {
+    min-height:
+      52px !important;
+    margin-top:
+      -7px !important;
+  }
+
+  .mobile-create-button > span {
+    width:
+      44px !important;
+    height:
+      44px !important;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 900px) and (pointer: coarse) {
+  .mobile-nav {
+    right: 50% !important;
+    left: auto !important;
+
+    width:
+      min(
+        620px,
+        calc(
+          100% -
+          28px -
+          var(
+            --yatut-safe-left
+          ) -
+          var(
+            --yatut-safe-right
+          )
+        )
+      ) !important;
+
+    transform:
+      translateX(
+        50%
+      );
+  }
+
+  .main-content {
+    padding-bottom:
+      calc(
+        112px +
+        var(
+          --yatut-safe-bottom
+        )
+      ) !important;
+  }
+}
