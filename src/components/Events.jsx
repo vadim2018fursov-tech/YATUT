@@ -1720,6 +1720,10 @@ function EventDetail({
   backendInviteCandidates = [],
   backendParticipants = [],
 }) {
+  const cancelled =
+    event.status ===
+    "cancelled";
+
   const going =
     event.attendees?.includes(
       "me"
