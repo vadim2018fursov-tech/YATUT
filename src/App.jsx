@@ -52,6 +52,7 @@ import Settings from "./components/Settings";
 import Notifications from "./components/Notifications";
 import MobileMoreMenu from "./components/MobileMoreMenu";
 import AuthPage from "./components/AuthPage";
+import Onboarding from "./components/Onboarding";
 
 import NowPage from "./pages/NowPage";
 import PulsePage from "./pages/PulsePage";
@@ -91,6 +92,7 @@ import {
 } from "./storage/notificationService";
 
 import {
+  completeMyOnboarding,
   getAuthSession,
   getMyProfile,
   isAuthBackendConfigured,
@@ -5178,6 +5180,31 @@ function App() {
   ] =
     useState(null);
 
+  const [
+    onboardingReady,
+    setOnboardingReady,
+  ] =
+    useState(
+      false
+    );
+
+  const [
+    needsOnboarding,
+    setNeedsOnboarding,
+  ] =
+    useState(
+      false
+    );
+
+  const [
+    onboardingBusy,
+    setOnboardingBusy,
+  ] =
+    useState(
+      false
+    );
+
+
   useEffect(() => {
     if (
       !authSession?.user?.id
@@ -5309,6 +5336,147 @@ function App() {
     authSession?.user?.id,
     authSession?.access_token,
   ]);
+
+  /* =======================================================
+     ONBOARDING STATE
+  ======================================================= */
+
+  useEffect(() => {
+    if (
+      !authSession?.user?.id
+    ) {
+      setOnboardingReady(
+        false
+      );
+
+      setNeedsOnboarding(
+        false
+      );
+
+      return undefined;
+    }
+
+    let active =
+      true;
+
+    setOnboardingReady(
+      false
+    );
+
+    getMyProfile(
+      authSession
+    )
+      .then(
+        (
+          profile
+        ) => {
+          if (!active) {
+            return;
+          }
+
+          setNeedsOnboarding(
+            !profile
+              ?.onboarding_completed_at
+          );
+
+          setOnboardingReady(
+            true
+          );
+        }
+      )
+      .catch(
+        (
+          error
+        ) => {
+          console.warn(
+            "ONBOARDING STATE ERROR:",
+            error
+          );
+
+          if (
+            active
+          ) {
+            setNeedsOnboarding(
+              false
+            );
+
+            setOnboardingReady(
+              true
+            );
+          }
+        }
+      );
+
+    return () => {
+      active =
+        false;
+    };
+  }, [
+    authSession?.user?.id,
+    authSession?.access_token,
+  ]);
+
+  async function finishOnboarding(
+    nextPage
+  ) {
+    if (
+      !authSession?.user?.id ||
+      onboardingBusy
+    ) {
+      return;
+    }
+
+    try {
+      setOnboardingBusy(
+        true
+      );
+
+      await completeMyOnboarding(
+        authSession
+      );
+
+      setNeedsOnboarding(
+        false
+      );
+
+      setCurrentPage(
+        nextPage
+      );
+
+      setRouteRevision(
+        (
+          previous
+        ) =>
+          previous +
+          1
+      );
+
+      window.history.replaceState(
+        {
+          yatut:
+            true,
+          page:
+            nextPage,
+        },
+        "",
+        nextPage ===
+          "home"
+          ? "/"
+          : `/${nextPage}`
+      );
+    } catch (
+      error
+    ) {
+      console.warn(
+        "ONBOARDING COMPLETE ERROR:",
+        error
+      );
+    } finally {
+      setOnboardingBusy(
+        false
+      );
+    }
+  }
 
   const [
     sidebarFriends,
@@ -7316,6 +7484,53 @@ function App() {
       <AuthPage
         onAuthenticated={
           handleAuthenticated
+        }
+      />
+    );
+  }
+
+  if (
+    authBackendConfigured &&
+    authSession &&
+    !onboardingReady
+  ) {
+    return (
+      <div className="auth-loading">
+        <div>
+          <div className="auth-brand-mark">
+            Я
+          </div>
+
+          <strong>
+            ЯТУТ
+          </strong>
+        </div>
+      </div>
+    );
+  }
+
+  if (
+    authBackendConfigured &&
+    authSession &&
+    needsOnboarding
+  ) {
+    return (
+      <Onboarding
+        profile={
+          shellProfile
+        }
+        busy={
+          onboardingBusy
+        }
+        onContinue={() =>
+          finishOnboarding(
+            "profile"
+          )
+        }
+        onSkip={() =>
+          finishOnboarding(
+            "home"
+          )
         }
       />
     );
