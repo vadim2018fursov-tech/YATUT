@@ -22,8 +22,10 @@ import {
 import {
   deleteBackendMessage,
   editBackendMessage,
+  getBackendOtherReadAt,
   listBackendChats,
   loadBackendMessages,
+  markBackendChatRead,
   openBackendDirectChat,
   sendBackendMessage,
 } from "../services/chatBackendService";
@@ -1940,8 +1942,20 @@ function MessageBubble({
           )}
 
           {mine && (
-            <span>
-              ✓✓
+            <span
+              title={
+                message.backend
+                  ? message.read
+                    ? "Прочитано"
+                    : "Надіслано"
+                  : "Надіслано"
+              }
+            >
+              {message.backend
+                ? message.read
+                  ? "✓✓"
+                  : "✓"
+                : "✓✓"}
             </span>
           )}
 
@@ -2108,6 +2122,14 @@ function Chats({
   ] =
     useState(
       "idle"
+    );
+
+  const [
+    otherReadAt,
+    setOtherReadAt,
+  ] =
+    useState(
+      null
     );
 
   const [
@@ -3108,15 +3130,62 @@ function Chats({
 
         try {
           let stored =
+            null;
+
+          let readAt =
+            null;
+
+          if (
             activeChat?.backend &&
             authSession?.user?.id
-              ? await loadBackendMessages(
+          ) {
+            [
+              stored,
+              readAt,
+            ] =
+              await Promise.all([
+                loadBackendMessages(
                   authSession,
                   activeChatId
-                )
-              : await getMessages(
+                ),
+                getBackendOtherReadAt(
+                  authSession,
                   activeChatId
-                );
+                ),
+              ]);
+
+            setOtherReadAt(
+              readAt
+            );
+
+            if (
+              document.visibilityState ===
+              "visible"
+            ) {
+              markBackendChatRead(
+                authSession,
+                activeChatId
+              ).catch(
+                (
+                  error
+                ) => {
+                  console.warn(
+                    "BACKEND READ MARK ERROR:",
+                    error
+                  );
+                }
+              );
+            }
+          } else {
+            stored =
+              await getMessages(
+                activeChatId
+              );
+
+            setOtherReadAt(
+              null
+            );
+          }
 
           if (
             !activeChat?.backend &&
@@ -3178,6 +3247,21 @@ function Chats({
               (message) => ({
                 ...message,
 
+                read:
+                  message.backend &&
+                  message.senderId ===
+                    "me"
+                    ? Boolean(
+                        readAt &&
+                        Number(
+                          message.createdAt
+                        ) <=
+                          Number(
+                            readAt
+                          )
+                      )
+                    : message.read,
+
                 fileUrl:
                   message.fileBlob
                     ? URL.createObjectURL(
@@ -3230,25 +3314,77 @@ function Chats({
         "idle"
       );
 
+      setOtherReadAt(
+        null
+      );
+
       return undefined;
     }
 
     let active =
       true;
 
-    async function refreshMessages() {
+    async function refreshMessages(
+      {
+        markRead =
+          false,
+      } = {}
+    ) {
       try {
-        const latest =
-          await loadBackendMessages(
-            authSession,
-            activeChat.id
-          );
+        const [
+          latest,
+          readAt,
+        ] =
+          await Promise.all([
+            loadBackendMessages(
+              authSession,
+              activeChat.id
+            ),
+            getBackendOtherReadAt(
+              authSession,
+              activeChat.id
+            ),
+          ]);
 
         if (
           active
         ) {
+          setOtherReadAt(
+            readAt
+          );
+
           setMessages(
-            latest
+            latest.map(
+              (
+                message
+              ) => ({
+                ...message,
+                read:
+                  message.senderId ===
+                    "me"
+                    ? Boolean(
+                        readAt &&
+                        Number(
+                          message.createdAt
+                        ) <=
+                          Number(
+                            readAt
+                          )
+                      )
+                    : message.read,
+              })
+            )
+          );
+        }
+
+        if (
+          markRead &&
+          document.visibilityState ===
+            "visible"
+        ) {
+          await markBackendChatRead(
+            authSession,
+            activeChat.id
           );
         }
       } catch (
@@ -3343,8 +3479,26 @@ function Chats({
         conversationId:
           activeChat.id,
         onChange:
-          () => {
-            refreshMessages();
+          (
+            change
+          ) => {
+            if (
+              change?.table ===
+              "conversation_members"
+            ) {
+              refreshMessages({
+                markRead:
+                  false,
+              });
+
+              return;
+            }
+
+            refreshMessages({
+              markRead:
+                true,
+            });
+
             refreshChatList();
           },
         onTyping:
@@ -3462,7 +3616,10 @@ function Chats({
     const fallbackTimer =
       window.setInterval(
         () => {
-          refreshMessages();
+          refreshMessages({
+            markRead:
+              false,
+          });
           refreshChatList();
         },
         15000
