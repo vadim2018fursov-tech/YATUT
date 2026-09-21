@@ -9,6 +9,60 @@ import YatutIcon from "./YatutIcon";
 
 const TILE_SIZE = 256;
 const DEFAULT_ZOOM = 14;
+const GEOCODER_URL =
+  "https://nominatim.openstreetmap.org/search";
+const GEOCODER_CACHE_KEY =
+  "yatut-geocoder-cache-v1";
+const GEOCODER_MIN_INTERVAL_MS =
+  1100;
+
+let lastGeocoderRequestAt = 0;
+
+function readGeocoderCache() {
+  try {
+    const raw =
+      localStorage.getItem(
+        GEOCODER_CACHE_KEY
+      );
+
+    const parsed =
+      raw
+        ? JSON.parse(raw)
+        : {};
+
+    return parsed &&
+      typeof parsed ===
+        "object"
+      ? parsed
+      : {};
+  } catch {
+    return {};
+  }
+}
+
+function writeGeocoderCache(
+  cache
+) {
+  try {
+    localStorage.setItem(
+      GEOCODER_CACHE_KEY,
+      JSON.stringify(
+        cache
+      )
+    );
+  } catch {
+    // Search cache is optional.
+  }
+}
+
+function normalizeSearchKey(
+  query
+) {
+  return String(query || "")
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, " ");
+}
 
 const CITY_CENTERS = {
   "київ": [50.4501, 30.5234],
@@ -391,6 +445,26 @@ export default function NearbyCoordinatePicker({
     DEFAULT_ZOOM
   );
 
+  const [
+    addressQuery,
+    setAddressQuery,
+  ] = useState("");
+
+  const [
+    searchResults,
+    setSearchResults,
+  ] = useState([]);
+
+  const [
+    searching,
+    setSearching,
+  ] = useState(false);
+
+  const [
+    searchError,
+    setSearchError,
+  ] = useState("");
+
   useEffect(() => {
     const element =
       stageRef.current;
@@ -454,6 +528,268 @@ export default function NearbyCoordinatePicker({
         size.height,
       ]
     );
+
+  async function searchAddress() {
+    const rawQuery =
+      addressQuery.trim();
+
+    if (
+      !rawQuery ||
+      searching
+    ) {
+      return;
+    }
+
+    const combinedQuery =
+      city &&
+      !rawQuery
+        .toLowerCase()
+        .includes(
+          city
+            .toLowerCase()
+        )
+        ? `${rawQuery}, ${city}`
+        : rawQuery;
+
+    const cacheKey =
+      normalizeSearchKey(
+        combinedQuery
+      );
+
+    const cache =
+      readGeocoderCache();
+
+    if (
+      Array.isArray(
+        cache[cacheKey]
+      )
+    ) {
+      setSearchResults(
+        cache[cacheKey]
+      );
+
+      setSearchError(
+        ""
+      );
+
+      return;
+    }
+
+    try {
+      setSearching(
+        true
+      );
+
+      setSearchError(
+        ""
+      );
+
+      const elapsed =
+        Date.now() -
+        lastGeocoderRequestAt;
+
+      if (
+        elapsed <
+        GEOCODER_MIN_INTERVAL_MS
+      ) {
+        await new Promise(
+          (
+            resolve
+          ) =>
+            setTimeout(
+              resolve,
+              GEOCODER_MIN_INTERVAL_MS -
+                elapsed
+            )
+        );
+      }
+
+      lastGeocoderRequestAt =
+        Date.now();
+
+      const url =
+        new URL(
+          GEOCODER_URL
+        );
+
+      url.searchParams.set(
+        "format",
+        "jsonv2"
+      );
+
+      url.searchParams.set(
+        "addressdetails",
+        "1"
+      );
+
+      url.searchParams.set(
+        "limit",
+        "5"
+      );
+
+      url.searchParams.set(
+        "accept-language",
+        "uk"
+      );
+
+      url.searchParams.set(
+        "q",
+        combinedQuery
+      );
+
+      const response =
+        await fetch(
+          url.toString(),
+          {
+            method:
+              "GET",
+            headers: {
+              Accept:
+                "application/json",
+            },
+          }
+        );
+
+      if (
+        !response.ok
+      ) {
+        throw new Error(
+          `HTTP ${response.status}`
+        );
+      }
+
+      const rows =
+        await response.json();
+
+      const results =
+        (
+          Array.isArray(
+            rows
+          )
+            ? rows
+            : []
+        )
+          .map(
+            (
+              row
+            ) => ({
+              id:
+                String(
+                  row.place_id ||
+                  row.osm_id ||
+                  row.display_name
+                ),
+              name:
+                row.display_name ||
+                combinedQuery,
+              type:
+                row.type ||
+                row.category ||
+                "address",
+              latitude:
+                Number(
+                  row.lat
+                ),
+              longitude:
+                Number(
+                  row.lon
+                ),
+            })
+          )
+          .filter(
+            (
+              row
+            ) =>
+              Number.isFinite(
+                row.latitude
+              ) &&
+              Number.isFinite(
+                row.longitude
+              )
+          );
+
+      setSearchResults(
+        results
+      );
+
+      if (
+        !results.length
+      ) {
+        setSearchError(
+          "Нічого не знайдено. Спробуйте додати місто, номер будинку або уточнити назву."
+        );
+      }
+
+      cache[cacheKey] =
+        results;
+
+      const keys =
+        Object.keys(
+          cache
+        );
+
+      if (
+        keys.length >
+        40
+      ) {
+        keys
+          .slice(
+            0,
+            keys.length -
+              40
+          )
+          .forEach(
+            (
+              key
+            ) => {
+              delete cache[key];
+            }
+          );
+      }
+
+      writeGeocoderCache(
+        cache
+      );
+    } catch (
+      error
+    ) {
+      console.warn(
+        "ADDRESS SEARCH ERROR:",
+        error
+      );
+
+      setSearchError(
+        "Пошук адреси зараз недоступний. Точку все одно можна поставити вручну."
+      );
+    } finally {
+      setSearching(
+        false
+      );
+    }
+  }
+
+  function selectSearchResult(
+    result
+  ) {
+    setCenter({
+      latitude:
+        result.latitude,
+      longitude:
+        result.longitude,
+    });
+
+    setZoom(
+      17
+    );
+
+    setSearchResults(
+      []
+    );
+
+    setSearchError(
+      ""
+    );
+  }
 
   function beginPan(
     event
@@ -558,6 +894,119 @@ export default function NearbyCoordinatePicker({
           ×
         </button>
       </header>
+
+      <div className="nearby-coordinate-picker__search">
+        <div>
+          <YatutIcon
+            name="search"
+            size={16}
+          />
+
+          <input
+            value={
+              addressQuery
+            }
+            onChange={(
+              event
+            ) => {
+              setAddressQuery(
+                event.target.value
+              );
+
+              if (
+                searchError
+              ) {
+                setSearchError(
+                  ""
+                );
+              }
+            }}
+            onKeyDown={(
+              event
+            ) => {
+              if (
+                event.key ===
+                "Enter"
+              ) {
+                event.preventDefault();
+                searchAddress();
+              }
+            }}
+            placeholder={
+              city
+                ? `Наприклад, Хрещатик 22, ${city}`
+                : "Введіть адресу або назву місця"
+            }
+          />
+
+          <button
+            type="button"
+            disabled={
+              !addressQuery.trim() ||
+              searching
+            }
+            onClick={
+              searchAddress
+            }
+          >
+            {searching
+              ? "Шукаємо..."
+              : "Знайти"}
+          </button>
+        </div>
+
+        {searchError && (
+          <p className="nearby-coordinate-picker__search-error">
+            {searchError}
+          </p>
+        )}
+
+        {searchResults.length >
+          0 && (
+          <div className="nearby-coordinate-picker__results">
+            {searchResults.map(
+              (
+                result
+              ) => (
+                <button
+                  key={
+                    result.id
+                  }
+                  type="button"
+                  onClick={() =>
+                    selectSearchResult(
+                      result
+                    )
+                  }
+                >
+                  <YatutIcon
+                    name="pin"
+                    size={15}
+                  />
+
+                  <span>
+                    <strong>
+                      {
+                        result.name
+                      }
+                    </strong>
+
+                    <small>
+                      {
+                        result.type
+                      }
+                    </small>
+                  </span>
+                </button>
+              )
+            )}
+          </div>
+        )}
+
+        <small className="nearby-coordinate-picker__search-note">
+          Пошук виконується лише після натискання кнопки або Enter — без автопідказок.
+        </small>
+      </div>
 
       <div
         ref={
