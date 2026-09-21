@@ -28,3 +28,9 @@ from public, anon;
 
 grant execute on function public.complete_my_onboarding()
 to authenticated, service_role;
+
+
+-- Backfill existing accounts so onboarding is only shown to new signups.
+update public.profiles
+set onboarding_completed_at = coalesce(onboarding_completed_at, now())
+where onboarding_completed_at is null;
