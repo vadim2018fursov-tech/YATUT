@@ -20,9 +20,17 @@ import {
 } from "../storage/notificationEntityBridge";
 
 import {
+  cancelBackendCommunityJoinRequest,
   deleteBackendCommunity,
+  getBackendCommunityMembershipState,
+  joinBackendCommunity,
+  leaveBackendCommunity,
   loadBackendCommunities,
   loadBackendCommunity,
+  loadBackendCommunityJoinRequests,
+  loadBackendCommunityMembers,
+  requestBackendCommunityJoin,
+  respondBackendCommunityJoinRequest,
   saveBackendCommunity,
 } from "../services/communityBackendService";
 
@@ -3092,66 +3100,494 @@ function ActiveModules({
 
 function MembersView({
   space,
+  authSession = null,
+  isOwner = false,
+  onMembershipChanged,
 }) {
-  return (
-    <section className="space-info-card">
-      <div className="space-detail-section-head">
-        <div>
-          <span>
-            УЧАСНИКИ
-          </span>
+  const [
+    members,
+    setMembers,
+  ] =
+    useState([]);
 
-          <h2>
-            Люди простору
-          </h2>
+  const [
+    requests,
+    setRequests,
+  ] =
+    useState([]);
+
+  const [
+    loading,
+    setLoading,
+  ] =
+    useState(
+      Boolean(
+        space.backend
+      )
+    );
+
+  const [
+    actionId,
+    setActionId,
+  ] =
+    useState(null);
+
+  useEffect(() => {
+    if (
+      !space.backend ||
+      !space.backendId ||
+      !authSession?.user?.id
+    ) {
+      setMembers(
+        []
+      );
+
+      setRequests(
+        []
+      );
+
+      setLoading(
+        false
+      );
+
+      return undefined;
+    }
+
+    let active =
+      true;
+
+    let refreshTimer =
+      null;
+
+    async function refresh() {
+      try {
+        const [
+          nextMembers,
+          nextRequests,
+        ] =
+          await Promise.all([
+            loadBackendCommunityMembers(
+              authSession,
+              space.backendId
+            ),
+            isOwner
+              ? loadBackendCommunityJoinRequests(
+                  authSession,
+                  space.backendId
+                )
+              : Promise.resolve(
+                  []
+                ),
+          ]);
+
+        if (
+          !active
+        ) {
+          return;
+        }
+
+        setMembers(
+          nextMembers
+        );
+
+        setRequests(
+          nextRequests
+        );
+
+        setLoading(
+          false
+        );
+      } catch (
+        error
+      ) {
+        console.warn(
+          "COMMUNITY MEMBERS LOAD ERROR:",
+          error
+        );
+
+        if (
+          active
+        ) {
+          setLoading(
+            false
+          );
+        }
+      }
+    }
+
+    refresh();
+
+    const channel =
+      subscribeCommunitiesRealtime({
+        session:
+          authSession,
+        onChange:
+          () => {
+            if (
+              refreshTimer
+            ) {
+              window.clearTimeout(
+                refreshTimer
+              );
+            }
+
+            refreshTimer =
+              window.setTimeout(
+                refresh,
+                100
+              );
+          },
+      });
+
+    return () => {
+      active =
+        false;
+
+      if (
+        refreshTimer
+      ) {
+        window.clearTimeout(
+          refreshTimer
+        );
+      }
+
+      channel.close();
+    };
+  }, [
+    space.backend,
+    space.backendId,
+    authSession?.user?.id,
+    authSession?.access_token,
+    isOwner,
+  ]);
+
+  async function respond(
+    request,
+    accept
+  ) {
+    if (
+      !request?.id ||
+      actionId
+    ) {
+      return;
+    }
+
+    setActionId(
+      request.id
+    );
+
+    try {
+      await respondBackendCommunityJoinRequest(
+        authSession,
+        request.id,
+        accept
+      );
+
+      setRequests(
+        (
+          previous
+        ) =>
+          previous.filter(
+            (
+              item
+            ) =>
+              item.id !==
+              request.id
+          )
+      );
+
+      if (
+        accept
+      ) {
+        const nextMembers =
+          await loadBackendCommunityMembers(
+            authSession,
+            space.backendId
+          );
+
+        setMembers(
+          nextMembers
+        );
+      }
+
+      await onMembershipChanged?.();
+    } catch (
+      error
+    ) {
+      console.warn(
+        "COMMUNITY JOIN RESPONSE ERROR:",
+        error
+      );
+
+      window.alert(
+        error?.message ||
+        "Не вдалося обробити заявку."
+      );
+    } finally {
+      setActionId(
+        null
+      );
+    }
+  }
+
+  if (
+    !space.backend
+  ) {
+    return (
+      <section className="space-info-card">
+        <div className="space-detail-section-head">
+          <div>
+            <span>
+              УЧАСНИКИ
+            </span>
+
+            <h2>
+              Люди простору
+            </h2>
+          </div>
+
+          <strong>
+            {
+              space.members
+                .length
+            }
+          </strong>
         </div>
 
-        <strong>
-          {
-            space.members
-              .length
-          }
-        </strong>
-      </div>
-
-      <div className="space-members-demo">
-        {space.members.map(
-          (
-            memberId
-          ) => (
-            <div
-              key={
-                memberId
-              }
-              className="space-member-row"
-            >
-              <span>
-                {memberId ===
-                "me"
-                  ? "В"
-                  : "У"}
-              </span>
-
-              <div>
-                <strong>
+        <div className="space-members-demo">
+          {space.members.map(
+            (
+              memberId
+            ) => (
+              <div
+                key={
+                  memberId
+                }
+                className="space-member-row"
+              >
+                <span>
                   {memberId ===
                   "me"
-                    ? "Вадим"
-                    : "Учасник"}
-                </strong>
+                    ? "В"
+                    : "У"}
+                </span>
 
-                <small>
-                  {memberId ===
-                  space.ownerId
-                    ? "Власник"
-                    : "Учасник"}
-                </small>
+                <div>
+                  <strong>
+                    {memberId ===
+                    "me"
+                      ? "Ви"
+                      : "Учасник"}
+                  </strong>
+
+                  <small>
+                    {memberId ===
+                    space.ownerId
+                      ? "Власник"
+                      : "Учасник"}
+                  </small>
+                </div>
               </div>
+            )
+          )}
+        </div>
+      </section>
+    );
+  }
+
+  const roleTitle = {
+    owner:
+      "Власник",
+    admin:
+      "Адміністратор",
+    moderator:
+      "Модератор",
+    member:
+      "Учасник",
+  };
+
+  return (
+    <>
+      {isOwner &&
+        requests.length >
+          0 && (
+          <section className="space-info-card">
+            <div className="space-detail-section-head">
+              <div>
+                <span>
+                  ЗАЯВКИ
+                </span>
+
+                <h2>
+                  Хочуть приєднатися
+                </h2>
+              </div>
+
+              <strong>
+                {
+                  requests.length
+                }
+              </strong>
             </div>
-          )
+
+            <div className="space-members-demo">
+              {requests.map(
+                (
+                  request
+                ) => (
+                  <div
+                    key={
+                      request.id
+                    }
+                    className="space-member-row"
+                  >
+                    <span>
+                      {request.avatar ? (
+                        <img
+                          src={
+                            request.avatar
+                          }
+                          alt=""
+                        />
+                      ) : (
+                        request.initial
+                      )}
+                    </span>
+
+                    <div>
+                      <strong>
+                        {
+                          request.name
+                        }
+                      </strong>
+
+                      <small>
+                        {request.username
+                          ? `@${request.username}`
+                          : "Користувач ЯТУТ"}
+                      </small>
+                    </div>
+
+                    <div className="community-request-actions">
+                      <button
+                        type="button"
+                        disabled={
+                          actionId ===
+                          request.id
+                        }
+                        onClick={() =>
+                          respond(
+                            request,
+                            true
+                          )
+                        }
+                      >
+                        Прийняти
+                      </button>
+
+                      <button
+                        type="button"
+                        disabled={
+                          actionId ===
+                          request.id
+                        }
+                        onClick={() =>
+                          respond(
+                            request,
+                            false
+                          )
+                        }
+                      >
+                        Відхилити
+                      </button>
+                    </div>
+                  </div>
+                )
+              )}
+            </div>
+          </section>
         )}
-      </div>
-    </section>
+
+      <section className="space-info-card">
+        <div className="space-detail-section-head">
+          <div>
+            <span>
+              УЧАСНИКИ
+            </span>
+
+            <h2>
+              Люди простору
+            </h2>
+          </div>
+
+          <strong>
+            {
+              members.length
+            }
+          </strong>
+        </div>
+
+        {loading ? (
+          <div className="spaces-empty">
+            Завантажуємо учасників…
+          </div>
+        ) : (
+          <div className="space-members-demo">
+            {members.map(
+              (
+                member
+              ) => (
+                <div
+                  key={
+                    member.id
+                  }
+                  className="space-member-row"
+                >
+                  <span>
+                    {member.avatar ? (
+                      <img
+                        src={
+                          member.avatar
+                        }
+                        alt=""
+                      />
+                    ) : (
+                      member.initial
+                    )}
+                  </span>
+
+                  <div>
+                    <strong>
+                      {
+                        member.name
+                      }
+                    </strong>
+
+                    <small>
+                      {
+                        roleTitle[
+                          member.role
+                        ] ||
+                        "Учасник"
+                      }
+                      {member.username
+                        ? ` · @${member.username}`
+                        : ""}
+                    </small>
+                  </div>
+                </div>
+              )
+            )}
+
+            {!members.length && (
+              <div className="spaces-empty">
+                Учасників поки немає.
+              </div>
+            )}
+          </div>
+        )}
+      </section>
+    </>
   );
 }
 
@@ -4425,6 +4861,7 @@ function SpaceDetail({
   onEdit,
   onUpdate,
   onDelete,
+  onMembershipChanged,
   authSession = null,
   currentUserId = null,
   initialPostId = null,
@@ -4435,6 +4872,18 @@ function SpaceDetail({
   ] = useState(
     "feed"
   );
+
+  const [
+    joinRequestStatus,
+    setJoinRequestStatus,
+  ] =
+    useState(null);
+
+  const [
+    membershipBusy,
+    setMembershipBusy,
+  ] =
+    useState(false);
 
   useEffect(() => {
     if (
@@ -4466,6 +4915,82 @@ function SpaceDetail({
           "me"
       )
     );
+
+  const memberRole =
+    currentUserId
+      ? space.memberRoles?.[
+          currentUserId
+        ] ||
+        (
+          isOwner
+            ? "owner"
+            : null
+        )
+      : null;
+
+  const isMember =
+    !space.backend ||
+    Boolean(
+      memberRole
+    );
+
+  useEffect(() => {
+    if (
+      !space.backend ||
+      !space.backendId ||
+      !authSession?.user?.id ||
+      isMember
+    ) {
+      setJoinRequestStatus(
+        null
+      );
+
+      return undefined;
+    }
+
+    let active =
+      true;
+
+    getBackendCommunityMembershipState(
+      authSession,
+      space.backendId
+    )
+      .then(
+        (
+          state
+        ) => {
+          if (
+            active
+          ) {
+            setJoinRequestStatus(
+              state?.requestStatus ||
+              null
+            );
+          }
+        }
+      )
+      .catch(
+        (
+          error
+        ) => {
+          console.warn(
+            "COMMUNITY MEMBERSHIP STATE ERROR:",
+            error
+          );
+        }
+      );
+
+    return () => {
+      active =
+        false;
+    };
+  }, [
+    space.backend,
+    space.backendId,
+    isMember,
+    authSession?.user?.id,
+    authSession?.access_token,
+  ]);
 
   const tabs = [
     {
@@ -4547,6 +5072,13 @@ function SpaceDetail({
   ];
 
   function openCommunityChat() {
+    if (
+      space.backend &&
+      !isMember
+    ) {
+      return;
+    }
+
     sessionStorage.setItem(
       "yatut-open-chat-id",
       `community-${space.id}`
@@ -4591,6 +5123,102 @@ function SpaceDetail({
     onNavigate?.(
       "chats"
     );
+  }
+
+  async function handleMembershipAction() {
+    if (
+      !space.backend ||
+      !space.backendId ||
+      !authSession?.user?.id ||
+      isOwner ||
+      membershipBusy
+    ) {
+      return;
+    }
+
+    setMembershipBusy(
+      true
+    );
+
+    try {
+      if (
+        isMember
+      ) {
+        const confirmed =
+          window.confirm(
+            `Вийти зі спільноти «${space.title}»?`
+          );
+
+        if (
+          !confirmed
+        ) {
+          return;
+        }
+
+        await leaveBackendCommunity(
+          authSession,
+          space.backendId
+        );
+
+        setJoinRequestStatus(
+          null
+        );
+      } else if (
+        joinRequestStatus ===
+        "pending"
+      ) {
+        await cancelBackendCommunityJoinRequest(
+          authSession,
+          space.backendId
+        );
+
+        setJoinRequestStatus(
+          "cancelled"
+        );
+      } else if (
+        space.privacy ===
+        "public"
+      ) {
+        await joinBackendCommunity(
+          authSession,
+          space.backendId
+        );
+
+        setJoinRequestStatus(
+          null
+        );
+      } else if (
+        space.privacy ===
+        "request"
+      ) {
+        await requestBackendCommunityJoin(
+          authSession,
+          space.backendId
+        );
+
+        setJoinRequestStatus(
+          "pending"
+        );
+      }
+
+      await onMembershipChanged?.();
+    } catch (
+      error
+    ) {
+      console.warn(
+        "COMMUNITY MEMBERSHIP ACTION ERROR:",
+        error
+      );
+
+      window.alert(
+        error?.message ||
+        "Не вдалося змінити участь у спільноті."
+      );
+    } finally {
+      setMembershipBusy(
+        false
+      );
+    }
   }
 
   async function shareSpace() {
@@ -4695,15 +5323,17 @@ function SpaceDetail({
           </div>
 
           <div className="community-detail-actions">
-            <button
-              type="button"
-              className="community-chat-main"
-              onClick={
-                openCommunityChat
-              }
-            >
-              💬 Повідомлення
-            </button>
+            {isMember && (
+              <button
+                type="button"
+                className="community-chat-main"
+                onClick={
+                  openCommunityChat
+                }
+              >
+                💬 Повідомлення
+              </button>
+            )}
 
             <button
               type="button"
@@ -4714,6 +5344,32 @@ function SpaceDetail({
             >
               ↗
             </button>
+
+            {space.backend &&
+              !isOwner &&
+              space.privacy !==
+                "private" && (
+              <button
+                type="button"
+                className="community-owner-badge"
+                disabled={
+                  membershipBusy
+                }
+                onClick={
+                  handleMembershipAction
+                }
+              >
+                {isMember
+                  ? "✓ Учасник · Вийти"
+                  : joinRequestStatus ===
+                    "pending"
+                  ? "⌛ Скасувати заявку"
+                  : space.privacy ===
+                    "request"
+                  ? "+ Надіслати заявку"
+                  : "+ Приєднатися"}
+              </button>
+            )}
 
             {isOwner && (
               <button
@@ -4854,6 +5510,15 @@ function SpaceDetail({
               <MembersView
                 space={
                   space
+                }
+                authSession={
+                  authSession
+                }
+                isOwner={
+                  isOwner
+                }
+                onMembershipChanged={
+                  onMembershipChanged
                 }
               />
             )}
@@ -5023,20 +5688,22 @@ function SpaceDetail({
               </span>
 
               <div className="space-live-modules">
-                <button
-                  type="button"
-                  onClick={
-                    openCommunityChat
-                  }
-                >
-                  <span>
-                    💬
-                  </span>
+                {isMember && (
+                  <button
+                    type="button"
+                    onClick={
+                      openCommunityChat
+                    }
+                  >
+                    <span>
+                      💬
+                    </span>
 
-                  <strong>
-                    Чат
-                  </strong>
-                </button>
+                    <strong>
+                      Чат
+                    </strong>
+                  </button>
+                )}
 
                 <button
                   type="button"
@@ -5547,6 +6214,96 @@ function Spaces({
       typeFilter,
     ]);
 
+  async function refreshCommunity(
+    targetSpace
+  ) {
+    if (
+      !authSession?.user?.id ||
+      !targetSpace?.backend
+    ) {
+      return targetSpace ||
+        null;
+    }
+
+    try {
+      const refreshed =
+        await loadBackendCommunity(
+          authSession,
+          targetSpace.backendId ||
+          targetSpace.id
+        );
+
+      if (
+        !refreshed
+      ) {
+        setSpaces(
+          (
+            previous
+          ) =>
+            previous.filter(
+              (
+                item
+              ) =>
+                item.id !==
+                targetSpace.id
+            )
+        );
+
+        if (
+          activeSpaceId ===
+          targetSpace.id
+        ) {
+          setActiveSpaceId(
+            null
+          );
+        }
+
+        return null;
+      }
+
+      setSpaces(
+        (
+          previous
+        ) => {
+          const exists =
+            previous.some(
+              (
+                item
+              ) =>
+                item.id ===
+                refreshed.id
+            );
+
+          return exists
+            ? previous.map(
+                (
+                  item
+                ) =>
+                  item.id ===
+                  refreshed.id
+                    ? refreshed
+                    : item
+              )
+            : [
+                refreshed,
+                ...previous,
+              ];
+        }
+      );
+
+      return refreshed;
+    } catch (
+      error
+    ) {
+      console.warn(
+        "COMMUNITY REFRESH ERROR:",
+        error
+      );
+
+      return null;
+    }
+  }
+
   function openCreate() {
     setEditingSpace(
       null
@@ -5819,6 +6576,11 @@ function Spaces({
           }
           onDelete={() =>
             deleteSpace(
+              activeSpace
+            )
+          }
+          onMembershipChanged={() =>
+            refreshCommunity(
               activeSpace
             )
           }
