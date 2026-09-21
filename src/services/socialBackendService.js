@@ -117,6 +117,12 @@ function personFromProfile(
         : "Користувач ЯТУТ",
     online:
       false,
+    status:
+      profile.status ||
+      "",
+    statusText:
+      profile.status_text ||
+      "",
     hasStory:
       false,
     storyViewed:
@@ -171,7 +177,7 @@ export async function searchBackendProfiles(
 
   url.searchParams.set(
     "select",
-    "id,username,full_name,avatar_url,cover_url,bio,city,country,status,verified,created_at"
+    "id,username,full_name,avatar_url,cover_url,bio,city,country,status,status_text,verified,created_at"
   );
 
   url.searchParams.set(
@@ -260,7 +266,7 @@ export async function getBackendUserProfile(
 
   profileUrl.searchParams.set(
     "select",
-    "id,username,full_name,avatar_url,cover_url,bio,city,country,status,verified,created_at"
+    "id,username,full_name,avatar_url,cover_url,bio,city,country,status,status_text,verified,created_at"
   );
 
   profileUrl.searchParams.set(
@@ -652,7 +658,7 @@ export async function getBackendConnectionPeople(
 
   profilesUrl.searchParams.set(
     "select",
-    "id,username,full_name,avatar_url,cover_url,bio,city,country,status,verified,created_at"
+    "id,username,full_name,avatar_url,cover_url,bio,city,country,status,status_text,verified,created_at"
   );
 
   const profilesResponse =
@@ -974,7 +980,7 @@ export async function getBackendFriendPeople(
 
   profilesUrl.searchParams.set(
     "select",
-    "id,username,full_name,avatar_url,cover_url,bio,city,country,status,verified,created_at"
+    "id,username,full_name,avatar_url,cover_url,bio,city,country,status,status_text,verified,created_at"
   );
 
   const profilesResponse =
