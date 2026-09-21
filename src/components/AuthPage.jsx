@@ -1,10 +1,12 @@
 import {
+  useEffect,
   useState,
 } from "react";
 
 import "../styles/auth.css";
 
 import {
+  getAuthCapabilities,
   isAuthBackendConfigured,
   signInWithOAuth,
   signInWithPassword,
@@ -53,6 +55,39 @@ export default function AuthPage({
     setError,
   ] =
     useState("");
+
+  const [
+    providers,
+    setProviders,
+  ] =
+    useState({
+      email: true,
+      google: false,
+      facebook: false,
+    });
+
+  useEffect(() => {
+    let active =
+      true;
+
+    getAuthCapabilities()
+      .then(
+        (capabilities) => {
+          if (
+            active
+          ) {
+            setProviders(
+              capabilities
+            );
+          }
+        }
+      );
+
+    return () => {
+      active =
+        false;
+    };
+  }, []);
 
   function patch(
     key,
@@ -395,7 +430,8 @@ export default function AuthPage({
             type="button"
             disabled={
               busy ||
-              !configured
+              !configured ||
+              !providers.google
             }
             onClick={() =>
               socialLogin(
@@ -403,7 +439,9 @@ export default function AuthPage({
               )
             }
           >
-            Google
+            {providers.google
+              ? "Google"
+              : "Google · скоро"}
           </button>
 
           <button
@@ -411,7 +449,8 @@ export default function AuthPage({
             type="button"
             disabled={
               busy ||
-              !configured
+              !configured ||
+              !providers.facebook
             }
             onClick={() =>
               socialLogin(
@@ -419,9 +458,21 @@ export default function AuthPage({
               )
             }
           >
-            Facebook
+            {providers.facebook
+              ? "Facebook"
+              : "Facebook · скоро"}
           </button>
         </div>
+
+        {configured &&
+          !providers.google &&
+          !providers.facebook && (
+          <div className="auth-message">
+            Email-вхід уже активний. Google та Facebook
+            увімкнуться тут автоматично після додавання
+            OAuth-провайдерів у Supabase.
+          </div>
+        )}
 
         {message && (
           <div className="auth-message">
