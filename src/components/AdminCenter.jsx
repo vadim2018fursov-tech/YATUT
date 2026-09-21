@@ -5,6 +5,7 @@ import {
 } from "react";
 
 import YatutIcon from "./YatutIcon";
+import AdminUserSanctionsModal from "./AdminUserSanctionsModal";
 
 import {
   loadSystemAdminDashboard,
@@ -107,6 +108,11 @@ export default function AdminCenter({
     loading,
     setLoading,
   ] = useState(true);
+
+  const [
+    sanctionsUser,
+    setSanctionsUser,
+  ] = useState(null);
 
   const [
     accessDenied,
@@ -788,63 +794,68 @@ export default function AdminCenter({
                 </strong>
               </header>
 
-              <div className="admin-simple-list">
+              <div className="admin-user-list">
                 {data.users.map(
                   (
                     user
                   ) => (
-                    <button
+                    <article
                       key={
                         user.id
                       }
-                      type="button"
-                      onClick={() =>
-                        onNavigate?.(
-                          "friends",
-                          {
-                            personId:
-                              user.id,
-                          }
-                        )
-                      }
+                      className="admin-user-row"
                     >
-                      <div className="admin-avatar">
-                        {user.avatarUrl ? (
-                          <img
-                            src={
-                              user.avatarUrl
+                      <button
+                        type="button"
+                        className="admin-user-row__profile"
+                        onClick={() =>
+                          onNavigate?.(
+                            "friends",
+                            {
+                              personId:
+                                user.id,
                             }
-                            alt=""
-                          />
-                        ) : (
-                          String(
-                            user.name ||
-                            "?"
                           )
-                            .charAt(0)
-                            .toUpperCase()
-                        )}
-                      </div>
+                        }
+                      >
+                        <div className="admin-avatar">
+                          {user.avatarUrl ? (
+                            <img
+                              src={
+                                user.avatarUrl
+                              }
+                              alt=""
+                            />
+                          ) : (
+                            String(
+                              user.name ||
+                              "?"
+                            )
+                              .charAt(0)
+                              .toUpperCase()
+                          )}
+                        </div>
 
-                      <div>
-                        <strong>
-                          {
-                            user.name
-                          }
-                          {user.founder
-                            ? " · Founder"
-                            : ""}
-                        </strong>
+                        <div>
+                          <strong>
+                            {
+                              user.name
+                            }
+                            {user.founder
+                              ? " · Founder"
+                              : ""}
+                          </strong>
 
-                        <small>
-                          @{user.username}
-                          {user.city
-                            ? ` · ${user.city}`
-                            : ""}
-                        </small>
-                      </div>
+                          <small>
+                            @{user.username}
+                            {user.city
+                              ? ` · ${user.city}`
+                              : ""}
+                          </small>
+                        </div>
+                      </button>
 
-                      <span>
+                      <span className="admin-user-row__reports">
                         {
                           Number(
                             user.reportsAgainst ||
@@ -852,8 +863,34 @@ export default function AdminCenter({
                           )
                         } скарг
                       </span>
-                    </button>
+
+                      <button
+                        type="button"
+                        className="admin-user-row__sanctions"
+                        disabled={
+                          user.founder
+                        }
+                        onClick={() =>
+                          setSanctionsUser(
+                            user
+                          )
+                        }
+                      >
+                        <YatutIcon
+                          name="bell"
+                          size={15}
+                        />
+
+                        Санкції
+                      </button>
+                    </article>
                   )
+                )}
+
+                {!data.users.length && (
+                  <p className="admin-empty">
+                    Користувачів не знайдено.
+                  </p>
                 )}
               </div>
             </section>
@@ -1178,6 +1215,28 @@ export default function AdminCenter({
           )}
         </>
       )}
+      {sanctionsUser && (
+        <AdminUserSanctionsModal
+          authSession={
+            authSession
+          }
+          user={
+            sanctionsUser
+          }
+          onClose={() =>
+            setSanctionsUser(
+              null
+            )
+          }
+          onChanged={() =>
+            refresh({
+              module:
+                "users",
+            })
+          }
+        />
+      )}
+
     </section>
   );
 }
