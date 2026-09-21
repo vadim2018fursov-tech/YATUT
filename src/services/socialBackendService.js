@@ -821,6 +821,158 @@ export async function getBackendFollowGraph(
   };
 }
 
+export async function getBackendFriendPeople(
+  session,
+  limit = 6
+) {
+  if (
+    !session?.user?.id
+  ) {
+    return [];
+  }
+
+  const friendshipsUrl =
+    new URL(
+      `${SUPABASE_URL}/rest/v1/friendships`
+    );
+
+  friendshipsUrl.searchParams.set(
+    "user_id",
+    `eq.${session.user.id}`
+  );
+
+  friendshipsUrl.searchParams.set(
+    "select",
+    "friend_id,created_at"
+  );
+
+  friendshipsUrl.searchParams.set(
+    "order",
+    "created_at.desc"
+  );
+
+  friendshipsUrl.searchParams.set(
+    "limit",
+    String(
+      Math.max(
+        1,
+        Math.min(
+          Number(
+            limit ||
+            6
+          ),
+          20
+        )
+      )
+    )
+  );
+
+  const friendshipsResponse =
+    await fetch(
+      friendshipsUrl,
+      {
+        headers:
+          headers(
+            session
+          ),
+      }
+    );
+
+  const friendships =
+    await parseResponse(
+      friendshipsResponse
+    );
+
+  const ids =
+    (
+      Array.isArray(
+        friendships
+      )
+        ? friendships
+        : []
+    )
+      .map(
+        (
+          row
+        ) =>
+          row.friend_id
+      )
+      .filter(
+        Boolean
+      );
+
+  if (
+    ids.length ===
+    0
+  ) {
+    return [];
+  }
+
+  const profilesUrl =
+    new URL(
+      `${SUPABASE_URL}/rest/v1/profiles`
+    );
+
+  profilesUrl.searchParams.set(
+    "id",
+    `in.(${ids.join(",")})`
+  );
+
+  profilesUrl.searchParams.set(
+    "select",
+    "id,username,full_name,avatar_url,cover_url,bio,city,country,status,verified,created_at"
+  );
+
+  const profilesResponse =
+    await fetch(
+      profilesUrl,
+      {
+        headers:
+          headers(
+            session
+          ),
+      }
+    );
+
+  const profiles =
+    await parseResponse(
+      profilesResponse
+    );
+
+  const byId =
+    new Map(
+      (
+        Array.isArray(
+          profiles
+        )
+          ? profiles
+          : []
+      ).map(
+        (
+          profile
+        ) => [
+          profile.id,
+          personFromProfile(
+            profile
+          ),
+        ]
+      )
+    );
+
+  return ids
+    .map(
+      (
+        id
+      ) =>
+        byId.get(
+          id
+        )
+    )
+    .filter(
+      Boolean
+    );
+}
+
 export async function getBackendRelationships(
   session
 ) {
