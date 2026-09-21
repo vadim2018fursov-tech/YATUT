@@ -5566,6 +5566,9 @@ function App() {
             onOpenChat={
               openPersonChat
             }
+            authSession={
+              authSession
+            }
           />
         );
 
@@ -5675,6 +5678,19 @@ function App() {
   if (
     authBackendConfigured &&
     !authSession
+  ) {
+    return (
+      <AuthPage
+        onAuthenticated={
+          handleAuthenticated
+        }
+      />
+    );
+  }
+
+  if (
+    currentPage ===
+    "auth"
   ) {
     return (
       <AuthPage
