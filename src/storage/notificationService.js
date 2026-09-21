@@ -8,6 +8,9 @@ const STORAGE_KEY =
 const CHANGE_EVENT =
   "yatut:notifications-changed";
 
+const SETTINGS_STORAGE_KEY =
+  "yatut-settings-v1";
+
 const MAX_NOTIFICATIONS =
   250;
 
@@ -649,6 +652,79 @@ export function getUnreadCount() {
 }
 
 /* =========================================================
+   SETTINGS BRIDGE
+========================================================= */
+
+function notificationPreferenceKey(
+  notification
+) {
+  switch (
+    notification?.type
+  ) {
+    case NOTIFICATION_TYPES.MESSAGE:
+      return "messages";
+
+    case NOTIFICATION_TYPES.FRIEND_REQUEST:
+    case NOTIFICATION_TYPES.FRIEND_ACCEPTED:
+      return "friends";
+
+    case NOTIFICATION_TYPES.COMMUNITY:
+    case NOTIFICATION_TYPES.COMMUNITY_INVITE:
+      return "communities";
+
+    case NOTIFICATION_TYPES.EVENT:
+    case NOTIFICATION_TYPES.EVENT_INVITE:
+    case NOTIFICATION_TYPES.EVENT_REMINDER:
+      return "events";
+
+    case NOTIFICATION_TYPES.BUSINESS:
+      return "business";
+
+    default:
+      return null;
+  }
+}
+
+function notificationEnabledBySettings(
+  notification
+) {
+  const key =
+    notificationPreferenceKey(
+      notification
+    );
+
+  if (!key) {
+    return true;
+  }
+
+  try {
+    const raw =
+      localStorage.getItem(
+        SETTINGS_STORAGE_KEY
+      );
+
+    if (!raw) {
+      return true;
+    }
+
+    const settings =
+      JSON.parse(
+        raw
+      );
+
+    const value =
+      settings?.notifications?.[
+        key
+      ];
+
+    return value !==
+      false;
+  } catch {
+    return true;
+  }
+}
+
+/* =========================================================
    CREATE
 ========================================================= */
 
@@ -662,6 +738,14 @@ export function createNotification(
     );
 
   if (!notification) {
+    return null;
+  }
+
+  if (
+    !notificationEnabledBySettings(
+      notification
+    )
+  ) {
     return null;
   }
 
