@@ -2843,3 +2843,379 @@
     flex-basis: 29px !important;
   }
 }
+
+
+/* =========================================================
+   YATUT MOBILE PAGES — UNIFIED APP EXPERIENCE
+   Search / Friends / Communities / Settings / Profile
+========================================================= */
+
+@media (max-width: 767px) {
+  /* SEARCH */
+  .global-search-page {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 0 calc(96px + env(safe-area-inset-bottom)) !important;
+    overflow-x: hidden !important;
+    background: #f7f8fc;
+  }
+
+  .global-search-hero {
+    min-height: 154px !important;
+    margin: 0 !important;
+    padding: 22px 16px 20px !important;
+    border-radius: 0 0 24px 24px !important;
+    overflow: hidden;
+  }
+
+  .global-search-hero h1 {
+    margin-top: 5px !important;
+    font-size: 28px !important;
+    line-height: 1.05 !important;
+    letter-spacing: -0.7px !important;
+  }
+
+  .global-search-hero p {
+    max-width: 82% !important;
+    margin-top: 8px !important;
+    font-size: 12px !important;
+    line-height: 1.45 !important;
+  }
+
+  .search-hero-symbol {
+    right: 14px !important;
+    bottom: 10px !important;
+    opacity: .11 !important;
+    transform: scale(.78) !important;
+    transform-origin: right bottom !important;
+  }
+
+  .global-search-box {
+    width: calc(100% - 20px) !important;
+    min-height: 52px !important;
+    margin: 12px 10px 0 !important;
+    padding: 0 12px !important;
+    border-radius: 16px !important;
+    box-shadow: 0 8px 24px rgba(28,30,43,.04) !important;
+  }
+
+  .global-search-tabs {
+    width: 100% !important;
+    margin: 10px 0 0 !important;
+    padding: 0 10px 9px !important;
+    display: flex !important;
+    gap: 7px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .global-search-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .global-search-tabs button {
+    flex: 0 0 auto !important;
+    min-width: max-content !important;
+    min-height: 38px !important;
+    padding: 0 13px !important;
+    border-radius: 12px !important;
+    white-space: nowrap !important;
+  }
+
+  .global-search-layout {
+    width: 100% !important;
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 10px !important;
+  }
+
+  .search-results-column {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .search-section {
+    width: 100% !important;
+    margin-top: 10px !important;
+    border-radius: 18px !important;
+    overflow: hidden !important;
+  }
+
+  .search-section-header {
+    padding: 14px !important;
+  }
+
+  .search-people-list {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+
+  .search-person-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    border-radius: 16px !important;
+  }
+
+  /* FRIENDS */
+  .friends-v2-page {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-bottom: calc(98px + env(safe-area-inset-bottom)) !important;
+    overflow-x: hidden !important;
+    background: #f7f8fc !important;
+  }
+
+  .friends-v2-hero {
+    min-height: 178px !important;
+    border-radius: 0 0 24px 24px !important;
+  }
+
+  .friends-v2-hero-content {
+    padding: 24px 16px 22px !important;
+  }
+
+  .friends-v2-eyebrow {
+    font-size: 9px !important;
+  }
+
+  .friends-v2-hero-content h1 {
+    max-width: 92% !important;
+    margin-top: 7px !important;
+    font-size: 27px !important;
+    line-height: 1.08 !important;
+  }
+
+  .friends-v2-hero-content p {
+    max-width: 90% !important;
+    margin-top: 8px !important;
+    font-size: 12px !important;
+  }
+
+  .friends-v2-summary {
+    margin: 10px !important;
+    gap: 7px !important;
+  }
+
+  .friends-v2-summary-item {
+    min-height: 76px !important;
+    padding: 10px !important;
+    border-radius: 15px !important;
+  }
+
+  .friends-v2-now-strip {
+    margin: 10px !important;
+    padding: 12px !important;
+    grid-template-columns: auto minmax(0, 1fr) !important;
+    border-radius: 17px !important;
+  }
+
+  .friends-v2-now-strip__actions {
+    grid-column: 1 / -1;
+    width: 100%;
+    overflow-x: auto;
+    padding-top: 2px;
+    scrollbar-width: none;
+  }
+
+  .friends-v2-now-strip__actions::-webkit-scrollbar {
+    display: none;
+  }
+
+  .friends-v2-toolbar,
+  .friends-v2-tabs,
+  .friends-v2-layout {
+    margin-right: 10px !important;
+    margin-left: 10px !important;
+  }
+
+  .friends-v2-tabs {
+    display: flex !important;
+    overflow-x: auto !important;
+    scrollbar-width: none;
+  }
+
+  .friends-v2-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .friends-v2-tabs button {
+    flex: 0 0 auto !important;
+    min-width: max-content !important;
+  }
+
+  /* COMMUNITIES */
+  .spaces-page,
+  .space-detail-page {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding-bottom: calc(98px + env(safe-area-inset-bottom)) !important;
+    overflow-x: hidden !important;
+    background: #f7f8fc;
+  }
+
+  .spaces-hero {
+    min-height: 174px !important;
+    padding: 23px 16px 20px !important;
+    border-radius: 0 0 24px 24px !important;
+  }
+
+  .spaces-hero h1 {
+    max-width: 78% !important;
+    font-size: 28px !important;
+    line-height: 1.06 !important;
+  }
+
+  .spaces-hero p {
+    max-width: 73% !important;
+    margin-top: 7px !important;
+    font-size: 11px !important;
+    line-height: 1.45 !important;
+  }
+
+  .spaces-controls,
+  .spaces-dashboard,
+  .spaces-title {
+    margin-right: 10px !important;
+    margin-left: 10px !important;
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+  }
+
+  .spaces-dashboard {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 7px !important;
+  }
+
+  .spaces-dashboard button {
+    min-height: 70px !important;
+    padding: 10px !important;
+    grid-template-columns: 34px minmax(0,1fr) !important;
+    border-radius: 14px !important;
+  }
+
+  .spaces-dashboard button > span {
+    width: 34px !important;
+    height: 34px !important;
+    border-radius: 11px !important;
+  }
+
+  .spaces-grid {
+    padding: 0 10px !important;
+    gap: 9px !important;
+  }
+
+  .space-card {
+    border: 1px solid #e6e7ee !important;
+    border-radius: 18px !important;
+    overflow: hidden !important;
+  }
+
+  .community-feed-composer,
+  .community-feed-post,
+  .community-overview-pinned,
+  .community-feed-chat-cta,
+  .space-info-card {
+    margin-right: 10px !important;
+    margin-left: 10px !important;
+    border-radius: 17px !important;
+  }
+
+  /* SETTINGS */
+  .feature-page:has(.settings-layout) {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 10px calc(98px + env(safe-area-inset-bottom)) !important;
+    gap: 10px !important;
+    overflow-x: hidden !important;
+  }
+
+  .feature-page:has(.settings-layout) .feature-hero {
+    min-height: 150px !important;
+    margin: 0 -10px !important;
+    padding: 22px 16px !important;
+    border-radius: 0 0 24px 24px !important;
+  }
+
+  .feature-page:has(.settings-layout) .feature-hero h1 {
+    font-size: 27px !important;
+  }
+
+  .settings-layout {
+    gap: 10px !important;
+  }
+
+  .settings-sidebar {
+    position: sticky !important;
+    top: 64px !important;
+    z-index: 15 !important;
+    margin: 0 -10px !important;
+    padding: 8px 10px !important;
+    border-radius: 0 !important;
+    background: rgba(247,248,252,.96) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  .settings-sidebar > button {
+    min-height: 40px !important;
+    border-radius: 12px !important;
+  }
+
+  .settings-section {
+    border-radius: 18px !important;
+    overflow: hidden !important;
+  }
+
+  .settings-section > header {
+    padding: 16px 14px !important;
+  }
+
+  .settings-section-body {
+    padding: 0 14px 8px !important;
+  }
+
+  .settings-row {
+    min-height: 82px !important;
+    gap: 10px !important;
+  }
+
+  /* PROFILE */
+  .profile-v2-page {
+    background: #f7f8fc !important;
+  }
+
+  .profile-v2-cover {
+    height: 176px !important;
+  }
+
+  .profile-v2-cover-copy {
+    display: none !important;
+  }
+
+  .profile-v3-mobile-card {
+    margin-top: -16px !important;
+    border-radius: 22px 22px 0 0 !important;
+  }
+
+  .profile-v2-tabs {
+    position: sticky;
+    top: 64px;
+    z-index: 14;
+    margin: 0 !important;
+    padding: 8px 10px !important;
+    background: rgba(247,248,252,.96);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  .profile-v2-post-list,
+  .profile-v2-main > .profile-v2-card,
+  .profile-v2-side {
+    margin-right: 10px !important;
+    margin-left: 10px !important;
+  }
+}
