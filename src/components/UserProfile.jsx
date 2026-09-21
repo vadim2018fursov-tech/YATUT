@@ -1,16 +1,49 @@
 import {
+  useEffect,
   useState,
 } from "react";
 
+import {
+  getBackendFollowState,
+  getBackendUserProfile,
+  toggleBackendFollow,
+} from "../services/socialBackendService";
+
 function UserProfile({
-  person,
+  person: initialPerson,
   relation,
   onBack,
   onFriendAction,
   onFollow,
   onBlock,
   onOpenChat,
+  authSession = null,
 }) {
+  const [
+    remotePerson,
+    setRemotePerson,
+  ] =
+    useState(null);
+
+  const [
+    backendFollowing,
+    setBackendFollowing,
+  ] =
+    useState(null);
+
+  const [
+    remoteLoading,
+    setRemoteLoading,
+  ] =
+    useState(
+      Boolean(
+        initialPerson?.backend
+      )
+    );
+
+  const person =
+    remotePerson ||
+    initialPerson;
   const [
     menuOpen,
     setMenuOpen,
@@ -20,6 +53,158 @@ function UserProfile({
     notice,
     setNotice,
   ] = useState("");
+
+  useEffect(() => {
+    if (
+      !initialPerson?.backend ||
+      !authSession?.user?.id
+    ) {
+      setRemotePerson(
+        null
+      );
+
+      setBackendFollowing(
+        null
+      );
+
+      setRemoteLoading(
+        false
+      );
+
+      return undefined;
+    }
+
+    let active =
+      true;
+
+    setRemoteLoading(
+      true
+    );
+
+    Promise.all([
+      getBackendUserProfile(
+        authSession,
+        initialPerson.id
+      ),
+      getBackendFollowState(
+        authSession,
+        initialPerson.id
+      ),
+    ])
+      .then(
+        ([
+          profile,
+          following,
+        ]) => {
+          if (
+            !active
+          ) {
+            return;
+          }
+
+          setRemotePerson(
+            profile
+          );
+
+          setBackendFollowing(
+            following
+          );
+        }
+      )
+      .catch(
+        (error) => {
+          console.warn(
+            "USER PROFILE LOAD ERROR:",
+            error
+          );
+        }
+      )
+      .finally(
+        () => {
+          if (
+            active
+          ) {
+            setRemoteLoading(
+              false
+            );
+          }
+        }
+      );
+
+    return () => {
+      active =
+        false;
+    };
+  }, [
+    initialPerson?.id,
+    initialPerson?.backend,
+    authSession?.user?.id,
+    authSession?.access_token,
+  ]);
+
+  async function handleFollow() {
+    if (
+      person?.backend &&
+      authSession?.user?.id
+    ) {
+      try {
+        const next =
+          await toggleBackendFollow(
+            authSession,
+            person.id
+          );
+
+        setBackendFollowing(
+          Boolean(
+            next
+          )
+        );
+
+        setRemotePerson(
+          (
+            previous
+          ) =>
+            previous
+              ? {
+                  ...previous,
+                  followersCount:
+                    Math.max(
+                      0,
+                      Number(
+                        previous.followersCount ||
+                        0
+                      ) +
+                        (
+                          next
+                            ? 1
+                            : -1
+                        )
+                    ),
+                }
+              : previous
+        );
+
+        showNotice(
+          next
+            ? "Ви підписалися"
+            : "Підписку скасовано"
+        );
+      } catch (
+        error
+      ) {
+        showNotice(
+          error?.message ||
+          "Не вдалося змінити підписку"
+        );
+      }
+
+      return;
+    }
+
+    onFollow?.(
+      person?.id
+    );
+  }
 
   if (!person) {
     return null;
@@ -35,9 +220,12 @@ function UserProfile({
     "none";
 
   const following =
-    Boolean(
-      relation?.following
-    );
+    backendFollowing !==
+      null
+      ? backendFollowing
+      : Boolean(
+          relation?.following
+        );
 
   const showNotice = (
     text
@@ -196,7 +384,17 @@ function UserProfile({
         ← Друзі
       </button>
 
-      <div className="other-profile-cover">
+      <div
+        className="other-profile-cover"
+        style={
+          person.cover
+            ? {
+                backgroundImage:
+                  `linear-gradient(180deg, rgba(17,18,28,.08), rgba(17,18,28,.42)), url("${person.cover}")`,
+              }
+            : undefined
+        }
+      >
         <div className="other-profile-cover-glow" />
       </div>
 
@@ -211,9 +409,20 @@ function UserProfile({
             }`}
           >
             <div>
-              {
-                person.initials
-              }
+              {person.avatar ? (
+                <img
+                  src={
+                    person.avatar
+                  }
+                  alt={
+                    person.name
+                  }
+                />
+              ) : (
+                person.initials ||
+                person.initial ||
+                "Я"
+              )}
             </div>
           </div>
 
@@ -231,10 +440,8 @@ function UserProfile({
                 ? "secondary"
                 : ""
             }`}
-            onClick={() =>
-              onFollow(
-                person.id
-              )
+            onClick={
+              handleFollow
             }
           >
             {following
@@ -506,25 +713,102 @@ function UserProfile({
               Дописи
             </h3>
 
-            <div className="other-profile-placeholder-post">
-              <div className="other-profile-placeholder-head">
-                <div>
-                  {
-                    person.initials
-                  }
-                </div>
-
-                <strong>
-                  {
-                    person.name
-                  }
-                </strong>
+            {remoteLoading ? (
+              <div className="other-profile-placeholder-post">
+                <p>
+                  Завантажуємо профіль…
+                </p>
               </div>
+            ) : person.posts?.length ? (
+              person.posts.map(
+                (
+                  post
+                ) => (
+                  <article
+                    key={
+                      post.id
+                    }
+                    className="other-profile-placeholder-post"
+                  >
+                    <div className="other-profile-placeholder-head">
+                      <div>
+                        {person.avatar ? (
+                          <img
+                            src={
+                              person.avatar
+                            }
+                            alt=""
+                          />
+                        ) : (
+                          person.initials ||
+                          person.initial ||
+                          "Я"
+                        )}
+                      </div>
 
-              <p>
-                Тут зʼявляться дописи користувача після підключення загальної бази контенту ЯТУТ.
-              </p>
-            </div>
+                      <strong>
+                        {
+                          person.name
+                        }
+                      </strong>
+                    </div>
+
+                    {post.text && (
+                      <p>
+                        {
+                          post.text
+                        }
+                      </p>
+                    )}
+
+                    {post.media &&
+                      post.mediaType ===
+                        "image" && (
+                        <img
+                          src={
+                            post.media
+                          }
+                          alt=""
+                          style={{
+                            width:
+                              "100%",
+                            borderRadius:
+                              16,
+                            marginTop:
+                              10,
+                          }}
+                        />
+                      )}
+
+                    {post.media &&
+                      post.mediaType ===
+                        "video" && (
+                        <video
+                          src={
+                            post.media
+                          }
+                          controls
+                          playsInline
+                          style={{
+                            width:
+                              "100%",
+                            borderRadius:
+                              16,
+                            marginTop:
+                              10,
+                          }}
+                        />
+                      )}
+                  </article>
+                )
+              )
+            ) : (
+              <div className="other-profile-placeholder-post">
+                <p>
+                  У цього користувача поки немає доступних дописів.
+                </p>
+              </div>
+            )}
           </div>
         </div>
 
