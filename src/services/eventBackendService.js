@@ -1,3 +1,7 @@
+import {
+  uploadEventCover,
+} from "./storageService";
+
 const SUPABASE_URL =
   "https://yqskwqahmkeiconsrhoy.supabase.co";
 
@@ -283,7 +287,11 @@ export async function loadBackendEvents(
 
 export async function createBackendEvent(
   session,
-  event
+  event,
+  {
+    publishToFeed = true,
+    coverFile = null,
+  } = {}
 ) {
   if (
     !session?.user?.id
@@ -327,8 +335,39 @@ export async function createBackendEvent(
         target_community_id:
           event.communityId ||
           null,
+        publish_to_feed:
+          Boolean(
+            publishToFeed
+          ),
       }
     );
+
+  if (
+    eventId &&
+    coverFile
+  ) {
+    const uploaded =
+      await uploadEventCover(
+        session,
+        eventId,
+        coverFile
+      );
+
+    if (
+      uploaded?.url
+    ) {
+      await rpc(
+        session,
+        "set_event_cover",
+        {
+          target_event_id:
+            eventId,
+          event_cover_url:
+            uploaded.url,
+        }
+      );
+    }
+  }
 
   const events =
     await loadBackendEvents(
@@ -390,5 +429,100 @@ export async function deleteBackendEvent(
       target_event_id:
         eventId,
     }
+  );
+}
+
+
+export async function loadEventInviteCandidates(
+  session,
+  eventId
+) {
+  if (
+    !session?.user?.id ||
+    !eventId
+  ) {
+    return [];
+  }
+
+  const rows =
+    await rpc(
+      session,
+      "get_event_invite_candidates",
+      {
+        target_event_id:
+          eventId,
+      }
+    );
+
+  return (
+    Array.isArray(
+      rows
+    )
+      ? rows
+      : []
+  ).map(
+    (
+      row
+    ) => {
+      const name =
+        row.full_name ||
+        row.username ||
+        "Користувач";
+
+      return {
+        id:
+          row.user_id,
+        name,
+        username:
+          row.username ||
+          "user",
+        initials:
+          name
+            .trim()
+            .charAt(0)
+            .toUpperCase() ||
+          "?",
+        avatar:
+          row.avatar_url ||
+          null,
+        city:
+          row.city ||
+          "",
+        inviteStatus:
+          row.invite_status ||
+          null,
+      };
+    }
+  );
+}
+
+export async function inviteBackendEventFriends(
+  session,
+  eventId,
+  personIds
+) {
+  if (
+    !session?.user?.id ||
+    !eventId
+  ) {
+    return 0;
+  }
+
+  return Number(
+    await rpc(
+      session,
+      "invite_event_friends",
+      {
+        target_event_id:
+          eventId,
+        invitee_ids:
+          Array.isArray(
+            personIds
+          )
+            ? personIds
+            : [],
+      }
+    ) ||
+    0
   );
 }
