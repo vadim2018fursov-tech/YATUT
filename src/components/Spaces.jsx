@@ -19,6 +19,17 @@ import {
   mergeAcceptedCommunityInvites,
 } from "../storage/notificationEntityBridge";
 
+import {
+  deleteBackendCommunity,
+  loadBackendCommunities,
+  loadBackendCommunity,
+  saveBackendCommunity,
+} from "../services/communityBackendService";
+
+import {
+  subscribeCommunitiesRealtime,
+} from "../services/realtimeService";
+
 /* =========================================================
    ЯТУТ — SPACES
 ========================================================= */
@@ -30,6 +41,14 @@ const LEGACY_KEYS = [
   "yatut-spaces-v1",
   "yatut-spaces",
 ];
+
+const DEMO_SPACE_IDS =
+  new Set([
+    "space-yatut-kyiv",
+    "space-school-24",
+    "space-yatut-team",
+    "space-creators",
+  ]);
 
 /* =========================================================
    TEMPLATES
@@ -4655,6 +4674,7 @@ function SpaceDetail({
 
 function Spaces({
   onNavigate,
+  authSession = null,
 }) {
   const [
     spaces,
@@ -4739,6 +4759,70 @@ function Spaces({
       setActiveSpaceId(
         resolvedId
       );
+
+      if (
+        authSession?.user?.id
+      ) {
+        loadBackendCommunity(
+          authSession,
+          resolvedId
+        )
+          .then(
+            (
+              remoteSpace
+            ) => {
+              if (
+                !remoteSpace
+              ) {
+                return;
+              }
+
+              setSpaces(
+                (
+                  previous
+                ) => {
+                  const exists =
+                    previous.some(
+                      (
+                        space
+                      ) =>
+                        space.id ===
+                        remoteSpace.id
+                    );
+
+                  return exists
+                    ? previous.map(
+                        (
+                          space
+                        ) =>
+                          space.id ===
+                          remoteSpace.id
+                            ? remoteSpace
+                            : space
+                      )
+                    : [
+                        remoteSpace,
+                        ...previous,
+                      ];
+                }
+              );
+
+              setActiveSpaceId(
+                remoteSpace.id
+              );
+            }
+          )
+          .catch(
+            (
+              error
+            ) => {
+              console.warn(
+                "COMMUNITY ROUTE LOAD ERROR:",
+                error
+              );
+            }
+          );
+      }
 
       try {
         sessionStorage.removeItem(
@@ -4855,7 +4939,152 @@ function Spaces({
         handleMembershipChange
       );
     };
-  }, []);
+  }, [
+    authSession?.user?.id,
+    authSession?.access_token,
+  ]);
+
+  useEffect(() => {
+    if (
+      !authSession?.user?.id
+    ) {
+      return undefined;
+    }
+
+    let active =
+      true;
+
+    let refreshTimer =
+      null;
+
+    async function refresh() {
+      try {
+        const remoteSpaces =
+          await loadBackendCommunities(
+            authSession
+          );
+
+        if (
+          active
+        ) {
+          setSpaces(
+            remoteSpaces
+          );
+        }
+      } catch (
+        error
+      ) {
+        console.warn(
+          "COMMUNITIES LOAD ERROR:",
+          error
+        );
+      }
+    }
+
+    async function bootstrap() {
+      try {
+        const localCandidates =
+          spaces.filter(
+            (
+              space
+            ) =>
+              !space.backend &&
+              !DEMO_SPACE_IDS.has(
+                space.id
+              ) &&
+              (
+                space.ownerId ===
+                  "me" ||
+                space.ownerId ===
+                  authSession.user.id
+              )
+          );
+
+        for (
+          const space of
+          localCandidates
+        ) {
+          try {
+            await saveBackendCommunity(
+              authSession,
+              space
+            );
+          } catch (
+            error
+          ) {
+            console.warn(
+              "COMMUNITY MIGRATION ERROR:",
+              error
+            );
+          }
+        }
+
+        await refresh();
+      } catch (
+        error
+      ) {
+        console.warn(
+          "COMMUNITIES BOOTSTRAP ERROR:",
+          error
+        );
+      }
+    }
+
+    const channel =
+      subscribeCommunitiesRealtime({
+        session:
+          authSession,
+        onChange:
+          () => {
+            if (
+              refreshTimer
+            ) {
+              window.clearTimeout(
+                refreshTimer
+              );
+            }
+
+            refreshTimer =
+              window.setTimeout(
+                refresh,
+                120
+              );
+          },
+        onStatus:
+          (
+            status
+          ) => {
+            if (
+              status ===
+              "error"
+            ) {
+              console.warn(
+                "COMMUNITIES REALTIME DEGRADED"
+              );
+            }
+          },
+      });
+
+    bootstrap();
+
+    return () => {
+      active =
+        false;
+
+      if (
+        refreshTimer
+      ) {
+        window.clearTimeout(
+          refreshTimer
+        );
+      }
+
+      channel.close();
+    };
+  }, [
+    authSession?.user?.id,
+    authSession?.access_token,
+  ]);
 
   useEffect(() => {
     saveSpaces(
@@ -4945,9 +5174,46 @@ function Spaces({
     );
   }
 
-  function saveSpace(
+  async function saveSpace(
     nextSpace
   ) {
+    let savedSpace =
+      nextSpace;
+
+    if (
+      authSession?.user?.id
+    ) {
+      try {
+        savedSpace =
+          await saveBackendCommunity(
+            authSession,
+            {
+              ...nextSpace,
+              ownerId:
+                nextSpace.ownerId ===
+                "me"
+                  ? authSession.user.id
+                  : nextSpace.ownerId,
+            }
+          ) ||
+          nextSpace;
+      } catch (
+        error
+      ) {
+        console.warn(
+          "COMMUNITY SAVE ERROR:",
+          error
+        );
+
+        window.alert(
+          error?.message ||
+          "Не вдалося зберегти спільноту."
+        );
+
+        return;
+      }
+    }
+
     setSpaces(
       (
         previous
@@ -4958,7 +5224,7 @@ function Spaces({
               space
             ) =>
               space.id ===
-              nextSpace.id
+              savedSpace.id
           );
 
         if (
@@ -4969,14 +5235,14 @@ function Spaces({
               space
             ) =>
               space.id ===
-              nextSpace.id
-                ? nextSpace
+              savedSpace.id
+                ? savedSpace
                 : space
           );
         }
 
         return [
-          nextSpace,
+          savedSpace,
           ...previous,
         ];
       }
@@ -4991,7 +5257,7 @@ function Spaces({
     );
 
     setActiveSpaceId(
-      nextSpace.id
+      savedSpace.id
     );
   }
 
@@ -5012,9 +5278,64 @@ function Spaces({
               : space
         )
     );
+
+    if (
+      authSession?.user?.id &&
+      (
+        nextSpace.ownerId ===
+          authSession.user.id ||
+        nextSpace.ownerId ===
+          "me"
+      )
+    ) {
+      saveBackendCommunity(
+        authSession,
+        {
+          ...nextSpace,
+          ownerId:
+            authSession.user.id,
+        }
+      )
+        .then(
+          (
+            savedSpace
+          ) => {
+            if (
+              !savedSpace
+            ) {
+              return;
+            }
+
+            setSpaces(
+              (
+                previous
+              ) =>
+                previous.map(
+                  (
+                    space
+                  ) =>
+                    space.id ===
+                    savedSpace.id
+                      ? savedSpace
+                      : space
+                )
+            );
+          }
+        )
+        .catch(
+          (
+            error
+          ) => {
+            console.warn(
+              "COMMUNITY UPDATE ERROR:",
+              error
+            );
+          }
+        );
+    }
   }
 
-  function deleteSpace(
+  async function deleteSpace(
     space
   ) {
     const confirmed =
@@ -5026,6 +5347,32 @@ function Spaces({
       !confirmed
     ) {
       return;
+    }
+
+    if (
+      authSession?.user?.id &&
+      space.backend
+    ) {
+      try {
+        await deleteBackendCommunity(
+          authSession,
+          space
+        );
+      } catch (
+        error
+      ) {
+        console.warn(
+          "COMMUNITY DELETE ERROR:",
+          error
+        );
+
+        window.alert(
+          error?.message ||
+          "Не вдалося видалити спільноту."
+        );
+
+        return;
+      }
     }
 
     setSpaces(
