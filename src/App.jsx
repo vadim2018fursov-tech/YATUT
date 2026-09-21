@@ -51,6 +51,7 @@ import Saved from "./components/Saved";
 import Settings from "./components/Settings";
 import Notifications from "./components/Notifications";
 import MobileMoreMenu from "./components/MobileMoreMenu";
+import AuthPage from "./components/AuthPage";
 
 import NowPage from "./pages/NowPage";
 import PulsePage from "./pages/PulsePage";
@@ -85,6 +86,13 @@ import {
   markNotificationRead,
   subscribeNotifications,
 } from "./storage/notificationService";
+
+import {
+  getAuthSession,
+  isAuthBackendConfigured,
+  signOut,
+  subscribeAuthState,
+} from "./services/authService";
 
 /* =========================================================
    YATUT APP
@@ -122,6 +130,7 @@ const ROUTE_TITLES = {
   business: "Бізнес · ЯТУТ",
   saved: "Збережене · ЯТУТ",
   settings: "Налаштування · ЯТУТ",
+  auth: "Вхід · ЯТУТ",
 };
 
 function decodeRoutePart(value) {
@@ -142,6 +151,22 @@ function routeFromLocation() {
   const query = url.searchParams;
 
   if (!first) return { page: "home", payload: null };
+
+  if (
+    first === "auth"
+  ) {
+    return {
+      page: "auth",
+      payload:
+        parts[1] ===
+          "callback"
+          ? {
+              callback:
+                true,
+            }
+          : null,
+    };
+  }
 
   if (first === "posts" && parts[1]) {
     return {
@@ -283,6 +308,9 @@ function routeToUrl(page, payload = null) {
   const encode = (value) => encodeURIComponent(String(value));
 
   switch (page) {
+    case "auth":
+      return "/auth";
+
     case "home": {
       if (!payload?.postId) return "/";
       const params = new URLSearchParams();
@@ -4412,6 +4440,25 @@ function App() {
       false
     );
 
+  const authBackendConfigured =
+    isAuthBackendConfigured();
+
+  const [
+    authSession,
+    setAuthSession,
+  ] =
+    useState(
+      null
+    );
+
+  const [
+    authReady,
+    setAuthReady,
+  ] =
+    useState(
+      !authBackendConfigured
+    );
+
   const [
     themeMode,
     setThemeMode,
@@ -4514,6 +4561,146 @@ function App() {
               "message"
         ).length
     );
+
+  /* =======================================================
+     AUTH SESSION
+  ======================================================= */
+
+  useEffect(() => {
+    if (
+      !authBackendConfigured
+    ) {
+      setAuthReady(
+        true
+      );
+
+      return undefined;
+    }
+
+    let mounted =
+      true;
+
+    getAuthSession()
+      .then(
+        (session) => {
+          if (
+            !mounted
+          ) {
+            return;
+          }
+
+          setAuthSession(
+            session
+          );
+
+          setAuthReady(
+            true
+          );
+        }
+      )
+      .catch(
+        (error) => {
+          console.warn(
+            "AUTH SESSION ERROR:",
+            error
+          );
+
+          if (
+            mounted
+          ) {
+            setAuthSession(
+              null
+            );
+
+            setAuthReady(
+              true
+            );
+          }
+        }
+      );
+
+    const unsubscribe =
+      subscribeAuthState(
+        (session) => {
+          setAuthSession(
+            session
+          );
+        }
+      );
+
+    return () => {
+      mounted =
+        false;
+
+      unsubscribe();
+    };
+  }, [
+    authBackendConfigured,
+  ]);
+
+  function handleAuthenticated(
+    session
+  ) {
+    setAuthSession(
+      session
+    );
+
+    setCurrentPage(
+      "home"
+    );
+
+    setRouteRevision(
+      (
+        previous
+      ) =>
+        previous +
+        1
+    );
+
+    window.history.replaceState(
+      {
+        yatut:
+          true,
+        page:
+          "home",
+      },
+      "",
+      "/"
+    );
+  }
+
+  async function handleSignOut() {
+    try {
+      await signOut();
+    } finally {
+      setAuthSession(
+        null
+      );
+
+      setCurrentPage(
+        "auth"
+      );
+
+      setNotificationsOpen(
+        false
+      );
+
+      setMobileMenuOpen(
+        false
+      );
+
+      window.history.replaceState(
+        {
+          yatut:
+            true,
+          page:
+            "auth",
+        },
+        "",
+        "/auth"
+      );
+    }
+  }
 
   /* =======================================================
      LIVE NOTIFICATION SYNC
@@ -5163,6 +5350,15 @@ function App() {
     switch (
       currentPage
     ) {
+      case "auth":
+        return (
+          <AuthPage
+            onAuthenticated={
+              handleAuthenticated
+            }
+          />
+        );
+
       case "home":
         return (
           <Home
@@ -5409,6 +5605,12 @@ function App() {
             onThemeChange={
               setThemePreference
             }
+            authSession={
+              authSession
+            }
+            onSignOut={
+              handleSignOut
+            }
           />
         );
 
@@ -5450,6 +5652,38 @@ function App() {
     ].includes(
       currentPage
     );
+
+  if (
+    authBackendConfigured &&
+    !authReady
+  ) {
+    return (
+      <div className="auth-loading">
+        <div>
+          <div className="auth-brand-mark">
+            Я
+          </div>
+
+          <strong>
+            ЯТУТ
+          </strong>
+        </div>
+      </div>
+    );
+  }
+
+  if (
+    authBackendConfigured &&
+    !authSession
+  ) {
+    return (
+      <AuthPage
+        onAuthenticated={
+          handleAuthenticated
+        }
+      />
+    );
+  }
 
   return (
     <div className="app">
