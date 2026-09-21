@@ -5560,6 +5560,9 @@ function App() {
             onOpenChat={
               openPersonChat
             }
+            authSession={
+              authSession
+            }
           />
         );
 
