@@ -1154,3 +1154,130 @@
       ) !important;
   }
 }
+
+
+/* =========================================================
+   PULSE MOBILE FULL-BLEED STABILITY V2
+   Prevent white gaps below immersive feed on web/PWA/native.
+========================================================= */
+
+@media (max-width: 767px) {
+  html:has(.pulse-immersive-mobile),
+  body:has(.pulse-immersive-mobile),
+  #root:has(.pulse-immersive-mobile),
+  .app:has(.pulse-immersive-mobile) {
+    background:
+      #08080b !important;
+  }
+
+  .layout.layout-wide.layout-pulse-immersive {
+    min-height:
+      calc(
+        var(
+          --yatut-visual-viewport-height,
+          100dvh
+        ) -
+        64px
+      ) !important;
+
+    margin-bottom:
+      0 !important;
+
+    background:
+      #08080b !important;
+  }
+
+  .layout-pulse-immersive
+  .main-content {
+    min-height:
+      calc(
+        var(
+          --yatut-visual-viewport-height,
+          100dvh
+        ) -
+        64px
+      ) !important;
+
+    padding-bottom:
+      0 !important;
+
+    overflow:
+      hidden !important;
+
+    background:
+      #08080b !important;
+  }
+
+  .pulse-immersive-mobile,
+  .pulse-immersive__feed,
+  .pulse-immersive__slide {
+    background:
+      #08080b !important;
+  }
+
+  .pulse-immersive-mobile {
+    min-height:
+      calc(
+        var(
+          --yatut-visual-viewport-height,
+          100dvh
+        ) -
+        64px
+      ) !important;
+
+    padding-bottom:
+      0 !important;
+  }
+
+  .pulse-immersive__feed,
+  .pulse-immersive__slide {
+    height:
+      calc(
+        var(
+          --yatut-visual-viewport-height,
+          100dvh
+        ) -
+        64px
+      ) !important;
+
+    min-height:
+      calc(
+        var(
+          --yatut-visual-viewport-height,
+          100dvh
+        ) -
+        64px
+      ) !important;
+  }
+
+  html.yatut-native
+  .layout.layout-wide.layout-pulse-immersive,
+  html.yatut-native
+  .layout-pulse-immersive
+  .main-content,
+  html.yatut-native
+  .pulse-immersive-mobile {
+    min-height:
+      calc(
+        100% -
+        0px
+      ) !important;
+
+    background:
+      #08080b !important;
+  }
+
+  html.yatut-native
+  .pulse-immersive__feed,
+  html.yatut-native
+  .pulse-immersive__slide {
+    height:
+      100% !important;
+
+    min-height:
+      100% !important;
+
+    background:
+      #08080b !important;
+  }
+}
