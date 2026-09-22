@@ -893,6 +893,22 @@ export default function Notifications({
       =================================================== */}
 
       <header className="notifications-header">
+        {pageMode && (
+          <button
+            className="notifications-page-back"
+            type="button"
+            onClick={
+              onClose
+            }
+            aria-label="Назад"
+          >
+            <YatutIcon
+              name="arrowLeft"
+              size={20}
+            />
+          </button>
+        )}
+
         <div className="notifications-heading">
           <span className="notifications-brand">
             ЯТУТ
@@ -980,27 +996,21 @@ export default function Notifications({
             )}
           </div>
 
-          <button
-            className="notifications-close"
-            type="button"
-            onClick={
-              onClose
-            }
-            aria-label={
-              pageMode
-                ? "Назад"
-                : "Закрити сповіщення"
-            }
-          >
-            <YatutIcon
-              name={
-                pageMode
-                  ? "arrowLeft"
-                  : "close"
+          {!pageMode && (
+            <button
+              className="notifications-close"
+              type="button"
+              onClick={
+                onClose
               }
-              size={19}
-            />
-          </button>
+              aria-label="Закрити сповіщення"
+            >
+              <YatutIcon
+                name="close"
+                size={19}
+              />
+            </button>
+          )}
         </div>
       </header>
 
