@@ -4259,3 +4259,130 @@ body {
       var(--yatut-ui-font) !important;
   }
 }
+
+
+/* =========================================================
+   ANDROID NATIVE SCROLL RESET V3
+   Restore browser-native one-finger scrolling everywhere.
+========================================================= */
+
+html,
+body,
+#root {
+  height: auto !important;
+  min-height: 100% !important;
+
+  touch-action: auto !important;
+
+  overscroll-behavior-y: auto !important;
+}
+
+body {
+  overflow-y: auto !important;
+
+  -webkit-overflow-scrolling: touch !important;
+}
+
+.app {
+  height: auto !important;
+  min-height: 100dvh !important;
+
+  overflow-y: visible !important;
+
+  touch-action: auto !important;
+
+  overscroll-behavior-y: auto !important;
+}
+
+.layout,
+.layout-wide,
+.main-content,
+.feed-column,
+.home-v2,
+.profile-v2-page,
+.friends-v2-page,
+.feature-page,
+.global-search-page,
+.settings-page,
+.saved-page,
+.nearby-page,
+.business-page,
+.notifications-panel.notifications-page {
+  height: auto !important;
+  min-height: 0;
+
+  touch-action: auto !important;
+
+  overscroll-behavior-y: auto !important;
+}
+
+.main-content,
+.feed-column {
+  overflow-y: visible !important;
+}
+
+html.yatut-standalone,
+html.yatut-standalone body {
+  overscroll-behavior-y: auto !important;
+  touch-action: auto !important;
+}
+
+@media (max-width: 900px), (hover: none) and (pointer: coarse) {
+  html,
+  body,
+  #root,
+  .app,
+  .layout,
+  .layout-wide,
+  .main-content,
+  .feed-column,
+  .home-v2,
+  .profile-v2-page,
+  .friends-v2-page,
+  .feature-page,
+  .global-search-page,
+  .settings-page,
+  .saved-page,
+  .nearby-page,
+  .business-page,
+  .notifications-panel.notifications-page {
+    touch-action: auto !important;
+  }
+
+  body:not(:has(.messenger.mobile-dialog-open)) {
+    overflow-y: auto !important;
+    touch-action: auto !important;
+    overscroll-behavior-y: auto !important;
+  }
+
+  body:not(:has(.messenger.mobile-dialog-open))
+  .app,
+  body:not(:has(.messenger.mobile-dialog-open))
+  .layout,
+  body:not(:has(.messenger.mobile-dialog-open))
+  .layout-wide,
+  body:not(:has(.messenger.mobile-dialog-open))
+  .main-content {
+    overflow-y: visible !important;
+    touch-action: auto !important;
+    overscroll-behavior-y: auto !important;
+  }
+
+  /* Horizontal rails keep native two-axis touch handling. */
+  .stories,
+  .composer-tools,
+  .global-search-tabs,
+  .notifications-filters,
+  .profile-v2-stats,
+  .yatut-pulse-grid {
+    touch-action: auto !important;
+  }
+}
+
+/*
+  Do not override intentional immersive/fixed interaction modes.
+*/
+body:has(.messenger.mobile-dialog-open),
+body.pulse-long-video-open {
+  overflow: hidden !important;
+}
