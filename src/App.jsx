@@ -5610,16 +5610,33 @@ function App() {
           );
 
         if (
-          active
+          !active
         ) {
-          setAccountAccessState(
-            next
-          );
-
-          setAccountAccessReady(
-            true
-          );
+          return;
         }
+
+        setAccountAccessState(
+          (
+            previous
+          ) => {
+            try {
+              return JSON.stringify(
+                previous
+              ) ===
+                JSON.stringify(
+                  next
+                )
+                ? previous
+                : next;
+            } catch {
+              return next;
+            }
+          }
+        );
+
+        setAccountAccessReady(
+          true
+        );
       } catch (
         error
       ) {
@@ -5638,24 +5655,60 @@ function App() {
       }
     }
 
-    setAccountAccessReady(
-      false
-    );
+    function refreshWhenVisible() {
+      if (
+        document.visibilityState ===
+        "visible"
+      ) {
+        refreshAccess();
+      }
+    }
+
+    function handleNativeState(
+      event
+    ) {
+      if (
+        event?.detail
+          ?.isActive
+      ) {
+        refreshAccess();
+      }
+    }
 
     refreshAccess();
 
-    const timer =
-      window.setInterval(
-        refreshAccess,
-        30 * 1000
-      );
+    window.addEventListener(
+      "focus",
+      refreshAccess
+    );
+
+    document.addEventListener(
+      "visibilitychange",
+      refreshWhenVisible
+    );
+
+    window.addEventListener(
+      "yatut:native-app-state",
+      handleNativeState
+    );
 
     return () => {
       active =
         false;
 
-      window.clearInterval(
-        timer
+      window.removeEventListener(
+        "focus",
+        refreshAccess
+      );
+
+      document.removeEventListener(
+        "visibilitychange",
+        refreshWhenVisible
+      );
+
+      window.removeEventListener(
+        "yatut:native-app-state",
+        handleNativeState
       );
     };
   }, [
@@ -6151,60 +6204,6 @@ function App() {
     };
   }, [
     authBackendConfigured,
-  ]);
-
-  useEffect(() => {
-    if (
-      !authBackendConfigured ||
-      !authSession
-    ) {
-      return undefined;
-    }
-
-    let active =
-      true;
-
-    const timer =
-      window.setInterval(
-        () => {
-          getAuthSession()
-            .then(
-              (session) => {
-                if (
-                  active &&
-                  session
-                ) {
-                  setAuthSession(
-                    session
-                  );
-                }
-              }
-            )
-            .catch(
-              (error) => {
-                console.warn(
-                  "AUTH REFRESH ERROR:",
-                  error
-                );
-              }
-            );
-        },
-        45 * 1000
-      );
-
-    return () => {
-      active =
-        false;
-
-      window.clearInterval(
-        timer
-      );
-    };
-  }, [
-    authBackendConfigured,
-    Boolean(
-      authSession
-    ),
   ]);
 
   function handleAuthenticated(
