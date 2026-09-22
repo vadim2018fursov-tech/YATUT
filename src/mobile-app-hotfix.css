@@ -4038,3 +4038,224 @@ canvas {
       clip;
   }
 }
+
+
+/* =========================================================
+   CROSS-DEVICE TOUCH + TYPOGRAPHY STABILITY V2
+   Android / iOS / iPadOS / desktop touchscreens
+========================================================= */
+
+:root {
+  --yatut-ui-font:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+}
+
+html,
+body,
+#root,
+.app {
+  touch-action:
+    pan-y pinch-zoom;
+}
+
+body {
+  overflow-y:
+    auto;
+  -webkit-overflow-scrolling:
+    touch;
+}
+
+.main-content,
+.home-v2,
+.profile-v2-page,
+.friends-v2-page,
+.feature-page,
+.global-search-page,
+.notifications-panel.notifications-page {
+  touch-action:
+    pan-y pinch-zoom;
+}
+
+.stories,
+.composer-tools,
+.global-search-tabs,
+.notifications-filters,
+.profile-v2-stats,
+.yatut-pulse-grid {
+  touch-action:
+    pan-x pan-y pinch-zoom;
+  -webkit-overflow-scrolling:
+    touch;
+}
+
+@media (max-width: 767px) {
+  .mobile-nav {
+    font-family:
+      var(--yatut-ui-font) !important;
+  }
+
+  .mobile-nav > button,
+  .mobile-nav-item {
+    font-family:
+      var(--yatut-ui-font) !important;
+
+    touch-action:
+      manipulation !important;
+  }
+
+  .mobile-nav > button small,
+  .mobile-nav-item > small {
+    min-height:
+      13px !important;
+
+    margin:
+      1px 0 0 !important;
+
+    display:
+      flex !important;
+    align-items:
+      center !important;
+    justify-content:
+      center !important;
+
+    font-family:
+      var(--yatut-ui-font) !important;
+    font-size:
+      10px !important;
+    font-style:
+      normal !important;
+    font-weight:
+      700 !important;
+    line-height:
+      1 !important;
+    letter-spacing:
+      -.08px !important;
+
+    text-align:
+      center !important;
+    white-space:
+      nowrap !important;
+
+    transform:
+      none !important;
+  }
+
+  .mobile-nav > button.active small,
+  .mobile-nav-item.active > small,
+  .mobile-nav > button[aria-current="page"] small {
+    font-weight:
+      760 !important;
+
+    color:
+      #635bff !important;
+  }
+
+  .mobile-nav-icon,
+  .mobile-profile-avatar {
+    width:
+      30px !important;
+    height:
+      30px !important;
+    min-width:
+      30px !important;
+    min-height:
+      30px !important;
+
+    display:
+      grid !important;
+    place-items:
+      center !important;
+
+    margin:
+      0 auto !important;
+  }
+
+  .mobile-nav-icon svg {
+    width:
+      21px !important;
+    height:
+      21px !important;
+
+    display:
+      block !important;
+  }
+
+  .mobile-nav-item.mobile-chat-center
+  .mobile-nav-icon svg {
+    width:
+      22px !important;
+    height:
+      22px !important;
+  }
+
+  .mobile-nav-item.has-unread
+  .mobile-nav-icon::after {
+    top:
+      -1px !important;
+    right:
+      -2px !important;
+
+    width:
+      7px !important;
+    min-width:
+      7px !important;
+    max-width:
+      7px !important;
+    height:
+      7px !important;
+    min-height:
+      7px !important;
+    max-height:
+      7px !important;
+
+    border-width:
+      1.5px !important;
+  }
+
+  .mobile-nav {
+    user-select:
+      none;
+    -webkit-user-select:
+      none;
+  }
+
+  .main-content {
+    touch-action:
+      pan-y pinch-zoom !important;
+
+    -webkit-overflow-scrolling:
+      touch;
+  }
+
+  body:not(:has(.messenger.mobile-dialog-open)) {
+    overflow-y:
+      auto !important;
+
+    touch-action:
+      pan-y pinch-zoom !important;
+  }
+
+  body:not(:has(.messenger.mobile-dialog-open))
+  .app {
+    min-height:
+      100dvh;
+
+    touch-action:
+      pan-y pinch-zoom !important;
+  }
+}
+
+/* Desktop/tablet typography must stay identical when using touch input. */
+@media (min-width: 768px) {
+  .mobile-nav {
+    font-family:
+      var(--yatut-ui-font) !important;
+  }
+}
