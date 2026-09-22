@@ -74,6 +74,8 @@
 	<string>ЯТУТ може зберігати створені фото та відео у вашу медіатеку за вашим запитом.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>ЯТУТ використовує геолокацію для функцій Поруч, місць і локальних подій.</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
 </dict>
