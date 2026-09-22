@@ -4386,3 +4386,72 @@ body:has(.messenger.mobile-dialog-open),
 body.pulse-long-video-open {
   overflow: hidden !important;
 }
+
+
+/* =========================================================
+   CAPACITOR NATIVE SHELL
+========================================================= */
+
+html.yatut-native {
+  --yatut-safe-top:
+    0px;
+
+  --yatut-native-keyboard-height:
+    0px;
+
+  overscroll-behavior:
+    none;
+}
+
+html.yatut-native,
+html.yatut-native body,
+html.yatut-native #root,
+html.yatut-native .app {
+  width:
+    100%;
+
+  max-width:
+    100%;
+
+  min-height:
+    100%;
+}
+
+html.yatut-native body {
+  margin:
+    0 !important;
+
+  -webkit-tap-highlight-color:
+    transparent;
+
+  -webkit-user-select:
+    none;
+}
+
+html.yatut-native input,
+html.yatut-native textarea,
+html.yatut-native [contenteditable="true"] {
+  -webkit-user-select:
+    text;
+  user-select:
+    text;
+}
+
+html.yatut-native
+.mobile-nav {
+  padding-bottom:
+    max(
+      6px,
+      env(
+        safe-area-inset-bottom
+      )
+    ) !important;
+}
+
+html.yatut-native
+button,
+html.yatut-native
+[role="button"] {
+  touch-action:
+    manipulation;
+}
