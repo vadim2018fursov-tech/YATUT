@@ -10,6 +10,13 @@ import "./Notifications.css";
 import YatutIcon from "./YatutIcon";
 
 import {
+  disablePushNotifications,
+  enablePushNotifications,
+  getPushSupportState,
+  syncPushSubscription,
+} from "../services/pushNotificationService";
+
+import {
   getNotifications,
   markAllNotificationsRead,
   markNotificationRead,
@@ -316,8 +323,116 @@ export default function Notifications({
   ] =
     useState(null);
 
+  const [
+    pushState,
+    setPushState,
+  ] =
+    useState(
+      () =>
+        getPushSupportState()
+    );
+
+  const [
+    pushBusy,
+    setPushBusy,
+  ] =
+    useState(false);
+
+  const [
+    pushMessage,
+    setPushMessage,
+  ] =
+    useState("");
+
   const panelRef =
     useRef(null);
+
+  /* =======================================================
+     DEVICE PUSH
+  ======================================================= */
+
+  useEffect(() => {
+    setPushState(
+      getPushSupportState()
+    );
+
+    if (
+      authSession?.user?.id &&
+      typeof Notification !==
+        "undefined" &&
+      Notification.permission ===
+        "granted"
+    ) {
+      syncPushSubscription(
+        authSession
+      )
+        .then(() => {
+          setPushState(
+            getPushSupportState()
+          );
+        })
+        .catch(
+          (error) => {
+            console.warn(
+              "PUSH SUBSCRIPTION SYNC ERROR:",
+              error
+            );
+          }
+        );
+    }
+  }, [
+    authSession?.user?.id,
+    authSession?.access_token,
+  ]);
+
+  async function toggleDevicePush() {
+    if (
+      !authSession?.user?.id ||
+      pushBusy
+    ) {
+      return;
+    }
+
+    setPushBusy(true);
+    setPushMessage("");
+
+    try {
+      const state =
+        getPushSupportState();
+
+      if (
+        state.permission ===
+        "granted"
+      ) {
+        await disablePushNotifications(
+          authSession
+        );
+
+        setPushMessage(
+          "Push-сповіщення вимкнено для цього пристрою."
+        );
+      } else {
+        await enablePushNotifications(
+          authSession
+        );
+
+        setPushMessage(
+          "Готово. ЯТУТ надсилатиме push-сповіщення на цей пристрій."
+        );
+      }
+    } catch (error) {
+      setPushMessage(
+        error?.message ||
+        "Не вдалося налаштувати push-сповіщення."
+      );
+    } finally {
+      setPushState(
+        getPushSupportState()
+      );
+
+      setPushBusy(false);
+    }
+  }
 
   /* =======================================================
      LIVE SYNC
@@ -1049,6 +1164,67 @@ export default function Notifications({
                 : ""
             }`}
           />
+        </section>
+      )}
+
+      {pageMode && (
+        <section className="notifications-device-push">
+          <div className="notifications-device-push-icon">
+            <YatutIcon
+              name="bell"
+              size={20}
+            />
+          </div>
+
+          <div className="notifications-device-push-copy">
+            <strong>
+              Сповіщення на цьому пристрої
+            </strong>
+
+            <span>
+              {pushState.requiresInstall
+                ? "На iPhone або iPad додайте ЯТУТ на головний екран, потім увімкніть push."
+                : pushState.permission === "granted"
+                ? `Push активні · ${pushState.deviceLabel}`
+                : pushState.supported
+                ? "Отримуйте повідомлення, запити в друзі та іншу активність, навіть коли ЯТУТ закритий."
+                : "Цей браузер не підтримує Web Push."}
+            </span>
+
+            {pushMessage && (
+              <small>
+                {pushMessage}
+              </small>
+            )}
+          </div>
+
+          <button
+            type="button"
+            className={
+              pushState.permission ===
+              "granted"
+                ? "is-enabled"
+                : ""
+            }
+            disabled={
+              pushBusy ||
+              !authSession?.user?.id ||
+              !pushState.supported ||
+              pushState.requiresInstall
+            }
+            onClick={
+              toggleDevicePush
+            }
+          >
+            {pushBusy
+              ? "Зачекайте…"
+              : pushState.permission ===
+                "granted"
+              ? "Вимкнути"
+              : pushState.requiresInstall
+              ? "Встановіть ЯТУТ"
+              : "Увімкнути"}
+          </button>
         </section>
       )}
 
