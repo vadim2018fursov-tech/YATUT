@@ -373,7 +373,7 @@ export default function DevicePermissions({
 
               return (
                 <article
-                  className={\`device-permission-row \${enabled ? "is-enabled" : ""}\`}
+                  className={`device-permission-row ${enabled ? "is-enabled" : ""}`}
                   key={
                     item.id
                   }
@@ -396,7 +396,7 @@ export default function DevicePermissions({
                       </strong>
 
                       <span
-                        className={\`device-permission-status \${enabled ? "is-enabled" : ""}\`}
+                        className={`device-permission-status ${enabled ? "is-enabled" : ""}`}
                       >
                         {requiresInstall
                           ? "Потрібне встановлення"
