@@ -10,6 +10,10 @@ import { createPortal } from "react-dom";
 import YatutIcon from "./YatutIcon";
 
 import {
+  nativeLightHaptic,
+} from "../services/nativeFeedbackService";
+
+import {
   deleteChat,
   deleteMessage,
   getChat,
@@ -8305,9 +8309,11 @@ function Chats({
 
                   <button
                     className="chat-send"
-                    onClick={
-                      sendMessage
-                    }
+                    onClick={() => {
+                      nativeLightHaptic();
+
+                      sendMessage();
+                    }}
                   >
                     {editing
                       ? "✓"
