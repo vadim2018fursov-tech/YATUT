@@ -8437,3 +8437,156 @@
       );
   }
 }
+
+
+/* =========================================================
+   CHAT MOBILE INPUT + TOUCH FIX V2
+========================================================= */
+
+@media (max-width: 700px) {
+  .messenger.mobile-dialog-open,
+  .messenger.mobile-dialog-open .chat-dialog {
+    touch-action:
+      pan-y pinch-zoom !important;
+  }
+
+  .messenger.mobile-dialog-open .chat-messages {
+    touch-action:
+      pan-y pinch-zoom !important;
+
+    -webkit-overflow-scrolling:
+      touch !important;
+
+    overscroll-behavior-y:
+      contain !important;
+  }
+
+  .messenger.mobile-dialog-open .chat-composer {
+    font-family:
+      var(
+        --yatut-ui-font,
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif
+      ) !important;
+  }
+
+  .messenger.mobile-dialog-open .chat-composer textarea {
+    width:
+      100% !important;
+
+    min-height:
+      44px !important;
+    max-height:
+      112px !important;
+
+    padding:
+      11px 46px
+      10px 14px !important;
+
+    display:
+      block !important;
+
+    border-radius:
+      20px !important;
+
+    font-family:
+      var(
+        --yatut-ui-font,
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif
+      ) !important;
+    font-size:
+      16px !important;
+    font-style:
+      normal !important;
+    font-weight:
+      450 !important;
+    line-height:
+      1.32 !important;
+    letter-spacing:
+      -.12px !important;
+
+    text-align:
+      left !important;
+    text-indent:
+      0 !important;
+
+    resize:
+      none !important;
+
+    touch-action:
+      manipulation !important;
+
+    -webkit-appearance:
+      none !important;
+    appearance:
+      none !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-composer textarea::placeholder {
+    font-family:
+      inherit !important;
+    font-size:
+      16px !important;
+    font-style:
+      normal !important;
+    font-weight:
+      400 !important;
+    line-height:
+      1.32 !important;
+    letter-spacing:
+      -.12px !important;
+
+    color:
+      #9a9eaa !important;
+
+    opacity:
+      1 !important;
+  }
+
+  .messenger.mobile-dialog-open .chat-plus,
+  .messenger.mobile-dialog-open .chat-voice-button,
+  .messenger.mobile-dialog-open .chat-send {
+    touch-action:
+      manipulation !important;
+  }
+
+  .messenger.mobile-dialog-open .chat-plus,
+  .messenger.mobile-dialog-open .chat-send {
+    display:
+      grid !important;
+    place-items:
+      center !important;
+  }
+}
+
+@media (min-width: 701px) {
+  .chat-composer textarea,
+  .chat-composer input {
+    font-family:
+      var(
+        --yatut-ui-font,
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif
+      ) !important;
+  }
+}
