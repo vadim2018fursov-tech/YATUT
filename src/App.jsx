@@ -5193,12 +5193,12 @@ function MobileNavigation({
                       ? "is-notification"
                       : "is-chat"
                   }`.trim()}
-                >
-                  {badgeValue >
-                  9
-                    ? "9+"
-                    : badgeValue}
-                </span>
+                  aria-label={
+                    isNotifications
+                      ? "Є нові сповіщення"
+                      : "Є нові повідомлення"
+                  }
+                />
               )}
 
               <small>
@@ -5970,7 +5970,14 @@ function App() {
   ] =
     useState(
       () =>
-        getUnreadCount()
+        getNotifications().filter(
+          (
+            notification
+          ) =>
+            !notification.read &&
+            notification.type !==
+              "message"
+        ).length
     );
 
   /* =======================================================
@@ -6710,7 +6717,9 @@ function App() {
               (
                 notification
               ) =>
-                !notification.read
+                !notification.read &&
+                notification.type !==
+                  "message"
             ).length
           );
 
