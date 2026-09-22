@@ -1,8 +1,18 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
+import {
+  initNativePlatform,
+} from "./services/nativePlatformService.js";
+
+const {
+  native:
+    nativePlatform,
+} =
+  initNativePlatform();
 
 const standalone =
+  nativePlatform ||
   window.matchMedia?.(
     "(display-mode: standalone)"
   )?.matches ||
@@ -156,6 +166,7 @@ createRoot(
 );
 
 if (
+  !nativePlatform &&
   "serviceWorker" in
     navigator &&
   import.meta.env.PROD
