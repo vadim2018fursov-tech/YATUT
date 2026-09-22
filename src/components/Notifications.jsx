@@ -339,6 +339,12 @@ export default function Notifications({
     useState(false);
 
   const [
+    pushSubscribed,
+    setPushSubscribed,
+  ] =
+    useState(false);
+
+  const [
     pushMessage,
     setPushMessage,
   ] =
@@ -366,7 +372,13 @@ export default function Notifications({
       syncPushSubscription(
         authSession
       )
-        .then(() => {
+        .then((subscription) => {
+          setPushSubscribed(
+            Boolean(
+              subscription
+            )
+          );
+
           setPushState(
             getPushSupportState()
           );
@@ -401,11 +413,14 @@ export default function Notifications({
         getPushSupportState();
 
       if (
-        state.permission ===
-        "granted"
+        pushSubscribed
       ) {
         await disablePushNotifications(
           authSession
+        );
+
+        setPushSubscribed(
+          false
         );
 
         setPushMessage(
@@ -414,6 +429,10 @@ export default function Notifications({
       } else {
         await enablePushNotifications(
           authSession
+        );
+
+        setPushSubscribed(
+          true
         );
 
         setPushMessage(
@@ -1184,7 +1203,7 @@ export default function Notifications({
             <span>
               {pushState.requiresInstall
                 ? "На iPhone або iPad додайте ЯТУТ на головний екран, потім увімкніть push."
-                : pushState.permission === "granted"
+                : pushSubscribed
                 ? `Push активні · ${pushState.deviceLabel}`
                 : pushState.supported
                 ? "Отримуйте повідомлення, запити в друзі та іншу активність, навіть коли ЯТУТ закритий."
@@ -1201,8 +1220,7 @@ export default function Notifications({
           <button
             type="button"
             className={
-              pushState.permission ===
-              "granted"
+              pushSubscribed
                 ? "is-enabled"
                 : ""
             }
@@ -1218,8 +1236,7 @@ export default function Notifications({
           >
             {pushBusy
               ? "Зачекайте…"
-              : pushState.permission ===
-                "granted"
+              : pushSubscribed
               ? "Вимкнути"
               : pushState.requiresInstall
               ? "Встановіть ЯТУТ"
