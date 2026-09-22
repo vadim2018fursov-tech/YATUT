@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">ЯТУТ</string>
+    <string name="title_activity_main">ЯТУТ</string>
+    <string name="package_name">com.yatut.app</string>
+    <string name="custom_url_scheme">com.yatut.app</string>
+</resources>
