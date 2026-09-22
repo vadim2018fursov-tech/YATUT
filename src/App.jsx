@@ -53,6 +53,7 @@ import Notifications from "./components/Notifications";
 import MobileMoreMenu from "./components/MobileMoreMenu";
 import AuthPage from "./components/AuthPage";
 import Onboarding from "./components/Onboarding";
+import DevicePermissions from "./components/DevicePermissions";
 import AdminCenter from "./components/AdminCenter";
 import AccountRestriction from "./components/AccountRestriction";
 
@@ -5362,6 +5363,85 @@ function App() {
       false
     );
 
+  const [
+    permissionsReady,
+    setPermissionsReady,
+  ] =
+    useState(false);
+
+  const [
+    needsDevicePermissions,
+    setNeedsDevicePermissions,
+  ] =
+    useState(false);
+
+  useEffect(() => {
+    const userId =
+      authSession?.user?.id;
+
+    if (
+      !userId
+    ) {
+      setPermissionsReady(
+        true
+      );
+
+      setNeedsDevicePermissions(
+        false
+      );
+
+      return;
+    }
+
+    try {
+      const done =
+        localStorage.getItem(
+          `yatut-device-permissions-v1:${userId}`
+        ) ===
+        "done";
+
+      setNeedsDevicePermissions(
+        !done
+      );
+    } catch {
+      setNeedsDevicePermissions(
+        true
+      );
+    }
+
+    setPermissionsReady(
+      true
+    );
+  }, [
+    authSession?.user?.id,
+  ]);
+
+  function finishDevicePermissions() {
+    const userId =
+      authSession?.user?.id;
+
+    if (
+      userId
+    ) {
+      try {
+        localStorage.setItem(
+          `yatut-device-permissions-v1:${userId}`,
+          "done"
+        );
+      } catch {
+        // The flow can still finish for the current session.
+      }
+    }
+
+    setNeedsDevicePermissions(
+      false
+    );
+
+    setPermissionsReady(
+      true
+    );
+  }
+
 
   useEffect(() => {
     if (
@@ -6204,6 +6284,14 @@ function App() {
     } finally {
       setAuthSession(
         null
+      );
+
+      setPermissionsReady(
+        false
+      );
+
+      setNeedsDevicePermissions(
+        false
       );
 
       setAccountAccessReady(
@@ -7944,6 +8032,43 @@ function App() {
           finishOnboarding(
             "home"
           )
+        }
+      />
+    );
+  }
+
+  if (
+    authBackendConfigured &&
+    authSession &&
+    !permissionsReady
+  ) {
+    return (
+      <div className="auth-loading">
+        <div>
+          <div className="auth-brand-mark">
+            Я
+          </div>
+
+          <strong>
+            ЯТУТ
+          </strong>
+        </div>
+      </div>
+    );
+  }
+
+  if (
+    authBackendConfigured &&
+    authSession &&
+    needsDevicePermissions
+  ) {
+    return (
+      <DevicePermissions
+        authSession={
+          authSession
+        }
+        onDone={
+          finishDevicePermissions
         }
       />
     );
