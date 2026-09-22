@@ -25233,3 +25233,369 @@ button.is-primary {
 .yatut-dark-mode .post-event-link strong {
   color: #f3f3f8;
 }
+
+
+/* =========================================================
+   YATUT PREMIUM UI PASS V1
+   Global depth, motion and premium surfaces
+========================================================= */
+
+:root {
+  --yatut-premium-accent: #6b63ff;
+  --yatut-premium-accent-2: #8a7cff;
+  --yatut-premium-surface: rgba(255,255,255,.88);
+  --yatut-premium-border: rgba(104,97,180,.11);
+  --yatut-premium-shadow:
+    0 18px 50px rgba(31,34,54,.08),
+    0 4px 14px rgba(31,34,54,.04);
+  --yatut-premium-shadow-hover:
+    0 24px 64px rgba(31,34,54,.12),
+    0 8px 20px rgba(99,91,255,.08);
+  --yatut-premium-glow:
+    0 12px 34px rgba(99,91,255,.18);
+  --yatut-premium-ease:
+    cubic-bezier(.22,.8,.26,1);
+}
+
+body {
+  background:
+    radial-gradient(
+      circle at 14% -8%,
+      rgba(118,109,255,.09),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 90% 6%,
+      rgba(186,177,255,.08),
+      transparent 28%
+    ),
+    #f6f7fb;
+}
+
+.topbar {
+  background:
+    rgba(255,255,255,.82) !important;
+  border-bottom:
+    1px solid
+    rgba(225,227,236,.74) !important;
+  box-shadow:
+    0 8px 30px
+    rgba(32,35,54,.035);
+  backdrop-filter:
+    blur(22px)
+    saturate(1.18);
+  -webkit-backdrop-filter:
+    blur(22px)
+    saturate(1.18);
+}
+
+.sidebar,
+.right-sidebar,
+.post-composer,
+.post-card,
+.story-card,
+.home-start-card,
+.yatut-pulse-card,
+.yatut-find-your-people,
+.search-section,
+.settings-section,
+.friends-v2-summary,
+.friends-v2-now-strip {
+  border-color:
+    var(--yatut-premium-border) !important;
+  box-shadow:
+    var(--yatut-premium-shadow);
+}
+
+.post-card,
+.post-composer,
+.home-start-card,
+.yatut-pulse-card,
+.yatut-find-your-people,
+.search-section,
+.settings-section,
+.friends-v2-person-card,
+.friends-v2-summary-item,
+.notification-item {
+  transition:
+    transform .24s
+      var(--yatut-premium-ease),
+    box-shadow .24s
+      var(--yatut-premium-ease),
+    border-color .24s
+      var(--yatut-premium-ease),
+    background .24s
+      var(--yatut-premium-ease);
+}
+
+@media (hover:hover) and (pointer:fine) {
+  .post-card:hover,
+  .home-start-card:hover,
+  .yatut-pulse-card:hover,
+  .yatut-find-your-people:hover,
+  .search-section:hover,
+  .friends-v2-person-card:hover,
+  .notification-item:hover {
+    transform:
+      translateY(-3px);
+    box-shadow:
+      var(--yatut-premium-shadow-hover);
+    border-color:
+      rgba(99,91,255,.18) !important;
+  }
+
+  .post-composer:hover {
+    box-shadow:
+      0 22px 56px
+      rgba(31,34,54,.1),
+      0 6px 18px
+      rgba(99,91,255,.06);
+  }
+}
+
+button,
+[role="button"],
+.icon-button,
+.profile-mini,
+.feed-tab {
+  transition:
+    transform .16s
+      var(--yatut-premium-ease),
+    box-shadow .18s
+      var(--yatut-premium-ease),
+    background .18s
+      var(--yatut-premium-ease),
+    color .18s
+      var(--yatut-premium-ease),
+    border-color .18s
+      var(--yatut-premium-ease);
+}
+
+button:active,
+[role="button"]:active,
+.icon-button:active,
+.profile-mini:active {
+  transform:
+    scale(.965);
+}
+
+.feature-primary-button,
+.home-start-card__actions button.is-primary,
+.global-search-empty-actions button:not(.secondary),
+.chat-list-empty-actions button:not(.secondary),
+.friends-v2-empty-action {
+  background:
+    linear-gradient(
+      145deg,
+      #7a70ff,
+      #635bff 62%,
+      #554ee8
+    ) !important;
+  box-shadow:
+    0 10px 24px
+    rgba(99,91,255,.2),
+    inset 0 1px 0
+    rgba(255,255,255,.2);
+}
+
+@media (hover:hover) and (pointer:fine) {
+  .feature-primary-button:hover,
+  .home-start-card__actions button.is-primary:hover,
+  .global-search-empty-actions button:not(.secondary):hover,
+  .chat-list-empty-actions button:not(.secondary):hover,
+  .friends-v2-empty-action:hover {
+    transform:
+      translateY(-2px);
+    box-shadow:
+      0 15px 32px
+      rgba(99,91,255,.28),
+      inset 0 1px 0
+      rgba(255,255,255,.22);
+  }
+}
+
+.icon-button,
+.profile-mini,
+.mobile-search-action {
+  box-shadow:
+    inset 0 1px 0
+    rgba(255,255,255,.82);
+}
+
+.feed-tab.active,
+.global-search-tabs button.active,
+.notifications-filters button.active {
+  box-shadow:
+    0 8px 20px
+    rgba(99,91,255,.14),
+    inset 0 1px 0
+    rgba(255,255,255,.16);
+}
+
+.post-card {
+  overflow:
+    clip;
+}
+
+.post-card::before {
+  content: "";
+  display: block;
+  height: 1px;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,.92),
+      rgba(99,91,255,.12),
+      transparent
+    );
+}
+
+.post-author .avatar,
+.comment-avatar,
+.profile-mini,
+.yatut-story-avatar,
+.friends-v2-person-avatar {
+  box-shadow:
+    0 6px 18px
+    rgba(37,40,61,.09);
+}
+
+.yatut-home-hero,
+.feature-hero,
+.global-search-hero,
+.friends-v2-hero {
+  box-shadow:
+    0 24px 70px
+    rgba(70,61,163,.14),
+    inset 0 1px 0
+    rgba(255,255,255,.16);
+}
+
+.yatut-home-hero::after,
+.feature-hero::after,
+.global-search-hero::after,
+.friends-v2-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      120deg,
+      rgba(255,255,255,.12),
+      transparent 30%,
+      transparent 70%,
+      rgba(255,255,255,.07)
+    );
+  opacity: .75;
+}
+
+.main-content > * {
+  animation:
+    yatutPremiumEnter
+    .42s
+    var(--yatut-premium-ease)
+    both;
+}
+
+@keyframes yatutPremiumEnter {
+  from {
+    opacity: 0;
+    transform:
+      translateY(10px)
+      scale(.995);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+.topbar-notification-badge {
+  animation:
+    yatutPremiumBadgeIn
+    .34s
+    var(--yatut-premium-ease)
+    both;
+}
+
+@keyframes yatutPremiumBadgeIn {
+  from {
+    opacity: 0;
+    transform:
+      scale(.68);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      scale(1);
+  }
+}
+
+body.yatut-dark-mode {
+  background:
+    radial-gradient(
+      circle at 18% -8%,
+      rgba(99,91,255,.12),
+      transparent 34%
+    ),
+    #101118;
+}
+
+body.yatut-dark-mode .topbar {
+  background:
+    rgba(18,19,27,.78) !important;
+  border-bottom-color:
+    rgba(255,255,255,.055) !important;
+  box-shadow:
+    0 8px 30px
+    rgba(0,0,0,.18);
+}
+
+body.yatut-dark-mode .sidebar,
+body.yatut-dark-mode .right-sidebar,
+body.yatut-dark-mode .post-composer,
+body.yatut-dark-mode .post-card,
+body.yatut-dark-mode .story-card,
+body.yatut-dark-mode .home-start-card,
+body.yatut-dark-mode .yatut-pulse-card,
+body.yatut-dark-mode .yatut-find-your-people,
+body.yatut-dark-mode .search-section,
+body.yatut-dark-mode .settings-section,
+body.yatut-dark-mode .friends-v2-summary,
+body.yatut-dark-mode .friends-v2-now-strip {
+  border-color:
+    rgba(255,255,255,.065) !important;
+  box-shadow:
+    0 18px 50px
+    rgba(0,0,0,.2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .main-content > *,
+  .topbar-notification-badge {
+    animation:
+      none !important;
+  }
+
+  .post-card,
+  .post-composer,
+  .home-start-card,
+  .yatut-pulse-card,
+  .yatut-find-your-people,
+  .search-section,
+  .settings-section,
+  .friends-v2-person-card,
+  .friends-v2-summary-item,
+  .notification-item,
+  button,
+  [role="button"] {
+    transition:
+      none !important;
+  }
+}
