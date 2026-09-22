@@ -3844,3 +3844,197 @@ body {
       none !important;
   }
 }
+
+
+/* =========================================================
+   MOBILE NAV UNREAD DOTS — ICON ANCHORED
+========================================================= */
+
+@media (max-width: 767px) {
+  .mobile-nav-item .mobile-nav-icon {
+    position: relative !important;
+    display: inline-grid !important;
+    place-items: center !important;
+  }
+
+  .mobile-nav-item.has-unread .mobile-nav-icon::after {
+    content: "" !important;
+
+    position: absolute !important;
+    top: -3px !important;
+    right: -5px !important;
+
+    width: 8px !important;
+    min-width: 8px !important;
+    max-width: 8px !important;
+    height: 8px !important;
+    min-height: 8px !important;
+    max-height: 8px !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    border:
+      2px solid
+      rgba(255,255,255,.98) !important;
+    border-radius:
+      999px !important;
+
+    background:
+      #ff4f8b !important;
+
+    box-shadow:
+      0 3px 8px
+      rgba(255,79,139,.32) !important;
+
+    transform:
+      none !important;
+
+    pointer-events:
+      none !important;
+
+    z-index:
+      5 !important;
+  }
+
+  .mobile-nav-item.mobile-chat-center.has-unread
+  .mobile-nav-icon::after {
+    background:
+      #635bff !important;
+
+    box-shadow:
+      0 3px 8px
+      rgba(99,91,255,.30) !important;
+  }
+
+  body.yatut-dark-mode
+  .mobile-nav-item.has-unread
+  .mobile-nav-icon::after {
+    border-color:
+      rgba(24,25,34,.98) !important;
+  }
+
+  .mobile-nav-badge {
+    display:
+      none !important;
+  }
+}
+
+/* =========================================================
+   MOBILE LAYOUT STABILITY AUDIT — SAFE SHELL
+========================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing:
+    border-box;
+}
+
+html,
+body,
+#root,
+.app {
+  width:
+    100%;
+  max-width:
+    100%;
+}
+
+html,
+body {
+  overflow-x:
+    hidden;
+}
+
+@supports (overflow: clip) {
+  html,
+  body {
+    overflow-x:
+      clip;
+  }
+}
+
+img,
+video,
+canvas {
+  max-width:
+    100%;
+}
+
+@media (max-width: 767px) {
+  .layout,
+  .layout-wide,
+  .main-content,
+  .home-v2,
+  .profile-v2-page,
+  .friends-v2-page,
+  .global-search-page,
+  .feature-page,
+  .notifications-panel.notifications-page,
+  .settings-page,
+  .saved-page,
+  .nearby-page,
+  .business-page,
+  .yatut-create-page,
+  .yatut-media-create {
+    min-width:
+      0 !important;
+
+    max-width:
+      100% !important;
+
+    box-sizing:
+      border-box !important;
+  }
+
+  .main-content {
+    width:
+      100% !important;
+
+    overflow-x:
+      clip !important;
+  }
+
+  .post-card,
+  .post-composer,
+  .search-section,
+  .settings-section,
+  .feature-section,
+  .friends-v2-person-card,
+  .friends-v2-now-strip,
+  .friends-v2-summary,
+  .notification-item {
+    min-width:
+      0 !important;
+
+    max-width:
+      100% !important;
+  }
+
+  input,
+  textarea,
+  select,
+  button {
+    max-width:
+      100%;
+  }
+
+  .feature-hero {
+    width:
+      auto !important;
+
+    max-width:
+      none !important;
+  }
+
+  /*
+    Full-screen media intentionally keep 100vw.
+    Ordinary pages must never move the document horizontally.
+  */
+  body:not(.pulse-long-video-open)
+  .app {
+    overflow-x:
+      clip;
+  }
+}
