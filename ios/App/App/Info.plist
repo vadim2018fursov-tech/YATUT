@@ -64,6 +64,16 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>ЯТУТ використовує камеру для фото, відео, сторіс та відеозв'язку.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>ЯТУТ використовує мікрофон для голосових повідомлень, відео та дзвінків.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>ЯТУТ надає можливість вибирати фото та відео для публікацій, сторіс і чатів.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>ЯТУТ може зберігати створені фото та відео у вашу медіатеку за вашим запитом.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>ЯТУТ використовує геолокацію для функцій Поруч, місць і локальних подій.</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
 </dict>
