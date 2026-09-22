@@ -1,5 +1,5 @@
 const CACHE_NAME =
-  "yatut-shell-v2";
+  "yatut-shell-v3";
 
 const APP_SHELL = [
   "/",
@@ -161,6 +161,140 @@ self.addEventListener(
             caches.match(
               request
             )
+        )
+    );
+  }
+);
+
+
+/* =========================================================
+   WEB PUSH
+========================================================= */
+
+self.addEventListener(
+  "push",
+  (event) => {
+    let payload = {};
+
+    try {
+      payload =
+        event.data
+          ? event.data.json()
+          : {};
+    } catch {
+      payload = {
+        title: "ЯТУТ",
+        body:
+          event.data?.text?.() ||
+          "У вас нове сповіщення",
+      };
+    }
+
+    const title =
+      payload.title ||
+      "ЯТУТ";
+
+    const options = {
+      body:
+        payload.body ||
+        "У вас нове сповіщення",
+      icon:
+        payload.icon ||
+        "/yatut-icon.svg",
+      badge:
+        payload.badge ||
+        "/yatut-icon.svg",
+      tag:
+        payload.id
+          ? `yatut-${payload.id}`
+          : undefined,
+      renotify: true,
+      data: {
+        url:
+          payload.url ||
+          "/notifications",
+        route:
+          payload.route ||
+          "notifications",
+        payload:
+          payload.data ||
+          {},
+        notificationId:
+          payload.id ||
+          null,
+      },
+    };
+
+    event.waitUntil(
+      self.registration
+        .showNotification(
+          title,
+          options
+        )
+    );
+  }
+);
+
+self.addEventListener(
+  "notificationclick",
+  (event) => {
+    event.notification.close();
+
+    const targetUrl =
+      new URL(
+        event.notification
+          ?.data?.url ||
+          "/notifications",
+        self.location.origin
+      ).href;
+
+    event.waitUntil(
+      self.clients
+        .matchAll({
+          type: "window",
+          includeUncontrolled: true,
+        })
+        .then(
+          async (
+            clientList
+          ) => {
+            for (
+              const client of
+                clientList
+            ) {
+              try {
+                const clientUrl =
+                  new URL(
+                    client.url
+                  );
+
+                if (
+                  clientUrl.origin ===
+                  self.location.origin
+                ) {
+                  await client.navigate(
+                    targetUrl
+                  );
+
+                  await client.focus();
+
+                  return;
+                }
+              } catch {
+                // Continue to the next window.
+              }
+            }
+
+            if (
+              self.clients
+                .openWindow
+            ) {
+              await self.clients
+                .openWindow(
+                  targetUrl
+                );
+            }
+          }
         )
     );
   }
