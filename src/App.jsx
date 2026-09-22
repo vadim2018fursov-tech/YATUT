@@ -4976,7 +4976,7 @@ function LeftSidebar({
                 onNavigate(
                   item.id
                 );
-              }
+              }}
             >
               <span className="nav-icon">
                 <YatutIcon
@@ -5021,11 +5021,13 @@ function LeftSidebar({
                   : ""
               }
               type="button"
-              onClick={() =>
+              onClick={() => {
+                nativeSelectionHaptic();
+
                 onNavigate(
                   item.id
-                )
-              }
+                );
+              }}
             >
               <span className="nav-icon">
                 <YatutIcon
