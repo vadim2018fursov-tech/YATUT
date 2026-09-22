@@ -86,7 +86,6 @@ import {
 
 import {
   getNotifications,
-  getUnreadCount,
   ingestNotificationEvent,
   markNotificationRead,
   removeNotification,
