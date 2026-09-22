@@ -3714,3 +3714,133 @@ html.yatut-standalone .topbar {
       none !important;
   }
 }
+
+
+/* =========================================================
+   MOBILE OVERFLOW GUARD + NAV DOTS
+========================================================= */
+
+html,
+body,
+#root,
+.app {
+  width: 100%;
+  max-width: 100%;
+}
+
+html,
+body {
+  overflow-x: clip;
+}
+
+.app,
+.layout,
+.layout-wide,
+.main-content {
+  min-width: 0;
+}
+
+@media (max-width: 767px) {
+  .app,
+  .layout,
+  .layout-wide,
+  .main-content {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .layout,
+  .layout-wide {
+    overflow-x: clip !important;
+  }
+
+  .main-content {
+    overflow-x: clip !important;
+  }
+
+  .main-content > *,
+  .feature-page,
+  .friends-v2-page,
+  .global-search-page,
+  .notifications-panel.notifications-page {
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .mobile-nav-item {
+    position: relative;
+  }
+
+  .mobile-nav-badge {
+    position: absolute;
+
+    top: 5px;
+    right: 14%;
+
+    width: 8px;
+    height: 8px;
+    min-width: 8px;
+
+    padding: 0;
+
+    border:
+      2px solid
+      rgba(255,255,255,.96);
+    border-radius: 999px;
+
+    background: #ff4f8b;
+
+    font-size: 0;
+    line-height: 0;
+
+    box-shadow:
+      0 4px 10px
+      rgba(255,79,139,.32);
+
+    pointer-events: none;
+
+    animation:
+      yatutNavDotIn
+      .24s
+      cubic-bezier(.22,.8,.26,1)
+      both;
+  }
+
+  .mobile-nav-badge.is-chat {
+    background: #635bff;
+
+    box-shadow:
+      0 4px 10px
+      rgba(99,91,255,.32);
+  }
+
+  .mobile-nav-badge.is-notification {
+    background: #ff4f8b;
+  }
+
+  @keyframes yatutNavDotIn {
+    from {
+      opacity: 0;
+      transform: scale(.45);
+    }
+
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  body.yatut-dark-mode
+  .mobile-nav-badge {
+    border-color:
+      rgba(24,25,34,.98);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-nav-badge {
+    animation:
+      none !important;
+  }
+}
