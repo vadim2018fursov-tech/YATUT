@@ -8350,3 +8350,131 @@ body.yatut-dark-mode
     grid-template-columns: 1fr;
   }
 }
+
+
+/* =========================================================
+   SETTINGS — DEVICE PUSH
+========================================================= */
+
+.settings-push-card {
+  padding: 14px;
+
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+
+  border: 1px solid rgba(99, 91, 255, .12);
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(241, 239, 255, .9),
+      rgba(252, 251, 255, .98)
+    );
+}
+
+.settings-push-card-icon {
+  width: 46px;
+  height: 46px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #746cff,
+      #635bff
+    );
+
+  color: #fff;
+
+  box-shadow:
+    0 10px 24px
+    rgba(99, 91, 255, .18);
+}
+
+.settings-push-card > section {
+  min-width: 0;
+}
+
+.settings-push-card > section > strong {
+  display: block;
+
+  color: #282b36;
+
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.settings-push-card > section > p {
+  margin: 4px 0 0;
+
+  color: #7e838f;
+
+  font-size: 9px;
+  line-height: 1.45;
+}
+
+.settings-push-card > section > small {
+  display: block;
+
+  margin-top: 5px;
+
+  color: #635bff;
+
+  font-size: 8px;
+  line-height: 1.4;
+}
+
+.settings-push-card > button {
+  min-width: 96px;
+}
+
+.settings-push-card > button:disabled {
+  opacity: .55;
+  cursor: default;
+}
+
+.yatut-dark-mode .settings-push-card {
+  border-color: rgba(145, 135, 255, .16);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(43, 40, 74, .88),
+      rgba(26, 27, 38, .96)
+    );
+}
+
+.yatut-dark-mode .settings-push-card > section > strong {
+  color: #f3f3f7;
+}
+
+.yatut-dark-mode .settings-push-card > section > p {
+  color: #aaaeba;
+}
+
+@media (max-width: 700px) {
+  .settings-push-card {
+    grid-template-columns: 42px minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .settings-push-card-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+  }
+
+  .settings-push-card > button {
+    grid-column: 1 / -1;
+
+    width: 100%;
+    min-width: 0;
+  }
+}
