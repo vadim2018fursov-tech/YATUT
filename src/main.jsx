@@ -62,11 +62,65 @@ function syncVisualViewportRoot() {
     viewport?.height ||
     window.innerHeight;
 
+  const width =
+    viewport?.width ||
+    window.innerWidth;
+
+  const offsetTop =
+    viewport?.offsetTop ||
+    0;
+
+  const offsetLeft =
+    viewport?.offsetLeft ||
+    0;
+
+  const keyboardHeight =
+    Math.max(
+      0,
+      window.innerHeight -
+        height -
+        offsetTop
+    );
+
   document.documentElement.style.setProperty(
     "--yatut-visual-viewport-height",
     `${Math.round(
       height
     )}px`
+  );
+
+  document.documentElement.style.setProperty(
+    "--yatut-visual-viewport-width",
+    `${Math.round(
+      width
+    )}px`
+  );
+
+  document.documentElement.style.setProperty(
+    "--yatut-visual-viewport-top",
+    `${Math.round(
+      offsetTop
+    )}px`
+  );
+
+  document.documentElement.style.setProperty(
+    "--yatut-visual-viewport-left",
+    `${Math.round(
+      offsetLeft
+    )}px`
+  );
+
+  document.documentElement.style.setProperty(
+    "--yatut-keyboard-height",
+    `${Math.round(
+      keyboardHeight
+    )}px`
+  );
+
+  document.documentElement.classList.toggle(
+    "yatut-keyboard-open",
+    keyboardHeight >
+      120
   );
 }
 
