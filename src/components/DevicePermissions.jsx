@@ -142,7 +142,7 @@ export default function DevicePermissions({
           id:
             "camera",
           icon:
-            "camera",
+            "video",
           title:
             "Камера",
           text:
@@ -154,7 +154,7 @@ export default function DevicePermissions({
           id:
             "microphone",
           icon:
-            "mic",
+            "microphone",
           title:
             "Мікрофон",
           text:
@@ -166,7 +166,7 @@ export default function DevicePermissions({
           id:
             "location",
           icon:
-            "location",
+            "pin",
           title:
             "Геолокація",
           text:
