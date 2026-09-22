@@ -1996,6 +1996,90 @@ function MessageBubble({
   );
 }
 
+function mergeBackendChatSnapshot(
+  previous = [],
+  backendChats = []
+) {
+  const previousById =
+    new Map(
+      previous.map(
+        (
+          chat
+        ) => [
+          chat.id,
+          chat,
+        ]
+      )
+    );
+
+  const incomingIds =
+    new Set(
+      backendChats.map(
+        (
+          chat
+        ) =>
+          chat.id
+      )
+    );
+
+  const mergedIncoming =
+    backendChats.map(
+      (
+        chat
+      ) => {
+        const cached =
+          previousById.get(
+            chat.id
+          );
+
+        return {
+          ...cached,
+          ...chat,
+          archived:
+            cached?.archived ||
+            false,
+          hidden:
+            cached?.hidden ||
+            false,
+          muted:
+            cached?.muted ||
+            false,
+        };
+      }
+    );
+
+  const stableDirectChats =
+    previous.filter(
+      (
+        chat
+      ) =>
+        chat?.backend &&
+        chat.type ===
+          "direct" &&
+        !incomingIds.has(
+          chat.id
+        )
+    );
+
+  return [
+    ...mergedIncoming,
+    ...stableDirectChats,
+  ].sort(
+    (
+      left,
+      right
+    ) =>
+      Number(
+        right.updatedAt ||
+        0
+      ) -
+      Number(
+        left.updatedAt ||
+        0
+      )
+  );
+}
+
 /* =========================================================
    CHATS
 ========================================================= */
@@ -2233,6 +2317,9 @@ function Chats({
   const bottomRef =
     useRef(null);
 
+  const messagesRef =
+    useRef(null);
+
   const emojiRef =
     useRef(null);
 
@@ -2275,10 +2362,43 @@ function Chats({
         viewport?.height ||
         window.innerHeight;
 
+      const width =
+        viewport?.width ||
+        window.innerWidth;
+
+      const offsetTop =
+        viewport?.offsetTop ||
+        0;
+
+      const offsetLeft =
+        viewport?.offsetLeft ||
+        0;
+
       document.documentElement.style.setProperty(
         "--yatut-visual-viewport-height",
         `${Math.round(
           height
+        )}px`
+      );
+
+      document.documentElement.style.setProperty(
+        "--yatut-visual-viewport-width",
+        `${Math.round(
+          width
+        )}px`
+      );
+
+      document.documentElement.style.setProperty(
+        "--yatut-visual-viewport-top",
+        `${Math.round(
+          offsetTop
+        )}px`
+      );
+
+      document.documentElement.style.setProperty(
+        "--yatut-visual-viewport-left",
+        `${Math.round(
+          offsetLeft
         )}px`
       );
     }
@@ -2324,10 +2444,6 @@ function Chats({
       window.removeEventListener(
         "resize",
         syncVisualViewport
-      );
-
-      document.documentElement.style.removeProperty(
-        "--yatut-visual-viewport-height"
       );
     };
   }, []);
@@ -2997,9 +3113,11 @@ function Chats({
                 authSession
               );
 
-            stored = [
-              ...backendChats,
-            ];
+            stored =
+              mergeBackendChatSnapshot(
+                stored,
+                backendChats
+              );
 
             for (
               const chat of
@@ -3261,22 +3379,13 @@ function Chats({
         }
 
         setChats(
-          [
-            ...backendChats,
-          ].sort(
-            (
-              left,
-              right
-            ) =>
-              Number(
-                right.updatedAt ||
-                0
-              ) -
-              Number(
-                left.updatedAt ||
-                0
-              )
-          )
+          (
+            previous
+          ) =>
+            mergeBackendChatSnapshot(
+              previous,
+              backendChats
+            )
         );
       } catch (
         error
@@ -3763,22 +3872,13 @@ function Chats({
         }
 
         setChats(
-          [
-            ...backendChats,
-          ].sort(
-            (
-              left,
-              right
-            ) =>
-              Number(
-                right.updatedAt ||
-                0
-              ) -
-              Number(
-                left.updatedAt ||
-                0
-              )
-          )
+          (
+            previous
+          ) =>
+            mergeBackendChatSnapshot(
+              previous,
+              backendChats
+            )
         );
       } catch (
         error
@@ -4145,13 +4245,28 @@ function Chats({
   ]);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView(
-      {
-        behavior: "smooth",
-      }
-    );
+    const container =
+      messagesRef.current;
+
+    if (!container) {
+      return;
+    }
+
+    const frame =
+      window.requestAnimationFrame(
+        () => {
+          container.scrollTop =
+            container.scrollHeight;
+        }
+      );
+
+    return () =>
+      window.cancelAnimationFrame(
+        frame
+      );
   }, [
     messages.length,
+    activeChatId,
   ]);
 
   /* =======================================================
@@ -7624,7 +7739,12 @@ function Chats({
                 </button>
               )}
 
-              <div className="chat-messages">
+              <div
+                ref={
+                  messagesRef
+                }
+                className="chat-messages"
+              >
 
                 <div className="chat-day">
                   Сьогодні
@@ -8051,6 +8171,22 @@ function Chats({
 
                   <textarea
                     value={draft}
+                    onFocus={() => {
+                      window.setTimeout(
+                        () => {
+                          const container =
+                            messagesRef.current;
+
+                          if (
+                            container
+                          ) {
+                            container.scrollTop =
+                              container.scrollHeight;
+                          }
+                        },
+                        80
+                      );
+                    }}
                     onChange={(event) =>
                       setDraft(
                         event.target
