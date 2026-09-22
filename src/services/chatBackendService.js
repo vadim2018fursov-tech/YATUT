@@ -586,29 +586,18 @@ export async function listBackendChats(
     return [];
   }
 
-  const url =
-    new URL(
-      `${SUPABASE_URL}/rest/v1/conversation_members`
-    );
-
-  url.searchParams.set(
-    "user_id",
-    `eq.${session.user.id}`
-  );
-
-  url.searchParams.set(
-    "select",
-    "conversation_id"
-  );
-
   const response =
     await fetch(
-      url,
+      `${SUPABASE_URL}/rest/v1/rpc/get_my_chat_summaries`,
       {
+        method:
+          "POST",
         headers:
           headers(
             session
           ),
+        body:
+          "{}",
       }
     );
 
@@ -617,77 +606,132 @@ export async function listBackendChats(
       response
     );
 
-  const ids =
-    [
-      ...new Set(
-        (
-          Array.isArray(
-            rows
-          )
-            ? rows
-            : []
-        ).map(
-          (
-            row
-          ) =>
-            row.conversation_id
-        )
-      ),
-    ];
-
-  const conversationState =
-    await getMyConversationState(
-      session
-    );
-
-  const conversations =
-    await Promise.all(
-      ids.map(
-        (
-          id
-        ) =>
-          getConversation(
-            session,
-            id
-          )
-      )
-    );
-
-  const chats =
-    await Promise.all(
-      conversations
-        .filter(Boolean)
-        .map(
-          (
-            conversation
-          ) =>
-            chatFromConversation(
-              session,
-              conversation
-            )
-        )
-    );
-
-  const enrichedChats =
-    chats.map(
+  return (
+    Array.isArray(
+      rows
+    )
+      ? rows
+      : []
+  )
+    .map(
       (
-        chat
-      ) => ({
-        ...chat,
-        unread:
-          conversationState.get(
-            chat.id
-          )?.unread ||
-          0,
-        lastReadAt:
-          conversationState.get(
-            chat.id
-          )?.lastReadAt ||
-          null,
-      })
-    );
+        row
+      ) => {
+        const name =
+          row.person_name ||
+          row.person_username ||
+          null;
 
-  return enrichedChats
+        const person =
+          row.person_id
+            ? {
+                id:
+                  row.person_id,
+                name:
+                  name ||
+                  "Користувач",
+                username:
+                  row.person_username ||
+                  "user",
+                initials:
+                  (
+                    name ||
+                    row.person_username ||
+                    "?"
+                  )
+                    .trim()
+                    .charAt(0)
+                    .toUpperCase() ||
+                  "?",
+                avatar:
+                  row.person_avatar_url ||
+                  null,
+                verified:
+                  Boolean(
+                    row.person_verified
+                  ),
+                online:
+                  false,
+              }
+            : null;
+
+        const members =
+          Array.isArray(
+            row.member_ids
+          )
+            ? row.member_ids
+            : [];
+
+        const memberRoles =
+          row.member_roles &&
+          typeof row.member_roles ===
+            "object"
+            ? row.member_roles
+            : {};
+
+        return {
+          id:
+            row.conversation_id,
+          backend:
+            true,
+          type:
+            row.conversation_type ||
+            "direct",
+          communityId:
+            row.community_id ||
+            null,
+          eventId:
+            row.event_id ||
+            null,
+          communityName:
+            row.community_id
+              ? row.conversation_title ||
+                "Спільнота"
+              : null,
+          members,
+          memberRoles,
+          personId:
+            row.person_id ||
+            null,
+          person,
+          title:
+            row.conversation_title ||
+            person?.name ||
+            "Чат ЯТУТ",
+          initials:
+            person?.initials ||
+            row.conversation_title
+              ?.charAt(0)
+              ?.toUpperCase() ||
+            "Я",
+          updatedAt:
+            Date.parse(
+              row.updated_at ||
+              new Date().toISOString()
+            ),
+          unread:
+            Number(
+              row.unread_count ||
+              0
+            ),
+          lastReadAt:
+            row.last_read_at
+              ? Date.parse(
+                  row.last_read_at
+                )
+              : null,
+          lastMessage:
+            messagePreview({
+              body:
+                row.latest_body ||
+                "",
+              kind:
+                row.latest_kind ||
+                "text",
+            }),
+        };
+      }
+    )
     .filter(Boolean)
     .sort(
       (
