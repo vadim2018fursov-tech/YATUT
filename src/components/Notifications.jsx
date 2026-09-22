@@ -28,7 +28,6 @@ import {
   deleteBackendNotification,
   deleteBackendNotifications,
   markAllBackendNotificationsRead,
-  markBackendNotificationRead,
 } from "../services/notificationBackendService";
 
 import {
