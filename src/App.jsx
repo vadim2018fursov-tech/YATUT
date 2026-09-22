@@ -5128,6 +5128,10 @@ function MobileNavigation({
                   ? "active"
                   : ""
               } ${
+                badgeValue > 0
+                  ? "has-unread"
+                  : ""
+              } ${
                 item.id ===
                 "pulse"
                   ? "mobile-pulse-button"
@@ -5183,22 +5187,6 @@ function MobileNavigation({
                     }
                   />
                 </span>
-              )}
-
-              {badgeValue >
-                0 && (
-                <span
-                  className={`mobile-nav-badge ${
-                    isNotifications
-                      ? "is-notification"
-                      : "is-chat"
-                  }`.trim()}
-                  aria-label={
-                    isNotifications
-                      ? "Є нові сповіщення"
-                      : "Є нові повідомлення"
-                  }
-                />
               )}
 
               <small>
