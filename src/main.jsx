@@ -4,6 +4,9 @@ import App from "./App.jsx";
 import {
   initNativePlatform,
 } from "./services/nativePlatformService.js";
+import {
+  initNativeRuntime,
+} from "./services/nativeRuntimeService.js";
 
 const {
   native:
@@ -164,6 +167,22 @@ createRoot(
     <App />
   </StrictMode>
 );
+
+if (
+  nativePlatform
+) {
+  initNativeRuntime()
+    .catch(
+      (
+        error
+      ) => {
+        console.warn(
+          "YATUT NATIVE RUNTIME:",
+          error
+        );
+      }
+    );
+}
 
 if (
   !nativePlatform &&
