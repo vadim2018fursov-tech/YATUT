@@ -7044,21 +7044,6 @@ function App() {
       );
     }
 
-    if (
-      page ===
-      "notifications"
-    ) {
-      setMobileMenuOpen(
-        false
-      );
-
-      setNotificationsOpen(
-        true
-      );
-
-      return;
-    }
-
     setNotificationsOpen(
       false
     );
@@ -7657,6 +7642,32 @@ function App() {
           />
         );
 
+      case "notifications":
+        return (
+          <Notifications
+            open
+            pageMode
+            onClose={() => {
+              if (
+                window.history.length >
+                1
+              ) {
+                window.history.back();
+              } else {
+                goToPage(
+                  "home"
+                );
+              }
+            }}
+            onNavigate={
+              goToPage
+            }
+            authSession={
+              authSession
+            }
+          />
+        );
+
       case "communities":
         return (
           <Spaces
@@ -7953,11 +7964,8 @@ function App() {
             false
           );
 
-          setNotificationsOpen(
-            (
-              previous
-            ) =>
-              !previous
+          goToPage(
+            "notifications"
           );
         }}
         mobileMenuOpen={
@@ -7992,23 +8000,6 @@ function App() {
         }
         viewerProfile={
           shellProfile
-        }
-      />
-
-      <Notifications
-        open={
-          notificationsOpen
-        }
-        onClose={() =>
-          setNotificationsOpen(
-            false
-          )
-        }
-        onNavigate={
-          goToPage
-        }
-        authSession={
-          authSession
         }
       />
 
@@ -8106,11 +8097,8 @@ function App() {
               false
             );
 
-            setNotificationsOpen(
-              (
-                previous
-              ) =>
-                !previous
+            goToPage(
+              "notifications"
             );
           }}
         />
