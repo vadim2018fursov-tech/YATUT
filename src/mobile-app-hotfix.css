@@ -3361,6 +3361,9 @@
 
     box-sizing:
       border-box;
+
+    transform:
+      none !important;
   }
 
   .mobile-nav > button {
@@ -3517,7 +3520,7 @@ html.yatut-standalone .topbar {
     transform:
       translateX(
         50%
-      );
+      ) !important;
   }
 
   .main-content {
