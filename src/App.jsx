@@ -76,6 +76,10 @@ import {
 } from "./utils/shareYatutItem";
 
 import {
+  nativeSelectionHaptic,
+} from "./services/nativeFeedbackService";
+
+import {
   createSavedPost,
   getSavedItems,
   isSaved,
@@ -4966,10 +4970,12 @@ function LeftSidebar({
                   : ""
               }
               type="button"
-              onClick={() =>
+              onClick={() => {
+                nativeSelectionHaptic();
+
                 onNavigate(
                   item.id
-                )
+                );
               }
             >
               <span className="nav-icon">
