@@ -3340,3 +3340,198 @@ body.yatut-dark-mode .notifications-page-back {
   background: #1c1d27;
   color: #d8d9e2;
 }
+
+
+/* =========================================================
+   DEVICE PUSH CARD
+========================================================= */
+
+.notifications-device-push {
+  margin: 10px 12px 6px;
+  padding: 13px 14px;
+
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 11px;
+
+  border: 1px solid rgba(99, 91, 255, .10);
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(240, 238, 255, .94),
+      rgba(250, 249, 255, .97)
+    );
+}
+
+.notifications-device-push-icon {
+  width: 42px;
+  height: 42px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #746cff,
+      #635bff
+    );
+
+  color: #fff;
+
+  box-shadow:
+    0 8px 18px
+    rgba(99, 91, 255, .18);
+}
+
+.notifications-device-push-copy {
+  min-width: 0;
+
+  display: grid;
+  gap: 3px;
+}
+
+.notifications-device-push-copy strong {
+  color: #242631;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.notifications-device-push-copy span {
+  color: #757a88;
+  font-size: 10px;
+  line-height: 1.35;
+}
+
+.notifications-device-push-copy small {
+  margin-top: 2px;
+  color: #635bff;
+  font-size: 9px;
+  line-height: 1.35;
+}
+
+.notifications-device-push > button {
+  min-height: 36px;
+
+  padding:
+    0
+    12px;
+
+  border: 0;
+  border-radius: 11px;
+
+  background: #635bff;
+  color: #fff;
+
+  font-size: 10px;
+  font-weight: 850;
+
+  cursor: pointer;
+}
+
+.notifications-device-push > button.is-enabled {
+  background: #efeff4;
+  color: #626673;
+}
+
+.notifications-device-push > button:disabled {
+  opacity: .55;
+  cursor: default;
+}
+
+@media (max-width: 767px) {
+  .notifications-device-push {
+    margin:
+      8px
+      10px
+      4px;
+
+    grid-template-columns:
+      38px
+      minmax(0, 1fr)
+      auto;
+
+    gap: 9px;
+
+    padding:
+      11px
+      12px;
+
+    border-radius: 17px;
+  }
+
+  .notifications-device-push-icon {
+    width: 38px;
+    height: 38px;
+
+    border-radius: 12px;
+  }
+
+  .notifications-device-push-copy strong {
+    font-size: 11px;
+  }
+
+  .notifications-device-push-copy span {
+    font-size: 9px;
+  }
+
+  .notifications-device-push > button {
+    min-height: 34px;
+
+    padding:
+      0
+      10px;
+
+    font-size: 9px;
+  }
+}
+
+@media (max-width: 430px) {
+  .notifications-device-push {
+    grid-template-columns:
+      36px
+      minmax(0, 1fr);
+
+    align-items: start;
+  }
+
+  .notifications-device-push-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .notifications-device-push > button {
+    grid-column: 1 / -1;
+
+    width: 100%;
+  }
+}
+
+body.yatut-dark-mode .notifications-device-push {
+  border-color: rgba(138, 128, 255, .16);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(42, 39, 71, .88),
+      rgba(25, 25, 37, .96)
+    );
+}
+
+body.yatut-dark-mode .notifications-device-push-copy strong {
+  color: #f1f1f5;
+}
+
+body.yatut-dark-mode .notifications-device-push-copy span {
+  color: #a7a9b5;
+}
+
+body.yatut-dark-mode .notifications-device-push > button.is-enabled {
+  background: #2b2c37;
+  color: #d5d6de;
+}
