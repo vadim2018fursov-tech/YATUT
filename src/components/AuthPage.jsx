@@ -55,6 +55,18 @@ export default function AuthPage({
     useState(false);
 
   const [
+    showPassword,
+    setShowPassword,
+  ] =
+    useState(false);
+
+  const [
+    showConfirmPassword,
+    setShowConfirmPassword,
+  ] =
+    useState(false);
+
+  const [
     message,
     setMessage,
   ] =
@@ -636,28 +648,64 @@ export default function AuthPage({
               Пароль
             </span>
 
-            <input
-              type="password"
-              value={
-                form.password
-              }
-              onChange={(
-                event
-              ) =>
-                patch(
-                  "password",
-                  event.target.value
-                )
-              }
-              autoComplete={
-                mode ===
-                "login"
-                  ? "current-password"
-                  : "new-password"
-              }
-              minLength={8}
-              required
-            />
+            <div className="auth-password-control">
+              <input
+                type={
+                  showPassword
+                    ? "text"
+                    : "password"
+                }
+                value={
+                  form.password
+                }
+                onChange={(
+                  event
+                ) =>
+                  patch(
+                    "password",
+                    event.target.value
+                  )
+                }
+                autoComplete={
+                  mode ===
+                    "login"
+                    ? "current-password"
+                    : "new-password"
+                }
+                minLength={8}
+                required
+              />
+
+              <button
+                className="auth-password-toggle"
+                type="button"
+                aria-label={
+                  showPassword
+                    ? "Сховати пароль"
+                    : "Показати пароль"
+                }
+                aria-pressed={
+                  showPassword
+                }
+                onClick={() =>
+                  setShowPassword(
+                    (visible) =>
+                      !visible
+                  )
+                }
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z" />
+                  <circle cx="12" cy="12" r="2.7" />
+                  {showPassword && (
+                    <path d="M4 4l16 16" />
+                  )}
+                </svg>
+              </button>
+            </div>
           </label>
           )}
 
@@ -685,23 +733,59 @@ export default function AuthPage({
                 Повторіть пароль
               </span>
 
-              <input
-                type="password"
-                value={
-                  form.confirmPassword
-                }
-                onChange={(
-                  event
-                ) =>
-                  patch(
-                    "confirmPassword",
-                    event.target.value
-                  )
-                }
-                autoComplete="new-password"
-                minLength={8}
-                required
-              />
+              <div className="auth-password-control">
+                <input
+                  type={
+                    showConfirmPassword
+                      ? "text"
+                      : "password"
+                  }
+                  value={
+                    form.confirmPassword
+                  }
+                  onChange={(
+                    event
+                  ) =>
+                    patch(
+                      "confirmPassword",
+                      event.target.value
+                    )
+                  }
+                  autoComplete="new-password"
+                  minLength={8}
+                  required
+                />
+
+                <button
+                  className="auth-password-toggle"
+                  type="button"
+                  aria-label={
+                    showConfirmPassword
+                      ? "Сховати пароль"
+                      : "Показати пароль"
+                  }
+                  aria-pressed={
+                    showConfirmPassword
+                  }
+                  onClick={() =>
+                    setShowConfirmPassword(
+                      (visible) =>
+                        !visible
+                    )
+                  }
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z" />
+                    <circle cx="12" cy="12" r="2.7" />
+                    {showConfirmPassword && (
+                      <path d="M4 4l16 16" />
+                    )}
+                  </svg>
+                </button>
+              </div>
             </label>
           )}
 
