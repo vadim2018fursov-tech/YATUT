@@ -286,7 +286,13 @@ export default function Notifications({
   ] =
     useState(
       () =>
-        getNotifications()
+        getNotifications().filter(
+          (
+            notification
+          ) =>
+            notification.type !==
+            "message"
+        )
     );
 
   const [
@@ -329,7 +335,13 @@ export default function Notifications({
           nextNotifications
         ) => {
           setNotifications(
-            nextNotifications
+            nextNotifications.filter(
+              (
+                notification
+              ) =>
+                notification.type !==
+                "message"
+            )
           );
         }
       );
