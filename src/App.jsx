@@ -89,6 +89,7 @@ import {
   getUnreadCount,
   ingestNotificationEvent,
   markNotificationRead,
+  removeNotification,
   replaceNotifications,
   subscribeNotifications,
 } from "./storage/notificationService";
@@ -124,6 +125,7 @@ import {
 } from "./services/realtimeService";
 
 import {
+  deleteBackendNotification,
   loadBackendNotifications,
   markBackendNotificationRead,
 } from "./services/notificationBackendService";
@@ -6828,21 +6830,20 @@ function App() {
   ======================================================= */
 
   function markChatNotificationsRead() {
-    const unreadMessages =
+    const messageNotifications =
       getNotifications().filter(
         (
           notification
         ) =>
-          !notification.read &&
           notification.type ===
-            "message"
+          "message"
       );
 
-    unreadMessages.forEach(
+    messageNotifications.forEach(
       (
         notification
       ) => {
-        markNotificationRead(
+        removeNotification(
           notification.id
         );
 
@@ -6850,7 +6851,7 @@ function App() {
           notification.backend &&
           authSession?.user?.id
         ) {
-          markBackendNotificationRead(
+          deleteBackendNotification(
             authSession,
             notification.id
           ).catch(
@@ -6858,10 +6859,16 @@ function App() {
               error
             ) => {
               console.warn(
-                "BACKEND MESSAGE NOTIFICATION READ ERROR:",
+                "BACKEND MESSAGE NOTIFICATION DELETE ERROR:",
                 error
               );
             }
+          );
+        } else if (
+          !notification.read
+        ) {
+          markNotificationRead(
+            notification.id
           );
         }
       }
