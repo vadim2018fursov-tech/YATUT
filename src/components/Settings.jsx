@@ -8,6 +8,13 @@ import "./FeaturePages.css";
 import YatutIcon from "./YatutIcon";
 
 import {
+  disablePushNotifications,
+  enablePushNotifications,
+  getPushSupportState,
+  syncPushSubscription,
+} from "../services/pushNotificationService";
+
+import {
   loadBackendSettings,
   saveBackendSettings,
 } from "../services/settingsBackendService";
@@ -159,6 +166,142 @@ export default function Settings({
     useState(
       !authSession?.user?.id
     );
+
+  const [
+    pushState,
+    setPushState,
+  ] =
+    useState(
+      () =>
+        getPushSupportState()
+    );
+
+  const [
+    pushSubscribed,
+    setPushSubscribed,
+  ] =
+    useState(false);
+
+  const [
+    pushBusy,
+    setPushBusy,
+  ] =
+    useState(false);
+
+  const [
+    pushMessage,
+    setPushMessage,
+  ] =
+    useState("");
+
+  useEffect(() => {
+    setPushState(
+      getPushSupportState()
+    );
+
+    if (
+      !authSession?.user?.id ||
+      typeof Notification ===
+        "undefined" ||
+      Notification.permission !==
+        "granted"
+    ) {
+      setPushSubscribed(
+        false
+      );
+
+      return;
+    }
+
+    syncPushSubscription(
+      authSession
+    )
+      .then(
+        (
+          subscription
+        ) => {
+          setPushSubscribed(
+            Boolean(
+              subscription
+            )
+          );
+
+          setPushState(
+            getPushSupportState()
+          );
+        }
+      )
+      .catch(
+        (
+          error
+        ) => {
+          console.warn(
+            "PUSH SUBSCRIPTION SYNC ERROR:",
+            error
+          );
+        }
+      );
+  }, [
+    authSession?.user?.id,
+    authSession?.access_token,
+  ]);
+
+  async function toggleDevicePush() {
+    if (
+      !authSession?.user?.id ||
+      pushBusy
+    ) {
+      return;
+    }
+
+    setPushBusy(true);
+    setPushMessage("");
+
+    try {
+      if (
+        pushSubscribed
+      ) {
+        await disablePushNotifications(
+          authSession
+        );
+
+        setPushSubscribed(
+          false
+        );
+
+        setPushMessage(
+          "Push-сповіщення вимкнено для цього пристрою."
+        );
+      } else {
+        await enablePushNotifications(
+          authSession
+        );
+
+        setPushSubscribed(
+          true
+        );
+
+        setPushMessage(
+          "Push-сповіщення активні на цьому пристрої."
+        );
+      }
+    } catch (
+      error
+    ) {
+      setPushMessage(
+        error?.message ||
+        "Не вдалося змінити push-сповіщення."
+      );
+    } finally {
+      setPushState(
+        getPushSupportState()
+      );
+
+      setPushBusy(
+        false
+      );
+    }
+  }
 
   useEffect(() => {
     if (
@@ -967,6 +1110,63 @@ export default function Settings({
               title="Що вам важливо"
               text="Оберіть події, про які ЯТУТ буде повідомляти."
             >
+              <div className="settings-push-card">
+                <div className="settings-push-card-icon">
+                  <YatutIcon
+                    name="bell"
+                    size={22}
+                  />
+                </div>
+
+                <section>
+                  <strong>
+                    Сповіщення на цьому пристрої
+                  </strong>
+
+                  <p>
+                    {pushState.requiresInstall
+                      ? "На iPhone або iPad спочатку додайте ЯТУТ на головний екран, потім відкрийте встановлену версію."
+                      : pushSubscribed
+                      ? `Push активні · ${pushState.deviceLabel}`
+                      : pushState.supported
+                      ? "Дозвольте ЯТУТ надсилати системні push-сповіщення, навіть коли сайт закритий."
+                      : "Цей браузер не підтримує Web Push."}
+                  </p>
+
+                  {pushMessage && (
+                    <small>
+                      {pushMessage}
+                    </small>
+                  )}
+                </section>
+
+                <button
+                  type="button"
+                  className={
+                    pushSubscribed
+                      ? "feature-secondary-button"
+                      : "feature-primary-button"
+                  }
+                  disabled={
+                    pushBusy ||
+                    !authSession?.user?.id ||
+                    !pushState.supported ||
+                    pushState.requiresInstall
+                  }
+                  onClick={
+                    toggleDevicePush
+                  }
+                >
+                  {pushBusy
+                    ? "Зачекайте…"
+                    : pushSubscribed
+                    ? "Вимкнути"
+                    : pushState.requiresInstall
+                    ? "Встановіть ЯТУТ"
+                    : "Увімкнути"}
+                </button>
+              </div>
+
               <SettingsToggle
                 title="Нові повідомлення"
                 text="Чати та Messenger."
