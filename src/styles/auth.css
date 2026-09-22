@@ -133,6 +133,61 @@
   box-shadow: 0 0 0 4px rgba(105, 91, 255, .1);
 }
 
+.auth-password-control {
+  position: relative;
+}
+
+.auth-password-control input {
+  padding-right: 50px;
+}
+
+.auth-password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--muted, #747787);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.auth-password-toggle:hover {
+  background: rgba(101, 94, 255, .08);
+  color: #655eff;
+}
+
+.auth-password-toggle:focus-visible {
+  outline: 3px solid rgba(101, 94, 255, .18);
+  outline-offset: 1px;
+}
+
+.auth-password-toggle svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.yatut-dark-mode .auth-password-toggle {
+  color: #a8aabc;
+}
+
+.yatut-dark-mode .auth-password-toggle:hover {
+  background: rgba(157, 149, 255, .12);
+  color: #b8b2ff;
+}
+
 .auth-primary,
 .auth-social {
   min-height: 49px;
