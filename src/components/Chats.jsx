@@ -3109,6 +3109,50 @@ function Chats({
           let stored =
             await getChats();
 
+          stored =
+            stored
+              .map(
+                (
+                  chat
+                ) => ({
+                  ...chat,
+                  type:
+                    chat.type ||
+                    "direct",
+                })
+              )
+              .sort(
+                (
+                  a,
+                  b
+                ) =>
+                  (b.updatedAt ||
+                    0) -
+                  (a.updatedAt ||
+                    0)
+              );
+
+          /*
+            Показываем локальный снимок сразу.
+            Backend обновляет его уже после первого рендера.
+          */
+          if (
+            stored.length
+          ) {
+            setChats(
+              stored
+            );
+
+            setActiveChatId(
+              (
+                previous
+              ) =>
+                previous ||
+                stored[0]?.id ||
+                null
+            );
+          }
+
           if (
             authSession?.user?.id
           ) {
@@ -3123,14 +3167,16 @@ function Chats({
                 backendChats
               );
 
-            for (
-              const chat of
-              backendChats
-            ) {
-              await saveChat(
-                chat
-              );
-            }
+            await Promise.all(
+              backendChats.map(
+                (
+                  chat
+                ) =>
+                  saveChat(
+                    chat
+                  )
+              )
+            );
           } else if (
             stored.length ===
             0
@@ -3353,7 +3399,9 @@ function Chats({
 
     load();
   }, [
-    authSession,
+    authSession?.user?.id,
+    authSession?.access_token,
+    initialPersonId,
   ]);
 
   useEffect(() => {
@@ -3759,7 +3807,8 @@ function Chats({
   }, [
     activeChatId,
     activeChat?.backend,
-    authSession,
+    authSession?.user?.id,
+    authSession?.access_token,
   ]);
 
   useEffect(() => {
