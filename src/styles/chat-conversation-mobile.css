@@ -8756,3 +8756,114 @@
       92px !important;
   }
 }
+
+
+/* =========================================================
+   CAPACITOR NATIVE CHAT
+   Native keyboard resizes the WebView, so browser viewport
+   compensation is intentionally disabled inside the app.
+========================================================= */
+
+html.yatut-native
+body:has(.messenger.mobile-dialog-open) {
+  position:
+    fixed !important;
+
+  inset:
+    0 !important;
+
+  width:
+    100% !important;
+  height:
+    100% !important;
+
+  overflow:
+    hidden !important;
+}
+
+html.yatut-native
+.messenger.mobile-dialog-open {
+  position:
+    fixed !important;
+
+  inset:
+    0 !important;
+
+  width:
+    100% !important;
+  max-width:
+    100% !important;
+
+  height:
+    100% !important;
+  min-height:
+    100% !important;
+  max-height:
+    100% !important;
+
+  margin:
+    0 !important;
+
+  transform:
+    none !important;
+}
+
+html.yatut-native
+.messenger.mobile-dialog-open
+.chat-dialog {
+  position:
+    absolute !important;
+
+  inset:
+    0 !important;
+
+  width:
+    100% !important;
+  height:
+    100% !important;
+  max-height:
+    100% !important;
+}
+
+html.yatut-native
+.messenger.mobile-dialog-open
+.chat-messages {
+  flex:
+    1 1 0 !important;
+
+  min-height:
+    0 !important;
+
+  overflow-y:
+    auto !important;
+
+  touch-action:
+    pan-y !important;
+
+  -webkit-overflow-scrolling:
+    touch !important;
+}
+
+html.yatut-native.yatut-native-keyboard-open
+.messenger.mobile-dialog-open
+.chat-composer:not(.voice-mode) {
+  margin-bottom:
+    5px !important;
+
+  padding-bottom:
+    5px !important;
+}
+
+html.yatut-native.yatut-native-keyboard-open
+.messenger.mobile-dialog-open
+.chat-dialog-header {
+  flex:
+    0 0 auto !important;
+}
+
+html.yatut-native.yatut-native-keyboard-open
+.messenger.mobile-dialog-open
+.chat-messages {
+  scroll-padding-bottom:
+    18px !important;
+}
