@@ -7,6 +7,7 @@ import {
 import "./FriendsV2.css";
 
 import YatutIcon from "./YatutIcon";
+import UserProfile from "./UserProfile";
 
 import {
   FRIEND_STATUSES,
@@ -894,11 +895,32 @@ export default function Friends({
           (item) =>
             item.id ===
             personId
-        );
-
-      if (!person) {
-        return;
-      }
+        ) || {
+          id:
+            personId,
+          backend:
+            Boolean(
+              authSession?.user?.id
+            ),
+          name:
+            "Користувач ЯТУТ",
+          username:
+            "user",
+          initial:
+            "Я",
+          initials:
+            "Я",
+          interests:
+            [],
+          common:
+            [],
+          friendsCount:
+            0,
+          followersCount:
+            0,
+          mutual:
+            0,
+        };
 
       setActiveTab(
         person.friendStatus ===
@@ -1499,8 +1521,22 @@ export default function Friends({
   function openProfile(
     person
   ) {
+    if (
+      !person?.id
+    ) {
+      return;
+    }
+
     setSelectedPerson(
       person
+    );
+
+    onNavigate?.(
+      "friends",
+      {
+        personId:
+          person.id,
+      }
     );
   }
 
@@ -1537,6 +1573,124 @@ export default function Friends({
   /* =======================================================
      RENDER
   ======================================================= */
+
+  if (
+    selectedPerson
+  ) {
+    const selectedStatus =
+      getStatus(
+        selectedPerson.id
+      );
+
+    const selectedRelation = {
+      ...(backendRelationships[
+        selectedPerson.id
+      ] || {}),
+      friendStatus:
+        selectedStatus,
+      following:
+        backendFollowGraph
+          .following
+          .includes(
+            selectedPerson.id
+          ),
+      follower:
+        backendFollowGraph
+          .followers
+          .includes(
+            selectedPerson.id
+          ),
+    };
+
+    return (
+      <div className="friends-v2-page friends-v2-profile-page">
+        <UserProfile
+          person={{
+            ...selectedPerson,
+            friendStatus:
+              selectedStatus,
+          }}
+          relation={
+            selectedRelation
+          }
+          authSession={
+            authSession
+          }
+          onBack={() => {
+            setSelectedPerson(
+              null
+            );
+
+            onNavigate?.(
+              "friends"
+            );
+          }}
+          onFriendAction={async (
+            personId,
+            action
+          ) => {
+            const person =
+              people.find(
+                (
+                  item
+                ) =>
+                  item.id ===
+                  personId
+              ) ||
+              selectedPerson;
+
+            if (
+              action ===
+              "reject"
+            ) {
+              await declineRequest(
+                person
+              );
+              return;
+            }
+
+            if (
+              action ===
+              "remove"
+            ) {
+              setRemoveCandidate(
+                person
+              );
+              return;
+            }
+
+            await requestFriend(
+              person
+            );
+          }}
+          onFollow={() => {}}
+          onBlock={(
+            personId,
+            blocked
+          ) => {
+            showNotice(
+              blocked
+                ? "Користувача заблоковано"
+                : "Користувача розблоковано",
+              "neutral"
+            );
+          }}
+          onReport={() => {
+            showNotice(
+              "Скаргу надіслано"
+            );
+          }}
+          onOpenChat={(
+            personId
+          ) =>
+            onOpenChat?.(
+              personId
+            )
+          }
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="friends-v2-page">
@@ -2397,52 +2551,6 @@ export default function Friends({
           }
           onConfirm={
             confirmRemoveFriend
-          }
-        />
-      )}
-
-      {/* ===================================================
-          PROFILE PREVIEW
-      =================================================== */}
-
-      {selectedPerson && (
-        <PersonPreview
-          person={{
-            ...selectedPerson,
-
-            friendStatus:
-              getStatus(
-                selectedPerson.id
-              ),
-          }}
-          onClose={() =>
-            setSelectedPerson(
-              null
-            )
-          }
-          onRelation={() => {
-            setRelationPerson(
-              selectedPerson
-            );
-
-            setSelectedPerson(
-              null
-            );
-          }}
-          onFriend={() =>
-            requestFriend(
-              selectedPerson
-            )
-          }
-          onDecline={() =>
-            declineRequest(
-              selectedPerson
-            )
-          }
-          onMessage={() =>
-            openChat(
-              selectedPerson
-            )
           }
         />
       )}
