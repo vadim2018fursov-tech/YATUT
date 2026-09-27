@@ -383,6 +383,9 @@ export default function PulsePage({
         externalVideos={
           backendVideos
         }
+        authSession={
+          authSession
+        }
       />
 
       <div className="pulse-desktop-experience">
