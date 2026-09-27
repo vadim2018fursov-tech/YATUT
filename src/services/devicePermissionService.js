@@ -1,25 +1,30 @@
 import {
   enablePushNotifications,
   getPushSupportState,
+  syncPushSubscription,
 } from "./pushNotificationService";
 
 export function getDevicePermissionState() {
-  const notification =
-    typeof Notification !== "undefined"
-      ? Notification.permission
-      : "unsupported";
+  const push =
+    typeof window !==
+      "undefined"
+      ? getPushSupportState()
+      : {
+          supported:
+            false,
+          requiresInstall:
+            false,
+          permission:
+            "unsupported",
+          deviceLabel:
+            "Пристрій",
+        };
 
   return {
-    notification,
-    push:
-      typeof window !== "undefined"
-        ? getPushSupportState()
-        : {
-            supported: false,
-            requiresInstall: false,
-            permission: "unsupported",
-            deviceLabel: "Пристрій",
-          },
+    notification:
+      push.permission ||
+      "unsupported",
+    push,
     camera:
       navigator?.mediaDevices?.getUserMedia
         ? "unknown"
@@ -42,6 +47,20 @@ export async function requestPushPermission(session) {
   );
 
   return "granted";
+}
+
+export async function syncPushPermission(
+  session
+) {
+  try {
+    await syncPushSubscription(
+      session
+    );
+  } catch {
+    // Permission status can still be read from the platform cache.
+  }
+
+  return getPushSupportState();
 }
 
 export async function requestMediaPermissions() {
