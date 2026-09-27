@@ -569,15 +569,15 @@ export default function ClipsPage({
                   <button
                     type="button"
                     onClick={() => {
-                      setSaved(
-                        true
-                      );
+                      pulseSocial.toggleSaved();
                       setMoreOpen(
                         false
                       );
                     }}
                   >
-                    Зберегти
+                    {pulseSocial.saved
+                      ? "Прибрати зі збереженого"
+                      : "Зберегти"}
                   </button>
 
                   <button
@@ -652,22 +652,19 @@ export default function ClipsPage({
           <button
             type="button"
             className={
-              liked
+              pulseSocial.liked
                 ? "is-active"
                 : ""
             }
-            onClick={() =>
-              setLiked(
-                (value) =>
-                  !value
-              )
+            onClick={
+              pulseSocial.toggleLike
             }
             aria-label="Подобається"
           >
             <Heart
               size={24}
               fill={
-                liked
+                pulseSocial.liked
                   ? "currentColor"
                   : "none"
               }
@@ -675,13 +672,7 @@ export default function ClipsPage({
 
             <span>
               {formatViews(
-                Number(
-                  video.views ||
-                    0
-                ) +
-                  (liked
-                    ? 1
-                    : 0)
+                pulseSocial.likesCount
               )}
             </span>
           </button>
@@ -690,14 +681,8 @@ export default function ClipsPage({
             type="button"
             aria-label="Коментарі"
             onClick={() =>
-              onNavigate?.(
-                "watch",
-                {
-                  videoId:
-                    video.id,
-                  openComments:
-                    true,
-                }
+              setCommentsOpen(
+                true
               )
             }
           >
@@ -706,8 +691,9 @@ export default function ClipsPage({
             />
 
             <span>
-              {video.comments ||
-                248}
+              {formatViews(
+                pulseSocial.commentsCount
+              )}
             </span>
           </button>
 
@@ -723,34 +709,39 @@ export default function ClipsPage({
             />
 
             <span>
-              {video.shares ||
-                61}
+              {formatViews(
+                video.shares ||
+                0
+              )}
             </span>
           </button>
 
           <button
             type="button"
             className={
-              saved
+              pulseSocial.saved
                 ? "is-active"
                 : ""
             }
-            onClick={() =>
-              setSaved(
-                (value) =>
-                  !value
-              )
+            onClick={
+              pulseSocial.toggleSaved
             }
             aria-label="Зберегти"
           >
             <Bookmark
               size={24}
               fill={
-                saved
+                pulseSocial.saved
                   ? "currentColor"
                   : "none"
               }
             />
+
+            <span>
+              {formatViews(
+                pulseSocial.savesCount
+              )}
+            </span>
           </button>
         </aside>
 
@@ -772,20 +763,21 @@ export default function ClipsPage({
             <button
               type="button"
               className={
-                following
+                pulseSocial.following
                   ? "is-following"
                   : ""
               }
-              onClick={() =>
-                setFollowing(
-                  (
-                    value
-                  ) =>
-                    !value
-                )
+              disabled={
+                pulseSocial.isOwnAuthor ||
+                pulseSocial.busy
+              }
+              onClick={
+                pulseSocial.toggleFollow
               }
             >
-              {following
+              {pulseSocial.isOwnAuthor
+                ? "Це ви"
+                : pulseSocial.following
                 ? "Ви підписані"
                 : "Підписатися"}
             </button>
@@ -947,6 +939,26 @@ export default function ClipsPage({
           }}
         />
       )}
+
+      <PulseCommentsSheet
+        open={
+          commentsOpen
+        }
+        video={
+          video
+        }
+        authSession={
+          authSession
+        }
+        onClose={() =>
+          setCommentsOpen(
+            false
+          )
+        }
+        onCountChange={
+          pulseSocial.refresh
+        }
+      />
     </div>
   );
 }
