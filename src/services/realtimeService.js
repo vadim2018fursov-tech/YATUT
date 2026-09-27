@@ -867,6 +867,44 @@ export function subscribePulseRealtime({
         table:
           "pulse_media",
       },
+      {
+        event:
+          "*",
+        schema:
+          "public",
+        table:
+          "pulse_reactions",
+        filter:
+          `user_id=eq.${session.user.id}`,
+      },
+      {
+        event:
+          "*",
+        schema:
+          "public",
+        table:
+          "pulse_comments",
+      },
+      {
+        event:
+          "*",
+        schema:
+          "public",
+        table:
+          "saved_items",
+        filter:
+          `user_id=eq.${session.user.id}`,
+      },
+      {
+        event:
+          "*",
+        schema:
+          "public",
+        table:
+          "follows",
+        filter:
+          `follower_id=eq.${session.user.id}`,
+      },
     ],
     onPostgresChange:
       onChange,
