@@ -59,6 +59,8 @@ export default function PulseVideoRail({
   variant = "wide",
   people = [],
   peopleCount = null,
+  emptyTitle = "Тут поки тихо",
+  emptyText = "Перші реальні відео зʼявляться тут автоматично.",
   onOpenVideo,
   onViewAll,
 }) {
@@ -114,38 +116,50 @@ export default function PulseVideoRail({
         />
       ) : null}
 
-      <div
-        className={`pulse-video-rail__track pulse-video-rail__track--${variant}`}
-      >
-        {videos.map(
-          (
-            video,
-            index
-          ) => (
-            <PulseVideoCard
-              key={
-                video.id
-              }
-              video={
-                video
-              }
-              variant={
-                index === 0 &&
-                variant ===
-                  "mixed"
-                  ? "feature"
-                  : variant ===
+      {videos.length ? (
+        <div
+          className={`pulse-video-rail__track pulse-video-rail__track--${variant}`}
+        >
+          {videos.map(
+            (
+              video,
+              index
+            ) => (
+              <PulseVideoCard
+                key={
+                  video.id
+                }
+                video={
+                  video
+                }
+                variant={
+                  index === 0 &&
+                  variant ===
                     "mixed"
-                  ? "compact"
-                  : variant
-              }
-              onOpen={
-                onOpenVideo
-              }
-            />
-          )
-        )}
-      </div>
+                    ? "feature"
+                    : variant ===
+                      "mixed"
+                    ? "compact"
+                    : variant
+                }
+                onOpen={
+                  onOpenVideo
+                }
+              />
+            )
+          )}
+        </div>
+      ) : (
+        <div className="pulse-video-rail__empty">
+          <strong>
+            {emptyTitle}
+          </strong>
+
+          <span>
+            {emptyText}
+          </span>
+        </div>
+      )}
     </section>
   );
 }
