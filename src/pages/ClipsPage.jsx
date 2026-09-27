@@ -71,6 +71,7 @@ export default function ClipsPage({
   onNavigate,
   initialVideoId = null,
   authSession = null,
+  initialCommentsOpen = false,
 }) {
   const [
     backendVideos,
@@ -251,7 +252,25 @@ export default function ClipsPage({
   const [
     commentsOpen,
     setCommentsOpen,
-  ] = useState(false);
+  ] = useState(
+    Boolean(
+      initialCommentsOpen
+    )
+  );
+
+  useEffect(
+    () => {
+      setCommentsOpen(
+        Boolean(
+          initialCommentsOpen
+        )
+      );
+    },
+    [
+      initialCommentsOpen,
+      initialVideoId,
+    ]
+  );
 
   const video =
     clips[
