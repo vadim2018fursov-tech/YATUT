@@ -27,6 +27,10 @@ import {
   loadPulseMedia,
 } from "../services/pulseBackendService";
 
+import {
+  subscribePulseRealtime,
+} from "../services/realtimeService";
+
 function ensureVideos(
   preferred,
   fallback,
@@ -85,17 +89,21 @@ export default function PulsePage({
     let active =
       true;
 
-    loadPulseMedia(
-      authSession,
-      {
-        limit:
-          40,
-      }
-    )
-      .then(
-        (
-          videos
-        ) => {
+    let refreshTimer =
+      null;
+
+    const refresh =
+      async () => {
+        try {
+          const videos =
+            await loadPulseMedia(
+              authSession,
+              {
+                limit:
+                  40,
+              }
+            );
+
           if (
             active
           ) {
@@ -103,22 +111,45 @@ export default function PulsePage({
               videos
             );
           }
-        }
-      )
-      .catch(
-        (
+        } catch (
           error
-        ) => {
+        ) {
           console.warn(
             "PULSE BACKEND LOAD ERROR:",
             error
           );
         }
-      );
+      };
+
+    refresh();
+
+    const realtime =
+      subscribePulseRealtime({
+        session:
+          authSession,
+        onChange:
+          () => {
+            window.clearTimeout(
+              refreshTimer
+            );
+
+            refreshTimer =
+              window.setTimeout(
+                refresh,
+                120
+              );
+          },
+      });
 
     return () => {
       active =
         false;
+
+      window.clearTimeout(
+        refreshTimer
+      );
+
+      realtime?.close?.();
     };
   }, [
     authSession?.user?.id,
