@@ -195,16 +195,15 @@ export default function Settings({
     useState("");
 
   useEffect(() => {
+    const initial =
+      getPushSupportState();
+
     setPushState(
-      getPushSupportState()
+      initial
     );
 
     if (
-      !authSession?.user?.id ||
-      typeof Notification ===
-        "undefined" ||
-      Notification.permission !==
-        "granted"
+      !authSession?.user?.id
     ) {
       setPushSubscribed(
         false
@@ -220,14 +219,20 @@ export default function Settings({
         (
           subscription
         ) => {
+          const next =
+            getPushSupportState();
+
           setPushSubscribed(
             Boolean(
               subscription
+            ) ||
+            Boolean(
+              next.subscribed
             )
           );
 
           setPushState(
-            getPushSupportState()
+            next
           );
         }
       )
@@ -238,6 +243,10 @@ export default function Settings({
           console.warn(
             "PUSH SUBSCRIPTION SYNC ERROR:",
             error
+          );
+
+          setPushState(
+            getPushSupportState()
           );
         }
       );
