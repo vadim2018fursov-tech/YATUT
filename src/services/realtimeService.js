@@ -837,6 +837,43 @@ export function subscribeChatListRealtime({
   });
 }
 
+export function subscribePulseRealtime({
+  session,
+  onChange,
+  onStatus,
+}) {
+  if (
+    !session?.access_token ||
+    !session?.user?.id
+  ) {
+    return {
+      updateAccessToken:
+        () => {},
+      close:
+        () => {},
+    };
+  }
+
+  return createRealtimeChannel({
+    session,
+    topic:
+      `pulse:${session.user.id}`,
+    changes: [
+      {
+        event:
+          "*",
+        schema:
+          "public",
+        table:
+          "pulse_media",
+      },
+    ],
+    onPostgresChange:
+      onChange,
+    onStatus,
+  });
+}
+
 export function subscribeFeedRealtime({
   session,
   onChange,
