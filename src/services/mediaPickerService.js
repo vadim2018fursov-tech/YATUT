@@ -1,155 +1,163 @@
 import {
-  Camera,
-  MediaType,
-  MediaTypeSelection,
-} from "@capacitor/camera";
-
-import {
   Capacitor,
 } from "@capacitor/core";
 
-const CANCEL_CODES =
-  new Set([
-    "OS-PLUG-CAMR-0006",
-    "OS-PLUG-CAMR-0013",
-    "OS-PLUG-CAMR-0017",
-    "OS-PLUG-CAMR-0020",
-  ]);
-
-function normalizeFormat(
-  format = "",
-  mediaType = "image"
+function mediaTypeForFile(
+  file
 ) {
-  const clean =
-    String(format || "")
-      .trim()
-      .toLowerCase()
-      .replace(/^\./, "");
-
-  if (clean === "jpeg") {
-    return {
-      extension:
-        "jpg",
-      mime:
-        "image/jpeg",
-    };
-  }
-
-  if (
-    clean ===
-      "jpg" ||
-    clean ===
-      "png" ||
-    clean ===
-      "webp" ||
-    clean ===
-      "heic" ||
-    clean ===
-      "heif"
-  ) {
-    return {
-      extension:
-        clean,
-      mime:
-        `image/${clean === "jpg" ? "jpeg" : clean}`,
-    };
-  }
-
-  if (
-    clean ===
-      "mp4" ||
-    clean ===
-      "webm"
-  ) {
-    return {
-      extension:
-        clean,
-      mime:
-        `video/${clean}`,
-    };
-  }
-
-  if (
-    clean ===
-      "mov" ||
-    clean ===
-      "quicktime"
-  ) {
-    return {
-      extension:
-        "mov",
-      mime:
-        "video/quicktime",
-    };
-  }
-
-  return mediaType ===
-    "video"
-    ? {
-        extension:
-          "mp4",
-        mime:
-          "video/mp4",
-      }
-    : {
-        extension:
-          "jpg",
-        mime:
-          "image/jpeg",
-      };
-}
-
-function detectMediaType(
-  result
-) {
-  if (
-    result?.type ===
-    MediaType.Video
-  ) {
-    return "video";
-  }
-
-  if (
-    result?.type ===
-    MediaType.Photo
-  ) {
-    return "image";
-  }
-
-  const format =
+  const mime =
     String(
-      result?.metadata?.format ||
+      file?.type ||
       ""
-    ).toLowerCase();
+    );
 
-  return [
-    "mp4",
-    "mov",
-    "quicktime",
-    "webm",
-  ].includes(
-    format
+  return mime.startsWith(
+    "video/"
   )
     ? "video"
     : "image";
 }
 
-function errorCode(
-  error
-) {
-  return String(
-    error?.code ||
-    ""
+function openSystemPicker({
+  accept,
+  capture = null,
+}) {
+  return new Promise(
+    (
+      resolve
+    ) => {
+      const input =
+        document.createElement(
+          "input"
+        );
+
+      let settled =
+        false;
+
+      const finish =
+        (
+          file = null
+        ) => {
+          if (
+            settled
+          ) {
+            return;
+          }
+
+          settled =
+            true;
+
+          input.remove();
+
+          resolve(
+            file
+          );
+        };
+
+      input.type =
+        "file";
+      input.accept =
+        accept;
+      input.multiple =
+        false;
+
+      if (
+        capture
+      ) {
+        input.setAttribute(
+          "capture",
+          capture
+        );
+      }
+
+      input.style.position =
+        "fixed";
+      input.style.left =
+        "-9999px";
+      input.style.width =
+        "1px";
+      input.style.height =
+        "1px";
+      input.style.opacity =
+        "0";
+      input.style.pointerEvents =
+        "none";
+
+      input.addEventListener(
+        "change",
+        () => {
+          finish(
+            input.files?.[0] ||
+            null
+          );
+        },
+        {
+          once:
+            true,
+        }
+      );
+
+      input.addEventListener(
+        "cancel",
+        () =>
+          finish(
+            null
+          ),
+        {
+          once:
+            true,
+        }
+      );
+
+      document.body.appendChild(
+        input
+      );
+
+      input.click();
+    }
   );
+}
+
+function resultForFile(
+  file
+) {
+  if (!file) {
+    return null;
+  }
+
+  const mediaType =
+    mediaTypeForFile(
+      file
+    );
+
+  return {
+    file,
+    mediaType,
+    previewUrl:
+      URL.createObjectURL(
+        file
+      ),
+    duration:
+      null,
+    width:
+      null,
+    height:
+      null,
+    thumbnailBase64:
+      null,
+    nativeResult:
+      null,
+  };
 }
 
 export function isMediaPickerCancelled(
   error
 ) {
-  return CANCEL_CODES.has(
-    errorCode(
-      error
-    )
+  return (
+    error?.name ===
+      "AbortError" ||
+    error?.name ===
+      "NotAllowedError"
   );
 }
 
@@ -161,214 +169,6 @@ export function getNativeMediaPlatform() {
   return Capacitor.getPlatform();
 }
 
-function sourceUrlForResult(
-  result
-) {
-  if (
-    result?.webPath
-  ) {
-    return result.webPath;
-  }
-
-  if (
-    result?.uri
-  ) {
-    return Capacitor.convertFileSrc(
-      result.uri
-    );
-  }
-
-  return null;
-}
-
-async function mediaResultToFile(
-  result,
-  {
-    prefix =
-      "yatut-media",
-  } = {}
-) {
-  if (!result) {
-    return null;
-  }
-
-  const mediaType =
-    detectMediaType(
-      result
-    );
-
-  const source =
-    sourceUrlForResult(
-      result
-    );
-
-  if (!source) {
-    throw new Error(
-      "Не вдалося отримати файл з пристрою."
-    );
-  }
-
-  const response =
-    await fetch(
-      source
-    );
-
-  if (
-    !response.ok
-  ) {
-    throw new Error(
-      "Не вдалося прочитати вибране медіа."
-    );
-  }
-
-  const blob =
-    await response.blob();
-
-  const normalized =
-    normalizeFormat(
-      result?.metadata?.format,
-      mediaType
-    );
-
-  const mimeType =
-    blob.type ||
-    normalized.mime;
-
-  const extension =
-    mimeType ===
-      "image/jpeg"
-      ? "jpg"
-      : mimeType ===
-        "video/quicktime"
-      ? "mov"
-      : (
-          mimeType.split(
-            "/"
-          )[1] ||
-          normalized.extension
-        )
-          .split(
-            ";"
-          )[0]
-          .replace(
-            /[^a-z0-9]/gi,
-            ""
-          ) ||
-        normalized.extension;
-
-  const file =
-    new File(
-      [
-        blob,
-      ],
-      `${prefix}-${Date.now()}.${extension}`,
-      {
-        type:
-          mimeType,
-        lastModified:
-          Date.now(),
-      }
-    );
-
-  return {
-    file,
-    mediaType,
-    previewUrl:
-      URL.createObjectURL(
-        file
-      ),
-    duration:
-      Number(
-        result?.metadata
-          ?.duration ||
-        0
-      ) ||
-      null,
-    width:
-      Number(
-        result?.metadata
-          ?.width ||
-        0
-      ) ||
-      null,
-    height:
-      Number(
-        result?.metadata
-          ?.height ||
-        0
-      ) ||
-      null,
-    thumbnailBase64:
-      result?.thumbnail ||
-      null,
-    nativeResult:
-      result,
-  };
-}
-
-function mediaSelectionFor(
-  kind
-) {
-  if (
-    kind ===
-    "video"
-  ) {
-    return MediaTypeSelection.Video;
-  }
-
-  if (
-    kind ===
-    "image"
-  ) {
-    return MediaTypeSelection.Photo;
-  }
-
-  return MediaTypeSelection.All;
-}
-
-function friendlyCameraError(
-  error,
-  fallback
-) {
-  if (
-    isMediaPickerCancelled(
-      error
-    )
-  ) {
-    return null;
-  }
-
-  const code =
-    errorCode(
-      error
-    );
-
-  if (
-    code ===
-      "OS-PLUG-CAMR-0003" ||
-    code ===
-      "OS-PLUG-CAMR-0005"
-  ) {
-    return new Error(
-      "ЯТУТ не має доступу до камери або медіатеки. Увімкніть доступ у налаштуваннях пристрою."
-    );
-  }
-
-  if (
-    code ===
-    "OS-PLUG-CAMR-0007"
-  ) {
-    return new Error(
-      "Камера недоступна на цьому пристрої."
-    );
-  }
-
-  return new Error(
-    error?.message ||
-    fallback
-  );
-}
-
 export async function pickNativeMedia(
   kind = "all"
 ) {
@@ -378,58 +178,23 @@ export async function pickNativeMedia(
     return null;
   }
 
-  try {
-    const {
-      results = [],
-    } =
-      await Camera.chooseFromGallery({
-        mediaType:
-          mediaSelectionFor(
-            kind
-          ),
-        allowMultipleSelection:
-          false,
-        limit:
-          1,
-        includeMetadata:
-          true,
-      });
+  const accept =
+    kind ===
+    "video"
+      ? "video/*"
+      : kind ===
+        "image"
+      ? "image/*"
+      : "image/*,video/*";
 
-    const result =
-      results[0];
+  const file =
+    await openSystemPicker({
+      accept,
+    });
 
-    if (!result) {
-      return null;
-    }
-
-    return mediaResultToFile(
-      result,
-      {
-        prefix:
-          kind ===
-            "video"
-            ? "gallery-video"
-            : kind ===
-              "image"
-            ? "gallery-photo"
-            : "gallery-media",
-      }
-    );
-  } catch (
-    error
-  ) {
-    const normalized =
-      friendlyCameraError(
-        error,
-        "Не вдалося відкрити медіатеку."
-      );
-
-    if (!normalized) {
-      return null;
-    }
-
-    throw normalized;
-  }
+  return resultForFile(
+    file
+  );
 }
 
 export async function captureNativePhoto() {
@@ -439,41 +204,17 @@ export async function captureNativePhoto() {
     return null;
   }
 
-  try {
-    const result =
-      await Camera.takePhoto({
-        quality:
-          92,
-        includeMetadata:
-          true,
-        saveToGallery:
-          false,
-        editable:
-          "no",
-      });
+  const file =
+    await openSystemPicker({
+      accept:
+        "image/*",
+      capture:
+        "environment",
+    });
 
-    return mediaResultToFile(
-      result,
-      {
-        prefix:
-          "camera-photo",
-      }
-    );
-  } catch (
-    error
-  ) {
-    const normalized =
-      friendlyCameraError(
-        error,
-        "Не вдалося зробити фото."
-      );
-
-    if (!normalized) {
-      return null;
-    }
-
-    throw normalized;
-  }
+  return resultForFile(
+    file
+  );
 }
 
 export async function captureNativeVideo() {
@@ -483,39 +224,17 @@ export async function captureNativeVideo() {
     return null;
   }
 
-  try {
-    const result =
-      await Camera.recordVideo({
-        saveToGallery:
-          false,
-        includeMetadata:
-          true,
-        isPersistent:
-          false,
-      });
+  const file =
+    await openSystemPicker({
+      accept:
+        "video/*",
+      capture:
+        "environment",
+    });
 
-    return mediaResultToFile(
-      result,
-      {
-        prefix:
-          "camera-video",
-      }
-    );
-  } catch (
-    error
-  ) {
-    const normalized =
-      friendlyCameraError(
-        error,
-        "Не вдалося записати відео."
-      );
-
-    if (!normalized) {
-      return null;
-    }
-
-    throw normalized;
-  }
+  return resultForFile(
+    file
+  );
 }
 
 export function revokeMediaPreview(
