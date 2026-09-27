@@ -14,6 +14,7 @@ import {
   requestLocationPermission,
   requestMediaPermissions,
   requestPushPermission,
+  syncPushPermission,
 } from "../services/devicePermissionService";
 
 function statusLabel(
@@ -76,6 +77,11 @@ export default function DevicePermissions({
     useState("");
 
   async function refresh() {
+    const push =
+      await syncPushPermission(
+        authSession
+      );
+
     const base =
       getDevicePermissionState();
 
@@ -98,6 +104,10 @@ export default function DevicePermissions({
 
     setStates({
       ...base,
+      notification:
+        push.permission ||
+        base.notification,
+      push,
       camera:
         base.camera ===
         "unsupported"
@@ -118,7 +128,10 @@ export default function DevicePermissions({
 
   useEffect(() => {
     refresh();
-  }, []);
+  }, [
+    authSession?.user?.id,
+    authSession?.access_token,
+  ]);
 
   const rows =
     useMemo(
