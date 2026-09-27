@@ -1,3 +1,14 @@
+import {
+  Capacitor,
+} from "@capacitor/core";
+
+import {
+  disableNativePushNotifications,
+  enableNativePushNotifications,
+  getNativePushSupportState,
+  syncNativePushNotifications,
+} from "./nativePushNotificationService";
+
 const SUPABASE_URL =
   "https://yqskwqahmkeiconsrhoy.supabase.co";
 
@@ -7,66 +18,141 @@ const SUPABASE_KEY =
 export const YATUT_VAPID_PUBLIC_KEY =
   "BBZI5sfmY-lHNUCQPubTGIz7iP5lwV3JB6fItEOavsnOwioxIiOdxbyq7AknZ5Kk47QukjC899W8r4cg4Ab95Tk";
 
-function headers(session, extra = {}) {
+function headers(
+  session,
+  extra = {}
+) {
   return {
-    apikey: SUPABASE_KEY,
+    apikey:
+      SUPABASE_KEY,
     Authorization:
-      `Bearer ${session?.access_token || SUPABASE_KEY}`,
-    "Content-Type": "application/json",
+      `Bearer ${
+        session?.access_token ||
+        SUPABASE_KEY
+      }`,
+    "Content-Type":
+      "application/json",
     ...extra,
   };
 }
 
-function urlBase64ToUint8Array(base64String) {
+function isNative() {
+  return Capacitor
+    .isNativePlatform();
+}
+
+function urlBase64ToUint8Array(
+  base64String
+) {
   const padding =
     "=".repeat(
-      (4 - (base64String.length % 4)) %
+      (
+        4 -
+        (
+          base64String.length %
+          4
+        )
+      ) %
         4
     );
 
   const base64 =
-    (base64String + padding)
-      .replace(/-/g, "+")
-      .replace(/_/g, "/");
+    (
+      base64String +
+      padding
+    )
+      .replace(
+        /-/g,
+        "+"
+      )
+      .replace(
+        /_/g,
+        "/"
+      );
 
   const rawData =
-    window.atob(base64);
+    window.atob(
+      base64
+    );
 
   return Uint8Array.from(
-    [...rawData].map(
-      (character) =>
-        character.charCodeAt(0)
+    [
+      ...rawData,
+    ].map(
+      (
+        character
+      ) =>
+        character.charCodeAt(
+          0
+        )
     )
   );
 }
 
 function detectDeviceLabel() {
-  const ua =
-    navigator.userAgent || "";
+  if (
+    isNative()
+  ) {
+    return Capacitor
+      .getPlatform() ===
+      "ios"
+      ? "iPhone / iPad"
+      : "Android";
+  }
 
-  if (/iPhone/i.test(ua)) {
+  const ua =
+    navigator.userAgent ||
+    "";
+
+  if (
+    /iPhone/i.test(
+      ua
+    )
+  ) {
     return "iPhone";
   }
 
-  if (/iPad/i.test(ua)) {
+  if (
+    /iPad/i.test(
+      ua
+    )
+  ) {
     return "iPad";
   }
 
-  if (/Android/i.test(ua)) {
-    return /Mobile/i.test(ua)
+  if (
+    /Android/i.test(
+      ua
+    )
+  ) {
+    return /Mobile/i.test(
+      ua
+    )
       ? "Android телефон"
       : "Android планшет";
   }
 
-  if (/Windows/i.test(ua)) {
+  if (
+    /Windows/i.test(
+      ua
+    )
+  ) {
     return "Windows";
   }
 
-  if (/Macintosh|Mac OS X/i.test(ua)) {
+  if (
+    /Macintosh|Mac OS X/i.test(
+      ua
+    )
+  ) {
     return "Mac";
   }
 
-  if (/Linux/i.test(ua)) {
+  if (
+    /Linux/i.test(
+      ua
+    )
+  ) {
     return "Linux";
   }
 
@@ -74,24 +160,37 @@ function detectDeviceLabel() {
 }
 
 export function getPushSupportState() {
+  if (
+    isNative()
+  ) {
+    return getNativePushSupportState();
+  }
+
   const supported =
-    "serviceWorker" in navigator &&
-    "PushManager" in window &&
-    "Notification" in window;
+    "serviceWorker" in
+      navigator &&
+    "PushManager" in
+      window &&
+    "Notification" in
+      window;
 
   const standalone =
     window.matchMedia?.(
       "(display-mode: standalone)"
     )?.matches ||
-    window.navigator.standalone ===
+    window.navigator
+      .standalone ===
       true;
 
   const isiOS =
     /iPhone|iPad|iPod/i.test(
-      navigator.userAgent || ""
+      navigator.userAgent ||
+        ""
     );
 
   return {
+    native:
+      false,
     supported,
     permission:
       supported
@@ -105,12 +204,17 @@ export function getPushSupportState() {
       ),
     deviceLabel:
       detectDeviceLabel(),
+    subscribed:
+      false,
   };
 }
 
 async function waitForRegistration() {
   if (
-    !("serviceWorker" in navigator)
+    !(
+      "serviceWorker" in
+      navigator
+    )
   ) {
     throw new Error(
       "Service Worker не підтримується на цьому пристрої."
@@ -118,16 +222,22 @@ async function waitForRegistration() {
   }
 
   let registration =
-    await navigator.serviceWorker
+    await navigator
+      .serviceWorker
       .getRegistration();
 
   if (!registration) {
     registration =
-      await navigator.serviceWorker
-        .register("/sw.js");
+      await navigator
+        .serviceWorker
+        .register(
+          "/sw.js"
+        );
   }
 
-  return navigator.serviceWorker.ready;
+  return navigator
+    .serviceWorker
+    .ready;
 }
 
 async function saveSubscription(
@@ -148,7 +258,8 @@ async function saveSubscription(
     await fetch(
       `${SUPABASE_URL}/rest/v1/push_subscriptions?on_conflict=endpoint`,
       {
-        method: "POST",
+        method:
+          "POST",
         headers:
           headers(
             session,
@@ -164,10 +275,12 @@ async function saveSubscription(
             endpoint:
               json.endpoint,
             p256dh:
-              json.keys?.p256dh ||
+              json.keys
+                ?.p256dh ||
               "",
             auth:
-              json.keys?.auth ||
+              json.keys
+                ?.auth ||
               "",
             device_label:
               detectDeviceLabel(),
@@ -178,7 +291,9 @@ async function saveSubscription(
       }
     );
 
-  if (!response.ok) {
+  if (
+    !response.ok
+  ) {
     const body =
       await response.text();
 
@@ -189,19 +304,23 @@ async function saveSubscription(
   }
 }
 
-export async function enablePushNotifications(
+async function enableWebPush(
   session
 ) {
   const support =
     getPushSupportState();
 
-  if (!support.supported) {
+  if (
+    !support.supported
+  ) {
     throw new Error(
       "Push-сповіщення не підтримуються цим браузером."
     );
   }
 
-  if (support.requiresInstall) {
+  if (
+    support.requiresInstall
+  ) {
     throw new Error(
       "На iPhone або iPad спочатку додайте ЯТУТ на головний екран, відкрийте встановлену версію і повторіть."
     );
@@ -232,14 +351,19 @@ export async function enablePushNotifications(
     await waitForRegistration();
 
   let subscription =
-    await registration.pushManager
+    await registration
+      .pushManager
       .getSubscription();
 
-  if (!subscription) {
+  if (
+    !subscription
+  ) {
     subscription =
-      await registration.pushManager
+      await registration
+        .pushManager
         .subscribe({
-          userVisibleOnly: true,
+          userVisibleOnly:
+            true,
           applicationServerKey:
             urlBase64ToUint8Array(
               YATUT_VAPID_PUBLIC_KEY
@@ -255,14 +379,23 @@ export async function enablePushNotifications(
   return subscription;
 }
 
-export async function syncPushSubscription(
+async function syncWebPush(
   session
 ) {
   if (
     !session?.user?.id ||
-    !("serviceWorker" in navigator) ||
-    !("PushManager" in window) ||
-    !("Notification" in window) ||
+    !(
+      "serviceWorker" in
+      navigator
+    ) ||
+    !(
+      "PushManager" in
+      window
+    ) ||
+    !(
+      "Notification" in
+      window
+    ) ||
     Notification.permission !==
       "granted"
   ) {
@@ -273,10 +406,13 @@ export async function syncPushSubscription(
     await waitForRegistration();
 
   const subscription =
-    await registration.pushManager
+    await registration
+      .pushManager
       .getSubscription();
 
-  if (subscription) {
+  if (
+    subscription
+  ) {
     await saveSubscription(
       session,
       subscription
@@ -286,24 +422,31 @@ export async function syncPushSubscription(
   return subscription;
 }
 
-export async function disablePushNotifications(
+async function disableWebPush(
   session
 ) {
   if (
-    !("serviceWorker" in navigator)
+    !(
+      "serviceWorker" in
+      navigator
+    )
   ) {
     return;
   }
 
   const registration =
-    await navigator.serviceWorker
+    await navigator
+      .serviceWorker
       .getRegistration();
 
   const subscription =
-    await registration?.pushManager
+    await registration
+      ?.pushManager
       ?.getSubscription();
 
-  if (!subscription) {
+  if (
+    !subscription
+  ) {
     return;
   }
 
@@ -315,7 +458,8 @@ export async function disablePushNotifications(
         subscription.endpoint
       )}`,
       {
-        method: "DELETE",
+        method:
+          "DELETE",
         headers:
           headers(
             session
@@ -324,5 +468,54 @@ export async function disablePushNotifications(
     );
   }
 
-  await subscription.unsubscribe();
+  await subscription
+    .unsubscribe();
+}
+
+export async function enablePushNotifications(
+  session
+) {
+  if (
+    isNative()
+  ) {
+    return enableNativePushNotifications(
+      session
+    );
+  }
+
+  return enableWebPush(
+    session
+  );
+}
+
+export async function syncPushSubscription(
+  session
+) {
+  if (
+    isNative()
+  ) {
+    return syncNativePushNotifications(
+      session
+    );
+  }
+
+  return syncWebPush(
+    session
+  );
+}
+
+export async function disablePushNotifications(
+  session
+) {
+  if (
+    isNative()
+  ) {
+    return disableNativePushNotifications(
+      session
+    );
+  }
+
+  return disableWebPush(
+    session
+  );
 }
