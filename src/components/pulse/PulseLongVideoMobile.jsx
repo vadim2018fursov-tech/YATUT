@@ -617,6 +617,7 @@ export default function PulseLongVideoMobile({
           .qualitySources?.[
           quality
         ] ||
+        selectedVideo.videoUrl ||
         selectedVideo.video ||
         null
       : null;
