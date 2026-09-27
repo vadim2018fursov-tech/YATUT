@@ -394,6 +394,37 @@ async function ensureListeners() {
   listenersReady =
     true;
 
+  if (
+    platform() ===
+    "android"
+  ) {
+    try {
+      await PushNotifications.createChannel({
+        id:
+          "yatut_default",
+        name:
+          "ЯТУТ",
+        description:
+          "Повідомлення, чати та активність ЯТУТ",
+        importance:
+          5,
+        visibility:
+          1,
+        sound:
+          "default",
+        vibration:
+          true,
+      });
+    } catch (
+      error
+    ) {
+      console.warn(
+        "NATIVE PUSH CHANNEL ERROR:",
+        error
+      );
+    }
+  }
+
   await PushNotifications.addListener(
     "registration",
     async (
