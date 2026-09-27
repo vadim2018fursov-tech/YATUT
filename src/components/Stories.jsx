@@ -31,6 +31,14 @@ import {
   subscribeStoriesRealtime,
 } from "../services/realtimeService";
 
+import {
+  captureNativePhoto,
+  captureNativeVideo,
+  isNativeMediaPicker,
+  pickNativeMedia,
+  revokeMediaPreview,
+} from "../services/mediaPickerService";
+
 /* =========================================================
    DEMO STORIES
 ========================================================= */
@@ -239,6 +247,9 @@ function Stories({
   const currentOwnerId =
     authSession?.user?.id ||
     "me";
+
+  const nativeMediaAvailable =
+    isNativeMediaPicker();
 
   /* =======================================================
      LOAD
@@ -704,6 +715,71 @@ function Stories({
       );
     };
 
+  async function pickStoryNativeMedia(
+    type
+  ) {
+    try {
+      const selected =
+        await pickNativeMedia(
+          type
+        );
+
+      if (!selected) {
+        return;
+      }
+
+      selectMedia(
+        selected.file,
+        selected.mediaType ||
+          type
+      );
+
+      revokeMediaPreview(
+        selected.previewUrl
+      );
+    } catch (
+      error
+    ) {
+      showToast(
+        error?.message ||
+        "Не вдалося відкрити медіатеку"
+      );
+    }
+  }
+
+  async function captureStoryNativeMedia(
+    type
+  ) {
+    try {
+      const selected =
+        type ===
+        "video"
+          ? await captureNativeVideo()
+          : await captureNativePhoto();
+
+      if (!selected) {
+        return;
+      }
+
+      selectMedia(
+        selected.file,
+        selected.mediaType ||
+          type
+      );
+
+      revokeMediaPreview(
+        selected.previewUrl
+      );
+    } catch (
+      error
+    ) {
+      showToast(
+        error?.message ||
+        "Не вдалося відкрити камеру"
+      );
+    }
+  }
+
   /* =======================================================
      CREATE
   ======================================================= */
@@ -1157,7 +1233,11 @@ function Stories({
                     <button
                       className="yatut-story-upload-zone"
                       onClick={() =>
-                        imageInputRef.current?.click()
+                        nativeMediaAvailable
+                          ? pickStoryNativeMedia(
+                              "image"
+                            )
+                          : imageInputRef.current?.click()
                       }
                     >
                       <span>
@@ -1183,12 +1263,31 @@ function Stories({
 
                       <button
                         onClick={() =>
-                          imageInputRef.current?.click()
+                          nativeMediaAvailable
+                          ? pickStoryNativeMedia(
+                              "image"
+                            )
+                          : imageInputRef.current?.click()
                         }
                       >
                         Замінити
                       </button>
                     </div>
+                  )}
+
+                  {nativeMediaAvailable && (
+                    <button
+                      type="button"
+                      className="yatut-story-native-capture"
+                      onClick={() =>
+                        captureStoryNativeMedia(
+                          "image"
+                        )
+                      }
+                    >
+                      <span>📷</span>
+                      Зняти фото
+                    </button>
                   )}
 
                 </div>
@@ -1220,7 +1319,11 @@ function Stories({
                     <button
                       className="yatut-story-upload-zone"
                       onClick={() =>
-                        videoInputRef.current?.click()
+                        nativeMediaAvailable
+                          ? pickStoryNativeMedia(
+                              "video"
+                            )
+                          : videoInputRef.current?.click()
                       }
                     >
                       <span>
@@ -1247,12 +1350,31 @@ function Stories({
 
                       <button
                         onClick={() =>
-                          videoInputRef.current?.click()
+                          nativeMediaAvailable
+                          ? pickStoryNativeMedia(
+                              "video"
+                            )
+                          : videoInputRef.current?.click()
                         }
                       >
                         Замінити
                       </button>
                     </div>
+                  )}
+
+                  {nativeMediaAvailable && (
+                    <button
+                      type="button"
+                      className="yatut-story-native-capture"
+                      onClick={() =>
+                        captureStoryNativeMedia(
+                          "video"
+                        )
+                      }
+                    >
+                      <span>🎥</span>
+                      Записати відео
+                    </button>
                   )}
 
                 </div>
