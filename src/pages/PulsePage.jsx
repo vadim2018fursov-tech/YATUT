@@ -101,6 +101,21 @@ export default function PulsePage({
   ] = useState([]);
 
   const [
+    friendBackendVideos,
+    setFriendBackendVideos,
+  ] = useState([]);
+
+  const [
+    cityBackendVideos,
+    setCityBackendVideos,
+  ] = useState([]);
+
+  const [
+    nearbyBackendVideos,
+    setNearbyBackendVideos,
+  ] = useState([]);
+
+  const [
     socialRevision,
     setSocialRevision,
   ] = useState(0);
@@ -141,6 +156,21 @@ export default function PulsePage({
 
             setTrendingBackendVideos(
               feeds.trending
+            );
+
+            setFriendBackendVideos(
+              feeds.friends ||
+              []
+            );
+
+            setCityBackendVideos(
+              feeds.city ||
+              []
+            );
+
+            setNearbyBackendVideos(
+              feeds.nearby ||
+              []
             );
           }
         } catch (
@@ -223,7 +253,7 @@ export default function PulsePage({
           activeTab ===
           "friends"
         ) {
-          return followingVideos.slice(
+          return friendBackendVideos.slice(
             0,
             8
           );
@@ -231,23 +261,22 @@ export default function PulsePage({
 
         if (
           activeTab ===
-          "city" ||
+          "city"
+        ) {
+          return cityBackendVideos.slice(
+            0,
+            8
+          );
+        }
+
+        if (
           activeTab ===
           "nearby"
         ) {
-          return backendVideos
-            .filter(
-              (
-                video
-              ) =>
-                video.location?.name &&
-                video.location.name !==
-                  "Україна"
-            )
-            .slice(
-              0,
-              8
-            );
+          return nearbyBackendVideos.slice(
+            0,
+            8
+          );
         }
 
         if (
@@ -267,6 +296,9 @@ export default function PulsePage({
         backendVideos,
         forYouVideos,
         followingVideos,
+        friendBackendVideos,
+        cityBackendVideos,
+        nearbyBackendVideos,
       ]
     );
 
@@ -405,44 +437,22 @@ export default function PulsePage({
 
   const nearbyVideos =
     ensureVideos(
-      [
-        ...backendVideos.filter(
-          (video) =>
-            video.location?.name &&
-            video.location.name !==
-              "Україна"
-        ),
-        ...(pulseRecommendations.nearby || []),
-      ],
-      [
-        ...backendVideos,
-        ...(pulseRecommendations.forYou || []),
-      ],
+      nearbyBackendVideos,
+      backendVideos,
       5
     );
 
   const friendVideos =
     ensureVideos(
-      pulseRecommendations.friends,
-      pulseRecommendations.forYou,
+      friendBackendVideos,
+      followingVideos,
       5
     );
 
   const cityVideos =
     ensureVideos(
-      [
-        ...backendVideos.filter(
-          (video) =>
-            video.location?.name &&
-            video.location.name !==
-              "Україна"
-        ),
-        ...(pulseRecommendations.city || []),
-      ],
-      [
-        ...backendVideos,
-        ...(pulseRecommendations.forYou || []),
-      ],
+      cityBackendVideos,
+      backendVideos,
       5
     );
 
