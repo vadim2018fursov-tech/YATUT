@@ -206,9 +206,34 @@ function reasonFor(
   video,
   {
     followedAuthors,
+    friendAuthors,
     viewedIds,
+    currentCity,
   }
 ) {
+  if (
+    friendAuthors.has(
+      video?.author?.id
+    )
+  ) {
+    return "Твій друг";
+  }
+
+  if (
+    currentCity &&
+    String(
+      video?.location?.name ||
+      ""
+    )
+      .trim()
+      .toLocaleLowerCase()
+      .includes(
+        currentCity
+      )
+  ) {
+    return "Твоє місто";
+  }
+
   if (
     followedAuthors.has(
       video?.author?.id
@@ -277,10 +302,12 @@ function rankForYou(
 ) {
   const {
     followedAuthors,
+    friendAuthors,
     viewedIds,
     likedIds,
     savedIds,
     currentUserId,
+    currentCity,
   } =
     signals;
 
@@ -314,6 +341,31 @@ function rankForYou(
         ) {
           score +=
             42;
+        }
+
+        if (
+          friendAuthors.has(
+            authorId
+          )
+        ) {
+          score +=
+            58;
+        }
+
+        if (
+          currentCity &&
+          String(
+            video?.location?.name ||
+            ""
+          )
+            .trim()
+            .toLocaleLowerCase()
+            .includes(
+              currentCity
+            )
+        ) {
+          score +=
+            24;
         }
 
         if (
@@ -443,17 +495,23 @@ async function loadSignals(
         null,
       followedAuthors:
         new Set(),
+      friendAuthors:
+        new Set(),
       viewedIds:
         new Set(),
       likedIds:
         new Set(),
       savedIds:
         new Set(),
+      currentCity:
+        "",
     };
   }
 
   const [
     followRows,
+    friendshipRows,
+    profileRows,
     viewRows,
     reactionRows,
     savedRows,
@@ -469,6 +527,30 @@ async function loadSignals(
             "following_id",
           limit:
             1000,
+        }
+      ),
+      readRows(
+        session,
+        "friendships",
+        {
+          or:
+            `(user_id.eq.${userId},friend_id.eq.${userId})`,
+          select:
+            "user_id,friend_id",
+          limit:
+            1000,
+        }
+      ),
+      readRows(
+        session,
+        "profiles",
+        {
+          id:
+            `eq.${userId}`,
+          select:
+            "id,city",
+          limit:
+            1,
         }
       ),
       readRows(
@@ -529,6 +611,30 @@ async function loadSignals(
             row.following_id
         )
       ),
+    friendAuthors:
+      new Set(
+        friendshipRows
+          .map(
+            (
+              row
+            ) =>
+              row.user_id ===
+              userId
+                ? row.friend_id
+                : row.user_id
+          )
+          .filter(
+            Boolean
+          )
+      ),
+    currentCity:
+      String(
+        profileRows?.[0]
+          ?.city ||
+        ""
+      )
+        .trim()
+        .toLocaleLowerCase(),
     viewedIds:
       new Set(
         viewRows.map(
@@ -631,6 +737,81 @@ export async function loadRankedPulseFeeds(
         })
       );
 
+  const friends =
+    forYou
+      .filter(
+        (
+          video
+        ) =>
+          signals.friendAuthors.has(
+            video?.author?.id
+          )
+      )
+      .sort(
+        (
+          first,
+          second
+        ) =>
+          Number(
+            second.createdAt ||
+            0
+          ) -
+          Number(
+            first.createdAt ||
+            0
+          )
+      )
+      .map(
+        (
+          video
+        ) => ({
+          ...video,
+          recommendationReason:
+            "Твій друг",
+        })
+      );
+
+  const city =
+    signals.currentCity
+      ? forYou
+          .filter(
+            (
+              video
+            ) =>
+              String(
+                video?.location?.name ||
+                ""
+              )
+                .trim()
+                .toLocaleLowerCase()
+                .includes(
+                  signals.currentCity
+                )
+          )
+          .map(
+            (
+              video
+            ) => ({
+              ...video,
+              recommendationReason:
+                "Твоє місто",
+            })
+          )
+      : [];
+
+  const nearby =
+    city
+      .slice(
+        0,
+        Math.max(
+          12,
+          Math.ceil(
+            city.length *
+            0.7
+          )
+        )
+      );
+
   const trending =
     [
       ...videos,
@@ -678,10 +859,19 @@ export async function loadRankedPulseFeeds(
       videos,
     forYou,
     following,
+    friends,
+    city,
+    nearby,
     trending,
     followedAuthorIds:
       [
         ...signals.followedAuthors,
       ],
+    friendAuthorIds:
+      [
+        ...signals.friendAuthors,
+      ],
+    currentCity:
+      signals.currentCity,
   };
 }
