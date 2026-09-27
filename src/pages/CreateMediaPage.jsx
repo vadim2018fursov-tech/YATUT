@@ -25,8 +25,8 @@ import {
 } from "../services/mediaPickerService";
 
 import {
-  uploadPostMedia,
   uploadPulseMedia,
+  uploadPulseThumbnail,
 } from "../services/storageService";
 
 import {
@@ -653,9 +653,10 @@ export default function CreateMediaPage({
           thumbnailFile
         ) {
           thumbnail =
-            await uploadPostMedia(
+            await uploadPulseThumbnail(
               authSession,
-              thumbnailFile
+              thumbnailFile,
+              type
             );
         }
       } catch (
