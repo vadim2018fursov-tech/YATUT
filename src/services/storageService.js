@@ -672,6 +672,83 @@ export async function uploadPulseMedia(
   };
 }
 
+export async function uploadPulseThumbnail(
+  session,
+  file,
+  kind = "video"
+) {
+  if (
+    !session?.user?.id ||
+    !file
+  ) {
+    return null;
+  }
+
+  const mime =
+    String(
+      file.type ||
+      ""
+    );
+
+  if (
+    !mime.startsWith(
+      "image/"
+    )
+  ) {
+    throw new Error(
+      "Обкладинка PULSE має бути зображенням."
+    );
+  }
+
+  if (
+    file.size >
+    10 *
+      1024 *
+      1024
+  ) {
+    throw new Error(
+      "Обкладинка PULSE має бути до 10 МБ."
+    );
+  }
+
+  const extension =
+    extensionForFile(
+      file
+    );
+
+  const safeKind =
+    [
+      "clip",
+      "video",
+      "moment",
+      "wave",
+    ].includes(
+      kind
+    )
+      ? kind
+      : "video";
+
+  const path =
+    `${session.user.id}/pulse/thumb-${safeKind}-${Date.now()}-${randomPart()}.${extension}`;
+
+  await uploadObject({
+    session,
+    bucket:
+      "post-media",
+    path,
+    file,
+  });
+
+  return {
+    url:
+      publicUrl(
+        "post-media",
+        path
+      ),
+    path,
+  };
+}
+
 export async function uploadStoryMedia(
   session,
   file
