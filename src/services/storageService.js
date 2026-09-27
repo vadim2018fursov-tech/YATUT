@@ -204,6 +204,7 @@ async function uploadObject({
   path,
   file,
   upsert = false,
+  onProgress = null,
 }) {
   if (
     !file
@@ -211,39 +212,165 @@ async function uploadObject({
     return null;
   }
 
-  const response =
-    await fetch(
-      `${SUPABASE_URL}/storage/v1/object/${encodeURIComponent(
-        bucket
-      )}/${encodeStoragePath(
-        path
-      )}`,
+  const url =
+    `${SUPABASE_URL}/storage/v1/object/${encodeURIComponent(
+      bucket
+    )}/${encodeStoragePath(
+      path
+    )}`;
+
+  const requestHeaders =
+    authHeaders(
+      session,
       {
-        method:
-          "POST",
-        headers:
-          authHeaders(
-            session,
-            {
-              "Content-Type":
-                file.type ||
-                "application/octet-stream",
-              "x-upsert":
-                upsert
-                  ? "true"
-                  : "false",
-              "cache-control":
-                "3600",
-            }
-          ),
-        body:
-          file,
+        "Content-Type":
+          file.type ||
+          "application/octet-stream",
+        "x-upsert":
+          upsert
+            ? "true"
+            : "false",
+        "cache-control":
+          "3600",
       }
     );
 
-  await parseResponse(
-    response
-  );
+  if (
+    typeof onProgress ===
+    "function"
+  ) {
+    await new Promise(
+      (
+        resolve,
+        reject
+      ) => {
+        const xhr =
+          new XMLHttpRequest();
+
+        xhr.open(
+          "POST",
+          url,
+          true
+        );
+
+        Object.entries(
+          requestHeaders
+        ).forEach(
+          ([
+            key,
+            value,
+          ]) => {
+            xhr.setRequestHeader(
+              key,
+              value
+            );
+          }
+        );
+
+        xhr.upload.onprogress =
+          (
+            event
+          ) => {
+            if (
+              !event.lengthComputable
+            ) {
+              return;
+            }
+
+            const progress =
+              Math.max(
+                0,
+                Math.min(
+                  100,
+                  Math.round(
+                    (
+                      event.loaded /
+                      event.total
+                    ) *
+                      100
+                  )
+                )
+              );
+
+            onProgress(
+              progress
+            );
+          };
+
+        xhr.onerror =
+          () => {
+            reject(
+              new Error(
+                "Не вдалося завантажити файл."
+              )
+            );
+          };
+
+        xhr.onload =
+          () => {
+            if (
+              xhr.status >=
+                200 &&
+              xhr.status <
+                300
+            ) {
+              onProgress(
+                100
+              );
+
+              resolve();
+
+              return;
+            }
+
+            let data =
+              null;
+
+            try {
+              data =
+                xhr.responseText
+                  ? JSON.parse(
+                      xhr.responseText
+                    )
+                  : null;
+            } catch {
+              data =
+                xhr.responseText;
+            }
+
+            reject(
+              new Error(
+                data?.message ||
+                data?.error ||
+                data?.statusCode ||
+                "Не вдалося завантажити файл."
+              )
+            );
+          };
+
+        xhr.send(
+          file
+        );
+      }
+    );
+  } else {
+    const response =
+      await fetch(
+        url,
+        {
+          method:
+            "POST",
+          headers:
+            requestHeaders,
+          body:
+            file,
+        }
+      );
+
+    await parseResponse(
+      response
+    );
+  }
 
   return {
     bucket,
@@ -593,7 +720,10 @@ export async function uploadPostMedia(
 export async function uploadPulseMedia(
   session,
   file,
-  kind = "video"
+  kind = "video",
+  {
+    onProgress = null,
+  } = {}
 ) {
   if (
     !session?.user?.id ||
@@ -655,6 +785,7 @@ export async function uploadPulseMedia(
       "post-media",
     path,
     file,
+    onProgress,
   });
 
   return {
