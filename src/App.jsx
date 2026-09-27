@@ -35,6 +35,7 @@ import "./mobile-app-hotfix.css";
 import "./styles/chat-conversation-mobile.css";
 import "./styles/pulse-long-video-mobile.css";
 import "./styles/mobile-more-menu.css";
+import "./styles/pulse-final-polish.css";
 import "./styles/dark-theme-v2.css";
 
 import Stories from "./components/Stories";
