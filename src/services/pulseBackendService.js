@@ -240,11 +240,33 @@ function mapPulseRow(
       null,
     duration:
       formatDuration(
-        row.duration_seconds
+        row.trim_end_seconds &&
+        row.trim_start_seconds !==
+          null
+          ? Number(
+              row.trim_end_seconds
+            ) -
+            Number(
+              row.trim_start_seconds ||
+              0
+            )
+          : row.duration_seconds
       ),
     durationSeconds:
       Number(
         row.duration_seconds ||
+        0
+      ) ||
+      null,
+    trimStart:
+      Number(
+        row.trim_start_seconds ||
+        0
+      ) ||
+      0,
+    trimEnd:
+      Number(
+        row.trim_end_seconds ||
         0
       ) ||
       null,
@@ -316,7 +338,7 @@ export async function loadPulseMedia(
 
   url.searchParams.set(
     "select",
-    "id,author_id,kind,title,description,media_url,media_path,thumbnail_url,thumbnail_path,mime_type,duration_seconds,location_name,visibility,views,likes_count,comments_count,shares_count,created_at,updated_at"
+    "id,author_id,kind,title,description,media_url,media_path,thumbnail_url,thumbnail_path,mime_type,duration_seconds,trim_start_seconds,trim_end_seconds,location_name,visibility,views,likes_count,comments_count,shares_count,created_at,updated_at"
   );
 
   url.searchParams.set(
@@ -423,7 +445,7 @@ export async function getPulseMediaById(
 
   url.searchParams.set(
     "select",
-    "id,author_id,kind,title,description,media_url,media_path,thumbnail_url,thumbnail_path,mime_type,duration_seconds,location_name,visibility,views,likes_count,comments_count,shares_count,created_at,updated_at"
+    "id,author_id,kind,title,description,media_url,media_path,thumbnail_url,thumbnail_path,mime_type,duration_seconds,trim_start_seconds,trim_end_seconds,location_name,visibility,views,likes_count,comments_count,shares_count,created_at,updated_at"
   );
 
   url.searchParams.set(
@@ -493,6 +515,8 @@ export async function createPulseMedia(
     thumbnailPath = null,
     mimeType = "video/mp4",
     durationSeconds = null,
+    trimStartSeconds = null,
+    trimEndSeconds = null,
     locationName = null,
     visibility = "public",
   }
@@ -572,6 +596,32 @@ export async function createPulseMedia(
                 ? Math.round(
                     Number(
                       durationSeconds
+                    )
+                  )
+                : null,
+            trim_start_seconds:
+              Number.isFinite(
+                Number(
+                  trimStartSeconds
+                )
+              )
+                ? Math.max(
+                    0,
+                    Number(
+                      trimStartSeconds
+                    )
+                  )
+                : null,
+            trim_end_seconds:
+              Number.isFinite(
+                Number(
+                  trimEndSeconds
+                )
+              )
+                ? Math.max(
+                    0,
+                    Number(
+                      trimEndSeconds
                     )
                   )
                 : null,
