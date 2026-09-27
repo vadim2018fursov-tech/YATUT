@@ -20,6 +20,14 @@
       "overlaysWebView": false,
       "style": "LIGHT",
       "backgroundColor": "#655EFF"
+    },
+    "PushNotifications": {
+      "presentationOptions": [
+        "badge",
+        "sound",
+        "banner",
+        "list"
+      ]
     }
   }
 }
