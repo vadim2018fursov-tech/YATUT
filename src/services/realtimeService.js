@@ -49,6 +49,12 @@ function createRealtimeChannel({
   let reconnectAttempt =
     0;
 
+  let lastSocketActivityAt =
+    Date.now();
+
+  let backgroundedAt =
+    null;
+
   const channelTopic =
     `realtime:${topic}`;
 
@@ -175,6 +181,13 @@ function createRealtimeChannel({
         );
     } catch {
       return;
+    }
+
+    if (
+      message
+    ) {
+      lastSocketActivityAt =
+        Date.now();
     }
 
     if (
@@ -315,6 +328,18 @@ function createRealtimeChannel({
       return;
     }
 
+    if (
+      socket &&
+      (
+        socket.readyState ===
+          WebSocket.OPEN ||
+        socket.readyState ===
+          WebSocket.CONNECTING
+      )
+    ) {
+      return;
+    }
+
     clearTimers();
 
     onStatus?.(
@@ -329,6 +354,9 @@ function createRealtimeChannel({
     socket.addEventListener(
       "open",
       () => {
+        lastSocketActivityAt =
+          Date.now();
+
         joinRef =
           nextRef();
 
@@ -379,6 +407,22 @@ function createRealtimeChannel({
         heartbeat =
           window.setInterval(
             () => {
+              if (
+                document.visibilityState ===
+                  "visible" &&
+                Date.now() -
+                  lastSocketActivityAt >
+                  45000
+              ) {
+                try {
+                  socket?.close();
+                } catch {
+                  scheduleReconnect();
+                }
+
+                return;
+              }
+
               rawSend(
                 "heartbeat",
                 {},
@@ -436,6 +480,101 @@ function createRealtimeChannel({
     );
   }
 
+  function ensureConnectedAfterResume() {
+    if (
+      closed
+    ) {
+      return;
+    }
+
+    const backgroundDuration =
+      backgroundedAt
+        ? Date.now() -
+          backgroundedAt
+        : 0;
+
+    backgroundedAt =
+      null;
+
+    if (
+      socket?.readyState ===
+        WebSocket.OPEN
+    ) {
+      if (
+        backgroundDuration >
+          30000 ||
+        Date.now() -
+          lastSocketActivityAt >
+          45000
+      ) {
+        try {
+          socket.close();
+        } catch {
+          scheduleReconnect();
+        }
+
+        return;
+      }
+
+      rawSend(
+        "heartbeat",
+        {},
+        {
+          targetTopic:
+            "phoenix",
+          useJoinRef:
+            false,
+        }
+      );
+
+      updateAccessToken(
+        session?.access_token
+      );
+
+      return;
+    }
+
+    if (
+      socket?.readyState ===
+        WebSocket.CONNECTING
+    ) {
+      return;
+    }
+
+    connect();
+  }
+
+  function handleVisibilityChange() {
+    if (
+      document.visibilityState ===
+      "hidden"
+    ) {
+      backgroundedAt =
+        Date.now();
+
+      return;
+    }
+
+    ensureConnectedAfterResume();
+  }
+
+  function handleNativeAppState(
+    event
+  ) {
+    if (
+      event?.detail?.isActive
+    ) {
+      ensureConnectedAfterResume();
+    } else {
+      backgroundedAt =
+        Date.now();
+    }
+  }
+
+  function handleNetworkOnline() {
+    ensureConnectedAfterResume();
+  }
+
   function broadcast(
     event,
     payload
@@ -473,6 +612,21 @@ function createRealtimeChannel({
     closed =
       true;
 
+    document.removeEventListener(
+      "visibilitychange",
+      handleVisibilityChange
+    );
+
+    window.removeEventListener(
+      "yatut:native-app-state",
+      handleNativeAppState
+    );
+
+    window.removeEventListener(
+      "online",
+      handleNetworkOnline
+    );
+
     clearTimers();
 
     if (
@@ -495,6 +649,21 @@ function createRealtimeChannel({
       "closed"
     );
   }
+
+  document.addEventListener(
+    "visibilitychange",
+    handleVisibilityChange
+  );
+
+  window.addEventListener(
+    "yatut:native-app-state",
+    handleNativeAppState
+  );
+
+  window.addEventListener(
+    "online",
+    handleNetworkOnline
+  );
 
   connect();
 
