@@ -180,6 +180,64 @@ async function countFollowers(
     : 0;
 }
 
+export async function loadPulseCreatorSocialState(
+  session,
+  authorId
+) {
+  if (!authorId) {
+    return {
+      following:
+        false,
+      followersCount:
+        0,
+    };
+  }
+
+  const followersCount =
+    await countFollowers(
+      session,
+      authorId
+    );
+
+  if (
+    !session?.user?.id ||
+    session.user.id ===
+      authorId
+  ) {
+    return {
+      following:
+        false,
+      followersCount,
+    };
+  }
+
+  const rows =
+    await fetchRows(
+      session,
+      "follows",
+      {
+        follower_id:
+          `eq.${session.user.id}`,
+        following_id:
+          `eq.${authorId}`,
+        select:
+          "following_id",
+        limit:
+          1,
+      }
+    );
+
+  return {
+    following:
+      Array.isArray(
+        rows
+      ) &&
+      rows.length >
+        0,
+    followersCount,
+  };
+}
+
 export async function loadPulseInteractionState(
   session,
   {
