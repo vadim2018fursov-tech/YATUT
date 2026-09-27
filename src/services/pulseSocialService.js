@@ -581,14 +581,38 @@ export async function setPulseSaved(
                   mediaId,
                 type:
                   "pulse",
+                source:
+                  "pulse",
                 sourceId:
                   mediaId,
                 title:
                   video?.title ||
                   "ЯТУТ PULSE",
+                subtitle:
+                  video?.type ===
+                    "clip"
+                    ? "PULSE · Clip"
+                    : "PULSE · Відео",
+                description:
+                  video?.description ||
+                  "",
+                text:
+                  video?.description ||
+                  "",
                 thumbnail:
                   video?.thumbnail ||
                   null,
+                image:
+                  video?.thumbnail ||
+                  null,
+                imageUrl:
+                  video?.thumbnail ||
+                  null,
+                cover:
+                  video?.thumbnail ||
+                  null,
+                mediaType:
+                  "video",
                 videoUrl:
                   video?.videoUrl ||
                   video?.video ||
@@ -596,7 +620,29 @@ export async function setPulseSaved(
                 author:
                   video?.author ||
                   null,
+                route:
+                  video?.type ===
+                    "clip"
+                    ? "clips"
+                    : "watch",
+                routePayload: {
+                  videoId:
+                    mediaId,
+                },
+                city:
+                  video?.location
+                    ?.name ||
+                  "",
+                location:
+                  video?.location
+                    ?.name ||
+                  "",
+                createdAt:
+                  video?.createdAt ||
+                  Date.now(),
                 savedAt:
+                  Date.now(),
+                updatedAt:
                   Date.now(),
               },
               updated_at:
