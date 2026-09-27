@@ -1,0 +1,741 @@
+/* =========================================================
+   YATUT — FINAL APP UI POLISH
+   Keeps current information architecture, unifies finish.
+========================================================= */
+
+:root {
+  --yatut-final-page:
+    #f6f7fb;
+  --yatut-final-surface:
+    rgba(
+      255,
+      255,
+      255,
+      .94
+    );
+  --yatut-final-line:
+    rgba(
+      27,
+      31,
+      44,
+      .075
+    );
+  --yatut-final-shadow:
+    0 14px 42px
+    rgba(
+      26,
+      23,
+      46,
+      .06
+    );
+  --yatut-final-radius:
+    22px;
+  --yatut-final-radius-sm:
+    15px;
+}
+
+/* ----- APP FOUNDATION ----- */
+
+body {
+  background:
+    var(
+      --yatut-final-page
+    );
+}
+
+.app {
+  background:
+    linear-gradient(
+      180deg,
+      #f8f9fc 0%,
+      #f5f6fa 100%
+    );
+}
+
+button,
+[role="button"] {
+  -webkit-tap-highlight-color:
+    transparent;
+}
+
+button:active,
+[role="button"]:active {
+  transition-duration:
+    70ms !important;
+}
+
+/* ----- TOPBAR ----- */
+
+.topbar {
+  border-bottom:
+    1px solid
+    var(
+      --yatut-final-line
+    ) !important;
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .88
+    ) !important;
+  box-shadow:
+    0 8px 28px
+    rgba(
+      21,
+      24,
+      37,
+      .045
+    );
+  backdrop-filter:
+    blur(24px)
+    saturate(1.12);
+  -webkit-backdrop-filter:
+    blur(24px)
+    saturate(1.12);
+}
+
+.desktop-search {
+  border:
+    1px solid
+    rgba(
+      99,
+      91,
+      255,
+      .075
+    );
+  background:
+    linear-gradient(
+      145deg,
+      #f4f4f9,
+      #f7f7fb
+    ) !important;
+  box-shadow:
+    inset 0 1px 0
+    rgba(
+      255,
+      255,
+      255,
+      .75
+    );
+}
+
+.desktop-search:hover {
+  border-color:
+    rgba(
+      99,
+      91,
+      255,
+      .15
+    );
+  background:
+    #f1efff !important;
+}
+
+.icon-button,
+.profile-mini {
+  border:
+    1px solid
+    rgba(
+      36,
+      39,
+      54,
+      .065
+    );
+  box-shadow:
+    inset 0 1px 0
+    rgba(
+      255,
+      255,
+      255,
+      .74
+    );
+}
+
+/* ----- DESKTOP SIDEBAR ----- */
+
+.yat-sidebar__link {
+  border:
+    1px solid
+    transparent;
+}
+
+.yat-sidebar__link:hover {
+  border-color:
+    rgba(
+      124,
+      58,
+      237,
+      .055
+    );
+  background:
+    rgba(
+      124,
+      58,
+      237,
+      .055
+    );
+}
+
+.yat-sidebar__link.is-active {
+  border-color:
+    rgba(
+      124,
+      58,
+      237,
+      .09
+    );
+  background:
+    linear-gradient(
+      135deg,
+      rgba(
+        124,
+        58,
+        237,
+        .12
+      ),
+      rgba(
+        99,
+        91,
+        255,
+        .08
+      )
+    );
+}
+
+/* ----- COMMON PREMIUM SURFACES ----- */
+
+.post-card,
+.post-composer,
+.card,
+.right-card,
+.premium-city-card,
+.premium-pulse-card,
+.settings-section,
+.search-section,
+.search-person-card,
+.profile-v2-card,
+.profile-v3-mobile-card,
+.friends-v2-summary-item,
+.friends-v2-now-strip,
+.space-card {
+  border-color:
+    var(
+      --yatut-final-line
+    ) !important;
+  box-shadow:
+    var(
+      --yatut-final-shadow
+    );
+}
+
+.post-card,
+.post-composer,
+.card,
+.right-card,
+.premium-city-card,
+.premium-pulse-card,
+.settings-section,
+.profile-v2-card {
+  border-radius:
+    var(
+      --yatut-final-radius
+    ) !important;
+}
+
+.post-card,
+.post-composer,
+.premium-pulse-card {
+  background:
+    var(
+      --yatut-final-surface
+    );
+}
+
+/* ----- HOME ----- */
+
+.premium-home-center {
+  gap: 14px;
+}
+
+.premium-pulse-card,
+.premium-create-post {
+  border-color:
+    var(
+      --yatut-final-line
+    );
+  box-shadow:
+    0 12px 36px
+    rgba(
+      24,
+      21,
+      43,
+      .055
+    );
+}
+
+.premium-create-placeholder,
+.composer-main textarea,
+.comment-input-box,
+.global-search-box {
+  border:
+    1px solid
+    rgba(
+      35,
+      39,
+      54,
+      .07
+    ) !important;
+  background:
+    #f8f8fb !important;
+}
+
+.premium-create-placeholder:hover {
+  border-color:
+    rgba(
+      99,
+      91,
+      255,
+      .14
+    ) !important;
+  background:
+    #f5f3ff !important;
+}
+
+.post-actions button,
+.composer-tools button {
+  transition:
+    transform 140ms ease,
+    background 140ms ease,
+    color 140ms ease;
+}
+
+.post-actions button:active,
+.composer-tools button:active {
+  transform:
+    scale(.97);
+}
+
+/* ----- PROFILE / FRIENDS / SEARCH ----- */
+
+.profile-v2-page,
+.friends-v2-page,
+.global-search-page,
+.settings-page,
+.saved-page,
+.nearby-page,
+.business-page {
+  min-width: 0;
+}
+
+.profile-v2-tabs,
+.friends-v2-tabs,
+.global-search-tabs {
+  border:
+    1px solid
+    rgba(
+      32,
+      35,
+      49,
+      .065
+    );
+  border-radius:
+    17px;
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .82
+    );
+  box-shadow:
+    0 8px 26px
+    rgba(
+      26,
+      23,
+      44,
+      .035
+    );
+  backdrop-filter:
+    blur(16px);
+  -webkit-backdrop-filter:
+    blur(16px);
+}
+
+.global-search-box:focus-within,
+.friends-v2-search:focus-within,
+.comment-input-box:focus-within {
+  border-color:
+    rgba(
+      99,
+      91,
+      255,
+      .28
+    ) !important;
+  box-shadow:
+    0 0 0 4px
+    rgba(
+      99,
+      91,
+      255,
+      .07
+    );
+}
+
+/* ----- MESSENGER ----- */
+
+.messenger,
+.chat-list,
+.chat-dialog {
+  border-color:
+    var(
+      --yatut-final-line
+    ) !important;
+}
+
+.chat-list-header,
+.chat-dialog-header,
+.chat-composer {
+  border-color:
+    rgba(
+      27,
+      31,
+      44,
+      .065
+    ) !important;
+}
+
+.chat-search,
+.chat-composer textarea {
+  border:
+    1px solid
+    rgba(
+      35,
+      39,
+      54,
+      .07
+    ) !important;
+  background:
+    #f7f7fa !important;
+}
+
+.chat-search:focus-within,
+.chat-composer textarea:focus {
+  border-color:
+    rgba(
+      99,
+      91,
+      255,
+      .25
+    ) !important;
+  box-shadow:
+    0 0 0 3px
+    rgba(
+      99,
+      91,
+      255,
+      .065
+    ) !important;
+}
+
+/* ----- MOBILE SHELL ----- */
+
+@media (max-width: 767px) {
+  .topbar {
+    min-height:
+      calc(
+        62px +
+        env(
+          safe-area-inset-top
+        )
+      );
+  }
+
+  .topbar-inner {
+    min-height: 62px;
+    padding:
+      8px 10px !important;
+  }
+
+  .brand-ya {
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    border-radius:
+      14px !important;
+    font-size:
+      25px !important;
+  }
+
+  .brand-tut {
+    font-size:
+      19px !important;
+  }
+
+  .desktop-search {
+    height:
+      42px !important;
+    border-radius:
+      14px !important;
+  }
+
+  .topbar-actions .icon-button,
+  .topbar-actions .profile-mini {
+    width:
+      40px !important;
+    height:
+      40px !important;
+    min-width:
+      40px !important;
+    border-radius:
+      13px !important;
+  }
+
+  .main-content {
+    padding-bottom:
+      calc(
+        94px +
+        env(
+          safe-area-inset-bottom
+        )
+      ) !important;
+  }
+
+  .mobile-nav {
+    left:
+      8px !important;
+    right:
+      8px !important;
+    bottom:
+      calc(
+        7px +
+        env(
+          safe-area-inset-bottom
+        )
+      ) !important;
+    width:
+      auto !important;
+    max-width:
+      none !important;
+    min-height:
+      67px !important;
+    padding:
+      6px 5px
+      7px !important;
+    overflow:
+      visible !important;
+    border:
+      1px solid
+      rgba(
+        255,
+        255,
+        255,
+        .78
+      ) !important;
+    border-radius:
+      23px !important;
+    background:
+      rgba(
+        255,
+        255,
+        255,
+        .91
+      ) !important;
+    box-shadow:
+      0 18px 48px
+      rgba(
+        29,
+        25,
+        52,
+        .18
+      ),
+      inset 0 1px 0
+      rgba(
+        255,
+        255,
+        255,
+        .92
+      ) !important;
+    backdrop-filter:
+      blur(26px)
+      saturate(1.15) !important;
+    -webkit-backdrop-filter:
+      blur(26px)
+      saturate(1.15) !important;
+  }
+
+  .mobile-nav > button,
+  .mobile-nav-item {
+    min-width: 0 !important;
+    min-height:
+      53px !important;
+    padding:
+      4px 2px !important;
+    border:
+      1px solid
+      transparent !important;
+    border-radius:
+      16px !important;
+    background:
+      transparent !important;
+    box-shadow:
+      none !important;
+  }
+
+  .mobile-nav > button.active,
+  .mobile-nav-item.active,
+  .mobile-nav > button[aria-current="page"] {
+    border-color:
+      rgba(
+        99,
+        91,
+        255,
+        .10
+      ) !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(
+          99,
+          91,
+          255,
+          .10
+        ),
+        rgba(
+          124,
+          58,
+          237,
+          .07
+        )
+      ) !important;
+    color:
+      #635bff !important;
+  }
+
+  .mobile-nav > button small,
+  .mobile-nav-item > small {
+    font-size:
+      9.5px !important;
+    letter-spacing:
+      -.12px !important;
+  }
+
+  .mobile-nav-icon,
+  .mobile-profile-avatar {
+    width:
+      29px !important;
+    height:
+      29px !important;
+    min-width:
+      29px !important;
+    min-height:
+      29px !important;
+  }
+
+  .mobile-nav-item.has-unread
+  .mobile-nav-icon::after {
+    width:
+      7px !important;
+    height:
+      7px !important;
+    border:
+      1.5px solid
+      #fff !important;
+    border-radius:
+      50% !important;
+  }
+
+  .post-card,
+  .post-composer,
+  .settings-section,
+  .profile-v3-mobile-card,
+  .friends-v2-summary-item,
+  .search-section {
+    box-shadow:
+      0 8px 24px
+      rgba(
+        26,
+        23,
+        45,
+        .045
+      ) !important;
+  }
+
+  .global-search-box input,
+  .friends-v2-search input,
+  .chat-search input,
+  .chat-composer textarea {
+    font-size:
+      16px !important;
+  }
+}
+
+/* ----- VERY SMALL PHONES ----- */
+
+@media (max-width: 390px) {
+  .brand-tut {
+    display: none;
+  }
+
+  .mobile-nav {
+    left:
+      6px !important;
+    right:
+      6px !important;
+  }
+
+  .mobile-nav > button small,
+  .mobile-nav-item > small {
+    font-size:
+      9px !important;
+  }
+}
+
+/* ----- DARK MODE BRIDGE ----- */
+
+body.yatut-dark-mode
+.desktop-search,
+body.yatut-dark-mode
+.chat-search,
+body.yatut-dark-mode
+.chat-composer textarea,
+body.yatut-dark-mode
+.premium-create-placeholder,
+body.yatut-dark-mode
+.composer-main textarea {
+  border-color:
+    rgba(
+      255,
+      255,
+      255,
+      .07
+    ) !important;
+}
+
+body.yatut-dark-mode
+.profile-v2-tabs,
+body.yatut-dark-mode
+.friends-v2-tabs,
+body.yatut-dark-mode
+.global-search-tabs {
+  border-color:
+    rgba(
+      255,
+      255,
+      255,
+      .075
+    );
+}
+
+/* ----- REDUCED MOTION ----- */
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+  .post-actions button,
+  .composer-tools button {
+    transition:
+      none !important;
+  }
+}
