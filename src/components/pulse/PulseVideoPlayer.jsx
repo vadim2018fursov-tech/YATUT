@@ -72,6 +72,7 @@ export default function PulseVideoPlayer({
   autoPlay = false,
   startAt = 0,
   endAt = null,
+  onPlaybackStart = null,
 }) {
   const videoRef =
     useRef(null);
@@ -526,6 +527,8 @@ export default function PulseVideoPlayer({
           false
         );
 
+        onPlaybackStart?.();
+
         showControls();
       }
 
@@ -630,6 +633,7 @@ export default function PulseVideoPlayer({
       safeStart,
       endAt,
       playbackEnd,
+      onPlaybackStart,
     ]
   );
 
