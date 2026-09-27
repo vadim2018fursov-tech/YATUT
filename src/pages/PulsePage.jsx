@@ -20,7 +20,6 @@ import PulseMobileImmersive from "../components/pulse/PulseMobileImmersive";
 
 import {
   pulseRecommendations,
-  pulseUsers,
 } from "../data/pulseMockData";
 
 import {
@@ -422,12 +421,34 @@ export default function PulsePage({
     }
   }
 
-  const friendsWatching = [
-    pulseUsers.maria,
-    pulseUsers.oleksandr,
-    pulseUsers.sofia,
-    pulseUsers.anastasia,
-  ].filter(Boolean);
+  const friendsWatching =
+    [
+      ...new Map(
+        friendBackendVideos
+          .map(
+            (
+              video
+            ) => [
+              video?.author?.id,
+              video?.author,
+            ]
+          )
+          .filter(
+            ([
+              id,
+              author,
+            ]) =>
+              Boolean(
+                id &&
+                author
+              )
+          )
+      ).values(),
+    ]
+      .slice(
+        0,
+        6
+      );
 
   const trendingVideos =
     trendingBackendVideos.slice(
@@ -436,23 +457,20 @@ export default function PulsePage({
     );
 
   const nearbyVideos =
-    ensureVideos(
-      nearbyBackendVideos,
-      backendVideos,
+    nearbyBackendVideos.slice(
+      0,
       5
     );
 
   const friendVideos =
-    ensureVideos(
-      friendBackendVideos,
-      followingVideos,
+    friendBackendVideos.slice(
+      0,
       5
     );
 
   const cityVideos =
-    ensureVideos(
-      cityBackendVideos,
-      backendVideos,
+    cityBackendVideos.slice(
+      0,
       5
     );
 
@@ -630,9 +648,11 @@ export default function PulsePage({
             onOpenVideo={
               openVideo
             }
+            emptyTitle="Поруч поки тихо"
+            emptyText="Відео з твоєї локації зʼявляться тут, коли хтось опублікує їх у PULSE."
             onViewAll={() =>
-              onNavigate?.(
-                "clips"
+              setActiveTab(
+                "nearby"
               )
             }
           />
@@ -658,8 +678,10 @@ export default function PulsePage({
               friendsWatching
             }
             peopleCount={
-              12
+              friendsWatching.length
             }
+            emptyTitle="Друзі ще нічого не опублікували"
+            emptyText="Коли твої друзі додадуть відео в PULSE, вони зʼявляться тут."
             onOpenVideo={
               openVideo
             }
@@ -681,13 +703,11 @@ export default function PulsePage({
             onOpenVideo={
               openVideo
             }
+            emptyTitle="У твоєму місті поки немає відео"
+            emptyText="Публікації з твоїм містом у локації автоматично зʼявляться тут."
             onViewAll={() =>
-              onNavigate?.(
-                "cityPulse",
-                {
-                  cityId:
-                    "kyiv",
-                }
+              setActiveTab(
+                "city"
               )
             }
           />
