@@ -1,4 +1,5 @@
 import {
+  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -21,6 +22,10 @@ import {
   pulseRecommendations,
   pulseUsers,
 } from "../data/pulseMockData";
+
+import {
+  loadPulseMedia,
+} from "../services/pulseBackendService";
 
 function ensureVideos(
   preferred,
@@ -62,6 +67,7 @@ function ensureVideos(
 
 export default function PulsePage({
   onNavigate,
+  authSession = null,
 }) {
   const [
     activeTab,
@@ -70,18 +76,83 @@ export default function PulsePage({
     "forYou"
   );
 
+  const [
+    backendVideos,
+    setBackendVideos,
+  ] = useState([]);
+
+  useEffect(() => {
+    let active =
+      true;
+
+    loadPulseMedia(
+      authSession,
+      {
+        limit:
+          40,
+      }
+    )
+      .then(
+        (
+          videos
+        ) => {
+          if (
+            active
+          ) {
+            setBackendVideos(
+              videos
+            );
+          }
+        }
+      )
+      .catch(
+        (
+          error
+        ) => {
+          console.warn(
+            "PULSE BACKEND LOAD ERROR:",
+            error
+          );
+        }
+      );
+
+    return () => {
+      active =
+        false;
+    };
+  }, [
+    authSession?.user?.id,
+    authSession?.access_token,
+  ]);
+
   const activeVideos =
     useMemo(
-      () =>
-        ensureVideos(
-          pulseRecommendations[
-            activeTab
-          ],
-          pulseRecommendations.forYou,
+      () => {
+        const preferred =
+          activeTab ===
+          "forYou"
+            ? [
+                ...backendVideos,
+                ...(pulseRecommendations.forYou || []),
+              ]
+            : pulseRecommendations[
+                activeTab
+              ];
+
+        const fallback = [
+          ...backendVideos,
+          ...(pulseRecommendations.forYou || []),
+        ];
+
+        return ensureVideos(
+          preferred,
+          fallback,
           5
-        ),
+        );
+      },
       [
         activeTab,
+        backendVideos,
       ]
     );
 
@@ -200,15 +271,29 @@ export default function PulsePage({
 
   const trendingVideos =
     ensureVideos(
-      pulseRecommendations.forYou,
-      pulseRecommendations.live,
+      backendVideos,
+      [
+        ...(pulseRecommendations.forYou || []),
+        ...(pulseRecommendations.live || []),
+      ],
       5
     );
 
   const nearbyVideos =
     ensureVideos(
-      pulseRecommendations.nearby,
-      pulseRecommendations.forYou,
+      [
+        ...backendVideos.filter(
+          (video) =>
+            video.location?.name &&
+            video.location.name !==
+              "Україна"
+        ),
+        ...(pulseRecommendations.nearby || []),
+      ],
+      [
+        ...backendVideos,
+        ...(pulseRecommendations.forYou || []),
+      ],
       5
     );
 
@@ -221,14 +306,28 @@ export default function PulsePage({
 
   const cityVideos =
     ensureVideos(
-      pulseRecommendations.city,
-      pulseRecommendations.forYou,
+      [
+        ...backendVideos.filter(
+          (video) =>
+            video.location?.name &&
+            video.location.name !==
+              "Україна"
+        ),
+        ...(pulseRecommendations.city || []),
+      ],
+      [
+        ...backendVideos,
+        ...(pulseRecommendations.forYou || []),
+      ],
       5
     );
 
   const authorVideos =
     ensureVideos(
-      pulseRecommendations.following,
+      [
+        ...backendVideos,
+        ...(pulseRecommendations.following || []),
+      ],
       pulseRecommendations.forYou,
       5
     );
@@ -238,6 +337,9 @@ export default function PulsePage({
       <PulseMobileImmersive
         onNavigate={
           onNavigate
+        }
+        externalVideos={
+          backendVideos
         }
       />
 
