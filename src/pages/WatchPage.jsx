@@ -36,6 +36,10 @@ import {
   loadPulseMedia,
 } from "../services/pulseBackendService";
 
+import {
+  loadPulseMedia,
+} from "../services/pulseBackendService";
+
 const FALLBACK_WATCH_IMAGE =
   "/assets/yatut/cities/kyiv/hero.jpg";
 
@@ -370,6 +374,58 @@ export default function WatchPage({
     video,
     setVideo,
   ] = useState(initialVideo);
+
+  useEffect(
+    () => {
+      if (
+        !videos.length
+      ) {
+        return;
+      }
+
+      if (
+        initialVideoId
+      ) {
+        const match =
+          videos.find(
+            (
+              item
+            ) =>
+              item.id ===
+              initialVideoId
+          );
+
+        if (
+          match
+        ) {
+          setVideo(
+            match
+          );
+
+          return;
+        }
+      }
+
+      setVideo(
+        (
+          current
+        ) =>
+          current ||
+          videos.find(
+            (
+              item
+            ) =>
+              item.type !==
+              "clip"
+          ) ||
+          videos[0]
+      );
+    },
+    [
+      videos,
+      initialVideoId,
+    ]
+  );
 
   useEffect(() => {
     if (
