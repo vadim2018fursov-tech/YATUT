@@ -402,6 +402,9 @@ function PulseImmersiveSlide({
         <button
           type="button"
           className="pulse-immersive__avatar-action"
+          disabled={
+            pulseSocial.isOwnAuthor
+          }
           onClick={
             pulseSocial.toggleFollow
           }
@@ -426,7 +429,7 @@ function PulseImmersiveSlide({
                 : ""
             }
           >
-            {following
+            {pulseSocial.following
               ? "✓"
               : "+"}
           </i>
@@ -455,10 +458,12 @@ function PulseImmersiveSlide({
 
           <small>
             {formatCompact(
-              stats.likes +
-                (liked
-                  ? 1
-                  : 0)
+              video.backend
+                ? pulseSocial.likesCount
+                : stats.likes +
+                  (pulseSocial.liked
+                    ? 1
+                    : 0)
             )}
           </small>
         </button>
@@ -526,10 +531,12 @@ function PulseImmersiveSlide({
 
           <small>
             {formatCompact(
-              stats.saves +
-                (saved
-                  ? 1
-                  : 0)
+              video.backend
+                ? pulseSocial.savesCount
+                : stats.saves +
+                  (pulseSocial.saved
+                    ? 1
+                    : 0)
             )}
           </small>
         </button>
@@ -596,11 +603,16 @@ function PulseImmersiveSlide({
                 ? "is-following"
                 : ""
             }
+            disabled={
+              pulseSocial.isOwnAuthor
+            }
             onClick={
               pulseSocial.toggleFollow
             }
           >
-            {following
+            {pulseSocial.isOwnAuthor
+              ? "Це ви"
+              : pulseSocial.following
               ? "Підписані"
               : "Підписатися"}
           </button>
@@ -717,30 +729,6 @@ export default function PulseMobileImmersive({
     setLongWatchOpen,
   ] = useState(false);
 
-  const [
-    likedIds,
-    setLikedIds,
-  ] = useState(
-    () =>
-      new Set()
-  );
-
-  const [
-    savedIds,
-    setSavedIds,
-  ] = useState(
-    () =>
-      new Set()
-  );
-
-  const [
-    followingIds,
-    setFollowingIds,
-  ] = useState(
-    () =>
-      new Set()
-  );
-
   const videos =
     useMemo(
       () =>
@@ -753,38 +741,6 @@ export default function PulseMobileImmersive({
         externalVideos,
       ]
     );
-
-  function toggleSet(
-    setter,
-    id
-  ) {
-    setter(
-      (
-        previous
-      ) => {
-        const next =
-          new Set(
-            previous
-          );
-
-        if (
-          next.has(
-            id
-          )
-        ) {
-          next.delete(
-            id
-          );
-        } else {
-          next.add(
-            id
-          );
-        }
-
-        return next;
-      }
-    );
-  }
 
   async function share(
     video
@@ -910,40 +866,6 @@ export default function PulseMobileImmersive({
                 }
                 authSession={
                   authSession
-                }
-                pulseSocial.liked={
-                  pulseSocial.likedIds.has(
-                    video.id
-                  )
-                }
-                pulseSocial.saved={
-                  pulseSocial.savedIds.has(
-                    video.id
-                  )
-                }
-                pulseSocial.following={
-                  pulseSocial.followingIds.has(
-                    video.author?.id
-                  )
-                }
-                pulseSocial.toggleLike={() =>
-                  toggleSet(
-                    setLikedIds,
-                    video.id
-                  )
-                }
-                pulseSocial.toggleSaved={() =>
-                  toggleSet(
-                    setSavedIds,
-                    video.id
-                  )
-                }
-                pulseSocial.toggleFollow={() =>
-                  toggleSet(
-                    setFollowingIds,
-                    video.author?.id ||
-                      video.id
-                  )
                 }
                 onShare={() =>
                   share(
