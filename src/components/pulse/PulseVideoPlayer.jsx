@@ -70,6 +70,8 @@ export default function PulseVideoPlayer({
   poster = null,
   title = "ЯТУТ PULSE",
   autoPlay = false,
+  startAt = 0,
+  endAt = null,
 }) {
   const videoRef =
     useRef(null);
@@ -137,6 +139,45 @@ export default function PulseVideoPlayer({
     poster ||
     FALLBACK_POSTER;
 
+  const safeStart =
+    Math.max(
+      0,
+      Number(
+        startAt ||
+        0
+      ) ||
+      0
+    );
+
+  const requestedEnd =
+    Number(
+      endAt
+    );
+
+  const playbackEnd =
+    Number.isFinite(
+      requestedEnd
+    ) &&
+    requestedEnd >
+      safeStart
+      ? Math.min(
+          requestedEnd,
+          duration ||
+            requestedEnd
+        )
+      : duration;
+
+  const playbackDuration =
+    Math.max(
+      0,
+      (
+        playbackEnd ||
+        duration ||
+        0
+      ) -
+        safeStart
+    );
+
   function showControls() {
     setControlsVisible(
       true
@@ -176,6 +217,23 @@ export default function PulseVideoPlayer({
     }
 
     if (video.paused) {
+      if (
+        ended ||
+        (
+          playbackEnd &&
+          video.currentTime >=
+            playbackEnd -
+              0.04
+        )
+      ) {
+        video.currentTime =
+          safeStart;
+
+        setEnded(
+          false
+        );
+      }
+
       video
         .play()
         .catch(() => {});
@@ -195,7 +253,7 @@ export default function PulseVideoPlayer({
     }
 
     video.currentTime =
-      0;
+      safeStart;
 
     video
       .play()
@@ -216,8 +274,15 @@ export default function PulseVideoPlayer({
     }
 
     const next =
-      Number(
-        event.target.value
+      Math.min(
+        playbackEnd ||
+          duration,
+        Math.max(
+          safeStart,
+          Number(
+            event.target.value
+          )
+        )
       );
 
     video.currentTime =
@@ -225,6 +290,10 @@ export default function PulseVideoPlayer({
 
     setCurrentTime(
       next
+    );
+
+    setEnded(
+      false
     );
   }
 
@@ -311,13 +380,14 @@ export default function PulseVideoPlayer({
 
     video.currentTime =
       Math.min(
+        playbackEnd ||
+          video.duration ||
+          Infinity,
         Math.max(
-          0,
+          safeStart,
           video.currentTime +
             seconds
-        ),
-        video.duration ||
-          Infinity
+        )
       );
   }
 
@@ -358,9 +428,42 @@ export default function PulseVideoPlayer({
       }
 
       function syncTime() {
-        setCurrentTime(
+        const current =
           video.currentTime ||
-            0
+          0;
+
+        if (
+          playbackEnd &&
+          current >=
+            playbackEnd -
+              0.03
+        ) {
+          video.pause();
+
+          video.currentTime =
+            playbackEnd;
+
+          setCurrentTime(
+            playbackEnd
+          );
+
+          setPlaying(
+            false
+          );
+
+          setEnded(
+            true
+          );
+
+          setControlsVisible(
+            true
+          );
+
+          return;
+        }
+
+        setCurrentTime(
+          current
         );
 
         if (
@@ -380,13 +483,38 @@ export default function PulseVideoPlayer({
       }
 
       function syncDuration() {
-        setDuration(
+        const nextDuration =
           Number.isFinite(
             video.duration
           )
             ? video.duration
-            : 0
+            : 0;
+
+        setDuration(
+          nextDuration
         );
+
+        if (
+          safeStart >
+            0 &&
+          video.currentTime <
+            safeStart
+        ) {
+          video.currentTime =
+            Math.min(
+              safeStart,
+              nextDuration ||
+                safeStart
+            );
+
+          setCurrentTime(
+            Math.min(
+              safeStart,
+              nextDuration ||
+                safeStart
+            )
+          );
+        }
       }
 
       function handlePlay() {
@@ -497,7 +625,12 @@ export default function PulseVideoPlayer({
         );
       };
     },
-    [src]
+    [
+      src,
+      safeStart,
+      endAt,
+      playbackEnd,
+    ]
   );
 
   useEffect(
@@ -600,23 +733,42 @@ export default function PulseVideoPlayer({
   );
 
   const playedPercent =
-    duration
-      ? (
-          currentTime /
-          duration
-        ) *
-        100
+    playbackDuration
+      ? Math.min(
+          100,
+          Math.max(
+            0,
+            (
+              (
+                currentTime -
+                safeStart
+              ) /
+              playbackDuration
+            ) *
+              100
+          )
+        )
       : 0;
 
   const bufferedPercent =
-    duration
+    playbackDuration
       ? Math.min(
           100,
-          (
-            buffered /
-            duration
-          ) *
-            100
+          Math.max(
+            0,
+            (
+              (
+                Math.min(
+                  buffered,
+                  playbackEnd ||
+                    buffered
+                ) -
+                safeStart
+              ) /
+              playbackDuration
+            ) *
+              100
+          )
         )
       : 0;
 
@@ -775,17 +927,24 @@ export default function PulseVideoPlayer({
 
             <input
               type="range"
-              min="0"
+              min={
+                safeStart
+              }
               max={
+                playbackEnd ||
                 duration ||
                 0
               }
               step="0.01"
               value={
                 Math.min(
-                  currentTime,
-                  duration ||
-                    0
+                  playbackEnd ||
+                    duration ||
+                    0,
+                  Math.max(
+                    safeStart,
+                    currentTime
+                  )
                 )
               }
               onChange={
@@ -860,10 +1019,15 @@ export default function PulseVideoPlayer({
 
               <span className="pulse-real-player__time">
                 {formatTime(
-                  currentTime
+                  Math.max(
+                    0,
+                    currentTime -
+                      safeStart
+                  )
                 )}
                 {" / "}
                 {formatTime(
+                  playbackDuration ||
                   duration
                 )}
               </span>
