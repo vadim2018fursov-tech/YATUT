@@ -511,30 +511,6 @@ export default function PulseLongVideoMobile({
   ] = useState("all");
 
   const [
-    subscribed,
-    setSubscribed,
-  ] = useState(
-    () =>
-      new Set()
-  );
-
-  const [
-    liked,
-    setLiked,
-  ] = useState(
-    () =>
-      new Set()
-  );
-
-  const [
-    saved,
-    setSaved,
-  ] = useState(
-    () =>
-      new Set()
-  );
-
-  const [
     quality,
     setQuality,
   ] = useState("auto");
@@ -707,38 +683,6 @@ export default function PulseLongVideoMobile({
       qualityOpen,
     ]
   );
-
-  function toggleSet(
-    setter,
-    id
-  ) {
-    setter(
-      (
-        previous
-      ) => {
-        const next =
-          new Set(
-            previous
-          );
-
-        if (
-          next.has(
-            id
-          )
-        ) {
-          next.delete(
-            id
-          );
-        } else {
-          next.add(
-            id
-          );
-        }
-
-        return next;
-      }
-    );
-  }
 
   async function openFullscreen() {
     const target =
