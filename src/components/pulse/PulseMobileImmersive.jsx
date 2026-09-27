@@ -12,7 +12,9 @@ import {
 } from "lucide-react";
 
 import {
+  useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 
@@ -278,6 +280,9 @@ function PulseImmersiveSlide({
     setCommentsOpen,
   ] = useState(false);
 
+  const slideRef =
+    useRef(null);
+
   const pulseSocial =
     usePulseSocial({
       video,
@@ -292,6 +297,71 @@ function PulseImmersiveSlide({
     buildStats(
       video
     );
+
+  useEffect(
+    () => {
+      const element =
+        slideRef.current;
+
+      if (
+        !element ||
+        !video?.backend
+      ) {
+        return;
+      }
+
+      const observer =
+        new IntersectionObserver(
+          (
+            entries
+          ) => {
+            const visible =
+              entries.some(
+                (
+                  entry
+                ) =>
+                  entry.isIntersecting &&
+                  entry.intersectionRatio >=
+                    0.65
+              );
+
+            if (
+              visible
+            ) {
+              pulseSocial.recordView();
+            }
+          },
+          {
+            threshold: [
+              0.65,
+            ],
+          }
+        );
+
+      observer.observe(
+        element
+      );
+
+      return () =>
+        observer.disconnect();
+    },
+    [
+      video?.id,
+      video?.backend,
+      pulseSocial.recordView,
+    ]
+  );
+
+  async function handleShare() {
+    const completed =
+      await onShare?.();
+
+    if (
+      completed
+    ) {
+      await pulseSocial.recordShare();
+    }
+  }
 
   const author =
     video.author ||
@@ -312,7 +382,12 @@ function PulseImmersiveSlide({
 
   return (
     <>
-    <article className="pulse-immersive__slide">
+    <article
+      ref={
+        slideRef
+      }
+      className="pulse-immersive__slide"
+    >
       {(video.videoUrl ||
         video.video) ? (
         <video
@@ -496,7 +571,7 @@ function PulseImmersiveSlide({
         <button
           type="button"
           onClick={
-            onShare
+            handleShare
           }
           aria-label="Поширити"
         >
@@ -506,7 +581,9 @@ function PulseImmersiveSlide({
 
           <small>
             {formatCompact(
-              stats.shares
+              video.backend
+                ? pulseSocial.sharesCount
+                : stats.shares
             )}
           </small>
         </button>
@@ -767,12 +844,19 @@ export default function PulseMobileImmersive({
           url,
         });
 
-        return;
+        return true;
       }
 
-      await navigator.clipboard?.writeText(
-        url
-      );
+      if (
+        navigator.clipboard
+          ?.writeText
+      ) {
+        await navigator.clipboard.writeText(
+          url
+        );
+
+        return true;
+      }
     } catch (
       error
     ) {
@@ -786,6 +870,8 @@ export default function PulseMobileImmersive({
         );
       }
     }
+
+    return false;
   }
 
   return (
