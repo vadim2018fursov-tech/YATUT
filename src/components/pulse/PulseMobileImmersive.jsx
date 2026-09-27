@@ -196,6 +196,33 @@ function buildStats(
         0
     );
 
+  if (
+    video.backend
+  ) {
+    return {
+      likes:
+        Number(
+          video.likes ||
+          0
+        ),
+      comments:
+        Number(
+          video.comments ||
+          0
+        ),
+      shares:
+        Number(
+          video.shares ||
+          0
+        ),
+      saves:
+        Number(
+          video.saves ||
+          0
+        ),
+    };
+  }
+
   return {
     likes:
       Math.max(
@@ -272,10 +299,12 @@ function PulseImmersiveSlide({
 
   return (
     <article className="pulse-immersive__slide">
-      {video.video ? (
+      {(video.videoUrl ||
+        video.video) ? (
         <video
           className="pulse-immersive__media"
           src={
+            video.videoUrl ||
             video.video
           }
           poster={
