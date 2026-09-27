@@ -22,6 +22,8 @@ import {
 } from "../../data/pulseMockData";
 
 import PulseLongVideoMobile from "./PulseLongVideoMobile";
+import PulseCommentsSheet from "./PulseCommentsSheet";
+import usePulseSocial from "../../hooks/usePulseSocial";
 
 const TABS = [
   {
@@ -266,15 +268,23 @@ function buildStats(
 
 function PulseImmersiveSlide({
   video,
-  liked,
-  saved,
-  following,
-  onLike,
-  onSave,
-  onFollow,
+  authSession,
   onShare,
   onCreate,
 }) {
+  const [
+    commentsOpen,
+    setCommentsOpen,
+  ] = useState(false);
+
+  const pulseSocial =
+    usePulseSocial({
+      video,
+      authSession,
+      realtime:
+        false,
+    });
+
   const stats =
     buildStats(
       video
@@ -298,6 +308,7 @@ function PulseImmersiveSlide({
     "/assets/regions/kyiv/hero.webp";
 
   return (
+    <>
     <article className="pulse-immersive__slide">
       {(video.videoUrl ||
         video.video) ? (
@@ -392,10 +403,10 @@ function PulseImmersiveSlide({
           type="button"
           className="pulse-immersive__avatar-action"
           onClick={
-            onFollow
+            pulseSocial.toggleFollow
           }
           aria-label={
-            following
+            pulseSocial.following
               ? "Ви підписані"
               : "Підписатися"
           }
@@ -410,7 +421,7 @@ function PulseImmersiveSlide({
 
           <i
             className={
-              following
+              pulseSocial.following
                 ? "is-following"
                 : ""
             }
@@ -424,19 +435,19 @@ function PulseImmersiveSlide({
         <button
           type="button"
           className={
-            liked
+            pulseSocial.liked
               ? "is-active"
               : ""
           }
           onClick={
-            onLike
+            pulseSocial.toggleLike
           }
           aria-label="Подобається"
         >
           <Heart
             size={29}
             fill={
-              liked
+              pulseSocial.liked
                 ? "currentColor"
                 : "none"
             }
@@ -455,6 +466,11 @@ function PulseImmersiveSlide({
         <button
           type="button"
           aria-label="Коментарі"
+          onClick={() =>
+            setCommentsOpen(
+              true
+            )
+          }
         >
           <MessageCircle
             size={29}
@@ -462,7 +478,9 @@ function PulseImmersiveSlide({
 
           <small>
             {formatCompact(
-              stats.comments
+              video.backend
+                ? pulseSocial.commentsCount
+                : stats.comments
             )}
           </small>
         </button>
@@ -488,19 +506,19 @@ function PulseImmersiveSlide({
         <button
           type="button"
           className={
-            saved
+            pulseSocial.saved
               ? "is-active"
               : ""
           }
           onClick={
-            onSave
+            pulseSocial.toggleSaved
           }
           aria-label="Зберегти"
         >
           <Bookmark
             size={28}
             fill={
-              saved
+              pulseSocial.saved
                 ? "currentColor"
                 : "none"
             }
@@ -574,12 +592,12 @@ function PulseImmersiveSlide({
           <button
             type="button"
             className={
-              following
+              pulseSocial.following
                 ? "is-following"
                 : ""
             }
             onClick={
-              onFollow
+              pulseSocial.toggleFollow
             }
           >
             {following
@@ -658,12 +676,34 @@ function PulseImmersiveSlide({
         )}
       </div>
     </article>
+
+    <PulseCommentsSheet
+      open={
+        commentsOpen
+      }
+      video={
+        video
+      }
+      authSession={
+        authSession
+      }
+      onClose={() =>
+        setCommentsOpen(
+          false
+        )
+      }
+      onCountChange={
+        pulseSocial.refresh
+      }
+    />
+    </>
   );
 }
 
 export default function PulseMobileImmersive({
   onNavigate,
   externalVideos = [],
+  authSession = null,
 }) {
   const [
     activeTab,
@@ -847,6 +887,9 @@ export default function PulseMobileImmersive({
           videos={
             videos
           }
+          authSession={
+            authSession
+          }
           onWatchChange={
             setLongWatchOpen
           }
@@ -865,34 +908,37 @@ export default function PulseMobileImmersive({
                 video={
                   video
                 }
-                liked={
-                  likedIds.has(
+                authSession={
+                  authSession
+                }
+                pulseSocial.liked={
+                  pulseSocial.likedIds.has(
                     video.id
                   )
                 }
-                saved={
-                  savedIds.has(
+                pulseSocial.saved={
+                  pulseSocial.savedIds.has(
                     video.id
                   )
                 }
-                following={
-                  followingIds.has(
+                pulseSocial.following={
+                  pulseSocial.followingIds.has(
                     video.author?.id
                   )
                 }
-                onLike={() =>
+                pulseSocial.toggleLike={() =>
                   toggleSet(
                     setLikedIds,
                     video.id
                   )
                 }
-                onSave={() =>
+                pulseSocial.toggleSaved={() =>
                   toggleSet(
                     setSavedIds,
                     video.id
                   )
                 }
-                onFollow={() =>
+                pulseSocial.toggleFollow={() =>
                   toggleSet(
                     setFollowingIds,
                     video.author?.id ||
