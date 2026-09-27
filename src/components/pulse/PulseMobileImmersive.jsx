@@ -315,6 +315,39 @@ function PulseImmersiveSlide({
           loop
           playsInline
           preload="metadata"
+          onLoadedMetadata={(
+            event
+          ) => {
+            if (
+              video.trimStart
+            ) {
+              event.currentTarget.currentTime =
+                video.trimStart;
+            }
+          }}
+          onTimeUpdate={(
+            event
+          ) => {
+            const element =
+              event.currentTarget;
+
+            if (
+              video.trimEnd &&
+              element.currentTime >=
+                video.trimEnd -
+                  0.03
+            ) {
+              element.currentTime =
+                video.trimStart ||
+                0;
+
+              element
+                .play()
+                .catch(
+                  () => {}
+                );
+            }
+          }}
         />
       ) : (
         <img
