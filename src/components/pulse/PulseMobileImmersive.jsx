@@ -472,6 +472,9 @@ function PulseImmersiveSlide({
         ) : (
           <span className="pulse-immersive__type">
             ЯТУТ PULSE
+            {video.recommendationReason
+              ? ` · ${video.recommendationReason}`
+              : ""}
           </span>
         )}
 
