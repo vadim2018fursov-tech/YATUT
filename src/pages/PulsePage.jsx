@@ -538,37 +538,55 @@ export default function PulsePage({
             </div>
 
             <div className="pulse-active-mode__track">
-              {activeVideos.map(
-                (
-                  video,
-                  index
-                ) => (
-                  <div
-                    key={
-                      video.id
-                    }
-                    className={
-                      index === 0
-                        ? "pulse-active-mode__feature"
-                        : "pulse-active-mode__small"
-                    }
-                  >
-                    <PulseVideoRail
-                      title=""
-                      videos={[
-                        video,
-                      ]}
-                      variant={
+              {activeVideos.length ? (
+                activeVideos.map(
+                  (
+                    video,
+                    index
+                  ) => (
+                    <div
+                      key={
+                        video.id
+                      }
+                      className={
                         index === 0
-                          ? "feature"
-                          : "compact"
+                          ? "pulse-active-mode__feature"
+                          : "pulse-active-mode__small"
                       }
-                      onOpenVideo={
-                        openVideo
-                      }
-                    />
-                  </div>
+                    >
+                      <PulseVideoRail
+                        title=""
+                        videos={[
+                          video,
+                        ]}
+                        variant={
+                          index === 0
+                            ? "feature"
+                            : "compact"
+                        }
+                        onOpenVideo={
+                          openVideo
+                        }
+                      />
+                    </div>
+                  )
                 )
+              ) : (
+                <div className="pulse-active-mode__empty">
+                  <strong>
+                    {activeTab ===
+                    "following"
+                      ? "Підписок поки немає"
+                      : "Тут поки тихо"}
+                  </strong>
+
+                  <span>
+                    {activeTab ===
+                    "following"
+                      ? "Підпишись на авторів у PULSE — їхні нові відео зʼявляться тут."
+                      : "Перші реальні публікації зʼявляться тут автоматично."}
+                  </span>
+                </div>
               )}
             </div>
           </section>
