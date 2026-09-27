@@ -884,6 +884,14 @@ export default function PulseLongVideoMobile({
                 selectedSource
               )
             }
+            startAt={
+              selectedVideo.trimStart ||
+              0
+            }
+            endAt={
+              selectedVideo.trimEnd ||
+              null
+            }
           />
 
           <button
