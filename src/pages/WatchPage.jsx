@@ -760,7 +760,9 @@ export default function WatchPage({
                 {video.author
                   ?.username ||
                   "yatut"}{" "}
-                · 24,8K підписників
+                · {formatNumber(
+                  pulseSocial.followersCount
+                )} підписників
               </small>
             </div>
           </button>
@@ -768,18 +770,21 @@ export default function WatchPage({
           <button
             type="button"
             className={`pulse-watch-subscribe ${
-              subscribed
+              pulseSocial.following
                 ? "is-subscribed"
                 : ""
             }`}
-            onClick={() =>
-              setSubscribed(
-                (value) =>
-                  !value
-              )
+            disabled={
+              pulseSocial.isOwnAuthor ||
+              pulseSocial.busy
+            }
+            onClick={
+              pulseSocial.toggleFollow
             }
           >
-            {subscribed ? (
+            {pulseSocial.isOwnAuthor ? (
+              "Це ви"
+            ) : pulseSocial.following ? (
               <>
                 <Bell
                   size={16}
@@ -797,33 +802,26 @@ export default function WatchPage({
               <button
                 type="button"
                 className={
-                  liked
+                  pulseSocial.liked
                     ? "is-active"
                     : ""
                 }
                 onClick={() => {
-                  setLiked(
-                    (value) =>
-                      !value
-                  );
-
+                  pulseSocial.toggleLike();
                   setDisliked(false);
                 }}
               >
                 <ThumbsUp
                   size={17}
                   fill={
-                    liked
+                    pulseSocial.liked
                       ? "currentColor"
                       : "none"
                   }
                 />
 
                 {formatNumber(
-                  12400 +
-                    (liked
-                      ? 1
-                      : 0)
+                  pulseSocial.likesCount
                 )}
               </button>
 
@@ -834,14 +832,13 @@ export default function WatchPage({
                     ? "is-active"
                     : ""
                 }
-                onClick={() => {
+                onClick={() =>
                   setDisliked(
                     (value) =>
                       !value
-                  );
-
-                  setLiked(false);
-                }}
+                  )
+                }
+                title="Дизлайк поки локальний"
               >
                 <ThumbsDown
                   size={17}
@@ -870,29 +867,30 @@ export default function WatchPage({
             <button
               type="button"
               className={
-                saved
+                pulseSocial.saved
                   ? "is-active"
                   : ""
               }
-              onClick={() =>
-                setSaved(
-                  (value) =>
-                    !value
-                )
+              onClick={
+                pulseSocial.toggleSaved
               }
             >
               <Bookmark
                 size={17}
                 fill={
-                  saved
+                  pulseSocial.saved
                     ? "currentColor"
                     : "none"
                 }
               />
 
-              {saved
-                ? "Збережено"
-                : "Зберегти"}
+              {pulseSocial.saved
+                ? `Збережено · ${formatNumber(
+                    pulseSocial.savesCount
+                  )}`
+                : `Зберегти · ${formatNumber(
+                    pulseSocial.savesCount
+                  )}`}
             </button>
 
             <button
