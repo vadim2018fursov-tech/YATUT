@@ -8,11 +8,18 @@ import {
 import {
   ArrowLeft,
   Camera,
+  CheckCircle2,
   Film,
+  Globe2,
+  Image as ImageIcon,
+  Lock,
   MapPin,
+  Play,
   Radio,
+  Scissors,
   Sparkles,
   Upload,
+  Users,
   Waves,
   Zap,
 } from "lucide-react";
@@ -81,6 +88,121 @@ const typeConfig = {
   },
 };
 
+function clamp(
+  value,
+  min,
+  max
+) {
+  return Math.min(
+    max,
+    Math.max(
+      min,
+      value
+    )
+  );
+}
+
+function formatTime(
+  value
+) {
+  const number =
+    Number(
+      value || 0
+    );
+
+  if (
+    !Number.isFinite(
+      number
+    )
+  ) {
+    return "0:00";
+  }
+
+  const total =
+    Math.max(
+      0,
+      Math.floor(
+        number
+      )
+    );
+
+  const hours =
+    Math.floor(
+      total / 3600
+    );
+
+  const minutes =
+    Math.floor(
+      (
+        total % 3600
+      ) / 60
+    );
+
+  const seconds =
+    total % 60;
+
+  if (
+    hours >
+    0
+  ) {
+    return `${hours}:${String(
+      minutes
+    ).padStart(
+      2,
+      "0"
+    )}:${String(
+      seconds
+    ).padStart(
+      2,
+      "0"
+    )}`;
+  }
+
+  return `${minutes}:${String(
+    seconds
+  ).padStart(
+    2,
+    "0"
+  )}`;
+}
+
+function formatBytes(
+  value
+) {
+  const bytes =
+    Number(
+      value || 0
+    );
+
+  if (
+    bytes >=
+    1024 *
+      1024
+  ) {
+    return `${(
+      bytes /
+      (
+        1024 *
+        1024
+      )
+    ).toFixed(
+      1
+    )} МБ`;
+  }
+
+  if (
+    bytes >=
+    1024
+  ) {
+    return `${Math.round(
+      bytes /
+      1024
+    )} КБ`;
+  }
+
+  return `${bytes} Б`;
+}
+
 function createVideoMetadata(
   source
 ) {
@@ -109,6 +231,7 @@ function createVideoMetadata(
           video.removeAttribute(
             "src"
           );
+
           video.load();
 
           resolve(
@@ -149,7 +272,9 @@ function createVideoMetadata(
 }
 
 function createVideoThumbnail(
-  source
+  source,
+  requestedTime =
+    0
 ) {
   return new Promise(
     (
@@ -166,8 +291,6 @@ function createVideoThumbnail(
         true;
       video.playsInline =
         true;
-      video.crossOrigin =
-        "anonymous";
       video.src =
         source;
 
@@ -190,6 +313,7 @@ function createVideoThumbnail(
           video.removeAttribute(
             "src"
           );
+
           video.load();
 
           resolve(
@@ -197,13 +321,7 @@ function createVideoThumbnail(
           );
         };
 
-      video.onerror =
-        () =>
-          finish(
-            null
-          );
-
-      video.onloadeddata =
+      const capture =
         () => {
           try {
             const width =
@@ -286,7 +404,7 @@ function createVideoThumbnail(
                 );
               },
               "image/jpeg",
-              0.86
+              0.88
             );
           } catch {
             finish(
@@ -294,6 +412,62 @@ function createVideoThumbnail(
             );
           }
         };
+
+      video.onerror =
+        () =>
+          finish(
+            null
+          );
+
+      video.onloadedmetadata =
+        () => {
+          const duration =
+            Number.isFinite(
+              video.duration
+            )
+              ? video.duration
+              : 0;
+
+          const maxTime =
+            Math.max(
+              0,
+              duration -
+                0.05
+            );
+
+          const safeTime =
+            clamp(
+              Number(
+                requestedTime ||
+                0
+              ),
+              0,
+              maxTime
+            );
+
+          if (
+            safeTime >
+            0.01
+          ) {
+            video.currentTime =
+              safeTime;
+
+            return;
+          }
+
+          if (
+            video.readyState >=
+            2
+          ) {
+            capture();
+          } else {
+            video.onloadeddata =
+              capture;
+          }
+        };
+
+      video.onseeked =
+        capture;
     }
   );
 }
@@ -313,6 +487,9 @@ export default function CreateMediaPage({
     config.icon;
 
   const fileInputRef =
+    useRef(null);
+
+  const videoRef =
     useRef(null);
 
   const nativeMediaAvailable =
@@ -335,6 +512,60 @@ export default function CreateMediaPage({
     setDurationSeconds,
   ] =
     useState(null);
+
+  const [
+    videoWidth,
+    setVideoWidth,
+  ] =
+    useState(null);
+
+  const [
+    videoHeight,
+    setVideoHeight,
+  ] =
+    useState(null);
+
+  const [
+    trimStart,
+    setTrimStart,
+  ] =
+    useState(0);
+
+  const [
+    trimEnd,
+    setTrimEnd,
+  ] =
+    useState(null);
+
+  const [
+    previewingTrim,
+    setPreviewingTrim,
+  ] =
+    useState(false);
+
+  const [
+    coverTime,
+    setCoverTime,
+  ] =
+    useState(0);
+
+  const [
+    coverFile,
+    setCoverFile,
+  ] =
+    useState(null);
+
+  const [
+    coverPreviewUrl,
+    setCoverPreviewUrl,
+  ] =
+    useState("");
+
+  const [
+    coverBusy,
+    setCoverBusy,
+  ] =
+    useState(false);
 
   const [
     title,
@@ -369,16 +600,28 @@ export default function CreateMediaPage({
     useState(false);
 
   const [
+    publishProgress,
+    setPublishProgress,
+  ] =
+    useState(0);
+
+  const [
+    publishStage,
+    setPublishStage,
+  ] =
+    useState("");
+
+  const [
     error,
     setError,
   ] =
     useState("");
 
   const [
-    success,
-    setSuccess,
+    publishedMedia,
+    setPublishedMedia,
   ] =
-    useState("");
+    useState(null);
 
   const isLive =
     type ===
@@ -388,12 +631,36 @@ export default function CreateMediaPage({
     title.trim() ||
     config.defaultTitle;
 
+  const safeDuration =
+    Number(
+      durationSeconds ||
+      0
+    );
+
+  const effectiveTrimEnd =
+    Number(
+      trimEnd ??
+      safeDuration
+    );
+
+  const selectedDuration =
+    Math.max(
+      0,
+      effectiveTrimEnd -
+        Number(
+          trimStart ||
+          0
+        )
+    );
+
   const canPublish =
     Boolean(
       authSession?.user?.id &&
       file &&
       !publishing &&
-      !isLive
+      !isLive &&
+      selectedDuration >
+        0.4
     );
 
   useEffect(
@@ -402,10 +669,15 @@ export default function CreateMediaPage({
         revokeMediaPreview(
           previewUrl
         );
+
+        revokeMediaPreview(
+          coverPreviewUrl
+        );
       };
     },
     [
       previewUrl,
+      coverPreviewUrl,
     ]
   );
 
@@ -416,15 +688,23 @@ export default function CreateMediaPage({
           return "";
         }
 
-        const name =
-          String(
-            file.name ||
-            ""
-          );
+        const resolution =
+          videoWidth &&
+          videoHeight
+            ? `${videoWidth}×${videoHeight}`
+            : null;
 
         return [
-          name,
-          file.type,
+          file.name,
+          formatBytes(
+            file.size
+          ),
+          resolution,
+          safeDuration
+            ? formatTime(
+                safeDuration
+              )
+            : null,
         ]
           .filter(
             Boolean
@@ -435,8 +715,71 @@ export default function CreateMediaPage({
       },
       [
         file,
+        videoWidth,
+        videoHeight,
+        safeDuration,
       ]
     );
+
+  async function setCoverFromFrame(
+    time =
+      coverTime
+  ) {
+    if (
+      !previewUrl
+    ) {
+      return;
+    }
+
+    setCoverBusy(
+      true
+    );
+
+    try {
+      const nextCover =
+        await createVideoThumbnail(
+          previewUrl,
+          time
+        );
+
+      if (
+        !nextCover
+      ) {
+        throw new Error(
+          "Не вдалося створити обкладинку."
+        );
+      }
+
+      revokeMediaPreview(
+        coverPreviewUrl
+      );
+
+      setCoverFile(
+        nextCover
+      );
+
+      setCoverPreviewUrl(
+        URL.createObjectURL(
+          nextCover
+        )
+      );
+
+      setError(
+        ""
+      );
+    } catch (
+      coverError
+    ) {
+      setError(
+        coverError?.message ||
+        "Не вдалося створити обкладинку."
+      );
+    } finally {
+      setCoverBusy(
+        false
+      );
+    }
+  }
 
   async function applyFile(
     nextFile,
@@ -475,11 +818,36 @@ export default function CreateMediaPage({
       return;
     }
 
-    setError("");
-    setSuccess("");
+    setError(
+      ""
+    );
+
+    setPublishedMedia(
+      null
+    );
+
+    setPublishProgress(
+      0
+    );
+
+    setPublishStage(
+      ""
+    );
 
     revokeMediaPreview(
       previewUrl
+    );
+
+    revokeMediaPreview(
+      coverPreviewUrl
+    );
+
+    setCoverFile(
+      null
+    );
+
+    setCoverPreviewUrl(
+      ""
     );
 
     const nextPreview =
@@ -495,28 +863,81 @@ export default function CreateMediaPage({
       nextPreview
     );
 
-    if (
-      preferredDuration
-    ) {
-      setDurationSeconds(
-        Number(
-          preferredDuration
-        ) ||
-        null
-      );
-    }
-
     const metadata =
       await createVideoMetadata(
         nextPreview
       );
 
-    if (
-      metadata.duration
-    ) {
-      setDurationSeconds(
-        metadata.duration
+    const duration =
+      Number(
+        metadata.duration ||
+        preferredDuration ||
+        0
       );
+
+    setDurationSeconds(
+      duration ||
+      null
+    );
+
+    setVideoWidth(
+      metadata.width ||
+      null
+    );
+
+    setVideoHeight(
+      metadata.height ||
+      null
+    );
+
+    setTrimStart(
+      0
+    );
+
+    setTrimEnd(
+      duration ||
+      null
+    );
+
+    const initialCoverTime =
+      duration
+        ? clamp(
+            duration *
+              0.15,
+            0,
+            Math.min(
+              duration,
+              3
+            )
+          )
+        : 0;
+
+    setCoverTime(
+      initialCoverTime
+    );
+
+    if (
+      duration
+    ) {
+      const firstCover =
+        await createVideoThumbnail(
+          nextPreview,
+          initialCoverTime
+        );
+
+      if (
+        firstCover
+      ) {
+        setCoverFile(
+          firstCover
+        );
+
+        setCoverPreviewUrl(
+          URL.createObjectURL(
+            firstCover
+          )
+        );
+      }
     }
   }
 
@@ -586,8 +1007,14 @@ export default function CreateMediaPage({
   }
 
   function clearVideo() {
+    videoRef.current?.pause();
+
     revokeMediaPreview(
       previewUrl
+    );
+
+    revokeMediaPreview(
+      coverPreviewUrl
     );
 
     setFile(
@@ -598,11 +1025,47 @@ export default function CreateMediaPage({
       ""
     );
 
+    setCoverFile(
+      null
+    );
+
+    setCoverPreviewUrl(
+      ""
+    );
+
     setDurationSeconds(
       null
     );
 
-    setSuccess(
+    setVideoWidth(
+      null
+    );
+
+    setVideoHeight(
+      null
+    );
+
+    setTrimStart(
+      0
+    );
+
+    setTrimEnd(
+      null
+    );
+
+    setCoverTime(
+      0
+    );
+
+    setPreviewingTrim(
+      false
+    );
+
+    setPublishProgress(
+      0
+    );
+
+    setPublishStage(
       ""
     );
 
@@ -611,6 +1074,170 @@ export default function CreateMediaPage({
     ) {
       fileInputRef.current.value =
         "";
+    }
+  }
+
+  function changeTrimStart(
+    rawValue
+  ) {
+    if (
+      !safeDuration
+    ) {
+      return;
+    }
+
+    const next =
+      clamp(
+        Number(
+          rawValue
+        ),
+        0,
+        Math.max(
+          0,
+          effectiveTrimEnd -
+            0.5
+        )
+      );
+
+    setTrimStart(
+      next
+    );
+
+    if (
+      videoRef.current
+    ) {
+      videoRef.current.currentTime =
+        next;
+    }
+  }
+
+  function changeTrimEnd(
+    rawValue
+  ) {
+    if (
+      !safeDuration
+    ) {
+      return;
+    }
+
+    const next =
+      clamp(
+        Number(
+          rawValue
+        ),
+        Number(
+          trimStart ||
+          0
+        ) +
+          0.5,
+        safeDuration
+      );
+
+    setTrimEnd(
+      next
+    );
+
+    if (
+      videoRef.current &&
+      videoRef.current.currentTime >
+        next
+    ) {
+      videoRef.current.currentTime =
+        Number(
+          trimStart ||
+          0
+        );
+    }
+  }
+
+  function previewTrim() {
+    const video =
+      videoRef.current;
+
+    if (!video) {
+      return;
+    }
+
+    video.currentTime =
+      Number(
+        trimStart ||
+        0
+      );
+
+    setPreviewingTrim(
+      true
+    );
+
+    video
+      .play()
+      .catch(
+        () => {
+          setPreviewingTrim(
+            false
+          );
+        }
+      );
+  }
+
+  function handlePreviewTimeUpdate(
+    event
+  ) {
+    if (
+      !previewingTrim
+    ) {
+      return;
+    }
+
+    const video =
+      event.currentTarget;
+
+    if (
+      video.currentTime >=
+      effectiveTrimEnd
+    ) {
+      video.pause();
+
+      video.currentTime =
+        Number(
+          trimStart ||
+          0
+        );
+
+      setPreviewingTrim(
+        false
+      );
+    }
+  }
+
+  function seekCover(
+    rawValue
+  ) {
+    if (
+      !safeDuration
+    ) {
+      return;
+    }
+
+    const next =
+      clamp(
+        Number(
+          rawValue
+        ),
+        0,
+        safeDuration
+      );
+
+    setCoverTime(
+      next
+    );
+
+    if (
+      videoRef.current
+    ) {
+      videoRef.current.pause();
+
+      videoRef.current.currentTime =
+        next;
     }
   }
 
@@ -639,44 +1266,82 @@ export default function CreateMediaPage({
         ""
       );
 
-      setSuccess(
-        "Завантажуємо відео…"
+      setPublishProgress(
+        2
+      );
+
+      setPublishStage(
+        "Готуємо відео"
       );
 
       uploaded =
         await uploadPulseMedia(
           authSession,
           file,
-          type
+          type,
+          {
+            onProgress:
+              (
+                progress
+              ) => {
+                setPublishStage(
+                  "Завантажуємо відео"
+                );
+
+                setPublishProgress(
+                  Math.min(
+                    84,
+                    Math.max(
+                      3,
+                      Math.round(
+                        progress *
+                          0.84
+                      )
+                    )
+                  )
+                );
+              },
+          }
         );
 
-      try {
-        const thumbnailFile =
-          await createVideoThumbnail(
-            previewUrl
-          );
+      setPublishProgress(
+        87
+      );
 
-        if (
-          thumbnailFile
-        ) {
-          thumbnail =
-            await uploadPulseThumbnail(
-              authSession,
-              thumbnailFile,
-              type
-            );
-        }
-      } catch (
-        thumbnailError
+      setPublishStage(
+        "Готуємо обкладинку"
+      );
+
+      let finalCover =
+        coverFile;
+
+      if (
+        !finalCover
       ) {
-        console.warn(
-          "PULSE THUMBNAIL ERROR:",
-          thumbnailError
-        );
+        finalCover =
+          await createVideoThumbnail(
+            previewUrl,
+            coverTime
+          );
       }
 
-      setSuccess(
-        "Публікуємо у PULSE…"
+      if (
+        finalCover
+      ) {
+        thumbnail =
+          await uploadPulseThumbnail(
+            authSession,
+            finalCover,
+            type
+          );
+      }
+
+      setPublishProgress(
+        94
+      );
+
+      setPublishStage(
+        "Публікуємо у PULSE"
       );
 
       created =
@@ -704,6 +1369,14 @@ export default function CreateMediaPage({
               file.type,
             durationSeconds:
               durationSeconds,
+            trimStartSeconds:
+              Number(
+                trimStart ||
+                0
+              ),
+            trimEndSeconds:
+              effectiveTrimEnd ||
+              null,
             locationName:
               locationName.trim() ||
               null,
@@ -717,24 +1390,16 @@ export default function CreateMediaPage({
         );
       }
 
-      setSuccess(
-        "Опубліковано ✓"
+      setPublishProgress(
+        100
       );
 
-      window.setTimeout(
-        () => {
-          onNavigate?.(
-            created.type ===
-              "clip"
-              ? "clips"
-              : "watch",
-            {
-              videoId:
-                created.id,
-            }
-          );
-        },
-        320
+      setPublishStage(
+        "Опубліковано"
+      );
+
+      setPublishedMedia(
+        created
       );
     } catch (
       publishError
@@ -784,7 +1449,11 @@ export default function CreateMediaPage({
         }
       }
 
-      setSuccess(
+      setPublishProgress(
+        0
+      );
+
+      setPublishStage(
         ""
       );
 
@@ -799,8 +1468,115 @@ export default function CreateMediaPage({
     }
   }
 
+  function openPublished() {
+    if (
+      !publishedMedia
+    ) {
+      return;
+    }
+
+    onNavigate?.(
+      publishedMedia.type ===
+        "clip"
+        ? "clips"
+        : "watch",
+      {
+        videoId:
+          publishedMedia.id,
+      }
+    );
+  }
+
+  if (
+    publishedMedia
+  ) {
+    return (
+      <section className="yatut-media-success">
+        <div className="yatut-media-success__icon">
+          <CheckCircle2
+            size={34}
+          />
+        </div>
+
+        <small>
+          ЯТУТ PULSE
+        </small>
+
+        <h1>
+          Опубліковано
+        </h1>
+
+        <p>
+          Відео вже у PULSE та синхронізоване між пристроями.
+        </p>
+
+        <div className="yatut-media-success__card">
+          <div className="yatut-media-success__cover">
+            {publishedMedia.thumbnail ? (
+              <img
+                src={
+                  publishedMedia.thumbnail
+                }
+                alt=""
+              />
+            ) : (
+              <Film
+                size={28}
+              />
+            )}
+          </div>
+
+          <div>
+            <strong>
+              {
+                publishedMedia.title
+              }
+            </strong>
+
+            <span>
+              {formatTime(
+                selectedDuration
+              )}
+              {locationName.trim()
+                ? ` · ${locationName.trim()}`
+                : ""}
+            </span>
+          </div>
+        </div>
+
+        <div className="yatut-media-success__actions">
+          <button
+            type="button"
+            className="is-primary"
+            onClick={
+              openPublished
+            }
+          >
+            <Play
+              size={17}
+              fill="currentColor"
+            />
+
+            Переглянути
+          </button>
+
+          <button
+            type="button"
+            onClick={() =>
+              onNavigate?.(
+                "pulse"
+              )
+            }
+          >
+            До PULSE
+          </button>
+        </div>
+      </section>
+    );
+  }
+
   return (
-    <div className="yatut-media-create">
+    <div className="yatut-media-create yatut-media-create--editor">
       <header className="yatut-media-create__header">
         <button
           type="button"
@@ -845,138 +1621,348 @@ export default function CreateMediaPage({
       </header>
 
       <section className="yatut-media-create__workspace">
-        <div
-          className={`yatut-media-create__preview ${
-            previewUrl
-              ? "has-media"
-              : ""
-          }`.trim()}
-        >
-          {isLive ? (
-            <div className="yatut-media-create__live-note">
-              <Radio
-                size={34}
-              />
-
-              <strong>
-                LIVE буде окремим модулем
-              </strong>
-
-              <p>
-                Для прямого ефіру потрібен окремий live pipeline.
-                Звичайні відео, Clips, Моменти та Хвилі вже
-                публікуються у справжній PULSE.
-              </p>
-            </div>
-          ) : previewUrl ? (
-            <>
-              <video
-                className="yatut-media-create__video"
-                src={
-                  previewUrl
-                }
-                controls
-                playsInline
-                preload="metadata"
-              />
-
-              <div className="yatut-media-create__media-actions">
-                <button
-                  type="button"
-                  onClick={
-                    chooseVideo
-                  }
-                >
-                  Замінити
-                </button>
-
-                <button
-                  type="button"
-                  onClick={
-                    clearVideo
-                  }
-                >
-                  Прибрати
-                </button>
-              </div>
-
-              <small className="yatut-media-create__file-meta">
-                {
-                  mediaShape
-                }
-              </small>
-            </>
-          ) : (
-            <>
-              <div className="yatut-media-create__preview-icon">
-                <Upload
-                  size={30}
+        <div className="yatut-media-editor">
+          <div
+            className={`yatut-media-create__preview ${
+              previewUrl
+                ? "has-media"
+                : ""
+            }`.trim()}
+          >
+            {isLive ? (
+              <div className="yatut-media-create__live-note">
+                <Radio
+                  size={34}
                 />
+
+                <strong>
+                  LIVE буде окремим модулем
+                </strong>
+
+                <p>
+                  Для прямого ефіру потрібен окремий live pipeline.
+                  Clips, відео, Моменти та Хвилі вже публікуються
+                  у справжній PULSE.
+                </p>
               </div>
-
-              <strong>
-                Додай відео
-              </strong>
-
-              <p>
-                Обери ролик з медіатеки або запиши його прямо
-                в ЯТУТ. Після публікації він зʼявиться у PULSE.
-              </p>
-
-              <div className="yatut-media-create__source-actions">
-                <button
-                  type="button"
-                  onClick={
-                    chooseVideo
+            ) : previewUrl ? (
+              <>
+                <video
+                  ref={
+                    videoRef
                   }
-                >
-                  <Upload
-                    size={16}
-                  />
+                  className="yatut-media-create__video"
+                  src={
+                    previewUrl
+                  }
+                  controls
+                  playsInline
+                  preload="metadata"
+                  onTimeUpdate={
+                    handlePreviewTimeUpdate
+                  }
+                />
 
-                  Обрати відео
-                </button>
-
-                {nativeMediaAvailable && (
+                <div className="yatut-media-create__media-actions">
                   <button
                     type="button"
                     onClick={
-                      recordVideo
+                      chooseVideo
                     }
                   >
-                    <Camera
+                    Замінити
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={
+                      clearVideo
+                    }
+                  >
+                    Прибрати
+                  </button>
+                </div>
+
+                <small className="yatut-media-create__file-meta">
+                  {
+                    mediaShape
+                  }
+                </small>
+              </>
+            ) : (
+              <>
+                <div className="yatut-media-create__preview-icon">
+                  <Upload
+                    size={30}
+                  />
+                </div>
+
+                <strong>
+                  Додай відео
+                </strong>
+
+                <p>
+                  Обери ролик з медіатеки або запиши його прямо
+                  в ЯТУТ. Перед публікацією можна вибрати фрагмент
+                  і обкладинку.
+                </p>
+
+                <div className="yatut-media-create__source-actions">
+                  <button
+                    type="button"
+                    onClick={
+                      chooseVideo
+                    }
+                  >
+                    <Upload
                       size={16}
                     />
 
-                    Записати
+                    Обрати відео
                   </button>
-                )}
-              </div>
-            </>
-          )}
 
-          <input
-            ref={
-              fileInputRef
-            }
-            hidden
-            type="file"
-            accept="video/*"
-            onChange={(
-              event
-            ) =>
-              applyFile(
-                event.target
-                  .files?.[0]
-              )
-            }
-          />
+                  {nativeMediaAvailable && (
+                    <button
+                      type="button"
+                      onClick={
+                        recordVideo
+                      }
+                    >
+                      <Camera
+                        size={16}
+                      />
+
+                      Записати
+                    </button>
+                  )}
+                </div>
+              </>
+            )}
+
+            <input
+              ref={
+                fileInputRef
+              }
+              hidden
+              type="file"
+              accept="video/*"
+              onChange={(
+                event
+              ) =>
+                applyFile(
+                  event.target
+                    .files?.[0]
+                )
+              }
+            />
+          </div>
+
+          {previewUrl &&
+            !isLive && (
+              <div className="yatut-media-editor__tools">
+                <section className="yatut-media-edit-card">
+                  <div className="yatut-media-edit-card__title">
+                    <span>
+                      <Scissors
+                        size={17}
+                      />
+                    </span>
+
+                    <div>
+                      <strong>
+                        Фрагмент
+                      </strong>
+
+                      <small>
+                        {formatTime(
+                          selectedDuration
+                        )} у публікації
+                      </small>
+                    </div>
+                  </div>
+
+                  <div className="yatut-media-trim">
+                    <div className="yatut-media-trim__labels">
+                      <span>
+                        Початок
+                        <strong>
+                          {formatTime(
+                            trimStart
+                          )}
+                        </strong>
+                      </span>
+
+                      <span>
+                        Кінець
+                        <strong>
+                          {formatTime(
+                            effectiveTrimEnd
+                          )}
+                        </strong>
+                      </span>
+                    </div>
+
+                    <label>
+                      <span>
+                        Від
+                      </span>
+
+                      <input
+                        type="range"
+                        min="0"
+                        max={
+                          safeDuration ||
+                          0
+                        }
+                        step="0.1"
+                        value={
+                          trimStart
+                        }
+                        onChange={(
+                          event
+                        ) =>
+                          changeTrimStart(
+                            event.target
+                              .value
+                          )
+                        }
+                      />
+                    </label>
+
+                    <label>
+                      <span>
+                        До
+                      </span>
+
+                      <input
+                        type="range"
+                        min="0"
+                        max={
+                          safeDuration ||
+                          0
+                        }
+                        step="0.1"
+                        value={
+                          effectiveTrimEnd
+                        }
+                        onChange={(
+                          event
+                        ) =>
+                          changeTrimEnd(
+                            event.target
+                              .value
+                          )
+                        }
+                      />
+                    </label>
+                  </div>
+
+                  <button
+                    type="button"
+                    className="yatut-media-preview-fragment"
+                    onClick={
+                      previewTrim
+                    }
+                  >
+                    <Play
+                      size={15}
+                      fill="currentColor"
+                    />
+
+                    Переглянути фрагмент
+                  </button>
+                </section>
+
+                <section className="yatut-media-edit-card">
+                  <div className="yatut-media-edit-card__title">
+                    <span>
+                      <ImageIcon
+                        size={17}
+                      />
+                    </span>
+
+                    <div>
+                      <strong>
+                        Обкладинка
+                      </strong>
+
+                      <small>
+                        Кадр на {formatTime(
+                          coverTime
+                        )}
+                      </small>
+                    </div>
+                  </div>
+
+                  <div className="yatut-media-cover">
+                    <div className="yatut-media-cover__preview">
+                      {coverPreviewUrl ? (
+                        <img
+                          src={
+                            coverPreviewUrl
+                          }
+                          alt="Обкладинка PULSE"
+                        />
+                      ) : (
+                        <ImageIcon
+                          size={26}
+                        />
+                      )}
+                    </div>
+
+                    <div className="yatut-media-cover__controls">
+                      <input
+                        type="range"
+                        min="0"
+                        max={
+                          safeDuration ||
+                          0
+                        }
+                        step="0.1"
+                        value={
+                          coverTime
+                        }
+                        onChange={(
+                          event
+                        ) =>
+                          seekCover(
+                            event.target
+                              .value
+                          )
+                        }
+                      />
+
+                      <button
+                        type="button"
+                        disabled={
+                          coverBusy
+                        }
+                        onClick={() =>
+                          setCoverFromFrame(
+                            coverTime
+                          )
+                        }
+                      >
+                        {coverBusy
+                          ? "Готуємо…"
+                          : "Встановити цей кадр"}
+                      </button>
+                    </div>
+                  </div>
+                </section>
+              </div>
+            )}
         </div>
 
         <aside className="yatut-media-create__settings">
           <div className="yatut-media-field">
             <label>
               Назва
+              <span>
+                {
+                  title.length
+                }/140
+              </span>
             </label>
 
             <input
@@ -1007,10 +1993,15 @@ export default function CreateMediaPage({
           <div className="yatut-media-field">
             <label>
               Опис
+              <span>
+                {
+                  description.length
+                }/3000
+              </span>
             </label>
 
             <textarea
-              rows={4}
+              rows={5}
               value={
                 description
               }
@@ -1065,68 +2056,174 @@ export default function CreateMediaPage({
             </div>
           </div>
 
-          <div className="yatut-media-options">
-            <button
-              type="button"
-              className={
-                visibility ===
-                "public"
-                  ? "is-active"
-                  : ""
-              }
-              disabled={
-                isLive
-              }
-              onClick={() =>
-                setVisibility(
+          <div className="yatut-media-audience">
+            <label>
+              Хто побачить
+            </label>
+
+            <div className="yatut-media-options yatut-media-options--three">
+              <button
+                type="button"
+                className={
+                  visibility ===
                   "public"
-                )
-              }
-            >
-              <Sparkles
-                size={17}
-              />
+                    ? "is-active"
+                    : ""
+                }
+                disabled={
+                  isLive
+                }
+                onClick={() =>
+                  setVisibility(
+                    "public"
+                  )
+                }
+              >
+                <Globe2
+                  size={16}
+                />
 
-              Для всіх
-            </button>
+                <span>
+                  <strong>
+                    Для всіх
+                  </strong>
 
-            <button
-              type="button"
-              className={
-                visibility ===
-                "friends"
-                  ? "is-active"
-                  : ""
-              }
-              disabled={
-                isLive
-              }
-              onClick={() =>
-                setVisibility(
+                  <small>
+                    У PULSE
+                  </small>
+                </span>
+              </button>
+
+              <button
+                type="button"
+                className={
+                  visibility ===
                   "friends"
-                )
-              }
-            >
-              <MapPin
-                size={17}
-              />
+                    ? "is-active"
+                    : ""
+                }
+                disabled={
+                  isLive
+                }
+                onClick={() =>
+                  setVisibility(
+                    "friends"
+                  )
+                }
+              >
+                <Users
+                  size={16}
+                />
 
-              Друзі
-            </button>
+                <span>
+                  <strong>
+                    Друзі
+                  </strong>
+
+                  <small>
+                    Тільки друзі
+                  </small>
+                </span>
+              </button>
+
+              <button
+                type="button"
+                className={
+                  visibility ===
+                  "private"
+                    ? "is-active"
+                    : ""
+                }
+                disabled={
+                  isLive
+                }
+                onClick={() =>
+                  setVisibility(
+                    "private"
+                  )
+                }
+              >
+                <Lock
+                  size={16}
+                />
+
+                <span>
+                  <strong>
+                    Лише я
+                  </strong>
+
+                  <small>
+                    Приватно
+                  </small>
+                </span>
+              </button>
+            </div>
           </div>
+
+          {file &&
+            !isLive && (
+              <div className="yatut-media-summary">
+                <Sparkles
+                  size={16}
+                />
+
+                <div>
+                  <strong>
+                    Готово до PULSE
+                  </strong>
+
+                  <span>
+                    {formatTime(
+                      selectedDuration
+                    )}
+                    {" · "}
+                    {visibility ===
+                      "public"
+                      ? "Для всіх"
+                      : visibility ===
+                        "friends"
+                      ? "Друзі"
+                      : "Лише я"}
+                  </span>
+                </div>
+              </div>
+            )}
+
+          {publishing && (
+            <div className="yatut-media-progress">
+              <div className="yatut-media-progress__top">
+                <span>
+                  {
+                    publishStage
+                  }
+                </span>
+
+                <strong>
+                  {
+                    publishProgress
+                  }%
+                </strong>
+              </div>
+
+              <div className="yatut-media-progress__track">
+                <i
+                  style={{
+                    width:
+                      `${publishProgress}%`,
+                  }}
+                />
+              </div>
+
+              <small>
+                Не закривай ЯТУТ до завершення завантаження.
+              </small>
+            </div>
+          )}
 
           {error && (
             <div className="yatut-media-create__status is-error">
               {
                 error
-              }
-            </div>
-          )}
-
-          {success && (
-            <div className="yatut-media-create__status is-success">
-              {
-                success
               }
             </div>
           )}
@@ -1142,16 +2239,16 @@ export default function CreateMediaPage({
             }
           >
             {publishing
-              ? "Публікуємо…"
+              ? `Публікуємо · ${publishProgress}%`
               : isLive
               ? "LIVE — наступний модуль"
-              : "Опублікувати"}
+              : "Опублікувати у PULSE"}
           </button>
 
           <small className="yatut-media-create__note">
             {authSession?.user?.id
               ? file
-                ? "Файл буде збережено в Supabase Storage, а публікація — у PULSE."
+                ? "Відео та обкладинка зберігаються у Supabase Storage. Обраний фрагмент використовується у PULSE."
                 : "Оберіть відео, щоб продовжити."
               : "Увійдіть в акаунт, щоб публікувати у PULSE."}
           </small>
