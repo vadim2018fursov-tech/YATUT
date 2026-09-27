@@ -9,6 +9,7 @@ import {
   MoreHorizontal,
   Settings2,
   Share2,
+  MessageCircle,
 } from "lucide-react";
 
 import {
@@ -19,6 +20,8 @@ import {
 } from "react";
 
 import PulseVideoPlayer from "./PulseVideoPlayer";
+import PulseCommentsSheet from "./PulseCommentsSheet";
+import usePulseSocial from "../../hooks/usePulseSocial";
 
 const CATEGORIES = [
   "Усі",
@@ -489,6 +492,7 @@ function LongVideoCard({
 
 export default function PulseLongVideoMobile({
   videos = [],
+  authSession = null,
   onWatchChange,
 }) {
   const [
@@ -539,6 +543,18 @@ export default function PulseLongVideoMobile({
     qualityOpen,
     setQualityOpen,
   ] = useState(false);
+
+  const [
+    commentsOpen,
+    setCommentsOpen,
+  ] = useState(false);
+
+  const pulseSocial =
+    usePulseSocial({
+      video:
+        selectedVideo,
+      authSession,
+    });
 
   const qualityRef =
     useRef(null);
@@ -796,6 +812,10 @@ export default function PulseLongVideoMobile({
     setQualityOpen(
       false
     );
+
+    setCommentsOpen(
+      false
+    );
   }
 
   async function shareVideo(
@@ -983,22 +1003,21 @@ export default function PulseLongVideoMobile({
             <button
               type="button"
               className={
-                subscribed.has(
-                  authorId
-                )
+                pulseSocial.following
                   ? "is-subscribed"
                   : ""
               }
-              onClick={() =>
-                toggleSet(
-                  setSubscribed,
-                  authorId
-                )
+              disabled={
+                pulseSocial.isOwnAuthor ||
+                pulseSocial.busy
+              }
+              onClick={
+                pulseSocial.toggleFollow
               }
             >
-              {subscribed.has(
-                authorId
-              ) ? (
+              {pulseSocial.isOwnAuthor ? (
+                "Це ви"
+              ) : pulseSocial.following ? (
                 <>
                   <Check
                     size={16}
@@ -1016,31 +1035,43 @@ export default function PulseLongVideoMobile({
             <button
               type="button"
               className={
-                liked.has(
-                  selectedVideo.id
-                )
+                pulseSocial.liked
                   ? "is-active"
                   : ""
               }
-              onClick={() =>
-                toggleSet(
-                  setLiked,
-                  selectedVideo.id
-                )
+              onClick={
+                pulseSocial.toggleLike
               }
             >
               <Heart
                 size={18}
                 fill={
-                  liked.has(
-                    selectedVideo.id
-                  )
+                  pulseSocial.liked
                     ? "currentColor"
                     : "none"
                 }
               />
 
-              Подобається
+              Подобається · {formatCompact(
+                pulseSocial.likesCount
+              )}
+            </button>
+
+            <button
+              type="button"
+              onClick={() =>
+                setCommentsOpen(
+                  true
+                )
+              }
+            >
+              <MessageCircle
+                size={18}
+              />
+
+              Коментарі · {formatCompact(
+                pulseSocial.commentsCount
+              )}
             </button>
 
             <button
@@ -1061,31 +1092,26 @@ export default function PulseLongVideoMobile({
             <button
               type="button"
               className={
-                saved.has(
-                  selectedVideo.id
-                )
+                pulseSocial.saved
                   ? "is-active"
                   : ""
               }
-              onClick={() =>
-                toggleSet(
-                  setSaved,
-                  selectedVideo.id
-                )
+              onClick={
+                pulseSocial.toggleSaved
               }
             >
               <Bookmark
                 size={18}
                 fill={
-                  saved.has(
-                    selectedVideo.id
-                  )
+                  pulseSocial.saved
                     ? "currentColor"
                     : "none"
                 }
               />
 
-              Зберегти
+              Зберегти · {formatCompact(
+                pulseSocial.savesCount
+              )}
             </button>
 
             <div
@@ -1218,6 +1244,26 @@ export default function PulseLongVideoMobile({
               )}
           </div>
         </div>
+
+        <PulseCommentsSheet
+          open={
+            commentsOpen
+          }
+          video={
+            selectedVideo
+          }
+          authSession={
+            authSession
+          }
+          onClose={() =>
+            setCommentsOpen(
+              false
+            )
+          }
+          onCountChange={
+            pulseSocial.refresh
+          }
+        />
       </section>
     );
   }
