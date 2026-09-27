@@ -396,7 +396,9 @@ export default function ClipsPage({
             }
             className="pulse-clips-stage__background"
             autoPlay
-            muted
+            muted={
+              muted
+            }
             loop
             playsInline
             preload="metadata"
