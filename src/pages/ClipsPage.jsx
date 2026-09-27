@@ -19,6 +19,8 @@ import {
 
 import YatutHereButton from "../components/pulse/YatutHereButton";
 import LocationPulsePanel from "../components/pulse/LocationPulsePanel";
+import PulseCommentsSheet from "../components/pulse/PulseCommentsSheet";
+import usePulseSocial from "../hooks/usePulseSocial";
 
 import {
   shareYatutItem,
@@ -261,6 +263,11 @@ export default function ClipsPage({
     setMoreOpen,
   ] = useState(false);
 
+  const [
+    commentsOpen,
+    setCommentsOpen,
+  ] = useState(false);
+
   const video =
     clips[
       currentIndex %
@@ -269,6 +276,12 @@ export default function ClipsPage({
           1
         )
     ];
+
+  const pulseSocial =
+    usePulseSocial({
+      video,
+      authSession,
+    });
 
   function resetActions() {
     setLiked(false);
