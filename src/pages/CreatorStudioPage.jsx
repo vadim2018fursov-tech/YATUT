@@ -2,46 +2,61 @@ import {
   Activity,
   ArrowLeft,
   BarChart3,
-  Clock3,
+  Bookmark,
   Eye,
+  Heart,
   MapPin,
+  MessageCircle,
   Play,
-  Radio,
+  Share2,
   Sparkles,
+  TrendingDown,
   TrendingUp,
   Users,
   Video,
 } from "lucide-react";
 
 import {
+  useEffect,
   useMemo,
   useState,
 } from "react";
 
 import {
-  pulseRecommendations,
-  pulseVideos,
-} from "../data/pulseMockData";
+  loadCreatorStudioData,
+} from "../services/creatorStudioService";
+
+import {
+  subscribePulseRealtime,
+} from "../services/realtimeService";
 
 const FALLBACK_IMAGE =
   "/assets/yatut/cities/kyiv/hero.jpg";
 
 const tabs = [
   {
-    id: "overview",
-    label: "Огляд",
+    id:
+      "overview",
+    label:
+      "Огляд",
   },
   {
-    id: "content",
-    label: "Контент",
+    id:
+      "content",
+    label:
+      "Контент",
   },
   {
-    id: "audience",
-    label: "Аудиторія",
+    id:
+      "audience",
+    label:
+      "Аудиторія",
   },
   {
-    id: "pulse",
-    label: "PULSE",
+    id:
+      "pulse",
+    label:
+      "PULSE",
   },
 ];
 
@@ -50,7 +65,8 @@ function formatNumber(
 ) {
   const number =
     Number(
-      value || 0
+      value ||
+      0
     );
 
   if (
@@ -60,7 +76,9 @@ function formatNumber(
     return `${(
       number /
       1000000
-    ).toFixed(1)}M`;
+    ).toFixed(
+      1
+    )}M`;
   }
 
   if (
@@ -78,48 +96,40 @@ function formatNumber(
   );
 }
 
-function getVideos() {
-  const source = [
-    ...(pulseVideos || []),
-    ...(pulseRecommendations.forYou || []),
-    ...(pulseRecommendations.nearby || []),
-    ...(pulseRecommendations.city || []),
-    ...(pulseRecommendations.events || []),
-    ...(pulseRecommendations.live || []),
-    ...(pulseRecommendations.wave || []),
-  ];
+function formatChange(
+  value
+) {
+  const number =
+    Number(
+      value ||
+      0
+    );
 
-  const unique = [];
+  if (
+    !Number.isFinite(
+      number
+    )
+  ) {
+    return null;
+  }
 
-  source.forEach(
-    (video) => {
-      if (
-        !video ||
-        unique.some(
-          (item) =>
-            item.id ===
-            video.id
-        )
-      ) {
-        return;
-      }
-
-      unique.push(
-        video
-      );
-    }
-  );
-
-  return unique;
+  return `${number > 0 ? "+" : ""}${number}%`;
 }
 
 function StudioMetric({
-  icon: Icon,
+  icon:
+    Icon,
   label,
   value,
-  change,
+  change = null,
   text,
 }) {
+  const positive =
+    Number(
+      change
+    ) >=
+    0;
+
   return (
     <article className="creator-studio-metric">
       <div className="creator-studio-metric__top">
@@ -129,55 +139,279 @@ function StudioMetric({
           />
         </span>
 
-        {change && (
-          <b>
-            <TrendingUp
-              size={12}
-            />
+        {change !==
+          null && (
+          <b
+            className={
+              positive
+                ? ""
+                : "is-negative"
+            }
+          >
+            {positive ? (
+              <TrendingUp
+                size={12}
+              />
+            ) : (
+              <TrendingDown
+                size={12}
+              />
+            )}
 
-            {change}
+            {formatChange(
+              change
+            )}
           </b>
         )}
       </div>
 
       <strong>
-        {value}
+        {
+          value
+        }
       </strong>
 
       <small>
-        {label}
+        {
+          label
+        }
       </small>
 
       {text && (
         <p>
-          {text}
+          {
+            text
+          }
         </p>
       )}
     </article>
   );
 }
 
+function emptyStudioData() {
+  return {
+    videos:
+      [],
+    followersCount:
+      0,
+    daily:
+      [],
+    current28: {
+      views:
+        0,
+      likes:
+        0,
+      comments:
+        0,
+      saves:
+        0,
+      shares:
+        0,
+    },
+    previous28: {
+      views:
+        0,
+      likes:
+        0,
+      comments:
+        0,
+      saves:
+        0,
+      shares:
+        0,
+    },
+    changes: {
+      views:
+        0,
+      likes:
+        0,
+      comments:
+        0,
+      saves:
+        0,
+      shares:
+        0,
+    },
+    cumulative: {
+      views:
+        0,
+      likes:
+        0,
+      comments:
+        0,
+      saves:
+        0,
+      shares:
+        0,
+    },
+    today: {
+      views:
+        0,
+      likes:
+        0,
+      comments:
+        0,
+      saves:
+        0,
+      shares:
+        0,
+    },
+  };
+}
+
 export default function CreatorStudioPage({
   onNavigate,
+  authSession = null,
 }) {
   const [
     activeTab,
     setActiveTab,
-  ] = useState(
-    "overview"
+  ] =
+    useState(
+      "overview"
+    );
+
+  const [
+    data,
+    setData,
+  ] =
+    useState(
+      emptyStudioData
+    );
+
+  const [
+    loading,
+    setLoading,
+  ] =
+    useState(
+      true
+    );
+
+  const [
+    error,
+    setError,
+  ] =
+    useState(
+      ""
+    );
+
+  useEffect(
+    () => {
+      if (
+        !authSession?.user?.id
+      ) {
+        setData(
+          emptyStudioData()
+        );
+
+        setLoading(
+          false
+        );
+
+        return;
+      }
+
+      let active =
+        true;
+
+      let timer =
+        null;
+
+      async function refresh() {
+        try {
+          setError(
+            ""
+          );
+
+          const next =
+            await loadCreatorStudioData(
+              authSession
+            );
+
+          if (
+            active
+          ) {
+            setData(
+              next
+            );
+          }
+        } catch (
+          loadError
+        ) {
+          console.warn(
+            "CREATOR STUDIO LOAD ERROR:",
+            loadError
+          );
+
+          if (
+            active
+          ) {
+            setError(
+              "Не вдалося завантажити аналітику PULSE."
+            );
+          }
+        } finally {
+          if (
+            active
+          ) {
+            setLoading(
+              false
+            );
+          }
+        }
+      }
+
+      setLoading(
+        true
+      );
+
+      refresh();
+
+      const realtime =
+        subscribePulseRealtime({
+          session:
+            authSession,
+          onChange:
+            () => {
+              window.clearTimeout(
+                timer
+              );
+
+              timer =
+                window.setTimeout(
+                  refresh,
+                  180
+                );
+            },
+        });
+
+      return () => {
+        active =
+          false;
+
+        window.clearTimeout(
+          timer
+        );
+
+        realtime?.close?.();
+      };
+    },
+    [
+      authSession?.user?.id,
+      authSession?.access_token,
+    ]
   );
 
   const videos =
-    useMemo(
-      () =>
-        getVideos(),
-      []
-    );
+    data.videos ||
+    [];
 
   const topVideos =
     useMemo(
       () =>
-        [...videos]
+        [
+          ...videos,
+        ]
           .sort(
             (
               first,
@@ -185,11 +419,11 @@ export default function CreatorStudioPage({
             ) =>
               Number(
                 second.views ||
-                  0
+                0
               ) -
               Number(
                 first.views ||
-                  0
+                0
               )
           )
           .slice(
@@ -201,26 +435,142 @@ export default function CreatorStudioPage({
       ]
     );
 
-  const totalViews =
-    videos.reduce(
-      (
-        total,
-        video
-      ) =>
-        total +
-        Number(
-          video.views ||
-            0
-        ),
+  const current28 =
+    data.current28 ||
+    emptyStudioData()
+      .current28;
+
+  const cumulative =
+    data.cumulative ||
+    emptyStudioData()
+      .cumulative;
+
+  const today =
+    data.today ||
+    emptyStudioData()
+      .today;
+
+  const todayInteractions =
+    Number(
+      today.likes ||
+      0
+    ) +
+    Number(
+      today.comments ||
+      0
+    ) +
+    Number(
+      today.saves ||
+      0
+    ) +
+    Number(
+      today.shares ||
       0
     );
 
+  const periodInteractions =
+    Number(
+      current28.likes ||
+      0
+    ) +
+    Number(
+      current28.comments ||
+      0
+    ) +
+    Number(
+      current28.saves ||
+      0
+    ) +
+    Number(
+      current28.shares ||
+      0
+    );
+
+  const cumulativeInteractions =
+    Number(
+      cumulative.likes ||
+      0
+    ) +
+    Number(
+      cumulative.comments ||
+      0
+    ) +
+    Number(
+      cumulative.saves ||
+      0
+    ) +
+    Number(
+      cumulative.shares ||
+      0
+    );
+
+  const engagementRate =
+    cumulative.views >
+      0
+      ? (
+          (
+            cumulativeInteractions /
+            cumulative.views
+          ) *
+          100
+        ).toFixed(
+          1
+        )
+      : "0.0";
+
+  const chart =
+    data.daily ||
+    [];
+
+  const chartMax =
+    Math.max(
+      1,
+      ...chart.map(
+        (
+          point
+        ) =>
+          Number(
+            point.views ||
+            0
+          )
+      )
+    );
+
+  const chartBars =
+    chart.filter(
+      (
+        _,
+        index
+      ) =>
+        index %
+          2 ===
+          0 ||
+        index ===
+          chart.length -
+            1
+    );
+
+  if (
+    loading &&
+    !videos.length
+  ) {
+    return (
+      <section className="creator-studio-loading">
+        <span />
+
+        <strong>
+          Завантажуємо Creator Studio…
+        </strong>
+
+        <small>
+          Реальні дані ЯТУТ PULSE
+        </small>
+      </section>
+    );
+  }
+
   return (
     <div className="creator-studio-page">
-      {/* ===============================================
-          HEADER
-      =============================================== */}
-
       <header className="creator-studio-header">
         <div>
           <button
@@ -251,10 +601,7 @@ export default function CreatorStudioPage({
           </h1>
 
           <p>
-            Статистика твоїх
-            відео, Clips, LIVE
-            та активності
-            в ЯТУТ PULSE.
+            Реальна статистика твоїх відео, Clips і активності в ЯТУТ PULSE.
           </p>
         </div>
 
@@ -267,28 +614,37 @@ export default function CreatorStudioPage({
 
           <div>
             <small>
-              PULSE ЗАРАЗ
+              СЬОГОДНІ
             </small>
 
             <strong>
-              428 людей
+              {formatNumber(
+                todayInteractions
+              )} взаємодій
             </strong>
 
             <p>
-              взаємодіють з
-              твоїм контентом
+              {formatNumber(
+                today.views
+              )} переглядів
             </p>
           </div>
         </div>
       </header>
 
-      {/* ===============================================
-          TABS
-      =============================================== */}
+      {error && (
+        <div className="creator-studio-error">
+          {
+            error
+          }
+        </div>
+      )}
 
       <nav className="creator-studio-tabs">
         {tabs.map(
-          (tab) => (
+          (
+            tab
+          ) => (
             <button
               key={
                 tab.id
@@ -314,52 +670,67 @@ export default function CreatorStudioPage({
         )}
       </nav>
 
-      {/* ===============================================
-          METRICS
-      =============================================== */}
-
       <section className="creator-studio-metrics">
         <StudioMetric
-          icon={Eye}
+          icon={
+            Eye
+          }
           label="Перегляди"
           value={
             formatNumber(
-              totalViews ||
-                184200
+              cumulative.views
             )
           }
-          change="+18%"
+          change={
+            data.changes
+              ?.views ??
+            0
+          }
+          text="зміна за останні 28 днів"
+        />
+
+        <StudioMetric
+          icon={
+            Users
+          }
+          label="Підписники"
+          value={
+            formatNumber(
+              data.followersCount
+            )
+          }
+          text="реальні підписки на автора"
+        />
+
+        <StudioMetric
+          icon={
+            Heart
+          }
+          label="Взаємодії"
+          value={
+            formatNumber(
+              periodInteractions
+            )
+          }
+          change={
+            data.changes
+              ?.likes ??
+            0
+          }
           text="за останні 28 днів"
         />
 
         <StudioMetric
-          icon={Users}
-          label="Підписники"
-          value="24,8K"
-          change="+7,4%"
-          text="+1 720 нових"
-        />
-
-        <StudioMetric
-          icon={Clock3}
-          label="Час перегляду"
-          value="8 420 год"
-          change="+12%"
-          text="відео та влоги"
-        />
-
-        <StudioMetric
-          icon={Activity}
-          label="PULSE охоплення"
-          value="38,4K"
-          change="+26%"
-          text="людей поруч"
+          icon={
+            Activity
+          }
+          label="Engagement"
+          value={
+            `${engagementRate}%`
+          }
+          text="від усіх переглядів"
         />
       </section>
-
-      {/* ===============================================
-          OVERVIEW
-      =============================================== */}
 
       {activeTab ===
         "overview" && (
@@ -378,104 +749,86 @@ export default function CreatorStudioPage({
                     </strong>
 
                     <small>
-                      Останні
-                      28 днів
+                      Останні 28 днів
                     </small>
                   </div>
                 </div>
 
                 <b>
-                  +18%
+                  {formatChange(
+                    data.changes
+                      ?.views ??
+                    0
+                  )}
                 </b>
               </header>
 
               <div className="creator-studio-chart__visual">
-                <div
-                  style={{
-                    height:
-                      "32%",
-                  }}
-                />
-
-                <div
-                  style={{
-                    height:
-                      "47%",
-                  }}
-                />
-
-                <div
-                  style={{
-                    height:
-                      "42%",
-                  }}
-                />
-
-                <div
-                  style={{
-                    height:
-                      "58%",
-                  }}
-                />
-
-                <div
-                  style={{
-                    height:
-                      "53%",
-                  }}
-                />
-
-                <div
-                  style={{
-                    height:
-                      "72%",
-                  }}
-                />
-
-                <div
-                  style={{
-                    height:
-                      "68%",
-                  }}
-                />
-
-                <div
-                  style={{
-                    height:
-                      "84%",
-                  }}
-                />
-
-                <div
-                  style={{
-                    height:
-                      "76%",
-                  }}
-                />
-
-                <div
-                  style={{
-                    height:
-                      "94%",
-                  }}
-                />
+                {chartBars.map(
+                  (
+                    point
+                  ) => (
+                    <div
+                      key={
+                        point.day
+                      }
+                      title={
+                        `${point.label}: ${formatNumber(
+                          point.views
+                        )}`
+                      }
+                      style={{
+                        height:
+                          `${Math.max(
+                            4,
+                            Math.round(
+                              (
+                                point.views /
+                                chartMax
+                              ) *
+                                100
+                            )
+                          )}%`,
+                      }}
+                    />
+                  )
+                )}
               </div>
 
               <footer>
                 <span>
-                  16 сер
+                  {
+                    chart[0]
+                      ?.label ||
+                    "—"
+                  }
                 </span>
 
                 <span>
-                  23 сер
+                  {
+                    chart[
+                      Math.floor(
+                        chart.length /
+                        3
+                      )
+                    ]?.label ||
+                    "—"
+                  }
                 </span>
 
                 <span>
-                  30 сер
-                </span>
-
-                <span>
-                  6 вер
+                  {
+                    chart[
+                      Math.floor(
+                        (
+                          chart.length *
+                          2
+                        ) /
+                        3
+                      )
+                    ]?.label ||
+                    "—"
+                  }
                 </span>
 
                 <span>
@@ -486,55 +839,61 @@ export default function CreatorStudioPage({
 
             <article className="creator-studio-live-card">
               <div className="creator-studio-live-card__icon">
-                <Radio
+                <Activity
                   size={22}
                 />
               </div>
 
               <small>
-                У РЕАЛЬНОМУ ЧАСІ
+                СЬОГОДНІ
               </small>
 
               <strong>
-                1 284
+                {formatNumber(
+                  today.views
+                )}
               </strong>
 
               <span>
-                перегляди
-                за останні
-                60 хвилин
+                реальних переглядів сьогодні
               </span>
 
-              <div className="creator-studio-live-bars">
-                {[
-                  34,
-                  48,
-                  40,
-                  58,
-                  51,
-                  67,
-                  62,
-                  76,
-                  70,
-                  88,
-                  81,
-                  96,
-                ].map(
-                  (
-                    height,
-                    index
-                  ) => (
-                    <i
-                      key={
-                        index
-                      }
-                      style={{
-                        height:
-                          `${height}%`,
-                      }}
-                    />
-                  )
-                )}
+              <div className="creator-studio-live-stats">
+                <span>
+                  <Heart
+                    size={13}
+                  />
+                  {formatNumber(
+                    today.likes
+                  )}
+                </span>
+
+                <span>
+                  <MessageCircle
+                    size={13}
+                  />
+                  {formatNumber(
+                    today.comments
+                  )}
+                </span>
+
+                <span>
+                  <Bookmark
+                    size={13}
+                  />
+                  {formatNumber(
+                    today.saves
+                  )}
+                </span>
+
+                <span>
+                  <Share2
+                    size={13}
+                  />
+                  {formatNumber(
+                    today.shares
+                  )}
+                </span>
               </div>
 
               <button
@@ -564,7 +923,7 @@ export default function CreatorStudioPage({
                   </strong>
 
                   <small>
-                    За переглядами
+                    За реальними переглядами
                   </small>
                 </div>
               </div>
@@ -581,88 +940,94 @@ export default function CreatorStudioPage({
               </button>
             </header>
 
-            <div className="creator-studio-top-videos">
-              {topVideos.map(
-                (
-                  video,
-                  index
-                ) => (
-                  <button
-                    type="button"
-                    key={
-                      video.id
-                    }
-                    onClick={() =>
-                      onNavigate?.(
-                        video.type ===
-                          "clip"
-                          ? "clips"
-                          : "watch",
-                        {
-                          videoId:
-                            video.id,
-                        }
-                      )
-                    }
-                  >
-                    <span className="creator-studio-top-videos__number">
-                      {index +
-                        1}
-                    </span>
-
-                    <div className="creator-studio-top-videos__media">
-                      <img
-                        src={
-                          video.thumbnail ||
-                          FALLBACK_IMAGE
-                        }
-                        alt=""
-                        onError={(
-                          event
-                        ) => {
-                          event.currentTarget.src =
-                            FALLBACK_IMAGE;
-                        }}
-                      />
-                    </div>
-
-                    <div className="creator-studio-top-videos__copy">
-                      <strong>
-                        {
-                          video.title
-                        }
-                      </strong>
-
-                      <span>
-                        {
+            {topVideos.length ? (
+              <div className="creator-studio-top-videos">
+                {topVideos.map(
+                  (
+                    video,
+                    index
+                  ) => (
+                    <button
+                      type="button"
+                      key={
+                        video.id
+                      }
+                      onClick={() =>
+                        onNavigate?.(
                           video.type ===
+                            "clip"
+                            ? "clips"
+                            : "watch",
+                          {
+                            videoId:
+                              video.id,
+                          }
+                        )
+                      }
+                    >
+                      <span className="creator-studio-top-videos__number">
+                        {index +
+                          1}
+                      </span>
+
+                      <div className="creator-studio-top-videos__media">
+                        <img
+                          src={
+                            video.thumbnail ||
+                            FALLBACK_IMAGE
+                          }
+                          alt=""
+                          onError={(
+                            event
+                          ) => {
+                            event.currentTarget.src =
+                              FALLBACK_IMAGE;
+                          }}
+                        />
+                      </div>
+
+                      <div className="creator-studio-top-videos__copy">
+                        <strong>
+                          {
+                            video.title
+                          }
+                        </strong>
+
+                        <span>
+                          {video.type ===
                           "clip"
                             ? "Clip"
-                            : "Відео"
-                        }
-                      </span>
-                    </div>
+                            : "Відео"}
+                        </span>
+                      </div>
 
-                    <div className="creator-studio-top-videos__views">
-                      <Eye
-                        size={14}
-                      />
+                      <div className="creator-studio-top-videos__views">
+                        <Eye
+                          size={14}
+                        />
 
-                      {formatNumber(
-                        video.views
-                      )}
-                    </div>
-                  </button>
-                )
-              )}
-            </div>
+                        {formatNumber(
+                          video.views
+                        )}
+                      </div>
+                    </button>
+                  )
+                )}
+              </div>
+            ) : (
+              <StudioEmpty
+                title="Контенту поки немає"
+                text="Опублікуй перше відео або Clip — воно одразу зʼявиться в аналітиці."
+                onAction={() =>
+                  onNavigate?.(
+                    "create"
+                  )
+                }
+              />
+            )}
           </section>
         </>
       )}
-
-      {/* ===============================================
-          CONTENT
-      =============================================== */}
 
       {activeTab ===
         "content" && (
@@ -679,8 +1044,7 @@ export default function CreatorStudioPage({
                 </strong>
 
                 <small>
-                  Відео, Clips,
-                  LIVE та PULSE
+                  Реальні відео PULSE
                 </small>
               </div>
             </div>
@@ -697,88 +1061,133 @@ export default function CreatorStudioPage({
             </button>
           </header>
 
-          <div className="creator-studio-content-table">
-            {videos.map(
-              (video) => (
-                <article
-                  key={
-                    video.id
-                  }
-                >
-                  <img
-                    src={
-                      video.thumbnail ||
-                      FALLBACK_IMAGE
-                    }
-                    alt=""
-                    onError={(
-                      event
-                    ) => {
-                      event.currentTarget.src =
-                        FALLBACK_IMAGE;
-                    }}
-                  />
+          {videos.length ? (
+            <div className="creator-studio-content-table">
+              {videos.map(
+                (
+                  video
+                ) => {
+                  const interactions =
+                    Number(
+                      video.likes ||
+                      0
+                    ) +
+                    Number(
+                      video.comments ||
+                      0
+                    ) +
+                    Number(
+                      video.saves ||
+                      0
+                    ) +
+                    Number(
+                      video.shares ||
+                      0
+                    );
 
-                  <div>
-                    <strong>
-                      {
-                        video.title
+                  const rate =
+                    Number(
+                      video.views ||
+                      0
+                    ) >
+                    0
+                      ? (
+                          (
+                            interactions /
+                            Number(
+                              video.views
+                            )
+                          ) *
+                          100
+                        ).toFixed(
+                          1
+                        )
+                      : "0.0";
+
+                  return (
+                    <article
+                      key={
+                        video.id
                       }
-                    </strong>
-
-                    <span>
-                      {
-                        video.type ===
-                        "clip"
-                          ? "Clip"
-                          : video.isLive
-                          ? "LIVE"
-                          : "Відео"
-                      }
-                    </span>
-                  </div>
-
-                  <span>
-                    <Eye
-                      size={13}
-                    />
-
-                    {formatNumber(
-                      video.views
-                    )}
-                  </span>
-
-                  <span>
-                    94%
-                  </span>
-
-                  <button
-                    type="button"
-                    onClick={() =>
-                      onNavigate?.(
-                        video.type ===
-                          "clip"
-                          ? "clips"
-                          : "watch",
-                        {
-                          videoId:
-                            video.id,
+                    >
+                      <img
+                        src={
+                          video.thumbnail ||
+                          FALLBACK_IMAGE
                         }
-                      )
-                    }
-                  >
-                    Відкрити
-                  </button>
-                </article>
-              )
-            )}
-          </div>
+                        alt=""
+                        onError={(
+                          event
+                        ) => {
+                          event.currentTarget.src =
+                            FALLBACK_IMAGE;
+                        }}
+                      />
+
+                      <div>
+                        <strong>
+                          {
+                            video.title
+                          }
+                        </strong>
+
+                        <span>
+                          {video.type ===
+                          "clip"
+                            ? "Clip"
+                            : "Відео"}
+                        </span>
+                      </div>
+
+                      <span>
+                        <Eye
+                          size={13}
+                        />
+
+                        {formatNumber(
+                          video.views
+                        )}
+                      </span>
+
+                      <span>
+                        {rate}%
+                      </span>
+
+                      <button
+                        type="button"
+                        onClick={() =>
+                          onNavigate?.(
+                            video.type ===
+                              "clip"
+                              ? "clips"
+                              : "watch",
+                            {
+                              videoId:
+                                video.id,
+                            }
+                          )
+                        }
+                      >
+                        Відкрити
+                      </button>
+                    </article>
+                  );
+                }
+              )}
+            </div>
+          ) : (
+            <StudioEmpty
+              title="Ще немає відео"
+              text="Створи перший матеріал у PULSE, щоб почати збирати реальну статистику."
+              onAction={() =>
+                onNavigate?.(
+                  "create"
+                )
+              }
+            />
+          )}
         </section>
       )}
-
-      {/* ===============================================
-          AUDIENCE
-      =============================================== */}
 
       {activeTab ===
         "audience" && (
@@ -795,38 +1204,73 @@ export default function CreatorStudioPage({
                 </strong>
 
                 <small>
-                  За останні
-                  28 днів
+                  Реальні підписники
                 </small>
               </div>
             </header>
 
             <div className="creator-studio-audience__big">
-              24,8K
+              {formatNumber(
+                data.followersCount
+              )}
             </div>
 
             <span>
-              постійних
-              підписників
+              підписників автора
             </span>
 
             <div className="creator-studio-audience__line">
               <i
                 style={{
                   width:
-                    "72%",
+                    `${Math.min(
+                      100,
+                      Number(
+                        engagementRate
+                      ) *
+                        5
+                    )}%`,
                 }}
               />
 
               <b>
-                72%
+                {
+                  engagementRate
+                }%
               </b>
 
               <span>
-                повертаються
-                до твоїх відео
+                загальна взаємодія
               </span>
             </div>
+          </article>
+
+          <article>
+            <header>
+              <Activity
+                size={18}
+              />
+
+              <div>
+                <strong>
+                  28 днів
+                </strong>
+
+                <small>
+                  Поведінка аудиторії
+                </small>
+              </div>
+            </header>
+
+            <div className="creator-studio-audience__big">
+              {formatNumber(
+                periodInteractions
+              )}
+            </div>
+
+            <span>
+              лайків, коментарів, збережень і поширень
+            </span>
           </article>
 
           <article>
@@ -837,113 +1281,27 @@ export default function CreatorStudioPage({
 
               <div>
                 <strong>
-                  Міста
+                  Географія глядачів
                 </strong>
 
                 <small>
-                  Де тебе
-                  дивляться
+                  Приватність перш за все
                 </small>
               </div>
             </header>
 
-            <div className="creator-studio-cities">
-              <div>
-                <strong>
-                  Київ
-                </strong>
-
-                <span>
-                  42%
-                </span>
-              </div>
-
-              <div>
-                <strong>
-                  Львів
-                </strong>
-
-                <span>
-                  18%
-                </span>
-              </div>
-
-              <div>
-                <strong>
-                  Одеса
-                </strong>
-
-                <span>
-                  14%
-                </span>
-              </div>
-
-              <div>
-                <strong>
-                  Дніпро
-                </strong>
-
-                <span>
-                  11%
-                </span>
-              </div>
-
-              <div>
-                <strong>
-                  Інші
-                </strong>
-
-                <span>
-                  15%
-                </span>
-              </div>
-            </div>
-          </article>
-
-          <article>
-            <header>
-              <Clock3
-                size={18}
-              />
-
-              <div>
-                <strong>
-                  Коли дивляться
-                </strong>
-
-                <small>
-                  Найактивніший час
-                </small>
-              </div>
-            </header>
-
-            <div className="creator-studio-time">
+            <div className="creator-studio-audience__notice">
               <strong>
-                19:00–23:00
+                Даних поки немає
               </strong>
 
               <span>
-                найкращий час
-                для публікації
+                ЯТУТ не вигадує міста аудиторії. Географія зʼявиться після окремого consent-based модуля аналітики.
               </span>
-
-              <div>
-                <i />
-                <i />
-                <i />
-                <i />
-                <i />
-                <i />
-                <i />
-              </div>
             </div>
           </article>
         </section>
       )}
-
-      {/* ===============================================
-          PULSE ANALYTICS
-      =============================================== */}
 
       {activeTab ===
         "pulse" && (
@@ -959,14 +1317,11 @@ export default function CreatorStudioPage({
               </small>
 
               <strong>
-                Твій живий вплив
+                Твій реальний вплив
               </strong>
 
               <p>
-                Як твій контент
-                поширюється між
-                містами, людьми
-                та реальними місцями.
+                Статистика формується з фактичних переглядів та взаємодій.
               </p>
             </div>
           </div>
@@ -974,155 +1329,158 @@ export default function CreatorStudioPage({
           <div className="creator-studio-pulse__grid">
             <article>
               <strong>
-                38,4K
+                {formatNumber(
+                  cumulative.views
+                )}
               </strong>
 
               <span>
-                людей побачили
-                тебе через PULSE
+                переглядів
               </span>
             </article>
 
             <article>
               <strong>
-                6 820
+                {formatNumber(
+                  cumulative.likes
+                )}
               </strong>
 
               <span>
-                відкриттів
-                через «Поруч»
+                лайків
               </span>
             </article>
 
             <article>
               <strong>
-                2 140
+                {formatNumber(
+                  cumulative.saves
+                )}
               </strong>
 
               <span>
-                натискань
-                «Я ТУТ»
+                збережень
               </span>
             </article>
 
             <article>
               <strong>
-                5 міст
+                {formatNumber(
+                  cumulative.shares
+                )}
               </strong>
 
               <span>
-                продовжили
-                твої хвилі
+                поширень
               </span>
             </article>
           </div>
 
-          <section className="creator-studio-pulse-map">
+          <section className="creator-studio-pulse-map creator-studio-pulse-map--real">
             <header>
-              <MapPin
+              <BarChart3
                 size={18}
               />
 
               <div>
                 <strong>
-                  Де живе
-                  твій PULSE
+                  Взаємодії за 28 днів
                 </strong>
 
                 <small>
-                  Географія
-                  взаємодій
+                  Реальні події PULSE
                 </small>
               </div>
             </header>
 
-            <div>
-              <button
-                type="button"
-                onClick={() =>
-                  onNavigate?.(
-                    "cityPulse",
-                    {
-                      cityId:
-                        "kyiv",
-                    }
-                  )
-                }
-              >
-                <strong>
-                  Київ
-                </strong>
+            <div className="creator-studio-pulse-breakdown">
+              <span>
+                <Heart
+                  size={15}
+                />
+                <b>
+                  {formatNumber(
+                    current28.likes
+                  )}
+                </b>
+                лайки
+              </span>
 
-                <span>
-                  12,4K
-                </span>
-              </button>
+              <span>
+                <MessageCircle
+                  size={15}
+                />
+                <b>
+                  {formatNumber(
+                    current28.comments
+                  )}
+                </b>
+                коментарі
+              </span>
 
-              <button
-                type="button"
-                onClick={() =>
-                  onNavigate?.(
-                    "cityPulse",
-                    {
-                      cityId:
-                        "lviv",
-                    }
-                  )
-                }
-              >
-                <strong>
-                  Львів
-                </strong>
+              <span>
+                <Bookmark
+                  size={15}
+                />
+                <b>
+                  {formatNumber(
+                    current28.saves
+                  )}
+                </b>
+                збереження
+              </span>
 
-                <span>
-                  6,2K
-                </span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() =>
-                  onNavigate?.(
-                    "cityPulse",
-                    {
-                      cityId:
-                        "odesa",
-                    }
-                  )
-                }
-              >
-                <strong>
-                  Одеса
-                </strong>
-
-                <span>
-                  8,7K
-                </span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() =>
-                  onNavigate?.(
-                    "cityPulse",
-                    {
-                      cityId:
-                        "dnipro",
-                    }
-                  )
-                }
-              >
-                <strong>
-                  Дніпро
-                </strong>
-
-                <span>
-                  5,1K
-                </span>
-              </button>
+              <span>
+                <Share2
+                  size={15}
+                />
+                <b>
+                  {formatNumber(
+                    current28.shares
+                  )}
+                </b>
+                поширення
+              </span>
             </div>
           </section>
         </section>
+      )}
+    </div>
+  );
+}
+
+function StudioEmpty({
+  title,
+  text,
+  onAction,
+}) {
+  return (
+    <div className="creator-studio-empty">
+      <Sparkles
+        size={25}
+      />
+
+      <strong>
+        {
+          title
+        }
+      </strong>
+
+      <span>
+        {
+          text
+        }
+      </span>
+
+      {onAction && (
+        <button
+          type="button"
+          onClick={
+            onAction
+          }
+        >
+          Створити контент
+        </button>
       )}
     </div>
   );
