@@ -255,6 +255,13 @@ export default function PulsePage({
 
   function continueWave() {
     const firstWaveVideo =
+      backendVideos.find(
+        (
+          video
+        ) =>
+          video.pulseKind ===
+          "wave"
+      ) ||
       pulseRecommendations.wave?.[0];
 
     if (
@@ -268,7 +275,11 @@ export default function PulsePage({
     }
 
     onNavigate?.(
-      "clips"
+      "createMedia",
+      {
+        type:
+          "wave",
+      }
     );
   }
 
