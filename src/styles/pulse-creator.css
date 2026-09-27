@@ -1246,3 +1246,114 @@ span {
     width: 100%;
   }
 }
+
+/* =========================================================
+   REAL CREATOR PROFILE STATE
+========================================================= */
+
+.pulse-creator-avatar img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  border-radius: inherit;
+}
+
+.pulse-creator-loading {
+  min-height: min(
+    620px,
+    calc(
+      100dvh -
+      120px
+    )
+  );
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 8px;
+  border:
+    1px solid
+    rgba(
+      124,
+      58,
+      237,
+      .1
+    );
+  border-radius: 26px;
+  background:
+    radial-gradient(
+      circle at 50% 32%,
+      rgba(
+        124,
+        58,
+        237,
+        .12
+      ),
+      transparent 24%
+    ),
+    #fff;
+  color: #555967;
+  text-align: center;
+}
+
+.pulse-creator-loading__orb {
+  width: 54px;
+  height: 54px;
+  display: block;
+  border-radius: 18px;
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #c026d3
+    );
+  box-shadow:
+    0 14px 32px
+    rgba(
+      124,
+      58,
+      237,
+      .24
+    );
+  animation:
+    pulse-creator-loading-orb
+    1.4s
+    ease-in-out
+    infinite;
+}
+
+.pulse-creator-loading strong {
+  margin-top: 8px;
+  color: #30323b;
+  font-size: 14px;
+}
+
+.pulse-creator-loading small {
+  color: #969aa5;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .6px;
+}
+
+.pulse-creator-subscribe:disabled,
+.pulse-creator-bottom button:disabled {
+  opacity: .58;
+  cursor: default;
+}
+
+@keyframes pulse-creator-loading-orb {
+  0%,
+  100% {
+    transform:
+      scale(
+        .96
+      );
+  }
+
+  50% {
+    transform:
+      scale(
+        1.04
+      );
+  }
+}
