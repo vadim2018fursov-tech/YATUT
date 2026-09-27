@@ -669,14 +669,22 @@ export default function CreateMediaPage({
         revokeMediaPreview(
           previewUrl
         );
+      };
+    },
+    [
+      previewUrl,
+    ]
+  );
 
+  useEffect(
+    () => {
+      return () => {
         revokeMediaPreview(
           coverPreviewUrl
         );
       };
     },
     [
-      previewUrl,
       coverPreviewUrl,
     ]
   );
