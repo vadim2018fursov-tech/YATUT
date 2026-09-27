@@ -594,6 +594,94 @@ export async function setPulseSaved(
   return false;
 }
 
+export async function recordPulseView(
+  session,
+  mediaId
+) {
+  if (
+    !session?.user?.id ||
+    !isPulseBackendId(
+      mediaId
+    )
+  ) {
+    return false;
+  }
+
+  const response =
+    await fetch(
+      `${SUPABASE_URL}/rest/v1/pulse_views?on_conflict=media_id,user_id`,
+      {
+        method:
+          "POST",
+        headers:
+          headers(
+            session,
+            {
+              Prefer:
+                "resolution=ignore-duplicates,return=minimal",
+            }
+          ),
+        body:
+          JSON.stringify({
+            media_id:
+              mediaId,
+            user_id:
+              session.user.id,
+          }),
+      }
+    );
+
+  await parseResponse(
+    response
+  );
+
+  return true;
+}
+
+export async function recordPulseShare(
+  session,
+  mediaId
+) {
+  if (
+    !session?.user?.id ||
+    !isPulseBackendId(
+      mediaId
+    )
+  ) {
+    return false;
+  }
+
+  const response =
+    await fetch(
+      `${SUPABASE_URL}/rest/v1/pulse_share_events`,
+      {
+        method:
+          "POST",
+        headers:
+          headers(
+            session,
+            {
+              Prefer:
+                "return=minimal",
+            }
+          ),
+        body:
+          JSON.stringify({
+            media_id:
+              mediaId,
+            user_id:
+              session.user.id,
+          }),
+      }
+    );
+
+  await parseResponse(
+    response
+  );
+
+  return true;
+}
+
 export async function togglePulseFollow(
   session,
   authorId
