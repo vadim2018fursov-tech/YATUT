@@ -590,6 +590,88 @@ export async function uploadPostMedia(
   };
 }
 
+export async function uploadPulseMedia(
+  session,
+  file,
+  kind = "video"
+) {
+  if (
+    !session?.user?.id ||
+    !file
+  ) {
+    return null;
+  }
+
+  const mime =
+    String(
+      file.type ||
+      ""
+    );
+
+  if (
+    !mime.startsWith(
+      "video/"
+    )
+  ) {
+    throw new Error(
+      "Для PULSE зараз можна завантажити відео."
+    );
+  }
+
+  if (
+    file.size >
+    100 *
+      1024 *
+      1024
+  ) {
+    throw new Error(
+      "Відео PULSE має бути до 100 МБ."
+    );
+  }
+
+  const extension =
+    extensionForFile(
+      file
+    );
+
+  const safeKind =
+    [
+      "clip",
+      "video",
+      "moment",
+      "wave",
+    ].includes(
+      kind
+    )
+      ? kind
+      : "video";
+
+  const path =
+    `${session.user.id}/pulse/${safeKind}-${Date.now()}-${randomPart()}.${extension}`;
+
+  await uploadObject({
+    session,
+    bucket:
+      "post-media",
+    path,
+    file,
+  });
+
+  return {
+    url:
+      publicUrl(
+        "post-media",
+        path
+      ),
+    path,
+    mimeType:
+      mime ||
+      "video/mp4",
+    mediaType:
+      "video",
+  };
+}
+
 export async function uploadStoryMedia(
   session,
   file
