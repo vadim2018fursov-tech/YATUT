@@ -80,6 +80,14 @@ export function getNotificationSourceInfo(
       label: "Профіль",
       tone: "people",
     },
+    watch: {
+      label: "PULSE",
+      tone: "activity",
+    },
+    clips: {
+      label: "PULSE",
+      tone: "activity",
+    },
     settings: {
       label: "Система",
       tone: "system",
