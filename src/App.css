@@ -11482,6 +11482,109 @@ body {
   color: #635bff;
 }
 
+.composer-native-capture {
+  margin:
+    0 15px 10px;
+  padding: 7px;
+  display: grid;
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(
+        0,
+        1fr
+      )
+    );
+  gap: 7px;
+  border:
+    1px solid
+    #e8e7f4;
+  border-radius: 14px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(
+        99,
+        91,
+        255,
+        0.055
+      ),
+      rgba(
+        192,
+        38,
+        211,
+        0.035
+      )
+    );
+}
+
+.composer-native-capture
+button {
+  min-width: 0;
+  min-height: 54px;
+  padding:
+    8px 10px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  border:
+    1px solid
+    #e5e4ef;
+  border-radius: 11px;
+  background: #fff;
+  color: #4e5260;
+  text-align: left;
+}
+
+.composer-native-capture
+button:active {
+  transform:
+    scale(
+      0.985
+    );
+}
+
+.composer-native-capture
+button > span {
+  width: 34px;
+  height: 34px;
+  flex:
+    0 0 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: #eeebff;
+  font-size: 17px;
+}
+
+.composer-native-capture
+button > div {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.composer-native-capture
+strong {
+  font-size: 10px;
+}
+
+.composer-native-capture
+small {
+  color: #9296a2;
+  font-size: 8px;
+}
+
+@media (
+  max-width: 520px
+) {
+  .composer-native-capture {
+    grid-template-columns:
+      1fr;
+  }
+}
+
 .publish-button {
   min-width: 126px;
 
