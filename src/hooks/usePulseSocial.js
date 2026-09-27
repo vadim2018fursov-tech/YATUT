@@ -2,6 +2,7 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 
@@ -12,6 +13,8 @@ import {
 import {
   isPulseBackendId,
   loadPulseInteractionState,
+  recordPulseShare,
+  recordPulseView,
   setPulseLike,
   setPulseSaved,
   togglePulseFollow,
@@ -87,6 +90,33 @@ export default function usePulseSocial({
     );
 
   const [
+    viewsCount,
+    setViewsCount,
+  ] =
+    useState(
+      Number(
+        video?.views ||
+        0
+      )
+    );
+
+  const [
+    sharesCount,
+    setSharesCount,
+  ] =
+    useState(
+      Number(
+        video?.shares ||
+        0
+      )
+    );
+
+  const viewedRef =
+    useRef(
+      new Set()
+    );
+
+  const [
     followersCount,
     setFollowersCount,
   ] =
@@ -142,12 +172,28 @@ export default function usePulseSocial({
           0
         )
       );
+
+      setViewsCount(
+        Number(
+          video?.views ||
+          0
+        )
+      );
+
+      setSharesCount(
+        Number(
+          video?.shares ||
+          0
+        )
+      );
     },
     [
       video?.id,
       video?.likes,
       video?.comments,
       video?.saves,
+      video?.views,
+      video?.shares,
     ]
   );
 
@@ -220,6 +266,20 @@ export default function usePulseSocial({
             setSavesCount(
               Number(
                 freshVideo.saves ||
+                0
+              )
+            );
+
+            setViewsCount(
+              Number(
+                freshVideo.views ||
+                0
+              )
+            );
+
+            setSharesCount(
+              Number(
+                freshVideo.shares ||
                 0
               )
             );
@@ -618,6 +678,89 @@ export default function usePulseSocial({
       ]
     );
 
+  const recordView =
+    useCallback(
+      async () => {
+        if (
+          !backend ||
+          !userId ||
+          !video?.id ||
+          viewedRef.current.has(
+            video.id
+          )
+        ) {
+          return;
+        }
+
+        viewedRef.current.add(
+          video.id
+        );
+
+        try {
+          await recordPulseView(
+            authSession,
+            video.id
+          );
+
+          await refresh();
+        } catch (
+          error
+        ) {
+          viewedRef.current.delete(
+            video.id
+          );
+
+          console.warn(
+            "PULSE VIEW ERROR:",
+            error
+          );
+        }
+      },
+      [
+        backend,
+        userId,
+        authSession,
+        video?.id,
+        refresh,
+      ]
+    );
+
+  const recordShare =
+    useCallback(
+      async () => {
+        if (
+          !backend ||
+          !userId ||
+          !video?.id
+        ) {
+          return;
+        }
+
+        try {
+          await recordPulseShare(
+            authSession,
+            video.id
+          );
+
+          await refresh();
+        } catch (
+          error
+        ) {
+          console.warn(
+            "PULSE SHARE COUNT ERROR:",
+            error
+          );
+        }
+      },
+      [
+        backend,
+        userId,
+        authSession,
+        video?.id,
+        refresh,
+      ]
+    );
+
   return useMemo(
     () => ({
       backend,
@@ -627,12 +770,16 @@ export default function usePulseSocial({
       likesCount,
       commentsCount,
       savesCount,
+      viewsCount,
+      sharesCount,
       followersCount,
       busy,
       isOwnAuthor,
       toggleLike,
       toggleSaved,
       toggleFollow,
+      recordView,
+      recordShare,
       refresh,
     }),
     [
@@ -643,12 +790,16 @@ export default function usePulseSocial({
       likesCount,
       commentsCount,
       savesCount,
+      viewsCount,
+      sharesCount,
       followersCount,
       busy,
       isOwnAuthor,
       toggleLike,
       toggleSaved,
       toggleFollow,
+      recordView,
+      recordShare,
       refresh,
     ]
   );
