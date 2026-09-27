@@ -244,7 +244,7 @@ export default function ClipsPage({
   const [
     muted,
     setMuted,
-  ] = useState(false);
+  ] = useState(true);
 
   const [
     showLocation,
