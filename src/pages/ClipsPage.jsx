@@ -322,16 +322,24 @@ export default function ClipsPage({
       return;
     }
 
-    await shareYatutItem({
-      title:
-        video.title ||
-        "ЯТУТ PULSE",
-      text:
-        video.description ||
-        "Дивись у ЯТУТ PULSE",
-      path:
-        `#clip=${encodeURIComponent(video.id)}`,
-    });
+    const result =
+      await shareYatutItem({
+        title:
+          video.title ||
+          "ЯТУТ PULSE",
+        text:
+          video.description ||
+          "Дивись у ЯТУТ PULSE",
+        path:
+          `#clip=${encodeURIComponent(video.id)}`,
+      });
+
+    if (
+      result?.shared ||
+      result?.copied
+    ) {
+      await pulseSocial.recordShare();
+    }
   }
 
   function handleImageError(
@@ -398,6 +406,9 @@ export default function ClipsPage({
             loop
             playsInline
             preload="metadata"
+            onPlay={
+              pulseSocial.recordView
+            }
             onLoadedMetadata={(
               event
             ) => {
@@ -693,8 +704,7 @@ export default function ClipsPage({
 
             <span>
               {formatViews(
-                video.shares ||
-                0
+                pulseSocial.sharesCount
               )}
             </span>
           </button>
