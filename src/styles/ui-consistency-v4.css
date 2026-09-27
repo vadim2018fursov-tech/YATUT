@@ -980,3 +980,72 @@ html.yatut-native
     max-width: 100% !important;
   }
 }
+
+
+/* ---------------------------------------------------------
+   Desktop wide-layout overflow correction
+--------------------------------------------------------- */
+
+@media (min-width: 1200px) {
+  .layout.layout-wide .feed-column,
+  .layout.layout-wide .friends-page,
+  .layout.layout-wide .other-profile-page,
+  .layout.layout-wide .profile-page,
+  .layout.layout-wide .messenger {
+    width: 100% !important;
+    max-width: 996px !important;
+    min-width: 0 !important;
+  }
+}
+
+/* ---------------------------------------------------------
+   Story / media full-screen viewport corrections
+--------------------------------------------------------- */
+
+.story-creator-overlay,
+.story-create-overlay,
+.story-create-backdrop,
+.yatut-story-backdrop {
+  width: 100% !important;
+  max-width: 100% !important;
+  left: 0 !important;
+  right: 0 !important;
+}
+
+.yatut-story-window {
+  max-width:
+    min(
+      420px,
+      calc(
+        100% -
+        24px
+      )
+    ) !important;
+}
+
+@media (max-width: 767px) {
+  .story-creator-overlay,
+  .story-create-overlay,
+  .story-create-backdrop,
+  .yatut-story-backdrop {
+    padding-left:
+      max(
+        10px,
+        env(
+          safe-area-inset-left
+        )
+      ) !important;
+    padding-right:
+      max(
+        10px,
+        env(
+          safe-area-inset-right
+        )
+      ) !important;
+  }
+
+  .yatut-story-window {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
