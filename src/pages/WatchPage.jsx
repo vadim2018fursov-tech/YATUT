@@ -653,6 +653,14 @@ export default function WatchPage({
           title={
             video.title
           }
+          startAt={
+            video.trimStart ||
+            0
+          }
+          endAt={
+            video.trimEnd ||
+            null
+          }
         />
 
         <section className="pulse-watch-title">
