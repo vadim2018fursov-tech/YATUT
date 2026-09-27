@@ -25,6 +25,7 @@ export default function usePulseSocial({
   video,
   authSession,
   realtime = true,
+  refreshKey = 0,
 }) {
   const backend =
     Boolean(
@@ -291,6 +292,7 @@ export default function usePulseSocial({
       authSession,
       refresh,
       realtime,
+      refreshKey,
     ]
   );
 
