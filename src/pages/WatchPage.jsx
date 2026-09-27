@@ -274,6 +274,7 @@ export default function WatchPage({
   onNavigate,
   initialVideoId = null,
   authSession = null,
+  initialCommentsOpen = false,
 }) {
   const [
     backendVideos,
@@ -467,7 +468,25 @@ export default function WatchPage({
   const [
     commentsOpen,
     setCommentsOpen,
-  ] = useState(false);
+  ] = useState(
+    Boolean(
+      initialCommentsOpen
+    )
+  );
+
+  useEffect(
+    () => {
+      setCommentsOpen(
+        Boolean(
+          initialCommentsOpen
+        )
+      );
+    },
+    [
+      initialCommentsOpen,
+      initialVideoId,
+    ]
+  );
 
   const pulseSocial =
     usePulseSocial({
