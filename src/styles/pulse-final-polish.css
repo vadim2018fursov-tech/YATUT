@@ -941,3 +941,228 @@ body.yatut-dark-mode
     transition: none !important;
   }
 }
+
+
+/* ----- FULL PULSE DARK EXPERIENCE ----- */
+
+body.yatut-dark-mode
+.pulse-desktop-experience,
+body.yatut-dark-mode
+.pulse-page,
+body.yatut-dark-mode
+.pulse-page__main {
+  color: #f4f5f8;
+}
+
+body.yatut-dark-mode
+.pulse-tabs,
+body.yatut-dark-mode
+.pulse-active-mode,
+body.yatut-dark-mode
+.pulse-video-rail,
+body.yatut-dark-mode
+.pulse-side-card {
+  border-color:
+    rgba(
+      255,
+      255,
+      255,
+      .075
+    ) !important;
+  background:
+    #1b1d26 !important;
+  box-shadow:
+    0 14px 42px
+    rgba(
+      0,
+      0,
+      0,
+      .16
+    ) !important;
+}
+
+body.yatut-dark-mode
+.pulse-tab {
+  color:
+    #a2a7b4;
+}
+
+body.yatut-dark-mode
+.pulse-tab:hover {
+  background:
+    #25243a;
+  color:
+    #c4bfff;
+}
+
+body.yatut-dark-mode
+.pulse-video-card,
+body.yatut-dark-mode
+.pulse-mini-video-card {
+  border-color:
+    rgba(
+      255,
+      255,
+      255,
+      .07
+    ) !important;
+  background:
+    #20222c !important;
+  box-shadow:
+    none;
+}
+
+body.yatut-dark-mode
+.pulse-video-card strong,
+body.yatut-dark-mode
+.pulse-mini-video-card__body strong,
+body.yatut-dark-mode
+.pulse-side-card__header strong,
+body.yatut-dark-mode
+.pulse-video-section__header strong,
+body.yatut-dark-mode
+.pulse-current-feed__title strong {
+  color:
+    #f2f3f7 !important;
+}
+
+body.yatut-dark-mode
+.pulse-video-card small,
+body.yatut-dark-mode
+.pulse-video-card span,
+body.yatut-dark-mode
+.pulse-mini-video-card__body span,
+body.yatut-dark-mode
+.pulse-mini-video-card__body small {
+  color:
+    #949aa8 !important;
+}
+
+body.yatut-dark-mode
+.pulse-watch-title h1,
+body.yatut-dark-mode
+.pulse-watch-author strong,
+body.yatut-dark-mode
+.pulse-watch-location__copy strong {
+  color:
+    #f3f4f7;
+}
+
+body.yatut-dark-mode
+.pulse-watch-author small,
+body.yatut-dark-mode
+.pulse-watch-location__copy span {
+  color:
+    #9197a5;
+}
+
+body.yatut-dark-mode
+.pulse-watch-author > span {
+  border-color:
+    rgba(
+      145,
+      139,
+      255,
+      .18
+    );
+  background:
+    linear-gradient(
+      145deg,
+      #343054,
+      #2b2944
+    );
+  color:
+    #c3beff;
+}
+
+body.yatut-dark-mode
+.pulse-watch-actions > button,
+body.yatut-dark-mode
+.pulse-watch-like-group,
+body.yatut-dark-mode
+.pulse-watch-subscribe.is-subscribed {
+  border-color:
+    rgba(
+      255,
+      255,
+      255,
+      .075
+    );
+  background:
+    #22242e;
+  color:
+    #b6bac6;
+}
+
+body.yatut-dark-mode
+.pulse-watch-location {
+  border-color:
+    rgba(
+      145,
+      139,
+      255,
+      .12
+    );
+  background:
+    linear-gradient(
+      135deg,
+      #22212f,
+      #1d202c
+    );
+}
+
+body.yatut-dark-mode
+.pulse-watch-location__icon {
+  background:
+    #302d50;
+  color:
+    #bcb7ff;
+}
+
+body.yatut-dark-mode
+.pulse-watch-comments > header > button {
+  background:
+    #302d50;
+  color:
+    #c6c1ff;
+}
+
+body.yatut-dark-mode
+.pulse-comments-sheet__header button,
+body.yatut-dark-mode
+.pulse-comments-sheet__replying button {
+  background:
+    #262833;
+  color:
+    #b0b5c1;
+}
+
+body.yatut-dark-mode
+.pulse-comments-sheet__replying {
+  background:
+    #2a2940;
+  color:
+    #bbb6ff;
+}
+
+body.yatut-dark-mode
+.pulse-comments-sheet__me {
+  background:
+    #302d50;
+  color:
+    #c6c1ff;
+}
+
+body.yatut-dark-mode
+.pulse-comments-sheet__empty strong {
+  color:
+    #dfe1e7;
+}
+
+body.yatut-dark-mode
+.pulse-comments-sheet__empty,
+body.yatut-dark-mode
+.pulse-comments-sheet__empty span {
+  color:
+    #8f95a3;
+}
