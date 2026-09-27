@@ -1,0 +1,943 @@
+/* =========================================================
+   YATUT PULSE — FINAL DESIGN POLISH
+   One visual language across desktop, mobile and native.
+========================================================= */
+
+:root {
+  --pulse-final-radius:
+    24px;
+  --pulse-final-radius-sm:
+    16px;
+  --pulse-final-line:
+    rgba(
+      24,
+      24,
+      35,
+      .08
+    );
+  --pulse-final-shadow:
+    0 18px 52px
+    rgba(
+      24,
+      18,
+      48,
+      .08
+    );
+  --pulse-final-glass:
+    rgba(
+      255,
+      255,
+      255,
+      .88
+    );
+}
+
+/* ----- DESKTOP PULSE FOUNDATION ----- */
+
+.pulse-desktop-experience {
+  min-width: 0;
+}
+
+.pulse-page {
+  gap: 20px;
+}
+
+.pulse-page__main {
+  gap: 18px;
+}
+
+.pulse-tabs,
+.pulse-active-mode,
+.pulse-video-rail,
+.pulse-side-card,
+.pulse-wave {
+  border-color:
+    var(
+      --pulse-final-line
+    ) !important;
+  box-shadow:
+    var(
+      --pulse-final-shadow
+    );
+}
+
+.pulse-tabs {
+  border-radius:
+    18px;
+  background:
+    var(
+      --pulse-final-glass
+    );
+  backdrop-filter:
+    blur(24px)
+    saturate(1.08);
+  -webkit-backdrop-filter:
+    blur(24px)
+    saturate(1.08);
+}
+
+.pulse-tab {
+  min-height: 44px;
+  border-radius: 12px;
+  font-size: 12px;
+  letter-spacing: -.08px;
+}
+
+.pulse-tab.is-active {
+  box-shadow:
+    0 10px 26px
+    rgba(
+      99,
+      91,
+      255,
+      .24
+    );
+}
+
+.pulse-hero,
+.pulse-wave {
+  border-radius:
+    var(
+      --pulse-final-radius
+    );
+}
+
+.pulse-video-rail,
+.pulse-active-mode,
+.pulse-side-card {
+  border-radius:
+    20px !important;
+}
+
+.pulse-video-card,
+.pulse-mini-video-card {
+  border-color:
+    rgba(
+      26,
+      27,
+      39,
+      .07
+    ) !important;
+  border-radius:
+    17px !important;
+  box-shadow:
+    0 8px 24px
+    rgba(
+      25,
+      20,
+      48,
+      .045
+    );
+}
+
+.pulse-video-card:hover,
+.pulse-mini-video-card:hover {
+  transform:
+    translateY(-3px);
+  box-shadow:
+    0 18px 38px
+    rgba(
+      29,
+      21,
+      63,
+      .10
+    );
+}
+
+/* ----- WATCH: readable premium hierarchy ----- */
+
+.pulse-watch-page {
+  gap: 28px;
+}
+
+.pulse-watch-title {
+  margin-top: 20px;
+}
+
+.pulse-watch-back {
+  margin-bottom: 10px;
+  font-size: 12px;
+}
+
+.pulse-watch-title h1 {
+  max-width: 900px;
+  font-size:
+    clamp(
+      25px,
+      2.2vw,
+      34px
+    );
+  line-height: 1.16;
+  letter-spacing: -.7px;
+}
+
+.pulse-watch-meta {
+  margin-top: 10px;
+  gap: 9px 16px;
+  font-size: 12px;
+}
+
+.pulse-watch-author-bar {
+  margin-top: 18px;
+  padding:
+    14px 0
+    18px;
+  gap: 11px;
+}
+
+.pulse-watch-author > span {
+  width: 48px;
+  height: 48px;
+  flex-basis: 48px;
+  border:
+    2px solid
+    rgba(
+      99,
+      91,
+      255,
+      .16
+    );
+  background:
+    linear-gradient(
+      145deg,
+      #f0ebff,
+      #ddd4ff
+    );
+  box-shadow:
+    0 8px 20px
+    rgba(
+      99,
+      91,
+      255,
+      .12
+    );
+}
+
+.pulse-watch-author strong {
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.pulse-watch-author small {
+  margin-top: 3px;
+  font-size: 11px;
+}
+
+.pulse-watch-subscribe {
+  min-height: 42px;
+  padding: 0 16px;
+  border-radius: 13px;
+  font-size: 12px;
+}
+
+.pulse-watch-subscribe:not(.is-subscribed) {
+  background:
+    linear-gradient(
+      135deg,
+      #635bff,
+      #7c3aed
+    );
+  box-shadow:
+    0 9px 22px
+    rgba(
+      99,
+      91,
+      255,
+      .20
+    );
+}
+
+.pulse-watch-actions {
+  gap: 7px;
+}
+
+.pulse-watch-actions > button,
+.pulse-watch-like-group {
+  min-height: 42px;
+  border-color:
+    rgba(
+      33,
+      35,
+      48,
+      .08
+    );
+  border-radius: 13px;
+  background: #f8f8fb;
+}
+
+.pulse-watch-actions > button,
+.pulse-watch-like-group button {
+  font-size: 11px;
+}
+
+.pulse-watch-description,
+.pulse-watch-location {
+  margin-top: 16px;
+  border:
+    1px solid
+    rgba(
+      40,
+      40,
+      56,
+      .06
+    );
+  border-radius:
+    var(
+      --pulse-final-radius-sm
+    );
+  box-shadow:
+    0 8px 26px
+    rgba(
+      27,
+      22,
+      48,
+      .035
+    );
+}
+
+.pulse-watch-description {
+  padding: 16px;
+  background:
+    linear-gradient(
+      145deg,
+      #f8f8fb,
+      #fbfbfd
+    );
+}
+
+.pulse-watch-description__stats {
+  font-size: 11px;
+}
+
+.pulse-watch-description p {
+  max-height: 58px;
+  margin-top: 9px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.pulse-watch-description__more {
+  margin-top: 8px;
+  font-size: 11px;
+}
+
+.pulse-watch-location {
+  padding: 15px;
+}
+
+.pulse-watch-location__copy small {
+  font-size: 9px;
+}
+
+.pulse-watch-location__copy strong {
+  margin-top: 1px;
+  font-size: 13px;
+}
+
+.pulse-watch-location__copy span {
+  margin-top: 2px;
+  font-size: 10px;
+}
+
+.pulse-watch-comments {
+  margin-top: 20px;
+  padding:
+    17px;
+  border:
+    1px solid
+    rgba(
+      33,
+      35,
+      48,
+      .07
+    );
+  border-radius: 18px;
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .8
+    );
+  box-shadow:
+    0 12px 34px
+    rgba(
+      28,
+      22,
+      52,
+      .05
+    );
+}
+
+.pulse-watch-comments h2 {
+  font-size: 16px;
+}
+
+.pulse-watch-comments > header > button {
+  min-height: 36px;
+  padding: 0 12px;
+  border-radius: 11px;
+  background: #f1edff;
+  color: #6d28d9;
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.pulse-watch-comments__open {
+  width: 100%;
+  min-height: 76px;
+  margin-top: 12px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  border:
+    1px solid
+    rgba(
+      124,
+      58,
+      237,
+      .12
+    );
+  border-radius: 14px;
+  background:
+    linear-gradient(
+      135deg,
+      #faf8ff,
+      #f7f5ff
+    );
+  color: #555968;
+  text-align: left;
+}
+
+.pulse-watch-comments__open > span {
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: #ece7ff;
+  color: #6d28d9;
+}
+
+.pulse-watch-comments__open strong,
+.pulse-watch-comments__open small {
+  display: block;
+}
+
+.pulse-watch-comments__open strong {
+  color: #2d2f39;
+  font-size: 13px;
+}
+
+.pulse-watch-comments__open small {
+  margin-top: 3px;
+  color: #9296a2;
+  font-size: 10px;
+  line-height: 1.35;
+}
+
+/* ----- COMMENTS SHEET ----- */
+
+.pulse-comments-backdrop {
+  background:
+    rgba(
+      10,
+      8,
+      18,
+      .50
+    );
+  backdrop-filter:
+    blur(16px)
+    saturate(.92);
+  -webkit-backdrop-filter:
+    blur(16px)
+    saturate(.92);
+}
+
+.pulse-comments-sheet {
+  border-radius: 26px;
+  box-shadow:
+    0 32px 90px
+    rgba(
+      17,
+      12,
+      36,
+      .28
+    );
+}
+
+.pulse-comments-sheet__header {
+  min-height: 66px;
+}
+
+.pulse-comments-sheet__header strong {
+  font-size: 17px;
+}
+
+.pulse-comments-row {
+  gap: 11px;
+}
+
+.pulse-comments-row__meta strong {
+  font-size: 13px;
+}
+
+.pulse-comments-row__meta span {
+  font-size: 11px;
+}
+
+.pulse-comments-row p {
+  font-size: 14px;
+}
+
+.pulse-comments-row__actions button {
+  min-height: 28px;
+  font-size: 11px;
+}
+
+.pulse-comments-sheet__composer {
+  position: sticky;
+  bottom: 0;
+  z-index: 3;
+  backdrop-filter:
+    blur(18px);
+  -webkit-backdrop-filter:
+    blur(18px);
+}
+
+/* ----- CLIPS ----- */
+
+.pulse-clips-page {
+  background:
+    radial-gradient(
+      circle at 50% 15%,
+      #171124 0%,
+      #0b0910 42%,
+      #06050a 100%
+    );
+}
+
+.pulse-clips-stage {
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      .10
+    );
+  box-shadow:
+    0 28px 90px
+    rgba(
+      0,
+      0,
+      0,
+      .42
+    );
+}
+
+.pulse-clips-top button,
+.pulse-clips-actions > button {
+  transition:
+    transform 150ms ease,
+    background 150ms ease,
+    color 150ms ease;
+}
+
+.pulse-clips-top button:active,
+.pulse-clips-actions > button:active {
+  transform:
+    scale(.94);
+}
+
+.pulse-clips-actions > button.is-active {
+  color: #b8a8ff;
+}
+
+.pulse-clips-author-line {
+  gap: 8px;
+}
+
+.pulse-clips-author-line button {
+  min-height: 36px;
+}
+
+.pulse-clips-description {
+  line-height: 1.4;
+}
+
+/* ----- MOBILE IMMERSIVE ----- */
+
+@media (max-width: 767px) {
+  .pulse-immersive-mobile,
+  .pulse-immersive__feed,
+  .pulse-immersive__slide,
+  .pulse-clips-page {
+    background:
+      #08080b !important;
+  }
+
+  .pulse-immersive-mobile {
+    min-height:
+      calc(
+        var(
+          --yatut-visual-viewport-height,
+          100dvh
+        ) -
+        64px
+      );
+  }
+
+  .pulse-immersive__feed,
+  .pulse-immersive__slide {
+    height:
+      calc(
+        var(
+          --yatut-visual-viewport-height,
+          100dvh
+        ) -
+        64px
+      );
+  }
+
+  .pulse-immersive__tabs {
+    padding:
+      8px 10px
+      9px;
+    gap: 6px;
+  }
+
+  .pulse-immersive__tabs button {
+    min-height: 38px;
+    padding: 0 13px;
+    border-radius: 14px;
+    font-size: 12px;
+  }
+
+  .pulse-immersive__actions {
+    right: 8px;
+    bottom:
+      calc(
+        128px +
+        env(
+          safe-area-inset-bottom
+        )
+      );
+    gap: 11px;
+  }
+
+  .pulse-immersive__actions > button {
+    width: 50px;
+    min-height: 46px;
+  }
+
+  .pulse-immersive__actions small {
+    font-size: 10px;
+    letter-spacing: -.1px;
+  }
+
+  .pulse-immersive__copy {
+    right: 66px;
+    bottom:
+      calc(
+        105px +
+        env(
+          safe-area-inset-bottom
+        )
+      );
+    left: 13px;
+  }
+
+  .pulse-immersive__author-copy strong {
+    font-size: 15px;
+  }
+
+  .pulse-immersive__author-copy small {
+    font-size: 11px;
+  }
+
+  .pulse-immersive__copy h2 {
+    font-size: 18px;
+  }
+
+  .pulse-immersive__copy p {
+    font-size: 13px;
+    line-height: 1.38;
+  }
+
+  .pulse-immersive__location {
+    min-height: 32px;
+    font-size: 11px;
+  }
+
+  .pulse-clips-page {
+    min-height:
+      calc(
+        var(
+          --yatut-visual-viewport-height,
+          100dvh
+        ) -
+        64px
+      );
+    padding: 0;
+  }
+
+  .pulse-clips-stage {
+    width: 100%;
+    max-width: none;
+    min-height:
+      calc(
+        var(
+          --yatut-visual-viewport-height,
+          100dvh
+        ) -
+        64px
+      );
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .pulse-clips-content {
+    bottom:
+      calc(
+        92px +
+        env(
+          safe-area-inset-bottom
+        )
+      );
+  }
+
+  .pulse-clips-actions {
+    bottom:
+      calc(
+        112px +
+        env(
+          safe-area-inset-bottom
+        )
+      );
+  }
+
+  .pulse-comments-backdrop {
+    align-items: end;
+  }
+
+  .pulse-comments-sheet {
+    width: 100%;
+    max-height:
+      min(
+        82dvh,
+        calc(
+          var(
+            --yatut-visual-viewport-height,
+            100dvh
+          ) -
+          8px
+        )
+      );
+    border-radius:
+      25px 25px
+      0 0;
+  }
+
+  .pulse-comments-sheet__header::before {
+    content: "";
+    position: absolute;
+    top: 7px;
+    left: 50%;
+    width: 38px;
+    height: 4px;
+    border-radius: 99px;
+    background:
+      rgba(
+        104,
+        108,
+        122,
+        .22
+      );
+    transform:
+      translateX(-50%);
+  }
+
+  .pulse-comments-sheet__header {
+    position: relative;
+    padding-top: 5px;
+  }
+
+  html.yatut-keyboard-open
+  .pulse-comments-sheet {
+    max-height:
+      calc(
+        var(
+          --yatut-visual-viewport-height,
+          100dvh
+        ) -
+        4px
+      );
+  }
+
+  .pulse-comments-sheet__composer {
+    padding-bottom:
+      calc(
+        10px +
+        env(
+          safe-area-inset-bottom
+        )
+      );
+  }
+}
+
+/* ----- TABLET ----- */
+
+@media (
+  min-width: 768px
+) and (
+  max-width: 1100px
+) {
+  .pulse-watch-page {
+    grid-template-columns:
+      minmax(
+        0,
+        1fr
+      );
+  }
+
+  .pulse-watch-sidebar {
+    display: grid;
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(
+          0,
+          1fr
+        )
+      );
+    gap: 12px;
+  }
+}
+
+/* ----- DARK MODE ----- */
+
+body.yatut-dark-mode
+.pulse-watch-description,
+body.yatut-dark-mode
+.pulse-watch-comments,
+body.yatut-dark-mode
+.pulse-comments-sheet {
+  border-color:
+    rgba(
+      255,
+      255,
+      255,
+      .08
+    );
+  background:
+    #1b1d26;
+  color:
+    #f4f5f8;
+}
+
+body.yatut-dark-mode
+.pulse-watch-description p,
+body.yatut-dark-mode
+.pulse-watch-meta,
+body.yatut-dark-mode
+.pulse-comments-row p {
+  color:
+    #a8adb9;
+}
+
+body.yatut-dark-mode
+.pulse-watch-comments__open {
+  border-color:
+    rgba(
+      145,
+      139,
+      255,
+      .14
+    );
+  background:
+    linear-gradient(
+      145deg,
+      #242332,
+      #20212b
+    );
+}
+
+body.yatut-dark-mode
+.pulse-watch-comments__open strong,
+body.yatut-dark-mode
+.pulse-comments-sheet__header strong,
+body.yatut-dark-mode
+.pulse-comments-row__meta strong {
+  color: #f2f3f7;
+}
+
+body.yatut-dark-mode
+.pulse-watch-comments__open small,
+body.yatut-dark-mode
+.pulse-comments-row__meta span {
+  color: #8f95a3;
+}
+
+body.yatut-dark-mode
+.pulse-comments-sheet__header,
+body.yatut-dark-mode
+.pulse-comments-sheet__composer {
+  border-color:
+    rgba(
+      255,
+      255,
+      255,
+      .08
+    );
+  background:
+    rgba(
+      27,
+      29,
+      38,
+      .96
+    );
+}
+
+body.yatut-dark-mode
+.pulse-comments-thread +
+.pulse-comments-thread {
+  border-color:
+    rgba(
+      255,
+      255,
+      255,
+      .06
+    );
+}
+
+body.yatut-dark-mode
+.pulse-comments-sheet textarea {
+  border-color:
+    rgba(
+      255,
+      255,
+      255,
+      .08
+    );
+  background:
+    #242631;
+  color: #f5f6f8;
+}
+
+/* ----- REDUCED MOTION ----- */
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+  .pulse-video-card,
+  .pulse-mini-video-card,
+  .pulse-clips-top button,
+  .pulse-clips-actions > button {
+    transition: none !important;
+  }
+}
