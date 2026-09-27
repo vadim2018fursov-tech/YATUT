@@ -14,6 +14,14 @@ import {
 } from "../services/nativeFeedbackService";
 
 import {
+  captureNativePhoto,
+  captureNativeVideo,
+  isNativeMediaPicker,
+  pickNativeMedia,
+  revokeMediaPreview,
+} from "../services/mediaPickerService";
+
+import {
   deleteChat,
   deleteMessage,
   getChat,
@@ -2317,6 +2325,9 @@ function Chats({
 
   const fileRef =
     useRef(null);
+
+  const nativeMediaAvailable =
+    isNativeMediaPicker();
 
   const bottomRef =
     useRef(null);
@@ -5734,6 +5745,73 @@ function Chats({
     );
   };
 
+  const pickChatNativeMedia =
+    async (
+      type
+    ) => {
+      try {
+        const selected =
+          await pickNativeMedia(
+            type
+          );
+
+        if (!selected) {
+          return;
+        }
+
+        selectAttachment(
+          selected.file,
+          selected.mediaType ||
+            type
+        );
+
+        revokeMediaPreview(
+          selected.previewUrl
+        );
+      } catch (
+        error
+      ) {
+        showChatToast(
+          error?.message ||
+          "Не вдалося відкрити медіатеку"
+        );
+      }
+    };
+
+  const captureChatNativeMedia =
+    async (
+      type
+    ) => {
+      try {
+        const selected =
+          type ===
+          "video"
+            ? await captureNativeVideo()
+            : await captureNativePhoto();
+
+        if (!selected) {
+          return;
+        }
+
+        selectAttachment(
+          selected.file,
+          selected.mediaType ||
+            type
+        );
+
+        revokeMediaPreview(
+          selected.previewUrl
+        );
+      } catch (
+        error
+      ) {
+        showChatToast(
+          error?.message ||
+          "Не вдалося відкрити камеру"
+        );
+      }
+    };
+
   const removeAttachment =
     () => {
       if (
@@ -8091,7 +8169,11 @@ function Chats({
                           <button
                             type="button"
                             onClick={() =>
-                              imageRef.current?.click()
+                              nativeMediaAvailable
+                                ? pickChatNativeMedia(
+                                    "image"
+                                  )
+                                : imageRef.current?.click()
                             }
                           >
                             <span className="chat-attach-icon violet">
@@ -8113,7 +8195,11 @@ function Chats({
                           <button
                             type="button"
                             onClick={() =>
-                              videoRef.current?.click()
+                              nativeMediaAvailable
+                                ? pickChatNativeMedia(
+                                    "video"
+                                  )
+                                : videoRef.current?.click()
                             }
                           >
                             <span className="chat-attach-icon blue">
@@ -8153,6 +8239,58 @@ function Chats({
                               Документ
                             </small>
                           </button>
+
+                          {nativeMediaAvailable && (
+                            <>
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  captureChatNativeMedia(
+                                    "image"
+                                  )
+                                }
+                              >
+                                <span className="chat-attach-icon violet">
+                                  <YatutIcon
+                                    name="image"
+                                    size={20}
+                                  />
+                                </span>
+
+                                <strong>
+                                  Камера
+                                </strong>
+
+                                <small>
+                                  Зняти фото
+                                </small>
+                              </button>
+
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  captureChatNativeMedia(
+                                    "video"
+                                  )
+                                }
+                              >
+                                <span className="chat-attach-icon blue">
+                                  <YatutIcon
+                                    name="video"
+                                    size={20}
+                                  />
+                                </span>
+
+                                <strong>
+                                  Камера
+                                </strong>
+
+                                <small>
+                                  Записати відео
+                                </small>
+                              </button>
+                            </>
+                          )}
 
                           <button
                             type="button"
