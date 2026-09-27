@@ -116,10 +116,12 @@ function formatCompact(
 }
 
 function getFeed(
-  tab
+  tab,
+  externalVideos = []
 ) {
   const all =
     uniqueVideos([
+      ...(externalVideos || []),
       ...(pulseRecommendations.forYou || []),
       ...(pulseRecommendations.nearby || []),
       ...(pulseRecommendations.friends || []),
@@ -143,7 +145,9 @@ function getFeed(
       return all.filter(
         (video) =>
           video.type ===
-          "vlog"
+            "vlog" ||
+          video.type ===
+            "video"
       );
 
     case "live":
@@ -155,9 +159,14 @@ function getFeed(
       );
 
     case "wave":
-      return uniqueVideos(
-        pulseRecommendations.wave
-      );
+      return uniqueVideos([
+        ...(externalVideos || []).filter(
+          (video) =>
+            video.pulseKind ===
+            "wave"
+        ),
+        ...(pulseRecommendations.wave || []),
+      ]);
 
     case "events":
       return all.filter(
@@ -592,6 +601,7 @@ function PulseImmersiveSlide({
 
 export default function PulseMobileImmersive({
   onNavigate,
+  externalVideos = [],
 }) {
   const [
     activeTab,
@@ -633,10 +643,12 @@ export default function PulseMobileImmersive({
     useMemo(
       () =>
         getFeed(
-          activeTab
+          activeTab,
+          externalVideos
         ),
       [
         activeTab,
+        externalVideos,
       ]
     );
 
