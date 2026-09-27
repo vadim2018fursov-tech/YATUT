@@ -24,6 +24,7 @@ import {
 export default function usePulseSocial({
   video,
   authSession,
+  realtime = true,
 }) {
   const backend =
     Boolean(
@@ -254,7 +255,16 @@ export default function usePulseSocial({
 
       refresh();
 
-      const realtime =
+      if (
+        !realtime
+      ) {
+        return () => {
+          active =
+            false;
+        };
+      }
+
+      const realtimeChannel =
         subscribePulseRealtime({
           session:
             authSession,
@@ -272,7 +282,7 @@ export default function usePulseSocial({
         active =
           false;
 
-        realtime?.close?.();
+        realtimeChannel?.close?.();
       };
     },
     [
@@ -280,6 +290,7 @@ export default function usePulseSocial({
       userId,
       authSession,
       refresh,
+      realtime,
     ]
   );
 
