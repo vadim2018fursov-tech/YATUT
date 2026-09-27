@@ -4,6 +4,10 @@ const tabs = [
     label: "Для тебе",
   },
   {
+    id: "following",
+    label: "Підписки",
+  },
+  {
     id: "nearby",
     label: "Поруч",
   },
