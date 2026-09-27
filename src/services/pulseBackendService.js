@@ -285,6 +285,11 @@ function mapPulseRow(
         row.comments_count ||
         0
       ),
+    saves:
+      Number(
+        row.saves_count ||
+        0
+      ),
     shares:
       Number(
         row.shares_count ||
@@ -338,7 +343,7 @@ export async function loadPulseMedia(
 
   url.searchParams.set(
     "select",
-    "id,author_id,kind,title,description,media_url,media_path,thumbnail_url,thumbnail_path,mime_type,duration_seconds,trim_start_seconds,trim_end_seconds,location_name,visibility,views,likes_count,comments_count,shares_count,created_at,updated_at"
+    "id,author_id,kind,title,description,media_url,media_path,thumbnail_url,thumbnail_path,mime_type,duration_seconds,trim_start_seconds,trim_end_seconds,location_name,visibility,views,likes_count,comments_count,saves_count,shares_count,created_at,updated_at"
   );
 
   url.searchParams.set(
@@ -445,7 +450,7 @@ export async function getPulseMediaById(
 
   url.searchParams.set(
     "select",
-    "id,author_id,kind,title,description,media_url,media_path,thumbnail_url,thumbnail_path,mime_type,duration_seconds,trim_start_seconds,trim_end_seconds,location_name,visibility,views,likes_count,comments_count,shares_count,created_at,updated_at"
+    "id,author_id,kind,title,description,media_url,media_path,thumbnail_url,thumbnail_path,mime_type,duration_seconds,trim_start_seconds,trim_end_seconds,location_name,visibility,views,likes_count,comments_count,saves_count,shares_count,created_at,updated_at"
   );
 
   url.searchParams.set(
