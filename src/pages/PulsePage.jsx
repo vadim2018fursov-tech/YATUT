@@ -24,8 +24,8 @@ import {
 } from "../data/pulseMockData";
 
 import {
-  loadPulseMedia,
-} from "../services/pulseBackendService";
+  loadRankedPulseFeeds,
+} from "../services/pulseFeedService";
 
 import {
   subscribePulseRealtime,
@@ -86,6 +86,21 @@ export default function PulsePage({
   ] = useState([]);
 
   const [
+    forYouVideos,
+    setForYouVideos,
+  ] = useState([]);
+
+  const [
+    followingVideos,
+    setFollowingVideos,
+  ] = useState([]);
+
+  const [
+    trendingBackendVideos,
+    setTrendingBackendVideos,
+  ] = useState([]);
+
+  const [
     socialRevision,
     setSocialRevision,
   ] = useState(0);
@@ -100,12 +115,12 @@ export default function PulsePage({
     const refresh =
       async () => {
         try {
-          const videos =
-            await loadPulseMedia(
+          const feeds =
+            await loadRankedPulseFeeds(
               authSession,
               {
                 limit:
-                  40,
+                  80,
               }
             );
 
@@ -113,7 +128,19 @@ export default function PulsePage({
             active
           ) {
             setBackendVideos(
-              videos
+              feeds.all
+            );
+
+            setForYouVideos(
+              feeds.forYou
+            );
+
+            setFollowingVideos(
+              feeds.following
+            );
+
+            setTrendingBackendVideos(
+              feeds.trending
             );
           }
         } catch (
@@ -172,31 +199,74 @@ export default function PulsePage({
   const activeVideos =
     useMemo(
       () => {
-        const preferred =
+        if (
           activeTab ===
           "forYou"
-            ? [
-                ...backendVideos,
-                ...(pulseRecommendations.forYou || []),
-              ]
-            : pulseRecommendations[
-                activeTab
-              ];
+        ) {
+          return forYouVideos.slice(
+            0,
+            8
+          );
+        }
 
-        const fallback = [
-          ...backendVideos,
-          ...(pulseRecommendations.forYou || []),
-        ];
+        if (
+          activeTab ===
+          "following"
+        ) {
+          return followingVideos.slice(
+            0,
+            8
+          );
+        }
 
-        return ensureVideos(
-          preferred,
-          fallback,
-          5
+        if (
+          activeTab ===
+          "friends"
+        ) {
+          return followingVideos.slice(
+            0,
+            8
+          );
+        }
+
+        if (
+          activeTab ===
+          "city" ||
+          activeTab ===
+          "nearby"
+        ) {
+          return backendVideos
+            .filter(
+              (
+                video
+              ) =>
+                video.location?.name &&
+                video.location.name !==
+                  "Україна"
+            )
+            .slice(
+              0,
+              8
+            );
+        }
+
+        if (
+          activeTab ===
+          "events"
+        ) {
+          return [];
+        }
+
+        return forYouVideos.slice(
+          0,
+          8
         );
       },
       [
         activeTab,
         backendVideos,
+        forYouVideos,
+        followingVideos,
       ]
     );
 
@@ -300,6 +370,9 @@ export default function PulsePage({
     switch (
       activeTab
     ) {
+      case "following":
+        return "Твої підписки";
+
       case "nearby":
         return "Зараз поруч";
 
@@ -325,12 +398,8 @@ export default function PulsePage({
   ].filter(Boolean);
 
   const trendingVideos =
-    ensureVideos(
-      backendVideos,
-      [
-        ...(pulseRecommendations.forYou || []),
-        ...(pulseRecommendations.live || []),
-      ],
+    trendingBackendVideos.slice(
+      0,
       5
     );
 
@@ -378,14 +447,15 @@ export default function PulsePage({
     );
 
   const authorVideos =
-    ensureVideos(
-      [
-        ...backendVideos,
-        ...(pulseRecommendations.following || []),
-      ],
-      pulseRecommendations.forYou,
-      5
-    );
+    followingVideos.length
+      ? followingVideos.slice(
+          0,
+          5
+        )
+      : forYouVideos.slice(
+          0,
+          5
+        );
 
   return (
     <>
@@ -395,6 +465,12 @@ export default function PulsePage({
         }
         externalVideos={
           backendVideos
+        }
+        forYouVideos={
+          forYouVideos
+        }
+        followingVideos={
+          followingVideos
         }
         authSession={
           authSession
