@@ -7,9 +7,7 @@ import {
   MapPin,
   MessageCircle,
   MoreHorizontal,
-  Send,
   Share2,
-  ThumbsDown,
   ThumbsUp,
 } from "lucide-react";
 
@@ -457,26 +455,6 @@ export default function WatchPage({
   ]);
 
   const [
-    subscribed,
-    setSubscribed,
-  ] = useState(false);
-
-  const [
-    liked,
-    setLiked,
-  ] = useState(false);
-
-  const [
-    disliked,
-    setDisliked,
-  ] = useState(false);
-
-  const [
-    saved,
-    setSaved,
-  ] = useState(false);
-
-  const [
     expanded,
     setExpanded,
   ] = useState(false);
@@ -496,21 +474,6 @@ export default function WatchPage({
       video,
       authSession,
     });
-
-  const [
-    commentText,
-    setCommentText,
-  ] = useState("");
-
-  const [
-    userComments,
-    setUserComments,
-  ] = useState([]);
-
-  const [
-    commentsNewestFirst,
-    setCommentsNewestFirst,
-  ] = useState(true);
 
   const recommendations =
     useMemo(
@@ -543,25 +506,6 @@ export default function WatchPage({
       path:
         `#watch=${encodeURIComponent(video.id)}`,
     });
-  }
-
-  function replyToComment(
-    username
-  ) {
-    setCommentText(
-      `@${username} `
-    );
-
-    window.setTimeout(
-      () => {
-        document
-          .querySelector(
-            ".pulse-watch-comment-create textarea"
-          )
-          ?.focus();
-      },
-      0
-    );
   }
 
   if (!video) {
@@ -617,37 +561,13 @@ export default function WatchPage({
 
     setVideo(nextVideo);
 
-    setLiked(false);
-    setDisliked(false);
-    setSaved(false);
     setExpanded(false);
+    setCommentsOpen(false);
 
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
-  }
-
-  function publishComment() {
-    const value =
-      commentText.trim();
-
-    if (!value) {
-      return;
-    }
-
-    setUserComments(
-      (current) => [
-        {
-          id:
-            `comment-${Date.now()}`,
-          text: value,
-        },
-        ...current,
-      ]
-    );
-
-    setCommentText("");
   }
 
   return (
@@ -825,30 +745,7 @@ export default function WatchPage({
                 )}
               </button>
 
-              <button
-                type="button"
-                className={
-                  disliked
-                    ? "is-active"
-                    : ""
-                }
-                onClick={() =>
-                  setDisliked(
-                    (value) =>
-                      !value
-                  )
-                }
-                title="Дизлайк поки локальний"
-              >
-                <ThumbsDown
-                  size={17}
-                  fill={
-                    disliked
-                      ? "currentColor"
-                      : "none"
-                  }
-                />
-              </button>
+
             </div>
 
             <button
