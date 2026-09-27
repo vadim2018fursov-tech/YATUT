@@ -774,6 +774,9 @@ export default function PulseLongVideoMobile({
         video.id
       )}`;
 
+    let completed =
+      false;
+
     try {
       if (
         navigator.share
@@ -787,12 +790,19 @@ export default function PulseLongVideoMobile({
           url,
         });
 
-        return;
-      }
+        completed =
+          true;
+      } else if (
+        navigator.clipboard
+          ?.writeText
+      ) {
+        await navigator.clipboard.writeText(
+          url
+        );
 
-      await navigator.clipboard?.writeText(
-        url
-      );
+        completed =
+          true;
+      }
     } catch (
       error
     ) {
@@ -805,6 +815,12 @@ export default function PulseLongVideoMobile({
           error
         );
       }
+    }
+
+    if (
+      completed
+    ) {
+      await pulseSocial.recordShare();
     }
   }
 
@@ -855,6 +871,9 @@ export default function PulseLongVideoMobile({
             endAt={
               selectedVideo.trimEnd ||
               null
+            }
+            onPlaybackStart={
+              pulseSocial.recordView
             }
           />
 
@@ -1030,7 +1049,9 @@ export default function PulseLongVideoMobile({
                 size={18}
               />
 
-              Поділитися
+              Поділитися · {formatCompact(
+                pulseSocial.sharesCount
+              )}
             </button>
 
             <button
