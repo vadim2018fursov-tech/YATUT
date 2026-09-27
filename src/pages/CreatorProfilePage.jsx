@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 
 import {
+  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -23,6 +24,21 @@ import {
   pulseUsers,
   pulseVideos,
 } from "../data/pulseMockData";
+
+import {
+  getPulseCreatorProfile,
+  loadPulseMedia,
+} from "../services/pulseBackendService";
+
+import {
+  isPulseBackendId,
+  loadPulseCreatorSocialState,
+  togglePulseFollow,
+} from "../services/pulseSocialService";
+
+import {
+  subscribePulseRealtime,
+} from "../services/realtimeService";
 
 import {
   shareYatutItem,
@@ -55,7 +71,8 @@ function formatNumber(
 ) {
   const number =
     Number(
-      value || 0
+      value ||
+      0
     );
 
   if (
@@ -65,7 +82,9 @@ function formatNumber(
     return `${(
       number /
       1000000
-    ).toFixed(1)}M`;
+    ).toFixed(
+      1
+    )}M`;
   }
 
   if (
@@ -83,7 +102,7 @@ function formatNumber(
   );
 }
 
-function getAllVideos() {
+function getDemoVideos() {
   const source = [
     ...(pulseVideos || []),
     ...(pulseRecommendations.forYou || []),
@@ -98,11 +117,15 @@ function getAllVideos() {
   const unique = [];
 
   source.forEach(
-    (video) => {
+    (
+      video
+    ) => {
       if (
         !video ||
         unique.some(
-          (item) =>
+          (
+            item
+          ) =>
             item.id ===
             video.id
         )
@@ -122,6 +145,7 @@ function getAllVideos() {
 export default function CreatorProfilePage({
   creatorId = "maria",
   onNavigate,
+  authSession = null,
 }) {
   const [
     activeTab,
@@ -131,52 +155,221 @@ export default function CreatorProfilePage({
   );
 
   const [
+    realCreator,
+    setRealCreator,
+  ] = useState(null);
+
+  const [
+    backendVideos,
+    setBackendVideos,
+  ] = useState([]);
+
+  const [
     subscribed,
     setSubscribed,
-  ] = useState(
-    false
+  ] = useState(false);
+
+  const [
+    followersCount,
+    setFollowersCount,
+  ] = useState(0);
+
+  const [
+    loading,
+    setLoading,
+  ] = useState(false);
+
+  const [
+    followBusy,
+    setFollowBusy,
+  ] = useState(false);
+
+  const backendCreator =
+    isPulseBackendId(
+      creatorId
+    );
+
+  const isOwnProfile =
+    Boolean(
+      backendCreator &&
+      authSession?.user?.id ===
+        creatorId
+    );
+
+  useEffect(
+    () => {
+      if (
+        !backendCreator
+      ) {
+        return;
+      }
+
+      let active =
+        true;
+
+      let refreshTimer =
+        null;
+
+      async function refresh() {
+        try {
+          setLoading(
+            true
+          );
+
+          const [
+            profile,
+            videos,
+            social,
+          ] =
+            await Promise.all([
+              getPulseCreatorProfile(
+                authSession,
+                creatorId
+              ),
+              loadPulseMedia(
+                authSession,
+                {
+                  limit:
+                    100,
+                  authorId:
+                    creatorId,
+                }
+              ),
+              loadPulseCreatorSocialState(
+                authSession,
+                creatorId
+              ),
+            ]);
+
+          if (!active) {
+            return;
+          }
+
+          setRealCreator(
+            profile
+          );
+
+          setBackendVideos(
+            videos
+          );
+
+          setSubscribed(
+            Boolean(
+              social.following
+            )
+          );
+
+          setFollowersCount(
+            Number(
+              social.followersCount ||
+              0
+            )
+          );
+        } catch (
+          error
+        ) {
+          console.warn(
+            "PULSE CREATOR LOAD ERROR:",
+            error
+          );
+        } finally {
+          if (
+            active
+          ) {
+            setLoading(
+              false
+            );
+          }
+        }
+      }
+
+      refresh();
+
+      const realtime =
+        authSession?.user?.id
+          ? subscribePulseRealtime({
+              session:
+                authSession,
+              onChange:
+                () => {
+                  window.clearTimeout(
+                    refreshTimer
+                  );
+
+                  refreshTimer =
+                    window.setTimeout(
+                      refresh,
+                      140
+                    );
+                },
+            })
+          : null;
+
+      return () => {
+        active =
+          false;
+
+        window.clearTimeout(
+          refreshTimer
+        );
+
+        realtime?.close?.();
+      };
+    },
+    [
+      backendCreator,
+      creatorId,
+      authSession?.user?.id,
+      authSession?.access_token,
+    ]
   );
 
-  const creator =
+  const demoCreator =
     pulseUsers[
       creatorId
     ] ||
     pulseUsers.maria ||
     {
-      id: "creator",
+      id:
+        "creator",
       name:
         "Автор ЯТУТ",
       username:
         "yatut.creator",
-      initials: "Я",
+      initials:
+        "Я",
     };
 
-  async function shareCreatorProfile() {
-    await shareYatutItem({
-      title:
-        `${creator.name} · ЯТУТ PULSE`,
-
-      text:
-        `@${creator.username} у ЯТУТ PULSE`,
-
-      path:
-        `#creator=${encodeURIComponent(creator.id)}`,
-    });
-  }
+  const creator =
+    realCreator ||
+    demoCreator;
 
   const allVideos =
     useMemo(
       () =>
-        getAllVideos(),
-      []
+        backendCreator
+          ? backendVideos
+          : getDemoVideos(),
+      [
+        backendCreator,
+        backendVideos,
+      ]
     );
 
   const creatorVideos =
     useMemo(
       () => {
+        if (
+          backendCreator
+        ) {
+          return allVideos;
+        }
+
         const exact =
           allVideos.filter(
-            (video) =>
+            (
+              video
+            ) =>
               video.author
                 ?.id ===
                 creator.id ||
@@ -198,6 +391,7 @@ export default function CreatorProfilePage({
       },
       [
         allVideos,
+        backendCreator,
         creator.id,
         creator.username,
       ]
@@ -211,30 +405,42 @@ export default function CreatorProfilePage({
         ) {
           case "clips":
             return creatorVideos.filter(
-              (video) =>
+              (
+                video
+              ) =>
                 video.type ===
-                "clip"
+                "clip" &&
+                video.pulseKind !==
+                "wave"
             );
 
           case "live":
             return creatorVideos.filter(
-              (video) =>
+              (
+                video
+              ) =>
                 video.isLive ||
                 video.type ===
                   "live"
             );
 
           case "waves":
-            return (
-              pulseRecommendations.wave ||
-              []
+            return creatorVideos.filter(
+              (
+                video
+              ) =>
+                video.pulseKind ===
+                "wave"
             );
 
           default:
             return creatorVideos.filter(
-              (video) =>
+              (
+                video
+              ) =>
                 video.type !==
-                "clip"
+                  "clip" &&
+                !video.isLive
             );
         }
       },
@@ -243,6 +449,186 @@ export default function CreatorProfilePage({
         creatorVideos,
       ]
     );
+
+  const totalViews =
+    useMemo(
+      () =>
+        creatorVideos.reduce(
+          (
+            total,
+            video
+          ) =>
+            total +
+            Number(
+              video.views ||
+              0
+            ),
+          0
+        ),
+      [
+        creatorVideos,
+      ]
+    );
+
+  const waveCount =
+    useMemo(
+      () =>
+        creatorVideos.filter(
+          (
+            video
+          ) =>
+            video.pulseKind ===
+            "wave"
+        ).length,
+      [
+        creatorVideos,
+      ]
+    );
+
+  const locationLabel =
+    [
+      creator.city,
+      creator.country,
+    ]
+      .filter(
+        Boolean
+      )
+      .join(
+        " · "
+      ) ||
+    "Україна";
+
+  async function shareCreatorProfile() {
+    await shareYatutItem({
+      title:
+        `${creator.name} · ЯТУТ PULSE`,
+      text:
+        `@${creator.username} у ЯТУТ PULSE`,
+      path:
+        `#creator=${encodeURIComponent(
+          creator.id
+        )}`,
+    });
+  }
+
+  async function toggleSubscribe() {
+    if (
+      isOwnProfile ||
+      followBusy
+    ) {
+      return;
+    }
+
+    if (
+      !backendCreator
+    ) {
+      setSubscribed(
+        (
+          value
+        ) =>
+          !value
+      );
+
+      return;
+    }
+
+    if (
+      !authSession?.user?.id
+    ) {
+      return;
+    }
+
+    const previous =
+      subscribed;
+
+    const next =
+      !previous;
+
+    setFollowBusy(
+      true
+    );
+
+    setSubscribed(
+      next
+    );
+
+    setFollowersCount(
+      (
+        count
+      ) =>
+        Math.max(
+          0,
+          count +
+            (
+              next
+                ? 1
+                : -1
+            )
+        )
+    );
+
+    try {
+      const result =
+        await togglePulseFollow(
+          authSession,
+          creatorId
+        );
+
+      if (
+        result !==
+        next
+      ) {
+        setFollowersCount(
+          (
+            count
+          ) =>
+            Math.max(
+              0,
+              count +
+                (
+                  result
+                    ? 1
+                    : -1
+                )
+            )
+        );
+      }
+
+      setSubscribed(
+        result
+      );
+    } catch (
+      error
+    ) {
+      console.warn(
+        "PULSE CREATOR FOLLOW ERROR:",
+        error
+      );
+
+      setSubscribed(
+        previous
+      );
+
+      setFollowersCount(
+        (
+          count
+        ) =>
+          Math.max(
+            0,
+            count +
+              (
+                next
+                  ? -1
+                  : 1
+              )
+          )
+      );
+    } finally {
+      setFollowBusy(
+        false
+      );
+    }
+  }
 
   function openVideo(
     video
@@ -275,12 +661,28 @@ export default function CreatorProfilePage({
     );
   }
 
+  if (
+    backendCreator &&
+    loading &&
+    !realCreator
+  ) {
+    return (
+      <section className="pulse-creator-loading">
+        <span className="pulse-creator-loading__orb" />
+
+        <strong>
+          Завантажуємо автора…
+        </strong>
+
+        <small>
+          ЯТУТ PULSE
+        </small>
+      </section>
+    );
+  }
+
   return (
     <div className="pulse-creator-page">
-      {/* =================================================
-          HERO
-      ================================================= */}
-
       <section className="pulse-creator-hero">
         <img
           className="pulse-creator-hero__background"
@@ -331,16 +733,25 @@ export default function CreatorProfilePage({
 
         <div className="pulse-creator-hero__content">
           <div className="pulse-creator-avatar">
-            <span>
-              {
-                creator.initials ||
-                creator.name
-                  ?.charAt(
-                    0
-                  ) ||
-                "Я"
-              }
-            </span>
+            {creator.avatar ? (
+              <img
+                src={
+                  creator.avatar
+                }
+                alt=""
+              />
+            ) : (
+              <span>
+                {
+                  creator.initials ||
+                  creator.name
+                    ?.charAt(
+                      0
+                    ) ||
+                  "Я"
+                }
+              </span>
+            )}
 
             <i />
           </div>
@@ -354,12 +765,14 @@ export default function CreatorProfilePage({
                 }
               </h1>
 
-              <span>
-                <Check
-                  size={12}
-                  strokeWidth={3}
-                />
-              </span>
+              {creator.verified && (
+                <span>
+                  <Check
+                    size={12}
+                    strokeWidth={3}
+                  />
+                </span>
+              )}
             </div>
 
             <strong>
@@ -371,10 +784,8 @@ export default function CreatorProfilePage({
             </strong>
 
             <p>
-              Живі історії міста,
-              люди та моменти,
-              які відбуваються
-              просто зараз.
+              {creator.bio ||
+                "Автор ЯТУТ PULSE. Живі історії, люди та моменти просто зараз."}
             </p>
 
             <div className="pulse-creator-location">
@@ -382,7 +793,9 @@ export default function CreatorProfilePage({
                 size={15}
               />
 
-              Київ · Україна
+              {
+                locationLabel
+              }
             </div>
           </div>
 
@@ -394,14 +807,23 @@ export default function CreatorProfilePage({
                   ? "is-subscribed"
                   : ""
               }`}
-              onClick={() =>
-                setSubscribed(
-                  (value) =>
-                    !value
-                )
+              disabled={
+                isOwnProfile ||
+                followBusy
+              }
+              onClick={
+                toggleSubscribe
               }
             >
-              {subscribed ? (
+              {isOwnProfile ? (
+                <>
+                  <Check
+                    size={16}
+                  />
+
+                  Це ви
+                </>
+              ) : subscribed ? (
                 <>
                   <Bell
                     size={16}
@@ -420,24 +842,26 @@ export default function CreatorProfilePage({
               )}
             </button>
 
-            <button
-              type="button"
-              onClick={() =>
-                onNavigate?.(
-                  "chats",
-                  {
-                    personId:
-                      creator.id,
-                  }
-                )
-              }
-            >
-              <MessageCircle
-                size={17}
-              />
+            {!isOwnProfile && (
+              <button
+                type="button"
+                onClick={() =>
+                  onNavigate?.(
+                    "chats",
+                    {
+                      personId:
+                        creator.id,
+                    }
+                  )
+                }
+              >
+                <MessageCircle
+                  size={17}
+                />
 
-              Написати
-            </button>
+                Написати
+              </button>
+            )}
 
             <button
               type="button"
@@ -454,14 +878,15 @@ export default function CreatorProfilePage({
         </div>
       </section>
 
-      {/* =================================================
-          STATS
-      ================================================= */}
-
       <section className="pulse-creator-stats">
         <article>
           <strong>
-            24,8K
+            {formatNumber(
+              backendCreator
+                ? followersCount
+                : creator.followers ||
+                  0
+            )}
           </strong>
 
           <span>
@@ -472,18 +897,7 @@ export default function CreatorProfilePage({
         <article>
           <strong>
             {formatNumber(
-              creatorVideos.reduce(
-                (
-                  total,
-                  video
-                ) =>
-                  total +
-                  Number(
-                    video.views ||
-                      0
-                  ),
-                0
-              )
+              totalViews
             )}
           </strong>
 
@@ -506,7 +920,9 @@ export default function CreatorProfilePage({
 
         <article>
           <strong>
-            18
+            {
+              waveCount
+            }
           </strong>
 
           <span>
@@ -514,10 +930,6 @@ export default function CreatorProfilePage({
           </span>
         </article>
       </section>
-
-      {/* =================================================
-          LIVE PRESENCE
-      ================================================= */}
 
       <section className="pulse-creator-presence">
         <div>
@@ -533,12 +945,14 @@ export default function CreatorProfilePage({
             </small>
 
             <strong>
-              Зараз у Києві
+              {creator.status ||
+                (creator.city
+                  ? `Автор із ${creator.city}`
+                  : "Автор ЯТУТ PULSE")}
             </strong>
 
             <p>
-              Остання активність
-              8 хвилин тому
+              Нові відео автора автоматично зʼявляються у PULSE.
             </p>
           </div>
         </div>
@@ -547,25 +961,19 @@ export default function CreatorProfilePage({
           type="button"
           onClick={() =>
             onNavigate?.(
-              "cityPulse",
-              {
-                cityId:
-                  "kyiv",
-              }
+              "pulse"
             )
           }
         >
-          Дивитися місто
+          До PULSE
         </button>
       </section>
 
-      {/* =================================================
-          TABS
-      ================================================= */}
-
       <nav className="pulse-creator-tabs">
         {tabs.map(
-          (tab) => (
+          (
+            tab
+          ) => (
             <button
               key={
                 tab.id
@@ -590,10 +998,6 @@ export default function CreatorProfilePage({
           )
         )}
       </nav>
-
-      {/* =================================================
-          CONTENT HEADER
-      ================================================= */}
 
       <section className="pulse-creator-content">
         <header>
@@ -634,7 +1038,9 @@ export default function CreatorProfilePage({
         {filteredVideos.length ? (
           <div className="pulse-creator-video-grid">
             {filteredVideos.map(
-              (video) => (
+              (
+                video
+              ) => (
                 <PulseVideoCard
                   key={
                     video.id
@@ -666,50 +1072,50 @@ export default function CreatorProfilePage({
             </strong>
 
             <span>
-              Нові матеріали
-              зʼявляться тут
-              автоматично.
+              Нові матеріали автора зʼявляться тут автоматично.
             </span>
           </div>
         )}
       </section>
 
-      {/* =================================================
-          CREATOR CTA
-      ================================================= */}
-
-      <section className="pulse-creator-bottom">
-        <div>
-          <Eye
-            size={20}
-          />
-
+      {!isOwnProfile && (
+        <section className="pulse-creator-bottom">
           <div>
-            <strong>
-              Стеж за автором
-              у реальному часі
-            </strong>
+            <Eye
+              size={20}
+            />
 
-            <span>
-              Нові відео,
-              LIVE та хвилі
-              зʼявляться у твоєму
-              PULSE.
-            </span>
+            <div>
+              <strong>
+                Стеж за автором у реальному часі
+              </strong>
+
+              <span>
+                Нові відео та хвилі зʼявляться у твоєму PULSE.
+              </span>
+            </div>
           </div>
-        </div>
 
-        <button
-          type="button"
-          onClick={() =>
-            setSubscribed(
-              true
-            )
-          }
-        >
-          Підписатися
-        </button>
-      </section>
+          <button
+            type="button"
+            className={
+              subscribed
+                ? "is-subscribed"
+                : ""
+            }
+            disabled={
+              followBusy
+            }
+            onClick={
+              toggleSubscribe
+            }
+          >
+            {subscribed
+              ? "Ви підписані"
+              : "Підписатися"}
+          </button>
+        </section>
+      )}
     </div>
   );
 }
