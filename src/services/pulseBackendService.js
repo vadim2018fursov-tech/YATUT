@@ -600,11 +600,18 @@ export async function createPulseMedia(
                   )
                 : null,
             trim_start_seconds:
-              Number.isFinite(
-                Number(
-                  trimStartSeconds
-                )
-              )
+              trimStartSeconds ===
+                null ||
+              trimStartSeconds ===
+                undefined ||
+              trimStartSeconds ===
+                ""
+                ? null
+                : Number.isFinite(
+                    Number(
+                      trimStartSeconds
+                    )
+                  )
                 ? Math.max(
                     0,
                     Number(
@@ -613,11 +620,18 @@ export async function createPulseMedia(
                   )
                 : null,
             trim_end_seconds:
-              Number.isFinite(
-                Number(
-                  trimEndSeconds
-                )
-              )
+              trimEndSeconds ===
+                null ||
+              trimEndSeconds ===
+                undefined ||
+              trimEndSeconds ===
+                ""
+                ? null
+                : Number.isFinite(
+                    Number(
+                      trimEndSeconds
+                    )
+                  )
                 ? Math.max(
                     0,
                     Number(
