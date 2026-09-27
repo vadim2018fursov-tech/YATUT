@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 
 import {
+  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -27,6 +28,10 @@ import {
   pulseRecommendations,
   pulseVideos,
 } from "../data/pulseMockData";
+
+import {
+  loadPulseMedia,
+} from "../services/pulseBackendService";
 
 const FALLBACK_CLIP_IMAGE =
   "/assets/yatut/cities/kyiv/hero.jpg";
@@ -63,11 +68,68 @@ function getCreatorId(video) {
 export default function ClipsPage({
   onNavigate,
   initialVideoId = null,
+  authSession = null,
 }) {
+  const [
+    backendVideos,
+    setBackendVideos,
+  ] = useState([]);
+
+  useEffect(() => {
+    let active =
+      true;
+
+    loadPulseMedia(
+      authSession,
+      {
+        limit:
+          40,
+      }
+    )
+      .then(
+        (
+          items
+        ) => {
+          if (
+            active
+          ) {
+            setBackendVideos(
+              items.filter(
+                (
+                  item
+                ) =>
+                  item.type ===
+                  "clip"
+              )
+            );
+          }
+        }
+      )
+      .catch(
+        (
+          error
+        ) => {
+          console.warn(
+            "CLIPS PULSE LOAD ERROR:",
+            error
+          );
+        }
+      );
+
+    return () => {
+      active =
+        false;
+    };
+  }, [
+    authSession?.user?.id,
+    authSession?.access_token,
+  ]);
+
   const clips =
     useMemo(
       () => {
         const source = [
+          ...backendVideos,
           ...(pulseVideos || []),
           ...(pulseRecommendations.forYou || []),
           ...(pulseRecommendations.nearby || []),
@@ -97,7 +159,9 @@ export default function ClipsPage({
 
         return unique;
       },
-      []
+      [
+        backendVideos,
+      ]
     );
 
   const initialIndex =
@@ -137,6 +201,35 @@ export default function ClipsPage({
   ] = useState(
     initialIndex
   );
+
+  useEffect(() => {
+    if (
+      !initialVideoId
+    ) {
+      return;
+    }
+
+    const index =
+      clips.findIndex(
+        (
+          item
+        ) =>
+          item.id ===
+          initialVideoId
+      );
+
+    if (
+      index >=
+      0
+    ) {
+      setCurrentIndex(
+        index
+      );
+    }
+  }, [
+    clips,
+    initialVideoId,
+  ]);
 
   const [
     liked,
@@ -290,20 +383,40 @@ export default function ClipsPage({
   return (
     <div className="pulse-clips-page">
       <section className="pulse-clips-stage">
-        <img
-          src={
-            video.thumbnail ||
-            FALLBACK_CLIP_IMAGE
-          }
-          alt={
-            video.title ||
-            "ЯТУТ PULSE"
-          }
-          className="pulse-clips-stage__background"
-          onError={
-            handleImageError
-          }
-        />
+        {video.videoUrl ||
+        video.video ? (
+          <video
+            src={
+              video.videoUrl ||
+              video.video
+            }
+            poster={
+              video.thumbnail ||
+              FALLBACK_CLIP_IMAGE
+            }
+            className="pulse-clips-stage__background"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+          />
+        ) : (
+          <img
+            src={
+              video.thumbnail ||
+              FALLBACK_CLIP_IMAGE
+            }
+            alt={
+              video.title ||
+              "ЯТУТ PULSE"
+            }
+            className="pulse-clips-stage__background"
+            onError={
+              handleImageError
+            }
+          />
+        )}
 
         <div className="pulse-clips-stage__shade" />
 
