@@ -857,3 +857,126 @@ html.yatut-native
     font-size: 12px !important;
   }
 }
+
+
+/* ---------------------------------------------------------
+   Targeted tiny typography fixes
+--------------------------------------------------------- */
+
+.profile-v2-cover-copy span,
+.profile-v2-stats span {
+  font-size: 11px !important;
+  line-height: 1.2 !important;
+}
+
+.profile-v2-inline-comment-form button {
+  font-size: 12px !important;
+}
+
+.friends-v2-now-strip__copy > span {
+  font-size: 10px !important;
+}
+
+.friends-v2-now-strip__copy small,
+.friends-v2-relation-point-copy small,
+.friends-v2-relation-modal-v2 .friends-v2-map-person small {
+  font-size: 11px !important;
+}
+
+.friends-v2-now-strip__actions button,
+.friends-v2-action-sheet button {
+  font-size: 12px !important;
+}
+
+.notifications-read-all,
+.notifications-filters button,
+.notifications-global-menu button,
+.notifications-footer button {
+  font-size: 12px !important;
+}
+
+.notifications-pulse > div:nth-child(2) span,
+.notification-source-chip,
+.notification-action-status {
+  font-size: 11px !important;
+}
+
+.notifications-filters button b,
+.notifications-group-header span {
+  font-size: 10px !important;
+}
+
+.pulse-mobile-header__brand small {
+  font-size: 10px !important;
+}
+
+.pulse-mobile-tabs button,
+.pulse-hero__primary,
+.pulse-clips-switch button {
+  font-size: 11px !important;
+}
+
+.pulse-ukraine-map__people span,
+.pulse-video-rail__title small,
+.pulse-wave__brand p {
+  font-size: 10px !important;
+  line-height: 1.3 !important;
+}
+
+.yatut-media-create__source-actions > button,
+.yatut-media-create__preview-actions > button,
+.yatut-media-cover__controls button {
+  font-size: 12px !important;
+}
+
+.yatut-media-create__file-meta,
+.yatut-media-edit-card__title small,
+.yatut-media-summary span,
+.yatut-media-success > small {
+  font-size: 11px !important;
+}
+
+.yatut-media-summary strong,
+.yatut-media-edit-card__title strong {
+  font-size: 12px !important;
+}
+
+/* ---------------------------------------------------------
+   Mobile width corrections for legacy full-bleed rules
+--------------------------------------------------------- */
+
+@media (max-width: 767px) {
+  .notifications-panel.notifications-page {
+    left: auto !important;
+    right: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-inline: auto !important;
+    border-radius: 0 !important;
+  }
+
+  .profile-v2-page,
+  .friends-v2-page,
+  .feature-page,
+  .creator-studio-page,
+  .yatut-create-page,
+  .yatut-media-create {
+    overflow-x: clip;
+  }
+
+  .yatut-create-header {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: 100% !important;
+  }
+
+  .city-pulse-page {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: clip !important;
+  }
+
+  .city-pulse-hero {
+    max-width: 100% !important;
+  }
+}
