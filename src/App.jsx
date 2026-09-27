@@ -257,10 +257,38 @@ function routeFromLocation() {
 
   if (first === "pulse") {
     if (parts[1] === "clips") {
-      return { page: "clips", payload: parts[2] ? { videoId: parts[2] } : null };
+      return {
+        page: "clips",
+        payload:
+          parts[2]
+            ? {
+                videoId:
+                  parts[2],
+                openComments:
+                  query.get(
+                    "comments"
+                  ) ===
+                  "1",
+              }
+            : null,
+      };
     }
     if (parts[1] === "watch") {
-      return { page: "watch", payload: parts[2] ? { videoId: parts[2] } : null };
+      return {
+        page: "watch",
+        payload:
+          parts[2]
+            ? {
+                videoId:
+                  parts[2],
+                openComments:
+                  query.get(
+                    "comments"
+                  ) ===
+                  "1",
+              }
+            : null,
+      };
     }
     if (parts[1] === "live") {
       return { page: "live", payload: parts[2] ? { videoId: parts[2] } : null };
@@ -401,10 +429,14 @@ function routeToUrl(page, payload = null) {
     }
     case "now": return "/now";
     case "pulse": return "/pulse";
-    case "clips":
-      return payload?.videoId ? `/pulse/clips/${encode(payload.videoId)}` : "/pulse/clips";
-    case "watch":
-      return payload?.videoId ? `/pulse/watch/${encode(payload.videoId)}` : "/pulse/watch";
+    case "clips": {
+      if (!payload?.videoId) return "/pulse/clips";
+      return `/pulse/clips/${encode(payload.videoId)}${payload.openComments ? "?comments=1" : ""}`;
+    }
+    case "watch": {
+      if (!payload?.videoId) return "/pulse/watch";
+      return `/pulse/watch/${encode(payload.videoId)}${payload.openComments ? "?comments=1" : ""}`;
+    }
     case "live":
       return payload?.videoId ? `/pulse/live/${encode(payload.videoId)}` : "/pulse/live";
     case "cityPulse":
@@ -5432,6 +5464,12 @@ function App() {
     useState(null);
 
   const [
+    selectedVideoOpenComments,
+    setSelectedVideoOpenComments,
+  ] =
+    useState(false);
+
+  const [
     selectedLiveVideoId,
     setSelectedLiveVideoId,
   ] =
@@ -7522,6 +7560,12 @@ function App() {
         payload?.videoId ||
         null
       );
+
+      setSelectedVideoOpenComments(
+        Boolean(
+          payload?.openComments
+        )
+      );
     }
 
     if (
@@ -7862,6 +7906,9 @@ function App() {
             authSession={
               authSession
             }
+            initialCommentsOpen={
+              selectedVideoOpenComments
+            }
           />
         );
 
@@ -7880,6 +7927,9 @@ function App() {
             }
             authSession={
               authSession
+            }
+            initialCommentsOpen={
+              selectedVideoOpenComments
             }
           />
         );
