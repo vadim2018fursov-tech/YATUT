@@ -1,0 +1,677 @@
+/* =========================================================
+   YATUT UI CONSISTENCY V4
+   Final layout + typography guard loaded last.
+========================================================= */
+
+:root {
+  --yatut-ui-font:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+}
+
+html,
+body,
+#root,
+.app {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+html,
+body {
+  overflow-x: clip;
+}
+
+body {
+  margin: 0;
+  font-family: var(--yatut-ui-font);
+  font-size: 14px;
+  line-height: 1.45;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+img,
+video,
+canvas,
+svg {
+  max-width: 100%;
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: var(--yatut-ui-font);
+}
+
+:where(
+  .layout,
+  .main-content,
+  .profile-v2-page,
+  .profile-v2-shell,
+  .friends-v2-page,
+  .notifications-panel,
+  .notifications-page,
+  .feature-page,
+  .settings-layout,
+  .messenger,
+  .pulse-page,
+  .pulse-page__main,
+  .pulse-desktop-experience,
+  .creator-studio-page,
+  .yatut-create-page,
+  .yatut-media-create
+) {
+  min-width: 0;
+  max-width: 100%;
+}
+
+:where(
+  .main-content,
+  .profile-v2-page,
+  .friends-v2-page,
+  .notifications-page,
+  .feature-page,
+  .pulse-page,
+  .creator-studio-page,
+  .yatut-create-page,
+  .yatut-media-create
+) > * {
+  min-width: 0;
+}
+
+/* ---------------------------------------------------------
+   Readable typography floor
+--------------------------------------------------------- */
+
+:where(
+  .profile-v2-page,
+  .friends-v2-page,
+  .notifications-page,
+  .feature-page,
+  .messenger,
+  .pulse-page,
+  .creator-studio-page,
+  .yatut-create-page,
+  .yatut-media-create
+) :is(p, li) {
+  font-size: max(12px, .78rem);
+  line-height: 1.48;
+}
+
+:where(
+  .profile-v2-page,
+  .friends-v2-page,
+  .notifications-page,
+  .feature-page,
+  .messenger,
+  .pulse-page,
+  .creator-studio-page,
+  .yatut-create-page,
+  .yatut-media-create
+) small {
+  font-size: max(11px, .70rem) !important;
+  line-height: 1.35;
+}
+
+:where(
+  .profile-v2-page,
+  .friends-v2-page,
+  .notifications-page,
+  .feature-page,
+  .messenger,
+  .pulse-page,
+  .creator-studio-page,
+  .yatut-create-page,
+  .yatut-media-create
+) button {
+  font-size: max(12px, .75rem);
+}
+
+:where(
+  .profile-v2-page,
+  .friends-v2-page,
+  .notifications-page,
+  .feature-page,
+  .messenger,
+  .pulse-page,
+  .creator-studio-page,
+  .yatut-create-page,
+  .yatut-media-create
+) input,
+:where(
+  .profile-v2-page,
+  .friends-v2-page,
+  .notifications-page,
+  .feature-page,
+  .messenger,
+  .pulse-page,
+  .creator-studio-page,
+  .yatut-create-page,
+  .yatut-media-create
+) textarea,
+:where(
+  .profile-v2-page,
+  .friends-v2-page,
+  .notifications-page,
+  .feature-page,
+  .messenger,
+  .pulse-page,
+  .creator-studio-page,
+  .yatut-create-page,
+  .yatut-media-create
+) select {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+:where(
+  .profile-v2-page,
+  .friends-v2-page,
+  .notifications-page,
+  .feature-page,
+  .messenger,
+  .pulse-page,
+  .creator-studio-page,
+  .yatut-create-page,
+  .yatut-media-create
+) h1 {
+  line-height: 1.12;
+  letter-spacing: -.025em;
+}
+
+:where(
+  .profile-v2-page,
+  .friends-v2-page,
+  .notifications-page,
+  .feature-page,
+  .messenger,
+  .pulse-page,
+  .creator-studio-page,
+  .yatut-create-page,
+  .yatut-media-create
+) h2 {
+  line-height: 1.18;
+  letter-spacing: -.015em;
+}
+
+/* ---------------------------------------------------------
+   Page-specific typography
+--------------------------------------------------------- */
+
+.profile-v3-mobile-name-row,
+.profile-v2-identity h1 {
+  font-size: clamp(22px, 3vw, 30px) !important;
+}
+
+.profile-v3-mobile-username,
+.profile-v3-mobile-bio,
+.profile-v3-mobile-meta,
+.profile-v3-mobile-status {
+  font-size: 13px !important;
+}
+
+.profile-v3-mobile-stats {
+  font-size: 12px !important;
+}
+
+.friends-v2-hero h1,
+.friends-v2-page h1 {
+  font-size: clamp(24px, 3vw, 32px) !important;
+}
+
+.friends-v2-eyebrow,
+.friends-v2-now-strip__copy small,
+.friends-v2-page .muted {
+  font-size: 11px !important;
+}
+
+.notifications-heading h2 {
+  font-size: clamp(22px, 3vw, 28px) !important;
+}
+
+.notifications-brand {
+  font-size: 11px !important;
+  letter-spacing: .08em;
+}
+
+.notification-item :is(p, .notification-text, .notification-body) {
+  font-size: 13px !important;
+  line-height: 1.42 !important;
+}
+
+.notification-item :is(time, small) {
+  font-size: 11px !important;
+}
+
+.feature-hero h1,
+.settings-content h2 {
+  font-size: clamp(22px, 3vw, 30px) !important;
+}
+
+.settings-row,
+.settings-data-card,
+.settings-section {
+  font-size: 13px;
+}
+
+.chat-list-header h1 {
+  font-size: 24px !important;
+}
+
+.chat-list-header > div > span,
+.chat-dialog-status,
+.chat-list-item small,
+.chat-message-time {
+  font-size: 11px !important;
+}
+
+.chat-list-item strong,
+.chat-dialog-title,
+.chat-message-text {
+  font-size: 14px !important;
+}
+
+.creator-studio-page h1 {
+  font-size: clamp(24px, 3vw, 34px) !important;
+}
+
+.creator-studio-page :is(
+  .creator-studio-metric,
+  .creator-studio-section,
+  .creator-studio-content-table,
+  .creator-studio-audience
+) {
+  font-size: 12px;
+}
+
+.yatut-create-title h1,
+.yatut-media-create__header h1 {
+  font-size: clamp(23px, 3vw, 31px) !important;
+}
+
+.yatut-create-card__copy strong,
+.yatut-media-create__settings strong {
+  font-size: 13px !important;
+}
+
+/* ---------------------------------------------------------
+   Horizontal stability
+--------------------------------------------------------- */
+
+:where(
+  .profile-v2-page,
+  .friends-v2-page,
+  .notifications-page,
+  .feature-page,
+  .settings-layout,
+  .pulse-page,
+  .creator-studio-page,
+  .yatut-create-page,
+  .yatut-media-create
+) {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+:where(
+  .profile-v2-shell,
+  .friends-v2-toolbar,
+  .friends-v2-summary,
+  .notifications-header,
+  .notifications-scroll,
+  .settings-content,
+  .creator-studio-dashboard,
+  .creator-studio-section,
+  .yatut-create-section,
+  .yatut-media-create__workspace
+) {
+  min-width: 0;
+  max-width: 100%;
+}
+
+:where(
+  .settings-layout,
+  .creator-studio-dashboard,
+  .yatut-media-create__workspace
+) > * {
+  min-width: 0;
+}
+
+:where(
+  .profile-v2-page,
+  .friends-v2-page,
+  .notifications-page,
+  .feature-page,
+  .creator-studio-page,
+  .yatut-create-page,
+  .yatut-media-create
+) :is(
+  .card,
+  .panel,
+  .section,
+  article
+) {
+  max-width: 100%;
+}
+
+/* ---------------------------------------------------------
+   Mobile / touch
+--------------------------------------------------------- */
+
+@media (
+  max-width: 900px
+),
+(
+  hover: none
+) and (
+  pointer: coarse
+) {
+  html,
+  body,
+  #root,
+  .app {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow-x: clip !important;
+  }
+
+  body {
+    font-size: 15px;
+  }
+
+  .layout,
+  .main-content {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  :where(
+    .profile-v2-page,
+    .friends-v2-page,
+    .notifications-page,
+    .feature-page,
+    .messenger,
+    .pulse-page,
+    .creator-studio-page,
+    .yatut-create-page,
+    .yatut-media-create
+  ) input,
+  :where(
+    .profile-v2-page,
+    .friends-v2-page,
+    .notifications-page,
+    .feature-page,
+    .messenger,
+    .pulse-page,
+    .creator-studio-page,
+    .yatut-create-page,
+    .yatut-media-create
+  ) textarea,
+  :where(
+    .profile-v2-page,
+    .friends-v2-page,
+    .notifications-page,
+    .feature-page,
+    .messenger,
+    .pulse-page,
+    .creator-studio-page,
+    .yatut-create-page,
+    .yatut-media-create
+  ) select {
+    font-size: 16px !important;
+  }
+
+  :where(
+    .profile-v2-page,
+    .friends-v2-page,
+    .notifications-page,
+    .feature-page,
+    .messenger,
+    .pulse-page,
+    .creator-studio-page,
+    .yatut-create-page,
+    .yatut-media-create
+  ) button {
+    font-size: 13px;
+  }
+
+  :where(
+    .profile-v2-page,
+    .friends-v2-page,
+    .notifications-page,
+    .feature-page,
+    .messenger,
+    .pulse-page,
+    .creator-studio-page,
+    .yatut-create-page,
+    .yatut-media-create
+  ) small {
+    font-size: 11px !important;
+  }
+
+  .mobile-nav {
+    left: 10px !important;
+    right: 10px !important;
+    bottom:
+      calc(
+        8px +
+        env(
+          safe-area-inset-bottom
+        )
+      ) !important;
+    width: auto !important;
+    max-width: none !important;
+    transform: none !important;
+    margin: 0 !important;
+  }
+
+  .mobile-nav > button,
+  .mobile-nav-item {
+    min-width: 0 !important;
+    flex: 1 1 0 !important;
+  }
+
+  .mobile-nav-label {
+    font-size: 11px !important;
+    line-height: 1.05 !important;
+    letter-spacing: -.01em !important;
+    white-space: nowrap;
+  }
+
+  .mobile-nav-icon {
+    width: 29px !important;
+    height: 29px !important;
+  }
+
+  .mobile-nav-icon svg {
+    width: 21px !important;
+    height: 21px !important;
+  }
+
+  .messenger.mobile-dialog-open,
+  .messenger.mobile-dialog-open .chat-dialog {
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    transform: none !important;
+  }
+
+  .messenger.mobile-dialog-open .chat-composer {
+    left: 0 !important;
+    right: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .messenger.mobile-dialog-open .chat-composer textarea {
+    min-height: 42px !important;
+    font-size: 16px !important;
+    line-height: 1.35 !important;
+  }
+
+  .messenger.mobile-dialog-open .chat-composer textarea::placeholder {
+    font-size: 16px !important;
+    line-height: 1.35 !important;
+  }
+
+  .profile-v2-page,
+  .friends-v2-page,
+  .notifications-page,
+  .feature-page,
+  .creator-studio-page,
+  .yatut-create-page,
+  .yatut-media-create {
+    padding-left:
+      max(
+        12px,
+        env(
+          safe-area-inset-left
+        )
+      );
+    padding-right:
+      max(
+        12px,
+        env(
+          safe-area-inset-right
+        )
+      );
+  }
+
+  .notifications-page {
+    padding-top: 0;
+  }
+
+  .notifications-header {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .friends-v2-toolbar,
+  .friends-v2-summary,
+  .profile-v2-shell,
+  .settings-layout {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .pulse-immersive-mobile,
+  .layout-pulse-immersive,
+  .layout-pulse-immersive .main-content {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    transform: none !important;
+    background: #08080b !important;
+  }
+
+  .pulse-immersive-mobile {
+    overflow-x: hidden !important;
+  }
+
+  .pulse-immersive__slide {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .pulse-immersive__meta,
+  .pulse-immersive__author,
+  .pulse-immersive__caption {
+    max-width: calc(100% - 76px) !important;
+  }
+
+  .pulse-immersive__author strong,
+  .pulse-immersive__caption,
+  .pulse-clips-stage__meta strong {
+    font-size: 14px !important;
+  }
+
+  .pulse-immersive__author small,
+  .pulse-clips-stage__meta small {
+    font-size: 11px !important;
+  }
+
+  .creator-studio-page,
+  .yatut-create-page,
+  .yatut-media-create {
+    padding-bottom:
+      calc(
+        96px +
+        env(
+          safe-area-inset-bottom
+        )
+      );
+  }
+}
+
+@media (max-width: 430px) {
+  .profile-v2-page,
+  .friends-v2-page,
+  .notifications-page,
+  .feature-page,
+  .creator-studio-page,
+  .yatut-create-page,
+  .yatut-media-create {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .profile-v3-mobile-name-row,
+  .profile-v2-identity h1,
+  .friends-v2-hero h1,
+  .friends-v2-page h1,
+  .notifications-heading h2,
+  .feature-hero h1,
+  .creator-studio-page h1,
+  .yatut-create-title h1,
+  .yatut-media-create__header h1 {
+    font-size: 22px !important;
+  }
+}
+
+/* ---------------------------------------------------------
+   Full-screen overlays must not create a 100vw side jump
+--------------------------------------------------------- */
+
+:where(
+  .chat-modal-backdrop,
+  .call-backdrop,
+  .pulse-comments-backdrop,
+  .gallery-viewer,
+  .story-viewer
+) {
+  max-width: 100%;
+}
+
+html.yatut-native
+:where(
+  .messenger.mobile-dialog-open,
+  .pulse-immersive-mobile
+) {
+  width: 100% !important;
+  max-width: 100% !important;
+}
