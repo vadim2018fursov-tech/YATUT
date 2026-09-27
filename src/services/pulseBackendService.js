@@ -132,7 +132,7 @@ async function loadProfiles(
 
   url.searchParams.set(
     "select",
-    "id,username,full_name,avatar_url,verified"
+    "id,username,full_name,avatar_url,cover_url,bio,city,country,status,status_text,verified,founder,early_user"
   );
 
   url.searchParams.set(
@@ -315,9 +315,33 @@ function mapPulseRow(
       avatar:
         profile?.avatar_url ||
         null,
+      cover:
+        profile?.cover_url ||
+        null,
+      bio:
+        profile?.bio ||
+        "",
+      city:
+        profile?.city ||
+        "",
+      country:
+        profile?.country ||
+        "",
+      status:
+        profile?.status_text ||
+        profile?.status ||
+        "",
       verified:
         Boolean(
           profile?.verified
+        ),
+      founder:
+        Boolean(
+          profile?.founder
+        ),
+      earlyUser:
+        Boolean(
+          profile?.early_user
         ),
     },
     createdAt:
@@ -334,6 +358,7 @@ export async function loadPulseMedia(
   {
     limit = 30,
     kind = null,
+    authorId = null,
   } = {}
 ) {
   const url =
@@ -380,6 +405,15 @@ export async function loadPulseMedia(
     url.searchParams.set(
       "kind",
       `eq.${kind}`
+    );
+  }
+
+  if (
+    authorId
+  ) {
+    url.searchParams.set(
+      "author_id",
+      `eq.${authorId}`
     );
   }
 
@@ -433,6 +467,88 @@ export async function loadPulseMedia(
     .filter(
       Boolean
     );
+}
+
+export async function getPulseCreatorProfile(
+  session,
+  creatorId
+) {
+  if (!creatorId) {
+    return null;
+  }
+
+  const profiles =
+    await loadProfiles(
+      session,
+      [
+        creatorId,
+      ]
+    );
+
+  const profile =
+    profiles.get(
+      creatorId
+    ) ||
+    null;
+
+  if (!profile) {
+    return null;
+  }
+
+  const name =
+    profile.full_name ||
+    profile.username ||
+    "Автор ЯТУТ";
+
+  return {
+    id:
+      profile.id,
+    name,
+    fullName:
+      name,
+    username:
+      profile.username ||
+      "yatut.creator",
+    initials:
+      name
+        .trim()
+        .charAt(
+          0
+        )
+        .toUpperCase() ||
+      "Я",
+    avatar:
+      profile.avatar_url ||
+      null,
+    cover:
+      profile.cover_url ||
+      null,
+    bio:
+      profile.bio ||
+      "",
+    city:
+      profile.city ||
+      "",
+    country:
+      profile.country ||
+      "",
+    status:
+      profile.status_text ||
+      profile.status ||
+      "",
+    verified:
+      Boolean(
+        profile.verified
+      ),
+    founder:
+      Boolean(
+        profile.founder
+      ),
+    earlyUser:
+      Boolean(
+        profile.early_user
+      ),
+  };
 }
 
 export async function getPulseMediaById(
