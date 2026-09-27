@@ -1,5 +1,6 @@
 import {
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -24,6 +25,7 @@ import {
 } from "../services/mediaPickerService";
 
 import {
+  uploadPostMedia,
   uploadPulseMedia,
 } from "../services/storageService";
 
@@ -37,6 +39,8 @@ const typeConfig = {
     title: "Новий Clip",
     description:
       "Коротке вертикальне відео.",
+    defaultTitle:
+      "Новий Clip",
   },
 
   video: {
@@ -44,6 +48,8 @@ const typeConfig = {
     title: "Нове відео",
     description:
       "Відео, влог або повна історія.",
+    defaultTitle:
+      "Нове відео",
   },
 
   live: {
@@ -51,6 +57,8 @@ const typeConfig = {
     title: "Новий LIVE",
     description:
       "Прямий ефір у ЯТУТ PULSE.",
+    defaultTitle:
+      "LIVE",
   },
 
   moment: {
@@ -58,6 +66,8 @@ const typeConfig = {
     title: "PULSE Момент",
     description:
       "Покажи, що відбувається тут і зараз.",
+    defaultTitle:
+      "PULSE Момент",
   },
 
   wave: {
@@ -65,66 +75,126 @@ const typeConfig = {
     title: "Продовжити хвилю",
     description:
       "Додай свою частину до спільної історії.",
+    defaultTitle:
+      "Хвиля PULSE",
   },
 };
 
-const MAX_VIDEO_SIZE =
-  100 *
-  1024 *
-  1024;
-
-function readVideoDuration(
-  file
+function createVideoMetadata(
+  source
 ) {
   return new Promise(
     (
       resolve
     ) => {
-      if (!file) {
-        resolve(null);
-        return;
-      }
-
-      const url =
-        URL.createObjectURL(
-          file
-        );
-
       const video =
         document.createElement(
           "video"
         );
 
-      const finish = (
-        value
-      ) => {
-        URL.revokeObjectURL(
-          url
-        );
-
-        video.removeAttribute(
-          "src"
-        );
-
-        resolve(
-          value
-        );
-      };
-
       video.preload =
         "metadata";
+      video.muted =
+        true;
+      video.playsInline =
+        true;
+      video.src =
+        source;
+
+      const finish =
+        (
+          value = {}
+        ) => {
+          video.removeAttribute(
+            "src"
+          );
+          video.load();
+
+          resolve(
+            value
+          );
+        };
 
       video.onloadedmetadata =
+        () => {
+          finish({
+            duration:
+              Number.isFinite(
+                video.duration
+              )
+                ? video.duration
+                : null,
+            width:
+              video.videoWidth ||
+              null,
+            height:
+              video.videoHeight ||
+              null,
+          });
+        };
+
+      video.onerror =
         () =>
-          finish(
-            Number.isFinite(
-              video.duration
-            )
-              ? Math.round(
-                  video.duration
-                )
-              : null
+          finish({
+            duration:
+              null,
+            width:
+              null,
+            height:
+              null,
+          });
+    }
+  );
+}
+
+function createVideoThumbnail(
+  source
+) {
+  return new Promise(
+    (
+      resolve
+    ) => {
+      const video =
+        document.createElement(
+          "video"
+        );
+
+      video.preload =
+        "auto";
+      video.muted =
+        true;
+      video.playsInline =
+        true;
+      video.crossOrigin =
+        "anonymous";
+      video.src =
+        source;
+
+      let settled =
+        false;
+
+      const finish =
+        (
+          file = null
+        ) => {
+          if (
+            settled
+          ) {
+            return;
+          }
+
+          settled =
+            true;
+
+          video.removeAttribute(
+            "src"
           );
+          video.load();
+
+          resolve(
+            file
+          );
+        };
 
       video.onerror =
         () =>
@@ -132,8 +202,97 @@ function readVideoDuration(
             null
           );
 
-      video.src =
-        url;
+      video.onloadeddata =
+        () => {
+          try {
+            const width =
+              video.videoWidth ||
+              720;
+
+            const height =
+              video.videoHeight ||
+              1280;
+
+            const scale =
+              Math.min(
+                1,
+                1280 /
+                  Math.max(
+                    width,
+                    height
+                  )
+              );
+
+            const canvas =
+              document.createElement(
+                "canvas"
+              );
+
+            canvas.width =
+              Math.max(
+                1,
+                Math.round(
+                  width *
+                    scale
+                )
+              );
+
+            canvas.height =
+              Math.max(
+                1,
+                Math.round(
+                  height *
+                    scale
+                )
+              );
+
+            const context =
+              canvas.getContext(
+                "2d"
+              );
+
+            context?.drawImage(
+              video,
+              0,
+              0,
+              canvas.width,
+              canvas.height
+            );
+
+            canvas.toBlob(
+              (
+                blob
+              ) => {
+                if (!blob) {
+                  finish(
+                    null
+                  );
+
+                  return;
+                }
+
+                finish(
+                  new File(
+                    [
+                      blob,
+                    ],
+                    `pulse-cover-${Date.now()}.jpg`,
+                    {
+                      type:
+                        "image/jpeg",
+                    }
+                  )
+                );
+              },
+              "image/jpeg",
+              0.86
+            );
+          } catch {
+            finish(
+              null
+            );
+          }
+        };
     }
   );
 }
@@ -155,90 +314,141 @@ export default function CreateMediaPage({
   const fileInputRef =
     useRef(null);
 
+  const nativeMediaAvailable =
+    isNativeMediaPicker();
+
   const [
-    mediaFile,
-    setMediaFile,
-  ] = useState(null);
+    file,
+    setFile,
+  ] =
+    useState(null);
 
   const [
     previewUrl,
     setPreviewUrl,
-  ] = useState("");
-
-  const [
-    title,
-    setTitle,
-  ] = useState("");
-
-  const [
-    description,
-    setDescription,
-  ] = useState("");
-
-  const [
-    locationName,
-    setLocationName,
-  ] = useState("");
-
-  const [
-    visibility,
-    setVisibility,
-  ] = useState(
-    "public"
-  );
+  ] =
+    useState("");
 
   const [
     durationSeconds,
     setDurationSeconds,
-  ] = useState(null);
+  ] =
+    useState(null);
+
+  const [
+    title,
+    setTitle,
+  ] =
+    useState("");
+
+  const [
+    description,
+    setDescription,
+  ] =
+    useState("");
+
+  const [
+    locationName,
+    setLocationName,
+  ] =
+    useState("");
+
+  const [
+    visibility,
+    setVisibility,
+  ] =
+    useState(
+      "public"
+    );
 
   const [
     publishing,
     setPublishing,
-  ] = useState(false);
+  ] =
+    useState(false);
 
   const [
     error,
     setError,
-  ] = useState("");
+  ] =
+    useState("");
 
-  const nativeMediaAvailable =
-    isNativeMediaPicker();
+  const [
+    success,
+    setSuccess,
+  ] =
+    useState("");
 
-  const liveMode =
+  const isLive =
     type ===
     "live";
 
+  const effectiveTitle =
+    title.trim() ||
+    config.defaultTitle;
+
+  const canPublish =
+    Boolean(
+      authSession?.user?.id &&
+      file &&
+      !publishing &&
+      !isLive
+    );
+
   useEffect(
-    () => () => {
-      if (
-        previewUrl.startsWith(
-          "blob:"
-        )
-      ) {
-        URL.revokeObjectURL(
+    () => {
+      return () => {
+        revokeMediaPreview(
           previewUrl
         );
-      }
+      };
     },
     [
       previewUrl,
     ]
   );
 
-  async function selectVideoFile(
-    file,
-    {
-      duration = null,
-    } = {}
+  const mediaShape =
+    useMemo(
+      () => {
+        if (!file) {
+          return "";
+        }
+
+        const name =
+          String(
+            file.name ||
+            ""
+          );
+
+        return [
+          name,
+          file.type,
+        ]
+          .filter(
+            Boolean
+          )
+          .join(
+            " · "
+          );
+      },
+      [
+        file,
+      ]
+    );
+
+  async function applyFile(
+    nextFile,
+    preferredDuration =
+      null
   ) {
-    if (!file) {
+    if (!nextFile) {
       return;
     }
 
     if (
       !String(
-        file.type ||
+        nextFile.type ||
         ""
       ).startsWith(
         "video/"
@@ -247,54 +457,66 @@ export default function CreateMediaPage({
       setError(
         "Для PULSE оберіть відеофайл."
       );
+
       return;
     }
 
     if (
-      file.size >
-      MAX_VIDEO_SIZE
+      nextFile.size >
+      100 *
+        1024 *
+        1024
     ) {
       setError(
         "Відео має бути до 100 МБ."
       );
+
       return;
     }
 
-    if (
-      previewUrl.startsWith(
-        "blob:"
-      )
-    ) {
-      URL.revokeObjectURL(
-        previewUrl
-      );
-    }
+    setError("");
+    setSuccess("");
+
+    revokeMediaPreview(
+      previewUrl
+    );
 
     const nextPreview =
       URL.createObjectURL(
-        file
+        nextFile
       );
 
-    setMediaFile(
-      file
+    setFile(
+      nextFile
     );
 
     setPreviewUrl(
       nextPreview
     );
 
-    setError("");
+    if (
+      preferredDuration
+    ) {
+      setDurationSeconds(
+        Number(
+          preferredDuration
+        ) ||
+        null
+      );
+    }
 
-    const measuredDuration =
-      duration ||
-      await readVideoDuration(
-        file
+    const metadata =
+      await createVideoMetadata(
+        nextPreview
       );
 
-    setDurationSeconds(
-      measuredDuration ||
-      null
-    );
+    if (
+      metadata.duration
+    ) {
+      setDurationSeconds(
+        metadata.duration
+      );
+    }
   }
 
   async function chooseVideo() {
@@ -311,22 +533,19 @@ export default function CreateMediaPage({
           return;
         }
 
-        await selectVideoFile(
+        await applyFile(
           selected.file,
-          {
-            duration:
-              selected.duration,
-          }
+          selected.duration
         );
 
         revokeMediaPreview(
           selected.previewUrl
         );
       } catch (
-        nextError
+        pickerError
       ) {
         setError(
-          nextError?.message ||
+          pickerError?.message ||
           "Не вдалося відкрити медіатеку."
         );
       }
@@ -339,15 +558,6 @@ export default function CreateMediaPage({
   }
 
   async function recordVideo() {
-    if (
-      !nativeMediaAvailable
-    ) {
-      fileInputRef.current
-        ?.click();
-
-      return;
-    }
-
     try {
       const selected =
         await captureNativeVideo();
@@ -356,42 +566,44 @@ export default function CreateMediaPage({
         return;
       }
 
-      await selectVideoFile(
+      await applyFile(
         selected.file,
-        {
-          duration:
-            selected.duration,
-        }
+        selected.duration
       );
 
       revokeMediaPreview(
         selected.previewUrl
       );
     } catch (
-      nextError
+      cameraError
     ) {
       setError(
-        nextError?.message ||
-        "Не вдалося записати відео."
+        cameraError?.message ||
+        "Не вдалося відкрити камеру."
       );
     }
   }
 
-  function removeVideo() {
-    if (
-      previewUrl.startsWith(
-        "blob:"
-      )
-    ) {
-      URL.revokeObjectURL(
-        previewUrl
-      );
-    }
+  function clearVideo() {
+    revokeMediaPreview(
+      previewUrl
+    );
 
-    setPreviewUrl("");
-    setMediaFile(null);
-    setDurationSeconds(null);
-    setError("");
+    setFile(
+      null
+    );
+
+    setPreviewUrl(
+      ""
+    );
+
+    setDurationSeconds(
+      null
+    );
+
+    setSuccess(
+      ""
+    );
 
     if (
       fileInputRef.current
@@ -403,43 +615,61 @@ export default function CreateMediaPage({
 
   async function publish() {
     if (
-      publishing ||
-      liveMode ||
-      !mediaFile
+      !canPublish
     ) {
       return;
     }
-
-    if (
-      !authSession?.user?.id
-    ) {
-      setError(
-        "Потрібно увійти в акаунт."
-      );
-      return;
-    }
-
-    setPublishing(
-      true
-    );
-    setError("");
 
     try {
+      setPublishing(
+        true
+      );
+
+      setError(
+        ""
+      );
+
+      setSuccess(
+        "Завантажуємо відео…"
+      );
+
       const uploaded =
         await uploadPulseMedia(
           authSession,
-          mediaFile,
+          file,
           type
         );
 
-      if (
-        !uploaded?.url ||
-        !uploaded?.path
+      let thumbnail =
+        null;
+
+      try {
+        const thumbnailFile =
+          await createVideoThumbnail(
+            previewUrl
+          );
+
+        if (
+          thumbnailFile
+        ) {
+          thumbnail =
+            await uploadPostMedia(
+              authSession,
+              thumbnailFile
+            );
+        }
+      } catch (
+        thumbnailError
       ) {
-        throw new Error(
-          "Не вдалося завантажити відео."
+        console.warn(
+          "PULSE THUMBNAIL ERROR:",
+          thumbnailError
         );
       }
+
+      setSuccess(
+        "Публікуємо у PULSE…"
+      );
 
       const created =
         await createPulseMedia(
@@ -448,18 +678,24 @@ export default function CreateMediaPage({
             kind:
               type,
             title:
-              title.trim() ||
-              config.title,
+              effectiveTitle,
             description:
               description.trim(),
             mediaUrl:
-              uploaded.url,
+              uploaded?.url,
             mediaPath:
-              uploaded.path,
+              uploaded?.path,
+            thumbnailUrl:
+              thumbnail?.url ||
+              null,
+            thumbnailPath:
+              thumbnail?.path ||
+              null,
             mimeType:
-              uploaded.mimeType ||
-              mediaFile.type,
-            durationSeconds,
+              uploaded?.mimeType ||
+              file.type,
+            durationSeconds:
+              durationSeconds,
             locationName:
               locationName.trim() ||
               null,
@@ -469,42 +705,43 @@ export default function CreateMediaPage({
 
       if (!created) {
         throw new Error(
-          "PULSE не повернув створене відео."
+          "Не вдалося створити публікацію PULSE."
         );
       }
 
-      removeVideo();
+      setSuccess(
+        "Опубліковано ✓"
+      );
 
-      if (
-        created.type ===
-        "clip"
-      ) {
-        onNavigate?.(
-          "clips",
-          {
-            videoId:
-              created.id,
-          }
-        );
-      } else {
-        onNavigate?.(
-          "watch",
-          {
-            videoId:
-              created.id,
-          }
-        );
-      }
+      window.setTimeout(
+        () => {
+          onNavigate?.(
+            created.type ===
+              "clip"
+              ? "clips"
+              : "watch",
+            {
+              videoId:
+                created.id,
+            }
+          );
+        },
+        320
+      );
     } catch (
-      nextError
+      publishError
     ) {
-      console.error(
+      console.warn(
         "PULSE PUBLISH ERROR:",
-        nextError
+        publishError
+      );
+
+      setSuccess(
+        ""
       );
 
       setError(
-        nextError?.message ||
+        publishError?.message ||
         "Не вдалося опублікувати відео."
       );
     } finally {
@@ -561,17 +798,32 @@ export default function CreateMediaPage({
 
       <section className="yatut-media-create__workspace">
         <div
-          className={
-            `yatut-media-create__preview ${
-              previewUrl
-                ? "has-media"
-                : ""
-            }`
-          }
+          className={`yatut-media-create__preview ${
+            previewUrl
+              ? "has-media"
+              : ""
+          }`.trim()}
         >
-          {previewUrl ? (
+          {isLive ? (
+            <div className="yatut-media-create__live-note">
+              <Radio
+                size={34}
+              />
+
+              <strong>
+                LIVE буде окремим модулем
+              </strong>
+
+              <p>
+                Для прямого ефіру потрібен окремий live pipeline.
+                Звичайні відео, Clips, Моменти та Хвилі вже
+                публікуються у справжній PULSE.
+              </p>
+            </div>
+          ) : previewUrl ? (
             <>
               <video
+                className="yatut-media-create__video"
                 src={
                   previewUrl
                 }
@@ -580,63 +832,31 @@ export default function CreateMediaPage({
                 preload="metadata"
               />
 
-              <div className="yatut-media-create__preview-actions">
+              <div className="yatut-media-create__media-actions">
                 <button
                   type="button"
                   onClick={
                     chooseVideo
                   }
                 >
-                  <Upload
-                    size={17}
-                  />
-
                   Замінити
                 </button>
-
-                {nativeMediaAvailable && (
-                  <button
-                    type="button"
-                    onClick={
-                      recordVideo
-                    }
-                  >
-                    <Camera
-                      size={17}
-                    />
-
-                    Зняти нове
-                  </button>
-                )}
 
                 <button
                   type="button"
                   onClick={
-                    removeVideo
+                    clearVideo
                   }
                 >
-                  Видалити
+                  Прибрати
                 </button>
               </div>
-            </>
-          ) : liveMode ? (
-            <>
-              <div className="yatut-media-create__preview-icon">
-                <Radio
-                  size={30}
-                />
-              </div>
 
-              <strong>
-                LIVE вже готуємо
-              </strong>
-
-              <p>
-                Завантаження відео вже працює.
-                Для LIVE потрібен окремий
-                streaming-сервер, тому не
-                підміняємо ефір звичайним файлом.
-              </p>
+              <small className="yatut-media-create__file-meta">
+                {
+                  mediaShape
+                }
+              </small>
             </>
           ) : (
             <>
@@ -647,14 +867,12 @@ export default function CreateMediaPage({
               </div>
 
               <strong>
-                Додай відео у PULSE
+                Додай відео
               </strong>
 
               <p>
-                Галерея працює на всіх
-                пристроях. У застосунку
-                можна одразу записати
-                відео камерою.
+                Обери ролик з медіатеки або запиши його прямо
+                в ЯТУТ. Після публікації він зʼявиться у PULSE.
               </p>
 
               <div className="yatut-media-create__source-actions">
@@ -665,7 +883,7 @@ export default function CreateMediaPage({
                   }
                 >
                   <Upload
-                    size={18}
+                    size={16}
                   />
 
                   Обрати відео
@@ -679,7 +897,7 @@ export default function CreateMediaPage({
                     }
                   >
                     <Camera
-                      size={18}
+                      size={16}
                     />
 
                     Записати
@@ -693,13 +911,13 @@ export default function CreateMediaPage({
             ref={
               fileInputRef
             }
+            hidden
             type="file"
             accept="video/*"
-            hidden
             onChange={(
               event
             ) =>
-              selectVideoFile(
+              applyFile(
                 event.target
                   .files?.[0]
               )
@@ -718,11 +936,6 @@ export default function CreateMediaPage({
               value={
                 title
               }
-              maxLength={120}
-              placeholder="Назва відео"
-              disabled={
-                liveMode
-              }
               onChange={(
                 event
               ) =>
@@ -730,6 +943,15 @@ export default function CreateMediaPage({
                   event.target
                     .value
                 )
+              }
+              placeholder={
+                config.defaultTitle
+              }
+              maxLength={
+                140
+              }
+              disabled={
+                isLive
               }
             />
           </div>
@@ -744,11 +966,6 @@ export default function CreateMediaPage({
               value={
                 description
               }
-              maxLength={1200}
-              placeholder="Розкажи про це відео..."
-              disabled={
-                liveMode
-              }
               onChange={(
                 event
               ) =>
@@ -756,6 +973,13 @@ export default function CreateMediaPage({
                   event.target
                     .value
                 )
+              }
+              placeholder="Розкажи про це відео..."
+              maxLength={
+                3000
+              }
+              disabled={
+                isLive
               }
             />
           </div>
@@ -765,20 +989,14 @@ export default function CreateMediaPage({
               Локація
             </label>
 
-            <div className="yatut-media-location yatut-media-location--input">
+            <div className="yatut-media-location-input">
               <MapPin
                 size={17}
               />
 
               <input
-                type="text"
                 value={
                   locationName
-                }
-                maxLength={100}
-                placeholder="Місто або місце"
-                disabled={
-                  liveMode
                 }
                 onChange={(
                   event
@@ -788,44 +1006,15 @@ export default function CreateMediaPage({
                       .value
                   )
                 }
+                placeholder="Наприклад: Київ, Поділ"
+                maxLength={
+                  120
+                }
+                disabled={
+                  isLive
+                }
               />
             </div>
-          </div>
-
-          <div className="yatut-media-field">
-            <label>
-              Аудиторія
-            </label>
-
-            <select
-              className="yatut-media-visibility"
-              value={
-                visibility
-              }
-              disabled={
-                liveMode
-              }
-              onChange={(
-                event
-              ) =>
-                setVisibility(
-                  event.target
-                    .value
-                )
-              }
-            >
-              <option value="public">
-                Для всіх
-              </option>
-
-              <option value="friends">
-                Друзі
-              </option>
-
-              <option value="private">
-                Лише я
-              </option>
-            </select>
           </div>
 
           <div className="yatut-media-options">
@@ -838,7 +1027,7 @@ export default function CreateMediaPage({
                   : ""
               }
               disabled={
-                liveMode
+                isLive
               }
               onClick={() =>
                 setVisibility(
@@ -850,39 +1039,46 @@ export default function CreateMediaPage({
                 size={17}
               />
 
-              Для тебе
+              Для всіх
             </button>
 
             <button
               type="button"
               className={
-                locationName.trim()
+                visibility ===
+                "friends"
                   ? "is-active"
                   : ""
               }
               disabled={
-                liveMode
+                isLive
               }
               onClick={() =>
-                document
-                  .querySelector(
-                    ".yatut-media-location--input input"
-                  )
-                  ?.focus()
+                setVisibility(
+                  "friends"
+                )
               }
             >
               <MapPin
                 size={17}
               />
 
-              Поруч
+              Друзі
             </button>
           </div>
 
           {error && (
-            <div className="yatut-media-create__error">
+            <div className="yatut-media-create__status is-error">
               {
                 error
+              }
+            </div>
+          )}
+
+          {success && (
+            <div className="yatut-media-create__status is-success">
+              {
+                success
               }
             </div>
           )}
@@ -891,25 +1087,25 @@ export default function CreateMediaPage({
             type="button"
             className="yatut-media-publish"
             disabled={
-              liveMode ||
-              publishing ||
-              !mediaFile
+              !canPublish
             }
             onClick={
               publish
             }
           >
-            {liveMode
-              ? "LIVE — наступний модуль"
-              : publishing
+            {publishing
               ? "Публікуємо…"
+              : isLive
+              ? "LIVE — наступний модуль"
               : "Опублікувати"}
           </button>
 
           <small className="yatut-media-create__note">
-            {liveMode
-              ? "Для LIVE підключимо окрему інфраструктуру трансляцій."
-              : "Відео зберігається у Supabase Storage і одразу з’являється у PULSE."}
+            {authSession?.user?.id
+              ? file
+                ? "Файл буде збережено в Supabase Storage, а публікація — у PULSE."
+                : "Оберіть відео, щоб продовжити."
+              : "Увійдіть в акаунт, щоб публікувати у PULSE."}
           </small>
         </aside>
       </section>
