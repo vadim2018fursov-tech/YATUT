@@ -149,6 +149,10 @@ import {
   getMyAccountAccessState,
 } from "./services/accountAccessService";
 
+import {
+  syncPushSubscription,
+} from "./services/pushNotificationService";
+
 /* =========================================================
    YATUT APP
 ========================================================= */
@@ -5713,6 +5717,86 @@ function App() {
     };
   }, [
     authBackendConfigured,
+    authSession?.user?.id,
+    authSession?.access_token,
+  ]);
+
+  useEffect(() => {
+    if (
+      !authSession?.user?.id
+    ) {
+      return undefined;
+    }
+
+    let active =
+      true;
+
+    async function syncDevicePush() {
+      try {
+        await syncPushSubscription(
+          authSession
+        );
+      } catch (
+        error
+      ) {
+        if (
+          active
+        ) {
+          console.warn(
+            "DEVICE PUSH SYNC ERROR:",
+            error
+          );
+        }
+      }
+    }
+
+    function syncWhenVisible() {
+      if (
+        document.visibilityState ===
+        "visible"
+      ) {
+        syncDevicePush();
+      }
+    }
+
+    function handleNativeState(
+      event
+    ) {
+      if (
+        event?.detail
+          ?.isActive
+      ) {
+        syncDevicePush();
+      }
+    }
+
+    syncDevicePush();
+
+    document.addEventListener(
+      "visibilitychange",
+      syncWhenVisible
+    );
+
+    window.addEventListener(
+      "yatut:native-app-state",
+      handleNativeState
+    );
+
+    return () => {
+      active =
+        false;
+
+      document.removeEventListener(
+        "visibilitychange",
+        syncWhenVisible
+      );
+
+      window.removeEventListener(
+        "yatut:native-app-state",
+        handleNativeState
+      );
+    };
+  }, [
     authSession?.user?.id,
     authSession?.access_token,
   ]);
