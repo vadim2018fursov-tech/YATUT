@@ -2108,3 +2108,205 @@ button {
     gap: 14px !important;
   }
 }
+
+
+/* =========================================================
+   CREATE MEDIA — REAL UPLOAD
+========================================================= */
+
+.yatut-media-create__preview.has-media {
+  min-height: 440px;
+  padding: 10px;
+  justify-content: flex-start;
+  background: #0f1017;
+}
+
+.yatut-media-create__preview.has-media > video {
+  width: 100%;
+  min-height: 0;
+  max-height: 520px;
+  flex: 1;
+  display: block;
+  object-fit: contain;
+  border-radius: 15px;
+  background: #090a0f;
+}
+
+.yatut-media-create__source-actions,
+.yatut-media-create__preview-actions {
+  width: 100%;
+  max-width: 430px;
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(
+        0,
+        1fr
+      )
+    );
+  gap: 8px;
+}
+
+.yatut-media-create__preview-actions {
+  max-width: none;
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(
+        0,
+        1fr
+      )
+    );
+}
+
+.yatut-media-create__source-actions > button,
+.yatut-media-create__preview-actions > button {
+  min-height: 42px;
+  margin: 0;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 1px solid #dedcf0;
+  border-radius: 11px;
+  background: #fff;
+  color: #6d28d9;
+  font-size: 9px;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.yatut-media-create__source-actions > button:first-child {
+  border-color: transparent;
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #c026d3
+    );
+  color: #fff;
+  box-shadow:
+    0 10px 24px
+    rgba(
+      124,
+      58,
+      237,
+      .22
+    );
+}
+
+.yatut-media-create__preview-actions > button {
+  border-color:
+    rgba(
+      255,
+      255,
+      255,
+      .12
+    );
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .08
+    );
+  color: #fff;
+}
+
+.yatut-media-create__preview-actions > button:last-child {
+  color: #fda4af;
+}
+
+.yatut-media-location--input {
+  padding-right: 5px;
+}
+
+.yatut-media-location--input input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #22242c;
+  font: inherit;
+  font-size: 9px;
+}
+
+.yatut-media-location--input input::placeholder {
+  color: #9ca0aa;
+}
+
+.yatut-media-visibility {
+  width: 100%;
+  min-height: 40px;
+  padding: 0 11px;
+  border: 1px solid #e6e7ed;
+  border-radius: 11px;
+  outline: 0;
+  background: #fafafd;
+  color: #31333d;
+  font: inherit;
+  font-size: 9px;
+}
+
+.yatut-media-options button.is-active {
+  border-color:
+    rgba(
+      124,
+      58,
+      237,
+      .25
+    );
+  background: #f2edff;
+  color: #6d28d9;
+}
+
+.yatut-media-create__error {
+  margin-top: 11px;
+  padding: 10px 11px;
+  border: 1px solid #fecdd3;
+  border-radius: 11px;
+  background: #fff1f2;
+  color: #be123c;
+  font-size: 9px;
+  line-height: 1.4;
+}
+
+.yatut-media-publish:not(:disabled) {
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #c026d3
+    );
+  color: #fff;
+  cursor: pointer;
+  box-shadow:
+    0 10px 24px
+    rgba(
+      124,
+      58,
+      237,
+      .2
+    );
+}
+
+.yatut-media-publish:not(:disabled):active {
+  transform: scale(.99);
+}
+
+@media (
+  max-width: 520px
+) {
+  .yatut-media-create__preview.has-media {
+    min-height: 360px;
+  }
+
+  .yatut-media-create__source-actions,
+  .yatut-media-create__preview-actions {
+    grid-template-columns: 1fr;
+  }
+}
