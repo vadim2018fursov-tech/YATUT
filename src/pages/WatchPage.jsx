@@ -496,16 +496,24 @@ export default function WatchPage({
       return;
     }
 
-    await shareYatutItem({
-      title:
-        video.title ||
-        "ЯТУТ PULSE",
-      text:
-        video.description ||
-        "Дивись відео у ЯТУТ PULSE",
-      path:
-        `#watch=${encodeURIComponent(video.id)}`,
-    });
+    const result =
+      await shareYatutItem({
+        title:
+          video.title ||
+          "ЯТУТ PULSE",
+        text:
+          video.description ||
+          "Дивись відео у ЯТУТ PULSE",
+        path:
+          `#watch=${encodeURIComponent(video.id)}`,
+      });
+
+    if (
+      result?.shared ||
+      result?.copied
+    ) {
+      await pulseSocial.recordShare();
+    }
   }
 
   if (!video) {
@@ -594,6 +602,9 @@ export default function WatchPage({
             video.trimEnd ||
             null
           }
+          onPlaybackStart={
+            pulseSocial.recordView
+          }
         />
 
         <section className="pulse-watch-title">
@@ -622,7 +633,7 @@ export default function WatchPage({
               <Eye size={15} />
 
               {formatNumber(
-                video.views
+                pulseSocial.viewsCount
               )}{" "}
               переглядів
             </span>
@@ -758,7 +769,9 @@ export default function WatchPage({
                 size={17}
               />
 
-              Поділитися
+              Поділитися · {formatNumber(
+                pulseSocial.sharesCount
+              )}
             </button>
 
             <button
