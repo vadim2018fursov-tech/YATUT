@@ -234,16 +234,6 @@ export default function ClipsPage({
   ]);
 
   const [
-    liked,
-    setLiked,
-  ] = useState(false);
-
-  const [
-    saved,
-    setSaved,
-  ] = useState(false);
-
-  const [
     muted,
     setMuted,
   ] = useState(true);
@@ -251,11 +241,6 @@ export default function ClipsPage({
   const [
     showLocation,
     setShowLocation,
-  ] = useState(false);
-
-  const [
-    following,
-    setFollowing,
   ] = useState(false);
 
   const [
@@ -284,11 +269,9 @@ export default function ClipsPage({
     });
 
   function resetActions() {
-    setLiked(false);
-    setSaved(false);
     setShowLocation(false);
     setMoreOpen(false);
-    setFollowing(false);
+    setCommentsOpen(false);
   }
 
   function nextVideo() {
