@@ -1,5 +1,5 @@
 const CACHE_NAME =
-  "yatut-shell-v3";
+  "yatut-shell-v4";
 
 const APP_SHELL = [
   "/",
