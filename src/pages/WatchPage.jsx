@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 
 import {
+  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -30,6 +31,10 @@ import {
   pulseRecommendations,
   pulseVideos,
 } from "../data/pulseMockData";
+
+import {
+  loadPulseMedia,
+} from "../services/pulseBackendService";
 
 const FALLBACK_WATCH_IMAGE =
   "/assets/yatut/cities/kyiv/hero.jpg";
@@ -55,8 +60,11 @@ function formatNumber(value) {
   return String(number);
 }
 
-function getAllVideos() {
+function getAllVideos(
+  externalVideos = []
+) {
   const source = [
+    ...(externalVideos || []),
     ...(pulseVideos || []),
     ...(pulseRecommendations.forYou || []),
     ...(pulseRecommendations.nearby || []),
@@ -265,11 +273,66 @@ function WatchComment({
 export default function WatchPage({
   onNavigate,
   initialVideoId = null,
+  authSession = null,
 }) {
+  const [
+    backendVideos,
+    setBackendVideos,
+  ] = useState([]);
+
+  useEffect(() => {
+    let active =
+      true;
+
+    loadPulseMedia(
+      authSession,
+      {
+        limit:
+          40,
+      }
+    )
+      .then(
+        (
+          items
+        ) => {
+          if (
+            active
+          ) {
+            setBackendVideos(
+              items
+            );
+          }
+        }
+      )
+      .catch(
+        (
+          error
+        ) => {
+          console.warn(
+            "WATCH PULSE LOAD ERROR:",
+            error
+          );
+        }
+      );
+
+    return () => {
+      active =
+        false;
+    };
+  }, [
+    authSession?.user?.id,
+    authSession?.access_token,
+  ]);
+
   const videos =
     useMemo(
-      () => getAllVideos(),
-      []
+      () =>
+        getAllVideos(
+          backendVideos
+        ),
+      [
+        backendVideos,
+      ]
     );
 
   const initialVideo =
@@ -307,6 +370,37 @@ export default function WatchPage({
     video,
     setVideo,
   ] = useState(initialVideo);
+
+  useEffect(() => {
+    if (
+      !initialVideoId
+    ) {
+      return;
+    }
+
+    const match =
+      videos.find(
+        (
+          item
+        ) =>
+          item.id ===
+          initialVideoId
+      );
+
+    if (
+      match &&
+      match.id !==
+        video?.id
+    ) {
+      setVideo(
+        match
+      );
+    }
+  }, [
+    initialVideoId,
+    videos,
+    video?.id,
+  ]);
 
   const [
     subscribed,
