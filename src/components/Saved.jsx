@@ -28,6 +28,7 @@ import {
    - Business
    - Spaces
    - Profiles
+   - PULSE
 
    Storage:
    savedService.js
@@ -49,6 +50,11 @@ const TABS = [
   {
     id: "post",
     title: "Дописи",
+  },
+
+  {
+    id: "pulse",
+    title: "PULSE",
   },
 
   {
@@ -169,6 +175,7 @@ function iconForType(
       return "image";
 
     case "video":
+    case "pulse":
       return "video";
 
     default:
@@ -208,6 +215,9 @@ function titleForType(
 
     case "video":
       return "Відео";
+
+    case "pulse":
+      return "PULSE";
 
     default:
       return "Збережене";
@@ -414,6 +424,9 @@ function legacyRouteForType(
     case "profile":
       return "friends";
 
+    case "pulse":
+      return "watch";
+
     default:
       return "home";
   }
@@ -523,6 +536,13 @@ export default function Saved({
             (item) =>
               item.type ===
               "post"
+          ).length,
+
+        pulse:
+          items.filter(
+            (item) =>
+              item.type ===
+              "pulse"
           ).length,
 
         event:
@@ -694,7 +714,7 @@ export default function Saved({
 
           <p>
             Усе важливе в одному місці:
-            дописи, події, спільноти,
+            дописи, PULSE, події, спільноти,
             місця, бізнес та люди.
           </p>
         </div>
@@ -750,13 +770,13 @@ export default function Saved({
 
         <article>
           <strong>
-            {counters.community +
-              counters.place +
-              counters.business}
+            {
+              counters.pulse
+            }
           </strong>
 
           <span>
-            Інше
+            PULSE
           </span>
         </article>
       </section>
@@ -1225,7 +1245,7 @@ function SavedEmpty({
 
       <p>
         Зберігайте цікаві дописи,
-        події, місця, бізнес та
+        PULSE, події, місця, бізнес та
         спільноти — вони зʼявляться
         тут.
       </p>
