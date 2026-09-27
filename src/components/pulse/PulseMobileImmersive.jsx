@@ -269,6 +269,7 @@ function buildStats(
 function PulseImmersiveSlide({
   video,
   authSession,
+  socialRevision = 0,
   onShare,
   onCreate,
 }) {
@@ -283,6 +284,8 @@ function PulseImmersiveSlide({
       authSession,
       realtime:
         false,
+      refreshKey:
+        socialRevision,
     });
 
   const stats =
@@ -716,6 +719,7 @@ export default function PulseMobileImmersive({
   onNavigate,
   externalVideos = [],
   authSession = null,
+  socialRevision = 0,
 }) {
   const [
     activeTab,
@@ -866,6 +870,9 @@ export default function PulseMobileImmersive({
                 }
                 authSession={
                   authSession
+                }
+                socialRevision={
+                  socialRevision
                 }
                 onShare={() =>
                   share(
