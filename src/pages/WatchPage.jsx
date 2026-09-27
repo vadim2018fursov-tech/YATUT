@@ -36,10 +36,6 @@ import {
   loadPulseMedia,
 } from "../services/pulseBackendService";
 
-import {
-  loadPulseMedia,
-} from "../services/pulseBackendService";
-
 const FALLBACK_WATCH_IMAGE =
   "/assets/yatut/cities/kyiv/hero.jpg";
 
