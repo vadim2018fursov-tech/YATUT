@@ -51,6 +51,8 @@ export const SAVED_TYPES = {
 
   VIDEO: "video",
 
+  PULSE: "pulse",
+
   ARTICLE: "article",
 
   OTHER: "other",
