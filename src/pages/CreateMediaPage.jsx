@@ -25,6 +25,7 @@ import {
 } from "../services/mediaPickerService";
 
 import {
+  deleteStorageObject,
   uploadPulseMedia,
   uploadPulseThumbnail,
 } from "../services/storageService";
@@ -620,6 +621,15 @@ export default function CreateMediaPage({
       return;
     }
 
+    let uploaded =
+      null;
+
+    let thumbnail =
+      null;
+
+    let created =
+      null;
+
     try {
       setPublishing(
         true
@@ -633,15 +643,12 @@ export default function CreateMediaPage({
         "Завантажуємо відео…"
       );
 
-      const uploaded =
+      uploaded =
         await uploadPulseMedia(
           authSession,
           file,
           type
         );
-
-      let thumbnail =
-        null;
 
       try {
         const thumbnailFile =
@@ -672,7 +679,7 @@ export default function CreateMediaPage({
         "Публікуємо у PULSE…"
       );
 
-      const created =
+      created =
         await createPulseMedia(
           authSession,
           {
@@ -736,6 +743,46 @@ export default function CreateMediaPage({
         "PULSE PUBLISH ERROR:",
         publishError
       );
+
+      if (
+        !created
+      ) {
+        const cleanup =
+          [
+            thumbnail?.path,
+            uploaded?.path,
+          ]
+            .filter(
+              Boolean
+            )
+            .map(
+              (
+                path
+              ) =>
+                deleteStorageObject(
+                  authSession,
+                  "post-media",
+                  path
+                ).catch(
+                  (
+                    cleanupError
+                  ) => {
+                    console.warn(
+                      "PULSE STORAGE ROLLBACK ERROR:",
+                      cleanupError
+                    );
+                  }
+                )
+            );
+
+        if (
+          cleanup.length
+        ) {
+          await Promise.all(
+            cleanup
+          );
+        }
+      }
 
       setSuccess(
         ""
