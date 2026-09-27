@@ -85,6 +85,11 @@ export default function PulsePage({
     setBackendVideos,
   ] = useState([]);
 
+  const [
+    socialRevision,
+    setSocialRevision,
+  ] = useState(0);
+
   useEffect(() => {
     let active =
       true;
@@ -129,6 +134,14 @@ export default function PulsePage({
           authSession,
         onChange:
           () => {
+            setSocialRevision(
+              (
+                value
+              ) =>
+                value +
+                1
+            );
+
             window.clearTimeout(
               refreshTimer
             );
@@ -385,6 +398,9 @@ export default function PulsePage({
         }
         authSession={
           authSession
+        }
+        socialRevision={
+          socialRevision
         }
       />
 
