@@ -225,6 +225,8 @@ function mapPulseRow(
       "",
     videoUrl:
       row.media_url,
+    video:
+      row.media_url,
     mediaPath:
       row.media_path,
     mimeType:
