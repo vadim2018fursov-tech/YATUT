@@ -80,6 +80,14 @@ import {
 } from "./services/nativeFeedbackService";
 
 import {
+  captureNativePhoto,
+  captureNativeVideo,
+  isNativeMediaPicker,
+  pickNativeMedia,
+  revokeMediaPreview,
+} from "./services/mediaPickerService";
+
+import {
   createSavedPost,
   getSavedItems,
   isSaved,
@@ -1037,6 +1045,15 @@ function PostComposer({
     useState(false);
 
   const [
+    nativeCaptureOpen,
+    setNativeCaptureOpen,
+  ] =
+    useState(false);
+
+  const nativeMediaAvailable =
+    isNativeMediaPicker();
+
+  const [
     locationOpen,
     setLocationOpen,
   ] =
@@ -1117,6 +1134,79 @@ function PostComposer({
       console.error(
         "MEDIA READ ERROR:",
         error
+      );
+    }
+  }
+
+  async function chooseNativeGallery(
+    type
+  ) {
+    try {
+      const selected =
+        await pickNativeMedia(
+          type
+        );
+
+      if (!selected) {
+        return;
+      }
+
+      await chooseFile(
+        selected.file,
+        selected.mediaType ||
+          type
+      );
+
+      revokeMediaPreview(
+        selected.previewUrl
+      );
+
+      setNativeCaptureOpen(
+        false
+      );
+    } catch (
+      error
+    ) {
+      window.alert(
+        error?.message ||
+        "Не вдалося відкрити медіатеку."
+      );
+    }
+  }
+
+  async function captureNativeMedia(
+    type
+  ) {
+    try {
+      const selected =
+        type ===
+        "video"
+          ? await captureNativeVideo()
+          : await captureNativePhoto();
+
+      if (!selected) {
+        return;
+      }
+
+      await chooseFile(
+        selected.file,
+        selected.mediaType ||
+          type
+      );
+
+      revokeMediaPreview(
+        selected.previewUrl
+      );
+
+      setNativeCaptureOpen(
+        false
+      );
+    } catch (
+      error
+    ) {
+      window.alert(
+        error?.message ||
+        "Не вдалося відкрити камеру."
       );
     }
   }
@@ -1226,6 +1316,9 @@ function PostComposer({
         "",
       ]);
       setPollOpen(false);
+      setNativeCaptureOpen(
+        false
+      );
 
       if (
         imageInputRef.current
@@ -1487,12 +1580,67 @@ function PostComposer({
         </div>
       )}
 
+      {nativeMediaAvailable &&
+        nativeCaptureOpen && (
+        <div className="composer-native-capture">
+          <button
+            type="button"
+            onClick={() =>
+              captureNativeMedia(
+                "image"
+              )
+            }
+          >
+            <span>
+              📷
+            </span>
+
+            <div>
+              <strong>
+                Зняти фото
+              </strong>
+
+              <small>
+                Відкрити камеру
+              </small>
+            </div>
+          </button>
+
+          <button
+            type="button"
+            onClick={() =>
+              captureNativeMedia(
+                "video"
+              )
+            }
+          >
+            <span>
+              🎥
+            </span>
+
+            <div>
+              <strong>
+                Записати відео
+              </strong>
+
+              <small>
+                Камера + мікрофон
+              </small>
+            </div>
+          </button>
+        </div>
+      )}
+
       <div className="composer-footer">
         <div className="composer-tools">
           <button
             type="button"
             onClick={() =>
-              imageInputRef.current?.click()
+              nativeMediaAvailable
+                ? chooseNativeGallery(
+                    "image"
+                  )
+                : imageInputRef.current?.click()
             }
           >
             <YatutIcon
@@ -1506,7 +1654,11 @@ function PostComposer({
           <button
             type="button"
             onClick={() =>
-              videoInputRef.current?.click()
+              nativeMediaAvailable
+                ? chooseNativeGallery(
+                    "video"
+                  )
+                : videoInputRef.current?.click()
             }
           >
             <YatutIcon
@@ -1516,6 +1668,32 @@ function PostComposer({
 
             Відео
           </button>
+
+          {nativeMediaAvailable && (
+            <button
+              type="button"
+              className={
+                nativeCaptureOpen
+                  ? "active"
+                  : ""
+              }
+              onClick={() =>
+                setNativeCaptureOpen(
+                  (
+                    previous
+                  ) =>
+                    !previous
+                )
+              }
+            >
+              <YatutIcon
+                name="video"
+                size={17}
+              />
+
+              Камера
+            </button>
+          )}
 
           <button
             type="button"
