@@ -675,3 +675,185 @@ html.yatut-native
   width: 100% !important;
   max-width: 100% !important;
 }
+
+
+/* ---------------------------------------------------------
+   Legacy tiny-text cleanup
+--------------------------------------------------------- */
+
+:where(
+  .profile-v2-page,
+  .friends-v2-page,
+  .notifications-page,
+  .feature-page,
+  .messenger,
+  .pulse-page,
+  .creator-studio-page,
+  .yatut-create-page,
+  .yatut-media-create
+) :where(
+  [class*="eyebrow"],
+  [class*="subtitle"],
+  [class*="caption"],
+  [class*="hint"],
+  [class*="meta"],
+  [class*="username"],
+  [class*="status"],
+  [class*="time"],
+  [class*="label"]
+) {
+  font-size: max(11px, .70rem) !important;
+  line-height: 1.35 !important;
+}
+
+:where(
+  .profile-v2-page,
+  .friends-v2-page,
+  .notifications-page,
+  .feature-page,
+  .messenger,
+  .pulse-page,
+  .creator-studio-page,
+  .yatut-create-page,
+  .yatut-media-create
+) :where(
+  [class*="badge"],
+  [class*="counter"],
+  [class*="count"]
+) {
+  font-size: max(10px, .66rem);
+}
+
+:where(
+  .profile-v2-page,
+  .friends-v2-page,
+  .notifications-page,
+  .feature-page,
+  .messenger,
+  .pulse-page,
+  .creator-studio-page,
+  .yatut-create-page,
+  .yatut-media-create
+) button > :is(
+  strong,
+  span
+) {
+  font-size: inherit;
+}
+
+:where(
+  .profile-v2-page,
+  .friends-v2-page,
+  .notifications-page,
+  .feature-page,
+  .messenger,
+  .pulse-page,
+  .creator-studio-page,
+  .yatut-create-page,
+  .yatut-media-create
+) :where(
+  [class*="row"],
+  [class*="grid"],
+  [class*="card"],
+  [class*="content"],
+  [class*="copy"],
+  [class*="body"],
+  [class*="identity"],
+  [class*="header"]
+) {
+  min-width: 0;
+}
+
+:where(
+  .profile-v2-page,
+  .friends-v2-page,
+  .notifications-page,
+  .feature-page,
+  .messenger,
+  .pulse-page,
+  .creator-studio-page,
+  .yatut-create-page,
+  .yatut-media-create
+) :where(
+  p,
+  h1,
+  h2,
+  h3,
+  strong,
+  span
+) {
+  overflow-wrap: anywhere;
+}
+
+/* ---------------------------------------------------------
+   Mobile readability details
+--------------------------------------------------------- */
+
+@media (
+  max-width: 900px
+),
+(
+  hover: none
+) and (
+  pointer: coarse
+) {
+  .profile-v3-mobile-bio,
+  .profile-v3-mobile-meta,
+  .profile-v3-mobile-status {
+    font-size: 13px !important;
+  }
+
+  .friends-v2-page :where(
+    [class*="copy"],
+    [class*="subtitle"],
+    [class*="meta"]
+  ),
+  .notifications-page :where(
+    [class*="body"],
+    [class*="text"],
+    [class*="meta"]
+  ),
+  .creator-studio-page :where(
+    [class*="copy"],
+    [class*="meta"],
+    [class*="label"]
+  ) {
+    font-size: 12px !important;
+  }
+
+  .chat-list-item strong,
+  .chat-dialog-title {
+    font-size: 15px !important;
+  }
+
+  .chat-list-item small,
+  .chat-dialog-status,
+  .chat-message-time {
+    font-size: 11px !important;
+  }
+
+  .chat-message-text,
+  .chat-message-bubble {
+    line-height: 1.42 !important;
+  }
+
+  .pulse-page :where(
+    [class*="meta"],
+    [class*="caption"],
+    [class*="subtitle"]
+  ) {
+    font-size: 12px !important;
+  }
+
+  .yatut-create-page :where(
+    [class*="copy"],
+    [class*="section__header"]
+  ),
+  .yatut-media-create :where(
+    [class*="note"],
+    [class*="meta"],
+    [class*="label"]
+  ) {
+    font-size: 12px !important;
+  }
+}
