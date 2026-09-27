@@ -1004,7 +1004,7 @@ export default function WatchPage({
           />
         </section>
 
-        <section className="pulse-watch-comments">
+        <section className="pulse-watch-comments pulse-watch-comments--real">
           <header>
             <div>
               <MessageCircle
@@ -1012,146 +1012,50 @@ export default function WatchPage({
               />
 
               <h2>
-                {248 +
-                  userComments.length}{" "}
-                коментарів
+                {formatNumber(
+                  pulseSocial.commentsCount
+                )} коментарів
               </h2>
             </div>
 
             <button
               type="button"
+              className="is-primary"
               onClick={() =>
-                setCommentsNewestFirst(
-                  (
-                    value
-                  ) =>
-                    !value
+                setCommentsOpen(
+                  true
                 )
               }
             >
-              {commentsNewestFirst
-                ? "Нові спочатку"
-                : "Популярні"}
-
-              <ChevronDown
-                size={14}
-              />
+              Відкрити
             </button>
           </header>
 
-          <div className="pulse-watch-comment-create">
+          <button
+            type="button"
+            className="pulse-watch-comments__open"
+            onClick={() =>
+              setCommentsOpen(
+                true
+              )
+            }
+          >
             <span>
-              В
+              <MessageCircle
+                size={20}
+              />
             </span>
 
             <div>
-              <textarea
-                value={
-                  commentText
-                }
-                onChange={(event) =>
-                  setCommentText(
-                    event.target
-                      .value
-                  )
-                }
-                placeholder="Додати коментар..."
-                rows={1}
-              />
+              <strong>
+                Приєднатися до розмови
+              </strong>
 
-              <div>
-                <button
-                  type="button"
-                  onClick={() =>
-                    setCommentText(
-                      ""
-                    )
-                  }
-                >
-                  Скасувати
-                </button>
-
-                <button
-                  type="button"
-                  className="is-primary"
-                  disabled={
-                    !commentText.trim()
-                  }
-                  onClick={
-                    publishComment
-                  }
-                >
-                  <Send
-                    size={14}
-                  />
-
-                  Коментувати
-                </button>
-              </div>
+              <small>
+                Коментарі синхронізуються між пристроями в реальному часі
+              </small>
             </div>
-          </div>
-
-          {(commentsNewestFirst
-            ? [
-                ...userComments,
-              ].reverse()
-            : userComments
-          ).map(
-            (comment) => (
-              <WatchComment
-                key={
-                  comment.id
-                }
-                avatar="В"
-                name="Вадим"
-                username="vadym"
-                text={
-                  comment.text
-                }
-                likes={0}
-                time="щойно"
-                onReply={
-                  replyToComment
-                }
-              />
-            )
-          )}
-
-          <WatchComment
-            avatar="М"
-            name="Марія Коваль"
-            username="maria.koval"
-            text="Дуже атмосферно. Саме за такі живі відео й люблю PULSE 🔥"
-            likes={124}
-            time="12 хв тому"
-            onReply={
-              replyToComment
-            }
-          />
-
-          <WatchComment
-            avatar="О"
-            name="Олександр"
-            username="oleksandr"
-            text="Було б круто ще побачити, хто з друзів зараз знаходиться поруч із цією локацією."
-            likes={47}
-            time="31 хв тому"
-            onReply={
-              replyToComment
-            }
-          />
-
-          <WatchComment
-            avatar="С"
-            name="Софія"
-            username="sofia"
-            text="Я буквально була тут годину тому 😄"
-            likes={31}
-            time="48 хв тому"
-            onReply={
-              replyToComment
-            }
-          />
+          </button>
         </section>
       </main>
 
@@ -1282,6 +1186,26 @@ export default function WatchPage({
           }}
         />
       )}
+
+      <PulseCommentsSheet
+        open={
+          commentsOpen
+        }
+        video={
+          video
+        }
+        authSession={
+          authSession
+        }
+        onClose={() =>
+          setCommentsOpen(
+            false
+          )
+        }
+        onCountChange={
+          pulseSocial.refresh
+        }
+      />
     </div>
   );
 }
