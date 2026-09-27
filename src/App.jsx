@@ -7840,6 +7840,9 @@ function App() {
             onNavigate={
               goToPage
             }
+            authSession={
+              authSession
+            }
           />
         );
 
@@ -7856,6 +7859,9 @@ function App() {
             onNavigate={
               goToPage
             }
+            authSession={
+              authSession
+            }
           />
         );
 
@@ -7871,6 +7877,9 @@ function App() {
             }
             onNavigate={
               goToPage
+            }
+            authSession={
+              authSession
             }
           />
         );
@@ -7920,6 +7929,9 @@ function App() {
             }
             onNavigate={
               goToPage
+            }
+            authSession={
+              authSession
             }
           />
         );
