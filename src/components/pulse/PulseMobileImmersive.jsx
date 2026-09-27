@@ -18,11 +18,6 @@ import {
   useState,
 } from "react";
 
-import {
-  pulseRecommendations,
-  pulseVideos,
-} from "../../data/pulseMockData";
-
 import PulseLongVideoMobile from "./PulseLongVideoMobile";
 import PulseCommentsSheet from "./PulseCommentsSheet";
 import usePulseSocial from "../../hooks/usePulseSocial";
@@ -31,6 +26,10 @@ const TABS = [
   {
     id: "forYou",
     label: "Для тебе",
+  },
+  {
+    id: "following",
+    label: "Підписки",
   },
   {
     id: "clips",
@@ -121,33 +120,37 @@ function formatCompact(
 
 function getFeed(
   tab,
-  externalVideos = []
+  externalVideos = [],
+  forYouVideos = [],
+  followingVideos = []
 ) {
   const all =
-    uniqueVideos([
-      ...(externalVideos || []),
-      ...(pulseRecommendations.forYou || []),
-      ...(pulseRecommendations.nearby || []),
-      ...(pulseRecommendations.friends || []),
-      ...(pulseRecommendations.city || []),
-      ...(pulseRecommendations.live || []),
-      ...(pulseRecommendations.events || []),
-      ...(pulseVideos || []),
-    ]);
+    uniqueVideos(
+      externalVideos
+    );
 
   switch (
     tab
   ) {
+    case "following":
+      return uniqueVideos(
+        followingVideos
+      );
+
     case "clips":
       return all.filter(
-        (video) =>
+        (
+          video
+        ) =>
           video.type ===
           "clip"
       );
 
     case "vlogs":
       return all.filter(
-        (video) =>
+        (
+          video
+        ) =>
           video.type ===
             "vlog" ||
           video.type ===
@@ -156,25 +159,28 @@ function getFeed(
 
     case "live":
       return all.filter(
-        (video) =>
+        (
+          video
+        ) =>
           video.isLive ||
           video.type ===
             "live"
       );
 
     case "wave":
-      return uniqueVideos([
-        ...(externalVideos || []).filter(
-          (video) =>
-            video.pulseKind ===
-            "wave"
-        ),
-        ...(pulseRecommendations.wave || []),
-      ]);
+      return all.filter(
+        (
+          video
+        ) =>
+          video.pulseKind ===
+          "wave"
+      );
 
     case "events":
       return all.filter(
-        (video) =>
+        (
+          video
+        ) =>
           video.type ===
             "event" ||
           video.recommendationType ===
@@ -182,7 +188,11 @@ function getFeed(
       );
 
     default:
-      return all;
+      return uniqueVideos(
+        forYouVideos.length
+          ? forYouVideos
+          : all
+      );
   }
 }
 
@@ -795,6 +805,8 @@ function PulseImmersiveSlide({
 export default function PulseMobileImmersive({
   onNavigate,
   externalVideos = [],
+  forYouVideos = [],
+  followingVideos = [],
   authSession = null,
   socialRevision = 0,
 }) {
@@ -815,11 +827,15 @@ export default function PulseMobileImmersive({
       () =>
         getFeed(
           activeTab,
-          externalVideos
+          externalVideos,
+          forYouVideos,
+          followingVideos
         ),
       [
         activeTab,
         externalVideos,
+        forYouVideos,
+        followingVideos,
       ]
     );
 
@@ -990,7 +1006,10 @@ export default function PulseMobileImmersive({
             </strong>
 
             <p>
-              Новий контент цього формату зʼявиться у PULSE.
+              {activeTab ===
+              "following"
+                ? "Підпишись на авторів — їхні нові відео зʼявляться тут."
+                : "Новий контент цього формату зʼявиться у PULSE."}
             </p>
 
             <button
