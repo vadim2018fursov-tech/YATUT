@@ -22,6 +22,8 @@ import {
 import PulseVideoPlayer from "../components/pulse/PulseVideoPlayer";
 import YatutHereButton from "../components/pulse/YatutHereButton";
 import LocationPulsePanel from "../components/pulse/LocationPulsePanel";
+import PulseCommentsSheet from "../components/pulse/PulseCommentsSheet";
+import usePulseSocial from "../hooks/usePulseSocial";
 
 import {
   shareYatutItem,
@@ -483,6 +485,17 @@ export default function WatchPage({
     showLocation,
     setShowLocation,
   ] = useState(false);
+
+  const [
+    commentsOpen,
+    setCommentsOpen,
+  ] = useState(false);
+
+  const pulseSocial =
+    usePulseSocial({
+      video,
+      authSession,
+    });
 
   const [
     commentText,
