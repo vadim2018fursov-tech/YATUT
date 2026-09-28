@@ -1021,6 +1021,12 @@ export default function PulseMobileImmersive({
     setLongWatchOpen,
   ] = useState(false);
 
+  const tabsRef =
+    useRef(null);
+
+  const swipeStartRef =
+    useRef(null);
+
   const videos =
     useMemo(
       () =>
@@ -1037,6 +1043,218 @@ export default function PulseMobileImmersive({
         followingVideos,
       ]
     );
+
+  function selectTab(
+    tabId,
+    {
+      haptic = true,
+    } = {}
+  ) {
+    if (
+      !TABS.some(
+        (
+          tab
+        ) =>
+          tab.id ===
+          tabId
+      )
+    ) {
+      return;
+    }
+
+    if (
+      tabId ===
+      activeTab
+    ) {
+      return;
+    }
+
+    if (
+      haptic
+    ) {
+      nativeLightHaptic();
+    }
+
+    setActiveTab(
+      tabId
+    );
+  }
+
+  function handleSwipeStart(
+    event
+  ) {
+    if (
+      longWatchOpen ||
+      event.touches.length !==
+        1
+    ) {
+      swipeStartRef.current =
+        null;
+
+      return;
+    }
+
+    const target =
+      event.target;
+
+    if (
+      target?.closest?.(
+        ".pulse-comments-sheet, button, a, input, textarea, select, [role='dialog']"
+      )
+    ) {
+      swipeStartRef.current =
+        null;
+
+      return;
+    }
+
+    const touch =
+      event.touches[0];
+
+    swipeStartRef.current = {
+      x:
+        touch.clientX,
+      y:
+        touch.clientY,
+    };
+  }
+
+  function handleSwipeEnd(
+    event
+  ) {
+    const start =
+      swipeStartRef.current;
+
+    swipeStartRef.current =
+      null;
+
+    if (
+      !start ||
+      longWatchOpen ||
+      event.changedTouches.length !==
+        1
+    ) {
+      return;
+    }
+
+    const touch =
+      event.changedTouches[0];
+
+    const deltaX =
+      touch.clientX -
+      start.x;
+
+    const deltaY =
+      touch.clientY -
+      start.y;
+
+    const horizontal =
+      Math.abs(
+        deltaX
+      );
+
+    const vertical =
+      Math.abs(
+        deltaY
+      );
+
+    if (
+      horizontal <
+        56 ||
+      horizontal <
+        vertical *
+          1.2
+    ) {
+      return;
+    }
+
+    const currentIndex =
+      TABS.findIndex(
+        (
+          tab
+        ) =>
+          tab.id ===
+          activeTab
+      );
+
+    if (
+      currentIndex <
+      0
+    ) {
+      return;
+    }
+
+    const nextIndex =
+      deltaX <
+      0
+        ? Math.min(
+            TABS.length -
+              1,
+            currentIndex +
+              1
+          )
+        : Math.max(
+            0,
+            currentIndex -
+              1
+          );
+
+    const nextTab =
+      TABS[
+        nextIndex
+      ];
+
+    if (
+      nextTab &&
+      nextTab.id !==
+        activeTab
+    ) {
+      selectTab(
+        nextTab.id
+      );
+    }
+  }
+
+  useEffect(
+    () => {
+      const tabs =
+        tabsRef.current;
+
+      if (!tabs) {
+        return;
+      }
+
+      const activeButton =
+        tabs.querySelector(
+          `[data-pulse-tab="${activeTab}"]`
+        );
+
+      if (!activeButton) {
+        return;
+      }
+
+      const nextLeft =
+        activeButton.offsetLeft -
+        (
+          tabs.clientWidth -
+          activeButton.offsetWidth
+        ) /
+          2;
+
+      tabs.scrollTo({
+        left:
+          Math.max(
+            0,
+            nextLeft
+          ),
+        behavior:
+          "smooth",
+      });
+    },
+    [
+      activeTab,
+    ]
+  );
 
   async function share(
     video
@@ -1091,6 +1309,12 @@ export default function PulseMobileImmersive({
 
   return (
     <section
+      onTouchStart={
+        handleSwipeStart
+      }
+      onTouchEnd={
+        handleSwipeEnd
+      }
       className={`pulse-immersive-mobile ${
         activeTab ===
         "vlogs"
@@ -1104,6 +1328,9 @@ export default function PulseMobileImmersive({
     >
       {!longWatchOpen && (
       <nav
+        ref={
+          tabsRef
+        }
         className="pulse-immersive__tabs"
         aria-label="Формати PULSE"
       >
@@ -1116,6 +1343,9 @@ export default function PulseMobileImmersive({
                 tab.id
               }
               type="button"
+              data-pulse-tab={
+                tab.id
+              }
               whileTap={{
                 scale: 0.94,
               }}
@@ -1125,13 +1355,11 @@ export default function PulseMobileImmersive({
                   ? "is-active"
                   : ""
               }
-              onClick={() => {
-                nativeLightHaptic();
-
-                setActiveTab(
+              onClick={() =>
+                selectTab(
                   tab.id
-                );
-              }}
+                )
+              }
             >
               {activeTab ===
                 tab.id && (
