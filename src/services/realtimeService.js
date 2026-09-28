@@ -997,6 +997,16 @@ export function subscribeFeedRealtime({
         filter:
           `following_id=eq.${session.user.id}`,
       },
+      {
+        event:
+          "*",
+        schema:
+          "public",
+        table:
+          "feed_feedback",
+        filter:
+          `user_id=eq.${session.user.id}`,
+      },
     ],
     onPostgresChange:
       onChange,
