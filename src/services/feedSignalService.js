@@ -89,6 +89,16 @@ export async function loadFeedPostSignals(
     "post_id,impressions,total_dwell_ms,max_dwell_ms,quick_skips,engaged_views,last_seen_at"
   );
 
+  url.searchParams.set(
+    "order",
+    "last_seen_at.desc.nullslast"
+  );
+
+  url.searchParams.set(
+    "limit",
+    "1500"
+  );
+
   const response =
     await fetch(
       url,
