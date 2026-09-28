@@ -274,8 +274,8 @@ function UserProfile({
 
         showNotice(
           next
-            ? "Ви підписалися"
-            : "Підписку скасовано"
+            ? "Ви стежите за дописами"
+            : "Ви більше не стежите за дописами"
         );
       } catch (
         error
@@ -651,9 +651,9 @@ function UserProfile({
 
           <motion.button
             type="button"
-            className={`user-main-action ${
+            className={`user-main-action follow-action ${
               following
-                ? "secondary"
+                ? "secondary is-following"
                 : ""
             }`}
             whileTap={{
@@ -664,8 +664,8 @@ function UserProfile({
             }
           >
             {following
-              ? "✓ Підписка"
-              : "Підписатися"}
+              ? "✓ Стежите"
+              : "Стежити"}
           </motion.button>
 
           <motion.button
