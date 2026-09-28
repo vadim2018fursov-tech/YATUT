@@ -3511,40 +3511,30 @@ function Chats({
                     0)
               );
 
+          const demoIds =
+            new Set(
+              DEMO_CHATS.map(
+                (
+                  chat
+                ) =>
+                  chat.id
+              )
+            );
+
           /*
-            Авторизованный пользователь никогда не должен видеть
-            старые demo/local чаты даже на первый кадр.
+            Никогда не смешиваем гостевые demo-чаты
+            и реальные разговоры авторизованного аккаунта.
           */
-          if (
-            !authSession?.user?.id &&
-            stored.length
-          ) {
-            setChats(
-              stored
-            );
-
-            setActiveChatId(
-              (
-                previous
-              ) =>
-                previous ||
-                stored[0]?.id ||
-                null
-            );
-          }
-
           if (
             authSession?.user?.id
           ) {
-            const demoIds =
-              new Set(
-                DEMO_CHATS.map(
-                  (
-                    chat
-                  ) =>
-                    chat.id
-                )
-              );
+            setChats(
+              []
+            );
+
+            setActiveChatId(
+              null
+            );
 
             await Promise.all(
               DEMO_CHATS.map(
@@ -3591,22 +3581,35 @@ function Chats({
                   )
               )
             );
-          } else if (
-            stored.length ===
-            0
-          ) {
-            for (
-              const chat of
-              DEMO_CHATS
-            ) {
-              await saveChat(
-                chat
+          } else {
+            stored =
+              stored.filter(
+                (
+                  chat
+                ) =>
+                  demoIds.has(
+                    chat.id
+                  ) &&
+                  !chat?.backend
               );
-            }
 
-            stored = [
-              ...DEMO_CHATS,
-            ];
+            if (
+              stored.length ===
+              0
+            ) {
+              for (
+                const chat of
+                DEMO_CHATS
+              ) {
+                await saveChat(
+                  chat
+                );
+              }
+
+              stored = [
+                ...DEMO_CHATS,
+              ];
+            }
           }
 
           stored =
