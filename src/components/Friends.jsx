@@ -28,8 +28,10 @@ import {
   getBackendFollowGraph,
   getBackendRelationships,
   removeBackendFriend,
+  reportBackendUser,
   searchBackendProfiles,
   sendBackendFriendRequest,
+  setBackendBlocked,
 } from "../services/socialBackendService";
 
 import {
@@ -1664,21 +1666,96 @@ export default function Friends({
             );
           }}
           onFollow={() => {}}
-          onBlock={(
+          onBlock={async (
             personId,
             blocked
           ) => {
-            showNotice(
-              blocked
-                ? "Користувача заблоковано"
-                : "Користувача розблоковано",
-              "neutral"
-            );
+            const person =
+              people.find(
+                (
+                  item
+                ) =>
+                  item.id ===
+                  personId
+              ) ||
+              selectedPerson;
+
+            try {
+              if (
+                person?.backend &&
+                authSession?.user?.id
+              ) {
+                await setBackendBlocked(
+                  authSession,
+                  personId,
+                  blocked
+                );
+
+                await refreshBackendPeople();
+              }
+
+              showNotice(
+                blocked
+                  ? "Користувача заблоковано"
+                  : "Користувача розблоковано",
+                "neutral"
+              );
+            } catch (
+              error
+            ) {
+              showNotice(
+                error?.message ||
+                "Не вдалося змінити блокування",
+                "neutral"
+              );
+
+              throw error;
+            }
           }}
-          onReport={() => {
-            showNotice(
-              "Скаргу надіслано"
-            );
+          onReport={async (
+            personId
+          ) => {
+            const person =
+              people.find(
+                (
+                  item
+                ) =>
+                  item.id ===
+                  personId
+              ) ||
+              selectedPerson;
+
+            try {
+              if (
+                person?.backend &&
+                authSession?.user?.id
+              ) {
+                await reportBackendUser(
+                  authSession,
+                  personId,
+                  {
+                    reason:
+                      "profile",
+                    details:
+                      "",
+                  }
+                );
+              }
+
+              showNotice(
+                "Скаргу надіслано"
+              );
+            } catch (
+              error
+            ) {
+              showNotice(
+                error?.message ||
+                "Не вдалося надіслати скаргу",
+                "neutral"
+              );
+
+              throw error;
+            }
           }}
           onOpenChat={(
             personId
