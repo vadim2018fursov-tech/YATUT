@@ -5367,3 +5367,173 @@ body.yatut-dark-mode .profile-v2-post-media-button {
     border-left-color: #30323c !important;
   }
 }
+
+
+/* =========================================================
+   PROFILE STORY + ONLINE RING V5
+========================================================= */
+
+.profile-v2-avatar-pulse {
+  position: relative;
+  isolation: isolate;
+  background:
+    linear-gradient(
+      145deg,
+      #eef0f6,
+      #e4e6ee
+    );
+  box-shadow:
+    0 0 0 7px #fff,
+    0 14px 34px rgba(25, 28, 44, .12);
+  animation: none;
+}
+
+.profile-v2-avatar-pulse::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.profile-v2-avatar {
+  position: relative;
+  z-index: 1;
+}
+
+.profile-v2-avatar-wrap.has-story
+.profile-v2-avatar-pulse::before {
+  opacity: 1;
+  background:
+    conic-gradient(
+      from 10deg,
+      #635bff,
+      #31c8d8,
+      #38d996,
+      #ffd166,
+      #ff5f93,
+      #8b70ff,
+      #635bff
+    );
+  animation:
+    yatutProfileStoryRing
+    7.5s
+    linear
+    infinite;
+}
+
+.profile-v2-avatar-wrap.is-online
+.profile-v2-avatar-pulse {
+  box-shadow:
+    0 0 0 7px #fff,
+    0 0 0 10px rgba(57, 220, 158, .10),
+    0 0 30px rgba(55, 218, 157, .18),
+    0 16px 40px rgba(99, 91, 255, .18);
+}
+
+.profile-v2-avatar-wrap.has-story.is-online
+.profile-v2-avatar-pulse {
+  box-shadow:
+    0 0 0 7px #fff,
+    0 0 0 10px rgba(99, 91, 255, .08),
+    0 0 34px rgba(69, 221, 172, .17),
+    0 18px 46px rgba(99, 91, 255, .22);
+}
+
+.profile-v2-online-dot {
+  width: 16px;
+  height: 16px;
+  right: 4px;
+  bottom: 8px;
+  z-index: 4;
+  border: 3px solid #fff;
+  background:
+    radial-gradient(
+      circle at 38% 34%,
+      #73ffc7,
+      #24ce86 58%,
+      #12a966
+    );
+  box-shadow:
+    0 0 0 3px rgba(36, 206, 134, .10),
+    0 0 15px rgba(36, 206, 134, .35);
+  animation:
+    yatutOnlineDotGlow
+    2.8s
+    ease-in-out
+    infinite;
+}
+
+@keyframes yatutProfileStoryRing {
+  to {
+    transform:
+      rotate(360deg);
+  }
+}
+
+@keyframes yatutOnlineDotGlow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 3px rgba(36, 206, 134, .08),
+      0 0 12px rgba(36, 206, 134, .26);
+  }
+
+  50% {
+    box-shadow:
+      0 0 0 4px rgba(36, 206, 134, .11),
+      0 0 19px rgba(36, 206, 134, .40);
+  }
+}
+
+body.yatut-dark-mode
+.profile-v2-avatar-pulse {
+  background:
+    linear-gradient(
+      145deg,
+      #262938,
+      #1d202d
+    );
+  box-shadow:
+    0 0 0 7px #171923,
+    0 14px 36px rgba(0, 0, 0, .28);
+}
+
+body.yatut-dark-mode
+.profile-v2-avatar-wrap.is-online
+.profile-v2-avatar-pulse,
+body.yatut-dark-mode
+.profile-v2-avatar-wrap.has-story.is-online
+.profile-v2-avatar-pulse {
+  box-shadow:
+    0 0 0 7px #171923,
+    0 0 0 10px rgba(61, 226, 166, .09),
+    0 0 34px rgba(61, 226, 166, .18),
+    0 18px 46px rgba(0, 0, 0, .32);
+}
+
+body.yatut-dark-mode
+.profile-v2-online-dot {
+  border-color:
+    #171923;
+}
+
+@media (max-width: 767px) {
+  .profile-v2-online-dot {
+    width: 15px;
+    height: 15px;
+    right: 3px;
+    bottom: 6px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .profile-v2-avatar-wrap.has-story
+  .profile-v2-avatar-pulse::before,
+  .profile-v2-online-dot {
+    animation:
+      none !important;
+  }
+}
