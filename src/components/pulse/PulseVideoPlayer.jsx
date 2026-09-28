@@ -73,6 +73,8 @@ export default function PulseVideoPlayer({
   startAt = 0,
   endAt = null,
   onPlaybackStart = null,
+  onPlaybackPause = null,
+  onPlaybackComplete = null,
 }) {
   const videoRef =
     useRef(null);
@@ -82,6 +84,12 @@ export default function PulseVideoPlayer({
 
   const hideTimerRef =
     useRef(null);
+
+  const completionNotifiedRef =
+    useRef(false);
+
+  const completedOnceRef =
+    useRef(false);
 
   const [
     playing,
@@ -230,6 +238,9 @@ export default function PulseVideoPlayer({
         video.currentTime =
           safeStart;
 
+        completionNotifiedRef.current =
+          false;
+
         setEnded(
           false
         );
@@ -255,6 +266,9 @@ export default function PulseVideoPlayer({
 
     video.currentTime =
       safeStart;
+
+    completionNotifiedRef.current =
+      false;
 
     video
       .play()
@@ -460,6 +474,21 @@ export default function PulseVideoPlayer({
             true
           );
 
+          if (
+            !completionNotifiedRef.current
+          ) {
+            onPlaybackComplete?.({
+              replay:
+                completedOnceRef.current,
+            });
+
+            completedOnceRef.current =
+              true;
+
+            completionNotifiedRef.current =
+              true;
+          }
+
           return;
         }
 
@@ -540,6 +569,8 @@ export default function PulseVideoPlayer({
         setControlsVisible(
           true
         );
+
+        onPlaybackPause?.();
       }
 
       function handleEnded() {
@@ -554,6 +585,21 @@ export default function PulseVideoPlayer({
         setControlsVisible(
           true
         );
+
+        if (
+          !completionNotifiedRef.current
+        ) {
+          onPlaybackComplete?.({
+            replay:
+              completedOnceRef.current,
+          });
+
+          completedOnceRef.current =
+            true;
+
+          completionNotifiedRef.current =
+            true;
+        }
       }
 
       video.addEventListener(
@@ -634,6 +680,8 @@ export default function PulseVideoPlayer({
       endAt,
       playbackEnd,
       onPlaybackStart,
+      onPlaybackPause,
+      onPlaybackComplete,
     ]
   );
 
