@@ -148,6 +148,11 @@ import {
 } from "./services/feedFeedbackService";
 
 import {
+  loadFeedPostSignals,
+  recordFeedPostSignal,
+} from "./services/feedSignalService";
+
+import {
   subscribeFeedRealtime,
   subscribeNotificationsRealtime,
   subscribeSavedRealtime,
@@ -2337,6 +2342,7 @@ function PostCard({
   onToggleSaved,
   onNotInterested,
   onLessFromAuthor,
+  onExposure,
   showRecommendationControls = false,
   onNavigate,
   viewerProfile = null,
@@ -2351,8 +2357,210 @@ function PostCard({
     mediaOpen,
     setMediaOpen,
   ] = useState(false);
+
+  const postCardRef =
+    useRef(null);
+
+  const exposureHandlerRef =
+    useRef(onExposure);
+
+  const exposureStateRef =
+    useRef({
+      active: false,
+      startedAt: 0,
+      sent: false,
+    });
+
+  useEffect(
+    () => {
+      exposureHandlerRef.current =
+        onExposure;
+    },
+    [
+      onExposure,
+    ]
+  );
+
+  useEffect(
+    () => {
+      const node =
+        postCardRef.current;
+
+      const canTrack =
+        Boolean(
+          node &&
+          post.backend &&
+          exposureHandlerRef.current &&
+          typeof IntersectionObserver !==
+            "undefined"
+        );
+
+      if (!canTrack) {
+        return undefined;
+      }
+
+      const state =
+        exposureStateRef.current;
+
+      state.active =
+        false;
+      state.startedAt =
+        0;
+      state.sent =
+        false;
+
+      function flushExposure() {
+        if (
+          !state.active ||
+          state.sent
+        ) {
+          state.active =
+            false;
+          state.startedAt =
+            0;
+
+          return;
+        }
+
+        const elapsed =
+          Math.max(
+            0,
+            performance.now() -
+              state.startedAt
+          );
+
+        state.active =
+          false;
+        state.startedAt =
+          0;
+
+        if (
+          elapsed <
+          600
+        ) {
+          return;
+        }
+
+        state.sent =
+          true;
+
+        const dwellMs =
+          Math.min(
+            60000,
+            Math.round(
+              elapsed
+            )
+          );
+
+        exposureHandlerRef.current?.({
+          postId:
+            post.id,
+          dwellMs,
+          impression:
+            true,
+          quickSkip:
+            dwellMs <
+            1600,
+          engaged:
+            dwellMs >=
+            (
+              post.mediaType ===
+              "video"
+                ? 4000
+                : 5000
+            ),
+        });
+      }
+
+      const observer =
+        new IntersectionObserver(
+          (
+            entries
+          ) => {
+            const entry =
+              entries[0];
+
+            const visible =
+              Boolean(
+                entry?.isIntersecting &&
+                entry.intersectionRatio >=
+                  0.6 &&
+                document.visibilityState ===
+                  "visible"
+              );
+
+            if (
+              visible &&
+              !state.active &&
+              !state.sent
+            ) {
+              state.active =
+                true;
+
+              state.startedAt =
+                performance.now();
+
+              return;
+            }
+
+            if (
+              !visible &&
+              state.active
+            ) {
+              flushExposure();
+            }
+          },
+          {
+            threshold: [
+              0,
+              0.6,
+              0.85,
+            ],
+          }
+        );
+
+      observer.observe(
+        node
+      );
+
+      function onVisibilityChange() {
+        if (
+          document.visibilityState !==
+            "visible" &&
+          state.active
+        ) {
+          flushExposure();
+        }
+      }
+
+      document.addEventListener(
+        "visibilitychange",
+        onVisibilityChange
+      );
+
+      return () => {
+        flushExposure();
+
+        observer.disconnect();
+
+        document.removeEventListener(
+          "visibilitychange",
+          onVisibilityChange
+        );
+      };
+    },
+    [
+      post.id,
+      post.backend,
+      post.mediaType,
+    ]
+  );
+
   return (
     <article
+      ref={
+        postCardRef
+      }
       id={`yatut-post-${post.id}`}
       className="post-card"
       data-post-id={
@@ -2982,6 +3190,15 @@ function Home({
     useState(null);
 
   const [
+    feedPostSignals,
+    setFeedPostSignals,
+  ] =
+    useState(
+      () =>
+        new Map()
+    );
+
+  const [
     feedLoading,
     setFeedLoading,
   ] =
@@ -3009,6 +3226,7 @@ function Home({
       relationships,
       followGraph,
       feedback,
+      postSignals,
     ] =
       await Promise.all([
         loadBackendFeed(
@@ -3049,6 +3267,20 @@ function Home({
               hiddenPostIds: [],
               mutedAuthorIds: [],
             };
+          }
+        ),
+        loadFeedPostSignals(
+          authSession
+        ).catch(
+          (
+            error
+          ) => {
+            console.warn(
+              "FEED SIGNAL LOAD ERROR:",
+              error
+            );
+
+            return new Map();
           }
         ),
       ]);
@@ -3115,6 +3347,12 @@ function Home({
           []
         ),
     });
+
+    setFeedPostSignals(
+      postSignals instanceof Map
+        ? postSignals
+        : new Map()
+    );
   }
 
   useEffect(() => {
@@ -3601,6 +3839,8 @@ function Home({
                 feedFeedback.hiddenPostIds,
               mutedAuthorIds:
                 feedFeedback.mutedAuthorIds,
+              feedSignals:
+                feedPostSignals,
             }
           );
         }
@@ -3616,6 +3856,7 @@ function Home({
         viewerProfile?.city,
         savedVersion,
         feedFeedback,
+        feedPostSignals,
       ]
     );
 
@@ -3810,6 +4051,31 @@ function Home({
 
       await refreshBackendFeed();
     }
+  }
+
+  function recordPostExposure(
+    signal
+  ) {
+    if (
+      !authSession?.user?.id ||
+      !signal?.postId
+    ) {
+      return;
+    }
+
+    recordFeedPostSignal(
+      authSession,
+      signal
+    ).catch(
+      (
+        error
+      ) => {
+        console.warn(
+          "FEED SIGNAL RECORD ERROR:",
+          error
+        );
+      }
+    );
   }
 
   async function publishPost({
@@ -5282,6 +5548,11 @@ function Home({
                 }
                 onLessFromAuthor={
                   showLessFromAuthor
+                }
+                onExposure={
+                  post.backend
+                    ? recordPostExposure
+                    : undefined
                 }
                 showRecommendationControls={
                   feedTab ===
