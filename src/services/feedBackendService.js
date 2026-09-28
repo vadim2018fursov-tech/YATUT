@@ -176,6 +176,9 @@ function authorView(
     avatar:
       profile?.avatar_url ||
       null,
+    city:
+      profile?.city ||
+      "",
     verified:
       Boolean(
         profile?.verified
@@ -565,6 +568,9 @@ export async function loadBackendFeed(
           author.initial,
         authorAvatar:
           author.avatar,
+        authorCity:
+          author.city ||
+          "",
         verified:
           author.verified,
         own:
