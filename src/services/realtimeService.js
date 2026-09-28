@@ -957,6 +957,46 @@ export function subscribeFeedRealtime({
         table:
           "post_reactions",
       },
+      {
+        event:
+          "*",
+        schema:
+          "public",
+        table:
+          "friendships",
+        filter:
+          `user_id=eq.${session.user.id}`,
+      },
+      {
+        event:
+          "*",
+        schema:
+          "public",
+        table:
+          "friendships",
+        filter:
+          `friend_id=eq.${session.user.id}`,
+      },
+      {
+        event:
+          "*",
+        schema:
+          "public",
+        table:
+          "follows",
+        filter:
+          `follower_id=eq.${session.user.id}`,
+      },
+      {
+        event:
+          "*",
+        schema:
+          "public",
+        table:
+          "follows",
+        filter:
+          `following_id=eq.${session.user.id}`,
+      },
     ],
     onPostgresChange:
       onChange,
