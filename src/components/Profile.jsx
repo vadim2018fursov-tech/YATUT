@@ -5,8 +5,15 @@ import {
   useState,
 } from "react";
 
+import {
+  AnimatePresence,
+  motion,
+} from "motion/react";
+
 import "./ProfileV2.css";
 import YatutIcon from "./YatutIcon";
+import YatutMediaViewer from "./ui/YatutMediaViewer";
+import useYatutAutoAnimate from "../hooks/useYatutAutoAnimate";
 
 import {
   createSavedPost,
@@ -464,6 +471,36 @@ export default function Profile({
     setPostMenuId,
   ] =
     useState(null);
+
+  const [
+    profileMedia,
+    setProfileMedia,
+  ] = useState({
+    open: false,
+    src: "",
+    type: "image",
+  });
+
+  const [
+    profilePostsAnimateRef,
+  ] = useYatutAutoAnimate({
+    duration: 230,
+  });
+
+  function openProfileMedia(
+    src,
+    type = "image"
+  ) {
+    if (!src) {
+      return;
+    }
+
+    setProfileMedia({
+      open: true,
+      src,
+      type,
+    });
+  }
 
   /* =======================================================
      SAVE PROFILE
@@ -1746,7 +1783,23 @@ export default function Profile({
                   : ""
               }`.trim()}
             >
-              <div className="profile-v3-mobile-avatar">
+              <motion.button
+                type="button"
+                className="profile-v3-mobile-avatar"
+                whileTap={{
+                  scale: 0.96,
+                }}
+                onClick={() =>
+                  openProfileMedia(
+                    profile.avatar,
+                    "image"
+                  )
+                }
+                aria-label="Відкрити фото профілю"
+                disabled={
+                  !profile.avatar
+                }
+              >
                 {profile.avatar ? (
                   <img
                     src={
@@ -1764,7 +1817,7 @@ export default function Profile({
                       "В"}
                   </span>
                 )}
-              </div>
+              </motion.button>
 
             </div>
 
@@ -2028,7 +2081,23 @@ export default function Profile({
 
               <div className="profile-v2-avatar-pulse">
 
-                <div className="profile-v2-avatar">
+                <motion.button
+                  type="button"
+                  className="profile-v2-avatar"
+                  whileTap={{
+                    scale: 0.965,
+                  }}
+                  onClick={() =>
+                    openProfileMedia(
+                      profile.avatar,
+                      "image"
+                    )
+                  }
+                  aria-label="Відкрити фото профілю"
+                  disabled={
+                    !profile.avatar
+                  }
+                >
 
                   {profile.avatar ? (
                     <img
@@ -2048,7 +2117,7 @@ export default function Profile({
                     </span>
                   )}
 
-                </div>
+                </motion.button>
 
               </div>
 
@@ -2385,7 +2454,7 @@ export default function Profile({
                     label,
                   ]
                 ) => (
-                  <button
+                  <motion.button
                     key={
                       id
                     }
@@ -2396,16 +2465,34 @@ export default function Profile({
                         : ""
                     }
                     type="button"
+                    whileTap={{
+                      scale: 0.96,
+                    }}
                     onClick={() =>
                       setActiveTab(
                         id
                       )
                     }
                   >
-                    {
-                      label
-                    }
-                  </button>
+                    {activeTab ===
+                      id && (
+                      <motion.span
+                        layoutId="profile-v2-tab-active"
+                        className="profile-v2-tab-active"
+                        transition={{
+                          type: "spring",
+                          stiffness: 470,
+                          damping: 38,
+                        }}
+                      />
+                    )}
+
+                    <span className="profile-v2-tab-label">
+                      {
+                        label
+                      }
+                    </span>
+                  </motion.button>
                 )
               )}
 
@@ -2417,7 +2504,12 @@ export default function Profile({
 
             {activeTab ===
               "posts" && (
-              <div className="profile-v2-post-list">
+              <div
+                ref={
+                  profilePostsAnimateRef
+                }
+                className="profile-v2-post-list"
+              >
 
                 <section className="profile-v2-inline-composer">
 
@@ -2484,11 +2576,27 @@ export default function Profile({
                   (
                     post
                   ) => (
-                    <article
+                    <motion.article
                       key={
                         post.id
                       }
+                      layout
                       className="profile-v2-post-card"
+                      initial={{
+                        opacity: 0,
+                        y: 10,
+                        scale: 0.992,
+                      }}
+                      animate={{
+                        opacity: 1,
+                        y: 0,
+                        scale: 1,
+                      }}
+                      exit={{
+                        opacity: 0,
+                        y: -8,
+                        scale: 0.985,
+                      }}
                     >
 
                       {post.repostedFrom && (
@@ -2567,9 +2675,30 @@ export default function Profile({
                             />
                           </button>
 
+                          <AnimatePresence>
                           {postMenuId ===
                             post.id && (
-                            <div className="profile-v2-post-menu">
+                            <motion.div
+                              className="profile-v2-post-menu"
+                              initial={{
+                                opacity: 0,
+                                y: 6,
+                                scale: 0.96,
+                              }}
+                              animate={{
+                                opacity: 1,
+                                y: 0,
+                                scale: 1,
+                              }}
+                              exit={{
+                                opacity: 0,
+                                y: 4,
+                                scale: 0.97,
+                              }}
+                              transition={{
+                                duration: 0.16,
+                              }}
+                            >
                               <button
                                 type="button"
                                 onClick={() =>
@@ -2594,8 +2723,9 @@ export default function Profile({
                                   ? "Видалити допис"
                                   : "Приховати з профілю"}
                               </button>
-                            </div>
+                            </motion.div>
                           )}
+                          </AnimatePresence>
                         </div>
 
                       </header>
@@ -2636,24 +2766,27 @@ export default function Profile({
                       {post.media &&
                         post.mediaType ===
                           "image" && (
-                        <img
-                          src={
-                            post.media
-                          }
-                          alt=""
-                          style={{
-                            width:
-                              "100%",
-                            maxHeight:
-                              560,
-                            objectFit:
-                              "cover",
-                            borderRadius:
-                              18,
-                            marginTop:
-                              12,
+                        <motion.button
+                          type="button"
+                          className="profile-v2-post-media-button"
+                          whileTap={{
+                            scale: 0.992,
                           }}
-                        />
+                          onClick={() =>
+                            openProfileMedia(
+                              post.media,
+                              "image"
+                            )
+                          }
+                          aria-label="Відкрити фото"
+                        >
+                          <img
+                            src={
+                              post.media
+                            }
+                            alt=""
+                          />
+                        </motion.button>
                       )}
 
                       {post.media &&
@@ -2680,8 +2813,11 @@ export default function Profile({
 
                       <footer>
 
-                        <button
+                        <motion.button
                           type="button"
+                          whileTap={{
+                            scale: 0.9,
+                          }}
                           className={
                             post.liked
                               ? "is-active"
@@ -2701,10 +2837,13 @@ export default function Profile({
                           {
                             post.likes
                           }
-                        </button>
+                        </motion.button>
 
-                        <button
+                        <motion.button
                           type="button"
+                          whileTap={{
+                            scale: 0.92,
+                          }}
                           className={
                             openProfileComments[
                               post.id
@@ -2726,10 +2865,13 @@ export default function Profile({
                           {
                             post.comments
                           }
-                        </button>
+                        </motion.button>
 
-                        <button
+                        <motion.button
                           type="button"
+                          whileTap={{
+                            scale: 0.92,
+                          }}
                           onClick={() =>
                             shareProfilePost(
                               post
@@ -2742,10 +2884,13 @@ export default function Profile({
                           />
 
                           Поділитися
-                        </button>
+                        </motion.button>
 
-                        <button
+                        <motion.button
                           type="button"
+                          whileTap={{
+                            scale: 0.92,
+                          }}
                           className={
                             isSaved(
                               "post",
@@ -2772,7 +2917,7 @@ export default function Profile({
                             name="saved"
                             size={16}
                           />
-                        </button>
+                        </motion.button>
 
                       </footer>
 
@@ -2866,7 +3011,7 @@ export default function Profile({
                         </section>
                       )}
 
-                    </article>
+                    </motion.article>
                   )
                 )}
 
@@ -3554,6 +3699,33 @@ export default function Profile({
           }}
         />
       )}
+
+      <YatutMediaViewer
+        open={
+          profileMedia.open
+        }
+        onOpenChange={(
+          open
+        ) =>
+          setProfileMedia(
+            (
+              previous
+            ) => ({
+              ...previous,
+              open,
+            })
+          )
+        }
+        src={
+          profileMedia.src
+        }
+        type={
+          profileMedia.type
+        }
+        alt={
+          profile.name
+        }
+      />
 
     </section>
   );
