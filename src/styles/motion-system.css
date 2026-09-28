@@ -326,3 +326,28 @@ body.yatut-dark-mode
       none !important;
   }
 }
+
+
+/* =========================================================
+   FEED MICRO INTERACTIONS
+========================================================= */
+
+.post-action-motion-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center;
+}
+
+.post-actions >
+button,
+.post-actions >
+[data-projection-id] {
+  transform-origin: center;
+}
+
+.feed >
+.post-card {
+  transform-origin:
+    50% 20%;
+}
