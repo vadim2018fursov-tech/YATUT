@@ -8,6 +8,7 @@ import {
 import { createPortal } from "react-dom";
 
 import YatutIcon from "./YatutIcon";
+import useYatutAutoAnimate from "../hooks/useYatutAutoAnimate";
 
 import {
   nativeLightHaptic,
@@ -2328,6 +2329,12 @@ function Chats({
 
   const nativeMediaAvailable =
     isNativeMediaPicker();
+
+  const [
+    chatItemsAnimateRef,
+  ] = useYatutAutoAnimate({
+    duration: 210,
+  });
 
   const bottomRef =
     useRef(null);
@@ -7257,7 +7264,12 @@ function Chats({
 
           </div>
 
-          <div className="chat-items">
+          <div
+            ref={
+              chatItemsAnimateRef
+            }
+            className="chat-items"
+          >
 
             {filteredChats.length ? (
               filteredChats.map(
