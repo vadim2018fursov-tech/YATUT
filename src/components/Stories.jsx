@@ -10,6 +10,12 @@ import {
 } from "react-dom";
 
 import {
+  motion,
+} from "motion/react";
+
+import useYatutCarousel from "../hooks/useYatutCarousel";
+
+import {
   deleteStory,
   getStories,
   saveStory,
@@ -194,6 +200,11 @@ function Stories({
   ] = useState(null);
 
   const [
+    viewerHeld,
+    setViewerHeld,
+  ] = useState(false);
+
+  const [
     creatorOpen,
     setCreatorOpen,
   ] = useState(false);
@@ -243,6 +254,15 @@ function Stories({
 
   const autoNextRef =
     useRef(null);
+
+  const [
+    storiesViewportRef,
+  ] = useYatutCarousel({
+    align: "start",
+    containScroll:
+      "trimSnaps",
+    dragFree: true,
+  });
 
   const currentOwnerId =
     authSession?.user?.id ||
@@ -510,7 +530,10 @@ function Stories({
       autoNextRef.current
     );
 
-    if (!viewerStory) {
+    if (
+      !viewerStory ||
+      viewerHeld
+    ) {
       return;
     }
 
@@ -533,6 +556,7 @@ function Stories({
   }, [
     viewerIndex,
     viewerStory?.id,
+    viewerHeld,
   ]);
 
   /* =======================================================
@@ -1497,8 +1521,79 @@ function Stories({
               closeViewer
             }
           >
-            <section
+            <motion.section
               className="yatut-story-window"
+              drag
+              dragDirectionLock
+              dragConstraints={{
+                top: 0,
+                right: 0,
+                bottom: 0,
+                left: 0,
+              }}
+              dragElastic={{
+                top: 0.32,
+                right: 0.18,
+                bottom: 0.5,
+                left: 0.18,
+              }}
+              dragSnapToOrigin
+              onDragEnd={(
+                _event,
+                info
+              ) => {
+                const {
+                  x,
+                  y,
+                } =
+                  info.offset;
+
+                if (
+                  y > 105 &&
+                  Math.abs(
+                    y
+                  ) >
+                    Math.abs(
+                      x
+                    )
+                ) {
+                  closeViewer();
+
+                  return;
+                }
+
+                if (
+                  x < -78
+                ) {
+                  nextStory();
+
+                  return;
+                }
+
+                if (
+                  x > 78
+                ) {
+                  previousStory();
+                }
+              }}
+              onPointerDown={(
+                event
+              ) => {
+                event.stopPropagation();
+                setViewerHeld(
+                  true
+                );
+              }}
+              onPointerUp={() =>
+                setViewerHeld(
+                  false
+                )
+              }
+              onPointerCancel={() =>
+                setViewerHeld(
+                  false
+                )
+              }
               onMouseDown={(
                 event
               ) =>
@@ -1824,7 +1919,7 @@ function Stories({
                 </footer>
               )}
 
-            </section>
+            </motion.section>
           </div>,
           document.body
         )
@@ -1836,7 +1931,13 @@ function Stories({
 
   return (
     <>
-      <section className="yatut-stories-strip">
+      <section
+        ref={
+          storiesViewportRef
+        }
+        className="yatut-stories-strip yatut-stories-embla"
+      >
+        <div className="yatut-stories-track">
 
         {/* MY STORY */}
 
@@ -1937,6 +2038,7 @@ function Stories({
             )
           )}
 
+        </div>
       </section>
 
       {creatorPortal}
