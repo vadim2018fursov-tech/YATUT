@@ -3512,10 +3512,11 @@ function Chats({
               );
 
           /*
-            Показываем локальный снимок сразу.
-            Backend обновляет его уже после первого рендера.
+            Авторизованный пользователь никогда не должен видеть
+            старые demo/local чаты даже на первый кадр.
           */
           if (
+            !authSession?.user?.id &&
             stored.length
           ) {
             setChats(
@@ -3535,6 +3536,40 @@ function Chats({
           if (
             authSession?.user?.id
           ) {
+            const demoIds =
+              new Set(
+                DEMO_CHATS.map(
+                  (
+                    chat
+                  ) =>
+                    chat.id
+                )
+              );
+
+            await Promise.all(
+              DEMO_CHATS.map(
+                (
+                  chat
+                ) =>
+                  deleteChat(
+                    chat.id
+                  ).catch(
+                    () => {}
+                  )
+              )
+            );
+
+            stored =
+              stored.filter(
+                (
+                  chat
+                ) =>
+                  chat?.backend &&
+                  !demoIds.has(
+                    chat.id
+                  )
+              );
+
             const backendChats =
               await listBackendChats(
                 authSession
