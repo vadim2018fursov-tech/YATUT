@@ -6,6 +6,7 @@ import {
 } from "react";
 
 import { createPortal } from "react-dom";
+import { AnimatePresence, motion } from "motion/react";
 
 import YatutIcon from "./YatutIcon";
 import useYatutAutoAnimate from "../hooks/useYatutAutoAnimate";
@@ -1535,6 +1536,86 @@ function MessageBubble({
   const menuTriggerRef =
     useRef(null);
 
+  const messageLongPressTimerRef =
+    useRef(null);
+
+  const messageLongPressStartRef =
+    useRef({
+      x: 0,
+      y: 0,
+    });
+
+  function cancelMessageLongPress() {
+    if (
+      messageLongPressTimerRef.current
+    ) {
+      window.clearTimeout(
+        messageLongPressTimerRef.current
+      );
+
+      messageLongPressTimerRef.current =
+        null;
+    }
+  }
+
+  function startMessageLongPress(
+    event
+  ) {
+    if (
+      event.target.closest(
+        "button, a, input, audio, video"
+      )
+    ) {
+      return;
+    }
+
+    messageLongPressStartRef.current = {
+      x:
+        event.clientX,
+      y:
+        event.clientY,
+    };
+
+    cancelMessageLongPress();
+
+    messageLongPressTimerRef.current =
+      window.setTimeout(
+        () => {
+          nativeLightHaptic();
+          setReactions(
+            false
+          );
+          setMenu(
+            true
+          );
+        },
+        420
+      );
+  }
+
+  function moveMessageLongPress(
+    event
+  ) {
+    const dx =
+      Math.abs(
+        event.clientX -
+          messageLongPressStartRef.current.x
+      );
+
+    const dy =
+      Math.abs(
+        event.clientY -
+          messageLongPressStartRef.current.y
+      );
+
+    if (
+      dx > 12 ||
+      dy > 12
+    ) {
+      cancelMessageLongPress();
+    }
+  }
+
   useEffect(() => {
     if (!menu) {
       return;
@@ -1571,6 +1652,12 @@ function MessageBubble({
     menu,
   ]);
 
+  useEffect(() => {
+    return () => {
+      cancelMessageLongPress();
+    };
+  }, []);
+
   const mine =
     message.senderId ===
     "me";
@@ -1582,7 +1669,35 @@ function MessageBubble({
     ];
 
   return (
-    <div
+    <motion.div
+      id={`message-${message.id}`}
+      layout
+      initial={{
+        opacity: 0,
+        y: 9,
+        x:
+          mine
+            ? 8
+            : -8,
+        scale: 0.985,
+      }}
+      animate={{
+        opacity: 1,
+        y: 0,
+        x: 0,
+        scale: 1,
+      }}
+      exit={{
+        opacity: 0,
+        y: -5,
+        scale: 0.98,
+      }}
+      transition={{
+        type: "spring",
+        stiffness: 430,
+        damping: 34,
+        mass: 0.72,
+      }}
       id={`message-${message.id}`}
       className={`message-row ${
         mine ? "mine" : ""
@@ -1616,12 +1731,31 @@ function MessageBubble({
           •••
         </button>
 
-        {menu && (
-          <div
+        <AnimatePresence>
+          {menu && (
+          <motion.div
             ref={
               menuRef
             }
             className="message-action-menu"
+            initial={{
+              opacity: 0,
+              y: 8,
+              scale: 0.96,
+            }}
+            animate={{
+              opacity: 1,
+              y: 0,
+              scale: 1,
+            }}
+            exit={{
+              opacity: 0,
+              y: 5,
+              scale: 0.97,
+            }}
+            transition={{
+              duration: 0.17,
+            }}
           >
             <div className="message-action-reactions">
               {REACTIONS.map(
@@ -1752,8 +1886,9 @@ function MessageBubble({
               </button>
             )}
 
-          </div>
-        )}
+          </motion.div>
+          )}
+        </AnimatePresence>
 
         <button
           className="message-reaction-trigger"
@@ -1767,8 +1902,31 @@ function MessageBubble({
           ♡
         </button>
 
-        {reactions && (
-          <div className="message-reaction-popover">
+        <AnimatePresence>
+          {reactions && (
+          <motion.div
+            className="message-reaction-popover"
+            initial={{
+              opacity: 0,
+              y: 6,
+              scale: 0.94,
+            }}
+            animate={{
+              opacity: 1,
+              y: 0,
+              scale: 1,
+            }}
+            exit={{
+              opacity: 0,
+              y: 4,
+              scale: 0.96,
+            }}
+            transition={{
+              type: "spring",
+              stiffness: 500,
+              damping: 34,
+            }}
+          >
 
             {REACTIONS.map(
               (emoji) => (
@@ -1790,10 +1948,38 @@ function MessageBubble({
               )
             )}
 
-          </div>
-        )}
+          </motion.div>
+          )}
+        </AnimatePresence>
 
-        <div
+        <motion.div
+          whileTap={{
+            scale: 0.985,
+          }}
+          onPointerDown={
+            startMessageLongPress
+          }
+          onPointerMove={
+            moveMessageLongPress
+          }
+          onPointerUp={
+            cancelMessageLongPress
+          }
+          onPointerCancel={
+            cancelMessageLongPress
+          }
+          onContextMenu={(
+            event
+          ) => {
+            event.preventDefault();
+            nativeLightHaptic();
+            setReactions(
+              false
+            );
+            setMenu(
+              true
+            );
+          }}
           className={`message-bubble ${
             mine ? "mine" : ""
           }`}
@@ -1959,7 +2145,7 @@ function MessageBubble({
             </span>
           )}
 
-        </div>
+        </motion.div>
 
         <div className="message-time">
 
@@ -1987,9 +2173,36 @@ function MessageBubble({
 
         </div>
 
-        {message.myReaction && (
-          <button
+        <AnimatePresence>
+          {message.myReaction && (
+          <motion.button
+            key={
+              message.myReaction
+            }
             className="message-reaction-saved"
+            initial={{
+              opacity: 0,
+              scale: 0.55,
+              y: 5,
+            }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+              y: 0,
+            }}
+            exit={{
+              opacity: 0,
+              scale: 0.6,
+              y: 4,
+            }}
+            whileTap={{
+              scale: 0.85,
+            }}
+            transition={{
+              type: "spring",
+              stiffness: 620,
+              damping: 30,
+            }}
             onClick={() =>
               onReaction(
                 message.id,
@@ -2000,12 +2213,13 @@ function MessageBubble({
             {
               message.myReaction
             }
-          </button>
-        )}
+          </motion.button>
+          )}
+        </AnimatePresence>
 
       </div>
 
-    </div>
+    </motion.div>
   );
 }
 
@@ -7893,6 +8107,9 @@ function Chats({
                   Сьогодні
                 </div>
 
+                <AnimatePresence
+                  initial={false}
+                >
                 {messages.map(
                   (message) => (
                     <MessageBubble
@@ -7965,6 +8182,7 @@ function Chats({
                     />
                   )
                 )}
+                </AnimatePresence>
 
                 <div
                   ref={
