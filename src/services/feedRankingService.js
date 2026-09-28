@@ -67,9 +67,28 @@ function viewerCommented(post, viewerId) {
 function buildInterestTokens(
   posts,
   viewerId,
-  feedSignals
+  feedSignals,
+  seedText = ""
 ) {
   const weights = new Map();
+
+  for (
+    const token of
+    tokenize(
+      seedText
+    )
+  ) {
+    weights.set(
+      token,
+      (
+        weights.get(
+          token
+        ) ||
+        0
+      ) +
+        2
+    );
+  }
 
   for (const post of posts) {
     let signal = 0;
@@ -311,6 +330,7 @@ export function rankForYouFeed(
     hiddenPostIds = new Set(),
     mutedAuthorIds = new Set(),
     feedSignals = new Map(),
+    viewerSeedText = "",
     now = Date.now(),
   } = {}
 ) {
@@ -330,7 +350,8 @@ export function rankForYouFeed(
     buildInterestTokens(
       source,
       viewerId,
-      feedSignals
+      feedSignals,
+      viewerSeedText
     );
 
   const scored =
