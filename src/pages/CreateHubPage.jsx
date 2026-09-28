@@ -325,8 +325,8 @@ export default function CreateHubPage({
             </strong>
 
             <p>
-              Clip, відео, LIVE,
-              момент, хвиля або подія.
+              Допис, історія, Clip,
+              відео, момент, хвиля або подія.
             </p>
           </div>
         </div>
