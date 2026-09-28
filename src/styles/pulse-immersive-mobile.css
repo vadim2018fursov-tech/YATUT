@@ -1425,3 +1425,64 @@ button.is-active {
       none !important;
   }
 }
+
+
+/* =========================================================
+   PULSE SWIPE + HIDDEN SCROLLBAR
+========================================================= */
+
+@media (max-width: 767px) {
+  html:has(.pulse-immersive-mobile),
+  body:has(.pulse-immersive-mobile),
+  #root:has(.pulse-immersive-mobile),
+  .app:has(.pulse-immersive-mobile) {
+    height:
+      var(
+        --yatut-visual-viewport-height,
+        100dvh
+      ) !important;
+    max-height:
+      var(
+        --yatut-visual-viewport-height,
+        100dvh
+      ) !important;
+    overflow:
+      hidden !important;
+    scrollbar-width:
+      none !important;
+    overscroll-behavior:
+      none;
+  }
+
+  html:has(.pulse-immersive-mobile)::-webkit-scrollbar,
+  body:has(.pulse-immersive-mobile)::-webkit-scrollbar,
+  #root:has(.pulse-immersive-mobile)::-webkit-scrollbar,
+  .app:has(.pulse-immersive-mobile)::-webkit-scrollbar,
+  .pulse-immersive-mobile::-webkit-scrollbar,
+  .pulse-immersive__feed::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
+    display:
+      none !important;
+  }
+
+  .pulse-immersive-mobile,
+  .pulse-immersive__feed {
+    scrollbar-width:
+      none !important;
+    -ms-overflow-style:
+      none;
+  }
+
+  .pulse-immersive__feed {
+    touch-action:
+      pan-y;
+    overscroll-behavior-x:
+      none;
+  }
+
+  .pulse-immersive__tabs {
+    touch-action:
+      pan-x;
+  }
+}
