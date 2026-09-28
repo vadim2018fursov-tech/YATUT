@@ -3447,7 +3447,18 @@ function Home({
           authSession?.user?.id
         ) {
           return rankForYouFeed(
-            posts,
+            posts.map(
+              (
+                post
+              ) => ({
+                ...post,
+                savedForRanking:
+                  isSaved(
+                    "post",
+                    post.id
+                  ),
+              })
+            ),
             {
               viewerId:
                 authSession.user.id,
@@ -3471,6 +3482,7 @@ function Home({
         backendFriendIds,
         backendFollowingIds,
         viewerProfile?.city,
+        savedVersion,
       ]
     );
 
