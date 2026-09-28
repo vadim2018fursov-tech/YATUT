@@ -29,6 +29,7 @@ export default function usePulseSocial({
   authSession,
   realtime = true,
   refreshKey = 0,
+  enabled = true,
 }) {
   const backend =
     Boolean(
@@ -201,6 +202,7 @@ export default function usePulseSocial({
     useCallback(
       async () => {
         if (
+          !enabled ||
           !backend ||
           !userId
         ) {
@@ -294,6 +296,7 @@ export default function usePulseSocial({
         }
       },
       [
+        enabled,
         backend,
         userId,
         authSession,
@@ -305,6 +308,7 @@ export default function usePulseSocial({
   useEffect(
     () => {
       if (
+        !enabled ||
         !backend ||
         !userId
       ) {
@@ -347,6 +351,7 @@ export default function usePulseSocial({
       };
     },
     [
+      enabled,
       backend,
       userId,
       authSession,
