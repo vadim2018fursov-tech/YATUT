@@ -2480,11 +2480,36 @@ function PostCard({
             const entry =
               entries[0];
 
+            const visibleHeight =
+              Number(
+                entry?.intersectionRect
+                  ?.height ||
+                0
+              );
+
+            const cardHeight =
+              Number(
+                entry?.boundingClientRect
+                  ?.height ||
+                0
+              );
+
+            const enoughVisible =
+              entry?.intersectionRatio >=
+                0.52 ||
+              visibleHeight >=
+                Math.min(
+                  320,
+                  window.innerHeight *
+                    0.45,
+                  cardHeight *
+                    0.52
+                );
+
             const visible =
               Boolean(
                 entry?.isIntersecting &&
-                entry.intersectionRatio >=
-                  0.6 &&
+                enoughVisible &&
                 document.visibilityState ===
                   "visible"
               );
@@ -2513,8 +2538,9 @@ function PostCard({
           {
             threshold: [
               0,
-              0.6,
-              0.85,
+              0.25,
+              0.52,
+              0.75,
             ],
           }
         );
