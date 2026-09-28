@@ -351,3 +351,65 @@ button,
   transform-origin:
     50% 20%;
 }
+
+
+/* =========================================================
+   CHAT MOTION
+========================================================= */
+
+.message-row {
+  transform-origin:
+    50% 100%;
+}
+
+.message-bubble {
+  touch-action:
+    pan-y;
+  transform-origin:
+    50% 100%;
+}
+
+.message-action-menu,
+.message-reaction-popover {
+  transform-origin:
+    center bottom;
+  will-change:
+    transform,
+    opacity;
+}
+
+.message-action-reaction,
+.message-reaction-popover button,
+.message-reaction-saved {
+  transition:
+    transform
+      var(--yatut-motion-fast)
+      var(--yatut-motion-ease);
+}
+
+.message-action-reaction:active,
+.message-reaction-popover button:active,
+.message-reaction-saved:active {
+  transform:
+    scale(.86);
+}
+
+@media (hover:hover) and (pointer:fine) {
+  .message-action-reaction:hover,
+  .message-reaction-popover button:hover {
+    transform:
+      translateY(-2px)
+      scale(1.08);
+  }
+}
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+  .message-row,
+  .message-action-menu,
+  .message-reaction-popover {
+    transform: none !important;
+  }
+}
