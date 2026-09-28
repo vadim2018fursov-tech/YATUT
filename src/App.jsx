@@ -132,9 +132,14 @@ import {
 } from "./services/feedBackendService";
 
 import {
+  getBackendFollowGraph,
   getBackendFriendPeople,
   getBackendRelationships,
 } from "./services/socialBackendService";
+
+import {
+  rankForYouFeed,
+} from "./services/feedRankingService";
 
 import {
   subscribeFeedRealtime,
@@ -2378,6 +2383,24 @@ function PostCard({
                 post.createdAt
               )}
             </span>
+
+            {post.recommendationReason && (
+              <motion.span
+                className="post-recommendation-reason"
+                initial={{
+                  opacity: 0,
+                  y: 2,
+                }}
+                animate={{
+                  opacity: 1,
+                  y: 0,
+                }}
+              >
+                {
+                  post.recommendationReason
+                }
+              </motion.span>
+            )}
           </div>
         </div>
 
@@ -2887,6 +2910,15 @@ function Home({
     );
 
   const [
+    backendFollowingIds,
+    setBackendFollowingIds,
+  ] =
+    useState(
+      () =>
+        new Set()
+    );
+
+  const [
     feedLoading,
     setFeedLoading,
   ] =
@@ -2912,12 +2944,16 @@ function Home({
     const [
       backendPosts,
       relationships,
+      followGraph,
     ] =
       await Promise.all([
         loadBackendFeed(
           authSession
         ),
         getBackendRelationships(
+          authSession
+        ),
+        getBackendFollowGraph(
           authSession
         ),
       ]);
@@ -2962,6 +2998,13 @@ function Home({
             ]) =>
               personId
           )
+      )
+    );
+
+    setBackendFollowingIds(
+      new Set(
+        followGraph?.following ||
+        []
       )
     );
   }
@@ -3364,10 +3407,8 @@ function Home({
                 post
               ) =>
                 post.authorId ===
-                  "yatut" ||
-                post.authorId ===
                   authSession.user.id ||
-                backendFriendIds.has(
+                backendFollowingIds.has(
                   post.authorId
                 )
             );
@@ -3386,6 +3427,27 @@ function Home({
           );
         }
 
+        if (
+          feedTab ===
+          "for-you" &&
+          authSession?.user?.id
+        ) {
+          return rankForYouFeed(
+            posts,
+            {
+              viewerId:
+                authSession.user.id,
+              friendIds:
+                backendFriendIds,
+              followingIds:
+                backendFollowingIds,
+              viewerCity:
+                viewerProfile?.city ||
+                "",
+            }
+          );
+        }
+
         return posts;
       },
       [
@@ -3393,6 +3455,8 @@ function Home({
         posts,
         authSession?.user?.id,
         backendFriendIds,
+        backendFollowingIds,
+        viewerProfile?.city,
       ]
     );
 
