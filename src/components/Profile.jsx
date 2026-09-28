@@ -2116,33 +2116,47 @@ export default function Profile({
               }
             </p>
 
-            <div className="profile-v3-mobile-meta">
-              <span>
-                <YatutIcon
-                  name="pin"
-                  size={15}
-                />
+            {(profile.city ||
+              profile.country ||
+              profile.work) && (
+              <div className="profile-v3-mobile-meta">
+                {(profile.city ||
+                  profile.country) && (
+                  <span>
+                    <YatutIcon
+                      name="pin"
+                      size={15}
+                    />
 
-                {
-                  profile.city
-                }
-                ,{" "}
-                {
-                  profile.country
-                }
-              </span>
+                    {
+                      [
+                        profile.city,
+                        profile.country,
+                      ]
+                        .filter(
+                          Boolean
+                        )
+                        .join(
+                          ", "
+                        )
+                    }
+                  </span>
+                )}
 
-              <span>
-                <YatutIcon
-                  name="business"
-                  size={15}
-                />
+                {profile.work && (
+                  <span>
+                    <YatutIcon
+                      name="business"
+                      size={15}
+                    />
 
-                {
-                  profile.work
-                }
-              </span>
-            </div>
+                    {
+                      profile.work
+                    }
+                  </span>
+                )}
+              </div>
+            )}
 
             <div
               ref={
@@ -2394,31 +2408,41 @@ export default function Profile({
 
               <div className="profile-v2-meta">
 
-                <span>
-                  <YatutIcon
-                    name="pin"
-                    size={15}
-                  />
+                {(profile.city ||
+                  profile.country) && (
+                  <span>
+                    <YatutIcon
+                      name="pin"
+                      size={15}
+                    />
 
-                  {
-                    profile.city
-                  }
-                  ,{" "}
-                  {
-                    profile.country
-                  }
-                </span>
+                    {
+                      [
+                        profile.city,
+                        profile.country,
+                      ]
+                        .filter(
+                          Boolean
+                        )
+                        .join(
+                          ", "
+                        )
+                    }
+                  </span>
+                )}
 
-                <span>
-                  <YatutIcon
-                    name="business"
-                    size={15}
-                  />
+                {profile.work && (
+                  <span>
+                    <YatutIcon
+                      name="business"
+                      size={15}
+                    />
 
-                  {
-                    profile.work
-                  }
-                </span>
+                    {
+                      profile.work
+                    }
+                  </span>
+                )}
 
               </div>
 
