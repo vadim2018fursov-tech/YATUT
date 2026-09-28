@@ -74,6 +74,7 @@ import CreateMediaPage from "./pages/CreateMediaPage";
 
 import YatutIcon from "./components/YatutIcon";
 import AnimatedPageSwitch from "./components/AnimatedPageSwitch";
+import YatutBootScreen from "./components/YatutBootScreen";
 import useYatutAutoAnimate from "./hooks/useYatutAutoAnimate";
 
 import {
@@ -8336,17 +8337,7 @@ function App() {
     !authReady
   ) {
     return (
-      <div className="auth-loading">
-        <div>
-          <div className="auth-brand-mark">
-            Я
-          </div>
-
-          <strong>
-            ЯТУТ
-          </strong>
-        </div>
-      </div>
+      <YatutBootScreen />
     );
   }
 
@@ -8369,17 +8360,7 @@ function App() {
     !accountAccessReady
   ) {
     return (
-      <div className="auth-loading">
-        <div>
-          <div className="auth-brand-mark">
-            Я
-          </div>
-
-          <strong>
-            ЯТУТ
-          </strong>
-        </div>
-      </div>
+      <YatutBootScreen />
     );
   }
 
@@ -8418,17 +8399,7 @@ function App() {
     !onboardingReady
   ) {
     return (
-      <div className="auth-loading">
-        <div>
-          <div className="auth-brand-mark">
-            Я
-          </div>
-
-          <strong>
-            ЯТУТ
-          </strong>
-        </div>
-      </div>
+      <YatutBootScreen />
     );
   }
 
@@ -8465,17 +8436,7 @@ function App() {
     !permissionsReady
   ) {
     return (
-      <div className="auth-loading">
-        <div>
-          <div className="auth-brand-mark">
-            Я
-          </div>
-
-          <strong>
-            ЯТУТ
-          </strong>
-        </div>
-      </div>
+      <YatutBootScreen />
     );
   }
 
