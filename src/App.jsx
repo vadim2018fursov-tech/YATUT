@@ -2337,6 +2337,7 @@ function PostCard({
   onToggleSaved,
   onNotInterested,
   onLessFromAuthor,
+  showRecommendationControls = false,
   onNavigate,
   viewerProfile = null,
 }) {
@@ -2491,7 +2492,8 @@ function PostCard({
                     : "Зберегти"}
                 </button>
 
-                {!post.own && (
+                {!post.own &&
+                  showRecommendationControls && (
                   <>
                     <button
                       type="button"
@@ -5280,6 +5282,10 @@ function Home({
                 }
                 onLessFromAuthor={
                   showLessFromAuthor
+                }
+                showRecommendationControls={
+                  feedTab ===
+                  "for-you"
                 }
                 onNavigate={
                   onNavigate
