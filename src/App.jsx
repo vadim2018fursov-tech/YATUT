@@ -3867,6 +3867,18 @@ function Home({
                 feedFeedback.mutedAuthorIds,
               feedSignals:
                 feedPostSignals,
+              viewerSeedText:
+                [
+                  viewerProfile?.bio,
+                  viewerProfile?.statusText,
+                  viewerProfile?.status,
+                ]
+                  .filter(
+                    Boolean
+                  )
+                  .join(
+                    " "
+                  ),
             }
           );
         }
@@ -3883,6 +3895,9 @@ function Home({
         savedVersion,
         feedFeedback,
         feedPostSignals,
+        viewerProfile?.bio,
+        viewerProfile?.statusText,
+        viewerProfile?.status,
       ]
     );
 
@@ -6805,6 +6820,22 @@ function App() {
           profile.avatar ||
           profile.avatar_url ||
           null,
+        bio:
+          profile.bio ||
+          "",
+        city:
+          profile.city ||
+          "",
+        country:
+          profile.country ||
+          "",
+        status:
+          profile.status ||
+          "",
+        statusText:
+          profile.statusText ||
+          profile.status_text ||
+          "",
         initial:
           name
             .trim()
