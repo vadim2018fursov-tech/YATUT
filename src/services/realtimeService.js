@@ -905,6 +905,16 @@ export function subscribePulseRealtime({
         filter:
           `follower_id=eq.${session.user.id}`,
       },
+      {
+        event:
+          "*",
+        schema:
+          "public",
+        table:
+          "pulse_feedback",
+        filter:
+          `user_id=eq.${session.user.id}`,
+      },
     ],
     onPostgresChange:
       onChange,
