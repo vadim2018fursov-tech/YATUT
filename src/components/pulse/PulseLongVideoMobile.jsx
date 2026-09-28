@@ -844,6 +844,27 @@ export default function PulseLongVideoMobile({
 
   useEffect(
     () => {
+      if (
+        !commentsOpen
+      ) {
+        return;
+      }
+
+      const media =
+        playerWrapRef.current
+          ?.querySelector(
+            "video"
+          );
+
+      media?.pause?.();
+    },
+    [
+      commentsOpen,
+    ]
+  );
+
+  useEffect(
+    () => {
       if (!qualityOpen) {
         return;
       }
