@@ -64,7 +64,11 @@ function viewerCommented(post, viewerId) {
   );
 }
 
-function buildInterestTokens(posts, viewerId) {
+function buildInterestTokens(
+  posts,
+  viewerId,
+  feedSignals
+) {
   const weights = new Map();
 
   for (const post of posts) {
@@ -95,7 +99,61 @@ function buildInterestTokens(posts, viewerId) {
       signal += 4;
     }
 
-    if (!signal) continue;
+    const behavior =
+      feedSignals.get(
+        post.id
+      );
+
+    if (behavior) {
+      if (
+        behavior.maxDwellMs >=
+        9000
+      ) {
+        signal +=
+          post.mediaType ===
+          "video"
+            ? 5
+            : 4;
+      } else if (
+        behavior.maxDwellMs >=
+        4500
+      ) {
+        signal +=
+          post.mediaType ===
+          "video"
+            ? 4
+            : 3;
+      } else if (
+        behavior.maxDwellMs >=
+        2200
+      ) {
+        signal += 1;
+      }
+
+      signal +=
+        Math.min(
+          Number(
+            behavior.engagedViews ||
+            0
+          ),
+          2
+        );
+
+      if (
+        Number(
+          behavior.quickSkips ||
+          0
+        ) >
+        Number(
+          behavior.engagedViews ||
+          0
+        )
+      ) {
+        signal -= 1;
+      }
+    }
+
+    if (signal <= 0) continue;
 
     const tokens = tokenize(
       [
@@ -252,6 +310,7 @@ export function rankForYouFeed(
     viewerCity = "",
     hiddenPostIds = new Set(),
     mutedAuthorIds = new Set(),
+    feedSignals = new Map(),
     now = Date.now(),
   } = {}
 ) {
@@ -270,7 +329,8 @@ export function rankForYouFeed(
   const interestTokens =
     buildInterestTokens(
       source,
-      viewerId
+      viewerId,
+      feedSignals
     );
 
   const scored =
@@ -355,6 +415,52 @@ export function rankForYouFeed(
         )
       ) {
         score -= 4;
+      }
+
+      const behavior =
+        feedSignals.get(
+          post.id
+        );
+
+      if (behavior) {
+        const impressions =
+          Number(
+            behavior.impressions ||
+            0
+          );
+
+        const quickSkips =
+          Number(
+            behavior.quickSkips ||
+            0
+          );
+
+        const engagedViews =
+          Number(
+            behavior.engagedViews ||
+            0
+          );
+
+        score -=
+          Math.min(
+            impressions *
+              2.5,
+            12
+          );
+
+        score -=
+          Math.min(
+            quickSkips *
+              6,
+            18
+          );
+
+        score +=
+          Math.min(
+            engagedViews *
+              2,
+            4
+          );
       }
 
       return {
