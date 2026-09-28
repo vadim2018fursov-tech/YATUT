@@ -1003,243 +1003,274 @@ function UserProfile({
             </div>
           )}
 
-          <div className="other-profile-card">
-            <h3>
-              Дописи
-            </h3>
+          <section className="other-profile-posts-section">
+            <header className="other-profile-section-heading">
+              <div>
+                <span>
+                  ПРОФІЛЬ
+                </span>
+
+                <h3>
+                  Дописи
+                </h3>
+              </div>
+
+              <strong>
+                {
+                  Number(
+                    person.postsCount ??
+                    person.posts?.length ??
+                    0
+                  )
+                }
+              </strong>
+            </header>
 
             {remoteLoading ? (
-              <div className="other-profile-placeholder-post">
-                <p>
-                  Завантажуємо профіль…
-                </p>
+              <div className="other-profile-post-card is-loading">
+                <div className="other-profile-post-skeleton">
+                  <span />
+
+                  <div>
+                    <b />
+
+                    <i />
+                  </div>
+                </div>
               </div>
             ) : person.posts?.length ? (
-              person.posts.map(
-                (
-                  post
-                ) => (
-                  <article
-                    key={
-                      post.id
-                    }
-                    className="other-profile-placeholder-post"
-                  >
-                    <div className="other-profile-placeholder-head">
-                      <div>
-                        {person.avatar ? (
+              <div className="other-profile-post-list">
+                {person.posts.map(
+                  (
+                    post
+                  ) => (
+                    <motion.article
+                      key={
+                        post.id
+                      }
+                      layout
+                      className="other-profile-post-card"
+                      initial={{
+                        opacity: 0,
+                        y: 10,
+                      }}
+                      animate={{
+                        opacity: 1,
+                        y: 0,
+                      }}
+                      transition={{
+                        duration: 0.22,
+                      }}
+                    >
+                      <header className="other-profile-post-head">
+                        <div className="other-profile-post-avatar">
+                          {person.avatar ? (
+                            <img
+                              src={
+                                person.avatar
+                              }
+                              alt=""
+                            />
+                          ) : (
+                            person.initials ||
+                            person.initial ||
+                            "Я"
+                          )}
+                        </div>
+
+                        <div className="other-profile-post-author">
+                          <strong>
+                            {
+                              person.name
+                            }
+                          </strong>
+
+                          <span>
+                            {
+                              formatProfilePostTime(
+                                post.createdAt
+                              )
+                            }
+
+                            {post.location
+                              ? ` · ${post.location}`
+                              : ""}
+                          </span>
+                        </div>
+                      </header>
+
+                      {post.text && (
+                        <p className="other-profile-post-text">
+                          {
+                            post.text
+                          }
+                        </p>
+                      )}
+
+                      {post.media &&
+                        post.mediaType ===
+                          "image" && (
+                        <motion.button
+                          type="button"
+                          className="other-profile-post-media"
+                          whileTap={{
+                            scale: 0.994,
+                          }}
+                          onClick={() =>
+                            openProfileMedia(
+                              post.media,
+                              "image",
+                              `Допіс ${person.name}`
+                            )
+                          }
+                          aria-label="Відкрити фото"
+                        >
                           <img
                             src={
-                              person.avatar
+                              post.media
                             }
                             alt=""
                           />
-                        ) : (
-                          person.initials ||
-                          person.initial ||
-                          "Я"
+                        </motion.button>
+                      )}
+
+                      {post.media &&
+                        post.mediaType ===
+                          "video" && (
+                        <div className="other-profile-post-video">
+                          <video
+                            src={
+                              post.media
+                            }
+                            controls
+                            playsInline
+                          />
+                        </div>
+                      )}
+
+                      <footer className="other-profile-post-footer">
+                        <span>
+                          {post.visibility ===
+                            "friends"
+                            ? "Друзі"
+                            : "Публічно"}
+                        </span>
+
+                        {Number(
+                          post.shares ||
+                          0
+                        ) >
+                          0 && (
+                          <span>
+                            ↗ {
+                              Number(
+                                post.shares ||
+                                0
+                              )
+                            }
+                          </span>
                         )}
-                      </div>
-
-                      <strong>
-                        {
-                          person.name
-                        }
-                      </strong>
-                    </div>
-
-                    {post.text && (
-                      <p>
-                        {
-                          post.text
-                        }
-                      </p>
-                    )}
-
-                    {post.media &&
-                      post.mediaType ===
-                        "image" && (
-                        <img
-                          src={
-                            post.media
-                          }
-                          alt=""
-                          style={{
-                            width:
-                              "100%",
-                            borderRadius:
-                              16,
-                            marginTop:
-                              10,
-                          }}
-                        />
-                      )}
-
-                    {post.media &&
-                      post.mediaType ===
-                        "video" && (
-                        <video
-                          src={
-                            post.media
-                          }
-                          controls
-                          playsInline
-                          style={{
-                            width:
-                              "100%",
-                            borderRadius:
-                              16,
-                            marginTop:
-                              10,
-                          }}
-                        />
-                      )}
-                  </article>
-                )
-              )
+                      </footer>
+                    </motion.article>
+                  )
+                )}
+              </div>
             ) : (
-              <div className="other-profile-placeholder-post">
+              <div className="other-profile-post-empty">
+                <span>
+                  ✦
+                </span>
+
+                <strong>
+                  Поки без дописів
+                </strong>
+
                 <p>
-                  У цього користувача поки немає доступних дописів.
+                  Тут зʼявляться публікації, якими користувач вирішить поділитися.
                 </p>
               </div>
             )}
-          </div>
+          </section>
         </div>
 
         <aside className="other-profile-column">
-          <div className="other-profile-card connection-card">
-            <h3>
-              Чому ви можете бути знайомі
-            </h3>
+          {person.reason && (
+            <div className="other-profile-card connection-card">
+              <h3>
+                Чому ви можете бути знайомі
+              </h3>
 
-            <div className="connection-reason">
-              <span>
-                ✨
-              </span>
-
-              <p>
-                {
-                  person.reason
-                }
-              </p>
-            </div>
-          </div>
-
-          <div className="other-profile-card">
-            <h3>
-              Звʼязки
-            </h3>
-
-            <div className="other-profile-stats">
-              <div>
-                <strong>
-                  {
-                    person.friendsCount
-                  }
-                </strong>
-
+              <div className="connection-reason">
                 <span>
-                  друзів
+                  ✨
                 </span>
-              </div>
 
-              <div>
-                <strong>
+                <p>
                   {
-                    person.followersCount
+                    person.reason
                   }
-                </strong>
-
-                <span>
-                  підписників
-                </span>
-              </div>
-
-              <div>
-                <strong>
-                  {
-                    person.mutual
-                  }
-                </strong>
-
-                <span>
-                  спільних
-                </span>
+                </p>
               </div>
             </div>
-          </div>
+          )}
 
-          <div className="other-profile-card">
-            <h3>
-              Спільне з вами
-            </h3>
+          {hasSharedData && (
+            <div className="other-profile-card">
+              <h3>
+                Спільне з вами
+              </h3>
 
-            <div className="shared-profile-items">
-              {person.mutual >
-                0 && (
-                <div>
-                  <span>
-                    🤝
-                  </span>
+              <div className="shared-profile-items">
+                {Number(
+                  person.mutual ||
+                  0
+                ) >
+                  0 && (
+                  <div>
+                    <span>
+                      🤝
+                    </span>
 
-                  <p>
-                    <strong>
-                      {
-                        person.mutual
-                      }{" "}
-                      спільних друзів
-                    </strong>
+                    <p>
+                      <strong>
+                        {
+                          Number(
+                            person.mutual ||
+                            0
+                          )
+                        }{" "}
+                        спільних друзів
+                      </strong>
 
-                    <small>
-                      Люди, яких ви обоє знаєте
-                    </small>
-                  </p>
-                </div>
-              )}
+                      <small>
+                        Люди, яких ви обоє знаєте
+                      </small>
+                    </p>
+                  </div>
+                )}
 
-              {person.city ===
-                "Київ" && (
-                <div>
-                  <span>
-                    📍
-                  </span>
+                {interests[0] && (
+                  <div>
+                    <span>
+                      ❤️
+                    </span>
 
-                  <p>
-                    <strong>
-                      Київ
-                    </strong>
+                    <p>
+                      <strong>
+                        {
+                          interests[0]
+                        }
+                      </strong>
 
-                    <small>
-                      Ви знаходитесь в одному місті
-                    </small>
-                  </p>
-                </div>
-              )}
-
-              {person.interests?.[0] && (
-                <div>
-                  <span>
-                    ❤️
-                  </span>
-
-                  <p>
-                    <strong>
-                      {
-                        person.interests[
-                          0
-                        ]
-                      }
-                    </strong>
-
-                    <small>
-                      Спільний інтерес
-                    </small>
-                  </p>
-                </div>
-              )}
+                      <small>
+                        Спільний інтерес
+                      </small>
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="other-profile-card profile-safety-card">
             <h3>
@@ -1278,6 +1309,33 @@ function UserProfile({
           </div>
         </aside>
       </div>
+
+      <YatutMediaViewer
+        open={
+          profileMedia.open
+        }
+        onOpenChange={(
+          open
+        ) =>
+          setProfileMedia(
+            (
+              previous
+            ) => ({
+              ...previous,
+              open,
+            })
+          )
+        }
+        src={
+          profileMedia.src
+        }
+        type={
+          profileMedia.type
+        }
+        alt={
+          profileMedia.alt
+        }
+      />
 
       {notice && (
         <div className="yatut-toast">
