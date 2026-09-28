@@ -646,7 +646,10 @@ export async function uploadEventCover(
 
 export async function uploadPostMedia(
   session,
-  file
+  file,
+  {
+    onProgress = null,
+  } = {}
 ) {
   if (
     !session?.user?.id ||
@@ -699,6 +702,7 @@ export async function uploadPostMedia(
       "post-media",
     path,
     file,
+    onProgress,
   });
 
   return {
