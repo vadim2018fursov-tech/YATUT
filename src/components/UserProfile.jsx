@@ -329,6 +329,15 @@ function UserProfile({
       ? person.interests
       : [];
 
+  const hasSharedData =
+    Number(
+      person.mutual ||
+      0
+    ) >
+      0 ||
+    interests.length >
+      0;
+
   const showNotice = (
     text
   ) => {
@@ -369,8 +378,12 @@ function UserProfile({
         "friends"
       ) {
         return (
-          <button
+          <motion.button
+            type="button"
             className="user-main-action secondary"
+            whileTap={{
+              scale: 0.96,
+            }}
             onClick={() =>
               onFriendAction(
                 person.id,
@@ -379,7 +392,7 @@ function UserProfile({
             }
           >
             ✓ Друзі
-          </button>
+          </motion.button>
         );
       }
 
@@ -388,8 +401,12 @@ function UserProfile({
         "outgoing"
       ) {
         return (
-          <button
+          <motion.button
+            type="button"
             className="user-main-action secondary"
+            whileTap={{
+              scale: 0.96,
+            }}
             onClick={() =>
               onFriendAction(
                 person.id,
@@ -398,7 +415,7 @@ function UserProfile({
             }
           >
             Запит надіслано
-          </button>
+          </motion.button>
         );
       }
 
@@ -408,8 +425,12 @@ function UserProfile({
       ) {
         return (
           <>
-            <button
+            <motion.button
+              type="button"
               className="user-main-action"
+              whileTap={{
+                scale: 0.96,
+              }}
               onClick={() =>
                 onFriendAction(
                   person.id,
@@ -418,10 +439,14 @@ function UserProfile({
               }
             >
               Прийняти
-            </button>
+            </motion.button>
 
-            <button
+            <motion.button
+              type="button"
               className="user-main-action secondary"
+              whileTap={{
+                scale: 0.96,
+              }}
               onClick={() =>
                 onFriendAction(
                   person.id,
@@ -430,14 +455,18 @@ function UserProfile({
               }
             >
               Відхилити
-            </button>
+            </motion.button>
           </>
         );
       }
 
       return (
-        <button
+        <motion.button
+          type="button"
           className="user-main-action"
+          whileTap={{
+            scale: 0.96,
+          }}
           onClick={() =>
             onFriendAction(
               person.id,
@@ -446,7 +475,7 @@ function UserProfile({
           }
         >
           + Додати в друзі
-        </button>
+        </motion.button>
       );
     };
 
@@ -521,13 +550,32 @@ function UserProfile({
 
       <div className="other-profile-main">
         <div className="other-profile-avatar-wrap">
-          <div
+          <motion.button
+            type="button"
             className={`other-profile-avatar ${
               person.hasStory &&
               !person.storyViewed
                 ? "has-story"
                 : ""
             }`}
+            whileTap={{
+              scale: 0.96,
+            }}
+            onClick={() =>
+              openProfileMedia(
+                person.avatar,
+                "image",
+                person.name
+              )
+            }
+            disabled={
+              !person.avatar
+            }
+            aria-label={
+              person.avatar
+                ? "Відкрити фото профілю"
+                : undefined
+            }
           >
             <div>
               {person.avatar ? (
@@ -545,7 +593,7 @@ function UserProfile({
                 "Я"
               )}
             </div>
-          </div>
+          </motion.button>
 
           {person.online && (
             <span className="other-profile-online" />
@@ -555,12 +603,16 @@ function UserProfile({
         <div className="other-profile-actions">
           {renderFriendButton()}
 
-          <button
+          <motion.button
+            type="button"
             className={`user-main-action ${
               following
                 ? "secondary"
                 : ""
             }`}
+            whileTap={{
+              scale: 0.96,
+            }}
             onClick={
               handleFollow
             }
@@ -568,10 +620,14 @@ function UserProfile({
             {following
               ? "✓ Підписка"
               : "Підписатися"}
-          </button>
+          </motion.button>
 
-          <button
+          <motion.button
+            type="button"
             className="user-main-action secondary"
+            whileTap={{
+              scale: 0.96,
+            }}
             onClick={() =>
               onOpenChat?.(
                 person.id
@@ -579,84 +635,112 @@ function UserProfile({
             }
           >
             💬 Написати
-          </button>
+          </motion.button>
 
           <div className="profile-more-wrap">
-            <button
-              className="profile-more-button"
-              onClick={() =>
-                setMenuOpen(
-                  !menuOpen
-                )
+            <DropdownMenu.Root
+              open={
+                menuOpen
+              }
+              onOpenChange={
+                setMenuOpen
               }
             >
-              •••
-            </button>
-
-            {menuOpen && (
-              <div className="profile-more-menu">
-                <button
-                  onClick={() => {
-                    navigator.clipboard
-                      ?.writeText(
-                        `@${person.username}`
-                      );
-
-                    showNotice(
-                      "Посилання скопійовано"
-                    );
-
-                    setMenuOpen(
-                      false
-                    );
+              <DropdownMenu.Trigger
+                asChild
+              >
+                <motion.button
+                  type="button"
+                  className="profile-more-button"
+                  whileTap={{
+                    scale: 0.92,
                   }}
+                  aria-label="Меню профілю"
                 >
-                  Копіювати профіль
-                </button>
+                  •••
+                </motion.button>
+              </DropdownMenu.Trigger>
 
-                <button
-                  onClick={() => {
-                    showNotice(
-                      "Користувача приховано з рекомендацій"
-                    );
-
-                    setMenuOpen(
-                      false
-                    );
-                  }}
+              <DropdownMenu.Portal>
+                <DropdownMenu.Content
+                  className="profile-more-menu"
+                  sideOffset={
+                    8
+                  }
+                  align="end"
+                  collisionPadding={
+                    12
+                  }
                 >
-                  Не показувати
-                </button>
+                  <DropdownMenu.Item
+                    asChild
+                  >
+                    <button
+                      type="button"
+                      onClick={() => {
+                        navigator.clipboard
+                          ?.writeText(
+                            `@${person.username}`
+                          );
 
-                <button
-                  onClick={() => {
-                    handleReport();
+                        showNotice(
+                          "Посилання скопійовано"
+                        );
+                      }}
+                    >
+                      Копіювати профіль
+                    </button>
+                  </DropdownMenu.Item>
 
-                    setMenuOpen(
-                      false
-                    );
-                  }}
-                >
-                  Поскаржитися
-                </button>
+                  <DropdownMenu.Item
+                    asChild
+                  >
+                    <button
+                      type="button"
+                      onClick={() =>
+                        showNotice(
+                          "Користувача приховано з рекомендацій"
+                        )
+                      }
+                    >
+                      Не показувати
+                    </button>
+                  </DropdownMenu.Item>
 
-                <button
-                  className="danger"
-                  onClick={() => {
-                    onBlock(
-                      person.id,
-                      true
-                    );
+                  <DropdownMenu.Item
+                    asChild
+                  >
+                    <button
+                      type="button"
+                      onClick={
+                        handleReport
+                      }
+                    >
+                      Поскаржитися
+                    </button>
+                  </DropdownMenu.Item>
 
-                    setMenuOpen(
-                      false
-                    );
-                  }}
-                >
-                  Заблокувати
-                </button>
-              </div>
-            )}
+                  <DropdownMenu.Separator className="profile-more-separator" />
+
+                  <DropdownMenu.Item
+                    asChild
+                  >
+                    <button
+                      type="button"
+                      className="danger"
+                      onClick={() =>
+                        onBlock(
+                          person.id,
+                          true
+                        )
+                      }
+                    >
+                      Заблокувати
+                    </button>
+                  </DropdownMenu.Item>
+                </DropdownMenu.Content>
+              </DropdownMenu.Portal>
+            </DropdownMenu.Root>
           </div>
         </div>
       </div>
@@ -738,6 +822,69 @@ function UserProfile({
           )}
         </div>
       </div>
+
+      <section className="other-profile-stat-strip">
+        <div>
+          <strong>
+            {
+              Number(
+                person.friendsCount ||
+                0
+              )
+            }
+          </strong>
+
+          <span>
+            друзі
+          </span>
+        </div>
+
+        <div>
+          <strong>
+            {
+              Number(
+                person.followersCount ||
+                0
+              )
+            }
+          </strong>
+
+          <span>
+            підписники
+          </span>
+        </div>
+
+        <div>
+          <strong>
+            {
+              Number(
+                person.followingCount ||
+                0
+              )
+            }
+          </strong>
+
+          <span>
+            підписки
+          </span>
+        </div>
+
+        <div>
+          <strong>
+            {
+              Number(
+                person.postsCount ??
+                person.posts?.length ??
+                0
+              )
+            }
+          </strong>
+
+          <span>
+            дописи
+          </span>
+        </div>
+      </section>
 
       <div className="other-profile-grid">
         <div className="other-profile-column">
