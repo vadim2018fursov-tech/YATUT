@@ -499,7 +499,6 @@ function rankForYou(
     watchSignals,
     currentUserId,
     currentCity,
-    watchSignals,
   } =
     signals;
 
