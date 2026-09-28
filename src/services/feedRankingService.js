@@ -11,10 +11,28 @@ function normalizeText(value) {
     .replace(/[^a-zа-яіїєґ0-9\s-]/gi, " ");
 }
 
+function normalizeToken(token) {
+  const clean =
+    token.trim();
+
+  if (
+    clean.length >= 7
+  ) {
+    return clean.slice(
+      0,
+      6
+    );
+  }
+
+  return clean;
+}
+
 function tokenize(value) {
   return normalizeText(value)
     .split(/\s+/)
-    .map((token) => token.trim())
+    .map(
+      normalizeToken
+    )
     .filter(
       (token) =>
         token.length >= 4 &&
