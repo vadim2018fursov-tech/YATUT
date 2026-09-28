@@ -142,6 +142,11 @@ import {
 } from "./services/feedRankingService";
 
 import {
+  addFeedFeedback,
+  loadFeedFeedback,
+} from "./services/feedFeedbackService";
+
+import {
   subscribeFeedRealtime,
   subscribeNotificationsRealtime,
   subscribeSavedRealtime,
@@ -2329,6 +2334,8 @@ function PostCard({
   onVotePoll,
   onShare,
   onToggleSaved,
+  onNotInterested,
+  onLessFromAuthor,
   onNavigate,
   viewerProfile = null,
 }) {
@@ -2482,6 +2489,40 @@ function PostCard({
                     ? "Прибрати зі збережених"
                     : "Зберегти"}
                 </button>
+
+                {!post.own && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setPostMenuOpen(
+                          false
+                        );
+
+                        onNotInterested?.(
+                          post
+                        );
+                      }}
+                    >
+                      Не цікаво
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setPostMenuOpen(
+                          false
+                        );
+
+                        onLessFromAuthor?.(
+                          post
+                        );
+                      }}
+                    >
+                      Менше від цього автора
+                    </button>
+                  </>
+                )}
 
                 {post.own && (
                   <button
@@ -2919,6 +2960,19 @@ function Home({
     );
 
   const [
+    feedFeedback,
+    setFeedFeedback,
+  ] =
+    useState(
+      () => ({
+        hiddenPostIds:
+          new Set(),
+        mutedAuthorIds:
+          new Set(),
+      })
+    );
+
+  const [
     feedLoading,
     setFeedLoading,
   ] =
@@ -2945,6 +2999,7 @@ function Home({
       backendPosts,
       relationships,
       followGraph,
+      feedback,
     ] =
       await Promise.all([
         loadBackendFeed(
@@ -2967,6 +3022,23 @@ function Home({
             return {
               followers: [],
               following: [],
+            };
+          }
+        ),
+        loadFeedFeedback(
+          authSession
+        ).catch(
+          (
+            error
+          ) => {
+            console.warn(
+              "FEED FEEDBACK LOAD ERROR:",
+              error
+            );
+
+            return {
+              hiddenPostIds: [],
+              mutedAuthorIds: [],
             };
           }
         ),
@@ -3021,6 +3093,19 @@ function Home({
         []
       )
     );
+
+    setFeedFeedback({
+      hiddenPostIds:
+        new Set(
+          feedback?.hiddenPostIds ||
+          []
+        ),
+      mutedAuthorIds:
+        new Set(
+          feedback?.mutedAuthorIds ||
+          []
+        ),
+    });
   }
 
   useEffect(() => {
@@ -3465,6 +3550,10 @@ function Home({
               viewerCity:
                 viewerProfile?.city ||
                 "",
+              hiddenPostIds:
+                feedFeedback.hiddenPostIds,
+              mutedAuthorIds:
+                feedFeedback.mutedAuthorIds,
             }
           );
         }
@@ -3479,8 +3568,104 @@ function Home({
         backendFollowingIds,
         viewerProfile?.city,
         savedVersion,
+        feedFeedback,
       ]
     );
+
+  async function markPostNotInteresting(
+    post
+  ) {
+    if (
+      !authSession?.user?.id ||
+      !post?.id
+    ) {
+      return;
+    }
+
+    nativeSelectionHaptic();
+
+    setFeedFeedback(
+      (
+        previous
+      ) => ({
+        ...previous,
+        hiddenPostIds:
+          new Set([
+            ...previous.hiddenPostIds,
+            post.id,
+          ]),
+      })
+    );
+
+    try {
+      await addFeedFeedback(
+        authSession,
+        {
+          kind:
+            "not_interested",
+          postId:
+            post.id,
+        }
+      );
+    } catch (
+      error
+    ) {
+      console.warn(
+        "NOT INTERESTED FEEDBACK ERROR:",
+        error
+      );
+
+      await refreshBackendFeed();
+    }
+  }
+
+  async function showLessFromAuthor(
+    post
+  ) {
+    if (
+      !authSession?.user?.id ||
+      !post?.authorId ||
+      post.own
+    ) {
+      return;
+    }
+
+    nativeSelectionHaptic();
+
+    setFeedFeedback(
+      (
+        previous
+      ) => ({
+        ...previous,
+        mutedAuthorIds:
+          new Set([
+            ...previous.mutedAuthorIds,
+            post.authorId,
+          ]),
+      })
+    );
+
+    try {
+      await addFeedFeedback(
+        authSession,
+        {
+          kind:
+            "less_from_author",
+          authorId:
+            post.authorId,
+        }
+      );
+    } catch (
+      error
+    ) {
+      console.warn(
+        "LESS FROM AUTHOR FEEDBACK ERROR:",
+        error
+      );
+
+      await refreshBackendFeed();
+    }
+  }
 
   async function publishPost({
     text,
@@ -4946,6 +5131,12 @@ function Home({
                   togglePostSaved(
                     post
                   )
+                }
+                onNotInterested={
+                  markPostNotInteresting
+                }
+                onLessFromAuthor={
+                  showLessFromAuthor
                 }
                 onNavigate={
                   onNavigate
