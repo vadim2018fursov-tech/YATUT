@@ -212,6 +212,7 @@ function watchSignalStrength(
   {
     likedIds,
     savedIds,
+    commentedIds,
   }
 ) {
   if (!signal) {
@@ -228,6 +229,13 @@ function watchSignalStrength(
           video?.id
         )
           ? 9
+          : 0
+      ) +
+      (
+        commentedIds.has(
+          video?.id
+        )
+          ? 10
           : 0
       )
     );
@@ -297,6 +305,13 @@ function watchSignalStrength(
         video?.id
       )
         ? 9
+        : 0
+    ) +
+    (
+      commentedIds.has(
+        video?.id
+      )
+        ? 10
         : 0
     ) -
     Math.min(
@@ -496,6 +511,7 @@ function rankForYou(
     viewedIds,
     likedIds,
     savedIds,
+    commentedIds,
     watchSignals,
     currentUserId,
     currentCity,
@@ -689,6 +705,16 @@ function rankForYou(
             18;
         }
 
+        const behaviorReason =
+          (
+            authorAffinity >=
+              14 ||
+            kindAffinity >=
+              18
+          )
+            ? "Схоже на те, що ти дивишся"
+            : null;
+
         return {
           ...video,
           recommendationScore:
@@ -698,9 +724,22 @@ function rankForYou(
               )
             ),
           recommendationReason:
+            behaviorReason ||
             reasonFor(
               video,
               signals
+            ),
+          discovery:
+            !currentUserId ||
+            (
+              authorId !==
+                currentUserId &&
+              !followedAuthors.has(
+                authorId
+              ) &&
+              !friendAuthors.has(
+                authorId
+              )
             ),
         };
       }
@@ -717,51 +756,114 @@ function rankForYou(
   const result =
     [];
 
-  const deferred =
+  const remaining =
+    [
+      ...scored,
+    ];
+
+  const recentAuthors =
     [];
 
-  scored.forEach(
-    (
-      video
-    ) => {
-      const previous =
-        result[
-          result.length -
-          1
-        ];
+  while (
+    remaining.length
+  ) {
+    const wantsDiscovery =
+      result.length >
+        0 &&
+      result.length %
+        4 ===
+        3;
 
-      const beforePrevious =
-        result[
-          result.length -
-          2
-        ];
+    const discoveryAvailable =
+      wantsDiscovery &&
+      remaining.some(
+        (
+          candidate
+        ) =>
+          candidate.discovery &&
+          candidate.recommendationScore >=
+            24
+      );
 
-      const repeatsAuthor =
-        previous?.author?.id &&
-        beforePrevious?.author?.id &&
-        previous.author.id ===
-          video.author?.id &&
-        beforePrevious.author.id ===
-          video.author?.id;
+    let bestIndex =
+      0;
+
+    let bestScore =
+      -Infinity;
+
+    for (
+      let index =
+        0;
+      index <
+      remaining.length;
+      index +=
+        1
+    ) {
+      const candidate =
+        remaining[
+          index
+        ];
 
       if (
-        repeatsAuthor
+        discoveryAvailable &&
+        !candidate.discovery
       ) {
-        deferred.push(
-          video
-        );
-      } else {
-        result.push(
-          video
-        );
+        continue;
+      }
+
+      const recentCount =
+        recentAuthors.filter(
+          (
+            authorId
+          ) =>
+            authorId &&
+            authorId ===
+              candidate?.author?.id
+        ).length;
+
+      const adjusted =
+        candidate.recommendationScore -
+        recentCount *
+          22;
+
+      if (
+        adjusted >
+        bestScore
+      ) {
+        bestScore =
+          adjusted;
+
+        bestIndex =
+          index;
       }
     }
-  );
 
-  return [
-    ...result,
-    ...deferred,
-  ];
+    const [
+      chosen,
+    ] =
+      remaining.splice(
+        bestIndex,
+        1
+      );
+
+    result.push(
+      chosen
+    );
+
+    recentAuthors.push(
+      chosen?.author?.id ||
+      null
+    );
+
+    if (
+      recentAuthors.length >
+      4
+    ) {
+      recentAuthors.shift();
+    }
+  }
+
+  return result;
 }
 
 async function loadSignals(
@@ -785,6 +887,8 @@ async function loadSignals(
         new Set(),
       savedIds:
         new Set(),
+      commentedIds:
+        new Set(),
       watchSignals:
         new Map(),
       currentCity:
@@ -799,6 +903,7 @@ async function loadSignals(
     viewRows,
     reactionRows,
     savedRows,
+    commentRows,
     watchSignals,
   ] =
     await Promise.all([
@@ -882,6 +987,20 @@ async function loadSignals(
             500,
         }
       ),
+      readRows(
+        session,
+        "pulse_comments",
+        {
+          author_id:
+            `eq.${userId}`,
+          select:
+            "media_id",
+          order:
+            "created_at.desc",
+          limit:
+            500,
+        }
+      ),
       loadPulseWatchSignals(
         session
       ).catch(
@@ -959,6 +1078,15 @@ async function loadSignals(
             row
           ) =>
             row.source_id
+        )
+      ),
+    commentedIds:
+      new Set(
+        commentRows.map(
+          (
+            row
+          ) =>
+            row.media_id
         )
       ),
     watchSignals:
