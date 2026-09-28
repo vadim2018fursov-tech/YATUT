@@ -1024,6 +1024,9 @@ export default function PulseMobileImmersive({
   const tabsRef =
     useRef(null);
 
+  const feedRef =
+    useRef(null);
+
   const swipeStartRef =
     useRef(null);
 
@@ -1250,6 +1253,13 @@ export default function PulseMobileImmersive({
         behavior:
           "smooth",
       });
+
+      feedRef.current
+        ?.scrollTo({
+          top: 0,
+          behavior:
+            "auto",
+        });
     },
     [
       activeTab,
@@ -1407,7 +1417,12 @@ export default function PulseMobileImmersive({
           }
         />
       ) : (
-      <div className="pulse-immersive__feed">
+      <div
+        ref={
+          feedRef
+        }
+        className="pulse-immersive__feed"
+      >
         {videos.length ? (
           videos.map(
             (
