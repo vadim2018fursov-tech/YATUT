@@ -92,6 +92,103 @@ async function readRows(
     : [];
 }
 
+const PULSE_STOP_WORDS =
+  new Set([
+    "і","й","та","або","але","що","це","для","про","від","до","на","у","в",
+    "з","із","зі","по","ми","ви","вони","він","вона","я","ти","не","як",
+    "the","and","for","with","this","that",
+  ]);
+
+function pulseTokens(
+  value
+) {
+  return String(
+    value ||
+    ""
+  )
+    .toLocaleLowerCase()
+    .replace(
+      /[^a-zа-яіїєґ0-9\s-]/gi,
+      " "
+    )
+    .split(
+      /\s+/
+    )
+    .map(
+      (
+        token
+      ) =>
+        token.length >=
+          7
+          ? token.slice(
+              0,
+              6
+            )
+          : token
+    )
+    .filter(
+      (
+        token
+      ) =>
+        token.length >=
+          4 &&
+        !PULSE_STOP_WORDS.has(
+          token
+        )
+    );
+}
+
+function profileInterestScore(
+  video,
+  profileTokens
+) {
+  if (
+    !profileTokens?.size
+  ) {
+    return 0;
+  }
+
+  const videoTokens =
+    new Set(
+      pulseTokens(
+        [
+          video?.title,
+          video?.description,
+          video?.location?.name,
+        ]
+          .filter(
+            Boolean
+          )
+          .join(
+            " "
+          )
+      )
+    );
+
+  let matches =
+    0;
+
+  for (
+    const token of
+    videoTokens
+  ) {
+    if (
+      profileTokens.has(
+        token
+      )
+    ) {
+      matches +=
+        1;
+    }
+  }
+
+  return Math.min(
+    matches *
+      8,
+    24
+  );
+}
+
 function stableNoise(
   value
 ) {
@@ -418,6 +515,7 @@ function reasonFor(
     friendAuthors,
     viewedIds,
     currentCity,
+    profileTokens,
   }
 ) {
   if (
@@ -449,6 +547,16 @@ function reasonFor(
     )
   ) {
     return "Ви підписані";
+  }
+
+  if (
+    profileInterestScore(
+      video,
+      profileTokens
+    ) >=
+    8
+  ) {
+    return "Схоже на твої інтереси";
   }
 
   if (
@@ -521,6 +629,7 @@ function rankForYou(
     mutedAuthorIds,
     currentUserId,
     currentCity,
+    profileTokens,
   } =
     signals;
 
@@ -596,6 +705,12 @@ function rankForYou(
           score +=
             24;
         }
+
+        score +=
+          profileInterestScore(
+            video,
+            profileTokens
+          );
 
         if (
           mutedAuthorIds.has(
@@ -937,6 +1052,8 @@ async function loadSignals(
         new Set(),
       mutedAuthorIds:
         new Set(),
+      profileTokens:
+        new Set(),
       currentCity:
         "",
     };
@@ -985,7 +1102,7 @@ async function loadSignals(
           id:
             `eq.${userId}`,
           select:
-            "id,city",
+            "id,city,bio,status,status_text",
           limit:
             1,
         }
@@ -1166,6 +1283,22 @@ async function loadSignals(
       new Set(
         feedback?.mutedAuthorIds ||
         []
+      ),
+    profileTokens:
+      new Set(
+        pulseTokens(
+          [
+            profileRows?.[0]?.bio,
+            profileRows?.[0]?.status_text,
+            profileRows?.[0]?.status,
+          ]
+            .filter(
+              Boolean
+            )
+            .join(
+              " "
+            )
+        )
       ),
   };
 }
