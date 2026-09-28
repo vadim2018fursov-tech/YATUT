@@ -608,3 +608,96 @@ body.yatut-dark-mode
     opacity: .7;
   }
 }
+
+
+/* =========================================================
+   YATUT MEDIA VIEWER
+========================================================= */
+
+.yatut-media-viewer__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 31000;
+  background: rgba(6,7,12,.78);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.yatut-media-viewer {
+  position: fixed;
+  z-index: 31001;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding:
+    max(18px, env(safe-area-inset-top))
+    max(18px, env(safe-area-inset-right))
+    max(18px, env(safe-area-inset-bottom))
+    max(18px, env(safe-area-inset-left));
+  outline: none;
+}
+
+.yatut-media-viewer__stage {
+  width: min(96vw, 1180px);
+  height: min(88dvh, 900px);
+  display: grid;
+  place-items: center;
+}
+
+.yatut-media-viewer__stage img,
+.yatut-media-viewer__stage video {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 22px;
+  object-fit: contain;
+  box-shadow: 0 28px 90px rgba(0,0,0,.38);
+}
+
+.yatut-media-viewer__close {
+  position: fixed;
+  top: calc(14px + env(safe-area-inset-top));
+  right: calc(14px + env(safe-area-inset-right));
+  z-index: 1;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 15px;
+  background: rgba(22,23,31,.62);
+  color: #fff;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.yatut-media-viewer__sr-title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+.yatut-media-viewer__overlay[data-state="open"] {
+  animation: yatutMediaOverlayIn 180ms ease both;
+}
+
+.yatut-media-viewer[data-state="open"] {
+  animation: yatutMediaViewerIn 260ms cubic-bezier(.22,.8,.26,1) both;
+}
+
+@keyframes yatutMediaOverlayIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes yatutMediaViewerIn {
+  from {
+    opacity: 0;
+    transform: scale(.985);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
