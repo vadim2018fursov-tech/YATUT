@@ -17,6 +17,11 @@ import {
   useState,
 } from "react";
 
+import {
+  AnimatePresence,
+  motion,
+} from "motion/react";
+
 import YatutHereButton from "../components/pulse/YatutHereButton";
 import LocationPulsePanel from "../components/pulse/LocationPulsePanel";
 import PulseCommentsSheet from "../components/pulse/PulseCommentsSheet";
@@ -34,6 +39,10 @@ import {
 import {
   loadPulseMedia,
 } from "../services/pulseBackendService";
+
+import {
+  nativeLightHaptic,
+} from "../services/nativeFeedbackService";
 
 const FALLBACK_CLIP_IMAGE =
   "/assets/yatut/cities/kyiv/hero.jpg";
@@ -405,7 +414,75 @@ export default function ClipsPage({
 
   return (
     <div className="pulse-clips-page">
-      <section className="pulse-clips-stage">
+      <AnimatePresence
+        mode="wait"
+        initial={false}
+      >
+      <motion.section
+        key={
+          video.id
+        }
+        className="pulse-clips-stage"
+        drag="y"
+        dragConstraints={{
+          top: 0,
+          bottom: 0,
+        }}
+        dragElastic={
+          0.18
+        }
+        initial={{
+          opacity: 0,
+          y: 20,
+          scale: 0.992,
+        }}
+        animate={{
+          opacity: 1,
+          y: 0,
+          scale: 1,
+        }}
+        exit={{
+          opacity: 0,
+          y: -16,
+          scale: 0.992,
+        }}
+        transition={{
+          type:
+            "spring",
+          stiffness:
+            390,
+          damping:
+            36,
+          mass:
+            0.78,
+        }}
+        onDragEnd={(
+          _event,
+          info
+        ) => {
+          if (
+            info.offset.y <
+              -78 ||
+            info.velocity.y <
+              -520
+          ) {
+            nativeLightHaptic();
+            nextVideo();
+
+            return;
+          }
+
+          if (
+            info.offset.y >
+              78 ||
+            info.velocity.y >
+              520
+          ) {
+            nativeLightHaptic();
+            previousVideo();
+          }
+        }}
+      >
         {video.videoUrl ||
         video.video ? (
           <video
@@ -662,16 +739,20 @@ export default function ClipsPage({
             <b>+</b>
           </button>
 
-          <button
+          <motion.button
             type="button"
+            whileTap={{
+              scale: 0.86,
+            }}
             className={
               pulseSocial.liked
                 ? "is-active"
                 : ""
             }
-            onClick={
-              pulseSocial.toggleLike
-            }
+            onClick={() => {
+              nativeLightHaptic();
+              pulseSocial.toggleLike();
+            }}
             aria-label="Подобається"
           >
             <Heart
@@ -726,18 +807,22 @@ export default function ClipsPage({
                 pulseSocial.sharesCount
               )}
             </span>
-          </button>
+          </motion.button>
 
-          <button
+          <motion.button
             type="button"
+            whileTap={{
+              scale: 0.88,
+            }}
             className={
               pulseSocial.saved
                 ? "is-active"
                 : ""
             }
-            onClick={
-              pulseSocial.toggleSaved
-            }
+            onClick={() => {
+              nativeLightHaptic();
+              pulseSocial.toggleSaved();
+            }}
             aria-label="Зберегти"
           >
             <Bookmark
@@ -754,7 +839,7 @@ export default function ClipsPage({
                 pulseSocial.savesCount
               )}
             </span>
-          </button>
+          </motion.button>
         </aside>
 
         <div className="pulse-clips-content">
@@ -904,7 +989,8 @@ export default function ClipsPage({
             }}
           />
         </div>
-      </section>
+      </motion.section>
+      </AnimatePresence>
 
       {showLocation && (
         <LocationPulsePanel
