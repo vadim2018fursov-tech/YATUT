@@ -769,7 +769,7 @@ export default function ClipsPage({
                 pulseSocial.likesCount
               )}
             </span>
-          </button>
+          </motion.button>
 
           <motion.button
             type="button"
