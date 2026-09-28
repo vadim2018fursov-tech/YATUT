@@ -46,6 +46,11 @@ import {
 } from "../services/pulseSocialService";
 
 import {
+  addPulseFeedback,
+  removePulseFeedback,
+} from "../services/pulseFeedbackService";
+
+import {
   nativeLightHaptic,
 } from "../services/nativeFeedbackService";
 
@@ -221,8 +226,31 @@ export default function ClipsPage({
 
         source.forEach(
           (video) => {
+            const authorId =
+              video?.author?.id;
+
+            const hidden =
+              Boolean(
+                video?.id &&
+                sessionHiddenMediaIds.has(
+                  video.id
+                )
+              );
+
+            const muted =
+              Boolean(
+                authorId &&
+                authorId !==
+                  authSession?.user?.id &&
+                sessionMutedAuthorIds.has(
+                  authorId
+                )
+              );
+
             if (
               !video ||
+              hidden ||
+              muted ||
               unique.some(
                 (item) =>
                   item.id ===
@@ -241,6 +269,9 @@ export default function ClipsPage({
       [
         rankedBackend,
         activeMode,
+        sessionHiddenMediaIds,
+        sessionMutedAuthorIds,
+        authSession?.user?.id,
       ]
     );
 
@@ -318,6 +349,27 @@ export default function ClipsPage({
     moreOpen,
     setMoreOpen,
   ] = useState(false);
+
+  const [
+    sessionHiddenMediaIds,
+    setSessionHiddenMediaIds,
+  ] = useState(
+    () =>
+      new Set()
+  );
+
+  const [
+    sessionMutedAuthorIds,
+    setSessionMutedAuthorIds,
+  ] = useState(
+    () =>
+      new Set()
+  );
+
+  const [
+    feedbackNotice,
+    setFeedbackNotice,
+  ] = useState(null);
 
   const [
     commentsOpen,
@@ -664,6 +716,249 @@ export default function ClipsPage({
     setMoreOpen(false);
     setCommentsOpen(false);
   }
+
+  async function markClipNotInterested(
+    targetVideo = video
+  ) {
+    if (!targetVideo?.id) {
+      return;
+    }
+
+    nativeLightHaptic();
+
+    clipVideoRef.current
+      ?.pause?.();
+
+    setSessionHiddenMediaIds(
+      (
+        previous
+      ) =>
+        new Set([
+          ...previous,
+          targetVideo.id,
+        ])
+    );
+
+    const persisted =
+      Boolean(
+        targetVideo.backend &&
+        authSession?.user?.id
+      );
+
+    setFeedbackNotice({
+      kind:
+        "not_interested",
+      mediaId:
+        targetVideo.id,
+      authorId:
+        null,
+      persisted,
+      label:
+        "Кліп прибрано з «Для тебе»",
+    });
+
+    setMoreOpen(
+      false
+    );
+
+    if (persisted) {
+      try {
+        await addPulseFeedback(
+          authSession,
+          {
+            kind:
+              "not_interested",
+            mediaId:
+              targetVideo.id,
+          }
+        );
+      } catch (
+        error
+      ) {
+        console.warn(
+          "CLIPS NOT INTERESTED ERROR:",
+          error
+        );
+      }
+    }
+  }
+
+  async function markLessFromClipAuthor(
+    targetVideo = video
+  ) {
+    const authorId =
+      targetVideo?.author?.id;
+
+    if (
+      !authorId ||
+      authorId ===
+        authSession?.user?.id
+    ) {
+      return;
+    }
+
+    nativeLightHaptic();
+
+    clipVideoRef.current
+      ?.pause?.();
+
+    setSessionMutedAuthorIds(
+      (
+        previous
+      ) =>
+        new Set([
+          ...previous,
+          authorId,
+        ])
+    );
+
+    const persisted =
+      Boolean(
+        targetVideo?.backend &&
+        authSession?.user?.id
+      );
+
+    setFeedbackNotice({
+      kind:
+        "less_from_author",
+      mediaId:
+        null,
+      authorId,
+      persisted,
+      label:
+        "Показуватимемо менше цього автора",
+    });
+
+    setMoreOpen(
+      false
+    );
+
+    if (persisted) {
+      try {
+        await addPulseFeedback(
+          authSession,
+          {
+            kind:
+              "less_from_author",
+            authorId,
+          }
+        );
+      } catch (
+        error
+      ) {
+        console.warn(
+          "CLIPS LESS AUTHOR ERROR:",
+          error
+        );
+      }
+    }
+  }
+
+  async function undoClipFeedback() {
+    const target =
+      feedbackNotice;
+
+    if (!target) {
+      return;
+    }
+
+    setFeedbackNotice(
+      null
+    );
+
+    if (
+      target.mediaId
+    ) {
+      setSessionHiddenMediaIds(
+        (
+          previous
+        ) => {
+          const next =
+            new Set(
+              previous
+            );
+
+          next.delete(
+            target.mediaId
+          );
+
+          return next;
+        }
+      );
+    }
+
+    if (
+      target.authorId
+    ) {
+      setSessionMutedAuthorIds(
+        (
+          previous
+        ) => {
+          const next =
+            new Set(
+              previous
+            );
+
+          next.delete(
+            target.authorId
+          );
+
+          return next;
+        }
+      );
+    }
+
+    if (
+      target.persisted &&
+      authSession?.user?.id
+    ) {
+      try {
+        await removePulseFeedback(
+          authSession,
+          {
+            kind:
+              target.kind,
+            mediaId:
+              target.mediaId,
+            authorId:
+              target.authorId,
+          }
+        );
+      } catch (
+        error
+      ) {
+        console.warn(
+          "CLIPS FEEDBACK UNDO ERROR:",
+          error
+        );
+      }
+    }
+  }
+
+  useEffect(
+    () => {
+      if (!feedbackNotice) {
+        return undefined;
+      }
+
+      const timer =
+        window.setTimeout(
+          () =>
+            setFeedbackNotice(
+              null
+            ),
+          5200
+        );
+
+      return () =>
+        window.clearTimeout(
+          timer
+        );
+    },
+    [
+      feedbackNotice,
+    ]
+  );
 
   function nextVideo() {
     if (!clips.length) {
@@ -1045,15 +1340,29 @@ export default function ClipsPage({
 
                   <button
                     type="button"
-                    onClick={() => {
-                      nextVideo();
-                      setMoreOpen(
-                        false
-                      );
-                    }}
+                    onClick={() =>
+                      markClipNotInterested(
+                        video
+                      )
+                    }
                   >
                     Не цікаво
                   </button>
+
+                  {video.author?.id &&
+                    video.author.id !==
+                      authSession?.user?.id && (
+                    <button
+                      type="button"
+                      onClick={() =>
+                        markLessFromClipAuthor(
+                          video
+                        )
+                      }
+                    >
+                      Менше від цього автора
+                    </button>
+                  )}
                 </div>
               )}
             </div>
@@ -1424,6 +1733,48 @@ export default function ClipsPage({
           pulseSocial.refresh
         }
       />
+
+      <AnimatePresence>
+        {feedbackNotice && (
+          <motion.div
+            className="pulse-clips-feedback-toast"
+            initial={{
+              opacity: 0,
+              y: 18,
+              scale: 0.98,
+            }}
+            animate={{
+              opacity: 1,
+              y: 0,
+              scale: 1,
+            }}
+            exit={{
+              opacity: 0,
+              y: 12,
+              scale: 0.985,
+            }}
+            transition={{
+              duration:
+                0.18,
+            }}
+          >
+            <span>
+              {
+                feedbackNotice.label
+              }
+            </span>
+
+            <button
+              type="button"
+              onClick={
+                undoClipFeedback
+              }
+            >
+              Скасувати
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
