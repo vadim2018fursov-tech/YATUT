@@ -43,6 +43,14 @@ import {
 } from "../services/feedBackendService";
 
 import {
+  hasMyActiveStory,
+} from "../services/storyBackendService";
+
+import {
+  subscribeStoriesRealtime,
+} from "../services/realtimeService";
+
+import {
   uploadProfileImage,
 } from "../services/storageService";
 
@@ -431,6 +439,12 @@ export default function Profile({
     useState(false);
 
   const [
+    hasActiveStory,
+    setHasActiveStory,
+  ] =
+    useState(false);
+
+  const [
     profilePosts,
     setProfilePosts,
   ] =
@@ -501,6 +515,92 @@ export default function Profile({
       type,
     });
   }
+
+  useEffect(
+    () => {
+      if (
+        !authSession?.user?.id
+      ) {
+        setHasActiveStory(
+          false
+        );
+
+        return undefined;
+      }
+
+      let active =
+        true;
+
+      let refreshTimer =
+        null;
+
+      const refreshStoryState =
+        async () => {
+          try {
+            const next =
+              await hasMyActiveStory(
+                authSession
+              );
+
+            if (active) {
+              setHasActiveStory(
+                next
+              );
+            }
+          } catch (
+            error
+          ) {
+            console.warn(
+              "PROFILE STORY STATE ERROR:",
+              error
+            );
+          }
+        };
+
+      refreshStoryState();
+
+      const channel =
+        subscribeStoriesRealtime({
+          session:
+            authSession,
+          onChange:
+            () => {
+              if (
+                refreshTimer
+              ) {
+                window.clearTimeout(
+                  refreshTimer
+                );
+              }
+
+              refreshTimer =
+                window.setTimeout(
+                  refreshStoryState,
+                  90
+                );
+            },
+        });
+
+      return () => {
+        active =
+          false;
+
+        if (
+          refreshTimer
+        ) {
+          window.clearTimeout(
+            refreshTimer
+          );
+        }
+
+        channel?.close?.();
+      };
+    },
+    [
+      authSession?.user?.id,
+      authSession?.access_token,
+    ]
+  );
 
   /* =======================================================
      SAVE PROFILE
@@ -2077,15 +2177,41 @@ export default function Profile({
 
             {/* AVATAR */}
 
-            <div className="profile-v2-avatar-wrap">
+            <div
+              className={`profile-v2-avatar-wrap ${
+                hasActiveStory
+                  ? "has-story"
+                  : ""
+              } ${
+                profile.online
+                  ? "is-online"
+                  : ""
+              }`.trim()}
+              data-story={
+                hasActiveStory
+                  ? "active"
+                  : "none"
+              }
+            >
 
               <div className="profile-v2-avatar-pulse">
 
                 <motion.button
                   type="button"
                   className="profile-v2-avatar"
+                  whileHover={{
+                    scale: 1.012,
+                  }}
                   whileTap={{
                     scale: 0.965,
+                  }}
+                  transition={{
+                    type:
+                      "spring",
+                    stiffness:
+                      460,
+                    damping:
+                      34,
                   }}
                   onClick={() =>
                     openProfileMedia(
@@ -2093,7 +2219,11 @@ export default function Profile({
                       "image"
                     )
                   }
-                  aria-label="Відкрити фото профілю"
+                  aria-label={
+                    hasActiveStory
+                      ? "Відкрити фото профілю. Є активна історія"
+                      : "Відкрити фото профілю"
+                  }
                   disabled={
                     !profile.avatar
                   }
