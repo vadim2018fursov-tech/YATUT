@@ -3137,11 +3137,20 @@ function Home({
       null;
 
     const refresh =
-      async () => {
+      async (
+        {
+          showLoading = false,
+        } = {}
+      ) => {
         try {
-          setFeedLoading(
-            true
-          );
+          if (
+            showLoading &&
+            active
+          ) {
+            setFeedLoading(
+              true
+            );
+          }
 
           await refreshBackendFeed();
         } catch (
@@ -3153,6 +3162,7 @@ function Home({
           );
         } finally {
           if (
+            showLoading &&
             active
           ) {
             setFeedLoading(
@@ -3162,7 +3172,9 @@ function Home({
         }
       };
 
-    refresh();
+    refresh({
+      showLoading: true,
+    });
 
     const channel =
       subscribeFeedRealtime({
@@ -3180,7 +3192,11 @@ function Home({
 
             refreshTimer =
               window.setTimeout(
-                refresh,
+                () =>
+                refresh({
+                  showLoading:
+                    false,
+                }),
                 120
               );
           },
