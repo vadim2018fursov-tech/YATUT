@@ -1,4 +1,5 @@
 import {
+  useCallback,
   useEffect,
   useMemo,
   useState,
@@ -124,14 +125,8 @@ export default function PulsePage({
     setCurrentCity,
   ] = useState("");
 
-  useEffect(() => {
-    let active =
-      true;
-
-    let refreshTimer =
-      null;
-
-    const refresh =
+  const refreshRankedFeeds =
+    useCallback(
       async () => {
         try {
           const feeds =
@@ -143,48 +138,36 @@ export default function PulsePage({
               }
             );
 
-          if (
-            active
-          ) {
-            setBackendVideos(
-              feeds.all
-            );
+          setBackendVideos(
+            feeds.all
+          );
 
-            setForYouVideos(
-              feeds.forYou
-            );
+          setForYouVideos(
+            feeds.forYou
+          );
 
-            setFollowingVideos(
-              feeds.following
-            );
+          setFollowingVideos(
+            feeds.following
+          );
 
-            setTrendingBackendVideos(
-              feeds.trending
-            );
+          setTrendingBackendVideos(
+            feeds.trending
+          );
 
-            setFriendBackendVideos(
-              feeds.friends ||
-              []
-            );
+          setFriendBackendVideos(
+            feeds.friends ||
+            []
+          );
 
-            setCityBackendVideos(
-              feeds.city ||
-              []
-            );
+          setCityBackendVideos(
+            feeds.city ||
+            []
+          );
 
-            setNearbyBackendVideos(
-              feeds.nearby ||
-              []
-            );
-
-            setCurrentCity(
-              String(
-                feeds.currentCity ||
-                ""
-              )
-                .trim()
-            );
-          }
+          setNearbyBackendVideos(
+            feeds.nearby ||
+            []
+          );
         } catch (
           error
         ) {
@@ -193,9 +176,18 @@ export default function PulsePage({
             error
           );
         }
-      };
+      },
+      [
+        authSession?.user?.id,
+        authSession?.access_token,
+      ]
+    );
 
-    refresh();
+  useEffect(() => {
+    let refreshTimer =
+      null;
+
+    refreshRankedFeeds();
 
     const realtime =
       subscribePulseRealtime({
@@ -217,16 +209,13 @@ export default function PulsePage({
 
             refreshTimer =
               window.setTimeout(
-                refresh,
+                refreshRankedFeeds,
                 120
               );
           },
       });
 
     return () => {
-      active =
-        false;
-
       window.clearTimeout(
         refreshTimer
       );
@@ -236,7 +225,36 @@ export default function PulsePage({
   }, [
     authSession?.user?.id,
     authSession?.access_token,
+    refreshRankedFeeds,
   ]);
+
+  useEffect(
+    () => {
+      function refreshWhenVisible() {
+        if (
+          document.visibilityState ===
+            "visible"
+        ) {
+          refreshRankedFeeds();
+        }
+      }
+
+      document.addEventListener(
+        "visibilitychange",
+        refreshWhenVisible
+      );
+
+      return () => {
+        document.removeEventListener(
+          "visibilitychange",
+          refreshWhenVisible
+        );
+      };
+    },
+    [
+      refreshRankedFeeds,
+    ]
+  );
 
   const activeVideos =
     useMemo(
@@ -378,6 +396,11 @@ export default function PulsePage({
     setActiveTab(
       tab
     );
+
+    window.setTimeout(
+      refreshRankedFeeds,
+      180
+    );
   }
 
   function continueWave() {
@@ -518,6 +541,9 @@ export default function PulsePage({
         }
         socialRevision={
           socialRevision
+        }
+        onRequestRefresh={
+          refreshRankedFeeds
         }
       />
 
