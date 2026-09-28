@@ -27044,3 +27044,43 @@ body.yatut-dark-mode
   background:
     transparent;
 }
+
+
+/* =========================================================
+   CHAT SEND LOCK STATE
+========================================================= */
+
+.chat-send:disabled,
+.chat-send.is-sending {
+  cursor: wait;
+  opacity: .72;
+  pointer-events: none;
+}
+
+.chat-send.is-sending {
+  animation:
+    yatutChatSendingPulse
+    .8s
+    ease-in-out
+    infinite
+    alternate;
+}
+
+@keyframes yatutChatSendingPulse {
+  from {
+    transform: scale(.96);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+  .chat-send.is-sending {
+    animation: none;
+  }
+}
