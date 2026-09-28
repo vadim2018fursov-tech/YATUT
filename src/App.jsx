@@ -4560,7 +4560,7 @@ function Home({
       />
 
       <nav className="feed-tabs">
-        <button
+        <motion.button
           className={`feed-tab ${
             feedTab ===
             "for-you"
@@ -4568,16 +4568,34 @@ function Home({
               : ""
           }`}
           type="button"
+          whileTap={{
+            scale: 0.96,
+          }}
           onClick={() =>
             setFeedTab(
               "for-you"
             )
           }
         >
-          Для вас
-        </button>
+          {feedTab ===
+            "for-you" && (
+            <motion.span
+              layoutId="home-feed-tab-active"
+              className="feed-tab-motion-bg"
+              transition={{
+                type: "spring",
+                stiffness: 470,
+                damping: 38,
+              }}
+            />
+          )}
 
-        <button
+          <span className="feed-tab-motion-label">
+            Для вас
+          </span>
+        </motion.button>
+
+        <motion.button
           className={`feed-tab ${
             feedTab ===
             "friends"
@@ -4585,16 +4603,34 @@ function Home({
               : ""
           }`}
           type="button"
+          whileTap={{
+            scale: 0.96,
+          }}
           onClick={() =>
             setFeedTab(
               "friends"
             )
           }
         >
-          Друзі
-        </button>
+          {feedTab ===
+            "friends" && (
+            <motion.span
+              layoutId="home-feed-tab-active"
+              className="feed-tab-motion-bg"
+              transition={{
+                type: "spring",
+                stiffness: 470,
+                damping: 38,
+              }}
+            />
+          )}
 
-        <button
+          <span className="feed-tab-motion-label">
+            Друзі
+          </span>
+        </motion.button>
+
+        <motion.button
           className={`feed-tab ${
             feedTab ===
             "following"
@@ -4602,14 +4638,32 @@ function Home({
               : ""
           }`}
           type="button"
+          whileTap={{
+            scale: 0.96,
+          }}
           onClick={() =>
             setFeedTab(
               "following"
             )
           }
         >
-          Підписки
-        </button>
+          {feedTab ===
+            "following" && (
+            <motion.span
+              layoutId="home-feed-tab-active"
+              className="feed-tab-motion-bg"
+              transition={{
+                type: "spring",
+                stiffness: 470,
+                damping: 38,
+              }}
+            />
+          )}
+
+          <span className="feed-tab-motion-label">
+            Підписки
+          </span>
+        </motion.button>
       </nav>
 
       <PostComposer
