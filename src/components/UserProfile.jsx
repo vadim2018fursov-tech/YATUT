@@ -697,21 +697,6 @@ function UserProfile({
                   >
                     <button
                       type="button"
-                      onClick={() =>
-                        showNotice(
-                          "Користувача приховано з рекомендацій"
-                        )
-                      }
-                    >
-                      Не показувати
-                    </button>
-                  </DropdownMenu.Item>
-
-                  <DropdownMenu.Item
-                    asChild
-                  >
-                    <button
-                      type="button"
                       onClick={
                         handleReport
                       }
@@ -1276,16 +1261,6 @@ function UserProfile({
             <h3>
               Безпека
             </h3>
-
-            <button
-              onClick={() =>
-                showNotice(
-                  "Профіль приховано з рекомендацій"
-                )
-              }
-            >
-              🙈 Не показувати в рекомендаціях
-            </button>
 
             <button
               onClick={
