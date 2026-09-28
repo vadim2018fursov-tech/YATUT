@@ -27125,3 +27125,118 @@ body.yatut-dark-mode
     left: 69px;
   }
 }
+
+
+/* =========================================================
+   FRIEND PROFILE INTERACTIVE STATS
+========================================================= */
+
+.other-profile-stat-strip
+> button {
+  position: relative;
+  min-width: 0;
+  min-height: 60px;
+  padding:
+    8px
+    6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  border: 0;
+  border-radius: 14px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.other-profile-stat-strip
+> button +
+button::before {
+  content: "";
+  position: absolute;
+  top: 12px;
+  bottom: 12px;
+  left: -2px;
+  width: 1px;
+  background: #ececf2;
+}
+
+.other-profile-stat-strip
+> button:hover {
+  background: #f7f6ff;
+}
+
+.other-profile-stat-strip
+> button strong {
+  color: #242731;
+  font-size: 19px;
+  font-weight: 900;
+  letter-spacing: -.35px;
+}
+
+.other-profile-stat-strip
+> button span {
+  overflow: hidden;
+  color: #989ca7;
+  font-size: 9px;
+  font-weight: 760;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+body.yatut-dark-mode
+.other-profile-stat-strip
+> button strong {
+  color: #f3f4f7;
+}
+
+body.yatut-dark-mode
+.other-profile-stat-strip
+> button +
+button::before {
+  background: #343640;
+}
+
+body.yatut-dark-mode
+.other-profile-stat-strip
+> button:hover {
+  background:
+    rgba(
+      99,
+      91,
+      255,
+      .12
+    );
+}
+
+@media (max-width: 767px) {
+  .other-profile-stat-strip
+  > button {
+    min-height: 53px;
+    padding:
+      6px
+      3px;
+    border-radius: 12px;
+  }
+
+  .other-profile-stat-strip
+  > button strong {
+    font-size:
+      clamp(
+        16px,
+        4.5vw,
+        19px
+      );
+  }
+
+  .other-profile-stat-strip
+  > button span {
+    font-size:
+      clamp(
+        7px,
+        2.25vw,
+        9px
+      );
+  }
+}
