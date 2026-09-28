@@ -119,6 +119,11 @@ export default function PulsePage({
     setSocialRevision,
   ] = useState(0);
 
+  const [
+    currentCity,
+    setCurrentCity,
+  ] = useState("");
+
   useEffect(() => {
     let active =
       true;
@@ -170,6 +175,14 @@ export default function PulsePage({
             setNearbyBackendVideos(
               feeds.nearby ||
               []
+            );
+
+            setCurrentCity(
+              String(
+                feeds.currentCity ||
+                ""
+              )
+                .trim()
             );
           }
         } catch (
@@ -694,7 +707,13 @@ export default function PulsePage({
 
           <PulseVideoRail
             title="Твоє місто"
-            subtitle="Київ прямо зараз"
+            subtitle={
+              currentCity
+                ? `${currentCity
+                    .charAt(0)
+                    .toUpperCase()}${currentCity.slice(1)} прямо зараз`
+                : "Додай місто у профілі — і тут зʼявиться локальний PULSE"
+            }
             type="city"
             videos={
               cityVideos
