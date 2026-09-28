@@ -370,6 +370,102 @@ async function getLatestMessage(
     : null;
 }
 
+function dedupeBackendMessageRows(
+  rows = []
+) {
+  const seenIds =
+    new Set();
+
+  const recentByFingerprint =
+    new Map();
+
+  return rows
+    .filter(Boolean)
+    .filter(
+      (
+        row
+      ) => {
+        const id =
+          String(
+            row.id ||
+            ""
+          );
+
+        if (
+          id &&
+          seenIds.has(
+            id
+          )
+        ) {
+          return false;
+        }
+
+        if (id) {
+          seenIds.add(
+            id
+          );
+        }
+
+        const fingerprint = [
+          row.conversation_id ||
+            "",
+          row.sender_id ||
+            "",
+          row.kind ||
+            "text",
+          row.body ||
+            "",
+          row.media_path ||
+            "",
+          row.file_name ||
+            "",
+        ].join(
+          "::"
+        );
+
+        const createdAt =
+          Date.parse(
+            row.created_at ||
+            ""
+          );
+
+        const previousAt =
+          recentByFingerprint.get(
+            fingerprint
+          );
+
+        if (
+          Number.isFinite(
+            previousAt
+          ) &&
+          Number.isFinite(
+            createdAt
+          ) &&
+          Math.abs(
+            createdAt -
+              previousAt
+          ) <=
+            3000
+        ) {
+          return false;
+        }
+
+        if (
+          Number.isFinite(
+            createdAt
+          )
+        ) {
+          recentByFingerprint.set(
+            fingerprint,
+            createdAt
+          );
+        }
+
+        return true;
+      }
+    );
+}
+
 function messagePreview(
   message
 ) {
@@ -1100,17 +1196,19 @@ export async function loadBackendMessages(
     );
 
   const visibleRows =
-    (
-      Array.isArray(
-        rows
-      )
-        ? rows
-        : []
-    ).filter(
+    dedupeBackendMessageRows(
       (
-        row
-      ) =>
-        !row.deleted_at
+        Array.isArray(
+          rows
+        )
+          ? rows
+          : []
+      ).filter(
+        (
+          row
+        ) =>
+          !row.deleted_at
+      )
     );
 
   const senderIds =
