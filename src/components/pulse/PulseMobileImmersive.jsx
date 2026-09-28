@@ -1217,6 +1217,7 @@ export default function PulseMobileImmersive({
   followingVideos = [],
   authSession = null,
   socialRevision = 0,
+  onRequestRefresh = null,
 }) {
   const [
     activeTab,
@@ -1289,6 +1290,12 @@ export default function PulseMobileImmersive({
 
     setActiveTab(
       tabId
+    );
+
+    window.setTimeout(
+      () =>
+        onRequestRefresh?.(),
+      180
     );
   }
 
@@ -1475,6 +1482,25 @@ export default function PulseMobileImmersive({
     ]
   );
 
+  function handleLongWatchChange(
+    open
+  ) {
+    if (
+      longWatchOpen &&
+      !open
+    ) {
+      window.setTimeout(
+        () =>
+          onRequestRefresh?.(),
+        180
+      );
+    }
+
+    setLongWatchOpen(
+      open
+    );
+  }
+
   async function share(
     video
   ) {
@@ -1622,7 +1648,7 @@ export default function PulseMobileImmersive({
             authSession
           }
           onWatchChange={
-            setLongWatchOpen
+            handleLongWatchChange
           }
         />
       ) : (
