@@ -1429,23 +1429,15 @@ button.is-active {
 
 /* =========================================================
    PULSE SWIPE + HIDDEN SCROLLBAR
+   iOS-safe: only the feed scrolls, never the app shell.
 ========================================================= */
 
 @media (max-width: 767px) {
-  html:has(.pulse-immersive-mobile),
-  body:has(.pulse-immersive-mobile),
-  #root:has(.pulse-immersive-mobile),
-  .app:has(.pulse-immersive-mobile) {
+  html:has(.pulse-immersive-mobile) {
+    width:
+      100%;
     height:
-      var(
-        --yatut-visual-viewport-height,
-        100dvh
-      ) !important;
-    max-height:
-      var(
-        --yatut-visual-viewport-height,
-        100dvh
-      ) !important;
+      100%;
     overflow:
       hidden !important;
     scrollbar-width:
@@ -1454,14 +1446,55 @@ button.is-active {
       none;
   }
 
+  body:has(.pulse-immersive-mobile) {
+    position:
+      fixed;
+    inset:
+      0;
+    width:
+      100%;
+    height:
+      var(
+        --yatut-visual-viewport-height,
+        100dvh
+      ) !important;
+    min-height:
+      0 !important;
+    max-height:
+      var(
+        --yatut-visual-viewport-height,
+        100dvh
+      ) !important;
+    margin:
+      0 !important;
+    padding-bottom:
+      0 !important;
+    overflow:
+      hidden !important;
+    scrollbar-width:
+      none !important;
+    overscroll-behavior:
+      none;
+  }
+
+  #root:has(.pulse-immersive-mobile),
+  .app:has(.pulse-immersive-mobile) {
+    width:
+      100%;
+    min-height:
+      100%;
+    overflow:
+      visible !important;
+  }
+
   html:has(.pulse-immersive-mobile)::-webkit-scrollbar,
   body:has(.pulse-immersive-mobile)::-webkit-scrollbar,
-  #root:has(.pulse-immersive-mobile)::-webkit-scrollbar,
-  .app:has(.pulse-immersive-mobile)::-webkit-scrollbar,
   .pulse-immersive-mobile::-webkit-scrollbar,
   .pulse-immersive__feed::-webkit-scrollbar {
-    width: 0 !important;
-    height: 0 !important;
+    width:
+      0 !important;
+    height:
+      0 !important;
     display:
       none !important;
   }
@@ -1474,15 +1507,61 @@ button.is-active {
       none;
   }
 
+  .pulse-immersive-mobile {
+    overflow:
+      hidden !important;
+    overscroll-behavior:
+      none;
+  }
+
   .pulse-immersive__feed {
+    overflow-x:
+      hidden !important;
+    overflow-y:
+      auto !important;
     touch-action:
       pan-y;
-    overscroll-behavior-x:
-      none;
+    overscroll-behavior:
+      contain;
+    -webkit-overflow-scrolling:
+      touch;
   }
 
   .pulse-immersive__tabs {
     touch-action:
       pan-x;
+  }
+
+  .app:has(.pulse-immersive-mobile)
+  .mobile-nav {
+    position:
+      fixed !important;
+    right:
+      8px !important;
+    bottom:
+      calc(
+        7px +
+        env(
+          safe-area-inset-bottom
+        )
+      ) !important;
+    left:
+      8px !important;
+    z-index:
+      50000 !important;
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      );
+    backface-visibility:
+      hidden;
+    -webkit-backface-visibility:
+      hidden;
+    will-change:
+      transform;
+    contain:
+      layout paint;
   }
 }
