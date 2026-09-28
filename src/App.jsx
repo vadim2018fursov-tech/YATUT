@@ -70,6 +70,8 @@ import EventsPulsePage from "./pages/EventsPulsePage";
 import CreatorStudioPage from "./pages/CreatorStudioPage";
 import CreatorProfilePage from "./pages/CreatorProfilePage";
 import CreateHubPage from "./pages/CreateHubPage";
+import CreatePostPage from "./pages/CreatePostPage";
+import CreateStoryPage from "./pages/CreateStoryPage";
 import CreateMediaPage from "./pages/CreateMediaPage";
 
 import YatutIcon from "./components/YatutIcon";
@@ -387,12 +389,27 @@ function routeFromLocation() {
   }
 
   if (first === "create") {
+    if (parts[1] === "post") {
+      return {
+        page: "createPost",
+        payload: null,
+      };
+    }
+
+    if (parts[1] === "story") {
+      return {
+        page: "createStory",
+        payload: null,
+      };
+    }
+
     if (parts[1] === "media") {
       return {
         page: "createMedia",
         payload: { type: parts[2] || "video" },
       };
     }
+
     return { page: "create", payload: null };
   }
 
@@ -463,6 +480,8 @@ function routeToUrl(page, payload = null) {
     case "cityPulse":
       return `/pulse/city/${encode(payload?.cityId || "kyiv")}`;
     case "create": return "/create";
+    case "createPost": return "/create/post";
+    case "createStory": return "/create/story";
     case "createMedia":
       return `/create/media/${encode(payload?.type || "video")}`;
     case "creatorStudio": return "/studio";
@@ -8227,6 +8246,30 @@ function App() {
           <CreateHubPage
             onNavigate={
               goToPage
+            }
+          />
+        );
+
+      case "createPost":
+        return (
+          <CreatePostPage
+            onNavigate={
+              goToPage
+            }
+            authSession={
+              authSession
+            }
+          />
+        );
+
+      case "createStory":
+        return (
+          <CreateStoryPage
+            onNavigate={
+              goToPage
+            }
+            authSession={
+              authSession
             }
           />
         );
