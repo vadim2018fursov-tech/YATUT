@@ -668,9 +668,6 @@ export default function PulseLongVideoMobile({
   function handleLongPlaybackStart() {
     pulseSocial.recordView();
 
-    const watch =
-      longWatchRef.current;
-
     if (
       !selectedVideo?.backend ||
       !authSession?.user?.id
@@ -679,13 +676,17 @@ export default function PulseLongVideoMobile({
     }
 
     if (
-      watch.mediaId !==
+      longWatchRef.current
+        .mediaId !==
       selectedVideo.id
     ) {
       resetLongWatch(
         selectedVideo.id
       );
     }
+
+    const watch =
+      longWatchRef.current;
 
     if (!watch.active) {
       watch.active =
