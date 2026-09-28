@@ -5,7 +5,7 @@ import {
   useState,
 } from "react";
 
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 
 import "./styles/tokens.css";
 import "./App.css";
@@ -75,6 +75,7 @@ import CreateMediaPage from "./pages/CreateMediaPage";
 import YatutIcon from "./components/YatutIcon";
 import AnimatedPageSwitch from "./components/AnimatedPageSwitch";
 import YatutBootScreen from "./components/YatutBootScreen";
+import YatutMediaViewer from "./components/ui/YatutMediaViewer";
 import useYatutAutoAnimate from "./hooks/useYatutAutoAnimate";
 
 import {
@@ -2267,6 +2268,16 @@ function PostCard({
   onNavigate,
   viewerProfile = null,
 }) {
+
+  const [
+    postMenuOpen,
+    setPostMenuOpen,
+  ] = useState(false);
+
+  const [
+    mediaOpen,
+    setMediaOpen,
+  ] = useState(false);
   return (
     <article
       id={`yatut-post-${post.id}`}
@@ -2311,23 +2322,106 @@ function PostCard({
           </div>
         </div>
 
-        {post.own ? (
-          <button
+        <div className="post-card-menu-wrap">
+          <motion.button
             className="post-delete-button"
             type="button"
+            whileTap={{
+              scale: 0.9,
+            }}
             onClick={() =>
-              onDelete(
-                post.id
+              setPostMenuOpen(
+                (
+                  value
+                ) =>
+                  !value
               )
             }
-            aria-label="Видалити допис"
+            aria-label="Меню допису"
+            aria-expanded={
+              postMenuOpen
+            }
           >
             <YatutIcon
               name="more"
               size={18}
             />
-          </button>
-) : null}
+          </motion.button>
+
+          <AnimatePresence>
+            {postMenuOpen && (
+              <motion.div
+                className="post-card-menu"
+                initial={{
+                  opacity: 0,
+                  y: 6,
+                  scale: 0.96,
+                }}
+                animate={{
+                  opacity: 1,
+                  y: 0,
+                  scale: 1,
+                }}
+                exit={{
+                  opacity: 0,
+                  y: 4,
+                  scale: 0.97,
+                }}
+                transition={{
+                  duration: 0.16,
+                }}
+              >
+                <button
+                  type="button"
+                  onClick={() => {
+                    setPostMenuOpen(
+                      false
+                    );
+
+                    onShare(
+                      post.id
+                    );
+                  }}
+                >
+                  Поділитися
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setPostMenuOpen(
+                      false
+                    );
+
+                    onToggleSaved();
+                  }}
+                >
+                  {saved
+                    ? "Прибрати зі збережених"
+                    : "Зберегти"}
+                </button>
+
+                {post.own && (
+                  <button
+                    type="button"
+                    className="danger"
+                    onClick={() => {
+                      setPostMenuOpen(
+                        false
+                      );
+
+                      onDelete(
+                        post.id
+                      );
+                    }}
+                  >
+                    Видалити допис
+                  </button>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </header>
 
       {post.text && (
@@ -2388,12 +2482,26 @@ function PostCard({
               playsInline
             />
           ) : (
-            <img
-              src={
-                post.media
+            <motion.button
+              type="button"
+              className="post-media-open"
+              whileTap={{
+                scale: 0.995,
+              }}
+              onClick={() =>
+                setMediaOpen(
+                  true
+                )
               }
-              alt="Медіа допису"
-            />
+              aria-label="Відкрити фото"
+            >
+              <img
+                src={
+                  post.media
+                }
+                alt="Медіа допису"
+              />
+            </motion.button>
           )}
         </div>
       )}
@@ -2647,6 +2755,25 @@ function PostCard({
           }
         />
       )}
+
+      <YatutMediaViewer
+        open={
+          mediaOpen
+        }
+        onOpenChange={
+          setMediaOpen
+        }
+        src={
+          post.media
+        }
+        type={
+          post.mediaType ===
+          "video"
+            ? "video"
+            : "image"
+        }
+        alt="Медіа допису"
+      />
     </article>
   );
 }
