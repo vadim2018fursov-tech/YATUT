@@ -1742,9 +1742,6 @@ export default function Friends({
                 );
               }
 
-              showNotice(
-                "Скаргу надіслано"
-              );
             } catch (
               error
             ) {
