@@ -495,6 +495,12 @@ export default function Profile({
     type: "image",
   });
 
+  const mobileStatusWrapRef =
+    useRef(null);
+
+  const desktopStatusWrapRef =
+    useRef(null);
+
   const [
     profilePostsAnimateRef,
   ] = useYatutAutoAnimate({
@@ -599,6 +605,80 @@ export default function Profile({
     [
       authSession?.user?.id,
       authSession?.access_token,
+    ]
+  );
+
+  useEffect(
+    () => {
+      if (!statusOpen) {
+        return undefined;
+      }
+
+      function handlePointerDown(
+        event
+      ) {
+        const target =
+          event.target;
+
+        const insideMobile =
+          mobileStatusWrapRef.current
+            ?.contains?.(
+              target
+            );
+
+        const insideDesktop =
+          desktopStatusWrapRef.current
+            ?.contains?.(
+              target
+            );
+
+        if (
+          !insideMobile &&
+          !insideDesktop
+        ) {
+          setStatusOpen(
+            false
+          );
+        }
+      }
+
+      function handleKeyDown(
+        event
+      ) {
+        if (
+          event.key ===
+          "Escape"
+        ) {
+          setStatusOpen(
+            false
+          );
+        }
+      }
+
+      document.addEventListener(
+        "pointerdown",
+        handlePointerDown
+      );
+
+      document.addEventListener(
+        "keydown",
+        handleKeyDown
+      );
+
+      return () => {
+        document.removeEventListener(
+          "pointerdown",
+          handlePointerDown
+        );
+
+        document.removeEventListener(
+          "keydown",
+          handleKeyDown
+        );
+      };
+    },
+    [
+      statusOpen,
     ]
   );
 
@@ -2064,10 +2144,18 @@ export default function Profile({
               </span>
             </div>
 
-            <div className="profile-v3-mobile-status-wrap">
+            <div
+              ref={
+                mobileStatusWrapRef
+              }
+              className="profile-v3-mobile-status-wrap"
+            >
               <button
                 className="profile-v3-mobile-status"
                 type="button"
+                aria-expanded={
+                  statusOpen
+                }
                 onClick={() =>
                   setStatusOpen(
                     (
@@ -2336,11 +2424,19 @@ export default function Profile({
 
               {/* STATUS */}
 
-              <div className="profile-v2-status-wrap">
+              <div
+                ref={
+                  desktopStatusWrapRef
+                }
+                className="profile-v2-status-wrap"
+              >
 
                 <button
                   className="profile-v2-status"
                   type="button"
+                  aria-expanded={
+                    statusOpen
+                  }
                   onClick={() =>
                     setStatusOpen(
                       (
