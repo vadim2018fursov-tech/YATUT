@@ -107,8 +107,6 @@ import {
 import {
   getNotifications,
   ingestNotificationEvent,
-  markNotificationRead,
-  removeNotification,
   replaceNotifications,
   subscribeNotifications,
 } from "./storage/notificationService";
@@ -144,9 +142,7 @@ import {
 } from "./services/realtimeService";
 
 import {
-  deleteBackendNotification,
   loadBackendNotifications,
-  markBackendNotificationRead,
 } from "./services/notificationBackendService";
 
 import {
@@ -7537,56 +7533,6 @@ function App() {
     authSession?.access_token,
   ]);
 
-  /* =======================================================
-     MARK MESSAGE NOTIFICATIONS READ
-  ======================================================= */
-
-  function markChatNotificationsRead() {
-    const messageNotifications =
-      getNotifications().filter(
-        (
-          notification
-        ) =>
-          notification.type ===
-          "message"
-      );
-
-    messageNotifications.forEach(
-      (
-        notification
-      ) => {
-        removeNotification(
-          notification.id
-        );
-
-        if (
-          notification.backend &&
-          authSession?.user?.id
-        ) {
-          deleteBackendNotification(
-            authSession,
-            notification.id
-          ).catch(
-            (
-              error
-            ) => {
-              console.warn(
-                "BACKEND MESSAGE NOTIFICATION DELETE ERROR:",
-                error
-              );
-            }
-          );
-        } else if (
-          !notification.read
-        ) {
-          markNotificationRead(
-            notification.id
-          );
-        }
-      }
-    );
-  }
-
   useEffect(() => {
     let media = null;
 
@@ -7816,13 +7762,6 @@ function App() {
       page ===
       "chats"
     ) {
-      /*
-        Когда пользователь открывает раздел Чаты,
-        считаем message-уведомления просмотренными.
-      */
-
-      markChatNotificationsRead();
-
       if (
         typeof payload ===
         "string"
