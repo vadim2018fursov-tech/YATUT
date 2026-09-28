@@ -325,7 +325,9 @@ function PulseImmersiveSlide({
   const watchStateRef =
     useRef({
       active: false,
+      visible: false,
       startedAt: 0,
+      accumulatedMs: 0,
       completionCount: 0,
       replayCount: 0,
       cycleCompleted: false,
@@ -449,26 +451,24 @@ function PulseImmersiveSlide({
         slideRef.current;
 
       if (!element) {
-        return;
+        return undefined;
       }
 
       const watch =
         watchStateRef.current;
 
-      function startWatch() {
-        if (
-          watch.active ||
-          !video?.backend ||
-          !authSession?.user?.id
-        ) {
-          return;
-        }
+      const media =
+        videoRef.current;
 
+      function resetExposure() {
         watch.active =
-          true;
+          false;
 
         watch.startedAt =
-          performance.now();
+          0;
+
+        watch.accumulatedMs =
+          0;
 
         watch.completionCount =
           0;
@@ -487,19 +487,29 @@ function PulseImmersiveSlide({
           );
       }
 
-      function flushWatch() {
+      function startPlaybackWatch() {
         if (
-          !watch.active ||
+          watch.active ||
+          !watch.visible ||
           !video?.backend ||
           !authSession?.user?.id
         ) {
-          watch.active =
-            false;
-
           return;
         }
 
-        const watchMs =
+        watch.active =
+          true;
+
+        watch.startedAt =
+          performance.now();
+      }
+
+      function accumulatePlaybackWatch() {
+        if (!watch.active) {
+          return;
+        }
+
+        watch.accumulatedMs +=
           Math.max(
             0,
             Math.round(
@@ -511,9 +521,40 @@ function PulseImmersiveSlide({
         watch.active =
           false;
 
+        watch.startedAt =
+          0;
+      }
+
+      function flushWatch() {
+        accumulatePlaybackWatch();
+
+        const watchMs =
+          Math.max(
+            0,
+            Math.round(
+              watch.accumulatedMs ||
+              0
+            )
+          );
+
+        const completed =
+          watch.completionCount >
+          0;
+
+        const replayed =
+          watch.replayCount >
+          0;
+
+        watch.visible =
+          false;
+
+        resetExposure();
+
         if (
+          !video?.backend ||
+          !authSession?.user?.id ||
           watchMs <
-          300
+            300
         ) {
           return;
         }
@@ -526,15 +567,13 @@ function PulseImmersiveSlide({
             watchMs,
             impression:
               true,
-            completed:
-              watch.completionCount >
-              0,
+            completed,
             quickSwipe:
               watchMs <
-              1800,
+                1800 &&
+              !completed,
             replay:
-              watch.replayCount >
-              0,
+              replayed,
           }
         ).catch(
           (
@@ -547,6 +586,16 @@ function PulseImmersiveSlide({
           }
         );
       }
+
+      media?.addEventListener(
+        "play",
+        startPlaybackWatch
+      );
+
+      media?.addEventListener(
+        "pause",
+        accumulatePlaybackWatch
+      );
 
       const observer =
         new IntersectionObserver(
@@ -570,30 +619,46 @@ function PulseImmersiveSlide({
               visible
             );
 
-            const media =
+            if (
+              visible &&
+              !watch.visible
+            ) {
+              watch.visible =
+                true;
+
+              resetExposure();
+
+              watch.visible =
+                true;
+            }
+
+            const currentMedia =
               videoRef.current;
 
-            if (media) {
+            if (currentMedia) {
               if (visible) {
-                media
+                currentMedia
                   .play()
                   .catch(
                     () => {}
                   );
               } else {
-                media.pause();
+                currentMedia.pause();
               }
             }
 
             if (visible) {
-              startWatch();
-
               if (
                 video?.backend
               ) {
                 pulseSocial.recordView();
               }
-            } else {
+            } else if (
+              watch.visible ||
+              watch.active ||
+              watch.accumulatedMs >
+                0
+            ) {
               flushWatch();
             }
           },
@@ -615,10 +680,17 @@ function PulseImmersiveSlide({
           document.visibilityState !==
             "visible"
         ) {
-          flushWatch();
-
           videoRef.current
             ?.pause?.();
+
+          if (
+            watch.visible ||
+            watch.active ||
+            watch.accumulatedMs >
+              0
+          ) {
+            flushWatch();
+          }
         }
       }
 
@@ -628,7 +700,17 @@ function PulseImmersiveSlide({
       );
 
       return () => {
-        flushWatch();
+        videoRef.current
+          ?.pause?.();
+
+        if (
+          watch.visible ||
+          watch.active ||
+          watch.accumulatedMs >
+            0
+        ) {
+          flushWatch();
+        }
 
         observer.disconnect();
 
@@ -637,8 +719,15 @@ function PulseImmersiveSlide({
           handleVisibility
         );
 
-        videoRef.current
-          ?.pause?.();
+        media?.removeEventListener(
+          "play",
+          startPlaybackWatch
+        );
+
+        media?.removeEventListener(
+          "pause",
+          accumulatePlaybackWatch
+        );
       };
     },
     [
