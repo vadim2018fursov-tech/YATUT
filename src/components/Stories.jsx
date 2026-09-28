@@ -13,6 +13,14 @@ import {
   motion,
 } from "motion/react";
 
+import {
+  Image as ImageIcon,
+  Sparkles,
+  Type,
+  Video,
+  X,
+} from "lucide-react";
+
 import useYatutCarousel from "../hooks/useYatutCarousel";
 
 import {
@@ -1134,8 +1142,23 @@ function Stories({
               closeCreator
             }
           >
-            <section
+            <motion.section
               className="yatut-story-create"
+              initial={{
+                opacity: 0,
+                y: 22,
+                scale: 0.975,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+                scale: 1,
+              }}
+              transition={{
+                type: "spring",
+                stiffness: 430,
+                damping: 34,
+              }}
               onMouseDown={(
                 event
               ) =>
@@ -1144,89 +1167,147 @@ function Stories({
             >
               <header className="yatut-story-create-header">
 
-                <div>
-                  <span>
-                    ЯТУТ
+                <div className="yatut-story-create-heading">
+                  <span className="yatut-story-create-mark">
+                    <Sparkles
+                      size={18}
+                    />
                   </span>
 
-                  <h2>
-                    Нова історія
-                  </h2>
+                  <div>
+                    <span>
+                      STORIES · ЯТУТ
+                    </span>
+
+                    <h2>
+                      Нова історія
+                    </h2>
+
+                    <p>
+                      Поділися моментом, який зникне через 24 години.
+                    </p>
+                  </div>
                 </div>
 
-                <button
+                <motion.button
+                  type="button"
                   className="yatut-story-close-light"
+                  whileTap={{
+                    scale: 0.9,
+                  }}
                   onClick={
                     closeCreator
                   }
+                  aria-label="Закрити"
                 >
-                  ×
-                </button>
+                  <X
+                    size={22}
+                  />
+                </motion.button>
 
               </header>
 
               {!creatorMode && (
                 <div className="yatut-story-create-start">
 
-                  <button
+                  <motion.button
+                    type="button"
+                    className="is-photo"
+                    whileTap={{
+                      scale: 0.975,
+                    }}
                     onClick={() =>
                       setCreatorMode(
                         "image"
                       )
                     }
                   >
-                    <span>
-                      🖼️
+                    <span className="yatut-story-create-option-icon">
+                      <ImageIcon
+                        size={27}
+                      />
                     </span>
 
-                    <strong>
-                      Фото
-                    </strong>
+                    <div>
+                      <strong>
+                        Фото
+                      </strong>
 
-                    <small>
-                      Додати фото
-                    </small>
-                  </button>
+                      <small>
+                        Обери кадр із галереї або зроби новий
+                      </small>
+                    </div>
 
-                  <button
+                    <i>
+                      →
+                    </i>
+                  </motion.button>
+
+                  <motion.button
+                    type="button"
+                    className="is-video"
+                    whileTap={{
+                      scale: 0.975,
+                    }}
                     onClick={() =>
                       setCreatorMode(
                         "video"
                       )
                     }
                   >
-                    <span>
-                      🎥
+                    <span className="yatut-story-create-option-icon">
+                      <Video
+                        size={27}
+                      />
                     </span>
 
-                    <strong>
-                      Відео
-                    </strong>
+                    <div>
+                      <strong>
+                        Відео
+                      </strong>
 
-                    <small>
-                      Додати відео
-                    </small>
-                  </button>
+                      <small>
+                        Додай короткий живий момент
+                      </small>
+                    </div>
 
-                  <button
+                    <i>
+                      →
+                    </i>
+                  </motion.button>
+
+                  <motion.button
+                    type="button"
+                    className="is-text"
+                    whileTap={{
+                      scale: 0.975,
+                    }}
                     onClick={() =>
                       setCreatorMode(
                         "text"
                       )
                     }
                   >
-                    <span>
-                      Aa
+                    <span className="yatut-story-create-option-icon">
+                      <Type
+                        size={28}
+                      />
                     </span>
 
-                    <strong>
-                      Текст
-                    </strong>
+                    <div>
+                      <strong>
+                        Текст
+                      </strong>
 
-                    <small>
-                      Створити історію
-                    </small>
-                  </button>
+                      <small>
+                        Напиши думку та обери фон
+                      </small>
+                    </div>
+
+                    <i>
+                      →
+                    </i>
+                  </motion.button>
 
                 </div>
               )}
@@ -1502,7 +1583,7 @@ function Stories({
                 </footer>
               )}
 
-            </section>
+            </motion.section>
           </div>,
           document.body
         )
