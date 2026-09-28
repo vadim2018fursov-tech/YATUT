@@ -27548,3 +27548,79 @@ body.yatut-dark-mode
   color:
     #a7aab5 !important;
 }
+
+
+/* =========================================================
+   FOR YOU RECOMMENDATION SIGNAL
+========================================================= */
+
+.post-recommendation-reason {
+  width:
+    fit-content;
+  max-width:
+    100%;
+  margin-top:
+    2px;
+  padding:
+    3px 7px;
+  border:
+    1px solid
+    rgba(
+      99,
+      91,
+      255,
+      .12
+    );
+  border-radius:
+    999px;
+  background:
+    rgba(
+      99,
+      91,
+      255,
+      .065
+    );
+  color:
+    #6b63df !important;
+  font-size:
+    8px !important;
+  font-weight:
+    820;
+  line-height:
+    1.2;
+  white-space:
+    nowrap;
+  overflow:
+    hidden;
+  text-overflow:
+    ellipsis;
+}
+
+body.yatut-dark-mode
+.post-recommendation-reason {
+  border-color:
+    rgba(
+      139,
+      130,
+      255,
+      .18
+    );
+  background:
+    rgba(
+      99,
+      91,
+      255,
+      .13
+    );
+  color:
+    #b8b2ff !important;
+}
+
+@media (max-width: 767px) {
+  .post-recommendation-reason {
+    padding:
+      2px 6px;
+    font-size:
+      7.5px !important;
+  }
+}
