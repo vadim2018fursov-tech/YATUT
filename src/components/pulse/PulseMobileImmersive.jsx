@@ -339,6 +339,11 @@ function PulseImmersiveSlide({
   ] = useState(false);
 
   const [
+    mediaActivated,
+    setMediaActivated,
+  ] = useState(false);
+
+  const [
     likeBurstKey,
     setLikeBurstKey,
   ] = useState(0);
@@ -351,12 +356,92 @@ function PulseImmersiveSlide({
         false,
       refreshKey:
         socialRevision,
+      enabled:
+        mediaActivated,
     });
 
   const stats =
     buildStats(
       video
     );
+
+  useEffect(
+    () => {
+      const element =
+        slideRef.current;
+
+      if (
+        !element ||
+        mediaActivated
+      ) {
+        return undefined;
+      }
+
+      const preloadObserver =
+        new IntersectionObserver(
+          (
+            entries
+          ) => {
+            if (
+              entries.some(
+                (
+                  entry
+                ) =>
+                  entry.isIntersecting
+              )
+            ) {
+              setMediaActivated(
+                true
+              );
+
+              preloadObserver.disconnect();
+            }
+          },
+          {
+            rootMargin:
+              "110% 0px",
+            threshold:
+              0,
+          }
+        );
+
+      preloadObserver.observe(
+        element
+      );
+
+      return () => {
+        preloadObserver.disconnect();
+      };
+    },
+    [
+      video?.id,
+      mediaActivated,
+    ]
+  );
+
+  useEffect(
+    () => {
+      if (
+        !mediaActivated ||
+        !slideActive ||
+        commentsOpen
+      ) {
+        return;
+      }
+
+      videoRef.current
+        ?.play?.()
+        ?.catch?.(
+          () => {}
+        );
+    },
+    [
+      mediaActivated,
+      slideActive,
+      commentsOpen,
+      video?.id,
+    ]
+  );
 
   useEffect(
     () => {
@@ -661,8 +746,12 @@ function PulseImmersiveSlide({
           }
           className="pulse-immersive__media"
           src={
-            video.videoUrl ||
-            video.video
+            mediaActivated
+              ? (
+                  video.videoUrl ||
+                  video.video
+                )
+              : undefined
           }
           poster={
             image
@@ -670,7 +759,11 @@ function PulseImmersiveSlide({
           muted
           loop
           playsInline
-          preload="metadata"
+          preload={
+            mediaActivated
+              ? "metadata"
+              : "none"
+          }
           onLoadedMetadata={(
             event
           ) => {
