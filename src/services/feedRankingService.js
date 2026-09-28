@@ -250,13 +250,22 @@ export function rankForYouFeed(
     friendIds = new Set(),
     followingIds = new Set(),
     viewerCity = "",
+    hiddenPostIds = new Set(),
+    mutedAuthorIds = new Set(),
     now = Date.now(),
   } = {}
 ) {
   const source =
-    Array.isArray(posts)
-      ? posts
-      : [];
+    (
+      Array.isArray(posts)
+        ? posts
+        : []
+    ).filter(
+      (post) =>
+        !hiddenPostIds.has(
+          post.id
+        )
+    );
 
   const interestTokens =
     buildInterestTokens(
@@ -318,6 +327,15 @@ export function rankForYouFeed(
 
       if (isLocal) {
         score += 11;
+      }
+
+      if (
+        mutedAuthorIds.has(
+          post.authorId
+        ) &&
+        !post.own
+      ) {
+        score -= 36;
       }
 
       if (post.media) {
