@@ -31,6 +31,10 @@ import {
   nativeLightHaptic,
 } from "../../services/nativeFeedbackService";
 
+import {
+  recordPulseWatchSignal,
+} from "../../services/pulseSocialService";
+
 const TABS = [
   {
     id: "forYou",
@@ -305,6 +309,17 @@ function PulseImmersiveSlide({
   const videoRef =
     useRef(null);
 
+  const watchStateRef =
+    useRef({
+      active: false,
+      startedAt: 0,
+      completionCount: 0,
+      replayCount: 0,
+      cycleCompleted: false,
+      everCompleted: false,
+      lastMediaTime: 0,
+    });
+
   const [
     slideActive,
     setSlideActive,
@@ -339,6 +354,102 @@ function PulseImmersiveSlide({
         return;
       }
 
+      const watch =
+        watchStateRef.current;
+
+      function startWatch() {
+        if (
+          watch.active ||
+          !video?.backend ||
+          !authSession?.user?.id
+        ) {
+          return;
+        }
+
+        watch.active =
+          true;
+
+        watch.startedAt =
+          performance.now();
+
+        watch.completionCount =
+          0;
+
+        watch.replayCount =
+          0;
+
+        watch.cycleCompleted =
+          false;
+
+        watch.lastMediaTime =
+          Number(
+            videoRef.current
+              ?.currentTime ||
+            0
+          );
+      }
+
+      function flushWatch() {
+        if (
+          !watch.active ||
+          !video?.backend ||
+          !authSession?.user?.id
+        ) {
+          watch.active =
+            false;
+
+          return;
+        }
+
+        const watchMs =
+          Math.max(
+            0,
+            Math.round(
+              performance.now() -
+                watch.startedAt
+            )
+          );
+
+        watch.active =
+          false;
+
+        if (
+          watchMs <
+          300
+        ) {
+          return;
+        }
+
+        recordPulseWatchSignal(
+          authSession,
+          {
+            mediaId:
+              video.id,
+            watchMs,
+            impression:
+              true,
+            completed:
+              watch.completionCount >
+              0,
+            quickSwipe:
+              watchMs <
+              1800,
+            replay:
+              watch.replayCount >
+              0,
+          }
+        ).catch(
+          (
+            error
+          ) => {
+            console.warn(
+              "PULSE WATCH SIGNAL ERROR:",
+              error
+            );
+          }
+        );
+      }
+
       const observer =
         new IntersectionObserver(
           (
@@ -351,7 +462,9 @@ function PulseImmersiveSlide({
                 ) =>
                   entry.isIntersecting &&
                   entry.intersectionRatio >=
-                    0.65
+                    0.65 &&
+                  document.visibilityState ===
+                    "visible"
               );
 
             setSlideActive(
@@ -373,11 +486,16 @@ function PulseImmersiveSlide({
               }
             }
 
-            if (
-              visible &&
-              video?.backend
-            ) {
-              pulseSocial.recordView();
+            if (visible) {
+              startWatch();
+
+              if (
+                video?.backend
+              ) {
+                pulseSocial.recordView();
+              }
+            } else {
+              flushWatch();
             }
           },
           {
@@ -393,14 +511,42 @@ function PulseImmersiveSlide({
         element
       );
 
+      function handleVisibility() {
+        if (
+          document.visibilityState !==
+            "visible"
+        ) {
+          flushWatch();
+
+          videoRef.current
+            ?.pause?.();
+        }
+      }
+
+      document.addEventListener(
+        "visibilitychange",
+        handleVisibility
+      );
+
       return () => {
+        flushWatch();
+
         observer.disconnect();
-        videoRef.current?.pause?.();
+
+        document.removeEventListener(
+          "visibilitychange",
+          handleVisibility
+        );
+
+        videoRef.current
+          ?.pause?.();
       };
     },
     [
       video?.id,
       video?.backend,
+      authSession?.user?.id,
+      authSession?.access_token,
       pulseSocial.recordView,
     ]
   );
@@ -526,15 +672,78 @@ function PulseImmersiveSlide({
             const element =
               event.currentTarget;
 
+            const watch =
+              watchStateRef.current;
+
+            const start =
+              Number(
+                video.trimStart ||
+                0
+              );
+
+            const end =
+              Number(
+                video.trimEnd ||
+                element.duration ||
+                video.durationSeconds ||
+                0
+              );
+
+            const current =
+              Number(
+                element.currentTime ||
+                0
+              );
+
+            if (
+              watch.lastMediaTime >
+                current +
+                  0.75
+            ) {
+              watch.cycleCompleted =
+                false;
+            }
+
+            if (
+              end >
+                start &&
+              !watch.cycleCompleted &&
+              current >=
+                start +
+                  (
+                    end -
+                    start
+                  ) *
+                    0.9
+            ) {
+              watch.completionCount +=
+                1;
+
+              if (
+                watch.everCompleted
+              ) {
+                watch.replayCount +=
+                  1;
+              }
+
+              watch.everCompleted =
+                true;
+
+              watch.cycleCompleted =
+                true;
+            }
+
+            watch.lastMediaTime =
+              current;
+
             if (
               video.trimEnd &&
-              element.currentTime >=
+              current >=
                 video.trimEnd -
                   0.03
             ) {
               element.currentTime =
-                video.trimStart ||
-                0;
+                start;
 
               element
                 .play()
