@@ -843,7 +843,7 @@ export async function recordPulseWatchSignal(
     Math.max(
       0,
       Math.min(
-        180000,
+        7200000,
         Math.round(
           Number(
             watchMs ||
@@ -859,6 +859,8 @@ export async function recordPulseWatchSignal(
       {
         method:
           "POST",
+        keepalive:
+          true,
         headers:
           headers(
             session
