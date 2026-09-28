@@ -2453,6 +2453,11 @@ function Chats({
   ] = useState("");
 
   const [
+    sending,
+    setSending,
+  ] = useState(false);
+
+  const [
     chatSearch,
     setChatSearch,
   ] = useState("");
@@ -6190,6 +6195,10 @@ function Chats({
       sendInFlightRef.current =
         true;
 
+      setSending(
+        true
+      );
+
       try {
       if (editing) {
         const text =
@@ -6421,6 +6430,10 @@ function Chats({
       } finally {
         sendInFlightRef.current =
           false;
+
+        setSending(
+          false
+        );
       }
     };
 
@@ -8758,6 +8771,15 @@ function Chats({
                         !event.shiftKey
                       ) {
                         event.preventDefault();
+
+                        if (
+                          event.repeat ||
+                          sending ||
+                          sendInFlightRef.current
+                        ) {
+                          return;
+                        }
+
                         sendMessage();
                       }
                     }}
@@ -8858,16 +8880,35 @@ function Chats({
 
                   <button
                     type="button"
-                    className="chat-send"
+                    className={`chat-send ${
+                      sending
+                        ? "is-sending"
+                        : ""
+                    }`.trim()}
+                    disabled={
+                      sending
+                    }
+                    aria-busy={
+                      sending
+                    }
                     onClick={() => {
+                      if (
+                        sending ||
+                        sendInFlightRef.current
+                      ) {
+                        return;
+                      }
+
                       nativeLightHaptic();
 
                       sendMessage();
                     }}
                   >
-                    {editing
-                      ? "✓"
-                      : "➤"}
+                    {sending
+                      ? "…"
+                      : editing
+                        ? "✓"
+                        : "➤"}
                   </button>
 
                 </footer>
