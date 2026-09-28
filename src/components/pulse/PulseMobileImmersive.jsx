@@ -476,6 +476,7 @@ function PulseImmersiveSlide({
                   entry.isIntersecting &&
                   entry.intersectionRatio >=
                     0.65 &&
+                  !commentsOpen &&
                   document.visibilityState ===
                     "visible"
               );
@@ -561,6 +562,7 @@ function PulseImmersiveSlide({
       authSession?.user?.id,
       authSession?.access_token,
       pulseSocial.recordView,
+      commentsOpen,
     ]
   );
 
