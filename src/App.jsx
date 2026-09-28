@@ -192,6 +192,8 @@ const ROUTE_TITLES = {
   live: "LIVE · PULSE · ЯТУТ",
   cityPulse: "Місто · PULSE · ЯТУТ",
   create: "Створити · ЯТУТ",
+  createPost: "Новий допис · ЯТУТ",
+  createStory: "Нова історія · ЯТУТ",
   createMedia: "Створити медіа · ЯТУТ",
   creatorStudio: "Студія автора · ЯТУТ",
   creator: "Автор · ЯТУТ",
