@@ -3392,8 +3392,6 @@ function Home({
               (
                 post
               ) =>
-                post.authorId ===
-                  authSession.user.id ||
                 backendFriendIds.has(
                   post.authorId
                 )
@@ -3420,8 +3418,6 @@ function Home({
               (
                 post
               ) =>
-                post.authorId ===
-                  authSession.user.id ||
                 backendFollowingIds.has(
                   post.authorId
                 )
