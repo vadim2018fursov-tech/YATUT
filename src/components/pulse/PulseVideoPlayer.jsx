@@ -307,6 +307,16 @@ export default function PulseVideoPlayer({
       next
     );
 
+    if (
+      !playbackEnd ||
+      next <
+        playbackEnd -
+          0.5
+    ) {
+      completionNotifiedRef.current =
+        false;
+    }
+
     setEnded(
       false
     );
@@ -393,7 +403,7 @@ export default function PulseVideoPlayer({
       return;
     }
 
-    video.currentTime =
+    const next =
       Math.min(
         playbackEnd ||
           video.duration ||
@@ -404,6 +414,23 @@ export default function PulseVideoPlayer({
             seconds
         )
       );
+
+    video.currentTime =
+      next;
+
+    if (
+      !playbackEnd ||
+      next <
+        playbackEnd -
+          0.5
+    ) {
+      completionNotifiedRef.current =
+        false;
+
+      setEnded(
+        false
+      );
+    }
   }
 
   async function toggleFullscreen() {
