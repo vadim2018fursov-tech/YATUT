@@ -325,6 +325,10 @@ export function rankForYouFeed(
         post,
         baseIndex: index,
         score,
+        discovery:
+          !post.own &&
+          !isFriend &&
+          !isFollowing,
         reason:
           recommendationReason({
             post,
@@ -349,6 +353,20 @@ export function rankForYouFeed(
     let bestScore =
       -Infinity;
 
+    const wantsDiscovery =
+      result.length > 0 &&
+      result.length % 4 === 3;
+
+    const discoveryAvailable =
+      wantsDiscovery &&
+      remaining.some(
+        (
+          candidate
+        ) =>
+          candidate.discovery &&
+          candidate.score >= 12
+      );
+
     for (
       let index = 0;
       index < remaining.length;
@@ -356,6 +374,13 @@ export function rankForYouFeed(
     ) {
       const candidate =
         remaining[index];
+
+      if (
+        discoveryAvailable &&
+        !candidate.discovery
+      ) {
+        continue;
+      }
 
       const recentCount =
         recentAuthors.filter(
