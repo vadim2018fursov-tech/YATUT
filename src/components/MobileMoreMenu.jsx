@@ -4,6 +4,10 @@ import {
   useState,
 } from "react";
 
+import {
+  Dialog,
+} from "radix-ui";
+
 import YatutIcon from "./YatutIcon";
 
 const PRIMARY_ITEMS = [
@@ -179,18 +183,28 @@ export default function MobileMoreMenu({
   }
 
   return (
-    <div
-      className="mobile-more-overlay"
-      role="presentation"
-      onPointerDown={(event) => {
+    <Dialog.Root
+      open={
+        open
+      }
+      onOpenChange={(
+        nextOpen
+      ) => {
         if (
-          event.target ===
-          event.currentTarget
+          !nextOpen
         ) {
           onClose?.();
         }
       }}
     >
+      <Dialog.Portal>
+        <Dialog.Overlay
+          className="mobile-more-overlay"
+        />
+
+        <Dialog.Content
+          asChild
+        >
       <section
         ref={
           sheetRef
@@ -224,24 +238,29 @@ export default function MobileMoreMenu({
               ЯТУТ
             </span>
 
-            <h2>
-              Меню
-            </h2>
+            <Dialog.Title
+              asChild
+            >
+              <h2>
+                Меню
+              </h2>
+            </Dialog.Title>
           </div>
 
-          <button
-            type="button"
-            className="mobile-more-close"
-            onClick={
-              onClose
-            }
-            aria-label="Закрити меню"
+          <Dialog.Close
+            asChild
           >
-            <YatutIcon
-              name="close"
-              size={19}
-            />
-          </button>
+            <button
+              type="button"
+              className="mobile-more-close"
+              aria-label="Закрити меню"
+            >
+              <YatutIcon
+                name="close"
+                size={19}
+              />
+            </button>
+          </Dialog.Close>
         </header>
 
         <section className="mobile-more-profile">
@@ -421,6 +440,8 @@ export default function MobileMoreMenu({
           </strong>
         </div>
       </section>
-    </div>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
   );
 }
