@@ -29,6 +29,7 @@ import {
   deleteBackendNotification,
   deleteBackendNotifications,
   markAllBackendNotificationsRead,
+  markBackendNotificationRead,
 } from "../services/notificationBackendService";
 
 import {
@@ -568,35 +569,46 @@ export default function Notifications({
      OPEN
   ======================================================= */
 
-  function openNotification(
+  async function openNotification(
     notification
   ) {
     /*
-      Переглянуте сповіщення одразу прибираємо зі списку.
-      Це синхронно оновлює badge та локальний UI, а backend
-      очищається у фоні, щоб воно не поверталося після перезавантаження.
+      Backend state must finish first. Otherwise a fast route change
+      can leave the row untouched and it returns on the next session.
     */
-    removeNotification(
-      notification.id
-    );
-
     if (
       notification.backend &&
       authSession?.user?.id
     ) {
-      deleteBackendNotification(
-        authSession,
-        notification.id
-      ).catch(
-        (
+      try {
+        await deleteBackendNotification(
+          authSession,
+          notification.id
+        );
+      } catch (
+        error
+      ) {
+        console.warn(
+          "BACKEND NOTIFICATION VIEW DELETE ERROR:",
           error
-        ) => {
-          console.warn(
-            "BACKEND NOTIFICATION VIEW DELETE ERROR:",
-            error
+        );
+
+        try {
+          await markBackendNotificationRead(
+            authSession,
+            notification.id
           );
+        } catch (
+          readError
+        ) {
+          console.warn(
+            "BACKEND NOTIFICATION VIEW READ ERROR:",
+            readError
+          );
+
+          return;
         }
-      );
+      }
     } else if (
       !notification.read
     ) {
@@ -604,6 +616,10 @@ export default function Notifications({
         notification.id
       );
     }
+
+    removeNotification(
+      notification.id
+    );
 
     const resolvedPayload =
       resolveNotificationPayload(
