@@ -4,14 +4,39 @@ import {
   BarChart3,
   CalendarDays,
   ChevronRight,
-  Radio,
+  FileText,
+  Images,
   Sparkles,
   Video,
   Waves,
   Zap,
 } from "lucide-react";
 
+import {
+  motion,
+} from "motion/react";
+
+import {
+  nativeSelectionHaptic,
+} from "../services/nativeFeedbackService";
+
 const createItems = [
+  {
+    id: "post",
+    icon: FileText,
+    eyebrow: "СТРІЧКА ЯТУТ",
+    title: "Допис",
+    description: "Текст, фото або відео у ваш профіль та стрічку.",
+    color: "blue",
+  },
+  {
+    id: "story",
+    icon: Images,
+    eyebrow: "STORIES",
+    title: "Історія",
+    description: "Фото, відео або текст у повноекранному форматі.",
+    color: "pink",
+  },
   {
     id: "clip",
     icon: Video,
@@ -27,14 +52,6 @@ const createItems = [
     title: "Відео",
     description: "Історія, огляд або повноцінний влог.",
     color: "blue",
-  },
-  {
-    id: "live",
-    icon: Radio,
-    eyebrow: "ПРЯМИЙ ЕФІР",
-    title: "LIVE",
-    description: "Покажи, що відбувається просто зараз.",
-    color: "pink",
   },
   {
     id: "event",
@@ -71,9 +88,10 @@ const createItems = [
 ];
 
 const QUICK_IDS = [
+  "post",
+  "story",
   "clip",
   "video",
-  "live",
   "event",
 ];
 
@@ -90,14 +108,27 @@ function CreateCard({
   const Icon = item.icon;
 
   return (
-    <button
+    <motion.button
       type="button"
       className={`yatut-create-card yatut-create-card--${item.color} yatut-create-card--${variant}`}
-      onClick={() =>
+      whileHover={{
+        y: -3,
+      }}
+      whileTap={{
+        scale: 0.97,
+      }}
+      transition={{
+        type: "spring",
+        stiffness: 480,
+        damping: 34,
+      }}
+      onClick={() => {
+        nativeSelectionHaptic();
+
         onCreate(
           item
-        )
-      }
+        );
+      }}
       aria-label={`Створити: ${item.title}`}
     >
       <span className="yatut-create-card__icon">
@@ -131,7 +162,7 @@ function CreateCard({
           size={19}
         />
       </span>
-    </button>
+    </motion.button>
   );
 }
 
@@ -194,10 +225,21 @@ export default function CreateHubPage({
 
     if (
       item.id ===
-      "wave"
+      "post"
     ) {
       onNavigate?.(
-        "pulse"
+        "createPost"
+      );
+
+      return;
+    }
+
+    if (
+      item.id ===
+      "story"
+    ) {
+      onNavigate?.(
+        "createStory"
       );
 
       return;
@@ -213,7 +255,17 @@ export default function CreateHubPage({
   }
 
   return (
-    <div className="yatut-create-page">
+    <motion.div
+      className="yatut-create-page"
+      initial={{
+        opacity: 0,
+        y: 8,
+      }}
+      animate={{
+        opacity: 1,
+        y: 0,
+      }}
+    >
       <header className="yatut-create-header">
         <button
           type="button"
@@ -379,6 +431,6 @@ export default function CreateHubPage({
           />
         </section>
       )}
-    </div>
+    </motion.div>
   );
 }
