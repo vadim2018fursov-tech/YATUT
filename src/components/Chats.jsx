@@ -430,6 +430,118 @@ function cleanMessage(
   return rest;
 }
 
+function dedupeChatMessages(
+  list = []
+) {
+  const byId =
+    new Set();
+
+  const recentByFingerprint =
+    new Map();
+
+  return [...list]
+    .filter(Boolean)
+    .sort(
+      (
+        left,
+        right
+      ) =>
+        Number(
+          left.createdAt ||
+          0
+        ) -
+        Number(
+          right.createdAt ||
+          0
+        )
+    )
+    .filter(
+      (
+        message
+      ) => {
+        const id =
+          String(
+            message.id ||
+            ""
+          );
+
+        if (
+          id &&
+          byId.has(
+            id
+          )
+        ) {
+          return false;
+        }
+
+        if (id) {
+          byId.add(
+            id
+          );
+        }
+
+        const fingerprint = [
+          message.chatId ||
+            "",
+          message.senderId ||
+            "",
+          message.type ||
+            "text",
+          message.text ||
+            "",
+          message.mediaPath ||
+            "",
+          message.fileName ||
+            "",
+        ].join(
+          "::"
+        );
+
+        const createdAt =
+          Number(
+            message.createdAt ||
+            0
+          );
+
+        const previousAt =
+          recentByFingerprint.get(
+            fingerprint
+          );
+
+        if (
+          previousAt &&
+          createdAt &&
+          Math.abs(
+            createdAt -
+              previousAt
+          ) <=
+            3000
+        ) {
+          return false;
+        }
+
+        if (createdAt) {
+          recentByFingerprint.set(
+            fingerprint,
+            createdAt
+          );
+        }
+
+        return true;
+      }
+    );
+}
+
+function appendUniqueMessage(
+  list,
+  message
+) {
+  return dedupeChatMessages([
+    ...list,
+    message,
+  ]);
+}
+
 function chatTitle(chat) {
   if (!chat) {
     return "";
@@ -2702,6 +2814,9 @@ function Chats({
   const realtimeChannelRef =
     useRef(null);
 
+  const sendInFlightRef =
+    useRef(false);
+
   const typingSendTimerRef =
     useRef(null);
 
@@ -3987,8 +4102,9 @@ function Chats({
           }
 
           setMessages(
-            stored.map(
-              (message) => ({
+            dedupeChatMessages(
+              stored.map(
+                (message) => ({
                 ...message,
 
                 read:
@@ -4013,6 +4129,7 @@ function Chats({
                       )
                     : null,
               })
+              )
             )
           );
         } catch (error) {
@@ -4099,10 +4216,11 @@ function Chats({
           );
 
           setMessages(
-            latest.map(
-              (
-                message
-              ) => ({
+            dedupeChatMessages(
+              latest.map(
+                (
+                  message
+                ) => ({
                 ...message,
                 read:
                   message.senderId ===
@@ -4117,7 +4235,8 @@ function Chats({
                           )
                       )
                     : message.read,
-              })
+                })
+              )
             )
           );
         }
@@ -6051,7 +6170,10 @@ function Chats({
 
   const sendMessage =
     async () => {
-      if (!activeChat) {
+      if (
+        !activeChat ||
+        sendInFlightRef.current
+      ) {
         return;
       }
 
@@ -6065,6 +6187,10 @@ function Chats({
         return;
       }
 
+      sendInFlightRef.current =
+        true;
+
+      try {
       if (editing) {
         const text =
           draft.trim();
@@ -6180,10 +6306,11 @@ function Chats({
             setMessages(
               (
                 previous
-              ) => [
-                ...previous,
-                backendMessage,
-              ]
+              ) =>
+                appendUniqueMessage(
+                  previous,
+                  backendMessage
+                )
             );
 
             await updatePreview(
@@ -6261,20 +6388,21 @@ function Chats({
       );
 
       setMessages(
-        (previous) => [
-          ...previous,
-
-          {
-            ...message,
-
-            fileUrl:
-              attachment?.file
-                ? URL.createObjectURL(
-                    attachment.file
-                  )
-                : null,
-          },
-        ]
+        (
+          previous
+        ) =>
+          appendUniqueMessage(
+            previous,
+            {
+              ...message,
+              fileUrl:
+                attachment?.file
+                  ? URL.createObjectURL(
+                      attachment.file
+                    )
+                  : null,
+            }
+          )
       );
 
       await updatePreview(
@@ -6290,6 +6418,10 @@ function Chats({
       removeAttachment();
 
       setEmojiOpen(false);
+      } finally {
+        sendInFlightRef.current =
+          false;
+      }
     };
 
   /* =======================================================
@@ -6369,10 +6501,11 @@ function Chats({
             setMessages(
               (
                 previous
-              ) => [
-                ...previous,
-                backendMessage,
-              ]
+              ) =>
+                appendUniqueMessage(
+                  previous,
+                  backendMessage
+                )
             );
 
             await updatePreview(
@@ -8724,6 +8857,7 @@ function Chats({
                   )}
 
                   <button
+                    type="button"
                     className="chat-send"
                     onClick={() => {
                       nativeLightHaptic();
