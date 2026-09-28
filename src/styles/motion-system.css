@@ -256,3 +256,73 @@ body.yatut-dark-mode
       none !important;
   }
 }
+
+
+/* =========================================================
+   YATUT STORIES MOTION
+========================================================= */
+
+.yatut-stories-embla {
+  display: block !important;
+  overflow: hidden !important;
+  touch-action: pan-y pinch-zoom;
+}
+
+.yatut-stories-track {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: max-content;
+  min-width: 100%;
+  will-change: transform;
+}
+
+.yatut-stories-track >
+.yatut-story-item {
+  flex:
+    0 0 auto;
+}
+
+.yatut-story-window {
+  touch-action: none;
+  will-change:
+    transform;
+}
+
+.yatut-story-window:active {
+  cursor: grabbing;
+}
+
+.yatut-story-avatar-wrap {
+  transition:
+    transform
+      var(--yatut-motion-fast)
+      var(--yatut-motion-ease),
+    filter
+      var(--yatut-motion-fast)
+      var(--yatut-motion-ease);
+}
+
+.yatut-story-item:active
+.yatut-story-avatar-wrap {
+  transform: scale(.94);
+}
+
+@media (hover:hover) and (pointer:fine) {
+  .yatut-story-item:hover
+  .yatut-story-avatar-wrap {
+    transform:
+      translateY(-2px)
+      scale(1.025);
+  }
+}
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+  .yatut-story-avatar-wrap {
+    transition:
+      none !important;
+  }
+}
