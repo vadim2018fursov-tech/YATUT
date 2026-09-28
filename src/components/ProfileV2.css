@@ -5254,3 +5254,116 @@ label
     border-radius: 16px;
   }
 }
+
+
+/* =========================================================
+   PROFILE DARK MODE FINAL
+========================================================= */
+
+body.yatut-dark-mode .profile-v2-page {
+  color: #f2f3f7;
+}
+
+body.yatut-dark-mode .profile-v2-hero {
+  border-color: #2d2f39 !important;
+  background: #181920 !important;
+  box-shadow: 0 18px 48px rgba(0,0,0,.22) !important;
+}
+
+body.yatut-dark-mode .profile-v3-mobile-avatar {
+  border-color: #181920 !important;
+  background:
+    radial-gradient(
+      circle at 30% 24%,
+      #292b3a,
+      #242238 45%,
+      #1b1c25 100%
+    ) !important;
+}
+
+body.yatut-dark-mode .profile-v3-mobile-online {
+  border-color: #181920 !important;
+}
+
+body.yatut-dark-mode .profile-v3-mobile-name-row h1,
+body.yatut-dark-mode .profile-v3-mobile-stats strong,
+body.yatut-dark-mode .profile-v2-card-head h3,
+body.yatut-dark-mode .profile-v2-post-card header strong,
+body.yatut-dark-mode .profile-v2-inline-composer textarea {
+  color: #f5f6f9 !important;
+}
+
+body.yatut-dark-mode .profile-v3-mobile-username,
+body.yatut-dark-mode .profile-v3-mobile-bio,
+body.yatut-dark-mode .profile-v3-mobile-stats span,
+body.yatut-dark-mode .profile-v2-post-card header span,
+body.yatut-dark-mode .profile-v2-inline-composer__bottom span {
+  color: #9da1ad !important;
+}
+
+body.yatut-dark-mode .profile-v3-mobile-action,
+body.yatut-dark-mode .profile-v3-mobile-meta span,
+body.yatut-dark-mode .profile-v3-mobile-status,
+body.yatut-dark-mode .profile-v2-tabs,
+body.yatut-dark-mode .profile-v2-card,
+body.yatut-dark-mode .profile-v2-post-card,
+body.yatut-dark-mode .profile-v2-inline-composer,
+body.yatut-dark-mode .profile-v2-repost-origin {
+  border-color: #30323c !important;
+  background: #181920 !important;
+  color: #d8dae3 !important;
+}
+
+body.yatut-dark-mode .profile-v2-tabs button {
+  color: #9da1ad !important;
+}
+
+body.yatut-dark-mode .profile-v2-tabs button.active {
+  background: #2b2945 !important;
+  color: #9188ff !important;
+}
+
+body.yatut-dark-mode .profile-v2-tab-active {
+  background: #2b2945 !important;
+  box-shadow: none !important;
+}
+
+body.yatut-dark-mode .profile-v2-inline-composer textarea {
+  border-color: #2c2e38 !important;
+  background: #11131a !important;
+}
+
+body.yatut-dark-mode .profile-v2-inline-composer textarea:focus {
+  background: #151720 !important;
+}
+
+body.yatut-dark-mode .profile-v2-repost-origin strong,
+body.yatut-dark-mode .profile-v2-post-card > p {
+  color: #e9eaf0 !important;
+}
+
+body.yatut-dark-mode .profile-v2-post-card > footer {
+  border-color: #2b2d37 !important;
+}
+
+body.yatut-dark-mode .profile-v2-post-card footer button {
+  color: #b0b3bd !important;
+}
+
+body.yatut-dark-mode .profile-v2-post-media-button {
+  background: #11131a !important;
+}
+
+@media (max-width: 767px) {
+  body.yatut-dark-mode .profile-v3-mobile-card {
+    color: #f2f3f7 !important;
+  }
+
+  body.yatut-dark-mode .profile-v3-mobile-stats {
+    border-top-color: #30323c !important;
+  }
+
+  body.yatut-dark-mode .profile-v3-mobile-stats button + button {
+    border-left-color: #30323c !important;
+  }
+}
