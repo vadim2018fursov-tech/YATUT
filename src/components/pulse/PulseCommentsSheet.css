@@ -434,3 +434,197 @@
     font-size: 16px;
   }
 }
+
+
+/* =========================================================
+   PULSE COMMENTS MOTION / RADIX
+========================================================= */
+
+.pulse-comments-backdrop[
+  data-state="open"
+] {
+  animation:
+    pulseCommentsOverlayIn
+    180ms
+    cubic-bezier(
+      .22,
+      .8,
+      .26,
+      1
+    )
+    both;
+}
+
+.pulse-comments-backdrop[
+  data-state="closed"
+] {
+  animation:
+    pulseCommentsOverlayOut
+    150ms
+    ease
+    both;
+}
+
+.pulse-comments-sheet[
+  data-state="open"
+] {
+  animation:
+    pulseCommentsSheetIn
+    260ms
+    cubic-bezier(
+      .22,
+      .8,
+      .26,
+      1
+    )
+    both;
+}
+
+.pulse-comments-sheet[
+  data-state="closed"
+] {
+  animation:
+    pulseCommentsSheetOut
+    170ms
+    ease
+    both;
+}
+
+.pulse-comments-sheet__handle {
+  display: none;
+}
+
+@keyframes pulseCommentsOverlayIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pulseCommentsOverlayOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes pulseCommentsSheetIn {
+  from {
+    opacity: 0;
+    transform:
+      translateY(18px)
+      scale(.985);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+@keyframes pulseCommentsSheetOut {
+  from {
+    opacity: 1;
+    transform:
+      translateY(0)
+      scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform:
+      translateY(10px)
+      scale(.99);
+  }
+}
+
+@media (max-width: 700px) {
+  .pulse-comments-sheet__handle {
+    width: 42px;
+    height: 5px;
+
+    display: block;
+
+    margin:
+      9px auto
+      2px;
+
+    border-radius:
+      999px;
+
+    background:
+      #d9d9e3;
+  }
+
+  .pulse-comments-sheet[
+    data-state="open"
+  ] {
+    animation:
+      pulseCommentsMobileIn
+      300ms
+      cubic-bezier(
+        .22,
+        .8,
+        .26,
+        1
+      )
+      both;
+  }
+
+  .pulse-comments-sheet[
+    data-state="closed"
+  ] {
+    animation:
+      pulseCommentsMobileOut
+      180ms
+      ease
+      both;
+  }
+
+  @keyframes pulseCommentsMobileIn {
+    from {
+      opacity: .72;
+      transform:
+        translateY(34px);
+    }
+
+    to {
+      opacity: 1;
+      transform:
+        translateY(0);
+    }
+  }
+
+  @keyframes pulseCommentsMobileOut {
+    from {
+      opacity: 1;
+      transform:
+        translateY(0);
+    }
+
+    to {
+      opacity: .6;
+      transform:
+        translateY(24px);
+    }
+  }
+}
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+  .pulse-comments-backdrop,
+  .pulse-comments-sheet {
+    animation:
+      none !important;
+  }
+}
