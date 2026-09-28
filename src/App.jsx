@@ -74,6 +74,7 @@ import CreateMediaPage from "./pages/CreateMediaPage";
 
 import YatutIcon from "./components/YatutIcon";
 import AnimatedPageSwitch from "./components/AnimatedPageSwitch";
+import useYatutAutoAnimate from "./hooks/useYatutAutoAnimate";
 
 import {
   shareYatutItem,
@@ -2491,29 +2492,67 @@ function PostCard({
       </div>
 
       <div className="post-actions">
-        <button
+        <motion.button
           className={
             post.liked
               ? "reaction-active"
               : ""
           }
           type="button"
-          onClick={() =>
+          whileTap={{
+            scale: 0.9,
+          }}
+          transition={
+            MOBILE_NAV_MOTION
+          }
+          onClick={() => {
+            nativeSelectionHaptic();
+
             onToggleLike(
               post.id
-            )
-          }
+            );
+          }}
         >
-          <YatutIcon
-            name="heart"
-            size={17}
-          />
+          <motion.span
+            className="post-action-motion-icon"
+            animate={
+              post.liked
+                ? {
+                    scale: [
+                      1,
+                      1.36,
+                      1,
+                    ],
+                    rotate: [
+                      0,
+                      -10,
+                      8,
+                      0,
+                    ],
+                  }
+                : {
+                    scale: 1,
+                    rotate: 0,
+                  }
+            }
+            transition={{
+              duration: 0.34,
+            }}
+          >
+            <YatutIcon
+              name="heart"
+              size={17}
+            />
+          </motion.span>
 
           Подобається
-        </button>
+        </motion.button>
 
-        <button
+        <motion.button
           type="button"
+          whileTap={{
+            scale: 0.92,
+          }}
           onClick={() =>
             onToggleComments(
               post.id
@@ -2526,10 +2565,13 @@ function PostCard({
           />
 
           Коментар
-        </button>
+        </motion.button>
 
-        <button
+        <motion.button
           type="button"
+          whileTap={{
+            scale: 0.92,
+          }}
           onClick={() =>
             onShare(
               post.id
@@ -2542,28 +2584,44 @@ function PostCard({
           />
 
           Поділитися
-        </button>
+        </motion.button>
 
-        <button
+        <motion.button
           className={`post-save-button ${
             saved
               ? "reaction-active"
               : ""
           }`}
           type="button"
+          whileTap={{
+            scale: 0.92,
+          }}
           onClick={
             onToggleSaved
           }
         >
-          <YatutIcon
-            name="saved"
-            size={17}
-          />
+          <motion.span
+            className="post-action-motion-icon"
+            animate={{
+              scale:
+                saved
+                  ? 1.12
+                  : 1,
+            }}
+            transition={
+              MOBILE_NAV_MOTION
+            }
+          >
+            <YatutIcon
+              name="saved"
+              size={17}
+            />
+          </motion.span>
 
           <span>
             Зберегти
           </span>
-        </button>
+        </motion.button>
       </div>
 
       {commentsOpen && (
@@ -2650,6 +2708,12 @@ function Home({
         authSession?.user?.id
       )
     );
+
+  const [
+    feedAnimateRef,
+  ] = useYatutAutoAnimate({
+    duration: 240,
+  });
 
   async function refreshBackendFeed() {
     if (
@@ -4495,6 +4559,9 @@ function Home({
       )}
 
       <div
+        ref={
+          feedAnimateRef
+        }
         className="feed"
         data-saved-version={
           savedVersion
