@@ -157,7 +157,7 @@ export async function loadFeedFeedback(
   };
 }
 
-async function deleteExisting(
+export async function removeFeedFeedback(
   session,
   {
     kind,
@@ -244,7 +244,7 @@ export async function addFeedFeedback(
     );
   }
 
-  await deleteExisting(
+  await removeFeedFeedback(
     session,
     {
       kind:
