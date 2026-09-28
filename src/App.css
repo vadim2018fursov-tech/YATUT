@@ -27492,3 +27492,59 @@ body.yatut-dark-mode .profile-online-chip {
   background: #173326 !important;
   color: #76d9a2 !important;
 }
+
+
+/* =========================================================
+   FRIEND VS FOLLOW ACTION
+========================================================= */
+
+.other-profile-actions
+.user-main-action.follow-action {
+  border:
+    1px solid
+    #dedbf8;
+  background:
+    #f7f6ff;
+  color:
+    #6b63df;
+  box-shadow:
+    none;
+}
+
+.other-profile-actions
+.user-main-action.follow-action:not(.is-following) {
+  background:
+    #fff;
+}
+
+.other-profile-actions
+.user-main-action.follow-action.is-following {
+  border-color:
+    #e4e4eb;
+  background:
+    #f4f5f8;
+  color:
+    #747986;
+}
+
+body.yatut-dark-mode
+.other-profile-actions
+.user-main-action.follow-action {
+  border-color:
+    #3d3a61 !important;
+  background:
+    #222139 !important;
+  color:
+    #bbb5ff !important;
+}
+
+body.yatut-dark-mode
+.other-profile-actions
+.user-main-action.follow-action.is-following {
+  border-color:
+    #343641 !important;
+  background:
+    #22242d !important;
+  color:
+    #a7aab5 !important;
+}
