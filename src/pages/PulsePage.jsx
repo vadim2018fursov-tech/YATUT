@@ -168,6 +168,11 @@ export default function PulsePage({
             feeds.nearby ||
             []
           );
+
+          setCurrentCity(
+            feeds.currentCity ||
+            ""
+          );
         } catch (
           error
         ) {
