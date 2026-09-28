@@ -6,6 +6,10 @@ import {
 } from "react";
 
 import {
+  motion,
+} from "motion/react";
+
+import {
   ArrowLeft,
   Camera,
   CheckCircle2,
@@ -40,6 +44,12 @@ import {
 import {
   createPulseMedia,
 } from "../services/pulseBackendService";
+
+import {
+  nativeLightHaptic,
+  nativeMediumHaptic,
+  nativeSelectionHaptic,
+} from "../services/nativeFeedbackService";
 
 const typeConfig = {
   clip: {
@@ -950,6 +960,8 @@ export default function CreateMediaPage({
   }
 
   async function chooseVideo() {
+    nativeSelectionHaptic();
+
     if (
       nativeMediaAvailable
     ) {
@@ -988,6 +1000,8 @@ export default function CreateMediaPage({
   }
 
   async function recordVideo() {
+    nativeSelectionHaptic();
+
     try {
       const selected =
         await captureNativeVideo();
@@ -1266,6 +1280,8 @@ export default function CreateMediaPage({
       null;
 
     try {
+      nativeMediumHaptic();
+
       setPublishing(
         true
       );
@@ -1409,6 +1425,8 @@ export default function CreateMediaPage({
       setPublishedMedia(
         created
       );
+
+      nativeLightHaptic();
     } catch (
       publishError
     ) {
@@ -1499,7 +1517,19 @@ export default function CreateMediaPage({
     publishedMedia
   ) {
     return (
-      <section className="yatut-media-success">
+      <motion.section
+        className="yatut-media-success"
+        initial={{
+          opacity: 0,
+          y: 10,
+          scale: 0.985,
+        }}
+        animate={{
+          opacity: 1,
+          y: 0,
+          scale: 1,
+        }}
+      >
         <div className="yatut-media-success__icon">
           <CheckCircle2
             size={34}
@@ -1579,12 +1609,22 @@ export default function CreateMediaPage({
             До PULSE
           </button>
         </div>
-      </section>
+      </motion.section>
     );
   }
 
   return (
-    <div className="yatut-media-create yatut-media-create--editor">
+    <motion.div
+      className="yatut-media-create yatut-media-create--editor"
+      initial={{
+        opacity: 0,
+        y: 8,
+      }}
+      animate={{
+        opacity: 1,
+        y: 0,
+      }}
+    >
       <header className="yatut-media-create__header">
         <button
           type="button"
@@ -2236,11 +2276,18 @@ export default function CreateMediaPage({
             </div>
           )}
 
-          <button
+          <motion.button
             type="button"
             className="yatut-media-publish"
             disabled={
               !canPublish
+            }
+            whileTap={
+              canPublish
+                ? {
+                    scale: 0.98,
+                  }
+                : undefined
             }
             onClick={
               publish
@@ -2251,7 +2298,7 @@ export default function CreateMediaPage({
               : isLive
               ? "LIVE — наступний модуль"
               : "Опублікувати у PULSE"}
-          </button>
+          </motion.button>
 
           <small className="yatut-media-create__note">
             {authSession?.user?.id
@@ -2262,6 +2309,6 @@ export default function CreateMediaPage({
           </small>
         </aside>
       </section>
-    </div>
+    </motion.div>
   );
 }
