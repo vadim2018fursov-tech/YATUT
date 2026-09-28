@@ -1492,6 +1492,36 @@ export default function PulseMobileImmersive({
           "PULSE NOT INTERESTED ERROR:",
           error
         );
+
+        setSessionHiddenMediaIds(
+          (
+            previous
+          ) => {
+            const next =
+              new Set(
+                previous
+              );
+
+            next.delete(
+              video.id
+            );
+
+            return next;
+          }
+        );
+
+        setFeedbackNotice({
+          kind:
+            "notice",
+          mediaId:
+            null,
+          authorId:
+            null,
+          persisted:
+            false,
+          label:
+            "Не вдалося зберегти налаштування",
+        });
       }
     }
   }
@@ -1552,6 +1582,36 @@ export default function PulseMobileImmersive({
           "PULSE LESS AUTHOR ERROR:",
           error
         );
+
+        setSessionMutedAuthorIds(
+          (
+            previous
+          ) => {
+            const next =
+              new Set(
+                previous
+              );
+
+            next.delete(
+              authorId
+            );
+
+            return next;
+          }
+        );
+
+        setFeedbackNotice({
+          kind:
+            "notice",
+          mediaId:
+            null,
+          authorId:
+            null,
+          persisted:
+            false,
+          label:
+            "Не вдалося зберегти налаштування",
+        });
       }
     }
   }
