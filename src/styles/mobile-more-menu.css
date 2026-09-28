@@ -49,7 +49,19 @@
   }
 
   .mobile-more-sheet {
-    width: 100%;
+    position: fixed;
+    z-index: 20001;
+    left: 50%;
+    bottom:
+      calc(
+        8px +
+        env(
+          safe-area-inset-bottom
+        )
+      );
+
+    width:
+      calc(100% - 16px);
     max-width: 720px;
     max-height:
       min(
@@ -117,7 +129,8 @@
       );
 
     transform:
-      translateY(
+      translate(
+        -50%,
         var(
           --mobile-menu-drag,
           0px
@@ -719,6 +732,8 @@
   }
 
   .mobile-more-sheet {
+    width:
+      calc(100% - 12px);
     max-height:
       84dvh;
 
