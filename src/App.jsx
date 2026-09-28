@@ -144,6 +144,7 @@ import {
 import {
   addFeedFeedback,
   loadFeedFeedback,
+  removeFeedFeedback,
 } from "./services/feedFeedbackService";
 
 import {
@@ -2973,6 +2974,12 @@ function Home({
     );
 
   const [
+    feedUndo,
+    setFeedUndo,
+  ] =
+    useState(null);
+
+  const [
     feedLoading,
     setFeedLoading,
   ] =
@@ -3252,6 +3259,28 @@ function Home({
       unsubscribe();
     };
   }, []);
+
+  useEffect(() => {
+    if (!feedUndo) {
+      return undefined;
+    }
+
+    const timer =
+      window.setTimeout(
+        () =>
+          setFeedUndo(
+            null
+          ),
+        5200
+      );
+
+    return () =>
+      window.clearTimeout(
+        timer
+      );
+  }, [
+    feedUndo,
+  ]);
 
   /* =======================================================
      INCOMING ACTIVITY
@@ -3613,6 +3642,17 @@ function Home({
       })
     );
 
+    setFeedUndo({
+      kind:
+        "not_interested",
+      postId:
+        post.id,
+      authorId:
+        null,
+      label:
+        "Допис прибрано з «Для вас»",
+    });
+
     try {
       await addFeedFeedback(
         authSession,
@@ -3661,6 +3701,17 @@ function Home({
       })
     );
 
+    setFeedUndo({
+      kind:
+        "less_from_author",
+      postId:
+        null,
+      authorId:
+        post.authorId,
+      label:
+        "Показуватимемо менше цього автора",
+    });
+
     try {
       await addFeedFeedback(
         authSession,
@@ -3676,6 +3727,82 @@ function Home({
     ) {
       console.warn(
         "LESS FROM AUTHOR FEEDBACK ERROR:",
+        error
+      );
+
+      await refreshBackendFeed();
+    }
+  }
+
+  async function undoFeedRecommendationFeedback() {
+    const target =
+      feedUndo;
+
+    if (
+      !target ||
+      !authSession?.user?.id
+    ) {
+      return;
+    }
+
+    setFeedUndo(
+      null
+    );
+
+    setFeedFeedback(
+      (
+        previous
+      ) => {
+        const hiddenPostIds =
+          new Set(
+            previous.hiddenPostIds
+          );
+
+        const mutedAuthorIds =
+          new Set(
+            previous.mutedAuthorIds
+          );
+
+        if (
+          target.postId
+        ) {
+          hiddenPostIds.delete(
+            target.postId
+          );
+        }
+
+        if (
+          target.authorId
+        ) {
+          mutedAuthorIds.delete(
+            target.authorId
+          );
+        }
+
+        return {
+          hiddenPostIds,
+          mutedAuthorIds,
+        };
+      }
+    );
+
+    try {
+      await removeFeedFeedback(
+        authSession,
+        {
+          kind:
+            target.kind,
+          postId:
+            target.postId,
+          authorId:
+            target.authorId,
+        }
+      );
+    } catch (
+      error
+    ) {
+      console.warn(
+        "UNDO FEED FEEDBACK ERROR:",
         error
       );
 
@@ -5169,6 +5296,47 @@ function Home({
           </div>
         )}
       </div>
+
+      <AnimatePresence>
+        {feedUndo && (
+          <motion.div
+            className="feed-feedback-toast"
+            initial={{
+              opacity: 0,
+              y: 18,
+              scale: 0.98,
+            }}
+            animate={{
+              opacity: 1,
+              y: 0,
+              scale: 1,
+            }}
+            exit={{
+              opacity: 0,
+              y: 12,
+              scale: 0.985,
+            }}
+            transition={{
+              duration: 0.18,
+            }}
+          >
+            <span>
+              {
+                feedUndo.label
+              }
+            </span>
+
+            <button
+              type="button"
+              onClick={
+                undoFeedRecommendationFeedback
+              }
+            >
+              Скасувати
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <section className="card temporary-page">
         <div className="temporary-icon">
