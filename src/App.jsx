@@ -262,6 +262,24 @@ function routeFromLocation() {
     return { page: "friends", payload: { personId: parts[1] } };
   }
 
+  if (first === "friends") {
+    const tab =
+      query.get(
+        "tab"
+      );
+
+    return {
+      page:
+        "friends",
+      payload:
+        tab
+          ? {
+              tab,
+            }
+          : null,
+    };
+  }
+
   if (first === "pulse") {
     if (parts[1] === "clips") {
       return {
@@ -454,8 +472,32 @@ function routeToUrl(page, payload = null) {
     case "creatorStudio": return "/studio";
     case "creator":
       return `/creator/${encode(payload?.creatorId || payload?.personId || payload?.authorId || "maria")}`;
-    case "friends":
-      return payload?.personId ? `/people/${encode(payload.personId)}` : "/friends";
+    case "friends": {
+      if (
+        payload?.personId
+      ) {
+        return `/people/${encode(payload.personId)}`;
+      }
+
+      const params =
+        new URLSearchParams();
+
+      if (
+        payload?.tab &&
+        payload.tab !==
+          "all"
+      ) {
+        params.set(
+          "tab",
+          payload.tab
+        );
+      }
+
+      const suffix =
+        params.toString();
+
+      return `/friends${suffix ? `?${suffix}` : ""}`;
+    }
     case "search": {
       const params = new URLSearchParams();
       if (payload?.query || payload?.search) params.set("q", payload.query || payload.search);
