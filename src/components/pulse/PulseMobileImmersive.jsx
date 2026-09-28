@@ -506,7 +506,6 @@ function PulseImmersiveSlide({
           poster={
             image
           }
-          autoPlay
           muted
           loop
           playsInline
@@ -1112,32 +1111,55 @@ export default function PulseMobileImmersive({
           (
             tab
           ) => (
-            <button
+            <motion.button
               key={
                 tab.id
               }
               type="button"
+              whileTap={{
+                scale: 0.94,
+              }}
               className={
                 activeTab ===
                 tab.id
                   ? "is-active"
                   : ""
               }
-              onClick={() =>
+              onClick={() => {
+                nativeLightHaptic();
+
                 setActiveTab(
                   tab.id
-                )
-              }
+                );
+              }}
             >
-              {
-                tab.label
-              }
+              {activeTab ===
+                tab.id && (
+                <motion.span
+                  layoutId="pulse-tab-active"
+                  className="pulse-immersive__tab-active"
+                  transition={{
+                    type:
+                      "spring",
+                    stiffness:
+                      480,
+                    damping:
+                      38,
+                  }}
+                />
+              )}
+
+              <span className="pulse-immersive__tab-label">
+                {
+                  tab.label
+                }
+              </span>
 
               {tab.id ===
                 "live" && (
                 <i />
               )}
-            </button>
+            </motion.button>
           )
         )}
       </nav>
