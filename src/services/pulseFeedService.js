@@ -2,6 +2,10 @@ import {
   loadPulseMedia,
 } from "./pulseBackendService";
 
+import {
+  loadPulseWatchSignals,
+} from "./pulseSocialService";
+
 const SUPABASE_URL =
   "https://yqskwqahmkeiconsrhoy.supabase.co";
 
@@ -202,6 +206,192 @@ function engagementScore(
   );
 }
 
+function watchSignalStrength(
+  signal,
+  video,
+  {
+    likedIds,
+    savedIds,
+  }
+) {
+  if (!signal) {
+    return (
+      (
+        likedIds.has(
+          video?.id
+        )
+          ? 7
+          : 0
+      ) +
+      (
+        savedIds.has(
+          video?.id
+        )
+          ? 9
+          : 0
+      )
+    );
+  }
+
+  const durationMs =
+    Math.max(
+      1000,
+      Number(
+        video?.durationSeconds ||
+        0
+      ) *
+        1000
+    );
+
+  const maxWatchMs =
+    Number(
+      signal.maxWatchMs ||
+      0
+    );
+
+  const watchRatio =
+    durationMs >
+    1000
+      ? Math.min(
+          1.25,
+          maxWatchMs /
+            durationMs
+        )
+      : Math.min(
+          1,
+          maxWatchMs /
+            10000
+        );
+
+  return (
+    Math.min(
+      watchRatio *
+        12,
+      15
+    ) +
+    Math.min(
+      Number(
+        signal.completions ||
+        0
+      ) *
+        8,
+      24
+    ) +
+    Math.min(
+      Number(
+        signal.replays ||
+        0
+      ) *
+        10,
+      20
+    ) +
+    (
+      likedIds.has(
+        video?.id
+      )
+        ? 7
+        : 0
+    ) +
+    (
+      savedIds.has(
+        video?.id
+      )
+        ? 9
+        : 0
+    ) -
+    Math.min(
+      Number(
+        signal.quickSwipes ||
+        0
+      ) *
+        5,
+      15
+    )
+  );
+}
+
+function buildWatchAffinities(
+  videos,
+  signals
+) {
+  const byAuthor =
+    new Map();
+
+  const byKind =
+    new Map();
+
+  const perVideo =
+    new Map();
+
+  for (
+    const video of
+    videos ||
+    []
+  ) {
+    const signal =
+      signals.watchSignals.get(
+        video.id
+      );
+
+    const strength =
+      watchSignalStrength(
+        signal,
+        video,
+        signals
+      );
+
+    if (
+      strength <=
+      0
+    ) {
+      continue;
+    }
+
+    perVideo.set(
+      video.id,
+      strength
+    );
+
+    const authorId =
+      video?.author?.id;
+
+    if (authorId) {
+      byAuthor.set(
+        authorId,
+        (
+          byAuthor.get(
+            authorId
+          ) ||
+          0
+        ) +
+          strength
+      );
+    }
+
+    const kind =
+      video?.pulseKind ||
+      video?.type ||
+      "video";
+
+    byKind.set(
+      kind,
+      (
+        byKind.get(
+          kind
+        ) ||
+        0
+      ) +
+        strength
+    );
+  }
+
+  return {
+    byAuthor,
+    byKind,
+    perVideo,
+  };
+}
+
 function reasonFor(
   video,
   {
@@ -306,10 +496,18 @@ function rankForYou(
     viewedIds,
     likedIds,
     savedIds,
+    watchSignals,
     currentUserId,
     currentCity,
+    watchSignals,
   } =
     signals;
+
+  const watchAffinity =
+    buildWatchAffinities(
+      videos,
+      signals
+    );
 
   const scored =
     (
@@ -368,13 +566,98 @@ function rankForYou(
             24;
         }
 
-        if (
+        const watchSignal =
+          watchSignals.get(
+            video.id
+          );
+
+        const ownWatchStrength =
+          watchAffinity.perVideo.get(
+            video.id
+          ) ||
+          0;
+
+        const authorAffinity =
+          Math.max(
+            0,
+            (
+              watchAffinity.byAuthor.get(
+                authorId
+              ) ||
+              0
+            ) -
+              ownWatchStrength
+          );
+
+        const kindKey =
+          video?.pulseKind ||
+          video?.type ||
+          "video";
+
+        const kindAffinity =
+          Math.max(
+            0,
+            (
+              watchAffinity.byKind.get(
+                kindKey
+              ) ||
+              0
+            ) -
+              ownWatchStrength
+          );
+
+        score +=
+          Math.min(
+            authorAffinity *
+              0.42,
+            28
+          );
+
+        score +=
+          Math.min(
+            kindAffinity *
+              0.28,
+            20
+          );
+
+        if (watchSignal) {
+          score -=
+            Math.min(
+              18 +
+                Number(
+                  watchSignal.impressions ||
+                  0
+                ) *
+                  6,
+              48
+            );
+
+          score -=
+            Math.min(
+              Number(
+                watchSignal.quickSwipes ||
+                0
+              ) *
+                10,
+              30
+            );
+
+          score +=
+            Math.min(
+              Number(
+                watchSignal.replays ||
+                0
+              ) *
+                3,
+              6
+            );
+        } else if (
           viewedIds.has(
             video.id
           )
         ) {
           score -=
-            36;
+            24;
         } else {
           score +=
             18;
@@ -386,7 +669,7 @@ function rankForYou(
           )
         ) {
           score -=
-            8;
+            6;
         }
 
         if (
@@ -395,7 +678,7 @@ function rankForYou(
           )
         ) {
           score -=
-            5;
+            4;
         }
 
         if (
@@ -503,6 +786,8 @@ async function loadSignals(
         new Set(),
       savedIds:
         new Set(),
+      watchSignals:
+        new Map(),
       currentCity:
         "",
     };
@@ -515,6 +800,7 @@ async function loadSignals(
     viewRows,
     reactionRows,
     savedRows,
+    watchSignals,
   ] =
     await Promise.all([
       readRows(
@@ -597,6 +883,20 @@ async function loadSignals(
             500,
         }
       ),
+      loadPulseWatchSignals(
+        session
+      ).catch(
+        (
+          error
+        ) => {
+          console.warn(
+            "PULSE WATCH SIGNAL LOAD ERROR:",
+            error
+          );
+
+          return new Map();
+        }
+      ),
     ]);
 
   return {
@@ -662,6 +962,10 @@ async function loadSignals(
             row.source_id
         )
       ),
+    watchSignals:
+      watchSignals instanceof Map
+        ? watchSignals
+        : new Map(),
   };
 }
 
