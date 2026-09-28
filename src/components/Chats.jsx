@@ -2575,7 +2575,7 @@ function Chats({
     useState(false);
 
   const [
-    realtimeStatus,
+    ,
     setRealtimeStatus,
   ] =
     useState(
