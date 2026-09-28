@@ -1,10 +1,11 @@
 import {
-  Fragment,
   useEffect,
   useMemo,
   useRef,
   useState,
 } from "react";
+
+import { motion } from "motion/react";
 
 import "./styles/tokens.css";
 import "./App.css";
@@ -72,6 +73,7 @@ import CreateHubPage from "./pages/CreateHubPage";
 import CreateMediaPage from "./pages/CreateMediaPage";
 
 import YatutIcon from "./components/YatutIcon";
+import AnimatedPageSwitch from "./components/AnimatedPageSwitch";
 
 import {
   shareYatutItem,
@@ -618,6 +620,13 @@ const MOBILE_NAV = [
     title: "Профіль",
   },
 ];
+
+const MOBILE_NAV_MOTION = {
+  type: "spring",
+  stiffness: 520,
+  damping: 38,
+  mass: 0.7,
+};
 
 /* =========================================================
    DEMO POSTS
@@ -5343,7 +5352,7 @@ function MobileNavigation({
               : 0;
 
           return (
-            <button
+            <motion.button
               key={
                 item.id
               }
@@ -5371,6 +5380,15 @@ function MobileNavigation({
                   : ""
               }`.trim()}
               type="button"
+              whileTap={{
+                scale: 0.92,
+              }}
+              whileHover={{
+                y: -2,
+              }}
+              transition={
+                MOBILE_NAV_MOTION
+              }
               aria-current={
                 active
                   ? "page"
@@ -5382,6 +5400,16 @@ function MobileNavigation({
                 )
               }
             >
+              {active ? (
+                <motion.span
+                  layoutId="yatut-mobile-nav-active"
+                  className="mobile-nav-active-glow"
+                  transition={
+                    MOBILE_NAV_MOTION
+                  }
+                />
+              ) : null}
+
               {item.id ===
               "profile" ? (
                 <span className="mobile-profile-avatar">
@@ -5418,7 +5446,7 @@ function MobileNavigation({
                   item.title
                 }
               </small>
-            </button>
+            </motion.button>
           );
         }
       )}
@@ -8515,13 +8543,13 @@ function App() {
         />
 
         <main className="main-content">
-          <Fragment
-            key={`${currentPage}-${routeRevision}`}
+          <AnimatedPageSwitch
+            pageKey={`${currentPage}-${routeRevision}`}
           >
             {
               renderPage()
             }
-          </Fragment>
+          </AnimatedPageSwitch>
         </main>
 
         {showRightSidebar && (
