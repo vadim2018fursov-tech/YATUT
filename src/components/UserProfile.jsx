@@ -352,6 +352,34 @@ function UserProfile({
     );
   };
 
+  async function copyProfileLink() {
+    const url =
+      `${window.location.origin}/people/${encodeURIComponent(
+        person.id
+      )}`;
+
+    try {
+      await navigator.clipboard.writeText(
+        url
+      );
+
+      showNotice(
+        "Посилання на профіль скопійовано"
+      );
+    } catch (
+      error
+    ) {
+      console.warn(
+        "PROFILE LINK COPY ERROR:",
+        error
+      );
+
+      showNotice(
+        "Не вдалося скопіювати посилання"
+      );
+    }
+  }
+
   async function handleReport() {
     try {
       await onReport?.(
@@ -677,16 +705,9 @@ function UserProfile({
                   >
                     <button
                       type="button"
-                      onClick={() => {
-                        navigator.clipboard
-                          ?.writeText(
-                            `@${person.username}`
-                          );
-
-                        showNotice(
-                          "Посилання скопійовано"
-                        );
-                      }}
+                      onClick={
+                        copyProfileLink
+                      }
                     >
                       Копіювати профіль
                     </button>
