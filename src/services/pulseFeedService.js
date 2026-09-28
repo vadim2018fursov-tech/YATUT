@@ -715,6 +715,23 @@ function rankForYou(
             ? "Схоже на те, що ти дивишся"
             : null;
 
+        const baseReason =
+          reasonFor(
+            video,
+            signals
+          );
+
+        const socialReason =
+          [
+            "Твій друг",
+            "Твоє місто",
+            "Ви підписані",
+          ].includes(
+            baseReason
+          )
+            ? baseReason
+            : null;
+
         return {
           ...video,
           recommendationScore:
@@ -724,11 +741,9 @@ function rankForYou(
               )
             ),
           recommendationReason:
+            socialReason ||
             behaviorReason ||
-            reasonFor(
-              video,
-              signals
-            ),
+            baseReason,
           discovery:
             !currentUserId ||
             (
