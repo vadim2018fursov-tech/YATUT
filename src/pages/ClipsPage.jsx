@@ -771,8 +771,11 @@ export default function ClipsPage({
             </span>
           </button>
 
-          <button
+          <motion.button
             type="button"
+            whileTap={{
+              scale: 0.88,
+            }}
             aria-label="Коментарі"
             onClick={() =>
               setCommentsOpen(
@@ -789,10 +792,13 @@ export default function ClipsPage({
                 pulseSocial.commentsCount
               )}
             </span>
-          </button>
+          </motion.button>
 
-          <button
+          <motion.button
             type="button"
+            whileTap={{
+              scale: 0.88,
+            }}
             aria-label="Поділитися"
             onClick={
               shareClip
