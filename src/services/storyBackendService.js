@@ -130,6 +130,69 @@ async function fetchProfiles(
   );
 }
 
+export async function hasMyActiveStory(
+  session
+) {
+  if (
+    !session?.user?.id
+  ) {
+    return false;
+  }
+
+  const url =
+    new URL(
+      `${SUPABASE_URL}/rest/v1/stories`
+    );
+
+  url.searchParams.set(
+    "author_id",
+    `eq.${session.user.id}`
+  );
+
+  url.searchParams.set(
+    "expires_at",
+    `gt.${new Date().toISOString()}`
+  );
+
+  url.searchParams.set(
+    "select",
+    "id"
+  );
+
+  url.searchParams.set(
+    "order",
+    "created_at.desc"
+  );
+
+  url.searchParams.set(
+    "limit",
+    "1"
+  );
+
+  const response =
+    await fetch(
+      url,
+      {
+        headers:
+          headers(
+            session
+          ),
+      }
+    );
+
+  const rows =
+    await parseResponse(
+      response
+    );
+
+  return Boolean(
+    Array.isArray(
+      rows
+    ) &&
+    rows.length
+  );
+}
+
 export async function loadBackendStories(
   session
 ) {
