@@ -1120,7 +1120,7 @@ function UserProfile({
                             openProfileMedia(
                               post.media,
                               "image",
-                              `Допіс ${person.name}`
+                              `Допис ${person.name}`
                             )
                           }
                           aria-label="Відкрити фото"
