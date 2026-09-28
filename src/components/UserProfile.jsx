@@ -77,6 +77,7 @@ function UserProfile({
   onBlock,
   onReport,
   onOpenChat,
+  onOpenConnections,
   authSession = null,
 }) {
   const [
@@ -351,6 +352,23 @@ function UserProfile({
       2200
     );
   };
+
+  function scrollToProfilePosts() {
+    window.requestAnimationFrame(
+      () => {
+        document
+          .querySelector(
+            ".other-profile-posts-section"
+          )
+          ?.scrollIntoView({
+            behavior:
+              "smooth",
+            block:
+              "start",
+          });
+      }
+    );
+  }
 
   async function copyProfileLink() {
     const url =
@@ -830,7 +848,17 @@ function UserProfile({
       </div>
 
       <section className="other-profile-stat-strip">
-        <div>
+        <motion.button
+          type="button"
+          whileTap={{
+            scale: 0.96,
+          }}
+          onClick={() =>
+            onOpenConnections?.(
+              "friends"
+            )
+          }
+        >
           <strong>
             {
               Number(
@@ -843,9 +871,19 @@ function UserProfile({
           <span>
             друзі
           </span>
-        </div>
+        </motion.button>
 
-        <div>
+        <motion.button
+          type="button"
+          whileTap={{
+            scale: 0.96,
+          }}
+          onClick={() =>
+            onOpenConnections?.(
+              "followers"
+            )
+          }
+        >
           <strong>
             {
               Number(
@@ -858,9 +896,19 @@ function UserProfile({
           <span>
             підписники
           </span>
-        </div>
+        </motion.button>
 
-        <div>
+        <motion.button
+          type="button"
+          whileTap={{
+            scale: 0.96,
+          }}
+          onClick={() =>
+            onOpenConnections?.(
+              "following"
+            )
+          }
+        >
           <strong>
             {
               Number(
@@ -873,9 +921,17 @@ function UserProfile({
           <span>
             підписки
           </span>
-        </div>
+        </motion.button>
 
-        <div>
+        <motion.button
+          type="button"
+          whileTap={{
+            scale: 0.96,
+          }}
+          onClick={
+            scrollToProfilePosts
+          }
+        >
           <strong>
             {
               Number(
@@ -889,7 +945,7 @@ function UserProfile({
           <span>
             дописи
           </span>
-        </div>
+        </motion.button>
       </section>
 
       <div className="other-profile-grid">
