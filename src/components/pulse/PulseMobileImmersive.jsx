@@ -18,9 +18,18 @@ import {
   useState,
 } from "react";
 
+import {
+  AnimatePresence,
+  motion,
+} from "motion/react";
+
 import PulseLongVideoMobile from "./PulseLongVideoMobile";
 import PulseCommentsSheet from "./PulseCommentsSheet";
 import usePulseSocial from "../../hooks/usePulseSocial";
+
+import {
+  nativeLightHaptic,
+} from "../../services/nativeFeedbackService";
 
 const TABS = [
   {
@@ -293,6 +302,19 @@ function PulseImmersiveSlide({
   const slideRef =
     useRef(null);
 
+  const videoRef =
+    useRef(null);
+
+  const [
+    slideActive,
+    setSlideActive,
+  ] = useState(false);
+
+  const [
+    likeBurstKey,
+    setLikeBurstKey,
+  ] = useState(0);
+
   const pulseSocial =
     usePulseSocial({
       video,
@@ -313,10 +335,7 @@ function PulseImmersiveSlide({
       const element =
         slideRef.current;
 
-      if (
-        !element ||
-        !video?.backend
-      ) {
+      if (!element) {
         return;
       }
 
@@ -335,15 +354,37 @@ function PulseImmersiveSlide({
                     0.65
               );
 
-            if (
+            setSlideActive(
               visible
+            );
+
+            const media =
+              videoRef.current;
+
+            if (media) {
+              if (visible) {
+                media
+                  .play()
+                  .catch(
+                    () => {}
+                  );
+              } else {
+                media.pause();
+              }
+            }
+
+            if (
+              visible &&
+              video?.backend
             ) {
               pulseSocial.recordView();
             }
           },
           {
             threshold: [
+              0.2,
               0.65,
+              0.9,
             ],
           }
         );
@@ -352,8 +393,10 @@ function PulseImmersiveSlide({
         element
       );
 
-      return () =>
+      return () => {
         observer.disconnect();
+        videoRef.current?.pause?.();
+      };
     },
     [
       video?.id,
@@ -371,6 +414,38 @@ function PulseImmersiveSlide({
     ) {
       await pulseSocial.recordShare();
     }
+  }
+
+  async function handleDoubleLike() {
+    nativeLightHaptic();
+
+    if (
+      !pulseSocial.liked
+    ) {
+      await pulseSocial.toggleLike();
+    }
+
+    setLikeBurstKey(
+      (
+        value
+      ) =>
+        value + 1
+    );
+  }
+
+  async function handleLike() {
+    nativeLightHaptic();
+    await pulseSocial.toggleLike();
+  }
+
+  async function handleSaved() {
+    nativeLightHaptic();
+    await pulseSocial.toggleSaved();
+  }
+
+  async function handleFollow() {
+    nativeLightHaptic();
+    await pulseSocial.toggleFollow();
   }
 
   const author =
@@ -392,15 +467,37 @@ function PulseImmersiveSlide({
 
   return (
     <>
-    <article
+    <motion.article
       ref={
         slideRef
       }
       className="pulse-immersive__slide"
+      data-active={
+        slideActive
+          ? "true"
+          : "false"
+      }
+      onDoubleClick={
+        handleDoubleLike
+      }
+      initial={{
+        opacity: 0.96,
+        scale: 0.995,
+      }}
+      animate={{
+        opacity: 1,
+        scale: 1,
+      }}
+      transition={{
+        duration: 0.2,
+      }}
     >
       {(video.videoUrl ||
         video.video) ? (
         <video
+          ref={
+            videoRef
+          }
           className="pulse-immersive__media"
           src={
             video.videoUrl ||
@@ -460,6 +557,61 @@ function PulseImmersiveSlide({
 
       <div className="pulse-immersive__shade" />
 
+      <AnimatePresence>
+        {likeBurstKey >
+          0 && (
+          <motion.div
+            key={
+              likeBurstKey
+            }
+            className="pulse-immersive__like-burst"
+            initial={{
+              opacity: 0,
+              scale: 0.45,
+              rotate: -14,
+            }}
+            animate={{
+              opacity: [
+                0,
+                1,
+                1,
+                0,
+              ],
+              scale: [
+                0.45,
+                1.22,
+                1,
+                1.5,
+              ],
+              rotate: [
+                -14,
+                6,
+                0,
+                0,
+              ],
+            }}
+            exit={{
+              opacity: 0,
+            }}
+            transition={{
+              duration: 0.72,
+              times: [
+                0,
+                0.28,
+                0.62,
+                1,
+              ],
+            }}
+            aria-hidden="true"
+          >
+            <Heart
+              size={82}
+              fill="currentColor"
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div className="pulse-immersive__top-meta">
         {isLive ? (
           <span className="pulse-immersive__live">
@@ -490,14 +642,17 @@ function PulseImmersiveSlide({
       </div>
 
       <aside className="pulse-immersive__actions">
-        <button
+        <motion.button
           type="button"
+          whileTap={{
+            scale: 0.88,
+          }}
           className="pulse-immersive__avatar-action"
           disabled={
             pulseSocial.isOwnAuthor
           }
           onClick={
-            pulseSocial.toggleFollow
+            handleFollow
           }
           aria-label={
             pulseSocial.following
@@ -524,28 +679,58 @@ function PulseImmersiveSlide({
               ? "✓"
               : "+"}
           </i>
-        </button>
+        </motion.button>
 
-        <button
+        <motion.button
           type="button"
+          whileTap={{
+            scale: 0.84,
+          }}
           className={
             pulseSocial.liked
               ? "is-active"
               : ""
           }
           onClick={
-            pulseSocial.toggleLike
+            handleLike
           }
           aria-label="Подобається"
         >
-          <Heart
-            size={29}
-            fill={
+          <motion.span
+            className="pulse-action-icon"
+            animate={
               pulseSocial.liked
-                ? "currentColor"
-                : "none"
+                ? {
+                    scale: [
+                      1,
+                      1.3,
+                      1,
+                    ],
+                    rotate: [
+                      0,
+                      -8,
+                      5,
+                      0,
+                    ],
+                  }
+                : {
+                    scale: 1,
+                    rotate: 0,
+                  }
             }
-          />
+            transition={{
+              duration: 0.32,
+            }}
+          >
+            <Heart
+              size={29}
+              fill={
+                pulseSocial.liked
+                  ? "currentColor"
+                  : "none"
+              }
+            />
+          </motion.span>
 
           <small>
             {formatCompact(
@@ -557,10 +742,13 @@ function PulseImmersiveSlide({
                     : 0)
             )}
           </small>
-        </button>
+        </motion.button>
 
-        <button
+        <motion.button
           type="button"
+          whileTap={{
+            scale: 0.86,
+          }}
           aria-label="Коментарі"
           onClick={() =>
             setCommentsOpen(
@@ -579,10 +767,13 @@ function PulseImmersiveSlide({
                 : stats.comments
             )}
           </small>
-        </button>
+        </motion.button>
 
-        <button
+        <motion.button
           type="button"
+          whileTap={{
+            scale: 0.86,
+          }}
           onClick={
             handleShare
           }
@@ -599,17 +790,20 @@ function PulseImmersiveSlide({
                 : stats.shares
             )}
           </small>
-        </button>
+        </motion.button>
 
-        <button
+        <motion.button
           type="button"
+          whileTap={{
+            scale: 0.86,
+          }}
           className={
             pulseSocial.saved
               ? "is-active"
               : ""
           }
           onClick={
-            pulseSocial.toggleSaved
+            handleSaved
           }
           aria-label="Зберегти"
         >
@@ -632,10 +826,13 @@ function PulseImmersiveSlide({
                     : 0)
             )}
           </small>
-        </button>
+        </motion.button>
 
-        <button
+        <motion.button
           type="button"
+          whileTap={{
+            scale: 0.88,
+          }}
           className="pulse-immersive__sound"
           onClick={
             onCreate
@@ -645,7 +842,7 @@ function PulseImmersiveSlide({
           <Music2
             size={20}
           />
-        </button>
+        </motion.button>
       </aside>
 
       <div className="pulse-immersive__copy">
@@ -700,7 +897,7 @@ function PulseImmersiveSlide({
               pulseSocial.isOwnAuthor
             }
             onClick={
-              pulseSocial.toggleFollow
+              handleFollow
             }
           >
             {pulseSocial.isOwnAuthor
@@ -780,7 +977,7 @@ function PulseImmersiveSlide({
           </button>
         )}
       </div>
-    </article>
+    </motion.article>
 
     <PulseCommentsSheet
       open={
