@@ -26430,6 +26430,8 @@ div::before {
   position: relative !important;
   top: auto !important;
   right: auto !important;
+  bottom: auto !important;
+  left: auto !important;
   z-index: 32000;
   width: 220px;
   padding: 7px;
@@ -27022,4 +27024,23 @@ body.yatut-dark-mode
   .other-profile-post-skeleton i {
     animation: none !important;
   }
+}
+
+
+/* FRIEND PROFILE DARK FOOTER FIX */
+
+body.yatut-dark-mode
+.other-profile-stat-strip
+> div +
+div::before {
+  background:
+    #343640;
+}
+
+body.yatut-dark-mode
+.other-profile-post-footer {
+  border-top-color:
+    #343640;
+  background:
+    transparent;
 }
