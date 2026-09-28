@@ -365,7 +365,7 @@ export function rankForYouFeed(
         ).length;
 
       const diversityPenalty =
-        recentCount * 18;
+        recentCount * 22;
 
       const adjusted =
         candidate.score -
