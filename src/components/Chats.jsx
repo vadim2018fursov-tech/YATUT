@@ -1698,7 +1698,6 @@ function MessageBubble({
         damping: 34,
         mass: 0.72,
       }}
-      id={`message-${message.id}`}
       className={`message-row ${
         mine ? "mine" : ""
       } ${
