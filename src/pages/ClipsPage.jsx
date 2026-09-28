@@ -14,6 +14,7 @@ import {
 import {
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 
@@ -37,8 +38,12 @@ import {
 } from "../data/pulseMockData";
 
 import {
-  loadPulseMedia,
-} from "../services/pulseBackendService";
+  loadRankedPulseFeeds,
+} from "../services/pulseFeedService";
+
+import {
+  recordPulseWatchSignal,
+} from "../services/pulseSocialService";
 
 import {
   nativeLightHaptic,
@@ -83,37 +88,67 @@ export default function ClipsPage({
   initialCommentsOpen = false,
 }) {
   const [
-    backendVideos,
-    setBackendVideos,
-  ] = useState([]);
+    rankedBackend,
+    setRankedBackend,
+  ] = useState({
+    all: [],
+    forYou: [],
+    nearby: [],
+  });
 
   useEffect(() => {
     let active =
       true;
 
-    loadPulseMedia(
+    loadRankedPulseFeeds(
       authSession,
       {
         limit:
-          40,
+          60,
       }
     )
       .then(
         (
-          items
+          feeds
         ) => {
           if (
             active
           ) {
-            setBackendVideos(
-              items.filter(
+            setRankedBackend({
+              all:
                 (
-                  item
-                ) =>
-                  item.type ===
-                  "clip"
-              )
-            );
+                  feeds?.all ||
+                  []
+                ).filter(
+                  (
+                    item
+                  ) =>
+                    item.type ===
+                    "clip"
+                ),
+              forYou:
+                (
+                  feeds?.forYou ||
+                  []
+                ).filter(
+                  (
+                    item
+                  ) =>
+                    item.type ===
+                    "clip"
+                ),
+              nearby:
+                (
+                  feeds?.nearby ||
+                  []
+                ).filter(
+                  (
+                    item
+                  ) =>
+                    item.type ===
+                    "clip"
+                ),
+            });
           }
         }
       )
@@ -140,14 +175,28 @@ export default function ClipsPage({
   const clips =
     useMemo(
       () => {
+        const primaryBackend =
+          activeMode ===
+          "nearby"
+            ? rankedBackend.nearby
+            : rankedBackend.forYou;
+
+        const primaryFallback =
+          activeMode ===
+          "nearby"
+            ? pulseRecommendations.nearby ||
+              []
+            : pulseRecommendations.forYou ||
+              [];
+
         const source = [
-          ...backendVideos,
+          ...primaryBackend,
+          ...rankedBackend.all,
+          ...primaryFallback,
           ...(pulseVideos || []),
-          ...(pulseRecommendations.forYou || []),
-          ...(pulseRecommendations.nearby || []),
-          ...(pulseRecommendations.live || []),
           ...(pulseRecommendations.city || []),
           ...(pulseRecommendations.wave || []),
+          ...(pulseRecommendations.live || []),
         ];
 
         const unique = [];
@@ -172,7 +221,8 @@ export default function ClipsPage({
         return unique;
       },
       [
-        backendVideos,
+        rankedBackend,
+        activeMode,
       ]
     );
 
@@ -295,6 +345,308 @@ export default function ClipsPage({
       video,
       authSession,
     });
+
+  const clipVideoRef =
+    useRef(null);
+
+  const clipWatchRef =
+    useRef({
+      mediaId: null,
+      active: false,
+      startedAt: 0,
+      totalWatchMs: 0,
+      completed: false,
+      replay: false,
+      cycleCompleted: false,
+      everCompleted: false,
+      lastMediaTime: 0,
+    });
+
+  function resetClipWatch(
+    mediaId = null
+  ) {
+    clipWatchRef.current = {
+      mediaId,
+      active: false,
+      startedAt: 0,
+      totalWatchMs: 0,
+      completed: false,
+      replay: false,
+      cycleCompleted: false,
+      everCompleted: false,
+      lastMediaTime: 0,
+    };
+  }
+
+  function accumulateClipWatch() {
+    const watch =
+      clipWatchRef.current;
+
+    if (!watch.active) {
+      return;
+    }
+
+    watch.totalWatchMs +=
+      Math.max(
+        0,
+        Math.round(
+          performance.now() -
+            watch.startedAt
+        )
+      );
+
+    watch.active =
+      false;
+
+    watch.startedAt =
+      0;
+  }
+
+  function handleClipPlay() {
+    pulseSocial.recordView();
+
+    if (
+      !video?.backend ||
+      !authSession?.user?.id
+    ) {
+      return;
+    }
+
+    const watch =
+      clipWatchRef.current;
+
+    if (
+      watch.mediaId !==
+      video.id
+    ) {
+      resetClipWatch(
+        video.id
+      );
+    }
+
+    if (!watch.active) {
+      watch.active =
+        true;
+
+      watch.startedAt =
+        performance.now();
+    }
+  }
+
+  function handleClipPause() {
+    accumulateClipWatch();
+  }
+
+  function handleClipTimeUpdate(
+    event
+  ) {
+    const element =
+      event.currentTarget;
+
+    const watch =
+      clipWatchRef.current;
+
+    const start =
+      Number(
+        video?.trimStart ||
+        0
+      );
+
+    const end =
+      Number(
+        video?.trimEnd ||
+        element.duration ||
+        video?.durationSeconds ||
+        0
+      );
+
+    const current =
+      Number(
+        element.currentTime ||
+        0
+      );
+
+    if (
+      watch.lastMediaTime >
+        current +
+          0.75
+    ) {
+      watch.cycleCompleted =
+        false;
+    }
+
+    if (
+      end >
+        start &&
+      !watch.cycleCompleted &&
+      current >=
+        start +
+          (
+            end -
+            start
+          ) *
+            0.9
+    ) {
+      watch.completed =
+        true;
+
+      if (
+        watch.everCompleted
+      ) {
+        watch.replay =
+          true;
+      }
+
+      watch.everCompleted =
+        true;
+
+      watch.cycleCompleted =
+        true;
+    }
+
+    watch.lastMediaTime =
+      current;
+
+    if (
+      video?.trimEnd &&
+      current >=
+        video.trimEnd -
+          0.03
+    ) {
+      element.currentTime =
+        start;
+
+      element
+        .play()
+        .catch(
+          () => {}
+        );
+    }
+  }
+
+  function flushClipWatch(
+    targetVideo
+  ) {
+    accumulateClipWatch();
+
+    const snapshot = {
+      ...clipWatchRef.current,
+    };
+
+    resetClipWatch(
+      null
+    );
+
+    if (
+      !targetVideo?.backend ||
+      !authSession?.user?.id ||
+      snapshot.mediaId !==
+        targetVideo.id ||
+      snapshot.totalWatchMs <
+        300
+    ) {
+      return;
+    }
+
+    recordPulseWatchSignal(
+      authSession,
+      {
+        mediaId:
+          targetVideo.id,
+        watchMs:
+          Math.min(
+            180000,
+            snapshot.totalWatchMs
+          ),
+        impression:
+          true,
+        completed:
+          snapshot.completed,
+        quickSwipe:
+          snapshot.totalWatchMs <
+            1800 &&
+          !snapshot.completed,
+        replay:
+          snapshot.replay,
+      }
+    ).catch(
+      (
+        error
+      ) => {
+        console.warn(
+          "PULSE CLIP WATCH SIGNAL ERROR:",
+          error
+        );
+      }
+    );
+  }
+
+  useEffect(
+    () => {
+      const current =
+        video;
+
+      if (!current) {
+        resetClipWatch(
+          null
+        );
+
+        return undefined;
+      }
+
+      resetClipWatch(
+        current.id
+      );
+
+      return () => {
+        flushClipWatch(
+          current
+        );
+      };
+    },
+    [
+      video?.id,
+      authSession?.user?.id,
+      authSession?.access_token,
+    ]
+  );
+
+  useEffect(
+    () => {
+      function handleVisibility() {
+        if (
+          document.visibilityState !==
+            "visible"
+        ) {
+          clipVideoRef.current
+            ?.pause?.();
+
+          accumulateClipWatch();
+
+          return;
+        }
+
+        clipVideoRef.current
+          ?.play?.()
+          ?.catch?.(
+            () => {}
+          );
+      }
+
+      document.addEventListener(
+        "visibilitychange",
+        handleVisibility
+      );
+
+      return () => {
+        document.removeEventListener(
+          "visibilitychange",
+          handleVisibility
+        );
+      };
+    },
+    []
+  );
 
   function resetActions() {
     setShowLocation(false);
@@ -486,6 +838,9 @@ export default function ClipsPage({
         {video.videoUrl ||
         video.video ? (
           <video
+            ref={
+              clipVideoRef
+            }
             src={
               video.videoUrl ||
               video.video
@@ -503,7 +858,10 @@ export default function ClipsPage({
             playsInline
             preload="metadata"
             onPlay={
-              pulseSocial.recordView
+              handleClipPlay
+            }
+            onPause={
+              handleClipPause
             }
             onLoadedMetadata={(
               event
@@ -515,29 +873,9 @@ export default function ClipsPage({
                   video.trimStart;
               }
             }}
-            onTimeUpdate={(
-              event
-            ) => {
-              const element =
-                event.currentTarget;
-
-              if (
-                video.trimEnd &&
-                element.currentTime >=
-                  video.trimEnd -
-                    0.03
-              ) {
-                element.currentTime =
-                  video.trimStart ||
-                  0;
-
-                element
-                  .play()
-                  .catch(
-                    () => {}
-                  );
-              }
-            }}
+            onTimeUpdate={
+              handleClipTimeUpdate
+            }
           />
         ) : (
           <img
@@ -583,11 +921,17 @@ export default function ClipsPage({
                   ? "is-active"
                   : ""
               }
-              onClick={() =>
+              onClick={() => {
                 setActiveMode(
                   "forYou"
-                )
-              }
+                );
+
+                setCurrentIndex(
+                  0
+                );
+
+                resetActions();
+              }}
             >
               Для тебе
             </button>
@@ -600,11 +944,17 @@ export default function ClipsPage({
                   ? "is-active"
                   : ""
               }
-              onClick={() =>
+              onClick={() => {
                 setActiveMode(
                   "nearby"
-                )
-              }
+                );
+
+                setCurrentIndex(
+                  0
+                );
+
+                resetActions();
+              }}
             >
               Поруч
             </button>
