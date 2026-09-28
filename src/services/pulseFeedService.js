@@ -6,6 +6,10 @@ import {
   loadPulseWatchSignals,
 } from "./pulseSocialService";
 
+import {
+  loadPulseFeedback,
+} from "./pulseFeedbackService";
+
 const SUPABASE_URL =
   "https://yqskwqahmkeiconsrhoy.supabase.co";
 
@@ -513,22 +517,34 @@ function rankForYou(
     savedIds,
     commentedIds,
     watchSignals,
+    hiddenMediaIds,
+    mutedAuthorIds,
     currentUserId,
     currentCity,
   } =
     signals;
 
+  const source =
+    (
+      videos ||
+      []
+    ).filter(
+      (
+        video
+      ) =>
+        !hiddenMediaIds.has(
+          video.id
+        )
+    );
+
   const watchAffinity =
     buildWatchAffinities(
-      videos,
+      source,
       signals
     );
 
   const scored =
-    (
-      videos ||
-      []
-    ).map(
+    source.map(
       (
         video
       ) => {
@@ -579,6 +595,17 @@ function rankForYou(
         ) {
           score +=
             24;
+        }
+
+        if (
+          mutedAuthorIds.has(
+            authorId
+          ) &&
+          authorId !==
+            currentUserId
+        ) {
+          score -=
+            48;
         }
 
         const watchSignal =
@@ -906,6 +933,10 @@ async function loadSignals(
         new Set(),
       watchSignals:
         new Map(),
+      hiddenMediaIds:
+        new Set(),
+      mutedAuthorIds:
+        new Set(),
       currentCity:
         "",
     };
@@ -920,6 +951,7 @@ async function loadSignals(
     savedRows,
     commentRows,
     watchSignals,
+    feedback,
   ] =
     await Promise.all([
       readRows(
@@ -1030,6 +1062,23 @@ async function loadSignals(
           return new Map();
         }
       ),
+      loadPulseFeedback(
+        session
+      ).catch(
+        (
+          error
+        ) => {
+          console.warn(
+            "PULSE FEEDBACK LOAD ERROR:",
+            error
+          );
+
+          return {
+            hiddenMediaIds: [],
+            mutedAuthorIds: [],
+          };
+        }
+      ),
     ]);
 
   return {
@@ -1108,6 +1157,16 @@ async function loadSignals(
       watchSignals instanceof Map
         ? watchSignals
         : new Map(),
+    hiddenMediaIds:
+      new Set(
+        feedback?.hiddenMediaIds ||
+        []
+      ),
+    mutedAuthorIds:
+      new Set(
+        feedback?.mutedAuthorIds ||
+        []
+      ),
   };
 }
 
@@ -1150,7 +1209,7 @@ export async function loadRankedPulseFeeds(
     );
 
   const following =
-    forYou
+    videos
       .filter(
         (
           video
@@ -1184,7 +1243,7 @@ export async function loadRankedPulseFeeds(
       );
 
   const friends =
-    forYou
+    videos
       .filter(
         (
           video
@@ -1219,7 +1278,7 @@ export async function loadRankedPulseFeeds(
 
   const city =
     signals.currentCity
-      ? forYou
+      ? videos
           .filter(
             (
               video
