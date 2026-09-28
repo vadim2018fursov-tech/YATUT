@@ -1765,6 +1765,51 @@ export default function Friends({
             )
           }
         />
+
+        {actionNotice && (
+          <div
+            key={
+              actionNotice.id
+            }
+            className={`friends-v2-toast ${actionNotice.tone}`}
+            role="status"
+            aria-live="polite"
+          >
+            <span className="friends-v2-toast-icon">
+              <YatutIcon
+                name={
+                  actionNotice.tone ===
+                  "success"
+                    ? "friends"
+                    : "close"
+                }
+                size={16}
+              />
+            </span>
+
+            <strong>
+              {
+                actionNotice.text
+              }
+            </strong>
+          </div>
+        )}
+
+        {removeCandidate && (
+          <FriendRemoveModal
+            person={
+              removeCandidate
+            }
+            onClose={() =>
+              setRemoveCandidate(
+                null
+              )
+            }
+            onConfirm={
+              confirmRemoveFriend
+            }
+          />
+        )}
       </div>
     );
   }
