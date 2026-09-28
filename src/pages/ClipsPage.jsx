@@ -172,6 +172,13 @@ export default function ClipsPage({
     authSession?.access_token,
   ]);
 
+  const [
+    activeMode,
+    setActiveMode,
+  ] = useState(
+    "forYou"
+  );
+
   const clips =
     useMemo(
       () => {
@@ -249,13 +256,6 @@ export default function ClipsPage({
         initialVideoId,
       ]
     );
-
-  const [
-    activeMode,
-    setActiveMode,
-  ] = useState(
-    "forYou"
-  );
 
   const [
     currentIndex,
