@@ -100,76 +100,87 @@ export default function ClipsPage({
     let active =
       true;
 
-    loadRankedPulseFeeds(
-      authSession,
-      {
-        limit:
-          60,
-      }
-    )
-      .then(
-        (
-          feeds
-        ) => {
-          if (
-            active
-          ) {
-            setRankedBackend({
-              all:
-                (
-                  feeds?.all ||
-                  []
-                ).filter(
-                  (
-                    item
-                  ) =>
-                    item.type ===
-                    "clip"
-                ),
-              forYou:
-                (
-                  feeds?.forYou ||
-                  []
-                ).filter(
-                  (
-                    item
-                  ) =>
-                    item.type ===
-                    "clip"
-                ),
-              nearby:
-                (
-                  feeds?.nearby ||
-                  []
-                ).filter(
-                  (
-                    item
-                  ) =>
-                    item.type ===
-                    "clip"
-                ),
-            });
-          }
-        }
-      )
-      .catch(
-        (
-          error
-        ) => {
-          console.warn(
-            "CLIPS PULSE LOAD ERROR:",
-            error
-          );
-        }
+    const refreshTimer =
+      window.setTimeout(
+        () => {
+          loadRankedPulseFeeds(
+            authSession,
+            {
+              limit:
+                60,
+            }
+          )
+            .then(
+              (
+                feeds
+              ) => {
+                if (
+                  active
+                ) {
+                  setRankedBackend({
+                    all:
+                      (
+                        feeds?.all ||
+                        []
+                      ).filter(
+                        (
+                          item
+                        ) =>
+                          item.type ===
+                          "clip"
+                      ),
+                    forYou:
+                      (
+                        feeds?.forYou ||
+                        []
+                      ).filter(
+                        (
+                          item
+                        ) =>
+                          item.type ===
+                          "clip"
+                      ),
+                    nearby:
+                      (
+                        feeds?.nearby ||
+                        []
+                      ).filter(
+                        (
+                          item
+                        ) =>
+                          item.type ===
+                          "clip"
+                      ),
+                  });
+                }
+              }
+            )
+            .catch(
+              (
+                error
+              ) => {
+                console.warn(
+                  "CLIPS PULSE LOAD ERROR:",
+                  error
+                );
+              }
+            );
+        },
+        160
       );
 
     return () => {
       active =
         false;
+
+      window.clearTimeout(
+        refreshTimer
+      );
     };
   }, [
     authSession?.user?.id,
     authSession?.access_token,
+    activeMode,
   ]);
 
   const [
