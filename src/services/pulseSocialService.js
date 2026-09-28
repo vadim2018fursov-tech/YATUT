@@ -742,6 +742,204 @@ export async function recordPulseView(
   return true;
 }
 
+export async function loadPulseWatchSignals(
+  session
+) {
+  if (
+    !session?.user?.id
+  ) {
+    return new Map();
+  }
+
+  const rows =
+    await fetchRows(
+      session,
+      "pulse_watch_signals",
+      {
+        user_id:
+          `eq.${session.user.id}`,
+        select:
+          "media_id,impressions,total_watch_ms,max_watch_ms,completions,quick_swipes,replays,last_seen_at",
+        order:
+          "last_seen_at.desc.nullslast",
+        limit:
+          1200,
+      }
+    );
+
+  return new Map(
+    (
+      Array.isArray(
+        rows
+      )
+        ? rows
+        : []
+    ).map(
+      (
+        row
+      ) => [
+        row.media_id,
+        {
+          impressions:
+            Number(
+              row.impressions ||
+              0
+            ),
+          totalWatchMs:
+            Number(
+              row.total_watch_ms ||
+              0
+            ),
+          maxWatchMs:
+            Number(
+              row.max_watch_ms ||
+              0
+            ),
+          completions:
+            Number(
+              row.completions ||
+              0
+            ),
+          quickSwipes:
+            Number(
+              row.quick_swipes ||
+              0
+            ),
+          replays:
+            Number(
+              row.replays ||
+              0
+            ),
+          lastSeenAt:
+            row.last_seen_at ||
+            null,
+        },
+      ]
+    )
+  );
+}
+
+export async function recordPulseWatchSignal(
+  session,
+  {
+    mediaId,
+    watchMs = 0,
+    impression = false,
+    completed = false,
+    quickSwipe = false,
+    replay = false,
+  }
+) {
+  if (
+    !session?.user?.id ||
+    !isPulseBackendId(
+      mediaId
+    )
+  ) {
+    return null;
+  }
+
+  const safeWatch =
+    Math.max(
+      0,
+      Math.min(
+        180000,
+        Math.round(
+          Number(
+            watchMs ||
+            0
+          )
+        )
+      )
+    );
+
+  const response =
+    await fetch(
+      `${SUPABASE_URL}/rest/v1/rpc/record_pulse_watch_signal`,
+      {
+        method:
+          "POST",
+        headers:
+          headers(
+            session
+          ),
+        body:
+          JSON.stringify({
+            target_media_id:
+              mediaId,
+            watch_delta_ms:
+              safeWatch,
+            impression_delta:
+              impression
+                ? 1
+                : 0,
+            completion_delta:
+              completed
+                ? 1
+                : 0,
+            quick_swipe_delta:
+              quickSwipe
+                ? 1
+                : 0,
+            replay_delta:
+              replay
+                ? 1
+                : 0,
+          }),
+      }
+    );
+
+  const data =
+    await parseResponse(
+      response
+    );
+
+  const row =
+    Array.isArray(data)
+      ? data[0]
+      : data;
+
+  if (!row) {
+    return null;
+  }
+
+  return {
+    impressions:
+      Number(
+        row.impressions ||
+        0
+      ),
+    totalWatchMs:
+      Number(
+        row.total_watch_ms ||
+        0
+      ),
+    maxWatchMs:
+      Number(
+        row.max_watch_ms ||
+        0
+      ),
+    completions:
+      Number(
+        row.completions ||
+        0
+      ),
+    quickSwipes:
+      Number(
+        row.quick_swipes ||
+        0
+      ),
+    replays:
+      Number(
+        row.replays ||
+        0
+      ),
+    lastSeenAt:
+      row.last_seen_at ||
+      null,
+  };
+}
+
 export async function recordPulseShare(
   session,
   mediaId
