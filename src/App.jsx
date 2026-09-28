@@ -2955,6 +2955,20 @@ function Home({
         ),
         getBackendFollowGraph(
           authSession
+        ).catch(
+          (
+            error
+          ) => {
+            console.warn(
+              "FOLLOW GRAPH LOAD ERROR:",
+              error
+            );
+
+            return {
+              followers: [],
+              following: [],
+            };
+          }
         ),
       ]);
 
