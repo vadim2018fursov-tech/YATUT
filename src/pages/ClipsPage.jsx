@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 
 import {
+  useCallback,
   useEffect,
   useMemo,
   useRef,
@@ -44,6 +45,10 @@ import {
 import {
   recordPulseWatchSignal,
 } from "../services/pulseSocialService";
+
+import {
+  subscribePulseRealtime,
+} from "../services/realtimeService";
 
 import {
   addPulseFeedback,
@@ -129,92 +134,109 @@ export default function ClipsPage({
     setFeedbackNotice,
   ] = useState(null);
 
-  useEffect(() => {
-    let active =
-      true;
-
-    const refreshTimer =
-      window.setTimeout(
-        () => {
-          loadRankedPulseFeeds(
-            authSession,
-            {
-              limit:
-                60,
-            }
-          )
-            .then(
-              (
-                feeds
-              ) => {
-                if (
-                  active
-                ) {
-                  setRankedBackend({
-                    all:
-                      (
-                        feeds?.all ||
-                        []
-                      ).filter(
-                        (
-                          item
-                        ) =>
-                          item.type ===
-                          "clip"
-                      ),
-                    forYou:
-                      (
-                        feeds?.forYou ||
-                        []
-                      ).filter(
-                        (
-                          item
-                        ) =>
-                          item.type ===
-                          "clip"
-                      ),
-                    nearby:
-                      (
-                        feeds?.nearby ||
-                        []
-                      ).filter(
-                        (
-                          item
-                        ) =>
-                          item.type ===
-                          "clip"
-                      ),
-                  });
-                }
-              }
-            )
-            .catch(
-              (
-                error
-              ) => {
-                console.warn(
-                  "CLIPS PULSE LOAD ERROR:",
-                  error
-                );
+  const refreshRankedClips =
+    useCallback(
+      async () => {
+        try {
+          const feeds =
+            await loadRankedPulseFeeds(
+              authSession,
+              {
+                limit:
+                  60,
               }
             );
-        },
-        160
-      );
 
-    return () => {
-      active =
-        false;
+          setRankedBackend({
+            all:
+              (
+                feeds?.all ||
+                []
+              ).filter(
+                (
+                  item
+                ) =>
+                  item.type ===
+                  "clip"
+              ),
+            forYou:
+              (
+                feeds?.forYou ||
+                []
+              ).filter(
+                (
+                  item
+                ) =>
+                  item.type ===
+                  "clip"
+              ),
+            nearby:
+              (
+                feeds?.nearby ||
+                []
+              ).filter(
+                (
+                  item
+                ) =>
+                  item.type ===
+                  "clip"
+              ),
+          });
+        } catch (
+          error
+        ) {
+          console.warn(
+            "CLIPS PULSE LOAD ERROR:",
+            error
+          );
+        }
+      },
+      [
+        authSession?.user?.id,
+        authSession?.access_token,
+      ]
+    );
 
-      window.clearTimeout(
-        refreshTimer
-      );
-    };
-  }, [
-    authSession?.user?.id,
-    authSession?.access_token,
-    activeMode,
-  ]);
+  useEffect(
+    () => {
+      let timer =
+        window.setTimeout(
+          refreshRankedClips,
+          120
+        );
+
+      const realtime =
+        subscribePulseRealtime({
+          session:
+            authSession,
+          onChange:
+            () => {
+              window.clearTimeout(
+                timer
+              );
+
+              timer =
+                window.setTimeout(
+                  refreshRankedClips,
+                  120
+                );
+            },
+        });
+
+      return () => {
+        window.clearTimeout(
+          timer
+        );
+
+        realtime?.close?.();
+      };
+    },
+    [
+      authSession?.user?.id,
+      authSession?.access_token,
+      refreshRankedClips,
+    ]
+  );
 
   const clips =
     useMemo(
@@ -243,37 +265,19 @@ export default function ClipsPage({
           ...(pulseRecommendations.live || []),
         ];
 
-        const unique = [];
+        const unique =
+          [];
 
         source.forEach(
-          (video) => {
-            const authorId =
-              video?.author?.id;
-
-            const hidden =
-              Boolean(
-                video?.id &&
-                sessionHiddenMediaIds.has(
-                  video.id
-                )
-              );
-
-            const muted =
-              Boolean(
-                authorId &&
-                authorId !==
-                  authSession?.user?.id &&
-                sessionMutedAuthorIds.has(
-                  authorId
-                )
-              );
-
+          (
+            video
+          ) => {
             if (
               !video ||
-              hidden ||
-              muted ||
               unique.some(
-                (item) =>
+                (
+                  item
+                ) =>
                   item.id ===
                   video.id
               )
@@ -281,11 +285,66 @@ export default function ClipsPage({
               return;
             }
 
-            unique.push(video);
+            if (
+              activeMode ===
+                "forYou" &&
+              video?.id &&
+              sessionHiddenMediaIds.has(
+                video.id
+              )
+            ) {
+              return;
+            }
+
+            unique.push(
+              video
+            );
           }
         );
 
-        return unique;
+        if (
+          activeMode !==
+          "forYou"
+        ) {
+          return unique;
+        }
+
+        const normal =
+          [];
+
+        const reduced =
+          [];
+
+        unique.forEach(
+          (
+            video
+          ) => {
+            const authorId =
+              video?.author?.id;
+
+            if (
+              authorId &&
+              authorId !==
+                authSession?.user?.id &&
+              sessionMutedAuthorIds.has(
+                authorId
+              )
+            ) {
+              reduced.push(
+                video
+              );
+            } else {
+              normal.push(
+                video
+              );
+            }
+          }
+        );
+
+        return [
+          ...normal,
+          ...reduced,
+        ];
       },
       [
         rankedBackend,
@@ -391,6 +450,20 @@ export default function ClipsPage({
     [
       initialCommentsOpen,
       initialVideoId,
+    ]
+  );
+
+  useEffect(
+    () => {
+      if (
+        commentsOpen
+      ) {
+        clipVideoRef.current
+          ?.pause?.();
+      }
+    },
+    [
+      commentsOpen,
     ]
   );
 
@@ -779,6 +852,36 @@ export default function ClipsPage({
           "CLIPS NOT INTERESTED ERROR:",
           error
         );
+
+        setSessionHiddenMediaIds(
+          (
+            previous
+          ) => {
+            const next =
+              new Set(
+                previous
+              );
+
+            next.delete(
+              targetVideo.id
+            );
+
+            return next;
+          }
+        );
+
+        setFeedbackNotice({
+          kind:
+            "notice",
+          mediaId:
+            null,
+          authorId:
+            null,
+          persisted:
+            false,
+          label:
+            "Не вдалося зберегти налаштування",
+        });
       }
     }
   }
@@ -850,6 +953,36 @@ export default function ClipsPage({
           "CLIPS LESS AUTHOR ERROR:",
           error
         );
+
+        setSessionMutedAuthorIds(
+          (
+            previous
+          ) => {
+            const next =
+              new Set(
+                previous
+              );
+
+            next.delete(
+              authorId
+            );
+
+            return next;
+          }
+        );
+
+        setFeedbackNotice({
+          kind:
+            "notice",
+          mediaId:
+            null,
+          authorId:
+            null,
+          persisted:
+            false,
+          label:
+            "Не вдалося зберегти налаштування",
+        });
       }
     }
   }
@@ -1764,14 +1897,17 @@ export default function ClipsPage({
               }
             </span>
 
-            <button
-              type="button"
-              onClick={
-                undoClipFeedback
-              }
-            >
-              Скасувати
-            </button>
+            {feedbackNotice.kind !==
+              "notice" && (
+              <button
+                type="button"
+                onClick={
+                  undoClipFeedback
+                }
+              >
+                Скасувати
+              </button>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
