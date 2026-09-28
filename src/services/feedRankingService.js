@@ -22,16 +22,60 @@ function tokenize(value) {
     );
 }
 
+function viewerCommented(post, viewerId) {
+  if (
+    !viewerId ||
+    !Array.isArray(post.comments)
+  ) {
+    return false;
+  }
+
+  return post.comments.some(
+    (comment) =>
+      comment.authorId === viewerId ||
+      (
+        Array.isArray(
+          comment.replies
+        ) &&
+        comment.replies.some(
+          (reply) =>
+            reply.authorId ===
+            viewerId
+        )
+      )
+  );
+}
+
 function buildInterestTokens(posts, viewerId) {
   const weights = new Map();
 
   for (const post of posts) {
-    const signal =
+    let signal = 0;
+
+    if (
       post.authorId === viewerId
-        ? 2
-        : post.liked
-        ? 3
-        : 0;
+    ) {
+      signal += 2;
+    }
+
+    if (post.liked) {
+      signal += 3;
+    }
+
+    if (
+      post.savedForRanking
+    ) {
+      signal += 4;
+    }
+
+    if (
+      viewerCommented(
+        post,
+        viewerId
+      )
+    ) {
+      signal += 4;
+    }
 
     if (!signal) continue;
 
@@ -264,6 +308,17 @@ export function rankForYouFeed(
 
       if (post.eventId) {
         score += 2;
+      }
+
+      if (
+        post.liked ||
+        post.savedForRanking ||
+        viewerCommented(
+          post,
+          viewerId
+        )
+      ) {
+        score -= 4;
       }
 
       return {
