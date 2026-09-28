@@ -8,6 +8,7 @@ import {
 import "./Notifications.css";
 
 import YatutIcon from "./YatutIcon";
+import useYatutAutoAnimate from "../hooks/useYatutAutoAnimate";
 
 import {
   getNotifications,
@@ -323,6 +324,12 @@ export default function Notifications({
 
   const panelRef =
     useRef(null);
+
+  const [
+    notificationsGroupsRef,
+  ] = useYatutAutoAnimate({
+    duration: 220,
+  });
 
   /* =======================================================
      LIVE SYNC
@@ -1144,7 +1151,12 @@ export default function Notifications({
 
       <div className="notifications-scroll">
         {groupedNotifications.length ? (
-          <div className="notifications-groups">
+          <div
+            ref={
+              notificationsGroupsRef
+            }
+            className="notifications-groups"
+          >
             {groupedNotifications.map(
               (
                 group
