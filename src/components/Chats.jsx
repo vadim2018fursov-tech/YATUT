@@ -1821,9 +1821,22 @@ function MessageBubble({
 
       {!mine && (
         <div className="message-avatar">
-          {sender?.initials ||
+          {(
+            sender?.avatar ||
+            person?.avatar
+          ) ? (
+            <img
+              src={
+                sender?.avatar ||
+                person?.avatar
+              }
+              alt=""
+            />
+          ) : (
+            sender?.initials ||
             person?.initials ||
-            "?"}
+            "?"
+          )}
         </div>
       )}
 
@@ -2840,10 +2853,17 @@ function Chats({
 
   const activePerson =
     activeChat?.personId
-      ? PEOPLE[
+      ? backendPeople.find(
+          (
+            person
+          ) =>
+            person.id ===
+            activeChat.personId
+        ) ||
+        activeChat.person ||
+        PEOPLE[
           activeChat.personId
         ] ||
-        activeChat.person ||
         null
       : null;
 
@@ -8063,8 +8083,17 @@ function Chats({
                           : ""
                       }`.trim()}
                     >
-                      {chatInitials(
-                        activeChat
+                      {activePerson?.avatar ? (
+                        <img
+                          src={
+                            activePerson.avatar
+                          }
+                          alt=""
+                        />
+                      ) : (
+                        chatInitials(
+                          activeChat
+                        )
                       )}
                     </div>
 
@@ -8095,10 +8124,6 @@ function Chats({
                                     ?.online
                             )
                           ? "Онлайн"
-                          : activeChat.backend &&
-                            realtimeStatus ===
-                              "connecting"
-                          ? "Підключення…"
                           : "Був(ла) нещодавно"}
                       </span>
 
@@ -8966,8 +8991,17 @@ function Chats({
                     : ""
                 }`.trim()}
               >
-                {chatInitials(
-                  activeChat
+                {activePerson?.avatar ? (
+                  <img
+                    src={
+                      activePerson.avatar
+                    }
+                    alt=""
+                  />
+                ) : (
+                  chatInitials(
+                    activeChat
+                  )
                 )}
               </div>
 
