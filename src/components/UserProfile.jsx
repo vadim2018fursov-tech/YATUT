@@ -228,6 +228,21 @@ function UserProfile({
           relation?.following
         );
 
+  const hasAboutData =
+    Boolean(
+      person.school ||
+      person.university ||
+      person.work ||
+      person.hometown
+    );
+
+  const interests =
+    Array.isArray(
+      person.interests
+    )
+      ? person.interests
+      : [];
+
   const showNotice = (
     text
   ) => {
@@ -640,115 +655,120 @@ function UserProfile({
 
       <div className="other-profile-grid">
         <div className="other-profile-column">
-          <div className="other-profile-card">
-            <h3>
-              Про людину
-            </h3>
+          {hasAboutData && (
+            <div className="other-profile-card">
+              <h3>
+                Про людину
+              </h3>
 
-            {person.school && (
-              <div className="profile-data-line">
-                <span>
-                  🏫
-                </span>
-
-                <div>
-                  <small>
-                    Школа
-                  </small>
-
-                  <strong>
-                    {
-                      person.school
-                    }
-                  </strong>
-                </div>
-              </div>
-            )}
-
-            {person.university && (
-              <div className="profile-data-line">
-                <span>
-                  🎓
-                </span>
-
-                <div>
-                  <small>
-                    Університет
-                  </small>
-
-                  <strong>
-                    {
-                      person.university
-                    }
-                  </strong>
-                </div>
-              </div>
-            )}
-
-            {person.work && (
-              <div className="profile-data-line">
-                <span>
-                  💼
-                </span>
-
-                <div>
-                  <small>
-                    Робота
-                  </small>
-
-                  <strong>
-                    {
-                      person.work
-                    }
-                  </strong>
-                </div>
-              </div>
-            )}
-
-            {person.hometown && (
-              <div className="profile-data-line">
-                <span>
-                  🏠
-                </span>
-
-                <div>
-                  <small>
-                    Рідне місто
-                  </small>
-
-                  <strong>
-                    {
-                      person.hometown
-                    }
-                  </strong>
-                </div>
-              </div>
-            )}
-          </div>
-
-          <div className="other-profile-card">
-            <h3>
-              Інтереси
-            </h3>
-
-            <div className="other-interest-list">
-              {person.interests.map(
-                (
-                  interest
-                ) => (
-                  <span
-                    key={
-                      interest
-                    }
-                  >
-                    {
-                      interest
-                    }
+              {person.school && (
+                <div className="profile-data-line">
+                  <span>
+                    🏫
                   </span>
-                )
+
+                  <div>
+                    <small>
+                      Школа
+                    </small>
+
+                    <strong>
+                      {
+                        person.school
+                      }
+                    </strong>
+                  </div>
+                </div>
+              )}
+
+              {person.university && (
+                <div className="profile-data-line">
+                  <span>
+                    🎓
+                  </span>
+
+                  <div>
+                    <small>
+                      Університет
+                    </small>
+
+                    <strong>
+                      {
+                        person.university
+                      }
+                    </strong>
+                  </div>
+                </div>
+              )}
+
+              {person.work && (
+                <div className="profile-data-line">
+                  <span>
+                    💼
+                  </span>
+
+                  <div>
+                    <small>
+                      Робота
+                    </small>
+
+                    <strong>
+                      {
+                        person.work
+                      }
+                    </strong>
+                  </div>
+                </div>
+              )}
+
+              {person.hometown && (
+                <div className="profile-data-line">
+                  <span>
+                    🏠
+                  </span>
+
+                  <div>
+                    <small>
+                      Рідне місто
+                    </small>
+
+                    <strong>
+                      {
+                        person.hometown
+                      }
+                    </strong>
+                  </div>
+                </div>
               )}
             </div>
-          </div>
+          )}
+
+          {interests.length >
+            0 && (
+            <div className="other-profile-card">
+              <h3>
+                Інтереси
+              </h3>
+
+              <div className="other-interest-list">
+                {interests.map(
+                  (
+                    interest
+                  ) => (
+                    <span
+                      key={
+                        interest
+                      }
+                    >
+                      {
+                        interest
+                      }
+                    </span>
+                  )
+                )}
+              </div>
+            </div>
+          )}
 
           <div className="other-profile-card">
             <h3>
