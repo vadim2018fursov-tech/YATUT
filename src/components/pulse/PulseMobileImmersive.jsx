@@ -23,6 +23,10 @@ import {
   motion,
 } from "motion/react";
 
+import {
+  DropdownMenu,
+} from "radix-ui";
+
 import PulseLongVideoMobile from "./PulseLongVideoMobile";
 import PulseCommentsSheet from "./PulseCommentsSheet";
 import usePulseSocial from "../../hooks/usePulseSocial";
@@ -34,6 +38,11 @@ import {
 import {
   recordPulseWatchSignal,
 } from "../../services/pulseSocialService";
+
+import {
+  addPulseFeedback,
+  removePulseFeedback,
+} from "../../services/pulseFeedbackService";
 
 const TABS = [
   {
@@ -297,6 +306,10 @@ function PulseImmersiveSlide({
   socialRevision = 0,
   onShare,
   onCreate,
+  showRecommendationControls = false,
+  onNotInterested,
+  onLessFromAuthor,
+  onNotice,
 }) {
   const [
     commentsOpen,
@@ -838,15 +851,107 @@ function PulseImmersiveSlide({
           </span>
         )}
 
-        <button
-          type="button"
-          className="pulse-immersive__more"
-          aria-label="Більше"
-        >
-          <MoreHorizontal
-            size={22}
-          />
-        </button>
+        <DropdownMenu.Root>
+          <DropdownMenu.Trigger
+            asChild
+          >
+            <button
+              type="button"
+              className="pulse-immersive__more"
+              aria-label="Більше"
+            >
+              <MoreHorizontal
+                size={22}
+              />
+            </button>
+          </DropdownMenu.Trigger>
+
+          <DropdownMenu.Portal>
+            <DropdownMenu.Content
+              className="pulse-immersive__menu"
+              sideOffset={
+                8
+              }
+              align="end"
+              collisionPadding={
+                12
+              }
+            >
+              {showRecommendationControls &&
+                !pulseSocial.isOwnAuthor && (
+                <>
+                  <DropdownMenu.Item
+                    asChild
+                  >
+                    <button
+                      type="button"
+                      onClick={() =>
+                        onNotInterested?.(
+                          video
+                        )
+                      }
+                    >
+                      Не цікаво
+                    </button>
+                  </DropdownMenu.Item>
+
+                  <DropdownMenu.Item
+                    asChild
+                  >
+                    <button
+                      type="button"
+                      onClick={() =>
+                        onLessFromAuthor?.(
+                          video
+                        )
+                      }
+                    >
+                      Менше від цього автора
+                    </button>
+                  </DropdownMenu.Item>
+
+                  <DropdownMenu.Separator
+                    className="pulse-immersive__menu-separator"
+                  />
+                </>
+              )}
+
+              <DropdownMenu.Item
+                asChild
+              >
+                <button
+                  type="button"
+                  onClick={async () => {
+                    const url =
+                      `${window.location.origin}${window.location.pathname}#pulse=${encodeURIComponent(
+                        video.id
+                      )}`;
+
+                    try {
+                      await navigator.clipboard
+                        ?.writeText(
+                          url
+                        );
+
+                      onNotice?.(
+                        "Посилання скопійовано"
+                      );
+                    } catch (
+                      error
+                    ) {
+                      console.warn(
+                        "PULSE LINK COPY ERROR:",
+                        error
+                      );
+                    }
+                  }}
+                >
+                  Копіювати посилання
+                </button>
+              </DropdownMenu.Item>
+            </DropdownMenu.Content>
+          </DropdownMenu.Portal>
+        </DropdownMenu.Root>
       </div>
 
       <aside className="pulse-immersive__actions">
@@ -1231,6 +1336,27 @@ export default function PulseMobileImmersive({
     setLongWatchOpen,
   ] = useState(false);
 
+  const [
+    sessionHiddenMediaIds,
+    setSessionHiddenMediaIds,
+  ] = useState(
+    () =>
+      new Set()
+  );
+
+  const [
+    sessionMutedAuthorIds,
+    setSessionMutedAuthorIds,
+  ] = useState(
+    () =>
+      new Set()
+  );
+
+  const [
+    feedbackNotice,
+    setFeedbackNotice,
+  ] = useState(null);
+
   const tabsRef =
     useRef(null);
 
@@ -1242,20 +1368,297 @@ export default function PulseMobileImmersive({
 
   const videos =
     useMemo(
-      () =>
-        getFeed(
-          activeTab,
-          externalVideos,
-          forYouVideos,
-          followingVideos
-        ),
+      () => {
+        const base =
+          getFeed(
+            activeTab,
+            externalVideos,
+            forYouVideos,
+            followingVideos
+          );
+
+        if (
+          activeTab !==
+          "forYou"
+        ) {
+          return base;
+        }
+
+        const visible =
+          base.filter(
+            (
+              video
+            ) =>
+              !sessionHiddenMediaIds.has(
+                video.id
+              )
+          );
+
+        const normal =
+          [];
+
+        const reduced =
+          [];
+
+        visible.forEach(
+          (
+            video
+          ) => {
+            if (
+              sessionMutedAuthorIds.has(
+                video?.author?.id
+              )
+            ) {
+              reduced.push(
+                video
+              );
+            } else {
+              normal.push(
+                video
+              );
+            }
+          }
+        );
+
+        return [
+          ...normal,
+          ...reduced,
+        ];
+      },
       [
         activeTab,
         externalVideos,
         forYouVideos,
         followingVideos,
+        sessionHiddenMediaIds,
+        sessionMutedAuthorIds,
       ]
     );
+
+  async function handleNotInterested(
+    video
+  ) {
+    if (!video?.id) {
+      return;
+    }
+
+    nativeLightHaptic();
+
+    setSessionHiddenMediaIds(
+      (
+        previous
+      ) =>
+        new Set([
+          ...previous,
+          video.id,
+        ])
+    );
+
+    const persisted =
+      Boolean(
+        video.backend &&
+        authSession?.user?.id
+      );
+
+    setFeedbackNotice({
+      kind:
+        "not_interested",
+      mediaId:
+        video.id,
+      authorId:
+        null,
+      persisted,
+      label:
+        "Ролик прибрано з «Для тебе»",
+    });
+
+    if (persisted) {
+      try {
+        await addPulseFeedback(
+          authSession,
+          {
+            kind:
+              "not_interested",
+            mediaId:
+              video.id,
+          }
+        );
+      } catch (
+        error
+      ) {
+        console.warn(
+          "PULSE NOT INTERESTED ERROR:",
+          error
+        );
+      }
+    }
+  }
+
+  async function handleLessFromAuthor(
+    video
+  ) {
+    const authorId =
+      video?.author?.id;
+
+    if (!authorId) {
+      return;
+    }
+
+    nativeLightHaptic();
+
+    setSessionMutedAuthorIds(
+      (
+        previous
+      ) =>
+        new Set([
+          ...previous,
+          authorId,
+        ])
+    );
+
+    const persisted =
+      Boolean(
+        video.backend &&
+        authSession?.user?.id
+      );
+
+    setFeedbackNotice({
+      kind:
+        "less_from_author",
+      mediaId:
+        null,
+      authorId,
+      persisted,
+      label:
+        "Показуватимемо менше цього автора",
+    });
+
+    if (persisted) {
+      try {
+        await addPulseFeedback(
+          authSession,
+          {
+            kind:
+              "less_from_author",
+            authorId,
+          }
+        );
+      } catch (
+        error
+      ) {
+        console.warn(
+          "PULSE LESS AUTHOR ERROR:",
+          error
+        );
+      }
+    }
+  }
+
+  async function undoPulseFeedback() {
+    const target =
+      feedbackNotice;
+
+    if (!target) {
+      return;
+    }
+
+    setFeedbackNotice(
+      null
+    );
+
+    if (
+      target.mediaId
+    ) {
+      setSessionHiddenMediaIds(
+        (
+          previous
+        ) => {
+          const next =
+            new Set(
+              previous
+            );
+
+          next.delete(
+            target.mediaId
+          );
+
+          return next;
+        }
+      );
+    }
+
+    if (
+      target.authorId
+    ) {
+      setSessionMutedAuthorIds(
+        (
+          previous
+        ) => {
+          const next =
+            new Set(
+              previous
+            );
+
+          next.delete(
+            target.authorId
+          );
+
+          return next;
+        }
+      );
+    }
+
+    if (
+      target.persisted &&
+      authSession?.user?.id
+    ) {
+      try {
+        await removePulseFeedback(
+          authSession,
+          {
+            kind:
+              target.kind,
+            mediaId:
+              target.mediaId,
+            authorId:
+              target.authorId,
+          }
+        );
+      } catch (
+        error
+      ) {
+        console.warn(
+          "PULSE FEEDBACK UNDO ERROR:",
+          error
+        );
+      }
+    }
+  }
+
+  useEffect(
+    () => {
+      if (!feedbackNotice) {
+        return undefined;
+      }
+
+      const timer =
+        window.setTimeout(
+          () =>
+            setFeedbackNotice(
+              null
+            ),
+          5200
+        );
+
+      return () =>
+        window.clearTimeout(
+          timer
+        );
+    },
+    [
+      feedbackNotice,
+    ]
+  );
 
   function selectTab(
     tabId,
@@ -1692,6 +2095,31 @@ export default function PulseMobileImmersive({
                     }
                   )
                 }
+                showRecommendationControls={
+                  activeTab ===
+                  "forYou"
+                }
+                onNotInterested={
+                  handleNotInterested
+                }
+                onLessFromAuthor={
+                  handleLessFromAuthor
+                }
+                onNotice={(
+                  label
+                ) =>
+                  setFeedbackNotice({
+                    kind:
+                      "notice",
+                    mediaId:
+                      null,
+                    authorId:
+                      null,
+                    persisted:
+                      false,
+                    label,
+                  })
+                }
               />
             )
           )
@@ -1730,6 +2158,47 @@ export default function PulseMobileImmersive({
         )}
       </div>
       )}
+
+      <AnimatePresence>
+        {feedbackNotice && (
+          <motion.div
+            className="pulse-feedback-toast"
+            initial={{
+              opacity: 0,
+              y: 18,
+              scale: 0.98,
+            }}
+            animate={{
+              opacity: 1,
+              y: 0,
+              scale: 1,
+            }}
+            exit={{
+              opacity: 0,
+              y: 12,
+              scale: 0.985,
+            }}
+          >
+            <span>
+              {
+                feedbackNotice.label
+              }
+            </span>
+
+            {feedbackNotice.kind !==
+              "notice" && (
+              <button
+                type="button"
+                onClick={
+                  undoPulseFeedback
+                }
+              >
+                Скасувати
+              </button>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
