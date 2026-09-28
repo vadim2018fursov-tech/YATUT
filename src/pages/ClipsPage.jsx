@@ -108,6 +108,27 @@ export default function ClipsPage({
     "forYou"
   );
 
+  const [
+    sessionHiddenMediaIds,
+    setSessionHiddenMediaIds,
+  ] = useState(
+    () =>
+      new Set()
+  );
+
+  const [
+    sessionMutedAuthorIds,
+    setSessionMutedAuthorIds,
+  ] = useState(
+    () =>
+      new Set()
+  );
+
+  const [
+    feedbackNotice,
+    setFeedbackNotice,
+  ] = useState(null);
+
   useEffect(() => {
     let active =
       true;
@@ -349,27 +370,6 @@ export default function ClipsPage({
     moreOpen,
     setMoreOpen,
   ] = useState(false);
-
-  const [
-    sessionHiddenMediaIds,
-    setSessionHiddenMediaIds,
-  ] = useState(
-    () =>
-      new Set()
-  );
-
-  const [
-    sessionMutedAuthorIds,
-    setSessionMutedAuthorIds,
-  ] = useState(
-    () =>
-      new Set()
-  );
-
-  const [
-    feedbackNotice,
-    setFeedbackNotice,
-  ] = useState(null);
 
   const [
     commentsOpen,
