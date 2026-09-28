@@ -1,7 +1,9 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { MotionConfig } from "motion/react";
 import App from "./App.jsx";
 import "./styles/ui-consistency-v4.css";
+import "./styles/motion-system.css";
 import {
   initNativePlatform,
 } from "./services/nativePlatformService.js";
@@ -165,7 +167,20 @@ createRoot(
   document.getElementById("root")
 ).render(
   <StrictMode>
-    <App />
+    <MotionConfig
+      reducedMotion="user"
+      transition={{
+        duration: 0.22,
+        ease: [
+          0.22,
+          0.8,
+          0.26,
+          1,
+        ],
+      }}
+    >
+      <App />
+    </MotionConfig>
   </StrictMode>
 );
 
