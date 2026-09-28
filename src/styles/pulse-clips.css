@@ -1550,3 +1550,34 @@ p {
   background: rgba(99,91,255,.18);
   color: #d9d6ff;
 }
+
+
+/* =========================================================
+   PULSE CLIPS MOTION
+========================================================= */
+
+.pulse-clips-stage {
+  touch-action:
+    pan-x;
+  transform-origin:
+    center;
+  will-change:
+    transform,
+    opacity;
+}
+
+.pulse-clips-actions
+button {
+  transform-origin:
+    center;
+}
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+  .pulse-clips-stage {
+    will-change:
+      auto;
+  }
+}
