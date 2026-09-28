@@ -23,6 +23,10 @@ import PulseVideoPlayer from "./PulseVideoPlayer";
 import PulseCommentsSheet from "./PulseCommentsSheet";
 import usePulseSocial from "../../hooks/usePulseSocial";
 
+import {
+  recordPulseWatchSignal,
+} from "../../services/pulseSocialService";
+
 const CATEGORIES = [
   "Усі",
   "Подорожі",
@@ -538,6 +542,16 @@ export default function PulseLongVideoMobile({
   const playerWrapRef =
     useRef(null);
 
+  const longWatchRef =
+    useRef({
+      mediaId: null,
+      active: false,
+      startedAt: 0,
+      totalWatchMs: 0,
+      completed: false,
+      replay: false,
+    });
+
   const channels =
     useMemo(
       () => {
@@ -613,6 +627,187 @@ export default function PulseLongVideoMobile({
         selectedVideo.video ||
         null
       : null;
+
+  function resetLongWatch(
+    mediaId = null
+  ) {
+    longWatchRef.current = {
+      mediaId,
+      active: false,
+      startedAt: 0,
+      totalWatchMs: 0,
+      completed: false,
+      replay: false,
+    };
+  }
+
+  function accumulateLongWatch() {
+    const watch =
+      longWatchRef.current;
+
+    if (!watch.active) {
+      return;
+    }
+
+    watch.totalWatchMs +=
+      Math.max(
+        0,
+        Math.round(
+          performance.now() -
+            watch.startedAt
+        )
+      );
+
+    watch.active =
+      false;
+
+    watch.startedAt =
+      0;
+  }
+
+  function handleLongPlaybackStart() {
+    pulseSocial.recordView();
+
+    const watch =
+      longWatchRef.current;
+
+    if (
+      !selectedVideo?.backend ||
+      !authSession?.user?.id
+    ) {
+      return;
+    }
+
+    if (
+      watch.mediaId !==
+      selectedVideo.id
+    ) {
+      resetLongWatch(
+        selectedVideo.id
+      );
+    }
+
+    if (!watch.active) {
+      watch.active =
+        true;
+
+      watch.startedAt =
+        performance.now();
+    }
+  }
+
+  function handleLongPlaybackPause() {
+    accumulateLongWatch();
+  }
+
+  function handleLongPlaybackComplete(
+    {
+      replay = false,
+    } = {}
+  ) {
+    accumulateLongWatch();
+
+    const watch =
+      longWatchRef.current;
+
+    watch.completed =
+      true;
+
+    if (replay) {
+      watch.replay =
+        true;
+    }
+  }
+
+  function flushLongWatch(
+    video
+  ) {
+    accumulateLongWatch();
+
+    const watch =
+      longWatchRef.current;
+
+    const snapshot = {
+      ...watch,
+    };
+
+    resetLongWatch(
+      null
+    );
+
+    if (
+      !video?.backend ||
+      !authSession?.user?.id ||
+      snapshot.mediaId !==
+        video.id ||
+      snapshot.totalWatchMs <
+        400
+    ) {
+      return;
+    }
+
+    recordPulseWatchSignal(
+      authSession,
+      {
+        mediaId:
+          video.id,
+        watchMs:
+          Math.min(
+            180000,
+            snapshot.totalWatchMs
+          ),
+        impression:
+          true,
+        completed:
+          snapshot.completed,
+        quickSwipe:
+          snapshot.totalWatchMs <
+          2500 &&
+          !snapshot.completed,
+        replay:
+          snapshot.replay,
+      }
+    ).catch(
+      (
+        error
+      ) => {
+        console.warn(
+          "PULSE LONG WATCH SIGNAL ERROR:",
+          error
+        );
+      }
+    );
+  }
+
+  useEffect(
+    () => {
+      const current =
+        selectedVideo;
+
+      if (!current) {
+        resetLongWatch(
+          null
+        );
+
+        return undefined;
+      }
+
+      resetLongWatch(
+        current.id
+      );
+
+      return () => {
+        flushLongWatch(
+          current
+        );
+      };
+    },
+    [
+      selectedVideo?.id,
+      authSession?.user?.id,
+      authSession?.access_token,
+    ]
+  );
 
   useEffect(
     () => {
@@ -873,7 +1068,13 @@ export default function PulseLongVideoMobile({
               null
             }
             onPlaybackStart={
-              pulseSocial.recordView
+              handleLongPlaybackStart
+            }
+            onPlaybackPause={
+              handleLongPlaybackPause
+            }
+            onPlaybackComplete={
+              handleLongPlaybackComplete
             }
           />
 
