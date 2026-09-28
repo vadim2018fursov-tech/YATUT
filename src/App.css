@@ -27084,3 +27084,44 @@ body.yatut-dark-mode
     animation: none;
   }
 }
+
+
+/* =========================================================
+   FRIEND PROFILE ROUND AVATAR FINAL
+========================================================= */
+
+.other-profile-avatar,
+.other-profile-avatar.has-story,
+.other-profile-avatar
+> div,
+.other-profile-avatar
+> div
+> img {
+  border-radius:
+    50% !important;
+}
+
+@media (max-width: 767px) {
+  .other-profile-avatar {
+    border-radius:
+      50% !important;
+  }
+
+  .other-profile-avatar
+  > div {
+    border-radius:
+      50% !important;
+  }
+
+  .other-profile-online {
+    top: 34px;
+    left: 74px;
+  }
+}
+
+@media (max-width: 390px) {
+  .other-profile-online {
+    top: 31px;
+    left: 69px;
+  }
+}
