@@ -5537,3 +5537,46 @@ body.yatut-dark-mode
       none !important;
   }
 }
+
+
+/* =========================================================
+   PROFILE STATUS POPOVER MOTION V5
+========================================================= */
+
+.profile-v2-status-menu {
+  transform-origin:
+    top left;
+  animation:
+    yatutProfileStatusIn
+    .16s
+    cubic-bezier(.2,.8,.2,1)
+    both;
+}
+
+.profile-v3-mobile-status-menu {
+  transform-origin:
+    top left;
+}
+
+@keyframes yatutProfileStatusIn {
+  from {
+    opacity: 0;
+    transform:
+      translateY(-5px)
+      scale(.985);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .profile-v2-status-menu {
+    animation:
+      none !important;
+  }
+}
