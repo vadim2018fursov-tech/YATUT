@@ -27240,3 +27240,109 @@ body.yatut-dark-mode
       );
   }
 }
+
+
+/* =========================================================
+   MESSENGER MOBILE CLEANUP V5
+========================================================= */
+
+.chat-header-avatar,
+.chat-info-avatar,
+.message-avatar {
+  overflow: hidden;
+}
+
+.chat-header-avatar img,
+.chat-info-avatar img,
+.message-avatar img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  border-radius: inherit;
+}
+
+.chat-header-avatar {
+  border-radius: 50%;
+}
+
+.chat-info-avatar {
+  border-radius: 50%;
+}
+
+.message-avatar {
+  border-radius: 50%;
+}
+
+@media (max-width: 767px) {
+  .message-more-trigger,
+  .message-reaction-trigger {
+    display: none !important;
+  }
+
+  .chat-messages {
+    padding-bottom:
+      calc(
+        104px +
+        env(
+          safe-area-inset-bottom
+        )
+      ) !important;
+    scroll-padding-bottom:
+      calc(
+        104px +
+        env(
+          safe-area-inset-bottom
+        )
+      );
+  }
+
+  .chat-composer {
+    position: relative;
+    z-index: 70;
+    background:
+      rgba(
+        255,
+        255,
+        255,
+        .96
+      );
+    backdrop-filter:
+      blur(18px);
+    -webkit-backdrop-filter:
+      blur(18px);
+    box-shadow:
+      0 -12px 32px
+      rgba(
+        28,
+        31,
+        48,
+        .055
+      );
+  }
+
+  .chat-header-avatar {
+    width: 39px;
+    height: 39px;
+  }
+
+  .message-avatar {
+    width: 30px;
+    height: 30px;
+    flex:
+      0
+      0
+      30px;
+  }
+}
+
+body.yatut-dark-mode
+.chat-composer {
+  background:
+    rgba(
+      20,
+      21,
+      28,
+      .96
+    );
+}
