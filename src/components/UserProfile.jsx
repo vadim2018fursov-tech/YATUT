@@ -4,10 +4,69 @@ import {
 } from "react";
 
 import {
+  motion,
+} from "motion/react";
+
+import {
+  DropdownMenu,
+} from "radix-ui";
+
+import YatutMediaViewer from "./ui/YatutMediaViewer";
+
+import {
   getBackendFollowState,
   getBackendUserProfile,
   toggleBackendFollow,
 } from "../services/socialBackendService";
+
+function formatProfilePostTime(
+  value
+) {
+  const date =
+    new Date(
+      Number(
+        value
+      ) ||
+      value ||
+      0
+    );
+
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
+    return "";
+  }
+
+  const now =
+    new Date();
+
+  if (
+    date.toDateString() ===
+    now.toDateString()
+  ) {
+    return date.toLocaleTimeString(
+      "uk-UA",
+      {
+        hour:
+          "2-digit",
+        minute:
+          "2-digit",
+      }
+    );
+  }
+
+  return date.toLocaleDateString(
+    "uk-UA",
+    {
+      day:
+        "numeric",
+      month:
+        "short",
+    }
+  );
+}
 
 function UserProfile({
   person: initialPerson,
@@ -54,6 +113,33 @@ function UserProfile({
     notice,
     setNotice,
   ] = useState("");
+
+  const [
+    profileMedia,
+    setProfileMedia,
+  ] = useState({
+    open: false,
+    src: "",
+    type: "image",
+    alt: "",
+  });
+
+  function openProfileMedia(
+    src,
+    type = "image",
+    alt = ""
+  ) {
+    if (!src) {
+      return;
+    }
+
+    setProfileMedia({
+      open: true,
+      src,
+      type,
+      alt,
+    });
+  }
 
   useEffect(() => {
     if (
