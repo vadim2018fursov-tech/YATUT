@@ -96,6 +96,13 @@ export default function ClipsPage({
     nearby: [],
   });
 
+  const [
+    activeMode,
+    setActiveMode,
+  ] = useState(
+    "forYou"
+  );
+
   useEffect(() => {
     let active =
       true;
@@ -182,13 +189,6 @@ export default function ClipsPage({
     authSession?.access_token,
     activeMode,
   ]);
-
-  const [
-    activeMode,
-    setActiveMode,
-  ] = useState(
-    "forYou"
-  );
 
   const clips =
     useMemo(
