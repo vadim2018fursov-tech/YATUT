@@ -11,6 +11,10 @@ import {
 } from "react";
 
 import {
+  Dialog,
+} from "radix-ui";
+
+import {
   createPulseComment,
   deletePulseComment,
   isPulseBackendId,
@@ -20,6 +24,8 @@ import {
 import {
   subscribePulseRealtime,
 } from "../../services/realtimeService";
+
+import useYatutAutoAnimate from "../../hooks/useYatutAutoAnimate";
 
 import "./PulseCommentsSheet.css";
 
@@ -123,6 +129,12 @@ export default function PulseCommentsSheet({
     setReplyingTo,
   ] =
     useState(null);
+
+  const [
+    commentsListRef,
+  ] = useYatutAutoAnimate({
+    duration: 220,
+  });
 
   const backend =
     Boolean(
@@ -443,25 +455,43 @@ export default function PulseCommentsSheet({
   }
 
   return (
-    <div
-      className="pulse-comments-backdrop"
-      onPointerDown={(
-        event
+    <Dialog.Root
+      open={
+        open
+      }
+      onOpenChange={(
+        nextOpen
       ) => {
         if (
-          event.target ===
-          event.currentTarget
+          !nextOpen
         ) {
           onClose?.();
         }
       }}
     >
+      <Dialog.Portal>
+        <Dialog.Overlay className="pulse-comments-backdrop" />
+
+        <Dialog.Content
+          asChild
+          aria-describedby={
+            undefined
+          }
+        >
       <section className="pulse-comments-sheet">
+        <div
+          className="pulse-comments-sheet__handle"
+          aria-hidden="true"
+        />
         <header className="pulse-comments-sheet__header">
           <div>
-            <strong>
-              Коментарі
-            </strong>
+            <Dialog.Title
+              asChild
+            >
+              <strong>
+                Коментарі
+              </strong>
+            </Dialog.Title>
 
             <span>
               {
@@ -470,20 +500,26 @@ export default function PulseCommentsSheet({
             </span>
           </div>
 
-          <button
-            type="button"
-            onClick={
-              onClose
-            }
-            aria-label="Закрити коментарі"
+          <Dialog.Close
+            asChild
           >
-            <X
-              size={20}
-            />
-          </button>
+            <button
+              type="button"
+              aria-label="Закрити коментарі"
+            >
+              <X
+                size={20}
+              />
+            </button>
+          </Dialog.Close>
         </header>
 
-        <div className="pulse-comments-sheet__list">
+        <div
+          ref={
+            commentsListRef
+          }
+          className="pulse-comments-sheet__list"
+        >
           {!backend ? (
             <div className="pulse-comments-sheet__empty">
               <strong>
@@ -677,7 +713,9 @@ export default function PulseCommentsSheet({
           </footer>
         )}
       </section>
-    </div>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
   );
 }
 
