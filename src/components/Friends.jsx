@@ -1761,6 +1761,24 @@ export default function Friends({
               personId
             )
           }
+          onOpenConnections={(
+            tab
+          ) => {
+            setSelectedPerson(
+              null
+            );
+
+            setActiveTab(
+              tab
+            );
+
+            onNavigate?.(
+              "friends",
+              {
+                tab,
+              }
+            );
+          }}
         />
 
         {actionNotice && (
