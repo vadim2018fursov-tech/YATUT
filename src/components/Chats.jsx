@@ -2867,6 +2867,14 @@ function Chats({
         null
       : null;
 
+  function activeChatIsVisible() {
+    return (
+      window.innerWidth >
+        767 ||
+      mobileDialogOpen
+    );
+  }
+
   useEffect(() => {
     if (
       !authSession?.user?.id ||
@@ -4044,7 +4052,8 @@ function Chats({
 
             if (
               document.visibilityState ===
-              "visible"
+                "visible" &&
+              activeChatIsVisible()
             ) {
               markBackendChatRead(
                 authSession,
@@ -4182,6 +4191,7 @@ function Chats({
     activeChat?.backend,
     authSession?.user?.id,
     authSession?.access_token,
+    mobileDialogOpen,
   ]);
 
   useEffect(() => {
@@ -4269,7 +4279,8 @@ function Chats({
         if (
           markRead &&
           document.visibilityState ===
-            "visible"
+            "visible" &&
+          activeChatIsVisible()
         ) {
           await markBackendChatRead(
             authSession,
@@ -4517,6 +4528,7 @@ function Chats({
     authSession?.user?.id,
     authSession?.access_token,
     shareLiveActivity,
+    mobileDialogOpen,
   ]);
 
   useEffect(() => {
