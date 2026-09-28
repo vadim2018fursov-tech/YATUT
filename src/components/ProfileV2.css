@@ -5580,3 +5580,233 @@ body.yatut-dark-mode
       none !important;
   }
 }
+
+
+/* =========================================================
+   PROFILE MOBILE FLOW FIX FINAL
+   Keep hero -> tabs -> content in one normal document flow.
+========================================================= */
+
+@media (max-width: 767px) {
+  .profile-v2-page,
+  .profile-v2-shell {
+    width: 100% !important;
+    min-width: 0 !important;
+    overflow-x: hidden !important;
+  }
+
+  .profile-v2-grid {
+    position: relative !important;
+    width: auto !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    margin:
+      14px
+      10px
+      0 !important;
+    display: block !important;
+    transform: none !important;
+    overflow: visible !important;
+  }
+
+  .profile-v2-main {
+    position: relative !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    overflow: visible !important;
+  }
+
+  .profile-v2-tabs {
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    z-index: 8 !important;
+
+    width: 100% !important;
+    min-height: 64px !important;
+    margin: 0 !important;
+    padding: 5px !important;
+
+    display: grid !important;
+    grid-template-columns:
+      repeat(
+        4,
+        minmax(0,1fr)
+      ) !important;
+    gap: 3px !important;
+
+    transform: none !important;
+    overflow: hidden !important;
+
+    border:
+      1px solid
+      #e8e9f0 !important;
+    border-radius:
+      18px !important;
+    background:
+      rgba(
+        255,
+        255,
+        255,
+        .96
+      ) !important;
+    box-shadow:
+      0 9px 26px
+      rgba(
+        31,
+        35,
+        54,
+        .055
+      ) !important;
+    backdrop-filter:
+      blur(16px);
+    -webkit-backdrop-filter:
+      blur(16px);
+  }
+
+  .profile-v2-tabs button {
+    position: relative !important;
+    min-width: 0 !important;
+    min-height: 52px !important;
+    padding:
+      0
+      4px !important;
+    border-radius:
+      13px !important;
+    overflow: hidden !important;
+  }
+
+  .profile-v2-tab-label {
+    position: relative;
+    z-index: 2;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size:
+      clamp(
+        8px,
+        2.55vw,
+        10px
+      ) !important;
+  }
+
+  .profile-v2-post-list {
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+
+  .profile-v2-inline-composer {
+    position: relative !important;
+    inset: auto !important;
+    z-index: 1 !important;
+
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+
+    border-radius:
+      18px !important;
+    transform: none !important;
+  }
+
+  .profile-v2-inline-composer__top {
+    align-items: flex-start !important;
+  }
+
+  .profile-v2-inline-composer textarea {
+    min-width: 0 !important;
+    min-height: 116px !important;
+    resize: none !important;
+  }
+
+  .profile-v2-inline-composer__bottom {
+    gap: 10px !important;
+    align-items: center !important;
+  }
+
+  .profile-v2-inline-composer__bottom button {
+    flex: 0 0 auto !important;
+  }
+
+  .profile-v2-post-card,
+  .profile-v2-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Desktop analytics are duplicated by the mobile profile surface. */
+  .profile-v2-side {
+    display: none !important;
+  }
+
+  body.yatut-dark-mode
+  .profile-v2-tabs {
+    border-color:
+      #30323c !important;
+    background:
+      rgba(
+        24,
+        25,
+        32,
+        .96
+      ) !important;
+    box-shadow:
+      0 12px 30px
+      rgba(
+        0,
+        0,
+        0,
+        .18
+      ) !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .profile-v2-grid {
+    margin-right:
+      8px !important;
+    margin-left:
+      8px !important;
+  }
+
+  .profile-v2-tabs {
+    min-height:
+      60px !important;
+    border-radius:
+      16px !important;
+  }
+
+  .profile-v2-tabs button {
+    min-height:
+      48px !important;
+  }
+
+  .profile-v2-inline-composer__bottom {
+    align-items:
+      stretch !important;
+    flex-direction:
+      column !important;
+  }
+
+  .profile-v2-inline-composer__bottom span {
+    width: 100%;
+  }
+
+  .profile-v2-inline-composer__bottom button {
+    width: 100%;
+    min-height: 46px !important;
+  }
+}
