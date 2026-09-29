@@ -1,63 +1,76 @@
 /* =========================================================
    YATUT CHAT COMPOSER MATCH V4
-   Matches the approved composer reference:
+   Exact compact composer based on the approved reference:
    + | message field with emoji | mic | send
 ========================================================= */
 
 @media (max-width: 767px) {
   .messenger.mobile-dialog-open
   .chat-composer:not(.voice-mode) {
-    --chat-control-size: 48px;
+    --chat-plus-size: 42px;
+    --chat-field-height: 46px;
+    --chat-mic-size: 42px;
+    --chat-send-size: 46px;
 
     display: grid !important;
 
     grid-template-columns:
-      var(--chat-control-size)
+      var(--chat-plus-size)
       minmax(0, 1fr)
-      var(--chat-control-size)
-      var(--chat-control-size) !important;
+      var(--chat-mic-size)
+      var(--chat-send-size) !important;
 
     grid-template-rows:
-      var(--chat-control-size) !important;
+      var(--chat-field-height) !important;
 
     align-items: center !important;
-    column-gap: 7px !important;
+
+    column-gap: 6px !important;
     row-gap: 0 !important;
 
+    min-height: 60px !important;
+
     padding:
-      8px
+      6px
       max(
-        10px,
+        8px,
         var(
           --yatut-safe-right,
           env(safe-area-inset-right, 0px)
         )
       )
       calc(
-        8px +
+        6px +
         var(
           --yatut-safe-bottom,
           env(safe-area-inset-bottom, 0px)
         )
       )
       max(
-        10px,
+        8px,
         var(
           --yatut-safe-left,
           env(safe-area-inset-left, 0px)
         )
       ) !important;
 
-    border-top:
+    overflow: visible !important;
+
+    border:
       1px solid
-      rgba(31,34,48,.055) !important;
+      rgba(35,38,52,.055) !important;
+
+    border-radius:
+      30px !important;
 
     background:
       rgba(255,255,255,.985) !important;
 
     box-shadow:
-      0 -10px 28px
-      rgba(31,35,54,.045) !important;
+      0 8px 28px
+      rgba(31,35,54,.075),
+      inset 0 1px 0
+      rgba(255,255,255,.92) !important;
   }
 
   html.yatut-chat-input-focused
@@ -67,7 +80,16 @@
   .messenger.mobile-dialog-open
   .chat-composer:not(.voice-mode) {
     padding-bottom:
-      8px !important;
+      6px !important;
+
+    margin-bottom:
+      0 !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode)
+  > input[hidden] {
+    display: none !important;
   }
 
   .messenger.mobile-dialog-open
@@ -98,13 +120,104 @@
     grid-row: 1 !important;
   }
 
+  /* + */
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode)
+  > .chat-plus-wrap {
+    position: static !important;
+
+    width:
+      var(--chat-plus-size) !important;
+
+    height:
+      var(--chat-plus-size) !important;
+
+    min-width:
+      var(--chat-plus-size) !important;
+
+    min-height:
+      var(--chat-plus-size) !important;
+
+    max-width:
+      var(--chat-plus-size) !important;
+
+    max-height:
+      var(--chat-plus-size) !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: grid !important;
+    place-items: center !important;
+
+    align-self: center !important;
+    justify-self: center !important;
+
+    transform: none !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode)
+  .chat-plus {
+    position: static !important;
+
+    width:
+      var(--chat-plus-size) !important;
+
+    height:
+      var(--chat-plus-size) !important;
+
+    min-width:
+      var(--chat-plus-size) !important;
+
+    min-height:
+      var(--chat-plus-size) !important;
+
+    max-width:
+      var(--chat-plus-size) !important;
+
+    max-height:
+      var(--chat-plus-size) !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    border:
+      1px solid
+      rgba(35,38,52,.075) !important;
+
+    border-radius:
+      50% !important;
+
+    background:
+      #fafbfc !important;
+
+    color:
+      #636976 !important;
+
+    box-shadow:
+      inset 0 1px 0
+      rgba(255,255,255,.92) !important;
+
+    transform: none !important;
+  }
+
+  /* Input pill */
   .messenger.mobile-dialog-open
   .chat-input-shell {
     position: relative !important;
 
     width: 100% !important;
     min-width: 0 !important;
-    height: var(--chat-control-size) !important;
+
+    height:
+      var(--chat-field-height) !important;
+
+    min-height:
+      var(--chat-field-height) !important;
+
+    max-height:
+      var(--chat-field-height) !important;
 
     display: flex !important;
     align-items: center !important;
@@ -113,41 +226,33 @@
 
     border:
       1px solid
-      rgba(99,91,255,.105) !important;
+      rgba(99,91,255,.10) !important;
 
     border-radius:
-      calc(
-        var(--chat-control-size) / 2
-      ) !important;
-
-    background:
-      rgba(255,255,255,.99) !important;
-
-    box-shadow:
-      inset 0 1px 2px
-      rgba(31,35,54,.018),
-      0 1px 0
-      rgba(255,255,255,.9) !important;
-
-    transition:
-      border-color 160ms ease,
-      box-shadow 160ms ease,
-      background 160ms ease;
-  }
-
-  .messenger.mobile-dialog-open
-  .chat-input-shell:focus-within {
-    border-color:
-      rgba(99,91,255,.25) !important;
+      24px !important;
 
     background:
       #fff !important;
 
     box-shadow:
-      0 0 0 3px
-      rgba(99,91,255,.055),
       inset 0 1px 2px
-      rgba(31,35,54,.018) !important;
+      rgba(31,35,54,.016) !important;
+
+    transition:
+      border-color 160ms ease,
+      box-shadow 160ms ease;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-input-shell:focus-within {
+    border-color:
+      rgba(99,91,255,.24) !important;
+
+    box-shadow:
+      0 0 0 3px
+      rgba(99,91,255,.045),
+      inset 0 1px 2px
+      rgba(31,35,54,.012) !important;
   }
 
   .messenger.mobile-dialog-open
@@ -155,6 +260,7 @@
   > textarea {
     width: 100% !important;
     min-width: 0 !important;
+
     height: 100% !important;
     min-height: 0 !important;
     max-height: 100% !important;
@@ -162,10 +268,10 @@
     margin: 0 !important;
 
     padding:
-      12px
-      48px
-      12px
-      16px !important;
+      11px
+      42px
+      11px
+      14px !important;
 
     border: 0 !important;
     border-radius: inherit !important;
@@ -185,7 +291,7 @@
       16px !important;
 
     line-height:
-      1.35 !important;
+      1.42 !important;
 
     resize:
       none !important;
@@ -195,14 +301,20 @@
 
     overflow-y:
       auto !important;
+
+    appearance: none !important;
+    -webkit-appearance: none !important;
   }
 
   .messenger.mobile-dialog-open
   .chat-input-shell
   > textarea:focus {
     border: 0 !important;
+    outline: 0 !important;
+
     background:
       transparent !important;
+
     box-shadow:
       none !important;
   }
@@ -211,11 +323,12 @@
   .chat-input-shell
   > textarea::placeholder {
     color:
-      #a5a9b4 !important;
+      #a6aab5 !important;
 
     opacity: 1;
   }
 
+  /* Emoji is inside the input, not a separate tile */
   .messenger.mobile-dialog-open
   .chat-input-shell
   > .yatut-emoji-wrapper {
@@ -226,17 +339,29 @@
     bottom: auto !important;
     left: auto !important;
 
-    width: 40px !important;
-    height: 40px !important;
+    width: 36px !important;
+    height: 36px !important;
 
-    min-width: 40px !important;
-    min-height: 40px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+
+    max-width: 36px !important;
+    max-height: 36px !important;
 
     margin: 0 !important;
     padding: 0 !important;
 
     display: grid !important;
     place-items: center !important;
+
+    border: 0 !important;
+    border-radius: 50% !important;
+
+    background:
+      transparent !important;
+
+    box-shadow:
+      none !important;
 
     transform:
       translateY(-50%) !important;
@@ -249,14 +374,22 @@
   .chat-emoji {
     position: static !important;
 
-    width: 40px !important;
-    height: 40px !important;
+    inset: auto !important;
 
-    min-width: 40px !important;
-    min-height: 40px !important;
+    width: 36px !important;
+    height: 36px !important;
+
+    min-width: 36px !important;
+    min-height: 36px !important;
+
+    max-width: 36px !important;
+    max-height: 36px !important;
 
     margin: 0 !important;
     padding: 0 !important;
+
+    display: grid !important;
+    place-items: center !important;
 
     border: 0 !important;
     border-radius: 50% !important;
@@ -265,7 +398,7 @@
       transparent !important;
 
     color:
-      #565b69 !important;
+      #4f5563 !important;
 
     box-shadow:
       none !important;
@@ -278,7 +411,7 @@
   .chat-input-shell
   .chat-emoji:active {
     background:
-      rgba(99,91,255,.075) !important;
+      rgba(99,91,255,.07) !important;
 
     color:
       #635bff !important;
@@ -287,75 +420,39 @@
       scale(.94) !important;
   }
 
+  /* Microphone */
   .messenger.mobile-dialog-open
   .chat-composer:not(.voice-mode)
-  > .chat-plus-wrap,
-  .messenger.mobile-dialog-open
-  .chat-composer:not(.voice-mode)
-  > .chat-voice-button,
-  .messenger.mobile-dialog-open
-  .chat-composer:not(.voice-mode)
-  > .chat-send {
+  > .chat-voice-button {
+    position: static !important;
+
     width:
-      var(--chat-control-size) !important;
+      var(--chat-mic-size) !important;
 
     height:
-      var(--chat-control-size) !important;
+      var(--chat-mic-size) !important;
 
     min-width:
-      var(--chat-control-size) !important;
+      var(--chat-mic-size) !important;
 
     min-height:
-      var(--chat-control-size) !important;
+      var(--chat-mic-size) !important;
 
     max-width:
-      var(--chat-control-size) !important;
+      var(--chat-mic-size) !important;
 
     max-height:
-      var(--chat-control-size) !important;
+      var(--chat-mic-size) !important;
 
     margin: 0 !important;
+    padding: 0 !important;
+
+    display: grid !important;
+    place-items: center !important;
 
     align-self: center !important;
     justify-self: center !important;
-  }
 
-  .messenger.mobile-dialog-open
-  .chat-composer:not(.voice-mode)
-  .chat-plus {
-    width:
-      var(--chat-control-size) !important;
-
-    height:
-      var(--chat-control-size) !important;
-
-    min-width:
-      var(--chat-control-size) !important;
-
-    min-height:
-      var(--chat-control-size) !important;
-
-    border:
-      1px solid
-      rgba(35,38,52,.075) !important;
-
-    border-radius:
-      50% !important;
-
-    background:
-      #fafbfc !important;
-
-    color:
-      #646a77 !important;
-
-    box-shadow:
-      inset 0 1px 0
-      rgba(255,255,255,.9) !important;
-  }
-
-  .messenger.mobile-dialog-open
-  .chat-composer:not(.voice-mode)
-  .chat-voice-button {
     border:
       1px solid
       rgba(99,91,255,.12) !important;
@@ -366,8 +463,8 @@
     background:
       linear-gradient(
         145deg,
-        #f2f0ff,
-        #ece9ff
+        #f3f1ff,
+        #eeebff
       ) !important;
 
     color:
@@ -375,21 +472,53 @@
 
     box-shadow:
       inset 0 1px 0
-      rgba(255,255,255,.86),
-      0 5px 14px
-      rgba(99,91,255,.07) !important;
+      rgba(255,255,255,.88) !important;
+
+    transform: none !important;
   }
 
+  /* Send */
   .messenger.mobile-dialog-open
   .chat-composer:not(.voice-mode)
-  .chat-send {
+  > .chat-send {
+    position: static !important;
+
+    width:
+      var(--chat-send-size) !important;
+
+    height:
+      var(--chat-send-size) !important;
+
+    min-width:
+      var(--chat-send-size) !important;
+
+    min-height:
+      var(--chat-send-size) !important;
+
+    max-width:
+      var(--chat-send-size) !important;
+
+    max-height:
+      var(--chat-send-size) !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: grid !important;
+    place-items: center !important;
+
+    align-self: center !important;
+    justify-self: center !important;
+
     border: 0 !important;
-    border-radius: 50% !important;
+
+    border-radius:
+      50% !important;
 
     background:
       linear-gradient(
         145deg,
-        #746cff,
+        #766eff,
         #5f56f5
       ) !important;
 
@@ -397,10 +526,12 @@
       #fff !important;
 
     box-shadow:
-      0 8px 20px
+      0 7px 18px
       rgba(99,91,255,.22),
       inset 0 1px 0
       rgba(255,255,255,.16) !important;
+
+    transform: none !important;
   }
 
   .messenger.mobile-dialog-open
@@ -414,14 +545,15 @@
       scale(.95) !important;
   }
 
+  /* Editing mode has no microphone. */
   .messenger.mobile-dialog-open
   .chat-composer:not(.voice-mode):not(
     :has(> .chat-voice-button)
   ) {
     grid-template-columns:
-      var(--chat-control-size)
+      var(--chat-plus-size)
       minmax(0, 1fr)
-      var(--chat-control-size) !important;
+      var(--chat-send-size) !important;
   }
 
   .messenger.mobile-dialog-open
@@ -433,37 +565,44 @@
       3 !important;
   }
 
-  /* Popovers remain anchored to their visual buttons. */
+  /* Keep emoji popup detached from the tiny wrapper. */
   .messenger.mobile-dialog-open
   .chat-input-shell
   .yatut-emoji-popover {
-    position: fixed !important;
+    position:
+      fixed !important;
   }
 }
 
 @media (max-width: 390px) {
   .messenger.mobile-dialog-open
   .chat-composer:not(.voice-mode) {
-    --chat-control-size: 44px;
+    --chat-plus-size: 40px;
+    --chat-field-height: 44px;
+    --chat-mic-size: 40px;
+    --chat-send-size: 44px;
 
     column-gap:
-      6px !important;
+      5px !important;
+
+    min-height:
+      56px !important;
 
     padding-right:
-      8px !important;
+      7px !important;
 
     padding-left:
-      8px !important;
+      7px !important;
   }
 
   .messenger.mobile-dialog-open
   .chat-input-shell
   > textarea {
     padding-right:
-      43px !important;
+      40px !important;
 
     padding-left:
-      14px !important;
+      13px !important;
   }
 
   .messenger.mobile-dialog-open
@@ -472,10 +611,14 @@
   .messenger.mobile-dialog-open
   .chat-input-shell
   .chat-emoji {
-    width: 36px !important;
-    height: 36px !important;
-    min-width: 36px !important;
-    min-height: 36px !important;
+    width: 34px !important;
+    height: 34px !important;
+
+    min-width: 34px !important;
+    min-height: 34px !important;
+
+    max-width: 34px !important;
+    max-height: 34px !important;
   }
 }
 
@@ -498,7 +641,7 @@
   .messenger.mobile-dialog-open
   .chat-input-shell:focus-within {
     border-color:
-      rgba(159,151,255,.23) !important;
+      rgba(159,151,255,.22) !important;
 
     background:
       #181a23 !important;
@@ -517,6 +660,6 @@
   .chat-input-shell
   .chat-emoji {
     color:
-      #c2c5ce !important;
+      #c4c7d0 !important;
   }
 }
