@@ -10,6 +10,10 @@ import {
   motion,
 } from "motion/react";
 
+import {
+  createPortal,
+} from "react-dom";
+
 import "./ProfileV2.css";
 import YatutIcon from "./YatutIcon";
 import YatutMediaViewer from "./ui/YatutMediaViewer";
@@ -393,6 +397,277 @@ function fileToDataUrl(
       reader.readAsDataURL(
         file
       );
+    }
+  );
+}
+
+
+function loadProfileCropImage(
+  src
+) {
+  return new Promise(
+    (
+      resolve,
+      reject
+    ) => {
+      const image =
+        new Image();
+
+      image.onload =
+        () =>
+          resolve(
+            image
+          );
+
+      image.onerror =
+        () =>
+          reject(
+            new Error(
+              "Не вдалося підготувати фото."
+            )
+          );
+
+      image.src =
+        src;
+    }
+  );
+}
+
+async function cropProfileImage(
+  file,
+  {
+    x = 50,
+    y = 50,
+    zoom = 1,
+    aspect = 1,
+    maxWidth = 1200,
+    prefix = "profile",
+  } = {}
+) {
+  if (!file) {
+    return null;
+  }
+
+  const source =
+    await fileToDataUrl(
+      file
+    );
+
+  const image =
+    await loadProfileCropImage(
+      source
+    );
+
+  const sourceWidth =
+    image.naturalWidth ||
+    image.width;
+
+  const sourceHeight =
+    image.naturalHeight ||
+    image.height;
+
+  if (
+    !sourceWidth ||
+    !sourceHeight
+  ) {
+    throw new Error(
+      "Не вдалося визначити розмір фото."
+    );
+  }
+
+  const safeAspect =
+    Math.max(
+      0.25,
+      Number(
+        aspect
+      ) ||
+        1
+    );
+
+  const safeZoom =
+    Math.max(
+      1,
+      Math.min(
+        3,
+        Number(
+          zoom
+        ) ||
+          1
+      )
+    );
+
+  const sourceAspect =
+    sourceWidth /
+    sourceHeight;
+
+  let baseCropWidth =
+    sourceWidth;
+
+  let baseCropHeight =
+    sourceHeight;
+
+  if (
+    sourceAspect >
+    safeAspect
+  ) {
+    baseCropWidth =
+      sourceHeight *
+      safeAspect;
+  } else {
+    baseCropHeight =
+      sourceWidth /
+      safeAspect;
+  }
+
+  const cropWidth =
+    baseCropWidth /
+    safeZoom;
+
+  const cropHeight =
+    baseCropHeight /
+    safeZoom;
+
+  const normalizedX =
+    Math.max(
+      0,
+      Math.min(
+        100,
+        Number(
+          x
+        ) ||
+          0
+      )
+    ) /
+    100;
+
+  const normalizedY =
+    Math.max(
+      0,
+      Math.min(
+        100,
+        Number(
+          y
+        ) ||
+          0
+      )
+    ) /
+    100;
+
+  const sourceX =
+    Math.max(
+      0,
+      (
+        sourceWidth -
+        cropWidth
+      ) *
+        normalizedX
+    );
+
+  const sourceY =
+    Math.max(
+      0,
+      (
+        sourceHeight -
+        cropHeight
+      ) *
+        normalizedY
+    );
+
+  const outputWidth =
+    Math.max(
+      320,
+      Math.min(
+        maxWidth,
+        Math.round(
+          cropWidth
+        )
+      )
+    );
+
+  const outputHeight =
+    Math.max(
+      1,
+      Math.round(
+        outputWidth /
+        safeAspect
+      )
+    );
+
+  const canvas =
+    document.createElement(
+      "canvas"
+    );
+
+  canvas.width =
+    outputWidth;
+
+  canvas.height =
+    outputHeight;
+
+  const context =
+    canvas.getContext(
+      "2d",
+      {
+        alpha: false,
+      }
+    );
+
+  if (!context) {
+    throw new Error(
+      "Не вдалося підготувати кадрування."
+    );
+  }
+
+  context.drawImage(
+    image,
+    sourceX,
+    sourceY,
+    cropWidth,
+    cropHeight,
+    0,
+    0,
+    outputWidth,
+    outputHeight
+  );
+
+  const blob =
+    await new Promise(
+      (
+        resolve,
+        reject
+      ) => {
+        canvas.toBlob(
+          (
+            value
+          ) => {
+            if (value) {
+              resolve(
+                value
+              );
+
+              return;
+            }
+
+            reject(
+              new Error(
+                "Не вдалося зберегти кадрування."
+              )
+            );
+          },
+          "image/jpeg",
+          0.92
+        );
+      }
+    );
+
+  return new File(
+    [
+      blob,
+    ],
+    `${prefix}-${Date.now()}.jpg`,
+    {
+      type:
+        "image/jpeg",
     }
   );
 }
@@ -4148,6 +4423,54 @@ function EditProfileModal({
   ] =
     useState(false);
 
+
+  const [
+    avatarCrop,
+    setAvatarCrop,
+  ] =
+    useState({
+      x: 50,
+      y: 50,
+      zoom: 1,
+    });
+
+  const [
+    coverCrop,
+    setCoverCrop,
+  ] =
+    useState({
+      x: 50,
+      y: 50,
+      zoom: 1,
+    });
+
+  useEffect(
+    () => {
+      document.documentElement
+        .classList.add(
+          "yatut-profile-editor-open"
+        );
+
+      document.body
+        .classList.add(
+          "yatut-profile-editor-open"
+        );
+
+      return () => {
+        document.documentElement
+          .classList.remove(
+            "yatut-profile-editor-open"
+          );
+
+        document.body
+          .classList.remove(
+            "yatut-profile-editor-open"
+          );
+      };
+    },
+    []
+  );
+
   /* =======================================================
      IMAGE
   ======================================================= */
@@ -4184,10 +4507,22 @@ function EditProfileModal({
         setAvatarFile(
           file
         );
+
+        setAvatarCrop({
+          x: 50,
+          y: 50,
+          zoom: 1,
+        });
       } else {
         setCoverFile(
           file
         );
+
+        setCoverCrop({
+          x: 50,
+          y: 50,
+          zoom: 1,
+        });
       }
     } catch (error) {
       console.error(
@@ -4237,6 +4572,32 @@ function EditProfileModal({
         true
       );
 
+      const preparedAvatarFile =
+        avatarFile
+          ? await cropProfileImage(
+              avatarFile,
+              {
+                ...avatarCrop,
+                aspect: 1,
+                maxWidth: 1024,
+                prefix: "avatar",
+              }
+            )
+          : null;
+
+      const preparedCoverFile =
+        coverFile
+          ? await cropProfileImage(
+              coverFile,
+              {
+                ...coverCrop,
+                aspect: 2.4,
+                maxWidth: 1800,
+                prefix: "cover",
+              }
+            )
+          : null;
+
       await onSave({
         ...profile,
         ...draft,
@@ -4263,10 +4624,10 @@ function EditProfileModal({
             : [],
 
         _avatarFile:
-          avatarFile,
+          preparedAvatarFile,
 
         _coverFile:
-          coverFile,
+          preparedCoverFile,
       });
     } finally {
       setSaving(
@@ -4279,7 +4640,7 @@ function EditProfileModal({
      UI
   ======================================================= */
 
-  return (
+  return createPortal(
     <div
       className="profile-v2-edit-backdrop"
       onMouseDown={(
@@ -4336,33 +4697,141 @@ function EditProfileModal({
 
         <div
           className="profile-v2-edit-cover"
-          style={
-            draft.cover
-              ? {
-                  backgroundImage:
-                    `linear-gradient(
-                      180deg,
-                      rgba(14,16,26,.08),
-                      rgba(14,16,26,.38)
-                    ),
-                    url("${draft.cover}")`,
-                }
-              : undefined
-          }
         >
+          {draft.cover ? (
+            <img
+              className="profile-v2-edit-cover-image"
+              src={
+                draft.cover
+              }
+              alt=""
+              style={{
+                objectPosition:
+                  `${coverCrop.x}% ${coverCrop.y}%`,
+                transform:
+                  `scale(${coverCrop.zoom})`,
+                transformOrigin:
+                  `${coverCrop.x}% ${coverCrop.y}%`,
+              }}
+            />
+          ) : null}
 
-          <button
-            type="button"
-            onClick={() =>
-              coverInputRef
-                .current
-                ?.click()
-            }
-          >
-            Змінити обкладинку
-          </button>
-
+          <div className="profile-v2-edit-cover-actions">
+            <button
+              type="button"
+              onClick={() =>
+                coverInputRef
+                  .current
+                  ?.click()
+              }
+            >
+              Змінити обкладинку
+            </button>
+          </div>
         </div>
+
+        {coverFile && (
+          <div className="profile-v2-crop-controls profile-v2-crop-controls-cover">
+            <strong>
+              Кадрування обкладинки
+            </strong>
+
+            <span>
+              Посуньте фото та змініть масштаб перед збереженням.
+            </span>
+
+            <label>
+              <b>
+                Горизонтально
+              </b>
+
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value={
+                  coverCrop.x
+                }
+                onChange={(
+                  event
+                ) =>
+                  setCoverCrop(
+                    (
+                      previous
+                    ) => ({
+                      ...previous,
+                      x:
+                        Number(
+                          event.target.value
+                        ),
+                    })
+                  )
+                }
+              />
+            </label>
+
+            <label>
+              <b>
+                Вертикально
+              </b>
+
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value={
+                  coverCrop.y
+                }
+                onChange={(
+                  event
+                ) =>
+                  setCoverCrop(
+                    (
+                      previous
+                    ) => ({
+                      ...previous,
+                      y:
+                        Number(
+                          event.target.value
+                        ),
+                    })
+                  )
+                }
+              />
+            </label>
+
+            <label>
+              <b>
+                Масштаб
+              </b>
+
+              <input
+                type="range"
+                min="1"
+                max="3"
+                step="0.05"
+                value={
+                  coverCrop.zoom
+                }
+                onChange={(
+                  event
+                ) =>
+                  setCoverCrop(
+                    (
+                      previous
+                    ) => ({
+                      ...previous,
+                      zoom:
+                        Number(
+                          event.target.value
+                        ),
+                    })
+                  )
+                }
+              />
+            </label>
+          </div>
+        )}
 
         {/* AVATAR */}
 
@@ -4376,6 +4845,14 @@ function EditProfileModal({
                   draft.avatar
                 }
                 alt=""
+                style={{
+                  objectPosition:
+                    `${avatarCrop.x}% ${avatarCrop.y}%`,
+                  transform:
+                    `scale(${avatarCrop.zoom})`,
+                  transformOrigin:
+                    `${avatarCrop.x}% ${avatarCrop.y}%`,
+                }}
               />
             ) : (
               draft.name?.[0] ||
@@ -4408,6 +4885,109 @@ function EditProfileModal({
           </div>
 
         </div>
+
+        {avatarFile && (
+          <div className="profile-v2-crop-controls profile-v2-crop-controls-avatar">
+            <strong>
+              Кадрування фото профілю
+            </strong>
+
+            <span>
+              Виставте обличчя точно в центрі майбутнього аватара.
+            </span>
+
+            <label>
+              <b>
+                Горизонтально
+              </b>
+
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value={
+                  avatarCrop.x
+                }
+                onChange={(
+                  event
+                ) =>
+                  setAvatarCrop(
+                    (
+                      previous
+                    ) => ({
+                      ...previous,
+                      x:
+                        Number(
+                          event.target.value
+                        ),
+                    })
+                  )
+                }
+              />
+            </label>
+
+            <label>
+              <b>
+                Вертикально
+              </b>
+
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value={
+                  avatarCrop.y
+                }
+                onChange={(
+                  event
+                ) =>
+                  setAvatarCrop(
+                    (
+                      previous
+                    ) => ({
+                      ...previous,
+                      y:
+                        Number(
+                          event.target.value
+                        ),
+                    })
+                  )
+                }
+              />
+            </label>
+
+            <label>
+              <b>
+                Масштаб
+              </b>
+
+              <input
+                type="range"
+                min="1"
+                max="3"
+                step="0.05"
+                value={
+                  avatarCrop.zoom
+                }
+                onChange={(
+                  event
+                ) =>
+                  setAvatarCrop(
+                    (
+                      previous
+                    ) => ({
+                      ...previous,
+                      zoom:
+                        Number(
+                          event.target.value
+                        ),
+                    })
+                  )
+                }
+              />
+            </label>
+          </div>
+        )}
 
         {/* BODY */}
 
@@ -4735,6 +5315,7 @@ function EditProfileModal({
 
       </form>
 
-    </div>
+    </div>,
+    document.body
   );
 }
