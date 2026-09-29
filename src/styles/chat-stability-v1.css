@@ -867,3 +867,54 @@ body.yatut-dark-mode
     padding: 7px 12px !important;
   }
 }
+
+
+/* =========================================================
+   OPEN DIALOG — HIDE GLOBAL BOTTOM NAV
+   Chat list keeps navigation; an opened conversation owns the viewport.
+========================================================= */
+@media (max-width: 767px) {
+  html.yatut-chat-open
+  body
+  #yatut-global-mobile-nav.mobile-nav {
+    display: none !important;
+  }
+
+  html.yatut-chat-open
+  .messenger.mobile-dialog-open
+  .chat-dialog {
+    padding-bottom: 0 !important;
+  }
+
+  html.yatut-chat-open
+  .messenger.mobile-dialog-open
+  .chat-composer {
+    min-height: 60px !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding:
+      7px
+      12px
+      max(
+        8px,
+        var(
+          --yatut-safe-bottom,
+          env(safe-area-inset-bottom, 0px)
+        )
+      )
+      !important;
+  }
+
+  html.yatut-chat-open.yatut-keyboard-open
+  .messenger.mobile-dialog-open
+  .chat-composer {
+    padding-bottom: 7px !important;
+  }
+
+  html.yatut-chat-open
+  .messenger.mobile-dialog-open
+  .chat-messages {
+    padding-bottom: 12px !important;
+    scroll-padding-bottom: 12px !important;
+  }
+}
