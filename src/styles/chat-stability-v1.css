@@ -1386,3 +1386,82 @@ body.yatut-dark-mode
     min-height: 0 !important;
   }
 }
+
+
+/* =========================================================
+   CHAT COMPOSER V10 — WHOLE BAR EXPANDS WITH TEXT
+========================================================= */
+@media (max-width: 767px) {
+  html.yatut-chat-open
+  .messenger.mobile-dialog-open
+  .chat-composer {
+    min-height:
+      calc(
+        var(--chat-input-height, 46px) +
+        14px
+      ) !important;
+    height: auto !important;
+    max-height: 154px !important;
+    align-items: flex-end !important;
+  }
+
+  html.yatut-chat-open
+  .messenger.mobile-dialog-open
+  .chat-input-shell {
+    position: relative !important;
+    align-self: stretch !important;
+    height:
+      var(--chat-input-height, 46px)
+      !important;
+    min-height: 46px !important;
+    max-height: 132px !important;
+    border-radius: 24px !important;
+    overflow: hidden !important;
+  }
+
+  html.yatut-chat-open
+  .messenger.mobile-dialog-open
+  .chat-input-shell
+  > textarea {
+    height:
+      var(--chat-input-height, 46px)
+      !important;
+    min-height: 46px !important;
+    max-height: 132px !important;
+    padding-right: 48px !important;
+    padding-bottom: 11px !important;
+  }
+
+  html.yatut-chat-open
+  .messenger.mobile-dialog-open
+  .chat-input-shell
+  > .chat-emoji-button {
+    position: absolute !important;
+    right: 8px !important;
+    bottom: 6px !important;
+    top: auto !important;
+    flex: none !important;
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    min-height: 34px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    transform: none !important;
+    z-index: 2 !important;
+  }
+
+  html.yatut-chat-open
+  .messenger.mobile-dialog-open
+  :is(
+    .chat-plus,
+    .chat-mic,
+    .chat-send
+  ) {
+    align-self: flex-end !important;
+    margin-bottom: 0 !important;
+  }
+}
