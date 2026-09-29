@@ -4455,3 +4455,55 @@ html.yatut-native
   touch-action:
     manipulation;
 }
+
+/* YATUT mobile nav: active state is icon + label only. No circle, pill or glow. */
+@media (max-width: 767px) {
+  .mobile-nav > button.active,
+  .mobile-nav > button[aria-current="page"],
+  .mobile-nav-item.active,
+  .mobile-nav-item[aria-current="page"] {
+    background: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    border-color: transparent !important;
+    filter: none !important;
+  }
+
+  .mobile-nav > button::before,
+  .mobile-nav > button.active::before,
+  .mobile-nav > button[aria-current="page"]::before,
+  .mobile-nav-item::before,
+  .mobile-nav-item.active::before,
+  .mobile-nav-item[aria-current="page"]::before,
+  .mobile-nav-icon::before,
+  .mobile-nav-item.active .mobile-nav-icon::before {
+    content: none !important;
+    display: none !important;
+    opacity: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .mobile-nav > button.active .mobile-nav-icon,
+  .mobile-nav > button[aria-current="page"] .mobile-nav-icon,
+  .mobile-nav-item.active .mobile-nav-icon,
+  .mobile-nav-item[aria-current="page"] .mobile-nav-icon {
+    background: transparent !important;
+    box-shadow: none !important;
+    border-color: transparent !important;
+    filter: none !important;
+  }
+
+  .mobile-nav > button.active svg,
+  .mobile-nav > button[aria-current="page"] svg,
+  .mobile-nav-item.active svg,
+  .mobile-nav-item[aria-current="page"] svg,
+  .mobile-nav > button.active small,
+  .mobile-nav > button[aria-current="page"] small,
+  .mobile-nav-item.active > small,
+  .mobile-nav-item[aria-current="page"] > small {
+    color: #635bff !important;
+    stroke: currentColor;
+  }
+}
+
