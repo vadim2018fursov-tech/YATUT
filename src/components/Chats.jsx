@@ -2187,6 +2187,14 @@ function MessageBubble({
     setReactions,
   ] = useState(false);
 
+  const [
+    actionPlacement,
+    setActionPlacement,
+  ] = useState("above");
+
+  const bubbleRef =
+    useRef(null);
+
   const menuRef =
     useRef(null);
 
@@ -2201,6 +2209,62 @@ function MessageBubble({
       x: 0,
       y: 0,
     });
+
+  function updateMessageActionPlacement() {
+    const bubble =
+      bubbleRef.current;
+
+    if (!bubble) {
+      return;
+    }
+
+    const rect =
+      bubble.getBoundingClientRect();
+
+    const viewport =
+      window.visualViewport;
+
+    const viewportTop =
+      viewport?.offsetTop ||
+      0;
+
+    const viewportHeight =
+      viewport?.height ||
+      window.innerHeight;
+
+    const viewportBottom =
+      viewportTop +
+      viewportHeight;
+
+    const safeTop =
+      viewportTop +
+      78;
+
+    const safeBottom =
+      viewportBottom -
+      88;
+
+    const spaceAbove =
+      Math.max(
+        0,
+        rect.top -
+          safeTop
+      );
+
+    const spaceBelow =
+      Math.max(
+        0,
+        safeBottom -
+          rect.bottom
+      );
+
+    setActionPlacement(
+      spaceBelow >=
+        spaceAbove
+        ? "below"
+        : "above"
+    );
+  }
 
   function cancelMessageLongPress() {
     if (
@@ -2239,9 +2303,13 @@ function MessageBubble({
       window.setTimeout(
         () => {
           nativeLightHaptic();
+
+          updateMessageActionPlacement();
+
           setReactions(
             false
           );
+
           setMenu(
             true
           );
@@ -2393,6 +2461,10 @@ function MessageBubble({
           }
           className="message-more-trigger"
           onClick={() => {
+            if (!menu) {
+              updateMessageActionPlacement();
+            }
+
             setMenu(!menu);
             setReactions(false);
           }}
@@ -2406,7 +2478,7 @@ function MessageBubble({
             ref={
               menuRef
             }
-            className="message-action-menu"
+            className={`message-action-menu message-action-menu-${actionPlacement}`}
             initial={{
               opacity: 0,
               y: 8,
@@ -2562,6 +2634,10 @@ function MessageBubble({
         <button
           className="message-reaction-trigger"
           onClick={() => {
+            if (!reactions) {
+              updateMessageActionPlacement();
+            }
+
             setReactions(
               !reactions
             );
@@ -2574,7 +2650,7 @@ function MessageBubble({
         <AnimatePresence>
           {reactions && (
           <motion.div
-            className="message-reaction-popover"
+            className={`message-reaction-popover message-reaction-popover-${actionPlacement}`}
             initial={{
               opacity: 0,
               y: 6,
@@ -2642,13 +2718,20 @@ function MessageBubble({
           ) => {
             event.preventDefault();
             nativeLightHaptic();
+
+            updateMessageActionPlacement();
+
             setReactions(
               false
             );
+
             setMenu(
               true
             );
           }}
+          ref={
+            bubbleRef
+          }
           className={`message-bubble ${
             mine ? "mine" : ""
           }`}
