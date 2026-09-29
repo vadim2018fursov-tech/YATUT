@@ -29139,3 +29139,434 @@ body.yatut-dark-mode
       ) !important;
   }
 }
+
+
+/* =========================================================
+   STORY CREATOR MOBILE V9
+   Compact premium picker: photo + video + text.
+========================================================= */
+
+@media (max-width: 767px) {
+  .yatut-story-backdrop:has(.yatut-story-create) {
+    padding:
+      max(
+        10px,
+        env(
+          safe-area-inset-top
+        )
+      )
+      10px
+      max(
+        10px,
+        env(
+          safe-area-inset-bottom
+        )
+      ) !important;
+    align-items: center !important;
+    background:
+      rgba(
+        208,
+        212,
+        225,
+        .38
+      ) !important;
+    backdrop-filter:
+      blur(26px)
+      saturate(1.08) !important;
+    -webkit-backdrop-filter:
+      blur(26px)
+      saturate(1.08) !important;
+  }
+
+  .yatut-story-create {
+    width: 100% !important;
+    max-width: 540px !important;
+    max-height:
+      calc(
+        100dvh -
+        max(
+          20px,
+          env(
+            safe-area-inset-top
+          )
+        ) -
+        max(
+          20px,
+          env(
+            safe-area-inset-bottom
+          )
+        )
+      ) !important;
+    border:
+      1px solid
+      rgba(
+        255,
+        255,
+        255,
+        .78
+      ) !important;
+    border-radius:
+      30px !important;
+    background:
+      rgba(
+        255,
+        255,
+        255,
+        .97
+      ) !important;
+    box-shadow:
+      0 30px 84px
+      rgba(
+        31,
+        29,
+        56,
+        .22
+      ) !important;
+  }
+
+  .yatut-story-create::before {
+    display: none !important;
+  }
+
+  .yatut-story-create-header {
+    min-height: 96px !important;
+    padding:
+      17px
+      17px
+      14px !important;
+    border-bottom:
+      1px solid
+      #eeeeF4 !important;
+    background:
+      linear-gradient(
+        180deg,
+        rgba(
+          255,
+          255,
+          255,
+          .98
+        ),
+        rgba(
+          250,
+          250,
+          255,
+          .94
+        )
+      ) !important;
+  }
+
+  .yatut-story-create-heading {
+    gap: 11px !important;
+  }
+
+  .yatut-story-create-mark {
+    width: 44px !important;
+    height: 44px !important;
+    flex-basis: 44px !important;
+    border-radius: 15px !important;
+    background:
+      linear-gradient(
+        145deg,
+        #665cff,
+        #9d38ed
+      ) !important;
+  }
+
+  .yatut-story-create-heading
+  span:not(.yatut-story-create-mark) {
+    color: #7d68ac !important;
+    font-size: 8px !important;
+    letter-spacing: .9px !important;
+  }
+
+  .yatut-story-create-heading h2 {
+    margin-top: 3px !important;
+    font-size:
+      clamp(
+        23px,
+        6.5vw,
+        28px
+      ) !important;
+    letter-spacing: -.55px !important;
+  }
+
+  .yatut-story-create-heading p {
+    display: block !important;
+    margin-top: 4px !important;
+    max-width: 250px !important;
+    font-size: 9px !important;
+    line-height: 1.35 !important;
+  }
+
+  .yatut-story-close-light {
+    width: 43px !important;
+    height: 43px !important;
+    flex-basis: 43px !important;
+    border-radius: 14px !important;
+    background:
+      #f2f3f7 !important;
+    color:
+      #4f5360 !important;
+  }
+
+  .yatut-story-create-start {
+    padding:
+      14px
+      14px
+      calc(
+        16px +
+        env(
+          safe-area-inset-bottom
+        )
+      ) !important;
+    display: grid !important;
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(
+          0,
+          1fr
+        )
+      ) !important;
+    gap: 10px !important;
+  }
+
+  .yatut-story-create-start
+  > button {
+    min-height: 126px !important;
+    padding:
+      14px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+    border-radius: 21px !important;
+    text-align: left !important;
+    box-shadow:
+      0 10px 26px
+      rgba(
+        34,
+        36,
+        58,
+        .045
+      ) !important;
+  }
+
+  .yatut-story-create-start
+  > button.is-photo {
+    border-color:
+      #ddd9ff !important;
+    background:
+      linear-gradient(
+        145deg,
+        #f6f4ff,
+        #efecff
+      ) !important;
+  }
+
+  .yatut-story-create-start
+  > button.is-video {
+    border-color:
+      #d9e8fb !important;
+    background:
+      linear-gradient(
+        145deg,
+        #f3f8ff,
+        #eaf4ff
+      ) !important;
+  }
+
+  .yatut-story-create-start
+  > button.is-text {
+    grid-column:
+      1 / -1 !important;
+    min-height: 92px !important;
+    display: grid !important;
+    grid-template-columns:
+      52px
+      minmax(
+        0,
+        1fr
+      )
+      30px !important;
+    align-items: center !important;
+    gap: 12px !important;
+    border-color:
+      #f2dcea !important;
+    background:
+      linear-gradient(
+        145deg,
+        #fff7fb,
+        #fff0f7
+      ) !important;
+  }
+
+  .yatut-story-create-option-icon {
+    width: 50px !important;
+    height: 50px !important;
+    flex: 0 0 50px !important;
+    border-radius: 16px !important;
+  }
+
+  .yatut-story-create-start
+  > button.is-photo
+  .yatut-story-create-option-icon {
+    background:
+      linear-gradient(
+        145deg,
+        #746cff,
+        #635bff
+      ) !important;
+    color: #fff !important;
+    box-shadow:
+      0 10px 24px
+      rgba(
+        99,
+        91,
+        255,
+        .20
+      );
+  }
+
+  .yatut-story-create-start
+  > button.is-video
+  .yatut-story-create-option-icon {
+    background:
+      linear-gradient(
+        145deg,
+        #4f92f0,
+        #3978e8
+      ) !important;
+    color: #fff !important;
+    box-shadow:
+      0 10px 24px
+      rgba(
+        57,
+        120,
+        232,
+        .18
+      );
+  }
+
+  .yatut-story-create-start
+  > button.is-text
+  .yatut-story-create-option-icon {
+    background:
+      linear-gradient(
+        145deg,
+        #ec6aa4,
+        #d84f8c
+      ) !important;
+    color: #fff !important;
+    box-shadow:
+      0 10px 24px
+      rgba(
+        216,
+        79,
+        140,
+        .17
+      );
+  }
+
+  .yatut-story-create-start
+  > button
+  > div {
+    width: 100% !important;
+    gap: 4px !important;
+  }
+
+  .yatut-story-create-start strong {
+    font-size: 15px !important;
+    line-height: 1.15 !important;
+  }
+
+  .yatut-story-create-start small {
+    color: #858a96 !important;
+    font-size: 9.5px !important;
+    line-height: 1.35 !important;
+  }
+
+  .yatut-story-create-start
+  > button:not(.is-text)
+  > i {
+    position: absolute !important;
+    top: 13px !important;
+    right: 13px !important;
+    bottom: auto !important;
+  }
+
+  .yatut-story-create-start
+  > button.is-text
+  > i {
+    position: static !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .yatut-story-create-start {
+    grid-template-columns:
+      1fr !important;
+  }
+
+  .yatut-story-create-start
+  > button.is-text {
+    grid-column: auto !important;
+  }
+
+  .yatut-story-create-start
+  > button {
+    min-height: 92px !important;
+    display: grid !important;
+    grid-template-columns:
+      50px
+      minmax(
+        0,
+        1fr
+      )
+      28px !important;
+    align-items: center !important;
+  }
+
+  .yatut-story-create-start
+  > button
+  > i {
+    position: static !important;
+  }
+}
+
+body.yatut-dark-mode
+.yatut-story-create-start
+> button.is-photo {
+  border-color: #3c3865 !important;
+  background:
+    linear-gradient(
+      145deg,
+      #24223a,
+      #201f32
+    ) !important;
+}
+
+body.yatut-dark-mode
+.yatut-story-create-start
+> button.is-video {
+  border-color: #29415f !important;
+  background:
+    linear-gradient(
+      145deg,
+      #202b3b,
+      #1d2634
+    ) !important;
+}
+
+body.yatut-dark-mode
+.yatut-story-create-start
+> button.is-text {
+  border-color: #543044 !important;
+  background:
+    linear-gradient(
+      145deg,
+      #34232d,
+      #2c2028
+    ) !important;
+}
