@@ -1728,7 +1728,10 @@ function ForwardModal({
         </header>
 
         <label className="forward-search">
-          🔎
+          <YatutIcon
+            name="search"
+            size={18}
+          />
 
           <input
             autoFocus
@@ -1740,6 +1743,22 @@ function ForwardModal({
             }
             placeholder="Знайти чат"
           />
+
+          {search && (
+            <button
+              type="button"
+              className="forward-search-clear"
+              onClick={() =>
+                setSearch("")
+              }
+              aria-label="Очистити пошук"
+            >
+              <YatutIcon
+                name="close"
+                size={15}
+              />
+            </button>
+          )}
         </label>
 
         <div className="forward-chat-list">
@@ -1788,6 +1807,25 @@ function ForwardModal({
 
               </div>
             )
+          )}
+
+          {!filtered.length && (
+            <div className="forward-empty">
+              <span>
+                <YatutIcon
+                  name="search"
+                  size={20}
+                />
+              </span>
+
+              <strong>
+                Нічого не знайдено
+              </strong>
+
+              <small>
+                Спробуйте інше ім’я або чат
+              </small>
+            </div>
           )}
 
         </div>
@@ -3595,6 +3633,27 @@ function Chats({
         communityId:
           activeChat.communityId,
       }
+    );
+  }
+
+  function openMessageSearch() {
+    setInfoOpen(
+      false
+    );
+
+    setMessageSearchOpen(
+      true
+    );
+
+    window.setTimeout(
+      () => {
+        document
+          .querySelector(
+            ".messenger.mobile-dialog-open .message-search-bar input"
+          )
+          ?.focus();
+      },
+      80
     );
   }
 
@@ -8786,30 +8845,75 @@ function Chats({
               {messageSearchOpen && (
                 <div className="message-search-bar">
 
-                  🔎
+                  <span className="message-search-icon">
+                    <YatutIcon
+                      name="search"
+                      size={18}
+                    />
+                  </span>
 
                   <input
                     autoFocus
                     value={
                       messageSearch
                     }
-                    onChange={(event) =>
-                      setMessageSearch(
+                    onChange={(event) => {
+                      const value =
                         event.target
-                          .value
-                      )
-                    }
+                          .value;
+
+                      setMessageSearch(
+                        value
+                      );
+
+                      const query =
+                        value
+                          .trim()
+                          .toLowerCase();
+
+                      if (!query) {
+                        return;
+                      }
+
+                      const first =
+                        messages.find(
+                          (message) =>
+                            message.text
+                              ?.toLowerCase()
+                              .includes(
+                                query
+                              )
+                        );
+
+                      if (first) {
+                        window.setTimeout(
+                          () =>
+                            document
+                              .getElementById(
+                                `message-${first.id}`
+                              )
+                              ?.scrollIntoView({
+                                behavior:
+                                  "smooth",
+                                block:
+                                  "center",
+                              }),
+                          80
+                        );
+                      }
+                    }}
                     placeholder="Пошук у переписці"
                   />
 
-                  <span>
-                    {
-                      foundMessages.length
-                    }{" "}
-                    знайдено
+                  <span className="message-search-count">
+                    {messageSearch.trim()
+                      ? `${foundMessages.length} знайдено`
+                      : "Пошук"}
                   </span>
 
                   <button
+                    type="button"
+                    className="message-search-close"
                     onClick={() => {
                       setMessageSearchOpen(
                         false
@@ -8818,8 +8922,12 @@ function Chats({
                         ""
                       );
                     }}
+                    aria-label="Закрити пошук"
                   >
-                    ×
+                    <YatutIcon
+                      name="close"
+                      size={17}
+                    />
                   </button>
 
                 </div>
@@ -8841,7 +8949,9 @@ function Chats({
                       })
                   }
                 >
-                  📌
+                  <span className="pinned-message-icon">
+                    📌
+                  </span>
 
                   <div>
                     <strong>
@@ -8854,6 +8964,13 @@ function Chats({
                       )}
                     </span>
                   </div>
+
+                  <span className="pinned-message-open">
+                    <YatutIcon
+                      name="chevronRight"
+                      size={17}
+                    />
+                  </span>
 
                 </button>
               )}
@@ -9675,6 +9792,25 @@ function Chats({
 
                 <button
                   type="button"
+                  className="chat-info-row-button chat-info-search-action"
+                  onClick={
+                    openMessageSearch
+                  }
+                >
+                  <span className="chat-info-menu-icon">
+                    <YatutIcon
+                      name="search"
+                      size={17}
+                    />
+                  </span>
+
+                  <span>
+                    Пошук у переписці
+                  </span>
+                </button>
+
+                <button
+                  type="button"
                   className="chat-info-primary-action"
                   onClick={
                     openActiveCommunity
@@ -9720,6 +9856,25 @@ function Chats({
               activeChat.type ===
                 "group" && (
                 <section className="chat-info-section">
+
+                  <button
+                    type="button"
+                    className="chat-info-row-button chat-info-search-action"
+                    onClick={
+                      openMessageSearch
+                    }
+                  >
+                    <span className="chat-info-menu-icon">
+                      <YatutIcon
+                        name="search"
+                        size={17}
+                      />
+                    </span>
+
+                    <span>
+                      Пошук у переписці
+                    </span>
+                  </button>
 
                   <strong>
                     Учасники
@@ -9773,6 +9928,25 @@ function Chats({
               "group" &&
               !activeChat.communityId && (
                 <section className="chat-info-section chat-info-compact-actions">
+
+                  <button
+                    type="button"
+                    className="chat-info-row-button chat-info-search-action"
+                    onClick={
+                      openMessageSearch
+                    }
+                  >
+                    <span className="chat-info-menu-icon">
+                      <YatutIcon
+                        name="search"
+                        size={17}
+                      />
+                    </span>
+
+                    <span>
+                      Пошук у переписці
+                    </span>
+                  </button>
 
                   <button
                     type="button"
