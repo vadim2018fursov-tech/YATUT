@@ -1277,7 +1277,7 @@ export async function loadBackendMessages(
               await createChatMediaSignedUrl(
                 session,
                 row.media_path,
-                3600
+                86400
               );
           } catch (
             error
@@ -1443,7 +1443,7 @@ export async function sendBackendMessage(
         await createChatMediaSignedUrl(
           session,
           row.media_path,
-          3600
+          86400
         );
     } catch (
       error
