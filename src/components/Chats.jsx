@@ -3345,6 +3345,10 @@ function Chats({
         "yatut-chat-open"
       );
 
+      document.documentElement.classList.remove(
+        "yatut-chat-input-focused"
+      );
+
       document.body.classList.remove(
         "yatut-chat-open"
       );
@@ -9354,6 +9358,10 @@ function Chats({
                     enterKeyHint="send"
                     autoComplete="off"
                     onFocus={() => {
+                      document.documentElement.classList.add(
+                        "yatut-chat-input-focused"
+                      );
+
                       window.setTimeout(
                         () => {
                           const container =
@@ -9364,6 +9372,35 @@ function Chats({
                           ) {
                             container.scrollTop =
                               container.scrollHeight;
+                          }
+
+                          window.dispatchEvent(
+                            new Event(
+                              "resize"
+                            )
+                          );
+                        },
+                        80
+                      );
+                    }}
+                    onBlur={() => {
+                      window.setTimeout(
+                        () => {
+                          if (
+                            document.activeElement !==
+                            document.querySelector(
+                              ".messenger.mobile-dialog-open .chat-composer textarea"
+                            )
+                          ) {
+                            document.documentElement.classList.remove(
+                              "yatut-chat-input-focused"
+                            );
+
+                            window.dispatchEvent(
+                              new Event(
+                                "resize"
+                              )
+                            );
                           }
                         },
                         80
