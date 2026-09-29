@@ -5,6 +5,7 @@ import App from "./App.jsx";
 import "./styles/ui-consistency-v4.css";
 import "./styles/motion-system.css";
 import "./styles/visual-foundation-v5.css";
+import "./styles/home-polish-v1.css";
 import {
   initNativePlatform,
 } from "./services/nativePlatformService.js";
