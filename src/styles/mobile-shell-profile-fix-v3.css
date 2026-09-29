@@ -1,0 +1,1193 @@
+/* =========================================================
+   YATUT MOBILE SHELL + PROFILE FIX V3
+   Final mobile overrides for chat avatars, bottom nav,
+   profile editor and personal profile.
+========================================================= */
+
+/* =========================================================
+   CHAT AVATARS — ALWAYS TRUE CIRCLES
+========================================================= */
+
+@media (max-width: 767px) {
+  .chat-avatar,
+  .chat-header-avatar,
+  .chat-avatar-media,
+  .chat-activity-avatar,
+  .chat-info-avatar {
+    aspect-ratio: 1 / 1 !important;
+    border-radius: 50% !important;
+  }
+
+  .chat-avatar {
+    position: relative !important;
+    width: 52px !important;
+    height: 52px !important;
+    min-width: 52px !important;
+    min-height: 52px !important;
+    flex: 0 0 52px !important;
+    align-self: center !important;
+  }
+
+  .chat-avatar img,
+  .chat-header-avatar img,
+  .chat-avatar-media img,
+  .chat-activity-avatar img,
+  .chat-info-avatar img,
+  .create-chat-avatar img,
+  .forward-chat-avatar img {
+    width: 100% !important;
+    height: 100% !important;
+    aspect-ratio: 1 / 1 !important;
+    display: block !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    clip-path: circle(50%) !important;
+  }
+
+  .chat-header-avatar {
+    width: 46px !important;
+    height: 46px !important;
+    min-width: 46px !important;
+    min-height: 46px !important;
+    flex: 0 0 46px !important;
+    overflow: visible !important;
+  }
+
+  .chat-avatar-media {
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden !important;
+  }
+}
+
+/* =========================================================
+   BOTTOM NAV — COMPACT / CLEAN / NO INNER BOTTOM OUTLINE
+========================================================= */
+
+@media (max-width: 767px) {
+  .mobile-nav {
+    position: fixed !important;
+    right: 12px !important;
+    bottom:
+      max(
+        8px,
+        env(safe-area-inset-bottom)
+      ) !important;
+    left: 12px !important;
+
+    z-index: 4000 !important;
+
+    width: auto !important;
+    max-width: none !important;
+    height: 78px !important;
+    min-height: 78px !important;
+
+    margin: 0 !important;
+    padding: 6px !important;
+
+    display: grid !important;
+    grid-template-columns:
+      repeat(
+        5,
+        minmax(0, 1fr)
+      ) !important;
+    align-items: stretch !important;
+    gap: 3px !important;
+
+    overflow: visible !important;
+
+    border: 0 !important;
+    border-bottom: 0 !important;
+    border-radius: 24px !important;
+
+    background:
+      rgba(255,255,255,.965) !important;
+
+    box-shadow:
+      0 16px 44px
+        rgba(31,35,54,.13),
+      0 3px 10px
+        rgba(31,35,54,.045) !important;
+
+    backdrop-filter:
+      blur(22px)
+      saturate(1.08) !important;
+    -webkit-backdrop-filter:
+      blur(22px)
+      saturate(1.08) !important;
+  }
+
+  .mobile-nav::before,
+  .mobile-nav::after {
+    display: none !important;
+    content: none !important;
+  }
+
+  .mobile-nav-item,
+  .mobile-nav > button {
+    position: relative !important;
+
+    min-width: 0 !important;
+    min-height: 66px !important;
+
+    margin: 0 !important;
+    padding:
+      5px
+      2px
+      4px !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 3px !important;
+
+    overflow: visible !important;
+
+    border: 0 !important;
+    outline: 0 !important;
+    border-radius: 18px !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .mobile-nav-active-glow {
+    position: absolute !important;
+    inset: 1px 2px !important;
+    z-index: -1 !important;
+
+    border: 0 !important;
+    outline: 0 !important;
+    border-radius: 18px !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(242,240,255,.98),
+        rgba(235,232,255,.98)
+      ) !important;
+
+    box-shadow:
+      none !important;
+  }
+
+  .mobile-nav-item.active {
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .mobile-nav-icon,
+  .mobile-profile-avatar {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    min-height: 34px !important;
+
+    display: grid !important;
+    place-items: center !important;
+
+    border: 0 !important;
+    outline: 0 !important;
+    border-radius: 12px !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .mobile-profile-avatar {
+    overflow: hidden !important;
+    border-radius: 50% !important;
+  }
+
+  .mobile-profile-avatar img {
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+  }
+
+  .mobile-nav-item.active
+  .mobile-nav-icon {
+    color: #635bff !important;
+  }
+
+  .mobile-nav-item.active
+  .mobile-profile-avatar {
+    box-shadow:
+      0 0 0 2px
+      rgba(99,91,255,.14) !important;
+  }
+
+  .mobile-nav-item small {
+    margin: 0 !important;
+
+    color: #252834 !important;
+
+    font-size:
+      clamp(
+        10px,
+        2.75vw,
+        11.5px
+      ) !important;
+
+    font-weight: 800 !important;
+    line-height: 1 !important;
+
+    white-space: nowrap !important;
+  }
+
+  .mobile-nav-item.active small {
+    color: #635bff !important;
+  }
+
+  html.yatut-profile-editor-open
+  .mobile-nav,
+  body.yatut-profile-editor-open
+  .mobile-nav {
+    display: none !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .mobile-nav {
+    right: 8px !important;
+    left: 8px !important;
+
+    height: 74px !important;
+    min-height: 74px !important;
+
+    padding: 5px !important;
+
+    border-radius: 22px !important;
+  }
+
+  .mobile-nav-item,
+  .mobile-nav > button {
+    min-height: 64px !important;
+  }
+
+  .mobile-nav-icon,
+  .mobile-profile-avatar {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    min-height: 32px !important;
+  }
+}
+
+/* =========================================================
+   PROFILE EDITOR — TRUE VIEWPORT MODAL
+========================================================= */
+
+html.yatut-profile-editor-open,
+body.yatut-profile-editor-open {
+  width: 100% !important;
+  height: 100% !important;
+
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+}
+
+.profile-v2-edit-backdrop {
+  position: fixed !important;
+  inset: 0 !important;
+
+  z-index: 22000 !important;
+
+  overflow: hidden !important;
+
+  background:
+    rgba(18,20,30,.56) !important;
+
+  backdrop-filter:
+    blur(16px)
+    saturate(.9) !important;
+  -webkit-backdrop-filter:
+    blur(16px)
+    saturate(.9) !important;
+}
+
+.profile-v2-edit-modal {
+  overscroll-behavior:
+    contain !important;
+
+  -webkit-overflow-scrolling:
+    touch !important;
+}
+
+.profile-v2-edit-cover {
+  position: relative !important;
+
+  overflow: hidden !important;
+
+  isolation: isolate;
+}
+
+.profile-v2-edit-cover-image {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 0;
+
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  transition:
+    object-position .12s ease,
+    transform .12s ease;
+}
+
+.profile-v2-edit-cover::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  z-index: 1;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(15,17,28,.04),
+      rgba(15,17,28,.32)
+    );
+}
+
+.profile-v2-edit-cover-actions {
+  position: relative;
+
+  z-index: 2;
+
+  margin-left: auto;
+}
+
+.profile-v2-crop-controls {
+  margin:
+    12px
+    18px
+    0;
+
+  padding:
+    13px
+    14px;
+
+  display: grid;
+  gap: 9px;
+
+  border:
+    1px solid
+    rgba(99,91,255,.10);
+
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #faf9ff,
+      #f6f4ff
+    );
+}
+
+.profile-v2-crop-controls > strong {
+  color: #2f3240;
+
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.profile-v2-crop-controls > span {
+  margin-top: -4px;
+
+  color: #8d92a0;
+
+  font-size: 8px;
+  line-height: 1.4;
+}
+
+.profile-v2-crop-controls label {
+  display: grid;
+  grid-template-columns:
+    92px
+    minmax(0,1fr);
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-v2-crop-controls label b {
+  color: #686d7a;
+
+  font-size: 8px;
+  font-weight: 800;
+}
+
+.profile-v2-crop-controls input[type="range"] {
+  width: 100%;
+
+  accent-color: #635bff;
+}
+
+.profile-v2-edit-avatar {
+  position: relative !important;
+
+  overflow: hidden !important;
+
+  border-radius: 50% !important;
+}
+
+.profile-v2-edit-avatar img {
+  width: 100% !important;
+  height: 100% !important;
+
+  display: block !important;
+
+  border-radius: 50% !important;
+
+  object-fit: cover !important;
+
+  transition:
+    object-position .12s ease,
+    transform .12s ease;
+}
+
+@media (max-width: 767px) {
+  .profile-v2-edit-backdrop {
+    padding:
+      max(
+        8px,
+        env(safe-area-inset-top)
+      )
+      0
+      0 !important;
+
+    display: flex !important;
+    align-items: flex-start !important;
+    justify-content: center !important;
+  }
+
+  .profile-v2-edit-modal {
+    width: 100% !important;
+    height:
+      calc(
+        var(
+          --yatut-visual-viewport-height,
+          100dvh
+        ) -
+        max(
+          8px,
+          env(safe-area-inset-top)
+        )
+      ) !important;
+
+    max-height: none !important;
+
+    margin: 0 !important;
+
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+
+    border:
+      0 !important;
+
+    border-radius:
+      24px
+      24px
+      0
+      0 !important;
+
+    background:
+      #fff !important;
+
+    box-shadow:
+      0 -10px 40px
+      rgba(24,26,40,.16) !important;
+  }
+
+  .profile-v2-edit-modal > header {
+    top: 0 !important;
+
+    min-height: 68px !important;
+
+    padding:
+      0
+      16px !important;
+
+    border-bottom:
+      1px solid
+      rgba(35,38,52,.065) !important;
+
+    background:
+      rgba(255,255,255,.97) !important;
+  }
+
+  .profile-v2-edit-modal
+  > header
+  h2 {
+    font-size: 19px !important;
+
+    letter-spacing: -.025em;
+  }
+
+  .profile-v2-edit-modal
+  > header
+  button {
+    width: 44px !important;
+    height: 44px !important;
+
+    border-radius: 14px !important;
+  }
+
+  .profile-v2-edit-cover {
+    height: 176px !important;
+
+    margin:
+      12px
+      12px
+      0 !important;
+
+    border-radius: 20px !important;
+  }
+
+  .profile-v2-edit-cover button {
+    min-height: 38px !important;
+
+    font-size: 10px !important;
+  }
+
+  .profile-v2-edit-avatar-row {
+    padding:
+      14px
+      16px !important;
+
+    gap: 13px !important;
+  }
+
+  .profile-v2-edit-avatar {
+    width: 82px !important;
+    height: 82px !important;
+
+    flex:
+      0 0
+      82px !important;
+  }
+
+  .profile-v2-edit-avatar-row strong {
+    font-size: 13px !important;
+  }
+
+  .profile-v2-edit-avatar-row span {
+    font-size: 9px !important;
+  }
+
+  .profile-v2-edit-avatar-row button {
+    min-height: 36px !important;
+
+    padding:
+      0
+      12px !important;
+
+    font-size: 10px !important;
+  }
+
+  .profile-v2-crop-controls {
+    margin:
+      10px
+      14px
+      0 !important;
+
+    padding:
+      13px !important;
+  }
+
+  .profile-v2-crop-controls > strong {
+    font-size: 12px !important;
+  }
+
+  .profile-v2-crop-controls > span,
+  .profile-v2-crop-controls label b {
+    font-size: 9px !important;
+  }
+
+  .profile-v2-edit-body {
+    padding:
+      14px !important;
+  }
+
+  .profile-v2-edit-body > section {
+    padding:
+      14px !important;
+
+    border-radius:
+      17px !important;
+  }
+
+  .profile-v2-edit-body h3 {
+    font-size:
+      13px !important;
+  }
+
+  .profile-v2-edit-body
+  label
+  > span {
+    font-size:
+      10px !important;
+  }
+
+  .profile-v2-edit-body input,
+  .profile-v2-edit-body textarea {
+    min-height:
+      46px !important;
+
+    font-size:
+      16px !important;
+
+    border-radius:
+      13px !important;
+  }
+
+  .profile-v2-edit-body textarea {
+    min-height:
+      108px !important;
+  }
+
+  .profile-v2-edit-modal > footer {
+    position: sticky !important;
+
+    right: 0;
+    bottom: 0 !important;
+    left: 0;
+
+    z-index: 8;
+
+    padding:
+      10px
+      14px
+      calc(
+        10px +
+        env(
+          safe-area-inset-bottom,
+          0px
+        )
+      ) !important;
+
+    border-top:
+      1px solid
+      rgba(35,38,52,.065) !important;
+
+    background:
+      rgba(255,255,255,.97) !important;
+
+    backdrop-filter:
+      blur(18px) !important;
+    -webkit-backdrop-filter:
+      blur(18px) !important;
+  }
+
+  .profile-v2-edit-cancel,
+  .profile-v2-edit-save {
+    min-height:
+      48px !important;
+
+    border-radius:
+      14px !important;
+
+    font-size:
+      12px !important;
+  }
+}
+
+/* =========================================================
+   PERSONAL PROFILE — CLEANER MOBILE HERO
+========================================================= */
+
+@media (max-width: 767px) {
+  .profile-v2-page {
+    padding-bottom:
+      calc(
+        104px +
+        env(
+          safe-area-inset-bottom,
+          0px
+        )
+      ) !important;
+  }
+
+  .profile-v2-hero {
+    margin:
+      10px
+      10px
+      0 !important;
+
+    overflow: hidden !important;
+
+    border:
+      1px solid
+      rgba(35,38,52,.06) !important;
+
+    border-radius:
+      26px !important;
+
+    background:
+      rgba(255,255,255,.985) !important;
+
+    box-shadow:
+      0 14px 38px
+      rgba(31,35,54,.07) !important;
+  }
+
+  .profile-v2-cover {
+    width: 100% !important;
+    height: 178px !important;
+
+    margin: 0 !important;
+
+    border-radius:
+      25px
+      25px
+      18px
+      18px !important;
+
+    background-position:
+      center !important;
+
+    box-shadow: none !important;
+  }
+
+  .profile-v2-cover-copy {
+    display:
+      none !important;
+  }
+
+  .profile-v3-mobile-card {
+    padding:
+      0
+      14px
+      15px !important;
+  }
+
+  .profile-v3-mobile-avatar-wrap {
+    margin-top:
+      -47px !important;
+
+    margin-left:
+      2px !important;
+  }
+
+  .profile-v3-mobile-avatar {
+    width:
+      96px !important;
+    height:
+      96px !important;
+
+    border:
+      5px solid
+      #fff !important;
+
+    border-radius:
+      50% !important;
+
+    background:
+      #eceaff !important;
+
+    box-shadow:
+      0 0 0 2px
+      rgba(99,91,255,.11),
+      0 12px 28px
+      rgba(31,35,54,.13) !important;
+  }
+
+  .profile-v3-mobile-avatar img {
+    width: 100% !important;
+    height: 100% !important;
+
+    border-radius:
+      50% !important;
+
+    object-fit:
+      cover !important;
+  }
+
+  .profile-v3-mobile-avatar-wrap.is-online
+  .profile-v3-mobile-avatar {
+    border-color:
+      #fff !important;
+
+    box-shadow:
+      0 0 0 2px
+      rgba(54,211,153,.45),
+      0 0 14px
+      rgba(54,211,153,.16),
+      0 12px 28px
+      rgba(31,35,54,.12) !important;
+  }
+
+  .profile-v3-mobile-identity-row {
+    margin-top:
+      9px !important;
+
+    align-items:
+      start !important;
+
+    gap:
+      8px !important;
+  }
+
+  .profile-v3-mobile-name-row {
+    gap:
+      5px !important;
+  }
+
+  .profile-v3-mobile-name-row h1 {
+    font-size:
+      clamp(
+        25px,
+        7vw,
+        31px
+      ) !important;
+
+    line-height:
+      1.02 !important;
+
+    letter-spacing:
+      -.04em !important;
+  }
+
+  .profile-v3-mobile-username {
+    margin-top:
+      5px !important;
+
+    font-size:
+      13px !important;
+  }
+
+  .profile-v3-mobile-actions {
+    width: 100% !important;
+
+    margin-top:
+      13px !important;
+
+    display: grid !important;
+    grid-template-columns:
+      minmax(0,1fr)
+      44px
+      44px !important;
+
+    gap:
+      7px !important;
+  }
+
+  .profile-v3-mobile-edit {
+    min-height:
+      44px !important;
+
+    border-radius:
+      14px !important;
+
+    font-size:
+      12px !important;
+  }
+
+  .profile-v3-mobile-action {
+    width:
+      44px !important;
+    height:
+      44px !important;
+
+    border-radius:
+      14px !important;
+  }
+
+  .profile-v3-mobile-stats {
+    margin-top:
+      14px !important;
+
+    padding:
+      5px !important;
+
+    display: grid !important;
+    grid-template-columns:
+      repeat(
+        4,
+        minmax(0,1fr)
+      ) !important;
+
+    gap:
+      3px !important;
+
+    border:
+      0 !important;
+
+    border-radius:
+      17px !important;
+
+    background:
+      #f7f7fa !important;
+  }
+
+  .profile-v3-mobile-stats button {
+    min-width:
+      0 !important;
+    min-height:
+      58px !important;
+
+    padding:
+      7px
+      2px !important;
+
+    border:
+      0 !important;
+    border-radius:
+      13px !important;
+
+    background:
+      transparent !important;
+  }
+
+  .profile-v3-mobile-stats button + button {
+    border-left:
+      0 !important;
+  }
+
+  .profile-v3-mobile-stats strong {
+    font-size:
+      19px !important;
+  }
+
+  .profile-v3-mobile-stats span {
+    margin-top:
+      4px !important;
+
+    font-size:
+      9px !important;
+  }
+
+  .profile-v3-mobile-bio {
+    margin:
+      13px
+      2px
+      0 !important;
+
+    color:
+      #626775 !important;
+
+    font-size:
+      13px !important;
+
+    line-height:
+      1.45 !important;
+  }
+
+  .profile-v3-mobile-meta {
+    margin-top:
+      11px !important;
+
+    display: flex !important;
+    flex-wrap: wrap !important;
+
+    gap:
+      7px !important;
+  }
+
+  .profile-v3-mobile-meta span {
+    min-height:
+      36px !important;
+
+    padding:
+      0
+      11px !important;
+
+    border:
+      1px solid
+      rgba(35,38,52,.06) !important;
+
+    border-radius:
+      12px !important;
+
+    background:
+      #f8f8fb !important;
+  }
+
+  .profile-v3-mobile-status-wrap {
+    margin-top:
+      9px !important;
+  }
+
+  .profile-v3-mobile-status {
+    min-height:
+      38px !important;
+
+    padding:
+      0
+      11px !important;
+
+    border:
+      1px solid
+      rgba(99,91,255,.11) !important;
+
+    border-radius:
+      13px !important;
+
+    background:
+      #f3f1ff !important;
+
+    box-shadow:
+      none !important;
+  }
+
+  .profile-v2-grid {
+    margin-top:
+      10px !important;
+  }
+
+  .profile-v2-tabs {
+    width:
+      calc(
+        100% -
+        20px
+      ) !important;
+
+    min-height:
+      56px !important;
+
+    margin:
+      0
+      10px !important;
+
+    padding:
+      5px !important;
+
+    border:
+      1px solid
+      rgba(35,38,52,.055) !important;
+
+    border-radius:
+      18px !important;
+
+    background:
+      rgba(255,255,255,.96) !important;
+
+    box-shadow:
+      0 8px 24px
+      rgba(31,35,54,.045) !important;
+  }
+
+  .profile-v2-tabs button {
+    min-height:
+      46px !important;
+
+    border-radius:
+      13px !important;
+  }
+}
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+@media (max-width: 767px) {
+  body.yatut-dark-mode
+  .mobile-nav {
+    background:
+      rgba(24,25,33,.965) !important;
+
+    box-shadow:
+      0 16px 44px
+      rgba(0,0,0,.30) !important;
+  }
+
+  body.yatut-dark-mode
+  .mobile-nav-active-glow {
+    background:
+      #2b2942 !important;
+  }
+
+  body.yatut-dark-mode
+  .mobile-nav-item small {
+    color:
+      #d8dae2 !important;
+  }
+
+  body.yatut-dark-mode
+  .mobile-nav-item.active small {
+    color:
+      #aaa4ff !important;
+  }
+
+  body.yatut-dark-mode
+  .profile-v2-edit-modal {
+    background:
+      #171820 !important;
+  }
+
+  body.yatut-dark-mode
+  .profile-v2-edit-modal
+  > header,
+  body.yatut-dark-mode
+  .profile-v2-edit-modal
+  > footer {
+    border-color:
+      rgba(255,255,255,.06) !important;
+
+    background:
+      rgba(23,24,32,.97) !important;
+  }
+
+  body.yatut-dark-mode
+  .profile-v2-crop-controls {
+    border-color:
+      rgba(255,255,255,.07) !important;
+
+    background:
+      #20212b !important;
+  }
+
+  body.yatut-dark-mode
+  .profile-v2-crop-controls
+  > strong {
+    color:
+      #f0f1f5 !important;
+  }
+
+  body.yatut-dark-mode
+  .profile-v2-crop-controls
+  > span,
+  body.yatut-dark-mode
+  .profile-v2-crop-controls
+  label b {
+    color:
+      #a2a6b1 !important;
+  }
+
+  body.yatut-dark-mode
+  .profile-v2-hero,
+  body.yatut-dark-mode
+  .profile-v2-tabs {
+    border-color:
+      rgba(255,255,255,.065) !important;
+
+    background:
+      #181920 !important;
+  }
+
+  body.yatut-dark-mode
+  .profile-v3-mobile-stats,
+  body.yatut-dark-mode
+  .profile-v3-mobile-meta span,
+  body.yatut-dark-mode
+  .profile-v3-mobile-status {
+    border-color:
+      rgba(255,255,255,.06) !important;
+
+    background:
+      #20212a !important;
+  }
+}
