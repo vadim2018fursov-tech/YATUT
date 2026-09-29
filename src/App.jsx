@@ -9449,7 +9449,7 @@ function App() {
   }
 
   return (
-    <div className="app">
+    <div className={`app ${currentPage === "pulse" ? "app-page-pulse" : ""}`.trim()}>
       <TopBar
         currentPage={
           currentPage
