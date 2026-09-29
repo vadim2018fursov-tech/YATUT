@@ -6074,3 +6074,132 @@ body.yatut-dark-mode
     min-height: 46px !important;
   }
 }
+
+
+/* =========================================================
+   PROFILE MOBILE SCREENSHOT FIX V9
+   Keep identity readable and content clear of bottom nav.
+========================================================= */
+
+@media (max-width: 767px) {
+  .profile-v3-mobile-identity-row {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+  }
+
+  .profile-v3-mobile-identity {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .profile-v3-mobile-name-row {
+    width: 100% !important;
+    min-width: 0 !important;
+    align-items: center !important;
+    gap: 6px !important;
+  }
+
+  .profile-v3-mobile-name-row h1 {
+    max-width: 100% !important;
+    font-size:
+      clamp(
+        25px,
+        7.2vw,
+        31px
+      ) !important;
+    line-height: .98 !important;
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+  }
+
+  .profile-v3-mobile-actions {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns:
+      minmax(0,1fr)
+      38px
+      38px !important;
+    align-items: center !important;
+    gap: 7px !important;
+  }
+
+  .profile-v3-mobile-edit {
+    width: 100% !important;
+    min-height: 40px !important;
+    justify-content: center !important;
+    font-size: 11px !important;
+  }
+
+  .profile-v3-mobile-action {
+    width: 38px !important;
+    height: 38px !important;
+  }
+
+  .profile-v2-grid {
+    margin-top: 12px !important;
+  }
+
+  .profile-v2-main {
+    gap: 12px !important;
+    padding-bottom:
+      calc(
+        118px +
+        env(
+          safe-area-inset-bottom
+        )
+      ) !important;
+  }
+
+  .profile-v2-tabs {
+    position: relative !important;
+    top: auto !important;
+    bottom: auto !important;
+    z-index: 1 !important;
+    margin: 0 !important;
+    box-shadow:
+      0 8px 24px
+      rgba(
+        31,
+        35,
+        54,
+        .055
+      ) !important;
+  }
+
+  .profile-v2-post-list {
+    padding-bottom:
+      calc(
+        24px +
+        env(
+          safe-area-inset-bottom
+        )
+      ) !important;
+  }
+
+  .profile-v2-inline-composer {
+    scroll-margin-bottom:
+      calc(
+        132px +
+        env(
+          safe-area-inset-bottom
+        )
+      ) !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .profile-v3-mobile-name-row h1 {
+    font-size:
+      clamp(
+        24px,
+        7.4vw,
+        29px
+      ) !important;
+  }
+
+  .profile-v3-mobile-card {
+    padding-bottom: 15px !important;
+  }
+}
