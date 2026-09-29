@@ -3631,7 +3631,13 @@ function Chats({
             false;
 
           if (
-            requestedChatId
+            requestedChatId &&
+            !(
+              authSession?.user?.id &&
+              LEGACY_DEMO_CHAT_IDS.has(
+                requestedChatId
+              )
+            )
           ) {
             let requested =
               stored.find(
@@ -3984,7 +3990,8 @@ function Chats({
             return;
           }
         } else if (
-          !chat
+          !chat &&
+          !authSession?.user?.id
         ) {
           chat = {
             id:
@@ -4009,6 +4016,23 @@ function Chats({
               ...previous,
             ]
           );
+        } else if (
+          authSession?.user?.id &&
+          !backendTarget
+        ) {
+          if (
+            LEGACY_DEMO_PERSON_IDS.has(
+              initialPersonId
+            )
+          ) {
+            await deleteChat(
+              `chat-${initialPersonId}`
+            ).catch(
+              () => {}
+            );
+          }
+
+          return;
         }
 
         if (
@@ -4102,61 +4126,6 @@ function Chats({
             setOtherReadAt(
               null
             );
-          }
-
-          if (
-            !activeChat?.backend &&
-            activeChatId ===
-              "chat-maria" &&
-            stored.length ===
-              0
-          ) {
-            const demo = [
-              {
-                id:
-                  "demo-chat-message-1",
-                chatId:
-                  "chat-maria",
-                senderId:
-                  "maria",
-                type: "text",
-                text:
-                  "Привіт 👋 Як справи?",
-                createdAt:
-                  Date.now() -
-                  600000,
-                pinned: false,
-              },
-
-              {
-                id:
-                  "demo-chat-message-2",
-                chatId:
-                  "chat-maria",
-                senderId:
-                  "me",
-                type: "text",
-                text:
-                  "Привіт! Працюю над ЯТУТ 😎",
-                createdAt:
-                  Date.now() -
-                  500000,
-                pinned: false,
-                myReaction:
-                  "🔥",
-              },
-            ];
-
-            for (
-              const message of
-              demo
-            ) {
-              await saveMessage(
-                message
-              );
-            }
-
-            stored = demo;
           }
 
           setMessages(
