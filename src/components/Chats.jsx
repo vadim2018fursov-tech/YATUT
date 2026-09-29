@@ -9995,10 +9995,13 @@ function Chats({
                         const textarea =
                           event.currentTarget;
 
-                        textarea.style.setProperty(
-                          "--chat-input-height",
-                          "46px"
-                        );
+                        const composer =
+                          textarea.closest(
+                            ".chat-composer"
+                          );
+
+                        textarea.style.height =
+                          "46px";
 
                         const nextHeight =
                           Math.min(
@@ -10009,10 +10012,18 @@ function Chats({
                             132
                           );
 
+                        composer?.style.setProperty(
+                          "--chat-input-height",
+                          `${nextHeight}px`
+                        );
+
                         textarea.style.setProperty(
                           "--chat-input-height",
                           `${nextHeight}px`
                         );
+
+                        textarea.style.height =
+                          `${nextHeight}px`;
 
                         textarea.style.overflowY =
                           textarea.scrollHeight >
