@@ -4706,15 +4706,39 @@ function Chats({
      FILTER
   ======================================================= */
 
+  const productionChats =
+    useMemo(
+      () => {
+        if (
+          !authSession?.user?.id
+        ) {
+          return [];
+        }
+
+        return chats.filter(
+          (
+            chat
+          ) =>
+            !isLegacyDemoChat(
+              chat
+            )
+        );
+      },
+      [
+        chats,
+        authSession?.user?.id,
+      ]
+    );
+
   const archivedCount =
-    chats.filter(
+    productionChats.filter(
       (chat) =>
         chat.archived &&
         !chat.hidden
     ).length;
 
   const hiddenCount =
-    chats.filter(
+    productionChats.filter(
       (chat) =>
         chat.hidden
     ).length;
@@ -4784,7 +4808,7 @@ function Chats({
           .toLowerCase();
 
       const source =
-        chats.filter(
+        productionChats.filter(
           (chat) => {
             if (
               chatListView ===
@@ -4841,13 +4865,13 @@ function Chats({
         }
       );
     }, [
-      chats,
+      productionChats,
       chatSearch,
       chatListView,
     ]);
 
   const chatActionChat =
-    chats.find(
+    productionChats.find(
       (chat) =>
         chat.id ===
         chatActionChatId
