@@ -1171,7 +1171,7 @@ export async function loadBackendMessages(
 
   url.searchParams.set(
     "select",
-    "id,conversation_id,sender_id,body,kind,reply_to,media_path,file_name,mime_type,duration_ms,created_at,edited_at,deleted_at"
+    "id,conversation_id,sender_id,body,kind,reply_to,media_path,file_name,mime_type,duration_ms,client_message_id,created_at,edited_at,deleted_at"
   );
 
   url.searchParams.set(
@@ -1332,6 +1332,9 @@ export async function loadBackendMessages(
                   1000
                 )
               : null,
+          clientMessageId:
+            row.client_message_id ||
+            null,
           createdAt:
             Date.parse(
               row.created_at
@@ -1365,53 +1368,166 @@ export async function loadBackendMessages(
   );
 }
 
-export async function sendBackendMessage(
+const CHAT_SEND_RETRY_WINDOW_MS =
+  30000;
+
+const chatSendAttempts =
+  new Map();
+
+function createClientMessageUuid() {
+  const cryptoApi =
+    globalThis.crypto;
+
+  if (
+    cryptoApi?.randomUUID
+  ) {
+    return cryptoApi.randomUUID();
+  }
+
+  const bytes =
+    new Uint8Array(
+      16
+    );
+
+  if (
+    cryptoApi?.getRandomValues
+  ) {
+    cryptoApi.getRandomValues(
+      bytes
+    );
+  } else {
+    for (
+      let index = 0;
+      index <
+      bytes.length;
+      index += 1
+    ) {
+      bytes[index] =
+        Math.floor(
+          Math.random() *
+          256
+        );
+    }
+  }
+
+  bytes[6] =
+    (
+      bytes[6] &
+      0x0f
+    ) |
+    0x40;
+
+  bytes[8] =
+    (
+      bytes[8] &
+      0x3f
+    ) |
+    0x80;
+
+  const hex =
+    Array.from(
+      bytes,
+      (
+        value
+      ) =>
+        value
+          .toString(16)
+          .padStart(
+            2,
+            "0"
+          )
+    );
+
+  return [
+    hex.slice(
+      0,
+      4
+    ).join(""),
+    hex.slice(
+      4,
+      6
+    ).join(""),
+    hex.slice(
+      6,
+      8
+    ).join(""),
+    hex.slice(
+      8,
+      10
+    ).join(""),
+    hex.slice(
+      10,
+      16
+    ).join(""),
+  ].join("-");
+}
+
+function messageSendFingerprint(
   session,
   conversationId,
-  {
-    text = "",
-    kind = "text",
-    replyToId = null,
-    mediaPath = null,
-    fileName = null,
-    mimeType = null,
-    durationMs = null,
-  } = {}
+  payload
 ) {
+  return [
+    session?.user?.id ||
+      "",
+    conversationId ||
+      "",
+    payload.kind ||
+      "text",
+    payload.text ||
+      "",
+    payload.replyToId ||
+      "",
+    payload.mediaPath ||
+      "",
+    payload.fileName ||
+      "",
+    payload.mimeType ||
+      "",
+    payload.durationMs ??
+      "",
+  ].join(
+    "\u001f"
+  );
+}
+
+async function fetchMessageByClientId(
+  session,
+  clientMessageId
+) {
+  const url =
+    new URL(
+      `${SUPABASE_URL}/rest/v1/messages`
+    );
+
+  url.searchParams.set(
+    "sender_id",
+    `eq.${session.user.id}`
+  );
+
+  url.searchParams.set(
+    "client_message_id",
+    `eq.${clientMessageId}`
+  );
+
+  url.searchParams.set(
+    "select",
+    "id,conversation_id,sender_id,body,kind,reply_to,media_path,file_name,mime_type,duration_ms,client_message_id,created_at,edited_at,deleted_at"
+  );
+
+  url.searchParams.set(
+    "limit",
+    "1"
+  );
+
   const response =
     await fetch(
-      `${SUPABASE_URL}/rest/v1/messages`,
+      url,
       {
-        method:
-          "POST",
         headers:
           headers(
-            session,
-            {
-              Prefer:
-                "return=representation",
-            }
+            session
           ),
-        body:
-          JSON.stringify({
-            conversation_id:
-              conversationId,
-            sender_id:
-              session.user.id,
-            body:
-              text,
-            kind,
-            reply_to:
-              replyToId,
-            media_path:
-              mediaPath,
-            file_name:
-              fileName,
-            mime_type:
-              mimeType,
-            duration_ms:
-              durationMs,
-          }),
       }
     );
 
@@ -1420,14 +1536,18 @@ export async function sendBackendMessage(
       response
     );
 
-  const row =
-    Array.isArray(
-      rows
-    )
-      ? rows[0] ||
+  return Array.isArray(
+    rows
+  )
+    ? rows[0] ||
         null
-      : null;
+    : null;
+}
 
+async function mapSentBackendMessage(
+  session,
+  row
+) {
   if (!row) {
     return null;
   }
@@ -1487,12 +1607,17 @@ export async function sendBackendMessage(
             1000
           )
         : null,
+    clientMessageId:
+      row.client_message_id ||
+      null,
     createdAt:
       Date.parse(
         row.created_at
       ),
     edited:
-      false,
+      Boolean(
+        row.edited_at
+      ),
     pinned:
       false,
     myReaction:
@@ -1507,6 +1632,206 @@ export async function sendBackendMessage(
     backend:
       true,
   };
+}
+
+export async function sendBackendMessage(
+  session,
+  conversationId,
+  {
+    text = "",
+    kind = "text",
+    replyToId = null,
+    mediaPath = null,
+    fileName = null,
+    mimeType = null,
+    durationMs = null,
+    clientMessageId = null,
+  } = {}
+) {
+  const payload = {
+    text,
+    kind,
+    replyToId,
+    mediaPath,
+    fileName,
+    mimeType,
+    durationMs,
+  };
+
+  const fingerprint =
+    messageSendFingerprint(
+      session,
+      conversationId,
+      payload
+    );
+
+  const now =
+    Date.now();
+
+  let attempt =
+    chatSendAttempts.get(
+      fingerprint
+    );
+
+  if (
+    attempt &&
+    now -
+      attempt.updatedAt >
+      CHAT_SEND_RETRY_WINDOW_MS
+  ) {
+    chatSendAttempts.delete(
+      fingerprint
+    );
+
+    attempt =
+      null;
+  }
+
+  if (
+    attempt?.promise
+  ) {
+    return attempt.promise;
+  }
+
+  if (!attempt) {
+    attempt = {
+      clientMessageId:
+        clientMessageId ||
+        createClientMessageUuid(),
+      updatedAt:
+        now,
+      promise:
+        null,
+    };
+
+    chatSendAttempts.set(
+      fingerprint,
+      attempt
+    );
+  } else if (
+    clientMessageId
+  ) {
+    attempt.clientMessageId =
+      clientMessageId;
+  }
+
+  const request =
+    (async () => {
+      const url =
+        new URL(
+          `${SUPABASE_URL}/rest/v1/messages`
+        );
+
+      url.searchParams.set(
+        "on_conflict",
+        "sender_id,client_message_id"
+      );
+
+      const response =
+        await fetch(
+          url,
+          {
+            method:
+              "POST",
+            headers:
+              headers(
+                session,
+                {
+                  Prefer:
+                    "resolution=ignore-duplicates,return=representation",
+                }
+              ),
+            body:
+              JSON.stringify({
+                conversation_id:
+                  conversationId,
+                sender_id:
+                  session.user.id,
+                body:
+                  text,
+                kind,
+                reply_to:
+                  replyToId,
+                media_path:
+                  mediaPath,
+                file_name:
+                  fileName,
+                mime_type:
+                  mimeType,
+                duration_ms:
+                  durationMs,
+                client_message_id:
+                  attempt.clientMessageId,
+              }),
+          }
+        );
+
+      const rows =
+        await parseResponse(
+          response
+        );
+
+      let row =
+        Array.isArray(
+          rows
+        )
+          ? rows[0] ||
+            null
+          : null;
+
+      if (!row) {
+        row =
+          await fetchMessageByClientId(
+            session,
+            attempt.clientMessageId
+          );
+      }
+
+      if (!row) {
+        throw new Error(
+          "Повідомлення не вдалося підтвердити."
+        );
+      }
+
+      return mapSentBackendMessage(
+        session,
+        row
+      );
+    })();
+
+  attempt.promise =
+    request;
+
+  attempt.updatedAt =
+    now;
+
+  try {
+    const result =
+      await request;
+
+    if (
+      chatSendAttempts.get(
+        fingerprint
+      ) ===
+      attempt
+    ) {
+      chatSendAttempts.delete(
+        fingerprint
+      );
+    }
+
+    return result;
+  } catch (
+    error
+  ) {
+    attempt.promise =
+      null;
+
+    attempt.updatedAt =
+      Date.now();
+
+    throw error;
+  }
 }
 
 export async function editBackendMessage(
