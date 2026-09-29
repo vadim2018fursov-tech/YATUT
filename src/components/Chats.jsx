@@ -8473,10 +8473,15 @@ function Chats({
                           ? "group"
                           : ""
                       } ${
-                        chat.personId &&
-                        PEOPLE[
-                          chat.personId
-                        ]?.online
+                        (
+                          chat.person?.online ||
+                          (
+                            chat.personId &&
+                            PEOPLE[
+                              chat.personId
+                            ]?.online
+                          )
+                        )
                           ? "is-online"
                           : ""
                       }`.trim()}
