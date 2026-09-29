@@ -2226,3 +2226,51 @@ body.yatut-profile-editor-open {
     border-radius: 50% !important;
   }
 }
+
+
+/* =========================================================
+   MOBILE NAV V10
+   Minimal active state: icon + label only. No circles/pills.
+========================================================= */
+@media (max-width: 767px) {
+  html body .mobile-nav > .mobile-nav-item,
+  html body .mobile-nav > .mobile-nav-item.active,
+  html body .mobile-nav > button.active,
+  html body .mobile-nav > button[aria-current="page"] {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  html body .mobile-nav > .mobile-nav-item > .mobile-nav-active-glow {
+    display: none !important;
+    opacity: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  html body .mobile-nav .mobile-nav-icon,
+  html body .mobile-nav .mobile-nav-item.active .mobile-nav-icon,
+  html body .mobile-nav > button.active .mobile-nav-icon,
+  html body .mobile-nav > button[aria-current="page"] .mobile-nav-icon {
+    background: transparent !important;
+    border: 0 !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+  }
+
+  html body .mobile-nav .mobile-nav-item.active .mobile-nav-icon,
+  html body .mobile-nav .mobile-nav-item.active small,
+  html body .mobile-nav > button.active .mobile-nav-icon,
+  html body .mobile-nav > button.active small,
+  html body .mobile-nav > button[aria-current="page"] .mobile-nav-icon,
+  html body .mobile-nav > button[aria-current="page"] small {
+    color: #635bff !important;
+  }
+
+  html body .mobile-nav .mobile-nav-item.active .yatut-icon,
+  html body .mobile-nav > button.active .yatut-icon,
+  html body .mobile-nav > button[aria-current="page"] .yatut-icon {
+    stroke: currentColor !important;
+  }
+}
