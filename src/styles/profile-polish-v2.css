@@ -1,0 +1,309 @@
+/* =========================================================
+   YATUT PROFILE POLISH V2
+   Mobile profile refinement. Does not touch bottom navigation.
+========================================================= */
+
+@media (max-width: 767px) {
+  .profile-v2-page {
+    --profile-surface: rgba(255,255,255,.97);
+    --profile-line: rgba(35,38,52,.075);
+    --profile-muted: #8c91a0;
+    --profile-text: #1d1f2b;
+    --profile-shadow: 0 14px 38px rgba(31,35,54,.075);
+  }
+
+  .profile-v2-hero {
+    border-color: var(--profile-line) !important;
+    background: var(--profile-surface) !important;
+    box-shadow: var(--profile-shadow) !important;
+  }
+
+  .profile-v2-cover {
+    box-shadow:
+      inset 0 0 0 1px rgba(255,255,255,.08),
+      0 8px 22px rgba(21,24,38,.06);
+  }
+
+  .profile-v3-mobile-card {
+    padding-top: 1px !important;
+    padding-bottom: 17px !important;
+  }
+
+  .profile-v3-mobile-avatar {
+    box-shadow:
+      0 0 0 1px rgba(99,91,255,.04),
+      0 12px 28px rgba(42,38,76,.12) !important;
+  }
+
+  .profile-v3-mobile-name-row {
+    margin-top: 1px;
+  }
+
+  .profile-v3-mobile-name-row h1 {
+    color: var(--profile-text) !important;
+    letter-spacing: -.035em !important;
+  }
+
+  .profile-v3-mobile-username {
+    margin-top: 5px !important;
+    color: #9196a4 !important;
+  }
+
+  .profile-v3-mobile-actions {
+    margin-top: 14px !important;
+  }
+
+  .profile-v3-mobile-edit {
+    border: 1px solid rgba(99,91,255,.10);
+    background:
+      linear-gradient(135deg,#736aff 0%,#635bff 62%,#5b52ee 100%) !important;
+    box-shadow:
+      0 9px 22px rgba(99,91,255,.20),
+      inset 0 1px 0 rgba(255,255,255,.18) !important;
+  }
+
+  .profile-v3-mobile-edit:active,
+  .profile-v3-mobile-action:active {
+    transform: scale(.97);
+  }
+
+  .profile-v3-mobile-action {
+    border-color: rgba(35,38,52,.07) !important;
+    background: rgba(247,248,251,.96) !important;
+    color: #626775 !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.8),
+      0 4px 12px rgba(31,35,54,.035);
+  }
+
+  .profile-v3-mobile-stats {
+    margin-top: 15px !important;
+    padding-top: 14px !important;
+    border-top-color: rgba(35,38,52,.065) !important;
+  }
+
+  .profile-v3-mobile-stats button {
+    min-height: 52px;
+    border-radius: 12px;
+  }
+
+  .profile-v3-mobile-stats button + button {
+    border-left-color: rgba(35,38,52,.055) !important;
+  }
+
+  .profile-v3-mobile-stats strong {
+    color: var(--profile-text) !important;
+    font-size: clamp(18px,5vw,21px) !important;
+    font-weight: 850 !important;
+    letter-spacing: -.025em;
+  }
+
+  .profile-v3-mobile-stats span {
+    margin-top: 6px !important;
+    color: var(--profile-muted) !important;
+    font-size: clamp(9px,2.55vw,10.5px) !important;
+    font-weight: 720 !important;
+  }
+
+  .profile-v3-mobile-bio {
+    margin-top: 13px !important;
+    color: #666b79 !important;
+    font-size: 13px !important;
+    line-height: 1.5 !important;
+  }
+
+  .profile-v3-mobile-meta {
+    margin-top: 12px !important;
+    gap: 8px !important;
+  }
+
+  .profile-v3-mobile-meta span,
+  .profile-v3-mobile-status {
+    min-height: 38px !important;
+    padding-inline: 11px !important;
+    border-radius: 13px !important;
+  }
+
+  .profile-v3-mobile-meta span {
+    border-color: rgba(35,38,52,.07) !important;
+    background: #f8f8fb !important;
+    color: #676c79 !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.84);
+  }
+
+  .profile-v3-mobile-status-wrap {
+    margin-top: 10px !important;
+  }
+
+  .profile-v3-mobile-status {
+    border-color: rgba(99,91,255,.14) !important;
+    background:
+      linear-gradient(145deg,#f5f3ff,#efedff) !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.82),
+      0 5px 14px rgba(99,91,255,.055);
+  }
+
+  .profile-v3-mobile-status strong {
+    font-size: 11px !important;
+  }
+
+  .profile-v2-grid {
+    margin-top: 13px !important;
+  }
+
+  .profile-v2-tabs {
+    min-height: 58px !important;
+    padding: 5px !important;
+    border-radius: 19px !important;
+  }
+
+  .profile-v2-tabs button {
+    min-height: 48px !important;
+    border-radius: 14px !important;
+  }
+
+  .profile-v2-tab-label {
+    font-size: clamp(10px,2.7vw,11.5px) !important;
+    font-weight: 800;
+  }
+
+  .profile-v2-inline-composer {
+    padding: 14px !important;
+    border: 1px solid var(--profile-line) !important;
+    border-radius: 22px !important;
+    background: var(--profile-surface) !important;
+    box-shadow: var(--profile-shadow) !important;
+  }
+
+  .profile-v2-inline-composer__top {
+    grid-template-columns: 48px minmax(0,1fr) !important;
+    gap: 11px !important;
+    align-items: start;
+  }
+
+  .profile-v2-inline-composer__avatar {
+    width: 48px !important;
+    height: 48px !important;
+    border-radius: 15px !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.7),
+      0 5px 14px rgba(99,91,255,.06);
+  }
+
+  .profile-v2-inline-composer textarea {
+    min-height: 84px !important;
+    padding: 13px 14px !important;
+    border: 1px solid rgba(35,38,52,.07) !important;
+    border-radius: 16px !important;
+    background: #f7f8fb !important;
+    color: var(--profile-text) !important;
+    line-height: 1.45 !important;
+    box-shadow: inset 0 1px 2px rgba(31,35,54,.025);
+    transition:
+      border-color 160ms ease,
+      background 160ms ease,
+      box-shadow 160ms ease;
+  }
+
+  .profile-v2-inline-composer textarea:focus {
+    border-color: rgba(99,91,255,.24) !important;
+    background: #fff !important;
+    box-shadow:
+      0 0 0 4px rgba(99,91,255,.06),
+      inset 0 1px 2px rgba(31,35,54,.02) !important;
+  }
+
+  .profile-v2-inline-composer__bottom {
+    margin-top: 10px !important;
+    gap: 10px !important;
+  }
+
+  .profile-v2-inline-composer__bottom span {
+    color: var(--profile-muted) !important;
+    font-size: 11px !important;
+    line-height: 1.35;
+  }
+
+  .profile-v2-inline-composer__bottom button {
+    min-height: 46px !important;
+    border-radius: 14px !important;
+    background:
+      linear-gradient(135deg,#746cff,#635bff) !important;
+    color: #fff !important;
+    font-size: 13px !important;
+    font-weight: 850 !important;
+    box-shadow:
+      0 9px 20px rgba(99,91,255,.18),
+      inset 0 1px 0 rgba(255,255,255,.16);
+  }
+
+  .profile-v2-inline-composer__bottom button:disabled {
+    opacity: 1 !important;
+    background:
+      linear-gradient(135deg,#d8d6ff,#c8c5ff) !important;
+    color: rgba(255,255,255,.92) !important;
+    box-shadow: none !important;
+  }
+
+  .profile-v2-post-card,
+  .profile-v2-card {
+    border-color: var(--profile-line) !important;
+    box-shadow: 0 12px 34px rgba(31,35,54,.055) !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .profile-v3-mobile-card {
+    padding-inline: 12px !important;
+  }
+
+  .profile-v3-mobile-stats strong {
+    font-size: 18px !important;
+  }
+
+  .profile-v3-mobile-stats span {
+    font-size: 9px !important;
+  }
+
+  .profile-v2-inline-composer {
+    padding: 12px !important;
+  }
+}
+
+@media (max-width: 767px) {
+  body.yatut-dark-mode .profile-v2-page {
+    --profile-surface: rgba(24,25,33,.97);
+    --profile-line: rgba(255,255,255,.075);
+    --profile-muted: #9da2b0;
+    --profile-text: #f3f4f8;
+    --profile-shadow: 0 16px 42px rgba(0,0,0,.24);
+  }
+
+  body.yatut-dark-mode .profile-v3-mobile-action,
+  body.yatut-dark-mode .profile-v3-mobile-meta span {
+    border-color: rgba(255,255,255,.07) !important;
+    background: #20222c !important;
+    color: #c3c6d0 !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.025);
+  }
+
+  body.yatut-dark-mode .profile-v3-mobile-bio {
+    color: #b1b4bf !important;
+  }
+
+  body.yatut-dark-mode .profile-v2-inline-composer textarea {
+    border-color: rgba(255,255,255,.07) !important;
+    background: #14161d !important;
+    color: var(--profile-text) !important;
+  }
+
+  body.yatut-dark-mode .profile-v2-inline-composer textarea:focus {
+    background: #171922 !important;
+  }
+
+  body.yatut-dark-mode .profile-v2-inline-composer__bottom button:disabled {
+    background: #34324d !important;
+    color: #8e89bd !important;
+  }
+}
