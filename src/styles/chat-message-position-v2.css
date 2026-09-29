@@ -1,0 +1,259 @@
+/* =========================================================
+   YATUT MESSAGE ACTION POSITION V2
+   Adaptive long-press placement relative to the message.
+========================================================= */
+
+@media (max-width: 767px) {
+  .messenger.mobile-dialog-open
+  .message-shell {
+    position: relative !important;
+    overflow: visible !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .message-row {
+    overflow: visible !important;
+  }
+
+  /* Full action menu follows the bubble instead of the composer. */
+  .messenger.mobile-dialog-open
+  .message-action-menu {
+    position: absolute !important;
+
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+
+    z-index: 9850 !important;
+
+    width:
+      min(
+        304px,
+        calc(
+          100vw -
+          28px
+        )
+      ) !important;
+
+    max-width:
+      calc(
+        100vw -
+        28px
+      ) !important;
+
+    max-height:
+      min(
+        420px,
+        58dvh
+      ) !important;
+
+    margin: 0 !important;
+
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+
+    transform: none !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .message-action-menu-above {
+    top: auto !important;
+    bottom:
+      calc(
+        100% +
+        10px
+      ) !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .message-action-menu-below {
+    top:
+      calc(
+        100% +
+        10px
+      ) !important;
+    bottom: auto !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .message-row.mine
+  .message-action-menu {
+    right: 0 !important;
+    left: auto !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .message-row:not(.mine)
+  .message-action-menu {
+    right: auto !important;
+    left: 0 !important;
+  }
+
+  /* Reactions only popover uses the same adaptive direction. */
+  .messenger.mobile-dialog-open
+  .message-reaction-popover {
+    position: absolute !important;
+
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+
+    z-index: 9840 !important;
+
+    width:
+      min(
+        286px,
+        calc(
+          100vw -
+          28px
+        )
+      ) !important;
+
+    max-width:
+      calc(
+        100vw -
+        28px
+      ) !important;
+
+    margin: 0 !important;
+
+    transform: none !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .message-reaction-popover-above {
+    top: auto !important;
+    bottom:
+      calc(
+        100% +
+        8px
+      ) !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .message-reaction-popover-below {
+    top:
+      calc(
+        100% +
+        8px
+      ) !important;
+    bottom: auto !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .message-row.mine
+  .message-reaction-popover {
+    right: 0 !important;
+    left: auto !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .message-row:not(.mine)
+  .message-reaction-popover {
+    right: auto !important;
+    left: 0 !important;
+  }
+
+  /* Arrow points back to the pressed message. */
+  .messenger.mobile-dialog-open
+  .message-action-menu::after,
+  .messenger.mobile-dialog-open
+  .message-reaction-popover::after {
+    content: "";
+
+    position: absolute;
+
+    width: 12px;
+    height: 12px;
+
+    background: inherit;
+
+    border-radius: 3px;
+
+    transform: rotate(45deg);
+
+    pointer-events: none;
+  }
+
+  .messenger.mobile-dialog-open
+  .message-action-menu-above::after,
+  .messenger.mobile-dialog-open
+  .message-reaction-popover-above::after {
+    top: auto;
+    bottom: -6px;
+  }
+
+  .messenger.mobile-dialog-open
+  .message-action-menu-below::after,
+  .messenger.mobile-dialog-open
+  .message-reaction-popover-below::after {
+    top: -6px;
+    bottom: auto;
+  }
+
+  .messenger.mobile-dialog-open
+  .message-row.mine
+  :is(
+    .message-action-menu,
+    .message-reaction-popover
+  )::after {
+    right: 18px;
+    left: auto;
+  }
+
+  .messenger.mobile-dialog-open
+  .message-row:not(.mine)
+  :is(
+    .message-action-menu,
+    .message-reaction-popover
+  )::after {
+    right: auto;
+    left: 18px;
+  }
+
+  /* Keep the selected message above neighbours while actions are open. */
+  .messenger.mobile-dialog-open
+  .message-row:has(.message-action-menu),
+  .messenger.mobile-dialog-open
+  .message-row:has(.message-reaction-popover) {
+    z-index: 120 !important;
+  }
+
+  /* Make enough room inside the scroll viewport for downward menus. */
+  .messenger.mobile-dialog-open
+  .chat-messages {
+    scroll-padding-top: 92px !important;
+    scroll-padding-bottom: 92px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .messenger.mobile-dialog-open
+  .message-action-menu {
+    width:
+      min(
+        286px,
+        calc(
+          100vw -
+          20px
+        )
+      ) !important;
+
+    max-height:
+      54dvh !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .message-reaction-popover {
+    width:
+      min(
+        274px,
+        calc(
+          100vw -
+          20px
+        )
+      ) !important;
+  }
+}
