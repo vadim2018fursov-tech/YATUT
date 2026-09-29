@@ -1,0 +1,425 @@
+/* =========================================================
+   YATUT HOME POLISH V1
+   Home is the reference visual language for the rest of app.
+========================================================= */
+
+:root {
+  --home-surface: rgba(255,255,255,.96);
+  --home-line: rgba(28,31,43,.075);
+  --home-shadow: 0 14px 42px rgba(31,28,55,.065);
+  --home-shadow-hover: 0 18px 54px rgba(31,28,55,.10);
+  --home-radius: 22px;
+  --home-radius-sm: 16px;
+  --home-muted: #7e8392;
+}
+
+.feed-column {
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.feed-column > * {
+  min-width: 0;
+}
+
+.feed-tabs {
+  position: relative;
+  isolation: isolate;
+  min-height: 48px;
+  padding: 5px;
+  border: 1px solid var(--home-line);
+  border-radius: 18px;
+  background: rgba(244,245,250,.88);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.feed-tab {
+  position: relative;
+  isolation: isolate;
+  min-height: 38px;
+  overflow: hidden;
+  border-radius: 14px;
+  color: var(--home-muted);
+  font-weight: 800;
+  letter-spacing: -.01em;
+}
+
+.feed-tab-motion-bg {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border: 1px solid rgba(99,91,255,.10);
+  border-radius: inherit;
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.98), rgba(247,246,255,.98));
+  box-shadow:
+    0 8px 20px rgba(85,77,190,.08),
+    inset 0 1px 0 rgba(255,255,255,.92);
+}
+
+.feed-tab.active {
+  color: #4e47d9;
+}
+
+.feed-tab-motion-label {
+  position: relative;
+  z-index: 1;
+}
+
+.stories-card,
+.post-composer,
+.post-card,
+.home-start-card {
+  border: 1px solid var(--home-line) !important;
+  background: var(--home-surface) !important;
+  box-shadow: var(--home-shadow);
+}
+
+.stories-card {
+  border-radius: var(--home-radius) !important;
+}
+
+.stories {
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+}
+
+.story-wrap {
+  scroll-snap-align: start;
+}
+
+.story-avatar,
+.story-ring,
+.story-add {
+  transition:
+    transform 180ms cubic-bezier(.22,.8,.26,1),
+    box-shadow 220ms cubic-bezier(.22,.8,.26,1);
+}
+
+.story-wrap:active .story-avatar,
+.story-wrap:active .story-ring,
+.story-wrap:active .story-add {
+  transform: scale(.96);
+}
+
+.post-composer {
+  border-radius: var(--home-radius) !important;
+  overflow: clip;
+}
+
+.composer-main textarea {
+  resize: none;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: inherit;
+}
+
+.composer-main textarea::placeholder {
+  color: #9a9eaa;
+}
+
+.composer-tools,
+.composer-footer {
+  min-width: 0;
+}
+
+.composer-tools button,
+.composer-footer button,
+.post-actions button,
+.home-start-card__actions button {
+  border-radius: 13px;
+  transition:
+    transform 140ms cubic-bezier(.22,.8,.26,1),
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 180ms ease;
+}
+
+.composer-tools button:active,
+.composer-footer button:active,
+.post-actions button:active,
+.home-start-card__actions button:active {
+  transform: scale(.97);
+}
+
+.post-card {
+  border-radius: var(--home-radius) !important;
+  overflow: clip;
+  transition:
+    transform 220ms cubic-bezier(.22,.8,.26,1),
+    box-shadow 220ms cubic-bezier(.22,.8,.26,1),
+    border-color 180ms ease;
+}
+
+@media (hover:hover) and (pointer:fine) {
+  .post-card:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--home-shadow-hover);
+    border-color: rgba(99,91,255,.10) !important;
+  }
+}
+
+.post-header,
+.post-text,
+.post-stats,
+.post-actions {
+  min-width: 0;
+}
+
+.post-text {
+  color: #303440;
+  line-height: 1.58;
+}
+
+.post-actions {
+  border-top: 1px solid rgba(28,31,43,.055);
+}
+
+.post-actions button {
+  min-height: 42px;
+}
+
+.yatut-post-media,
+.premium-feed-single-image,
+.premium-feed-gallery,
+.premium-feed-gallery-two,
+.yatut-feed-video {
+  overflow: clip;
+}
+
+.yatut-post-media img,
+.yatut-feed-video video {
+  display: block;
+  width: 100%;
+}
+
+.yatut-feed-media-button {
+  overflow: hidden;
+  background: #eceef4;
+}
+
+.yatut-feed-media-button img {
+  transition: transform 320ms cubic-bezier(.22,.8,.26,1);
+}
+
+@media (hover:hover) and (pointer:fine) {
+  .yatut-feed-media-button:hover img {
+    transform: scale(1.015);
+  }
+}
+
+.home-start-card {
+  display: grid;
+  grid-template-columns: auto minmax(0,1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  border-radius: var(--home-radius);
+}
+
+.home-start-card__copy {
+  min-width: 0;
+}
+
+.home-start-card__copy > span {
+  color: #766ff2;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .09em;
+}
+
+.home-start-card__copy strong {
+  display: block;
+  margin-top: 2px;
+  color: #2f3240;
+  font-size: 15px;
+}
+
+.home-start-card__copy p {
+  margin: 4px 0 0;
+  color: var(--home-muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.home-start-card__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.home-start-card__actions button {
+  min-height: 40px;
+  padding: 0 13px;
+  border: 1px solid rgba(31,34,48,.07);
+  background: #f4f5f9;
+  font-weight: 800;
+}
+
+.home-start-card__actions button.is-primary {
+  border-color: transparent;
+  background: #635bff;
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(99,91,255,.20);
+}
+
+body.yatut-dark-mode {
+  --home-surface: rgba(25,26,35,.96);
+  --home-line: rgba(255,255,255,.075);
+  --home-shadow: 0 14px 44px rgba(0,0,0,.22);
+  --home-shadow-hover: 0 18px 58px rgba(0,0,0,.28);
+  --home-muted: #a3a8b7;
+}
+
+body.yatut-dark-mode .feed-tabs {
+  background: rgba(31,32,43,.86);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.035);
+}
+
+body.yatut-dark-mode .feed-tab-motion-bg {
+  border-color: rgba(150,142,255,.15);
+  background: linear-gradient(145deg, rgba(48,47,70,.98), rgba(38,39,52,.98));
+  box-shadow:
+    0 8px 22px rgba(0,0,0,.18),
+    inset 0 1px 0 rgba(255,255,255,.055);
+}
+
+body.yatut-dark-mode .feed-tab.active {
+  color: #c7c3ff;
+}
+
+body.yatut-dark-mode .post-text,
+body.yatut-dark-mode .home-start-card__copy strong {
+  color: #f3f4f8;
+}
+
+body.yatut-dark-mode .post-actions {
+  border-top-color: rgba(255,255,255,.055);
+}
+
+body.yatut-dark-mode .composer-main textarea::placeholder {
+  color: #777c89;
+}
+
+body.yatut-dark-mode .home-start-card__actions button {
+  border-color: rgba(255,255,255,.07);
+  background: #2b2d38;
+  color: #e7e8ef;
+}
+
+@media (max-width: 767px) {
+  .feed-column {
+    gap: 10px;
+  }
+
+  .stories-card,
+  .post-composer,
+  .post-card {
+    width: calc(100% - 16px) !important;
+    margin-inline: 8px !important;
+    border-right: 1px solid var(--home-line) !important;
+    border-left: 1px solid var(--home-line) !important;
+    border-radius: 20px !important;
+  }
+
+  .feed-tabs {
+    width: calc(100% - 16px) !important;
+    max-width: calc(100% - 16px) !important;
+    margin: 0 8px !important;
+    border-radius: 16px;
+  }
+
+  .feed-tab {
+    min-height: 40px;
+    font-size: 12px !important;
+  }
+
+  .stories-card {
+    padding: 11px 8px 9px !important;
+  }
+
+  .stories {
+    padding-inline: 2px !important;
+  }
+
+  .post-composer {
+    padding: 13px 11px 14px !important;
+  }
+
+  .composer-main {
+    grid-template-columns: 46px minmax(0,1fr) !important;
+    gap: 9px !important;
+  }
+
+  .composer-main .avatar {
+    width: 46px !important;
+    height: 46px !important;
+    min-width: 46px !important;
+    border-radius: 15px !important;
+  }
+
+  .composer-main textarea {
+    min-height: 48px !important;
+    font-size: 16px !important;
+    line-height: 1.42;
+  }
+
+  .post-header {
+    padding: 13px 12px 9px !important;
+  }
+
+  .post-text {
+    padding: 4px 12px 12px !important;
+    font-size: 14px;
+  }
+
+  .post-stats {
+    padding-inline: 12px !important;
+  }
+
+  .post-actions {
+    padding: 6px !important;
+  }
+
+  .post-actions button {
+    min-width: 0;
+    padding-inline: 7px;
+    font-size: 11px !important;
+  }
+
+  .home-start-card {
+    grid-template-columns: auto minmax(0,1fr);
+    margin-inline: 8px;
+    padding: 14px;
+  }
+
+  .home-start-card__actions {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .home-start-card__actions button {
+    flex: 1 1 0;
+  }
+}
+
+@media (max-width: 390px) {
+  .stories-card,
+  .post-composer,
+  .post-card,
+  .feed-tabs {
+    width: calc(100% - 12px) !important;
+    max-width: calc(100% - 12px) !important;
+    margin-inline: 6px !important;
+  }
+
+  .post-actions button span:last-child {
+    font-size: 10px;
+  }
+}
