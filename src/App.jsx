@@ -6490,16 +6490,6 @@ function MobileNavigation({
                 )
               }
             >
-              {active ? (
-                <motion.span
-                  layoutId="yatut-mobile-nav-active"
-                  className="mobile-nav-active-glow"
-                  transition={
-                    MOBILE_NAV_MOTION
-                  }
-                />
-              ) : null}
-
               <span className="mobile-nav-icon">
                 <YatutIcon
                   name={
