@@ -3243,6 +3243,117 @@ function Chats({
   const remoteTypingTimerRef =
     useRef(null);
 
+  useEffect(() => {
+    const mobile =
+      window.matchMedia?.(
+        "(max-width: 767px)"
+      )?.matches;
+
+    const shouldLock =
+      Boolean(
+        mobile &&
+        mobileDialogOpen
+      );
+
+    document.documentElement.classList.toggle(
+      "yatut-chat-open",
+      shouldLock
+    );
+
+    document.body.classList.toggle(
+      "yatut-chat-open",
+      shouldLock
+    );
+
+    if (
+      !shouldLock
+    ) {
+      return undefined;
+    }
+
+    const viewport =
+      window.visualViewport;
+
+    let frame =
+      null;
+
+    const settleMessages =
+      () => {
+        if (
+          frame
+        ) {
+          window.cancelAnimationFrame(
+            frame
+          );
+        }
+
+        frame =
+          window.requestAnimationFrame(
+            () => {
+              const container =
+                messagesRef.current;
+
+              const activeElement =
+                document.activeElement;
+
+              const composerFocused =
+                activeElement?.closest?.(
+                  ".chat-composer"
+                );
+
+              if (
+                container &&
+                composerFocused
+              ) {
+                container.scrollTop =
+                  container.scrollHeight;
+              }
+            }
+          );
+      };
+
+    viewport?.addEventListener(
+      "resize",
+      settleMessages
+    );
+
+    viewport?.addEventListener(
+      "scroll",
+      settleMessages
+    );
+
+    return () => {
+      viewport?.removeEventListener(
+        "resize",
+        settleMessages
+      );
+
+      viewport?.removeEventListener(
+        "scroll",
+        settleMessages
+      );
+
+      if (
+        frame
+      ) {
+        window.cancelAnimationFrame(
+          frame
+        );
+      }
+
+      document.documentElement.classList.remove(
+        "yatut-chat-open"
+      );
+
+      document.body.classList.remove(
+        "yatut-chat-open"
+      );
+    };
+  }, [
+    mobileDialogOpen,
+    activeChatId,
+  ]);
+
   const activeChat =
     chats.find(
       (chat) =>
