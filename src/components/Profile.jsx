@@ -702,6 +702,12 @@ export default function Profile({
     );
 
   const [
+    mobileMoreOpen,
+    setMobileMoreOpen,
+  ] =
+    useState(false);
+
+  const [
     editing,
     setEditing,
   ] =
@@ -2310,11 +2316,14 @@ export default function Profile({
                 <button
                   className="profile-v3-mobile-edit"
                   type="button"
-                  onClick={() =>
+                  onClick={() => {
+                    setMobileMoreOpen(
+                      false
+                    );
                     setEditing(
                       true
-                    )
-                  }
+                    );
+                  }}
                 >
                   Редагувати
                 </button>
@@ -2322,11 +2331,14 @@ export default function Profile({
                 <button
                   className="profile-v3-mobile-action"
                   type="button"
-                  onClick={() =>
+                  onClick={() => {
+                    setMobileMoreOpen(
+                      false
+                    );
                     onNavigate?.(
                       "settings"
-                    )
-                  }
+                    );
+                  }}
                   aria-label="Налаштування"
                 >
                   <YatutIcon
@@ -2335,21 +2347,99 @@ export default function Profile({
                   />
                 </button>
 
-                <button
-                  className="profile-v3-mobile-action"
-                  type="button"
-                  aria-label="Більше про профіль"
-                  onClick={() =>
-                    setActiveTab(
-                      "about"
-                    )
-                  }
+                <div
+                  className={`profile-v3-mobile-more-wrap ${
+                    mobileMoreOpen
+                      ? "is-open"
+                      : ""
+                  }`.trim()}
                 >
-                  <YatutIcon
-                    name="more"
-                    size={18}
-                  />
-                </button>
+                  <button
+                    className="profile-v3-mobile-action profile-v3-mobile-more-trigger"
+                    type="button"
+                    aria-label="Ще"
+                    aria-haspopup="menu"
+                    aria-expanded={
+                      mobileMoreOpen
+                    }
+                    onClick={() =>
+                      setMobileMoreOpen(
+                        (
+                          current
+                        ) =>
+                          !current
+                      )
+                    }
+                  >
+                    <span className="profile-v3-mobile-more-icons">
+                      <YatutIcon
+                        name="more"
+                        size={18}
+                      />
+                      <YatutIcon
+                        name="chevronDown"
+                        size={11}
+                      />
+                    </span>
+                  </button>
+
+                  <AnimatePresence>
+                    {mobileMoreOpen && (
+                      <motion.div
+                        className="profile-v3-mobile-more-menu"
+                        role="menu"
+                        initial={{
+                          opacity: 0,
+                          y: 6,
+                          scale: 0.96,
+                        }}
+                        animate={{
+                          opacity: 1,
+                          y: 0,
+                          scale: 1,
+                        }}
+                        exit={{
+                          opacity: 0,
+                          y: 4,
+                          scale: 0.97,
+                        }}
+                        transition={{
+                          duration: 0.15,
+                        }}
+                      >
+                        <button
+                          type="button"
+                          role="menuitem"
+                          onClick={() => {
+                            setActiveTab(
+                              "about"
+                            );
+                            setMobileMoreOpen(
+                              false
+                            );
+                          }}
+                        >
+                          Про мене
+                        </button>
+
+                        <button
+                          type="button"
+                          role="menuitem"
+                          onClick={() => {
+                            setActiveTab(
+                              "achievements"
+                            );
+                            setMobileMoreOpen(
+                              false
+                            );
+                          }}
+                        >
+                          Досягнення
+                        </button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
               </div>
             </div>
 
