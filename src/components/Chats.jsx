@@ -390,6 +390,81 @@ function formatChatListTime(
   );
 }
 
+function messageDayKey(value) {
+  const date = new Date(
+    Number(value || 0)
+  );
+
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
+    return "";
+  }
+
+  return [
+    date.getFullYear(),
+    String(
+      date.getMonth() + 1
+    ).padStart(2, "0"),
+    String(
+      date.getDate()
+    ).padStart(2, "0"),
+  ].join("-");
+}
+
+function formatMessageDay(value) {
+  const date = new Date(
+    Number(value || 0)
+  );
+
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
+    return "";
+  }
+
+  const today =
+    new Date();
+
+  const yesterday =
+    new Date();
+
+  yesterday.setDate(
+    today.getDate() - 1
+  );
+
+  if (
+    date.toDateString() ===
+    today.toDateString()
+  ) {
+    return "Сьогодні";
+  }
+
+  if (
+    date.toDateString() ===
+    yesterday.toDateString()
+  ) {
+    return "Вчора";
+  }
+
+  return date.toLocaleDateString(
+    "uk-UA",
+    {
+      day: "numeric",
+      month: "long",
+      year:
+        date.getFullYear() ===
+        today.getFullYear()
+          ? undefined
+          : "numeric",
+    }
+  );
+}
+
 function formatDuration(
   value = 0
 ) {
@@ -9185,19 +9260,40 @@ function Chats({
                 className="chat-messages"
               >
 
-                <div className="chat-day">
-                  Сьогодні
-                </div>
-
                 <AnimatePresence
                   initial={false}
                 >
                 {messages.map(
-                  (message) => (
-                    <MessageBubble
+                  (message, index) => {
+                    const previous =
+                      index > 0
+                        ? messages[index - 1]
+                        : null;
+
+                    const showDay =
+                      !previous ||
+                      messageDayKey(
+                        previous.createdAt
+                      ) !==
+                        messageDayKey(
+                          message.createdAt
+                        );
+
+                    return (
+                    <Fragment
                       key={
                         message.id
                       }
+                    >
+                      {showDay && (
+                        <div className="chat-day">
+                          {formatMessageDay(
+                            message.createdAt
+                          )}
+                        </div>
+                      )}
+
+                    <MessageBubble
                       message={
                         message
                       }
@@ -9262,7 +9358,9 @@ function Chats({
                         )
                       }
                     />
-                  )
+                    </Fragment>
+                    );
+                  }
                 )}
                 </AnimatePresence>
 
@@ -9727,12 +9825,23 @@ function Chats({
                           80
                         );
                       }}
-                      onChange={(event) =>
+                      onChange={(event) => {
                         setDraft(
-                          event.target
-                            .value
-                        )
-                      }
+                          event.target.value
+                        );
+
+                        const textarea =
+                          event.currentTarget;
+
+                        textarea.style.height =
+                          "auto";
+
+                        textarea.style.height =
+                          `${Math.min(
+                            textarea.scrollHeight,
+                            132
+                          )}px`;
+                      }}
                       placeholder={
                         editing
                           ? "Редагувати повідомлення..."
