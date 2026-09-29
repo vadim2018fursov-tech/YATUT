@@ -1049,3 +1049,72 @@ html.yatut-native
     max-width: 100% !important;
   }
 }
+
+
+/* ---------------------------------------------------------
+   Mobile bottom nav — exact five-column optical alignment
+   Active state = icon + label only, never a tile/circle.
+--------------------------------------------------------- */
+@media (max-width: 767px) {
+  .mobile-nav {
+    display: grid !important;
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    align-items: center !important;
+    justify-items: stretch !important;
+    column-gap: 0 !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    box-sizing: border-box !important;
+  }
+
+  .mobile-nav > button,
+  .mobile-nav-item {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    transform: none !important;
+    justify-self: stretch !important;
+    align-self: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  .mobile-nav > button::before,
+  .mobile-nav > button::after,
+  .mobile-nav-item::before,
+  .mobile-nav-item::after {
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .mobile-nav > button.active,
+  .mobile-nav-item.active,
+  .mobile-nav > button[aria-current="page"] {
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
+  }
+
+  .mobile-nav > button > span:not(.mobile-profile-avatar),
+  .mobile-nav-item > span:not(.mobile-profile-avatar),
+  .mobile-nav-icon {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    transform: none !important;
+  }
+
+  .mobile-nav-label {
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    text-align: center !important;
+    transform: none !important;
+  }
+}
