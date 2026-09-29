@@ -3594,16 +3594,7 @@ function Chats({
               )
             );
 
-            stored =
-              stored.filter(
-                (
-                  chat
-                ) =>
-                  !isLegacyDemoChat(
-                    chat
-                  ) &&
-                  chat?.backend
-              );
+            stored = [];
           }
 
           stored =
