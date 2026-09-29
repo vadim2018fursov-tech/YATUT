@@ -5094,6 +5094,15 @@ function Chats({
         "textarea"
       );
 
+    const surface =
+      composer?.querySelector(
+        ".chat-input-surface"
+      );
+
+    surface?.classList.remove(
+      "is-multiline"
+    );
+
     composer?.style.setProperty(
       "--chat-input-height",
       "46px"
@@ -9179,8 +9188,21 @@ function Chats({
                         false
                       )
                     }
+                    aria-label="Назад"
                   >
-                    ‹
+                    <svg
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M15 18 9 12l6-6"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.3"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
                   </button>
 
                   <button
@@ -10034,6 +10056,11 @@ function Chats({
                             ".chat-composer"
                           );
 
+                        const surface =
+                          textarea.closest(
+                            ".chat-input-surface"
+                          );
+
                         textarea.style.height =
                           "46px";
 
@@ -10064,6 +10091,11 @@ function Chats({
                           132
                             ? "auto"
                             : "hidden";
+
+                        surface?.classList.toggle(
+                          "is-multiline",
+                          nextHeight > 52
+                        );
                       }}
                       placeholder={
                         editing
