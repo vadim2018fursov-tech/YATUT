@@ -1,0 +1,405 @@
+/* =========================================================
+   YATUT CHAT COMPOSER FIX V3
+   Locks mobile composer geometry and compensates the iOS
+   VisualViewport accessory-bar gap. Bottom navigation untouched.
+========================================================= */
+
+@media (max-width: 767px) {
+  .messenger.mobile-dialog-open {
+    --chat-control-size: 48px;
+  }
+
+  html.yatut-chat-input-focused
+  .messenger.mobile-dialog-open {
+    height:
+      calc(
+        var(
+          --yatut-visual-viewport-height,
+          100dvh
+        ) +
+        var(
+          --yatut-chat-viewport-gap,
+          0px
+        )
+      ) !important;
+
+    max-height:
+      calc(
+        var(
+          --yatut-visual-viewport-height,
+          100dvh
+        ) +
+        var(
+          --yatut-chat-viewport-gap,
+          0px
+        )
+      ) !important;
+  }
+
+  html.yatut-chat-input-focused
+  .messenger.mobile-dialog-open
+  .chat-dialog {
+    height:
+      100% !important;
+
+    max-height:
+      100% !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode) {
+    display:
+      grid !important;
+
+    grid-template-columns:
+      var(
+        --chat-control-size
+      )
+      minmax(
+        0,
+        1fr
+      )
+      var(
+        --chat-control-size
+      )
+      var(
+        --chat-control-size
+      )
+      var(
+        --chat-control-size
+      ) !important;
+
+    grid-template-rows:
+      var(
+        --chat-control-size
+      ) !important;
+
+    align-items:
+      center !important;
+
+    justify-items:
+      stretch !important;
+
+    column-gap:
+      7px !important;
+
+    row-gap:
+      0 !important;
+
+    min-height:
+      calc(
+        var(
+          --chat-control-size
+        ) +
+        18px
+      ) !important;
+
+    padding:
+      9px
+      max(
+        8px,
+        var(
+          --yatut-safe-right,
+          env(
+            safe-area-inset-right,
+            0px
+          )
+        )
+      )
+      calc(
+        9px +
+        var(
+          --yatut-safe-bottom,
+          env(
+            safe-area-inset-bottom,
+            0px
+          )
+        )
+      )
+      max(
+        8px,
+        var(
+          --yatut-safe-left,
+          env(
+            safe-area-inset-left,
+            0px
+          )
+        )
+      ) !important;
+
+    box-sizing:
+      border-box !important;
+  }
+
+  html.yatut-chat-input-focused
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode),
+  html.yatut-keyboard-open
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode) {
+    padding-bottom:
+      9px !important;
+
+    margin-bottom:
+      0 !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode)
+  > input[hidden] {
+    display:
+      none !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode)
+  > .chat-plus-wrap {
+    grid-column:
+      1 !important;
+
+    grid-row:
+      1 !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode)
+  > textarea {
+    grid-column:
+      2 !important;
+
+    grid-row:
+      1 !important;
+
+    width:
+      100% !important;
+
+    min-width:
+      0 !important;
+
+    height:
+      var(
+        --chat-control-size
+      ) !important;
+
+    min-height:
+      var(
+        --chat-control-size
+      ) !important;
+
+    max-height:
+      var(
+        --chat-control-size
+      ) !important;
+
+    margin:
+      0 !important;
+
+    align-self:
+      center !important;
+
+    resize:
+      none !important;
+
+    overflow-y:
+      auto !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode)
+  > .yatut-emoji-wrapper {
+    grid-column:
+      3 !important;
+
+    grid-row:
+      1 !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode)
+  > .chat-voice-button {
+    grid-column:
+      4 !important;
+
+    grid-row:
+      1 !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode)
+  > .chat-send {
+    grid-column:
+      5 !important;
+
+    grid-row:
+      1 !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode)
+  :is(
+    .chat-plus-wrap,
+    .yatut-emoji-wrapper
+  ) {
+    position:
+      static !important;
+
+    inset:
+      auto !important;
+
+    width:
+      var(
+        --chat-control-size
+      ) !important;
+
+    height:
+      var(
+        --chat-control-size
+      ) !important;
+
+    min-width:
+      var(
+        --chat-control-size
+      ) !important;
+
+    min-height:
+      var(
+        --chat-control-size
+      ) !important;
+
+    max-width:
+      var(
+        --chat-control-size
+      ) !important;
+
+    max-height:
+      var(
+        --chat-control-size
+      ) !important;
+
+    margin:
+      0 !important;
+
+    padding:
+      0 !important;
+
+    align-self:
+      center !important;
+
+    justify-self:
+      center !important;
+
+    transform:
+      none !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode)
+  :is(
+    .chat-plus,
+    .chat-emoji,
+    .chat-voice-button,
+    .chat-send
+  ) {
+    position:
+      static !important;
+
+    inset:
+      auto !important;
+
+    width:
+      var(
+        --chat-control-size
+      ) !important;
+
+    height:
+      var(
+        --chat-control-size
+      ) !important;
+
+    min-width:
+      var(
+        --chat-control-size
+      ) !important;
+
+    min-height:
+      var(
+        --chat-control-size
+      ) !important;
+
+    max-width:
+      var(
+        --chat-control-size
+      ) !important;
+
+    max-height:
+      var(
+        --chat-control-size
+      ) !important;
+
+    margin:
+      0 !important;
+
+    padding:
+      0 !important;
+
+    align-self:
+      center !important;
+
+    justify-self:
+      center !important;
+
+    transform:
+      none !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode)
+  .yatut-emoji-wrapper
+  .chat-emoji {
+    top:
+      auto !important;
+
+    right:
+      auto !important;
+
+    bottom:
+      auto !important;
+
+    left:
+      auto !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-messages {
+    min-height:
+      0 !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .messenger.mobile-dialog-open {
+    --chat-control-size: 44px;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode) {
+    column-gap:
+      5px !important;
+
+    padding-right:
+      7px !important;
+
+    padding-left:
+      7px !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode)
+  > textarea {
+    padding-right:
+      10px !important;
+
+    padding-left:
+      10px !important;
+  }
+}
