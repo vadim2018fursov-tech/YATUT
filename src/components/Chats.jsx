@@ -3673,9 +3673,18 @@ function Chats({
         focused.blur();
       }
 
-      window.scrollTo(
-        0,
-        0
+      window.setTimeout(
+        () => {
+          window.scrollTo(
+            0,
+            0
+          );
+
+          window.dispatchEvent(
+            new Event("resize")
+          );
+        },
+        80
       );
     };
   }, [
@@ -5078,15 +5087,24 @@ function Chats({
     let timer = null;
 
     const scrollToLatest = () => {
+      const marker =
+        bottomRef.current;
+
       const container =
         messagesRef.current;
 
-      if (!container) {
-        return;
+      if (marker) {
+        marker.scrollIntoView({
+          block: "end",
+          inline: "nearest",
+          behavior: "auto",
+        });
       }
 
-      container.scrollTop =
-        container.scrollHeight;
+      if (container) {
+        container.scrollTop =
+          container.scrollHeight;
+      }
     };
 
     frameOne =
@@ -5102,7 +5120,13 @@ function Chats({
     timer =
       window.setTimeout(
         scrollToLatest,
-        180
+        420
+      );
+
+    const mediaTimer =
+      window.setTimeout(
+        scrollToLatest,
+        900
       );
 
     return () => {
@@ -5121,6 +5145,12 @@ function Chats({
       if (timer) {
         window.clearTimeout(
           timer
+        );
+      }
+
+      if (mediaTimer) {
+        window.clearTimeout(
+          mediaTimer
         );
       }
     };
@@ -9950,17 +9980,24 @@ function Chats({
                         const textarea =
                           event.currentTarget;
 
-                        textarea.style.height =
-                          "auto";
+                        textarea.style.setProperty(
+                          "--chat-input-height",
+                          "46px"
+                        );
 
-                        textarea.style.height =
-                          `${Math.min(
+                        const nextHeight =
+                          Math.min(
                             Math.max(
                               textarea.scrollHeight,
                               46
                             ),
                             132
-                          )}px`;
+                          );
+
+                        textarea.style.setProperty(
+                          "--chat-input-height",
+                          `${nextHeight}px`
+                        );
 
                         textarea.style.overflowY =
                           textarea.scrollHeight >
