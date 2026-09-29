@@ -1949,3 +1949,79 @@ body.yatut-profile-editor-open {
     max-height: 56px !important;
   }
 }
+
+
+/* =========================================================
+   GLOBAL MOBILE NAV — FINAL ISOLATION
+   ID specificity intentionally beats route/page legacy selectors.
+========================================================= */
+@media (max-width: 767px) {
+  html body #yatut-global-mobile-nav.mobile-nav {
+    position: fixed !important;
+    inset: auto 22px max(8px, env(safe-area-inset-bottom)) 22px !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: calc(100vw - 44px) !important;
+    height: 58px !important;
+    min-height: 58px !important;
+    max-height: 58px !important;
+    margin: 0 !important;
+    padding: 3px 4px !important;
+    box-sizing: border-box !important;
+
+    display: grid !important;
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    align-items: center !important;
+    justify-items: stretch !important;
+    gap: 2px !important;
+
+    transform: none !important;
+    translate: none !important;
+    scale: 1 !important;
+    animation: none !important;
+    transition-property: none !important;
+    will-change: auto !important;
+    contain: none !important;
+
+    z-index: 50000 !important;
+  }
+
+  html body #yatut-global-mobile-nav.mobile-nav > button.mobile-nav-item,
+  html body #yatut-global-mobile-nav.mobile-nav > button.mobile-nav-item:hover,
+  html body #yatut-global-mobile-nav.mobile-nav > button.mobile-nav-item:active,
+  html body #yatut-global-mobile-nav.mobile-nav > button.mobile-nav-item:focus {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: 52px !important;
+    min-height: 52px !important;
+    max-height: 52px !important;
+    margin: 0 !important;
+    padding: 2px 1px !important;
+    justify-self: stretch !important;
+    align-self: center !important;
+    transform: none !important;
+    translate: none !important;
+    scale: 1 !important;
+    animation: none !important;
+    transition-property: color, opacity !important;
+  }
+}
+
+@media (max-width: 390px) {
+  html body #yatut-global-mobile-nav.mobile-nav {
+    inset: auto 16px max(8px, env(safe-area-inset-bottom)) 16px !important;
+    max-width: calc(100vw - 32px) !important;
+    height: 56px !important;
+    min-height: 56px !important;
+    max-height: 56px !important;
+  }
+
+  html body #yatut-global-mobile-nav.mobile-nav > button.mobile-nav-item {
+    height: 50px !important;
+    min-height: 50px !important;
+    max-height: 50px !important;
+  }
+}
