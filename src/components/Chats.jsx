@@ -9714,6 +9714,8 @@ function Chats({
                     }
                   />
 
+                  <div className="chat-input-surface">
+
                   <div
                     ref={
                       attachRef
@@ -10217,6 +10219,8 @@ function Chats({
                         ? "✓"
                         : "➤"}
                   </button>
+
+                  </div>
 
                 </footer>
               )}
