@@ -1577,3 +1577,164 @@ body.yatut-dark-mode
     display: none !important;
   }
 }
+
+
+/* =========================================================
+   CHAT COMPOSER V12 — STRUCTURAL FINAL
+========================================================= */
+@media (max-width: 767px) {
+  .messenger.mobile-dialog-open.dialog-positioning
+  .chat-dialog {
+    visibility: hidden !important;
+  }
+
+  html.yatut-chat-open
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode) {
+    display: grid !important;
+    grid-template-columns:
+      46px
+      minmax(0, 1fr)
+      46px
+      46px !important;
+    grid-template-rows:
+      minmax(
+        46px,
+        var(--chat-input-height, 46px)
+      ) !important;
+    align-items: end !important;
+    column-gap: 7px !important;
+
+    height:
+      calc(
+        var(--chat-input-height, 46px) +
+        14px
+      ) !important;
+    min-height: 60px !important;
+    max-height: 146px !important;
+    box-sizing: border-box !important;
+  }
+
+  html.yatut-chat-open
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode)
+  > .chat-input-unified {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    align-self: stretch !important;
+
+    display: block !important;
+    position: relative !important;
+
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 46px !important;
+    max-height: 132px !important;
+
+    border: 0 !important;
+    border-left: 0 !important;
+    border-right: 0 !important;
+    outline: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+  }
+
+  html.yatut-chat-open
+  .messenger.mobile-dialog-open
+  .chat-input-unified
+  > textarea {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    padding: 10px 42px 10px 10px !important;
+    border: 0 !important;
+    outline: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  html.yatut-chat-open
+  .messenger.mobile-dialog-open
+  .chat-input-unified
+  > .chat-input-emoji {
+    position: absolute !important;
+    right: 4px !important;
+    bottom: 6px !important;
+    top: auto !important;
+
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    min-height: 34px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-left: 0 !important;
+    border-right: 0 !important;
+    outline: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  html.yatut-chat-open
+  .messenger.mobile-dialog-open
+  .chat-input-unified
+  > .chat-input-emoji::before,
+  html.yatut-chat-open
+  .messenger.mobile-dialog-open
+  .chat-input-unified
+  > .chat-input-emoji::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  html.yatut-chat-open
+  .messenger.mobile-dialog-open
+  .chat-input-unified
+  .chat-emoji {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    min-height: 34px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    outline: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  html.yatut-chat-open
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode)
+  > .chat-attach-button {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    align-self: end !important;
+  }
+
+  html.yatut-chat-open
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode)
+  > .chat-voice-button {
+    grid-column: 3 !important;
+    grid-row: 1 !important;
+    align-self: end !important;
+  }
+
+  html.yatut-chat-open
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode)
+  > .chat-send {
+    grid-column: 4 !important;
+    grid-row: 1 !important;
+    align-self: end !important;
+  }
+}
