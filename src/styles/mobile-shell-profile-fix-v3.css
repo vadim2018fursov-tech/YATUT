@@ -1658,3 +1658,178 @@ body.yatut-profile-editor-open {
       32px !important;
   }
 }
+
+
+/* =========================================================
+   MOBILE NAV V6
+   Thinner floating navigation with uniform profile icon.
+========================================================= */
+
+@media (max-width: 767px) {
+  html body
+  .mobile-nav {
+    right: 20px !important;
+    left: 20px !important;
+
+    width: auto !important;
+    max-width:
+      calc(
+        100% -
+        40px
+      ) !important;
+
+    height: 68px !important;
+    min-height: 68px !important;
+    max-height: 68px !important;
+
+    padding: 4px !important;
+
+    gap: 2px !important;
+
+    border-radius: 21px !important;
+
+    box-shadow:
+      0 12px 32px
+        rgba(31,35,54,.11),
+      0 2px 8px
+        rgba(31,35,54,.035) !important;
+  }
+
+  html body
+  .mobile-nav
+  > .mobile-nav-item {
+    height: 60px !important;
+    min-height: 60px !important;
+    max-height: 60px !important;
+
+    padding:
+      4px
+      1px
+      3px !important;
+
+    gap: 2px !important;
+
+    border-radius: 16px !important;
+  }
+
+  html body
+  .mobile-nav
+  > .mobile-nav-item
+  > .mobile-nav-active-glow {
+    inset:
+      1px
+      2px !important;
+
+    border-radius: 16px !important;
+  }
+
+  html body
+  .mobile-nav
+  .mobile-nav-icon {
+    width: 30px !important;
+    height: 30px !important;
+
+    min-width: 30px !important;
+    min-height: 30px !important;
+
+    max-width: 30px !important;
+    max-height: 30px !important;
+
+    border-radius: 10px !important;
+  }
+
+  html body
+  .mobile-nav
+  .mobile-nav-icon
+  .yatut-icon {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  html body
+  .mobile-nav
+  > .mobile-nav-item:nth-child(3)
+  .mobile-nav-icon
+  .yatut-icon {
+    width: 21px !important;
+    height: 21px !important;
+  }
+
+  html body
+  .mobile-nav
+  .mobile-nav-item
+  small {
+    font-size:
+      clamp(
+        9px,
+        2.45vw,
+        10.5px
+      ) !important;
+
+    line-height: 1 !important;
+  }
+
+  /* Old avatar-only mobile-nav rules are neutralized because
+     the profile destination now uses the same icon system. */
+  html body
+  .mobile-nav
+  .mobile-profile-avatar {
+    display: none !important;
+  }
+}
+
+@media (max-width: 390px) {
+  html body
+  .mobile-nav {
+    right: 14px !important;
+    left: 14px !important;
+
+    max-width:
+      calc(
+        100% -
+        28px
+      ) !important;
+
+    height: 66px !important;
+    min-height: 66px !important;
+    max-height: 66px !important;
+
+    border-radius: 20px !important;
+  }
+
+  html body
+  .mobile-nav
+  > .mobile-nav-item {
+    height: 58px !important;
+    min-height: 58px !important;
+    max-height: 58px !important;
+  }
+
+  html body
+  .mobile-nav
+  .mobile-nav-icon {
+    width: 28px !important;
+    height: 28px !important;
+
+    min-width: 28px !important;
+    min-height: 28px !important;
+
+    max-width: 28px !important;
+    max-height: 28px !important;
+  }
+
+  html body
+  .mobile-nav
+  .mobile-nav-icon
+  .yatut-icon {
+    width: 19px !important;
+    height: 19px !important;
+  }
+
+  html body
+  .mobile-nav
+  .mobile-nav-item
+  small {
+    font-size: 9px !important;
+  }
+}
