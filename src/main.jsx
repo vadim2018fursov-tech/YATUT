@@ -14,6 +14,7 @@ import "./styles/chat-polish-v2.css";
 import "./styles/chat-composer-fix-v3.css";
 import "./styles/chat-composer-match-v4.css";
 import "./styles/chat-message-actions-v1.css";
+import "./styles/chat-search-forward-v1.css";
 import {
   initNativePlatform,
 } from "./services/nativePlatformService.js";
