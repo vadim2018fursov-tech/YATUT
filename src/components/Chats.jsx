@@ -212,45 +212,40 @@ const STORY_SETS = {
    DEMO
 ========================================================= */
 
-const DEMO_CHATS = [
-  {
-    id: "chat-maria",
-    type: "direct",
-    personId: "maria",
-    updatedAt:
-      Date.now() -
-      1000,
-    unread: 2,
-    lastMessage:
-      "Привіт 👋",
-  },
+const LEGACY_DEMO_CHAT_IDS =
+  new Set([
+    "chat-maria",
+    "chat-oleksandr",
+    "chat-sofia",
+  ]);
 
-  {
-    id:
-      "chat-oleksandr",
-    type: "direct",
-    personId:
-      "oleksandr",
-    updatedAt:
-      Date.now() -
-      400000,
-    unread: 0,
-    lastMessage:
-      "До зустрічі!",
-  },
+const LEGACY_DEMO_PERSON_IDS =
+  new Set([
+    "maria",
+    "oleksandr",
+    "anastasia",
+    "max",
+    "sofia",
+    "vlad",
+    "yulia",
+  ]);
 
-  {
-    id: "chat-sofia",
-    type: "direct",
-    personId: "sofia",
-    updatedAt:
-      Date.now() -
-      800000,
-    unread: 0,
-    lastMessage:
-      "Дякую ✨",
-  },
-];
+function isLegacyDemoChat(
+  chat
+) {
+  if (!chat) {
+    return false;
+  }
+
+  return (
+    LEGACY_DEMO_CHAT_IDS.has(
+      chat.id
+    ) ||
+    LEGACY_DEMO_PERSON_IDS.has(
+      chat.personId
+    )
+  );
+}
 
 const EMOJIS = [
   "😀",
@@ -3512,14 +3507,7 @@ function Chats({
               );
 
           const demoIds =
-            new Set(
-              DEMO_CHATS.map(
-                (
-                  chat
-                ) =>
-                  chat.id
-              )
-            );
+            LEGACY_DEMO_CHAT_IDS;
 
           /*
             Никогда не смешиваем гостевые demo-чаты
@@ -3537,12 +3525,14 @@ function Chats({
             );
 
             await Promise.all(
-              DEMO_CHATS.map(
+              Array.from(
+                LEGACY_DEMO_CHAT_IDS
+              ).map(
                 (
-                  chat
+                  chatId
                 ) =>
                   deleteChat(
-                    chat.id
+                    chatId
                   ).catch(
                     () => {}
                   )
@@ -3557,6 +3547,9 @@ function Chats({
                   chat?.backend &&
                   !demoIds.has(
                     chat.id
+                  ) &&
+                  !isLegacyDemoChat(
+                    chat
                   )
               );
 
@@ -3582,34 +3575,35 @@ function Chats({
               )
             );
           } else {
+            /*
+              Production never injects demo chats.
+              Also purge stale demo rows left by older builds.
+            */
+            await Promise.all(
+              Array.from(
+                LEGACY_DEMO_CHAT_IDS
+              ).map(
+                (
+                  chatId
+                ) =>
+                  deleteChat(
+                    chatId
+                  ).catch(
+                    () => {}
+                  )
+              )
+            );
+
             stored =
               stored.filter(
                 (
                   chat
                 ) =>
-                  demoIds.has(
-                    chat.id
+                  !isLegacyDemoChat(
+                    chat
                   ) &&
-                  !chat?.backend
+                  chat?.backend
               );
-
-            if (
-              stored.length ===
-              0
-            ) {
-              for (
-                const chat of
-                DEMO_CHATS
-              ) {
-                await saveChat(
-                  chat
-                );
-              }
-
-              stored = [
-                ...DEMO_CHATS,
-              ];
-            }
           }
 
           stored =
@@ -3747,7 +3741,8 @@ function Chats({
                 );
               }
             } else if (
-              !chat
+              !chat &&
+              !authSession?.user?.id
             ) {
               chat = {
                 id:
@@ -4776,19 +4771,7 @@ function Chats({
           );
         }
 
-        return Object.values(
-          PEOPLE
-        )
-          .filter(
-            (person) =>
-              person.id !==
-                "me" &&
-              person.online
-          )
-          .slice(
-            0,
-            7
-          );
+        return [];
       },
       [
         authSession?.user?.id,
@@ -4805,14 +4788,7 @@ function Chats({
           return [];
         }
 
-        return Object.values(
-          PEOPLE
-        ).filter(
-          (person) =>
-            STORY_SETS[
-              person.id
-            ]?.length
-        );
+        return [];
       },
       [
         authSession?.user?.id,
@@ -7458,15 +7434,7 @@ function Chats({
                   {(
                     authSession?.user?.id
                       ? backendPeople
-                      : Object.values(
-                          PEOPLE
-                        ).filter(
-                          (
-                            person
-                          ) =>
-                            person.id !==
-                            "me"
-                        )
+                      : []
                   ).map(
                     (
                       person
@@ -9284,13 +9252,7 @@ function Chats({
           people={
             authSession?.user?.id
               ? backendPeople
-              : Object.values(
-                  PEOPLE
-                ).filter(
-                  (person) =>
-                    person.id !==
-                    "me"
-                )
+              : []
           }
           onClose={() =>
             setGroupOpen(false)
