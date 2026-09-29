@@ -414,6 +414,71 @@ function formatDuration(
   )}`;
 }
 
+function getVoiceRecorderOptions() {
+  if (
+    typeof MediaRecorder ===
+    "undefined"
+  ) {
+    return undefined;
+  }
+
+  const formats = [
+    "audio/mp4;codecs=mp4a.40.2",
+    "audio/mp4",
+    "audio/webm;codecs=opus",
+    "audio/webm",
+    "audio/ogg;codecs=opus",
+  ];
+
+  const supported =
+    formats.find(
+      (type) =>
+        MediaRecorder.isTypeSupported?.(
+          type
+        )
+    );
+
+  return supported
+    ? {
+        mimeType:
+          supported,
+      }
+    : undefined;
+}
+
+function voiceFileExtension(
+  mimeType = ""
+) {
+  const mime =
+    String(
+      mimeType
+    ).toLowerCase();
+
+  if (
+    mime.includes(
+      "mp4"
+    ) ||
+    mime.includes(
+      "m4a"
+    ) ||
+    mime.includes(
+      "aac"
+    )
+  ) {
+    return "m4a";
+  }
+
+  if (
+    mime.includes(
+      "ogg"
+    )
+  ) {
+    return "ogg";
+  }
+
+  return "webm";
+}
+
 function cleanMessage(
   message
 ) {
@@ -1049,30 +1114,91 @@ function VoiceRecorder({
     setError,
   ] = useState("");
 
+  const [
+    ready,
+    setReady,
+  ] = useState(false);
+
+  const stopTracks =
+    () => {
+      clearInterval(
+        timerRef.current
+      );
+
+      timerRef.current =
+        null;
+
+      streamRef.current
+        ?.getTracks()
+        .forEach(
+          (track) =>
+            track.stop()
+        );
+
+      streamRef.current =
+        null;
+    };
+
   useEffect(() => {
     let mounted = true;
 
     const start =
       async () => {
+        if (
+          !navigator
+            .mediaDevices
+            ?.getUserMedia ||
+          typeof MediaRecorder ===
+            "undefined"
+        ) {
+          setError(
+            "Запис голосу не підтримується на цьому пристрої."
+          );
+
+          return;
+        }
+
         try {
           const stream =
             await navigator.mediaDevices.getUserMedia(
               {
-                audio: true,
+                audio: {
+                  echoCancellation:
+                    true,
+                  noiseSuppression:
+                    true,
+                  autoGainControl:
+                    true,
+                },
               }
             );
 
           if (!mounted) {
+            stream
+              .getTracks()
+              .forEach(
+                (track) =>
+                  track.stop()
+              );
+
             return;
           }
 
           streamRef.current =
             stream;
 
+          const options =
+            getVoiceRecorderOptions();
+
           const recorder =
-            new MediaRecorder(
-              stream
-            );
+            options
+              ? new MediaRecorder(
+                  stream,
+                  options
+                )
+              : new MediaRecorder(
+                  stream
+                );
 
           recorderRef.current =
             recorder;
@@ -1083,8 +1209,9 @@ function VoiceRecorder({
           recorder.ondataavailable =
             (event) => {
               if (
+                event.data &&
                 event.data.size >
-                0
+                  0
               ) {
                 chunksRef.current.push(
                   event.data
@@ -1092,10 +1219,27 @@ function VoiceRecorder({
               }
             };
 
-          recorder.start();
+          recorder.onerror =
+            () => {
+              if (
+                mounted
+              ) {
+                setError(
+                  "Не вдалося записати голосове."
+                );
+              }
+            };
+
+          recorder.start(
+            250
+          );
+
+          setReady(
+            true
+          );
 
           timerRef.current =
-            setInterval(
+            window.setInterval(
               () =>
                 setDuration(
                   (value) =>
@@ -1103,9 +1247,19 @@ function VoiceRecorder({
                 ),
               1000
             );
-        } catch {
+        } catch (
+          recordError
+        ) {
+          console.warn(
+            "VOICE RECORDER ERROR:",
+            recordError
+          );
+
           setError(
-            "Немає доступу до мікрофона."
+            recordError?.name ===
+              "NotAllowedError"
+              ? "Дозвольте ЯТУТ доступ до мікрофона."
+              : "Не вдалося увімкнути мікрофон."
           );
         }
       };
@@ -1119,88 +1273,116 @@ function VoiceRecorder({
         timerRef.current
       );
 
-      streamRef.current
-        ?.getTracks()
-        .forEach(
-          (track) =>
-            track.stop()
-        );
+      const recorder =
+        recorderRef.current;
+
+      if (
+        recorder &&
+        recorder.state !==
+          "inactive"
+      ) {
+        recorder.onstop =
+          null;
+
+        try {
+          recorder.stop();
+        } catch {
+          // Recorder is already stopping.
+        }
+      }
+
+      stopTracks();
     };
   }, []);
 
-  const stopTracks =
+  const cancel =
     () => {
-      clearInterval(
-        timerRef.current
-      );
+      const recorder =
+        recorderRef.current;
 
-      streamRef.current
-        ?.getTracks()
-        .forEach(
-          (track) =>
-            track.stop()
-        );
+      if (
+        recorder &&
+        recorder.state !==
+          "inactive"
+      ) {
+        recorder.onstop =
+          () => {
+            stopTracks();
+            onCancel();
+          };
+
+        recorder.stop();
+      } else {
+        stopTracks();
+        onCancel();
+      }
     };
 
-  const cancel = () => {
-    const recorder =
-      recorderRef.current;
+  const send =
+    () => {
+      const recorder =
+        recorderRef.current;
 
-    if (
-      recorder &&
-      recorder.state !==
-        "inactive"
-    ) {
+      if (
+        !ready ||
+        !recorder ||
+        recorder.state ===
+          "inactive"
+      ) {
+        return;
+      }
+
+      setReady(
+        false
+      );
+
       recorder.onstop =
         () => {
+          const mimeType =
+            recorder.mimeType ||
+            chunksRef.current[
+              0
+            ]?.type ||
+            "audio/webm";
+
+          const blob =
+            new Blob(
+              chunksRef.current,
+              {
+                type:
+                  mimeType,
+              }
+            );
+
           stopTracks();
-          onCancel();
+
+          if (
+            !blob.size
+          ) {
+            setError(
+              "Голосове порожнє. Спробуйте ще раз."
+            );
+
+            return;
+          }
+
+          onSend(
+            blob,
+            Math.max(
+              duration,
+              1
+            )
+          );
         };
 
+      try {
+        recorder.requestData?.();
+      } catch {
+        // Some Safari versions do not allow requestData while stopping.
+      }
+
       recorder.stop();
-    } else {
-      stopTracks();
-      onCancel();
-    }
-  };
-
-  const send = () => {
-    const recorder =
-      recorderRef.current;
-
-    if (
-      !recorder ||
-      recorder.state ===
-        "inactive"
-    ) {
-      return;
-    }
-
-    recorder.onstop =
-      () => {
-        const blob =
-          new Blob(
-            chunksRef.current,
-            {
-              type:
-                recorder.mimeType ||
-                "audio/webm",
-            }
-          );
-
-        stopTracks();
-
-        onSend(
-          blob,
-          Math.max(
-            duration,
-            1
-          )
-        );
-      };
-
-    recorder.stop();
-  };
+    };
 
   return (
     <div
@@ -1210,7 +1392,6 @@ function VoiceRecorder({
           : "is-recording"
       }`.trim()}
     >
-
       <button
         type="button"
         className="voice-cancel-button"
@@ -1226,14 +1407,21 @@ function VoiceRecorder({
       </button>
 
       <div className="voice-recording-status">
-
-        <span className="voice-live-dot active" />
+        <span
+          className={`voice-live-dot ${
+            ready
+              ? "active"
+              : ""
+          }`.trim()}
+        />
 
         <div>
           <strong>
             {error
-              ? "Мікрофон недоступний"
-              : "Записуємо"}
+              ? "Мікрофон"
+              : ready
+                ? "Записуємо"
+                : "Готуємо…"}
           </strong>
 
           <span>
@@ -1243,14 +1431,12 @@ function VoiceRecorder({
               )}
           </span>
         </div>
-
       </div>
 
       <div
         className="voice-wave"
         aria-hidden="true"
       >
-
         {Array.from({
           length: 18,
         }).map(
@@ -1260,22 +1446,26 @@ function VoiceRecorder({
                 index
               }
               style={{
-                "--voice-wave-i":
+                "--voice-i":
                   index,
               }}
             />
           )
         )}
-
       </div>
 
       <button
         type="button"
         className="voice-send-button"
         disabled={
-          Boolean(error)
+          Boolean(
+            error
+          ) ||
+          !ready
         }
-        onClick={send}
+        onClick={
+          send
+        }
         aria-label="Надіслати голосове"
       >
         <YatutIcon
@@ -1283,7 +1473,6 @@ function VoiceRecorder({
           size={18}
         />
       </button>
-
     </div>
   );
 }
@@ -1605,6 +1794,329 @@ function ForwardModal({
 
       </section>
 
+    </div>
+  );
+}
+
+function VoiceMessagePlayer({
+  src,
+  duration = 0,
+}) {
+  const audioRef =
+    useRef(null);
+
+  const [
+    playing,
+    setPlaying,
+  ] = useState(false);
+
+  const [
+    currentTime,
+    setCurrentTime,
+  ] = useState(0);
+
+  const [
+    mediaDuration,
+    setMediaDuration,
+  ] = useState(
+    Number(
+      duration ||
+      0
+    )
+  );
+
+  const [
+    playbackError,
+    setPlaybackError,
+  ] = useState(false);
+
+  useEffect(() => {
+    const audio =
+      audioRef.current;
+
+    setPlaying(
+      false
+    );
+
+    setCurrentTime(
+      0
+    );
+
+    setMediaDuration(
+      Number(
+        duration ||
+        0
+      )
+    );
+
+    setPlaybackError(
+      false
+    );
+
+    if (audio) {
+      audio.pause();
+      audio.load();
+    }
+  }, [
+    src,
+    duration,
+  ]);
+
+  const safeDuration =
+    Number.isFinite(
+      mediaDuration
+    ) &&
+    mediaDuration >
+      0
+      ? mediaDuration
+      : Math.max(
+          Number(
+            duration ||
+            0
+          ),
+          0
+        );
+
+  const togglePlayback =
+    async () => {
+      const audio =
+        audioRef.current;
+
+      if (!audio) {
+        return;
+      }
+
+      if (
+        !audio.paused
+      ) {
+        audio.pause();
+
+        return;
+      }
+
+      if (
+        audio.ended
+      ) {
+        audio.currentTime =
+          0;
+      }
+
+      try {
+        setPlaybackError(
+          false
+        );
+
+        await audio.play();
+      } catch (
+        firstError
+      ) {
+        try {
+          audio.load();
+          await audio.play();
+        } catch (
+          secondError
+        ) {
+          console.warn(
+            "VOICE PLAYBACK ERROR:",
+            secondError ||
+              firstError
+          );
+
+          setPlaybackError(
+            true
+          );
+        }
+      }
+    };
+
+  const seek =
+    (event) => {
+      const audio =
+        audioRef.current;
+
+      if (
+        !audio ||
+        !safeDuration
+      ) {
+        return;
+      }
+
+      const next =
+        Number(
+          event.target.value ||
+          0
+        );
+
+      audio.currentTime =
+        next;
+
+      setCurrentTime(
+        next
+      );
+    };
+
+  return (
+    <div
+      className={`voice-message ${
+        playing
+          ? "is-playing"
+          : ""
+      } ${
+        playbackError
+          ? "has-error"
+          : ""
+      }`.trim()}
+    >
+      <audio
+        ref={
+          audioRef
+        }
+        preload="metadata"
+        src={
+          src
+        }
+        onLoadedMetadata={(
+          event
+        ) => {
+          const next =
+            event.currentTarget
+              .duration;
+
+          if (
+            Number.isFinite(
+              next
+            ) &&
+            next >
+              0
+          ) {
+            setMediaDuration(
+              next
+            );
+          }
+        }}
+        onDurationChange={(
+          event
+        ) => {
+          const next =
+            event.currentTarget
+              .duration;
+
+          if (
+            Number.isFinite(
+              next
+            ) &&
+            next >
+              0
+          ) {
+            setMediaDuration(
+              next
+            );
+          }
+        }}
+        onTimeUpdate={(
+          event
+        ) =>
+          setCurrentTime(
+            event.currentTarget
+              .currentTime ||
+              0
+          )
+        }
+        onPlay={() =>
+          setPlaying(
+            true
+          )
+        }
+        onPause={() =>
+          setPlaying(
+            false
+          )
+        }
+        onEnded={() => {
+          setPlaying(
+            false
+          );
+
+          setCurrentTime(
+            0
+          );
+        }}
+        onError={() =>
+          setPlaybackError(
+            true
+          )
+        }
+      />
+
+      <button
+        type="button"
+        className="voice-message-play"
+        onClick={
+          togglePlayback
+        }
+        aria-label={
+          playing
+            ? "Пауза"
+            : "Відтворити голосове"
+        }
+      >
+        <span
+          aria-hidden="true"
+        >
+          {playing
+            ? "Ⅱ"
+            : "▶"}
+        </span>
+      </button>
+
+      <div className="voice-message-track">
+        <input
+          type="range"
+          min="0"
+          max={
+            Math.max(
+              safeDuration,
+              1
+            )
+          }
+          step="0.05"
+          value={
+            Math.min(
+              currentTime,
+              Math.max(
+                safeDuration,
+                1
+              )
+            )
+          }
+          onChange={
+            seek
+          }
+          aria-label="Позиція голосового повідомлення"
+        />
+
+        <div className="voice-message-meta">
+          <span>
+            {formatDuration(
+              Math.floor(
+                currentTime
+              )
+            )}
+          </span>
+
+          <span>
+            {playbackError
+              ? "Помилка відтворення"
+              : formatDuration(
+                  Math.ceil(
+                    safeDuration ||
+                    duration ||
+                    0
+                  )
+                )}
+          </span>
+        </div>
+      </div>
     </div>
   );
 }
@@ -2192,26 +2704,14 @@ function MessageBubble({
           {message.type ===
             "voice" &&
             message.fileUrl && (
-              <div className="voice-message">
-
-                <span>
-                  🎙
-                </span>
-
-                <audio
-                  controls
-                  src={
-                    message.fileUrl
-                  }
-                />
-
-                <small>
-                  {formatDuration(
-                    message.voiceDuration
-                  )}
-                </small>
-
-              </div>
+              <VoiceMessagePlayer
+                src={
+                  message.fileUrl
+                }
+                duration={
+                  message.voiceDuration
+                }
+              />
             )}
 
           {message.widget?.type ===
@@ -2761,6 +3261,27 @@ function Chats({
           offsetLeft
         )}px`
       );
+
+      const keyboardInset =
+        Math.max(
+          0,
+          window.innerHeight -
+            height -
+            offsetTop
+        );
+
+      document.documentElement.style.setProperty(
+        "--yatut-keyboard-inset",
+        `${Math.round(
+          keyboardInset
+        )}px`
+      );
+
+      document.documentElement.classList.toggle(
+        "yatut-chat-keyboard-open",
+        keyboardInset >
+          100
+      );
     }
 
     syncVisualViewport();
@@ -2804,6 +3325,10 @@ function Chats({
       window.removeEventListener(
         "resize",
         syncVisualViewport
+      );
+
+      document.documentElement.classList.remove(
+        "yatut-chat-keyboard-open"
       );
     };
   }, []);
@@ -6485,16 +7010,21 @@ function Chats({
         authSession?.user?.id
       ) {
         try {
+          const voiceMimeType =
+            blob.type ||
+            "audio/webm";
+
           const voiceFile =
             new File(
               [
                 blob,
               ],
-              `voice-${Date.now()}.webm`,
+              `voice-${Date.now()}.${voiceFileExtension(
+                voiceMimeType
+              )}`,
               {
                 type:
-                  blob.type ||
-                  "audio/webm",
+                  voiceMimeType,
               }
             );
 
@@ -8764,6 +9294,9 @@ function Chats({
 
                   <textarea
                     value={draft}
+                    rows={1}
+                    enterKeyHint="send"
+                    autoComplete="off"
                     onFocus={() => {
                       window.setTimeout(
                         () => {
