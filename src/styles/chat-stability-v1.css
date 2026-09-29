@@ -767,3 +767,16 @@ body.yatut-dark-mode
   color:
     #aaa4ff;
 }
+
+@media (max-width: 767px) {
+  html.yatut-chat-open,
+  html.yatut-chat-open body,
+  body.yatut-chat-open {
+    overflow: hidden !important;
+    overscroll-behavior: none !important;
+  }
+
+  html.yatut-chat-open body {
+    touch-action: manipulation;
+  }
+}
