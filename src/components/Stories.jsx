@@ -14,6 +14,7 @@ import {
 } from "motion/react";
 
 import {
+  Camera,
   Image as ImageIcon,
   Sparkles,
   Type,
@@ -1345,8 +1346,10 @@ function Stories({
                           : imageInputRef.current?.click()
                       }
                     >
-                      <span>
-                        🖼️
+                      <span className="yatut-story-upload-icon">
+                        <ImageIcon
+                          size={28}
+                        />
                       </span>
 
                       <strong>
@@ -1390,7 +1393,9 @@ function Stories({
                         )
                       }
                     >
-                      <span>📷</span>
+                      <Camera
+                        size={17}
+                      />
                       Зняти фото
                     </button>
                   )}
@@ -1431,8 +1436,10 @@ function Stories({
                           : videoInputRef.current?.click()
                       }
                     >
-                      <span>
-                        🎥
+                      <span className="yatut-story-upload-icon">
+                        <Video
+                          size={28}
+                        />
                       </span>
 
                       <strong>
@@ -1477,7 +1484,9 @@ function Stories({
                         )
                       }
                     >
-                      <span>🎥</span>
+                      <Video
+                        size={17}
+                      />
                       Записати відео
                     </button>
                   )}
