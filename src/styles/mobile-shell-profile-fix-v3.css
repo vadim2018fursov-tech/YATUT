@@ -2149,3 +2149,80 @@ body.yatut-profile-editor-open {
     font-size: 8.5px !important;
   }
 }
+
+
+/* =========================================================
+   MOBILE NAV V9
+   Rounder shell + true circular icon buttons.
+========================================================= */
+@media (max-width: 767px) {
+  html body .mobile-nav {
+    border-radius: 28px !important;
+  }
+
+  html body .mobile-nav > .mobile-nav-item {
+    border-radius: 22px !important;
+  }
+
+  html body .mobile-nav > .mobile-nav-item > .mobile-nav-active-glow {
+    inset: 0 2px !important;
+    border-radius: 22px !important;
+  }
+
+  html body .mobile-nav .mobile-nav-icon,
+  html body .mobile-nav .mobile-nav-item.active .mobile-nav-icon,
+  html body .mobile-nav > button.active .mobile-nav-icon,
+  html body .mobile-nav > button[aria-current="page"] .mobile-nav-icon {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
+    max-width: 30px !important;
+    max-height: 30px !important;
+
+    flex: 0 0 30px !important;
+    border: 0 !important;
+    border-radius: 50% !important;
+    background: rgba(35,38,48,.045) !important;
+    box-shadow: none !important;
+  }
+
+  html body .mobile-nav .mobile-nav-item.active .mobile-nav-icon,
+  html body .mobile-nav > button.active .mobile-nav-icon,
+  html body .mobile-nav > button[aria-current="page"] .mobile-nav-icon {
+    background: rgba(99,91,255,.12) !important;
+  }
+
+  html body .mobile-nav .mobile-nav-icon .yatut-icon {
+    width: 19px !important;
+    height: 19px !important;
+  }
+
+  html body .mobile-nav > .mobile-nav-item:nth-child(3) .mobile-nav-icon .yatut-icon {
+    width: 19px !important;
+    height: 19px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  html body .mobile-nav {
+    border-radius: 27px !important;
+  }
+
+  html body .mobile-nav > .mobile-nav-item,
+  html body .mobile-nav > .mobile-nav-item > .mobile-nav-active-glow {
+    border-radius: 21px !important;
+  }
+
+  html body .mobile-nav .mobile-nav-icon,
+  html body .mobile-nav .mobile-nav-item.active .mobile-nav-icon {
+    width: 29px !important;
+    height: 29px !important;
+    min-width: 29px !important;
+    min-height: 29px !important;
+    max-width: 29px !important;
+    max-height: 29px !important;
+    flex-basis: 29px !important;
+    border-radius: 50% !important;
+  }
+}
