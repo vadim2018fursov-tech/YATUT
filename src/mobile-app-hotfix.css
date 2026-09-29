@@ -829,9 +829,9 @@
 
   .mobile-nav > button.active:not(.mobile-create-button) > span:first-child {
     border-color: transparent !important;
-    background: #eceaff !important;
+    background: transparent !important;
     color: #635bff !important;
-    box-shadow: inset 0 0 0 1px rgba(99, 91, 255, .05) !important;
+    box-shadow: none !important;
   }
 
   .mobile-nav .mobile-profile-avatar {
