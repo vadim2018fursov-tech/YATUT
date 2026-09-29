@@ -1191,3 +1191,206 @@ body.yatut-profile-editor-open {
       #20212a !important;
   }
 }
+
+
+/* =========================================================
+   HOME SCREEN QUICK FIXES V4
+   Story identity, composer fit and active-nav ghost cleanup.
+========================================================= */
+
+@media (max-width: 767px) {
+  /* Own story must reflect the real profile avatar. */
+  .yatut-story-item:first-child {
+    min-width: 88px !important;
+    width: 88px !important;
+    flex: 0 0 88px !important;
+  }
+
+  .yatut-story-item:first-child > span:last-child {
+    width: 88px !important;
+    max-width: 88px !important;
+
+    overflow: visible !important;
+
+    font-size: 11px !important;
+
+    text-overflow: clip !important;
+    white-space: nowrap !important;
+  }
+
+  .yatut-story-avatar {
+    overflow: hidden !important;
+
+    border-radius: 50% !important;
+  }
+
+  .yatut-story-avatar img {
+    width: 100% !important;
+    height: 100% !important;
+
+    display: block !important;
+
+    border-radius: 50% !important;
+
+    object-fit: cover !important;
+    object-position: center !important;
+  }
+
+  /* All composer actions must fit instead of clipping the final event item. */
+  .post-composer
+  .composer-tools {
+    width: 100% !important;
+    max-width: 100% !important;
+
+    display: flex !important;
+    flex-wrap: nowrap !important;
+
+    gap: 2px !important;
+
+    overflow: hidden !important;
+
+    padding:
+      2px
+      0 !important;
+  }
+
+  .post-composer
+  .composer-tools
+  > button {
+    min-width: 0 !important;
+    width: auto !important;
+
+    flex:
+      1
+      1
+      0 !important;
+
+    min-height: 48px !important;
+
+    padding:
+      5px
+      1px !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    gap: 3px !important;
+
+    border-radius: 10px !important;
+
+    font-size:
+      clamp(
+        8px,
+        2.25vw,
+        9.5px
+      ) !important;
+
+    line-height: 1 !important;
+
+    white-space: nowrap !important;
+  }
+
+  .post-composer
+  .composer-tools
+  > button
+  svg {
+    width: 18px !important;
+    height: 18px !important;
+
+    min-width: 18px !important;
+
+    flex: 0 0 18px !important;
+  }
+
+  /* Override the legacy span:first-child rule that was styling the
+     moving active glow as though it were the nav icon itself. */
+  html body
+  .mobile-nav
+  > button.mobile-nav-item
+  > span.mobile-nav-active-glow {
+    position: absolute !important;
+
+    inset:
+      1px
+      2px !important;
+
+    width: auto !important;
+    height: auto !important;
+
+    min-width: 0 !important;
+    min-height: 0 !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: block !important;
+
+    border: 0 !important;
+    outline: 0 !important;
+
+    border-radius: 18px !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(242,240,255,.98),
+        rgba(235,232,255,.98)
+      ) !important;
+
+    box-shadow: none !important;
+
+    pointer-events: none !important;
+
+    z-index: 0 !important;
+  }
+
+  .mobile-nav
+  > button.mobile-nav-item
+  > .mobile-nav-icon,
+  .mobile-nav
+  > button.mobile-nav-item
+  > .mobile-profile-avatar,
+  .mobile-nav
+  > button.mobile-nav-item
+  > small {
+    position: relative !important;
+
+    z-index: 2 !important;
+  }
+
+  .mobile-nav
+  > button.mobile-nav-item
+  > .mobile-nav-icon {
+    border: 0 !important;
+    outline: 0 !important;
+
+    background: transparent !important;
+
+    box-shadow: none !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .post-composer
+  .composer-tools
+  > button {
+    font-size:
+      8px !important;
+  }
+
+  .yatut-story-item:first-child {
+    min-width: 84px !important;
+    width: 84px !important;
+    flex-basis: 84px !important;
+  }
+
+  .yatut-story-item:first-child > span:last-child {
+    width: 84px !important;
+    max-width: 84px !important;
+
+    font-size: 10.5px !important;
+  }
+}
