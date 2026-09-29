@@ -1839,9 +1839,15 @@ function ForwardModal({
 function VoiceMessagePlayer({
   src,
   duration = 0,
+  mimeType = "",
 }) {
   const audioRef =
     useRef(null);
+
+  const [
+    playableSrc,
+    setPlayableSrc,
+  ] = useState(src || "");
 
   const [
     playing,
@@ -1869,35 +1875,106 @@ function VoiceMessagePlayer({
   ] = useState(false);
 
   useEffect(() => {
+    let active = true;
+    let objectUrl = null;
+
     const audio =
       audioRef.current;
 
-    setPlaying(
-      false
-    );
-
-    setCurrentTime(
-      0
-    );
-
+    setPlaying(false);
+    setCurrentTime(0);
     setMediaDuration(
-      Number(
-        duration ||
-        0
-      )
+      Number(duration || 0)
     );
-
-    setPlaybackError(
-      false
-    );
+    setPlaybackError(false);
+    setPlayableSrc(src || "");
 
     if (audio) {
       audio.pause();
-      audio.load();
     }
+
+    async function prepareVoiceSource() {
+      if (!src) {
+        return;
+      }
+
+      try {
+        const response =
+          await fetch(src);
+
+        if (!response.ok) {
+          throw new Error(
+            `Voice media request failed: ${response.status}`
+          );
+        }
+
+        const sourceBlob =
+          await response.blob();
+
+        if (!sourceBlob.size) {
+          throw new Error(
+            "Voice media is empty."
+          );
+        }
+
+        const normalizedType =
+          String(
+            mimeType ||
+            sourceBlob.type ||
+            "audio/mp4"
+          ).trim();
+
+        const playableBlob =
+          sourceBlob.type ===
+            normalizedType
+            ? sourceBlob
+            : new Blob(
+                [sourceBlob],
+                {
+                  type:
+                    normalizedType,
+                }
+              );
+
+        objectUrl =
+          URL.createObjectURL(
+            playableBlob
+          );
+
+        if (active) {
+          setPlayableSrc(
+            objectUrl
+          );
+        }
+      } catch (error) {
+        console.warn(
+          "VOICE SOURCE PREPARE ERROR:",
+          error
+        );
+
+        if (active) {
+          setPlayableSrc(
+            src
+          );
+        }
+      }
+    }
+
+    prepareVoiceSource();
+
+    return () => {
+      active = false;
+
+      if (objectUrl) {
+        URL.revokeObjectURL(
+          objectUrl
+        );
+      }
+    };
   }, [
     src,
     duration,
+    mimeType,
   ]);
 
   const safeDuration =
@@ -2011,7 +2088,7 @@ function VoiceMessagePlayer({
         }
         preload="metadata"
         src={
-          src
+          playableSrc
         }
         onLoadedMetadata={(
           event
@@ -2847,6 +2924,9 @@ function MessageBubble({
                 }
                 duration={
                   message.voiceDuration
+                }
+                mimeType={
+                  message.mimeType
                 }
               />
             )}
@@ -4833,6 +4913,8 @@ function Chats({
                       )
                     : message.fileUrl ||
                       null,
+                fileUrlLoadedAt:
+                  Date.now(),
               })
               )
             )
@@ -4956,9 +5038,26 @@ function Chats({
                       ...message,
                       fileUrl:
                         sameMedia &&
-                        existing.fileUrl
+                        existing.fileUrl &&
+                        Date.now() -
+                          Number(
+                            existing.fileUrlLoadedAt ||
+                            0
+                          ) <
+                          10 * 60 * 1000
                           ? existing.fileUrl
                           : message.fileUrl,
+                      fileUrlLoadedAt:
+                        sameMedia &&
+                        existing.fileUrl &&
+                        Date.now() -
+                          Number(
+                            existing.fileUrlLoadedAt ||
+                            0
+                          ) <
+                          10 * 60 * 1000
+                          ? existing.fileUrlLoadedAt
+                          : Date.now(),
                       read:
                         message.senderId ===
                           "me"
