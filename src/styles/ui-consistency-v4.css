@@ -1118,3 +1118,67 @@ html.yatut-native
     transform: none !important;
   }
 }
+
+
+/* ---------------------------------------------------------
+   PULSE bottom nav normalization
+   Keep PULSE identical to the shared mobile navigation.
+--------------------------------------------------------- */
+@media (max-width: 767px) {
+  .layout-pulse-immersive .mobile-navigation,
+  .pulse-page .mobile-navigation,
+  .pulse-immersive-mobile .mobile-navigation {
+    left: 10px !important;
+    right: 10px !important;
+    width: auto !important;
+    max-width: none !important;
+    margin: 0 !important;
+    transform: none !important;
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    box-sizing: border-box !important;
+  }
+
+  .layout-pulse-immersive .mobile-navigation .mobile-nav-item,
+  .pulse-page .mobile-navigation .mobile-nav-item,
+  .pulse-immersive-mobile .mobile-navigation .mobile-nav-item {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    transform: none !important;
+    justify-self: stretch !important;
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  .layout-pulse-immersive .mobile-navigation .mobile-nav-item.active,
+  .pulse-page .mobile-navigation .mobile-nav-item.active,
+  .pulse-immersive-mobile .mobile-navigation .mobile-nav-item.active,
+  .layout-pulse-immersive .mobile-navigation .mobile-nav-item.active > *,
+  .pulse-page .mobile-navigation .mobile-nav-item.active > *,
+  .pulse-immersive-mobile .mobile-navigation .mobile-nav-item.active > *,
+  .layout-pulse-immersive .mobile-navigation .mobile-nav-icon,
+  .pulse-page .mobile-navigation .mobile-nav-icon,
+  .pulse-immersive-mobile .mobile-navigation .mobile-nav-icon {
+    background: transparent !important;
+    background-image: none !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
+    filter: none !important;
+  }
+
+  .layout-pulse-immersive .mobile-navigation .mobile-nav-item::before,
+  .layout-pulse-immersive .mobile-navigation .mobile-nav-item::after,
+  .pulse-page .mobile-navigation .mobile-nav-item::before,
+  .pulse-page .mobile-navigation .mobile-nav-item::after,
+  .pulse-immersive-mobile .mobile-navigation .mobile-nav-item::before,
+  .pulse-immersive-mobile .mobile-navigation .mobile-nav-item::after {
+    content: none !important;
+    display: none !important;
+  }
+}
