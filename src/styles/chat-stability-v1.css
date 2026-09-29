@@ -918,3 +918,147 @@ body.yatut-dark-mode
     scroll-padding-bottom: 12px !important;
   }
 }
+
+
+/* =========================================================
+   OPEN DIALOG — COMPACT FLOATING COMPOSER V4
+   Final mobile layout: no nav, no oversized bottom panel.
+========================================================= */
+@media (max-width: 767px) {
+  html.yatut-chat-open
+  .messenger.mobile-dialog-open
+  .chat-dialog {
+    padding-bottom: 0 !important;
+  }
+
+  html.yatut-chat-open
+  .messenger.mobile-dialog-open
+  .chat-messages {
+    padding-bottom:
+      calc(
+        78px +
+        var(
+          --yatut-safe-bottom,
+          env(safe-area-inset-bottom, 0px)
+        )
+      ) !important;
+    scroll-padding-bottom:
+      calc(
+        78px +
+        var(
+          --yatut-safe-bottom,
+          env(safe-area-inset-bottom, 0px)
+        )
+      ) !important;
+  }
+
+  html.yatut-chat-open
+  .messenger.mobile-dialog-open
+  .chat-composer {
+    position: absolute !important;
+    right: 10px !important;
+    bottom:
+      max(
+        8px,
+        var(
+          --yatut-safe-bottom,
+          env(safe-area-inset-bottom, 0px)
+        )
+      ) !important;
+    left: 10px !important;
+    top: auto !important;
+
+    width: auto !important;
+    max-width: none !important;
+    min-height: 60px !important;
+    max-height: none !important;
+
+    margin: 0 !important;
+    padding: 7px 8px !important;
+    gap: 7px !important;
+
+    border:
+      1px solid
+      rgba(35,38,52,.055) !important;
+    border-radius: 30px !important;
+
+    background:
+      rgba(255,255,255,.96) !important;
+
+    box-shadow:
+      0 12px 34px
+      rgba(31,35,54,.10) !important;
+
+    backdrop-filter: blur(22px) !important;
+    -webkit-backdrop-filter: blur(22px) !important;
+
+    z-index: 30 !important;
+  }
+
+  html.yatut-chat-open
+  .messenger.mobile-dialog-open
+  .chat-composer textarea {
+    min-height: 46px !important;
+    height: 46px;
+    padding: 11px 14px !important;
+    border-radius: 23px !important;
+  }
+
+  html.yatut-chat-open
+  .messenger.mobile-dialog-open
+  :is(
+    .chat-plus,
+    .chat-mic,
+    .chat-send
+  ) {
+    flex: 0 0 46px !important;
+    width: 46px !important;
+    height: 46px !important;
+    min-width: 46px !important;
+    min-height: 46px !important;
+    max-width: 46px !important;
+    max-height: 46px !important;
+    margin: 0 !important;
+    border-radius: 50% !important;
+  }
+
+  html.yatut-chat-open.yatut-keyboard-open
+  .messenger.mobile-dialog-open
+  .chat-messages {
+    padding-bottom: 72px !important;
+    scroll-padding-bottom: 72px !important;
+  }
+
+  html.yatut-chat-open.yatut-keyboard-open
+  .messenger.mobile-dialog-open
+  .chat-composer {
+    bottom: 6px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  html.yatut-chat-open
+  .messenger.mobile-dialog-open
+  .chat-composer {
+    right: 8px !important;
+    left: 8px !important;
+    gap: 5px !important;
+    padding: 6px !important;
+  }
+
+  html.yatut-chat-open
+  .messenger.mobile-dialog-open
+  :is(
+    .chat-plus,
+    .chat-mic,
+    .chat-send
+  ) {
+    flex-basis: 44px !important;
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
+    max-width: 44px !important;
+    max-height: 44px !important;
+  }
+}
