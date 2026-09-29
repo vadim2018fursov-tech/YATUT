@@ -5810,3 +5810,267 @@ body.yatut-dark-mode
     min-height: 46px !important;
   }
 }
+
+
+/* =========================================================
+   PROFILE MOBILE LAYOUT LOCK V8
+   Final mobile flow: hero -> tabs -> composer -> content.
+========================================================= */
+
+@media (max-width: 767px) {
+  .profile-v2-page {
+    width: 100% !important;
+    min-width: 0 !important;
+    padding-bottom:
+      calc(
+        124px +
+        env(
+          safe-area-inset-bottom
+        )
+      ) !important;
+    overflow-x: clip !important;
+  }
+
+  .profile-v2-shell {
+    width: 100% !important;
+    min-width: 0 !important;
+    overflow: visible !important;
+  }
+
+  .profile-v2-grid {
+    position: relative !important;
+    isolation: isolate;
+    width:
+      calc(
+        100% - 16px
+      ) !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    margin:
+      14px
+      8px
+      0 !important;
+    padding: 0 !important;
+    display: block !important;
+    overflow: visible !important;
+    transform: none !important;
+  }
+
+  .profile-v2-main {
+    position: relative !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 14px !important;
+    overflow: visible !important;
+    transform: none !important;
+  }
+
+  .profile-v2-main > * {
+    position: relative;
+    flex:
+      0
+      0
+      auto;
+    min-width: 0;
+  }
+
+  .profile-v2-tabs {
+    position: relative !important;
+    inset: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    right: auto !important;
+    z-index: 2 !important;
+    order: 0 !important;
+
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 58px !important;
+    margin: 0 !important;
+    padding: 5px !important;
+
+    display: grid !important;
+    grid-template-columns:
+      repeat(
+        4,
+        minmax(0,1fr)
+      ) !important;
+    gap: 3px !important;
+
+    overflow: hidden !important;
+    transform: none !important;
+    translate: none !important;
+    contain:
+      layout paint;
+
+    border-radius:
+      18px !important;
+    box-shadow:
+      0 10px 28px
+      rgba(
+        31,
+        35,
+        54,
+        .06
+      ) !important;
+  }
+
+  .profile-v2-tabs button {
+    position: relative !important;
+    inset: auto !important;
+    min-width: 0 !important;
+    min-height: 48px !important;
+    margin: 0 !important;
+    padding:
+      0
+      4px !important;
+    transform: none;
+  }
+
+  .profile-v2-post-list {
+    position: relative !important;
+    z-index: 1 !important;
+    order: 1 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 14px !important;
+    overflow: visible !important;
+    transform: none !important;
+  }
+
+  .profile-v2-inline-composer {
+    position: relative !important;
+    inset: auto !important;
+    z-index: 1 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 14px !important;
+    overflow: hidden !important;
+    border-radius:
+      18px !important;
+    transform: none !important;
+    translate: none !important;
+    scroll-margin-bottom:
+      calc(
+        116px +
+        env(
+          safe-area-inset-bottom
+        )
+      );
+  }
+
+  .profile-v2-inline-composer__top {
+    width: 100% !important;
+    min-width: 0 !important;
+    display: grid !important;
+    grid-template-columns:
+      46px
+      minmax(0,1fr) !important;
+    align-items: start !important;
+    gap: 10px !important;
+  }
+
+  .profile-v2-inline-composer__avatar {
+    width: 46px !important;
+    height: 46px !important;
+    min-width: 46px !important;
+    flex:
+      0
+      0
+      46px !important;
+  }
+
+  .profile-v2-inline-composer textarea {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 112px !important;
+    margin: 0 !important;
+    resize: none !important;
+    font-size: 16px !important;
+  }
+
+  .profile-v2-inline-composer__bottom {
+    width: 100% !important;
+    min-width: 0 !important;
+    margin-top: 10px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content:
+      space-between !important;
+    gap: 10px !important;
+  }
+
+  .profile-v2-inline-composer__bottom span {
+    min-width: 0 !important;
+    line-height: 1.35 !important;
+  }
+
+  .profile-v2-inline-composer__bottom button {
+    min-height: 42px !important;
+    flex:
+      0
+      0
+      auto !important;
+  }
+
+  .profile-v2-side {
+    display: none !important;
+    position: static !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+
+  .profile-v2-post-card,
+  .profile-v2-card {
+    position: relative !important;
+    z-index: 0 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    transform: none !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .profile-v2-tabs {
+    min-height: 56px !important;
+    border-radius:
+      16px !important;
+  }
+
+  .profile-v2-tabs button {
+    min-height: 46px !important;
+  }
+
+  .profile-v2-tab-label {
+    font-size:
+      clamp(
+        8px,
+        2.45vw,
+        10px
+      ) !important;
+  }
+
+  .profile-v2-inline-composer {
+    padding: 13px !important;
+  }
+
+  .profile-v2-inline-composer__bottom {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  .profile-v2-inline-composer__bottom button {
+    width: 100% !important;
+    min-height: 46px !important;
+  }
+}
