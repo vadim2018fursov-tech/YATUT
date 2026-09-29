@@ -10,6 +10,7 @@ import "./styles/profile-mobile-fix-v1.css";
 import "./styles/profile-polish-v2.css";
 import "./styles/friends-polish-v1.css";
 import "./styles/chat-stability-v1.css";
+import "./styles/chat-polish-v2.css";
 import {
   initNativePlatform,
 } from "./services/nativePlatformService.js";
