@@ -6470,15 +6470,8 @@ function MobileNavigation({
                   : ""
               }`.trim()}
               type="button"
-              whileTap={{
-                scale: 0.92,
-              }}
-              whileHover={{
-                y: -2,
-              }}
-              transition={
-                MOBILE_NAV_MOTION
-              }
+              /* Keep the global mobile shell geometrically inert.
+                 Active state may recolor, but route/tap state must never move it. */
               aria-current={
                 active
                   ? "page"
