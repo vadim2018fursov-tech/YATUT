@@ -2133,6 +2133,20 @@ export default function Profile({
                         profile.city,
                         profile.country,
                       ]
+                        .map(
+                          (
+                            value
+                          ) =>
+                            String(
+                              value ||
+                              ""
+                            )
+                              .trim()
+                              .replace(
+                                /^[,;\s]+/,
+                                ""
+                              )
+                        )
                         .filter(
                           Boolean
                         )
