@@ -780,3 +780,42 @@ body.yatut-dark-mode
     touch-action: manipulation;
   }
 }
+
+
+/* =========================================================
+   MOBILE CHAT / GLOBAL NAV SEPARATION V2
+   Keep the composer above the fixed global navigation.
+========================================================= */
+@media (max-width: 767px) {
+  html:not(.yatut-keyboard-open)
+  .messenger.mobile-dialog-open
+  .chat-dialog {
+    padding-bottom:
+      calc(
+        72px +
+        var(
+          --yatut-safe-bottom,
+          env(
+            safe-area-inset-bottom,
+            0px
+          )
+        )
+      ) !important;
+  }
+
+  html.yatut-keyboard-open
+  .messenger.mobile-dialog-open
+  .chat-dialog {
+    padding-bottom: 0 !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-messages {
+    scroll-padding-bottom: 16px !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-composer {
+    z-index: 4 !important;
+  }
+}
