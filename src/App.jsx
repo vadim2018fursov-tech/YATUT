@@ -5339,6 +5339,9 @@ function Home({
         authSession={
           authSession
         }
+        viewerProfile={
+          viewerProfile
+        }
       />
 
       <nav className="feed-tabs">
