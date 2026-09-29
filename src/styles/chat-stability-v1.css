@@ -1062,3 +1062,73 @@ body.yatut-dark-mode
     max-height: 44px !important;
   }
 }
+
+
+/* =========================================================
+   MOBILE CHAT INPUT + DATE POLISH V5
+========================================================= */
+@media (max-width: 767px) {
+  .messenger.mobile-dialog-open
+  .chat-day {
+    position: sticky;
+    top: 8px;
+    z-index: 3;
+    width: max-content;
+    max-width: calc(100% - 32px);
+    margin: 10px auto 14px !important;
+    padding: 5px 11px !important;
+    border-radius: 999px !important;
+    background: rgba(238,239,244,.92) !important;
+    color: #969ba8 !important;
+    font-size: 12px !important;
+    line-height: 1.2 !important;
+    font-weight: 600 !important;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  html.yatut-chat-open
+  .messenger.mobile-dialog-open
+  .chat-composer {
+    max-height: 156px !important;
+    align-items: flex-end !important;
+  }
+
+  html.yatut-chat-open
+  .messenger.mobile-dialog-open
+  .chat-input-shell {
+    min-width: 0 !important;
+    align-items: flex-end !important;
+  }
+
+  html.yatut-chat-open
+  .messenger.mobile-dialog-open
+  .chat-composer textarea {
+    height: auto;
+    min-height: 46px !important;
+    max-height: 132px !important;
+    resize: none !important;
+    overflow-y: auto !important;
+    line-height: 1.28 !important;
+  }
+
+  /* visualViewport already shrinks the dialog to the keyboard.
+     Keep the composer on that viewport edge, not above it twice. */
+  html.yatut-chat-open.yatut-keyboard-open
+  .messenger.mobile-dialog-open
+  .chat-composer {
+    bottom: 0 !important;
+    right: 8px !important;
+    left: 8px !important;
+    margin: 0 !important;
+    border-radius: 28px 28px 0 0 !important;
+    padding-bottom: 6px !important;
+  }
+
+  html.yatut-chat-open.yatut-keyboard-open
+  .messenger.mobile-dialog-open
+  .chat-messages {
+    padding-bottom: 82px !important;
+    scroll-padding-bottom: 82px !important;
+  }
+}
