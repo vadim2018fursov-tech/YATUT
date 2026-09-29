@@ -9543,7 +9543,15 @@ function Chats({
             ref={
               infoPanelRef
             }
-            className="chat-info-panel"
+            className={`chat-info-panel ${
+              activeChat.type !==
+                "group" &&
+              !activeChat.communityId
+                ? "chat-info-direct"
+                : activeChat.communityId
+                  ? "chat-info-community"
+                  : "chat-info-group"
+            }`.trim()}
           >
 
             <header className="chat-info-header">
