@@ -4679,7 +4679,8 @@ function Chats({
                     ? URL.createObjectURL(
                         message.fileBlob
                       )
-                    : null,
+                    : message.fileUrl ||
+                      null,
               })
               )
             )
@@ -4769,28 +4770,61 @@ function Chats({
           );
 
           setMessages(
-            dedupeChatMessages(
-              latest.map(
-                (
-                  message
-                ) => ({
-                ...message,
-                read:
-                  message.senderId ===
-                    "me"
-                    ? Boolean(
-                        readAt &&
-                        Number(
-                          message.createdAt
-                        ) <=
-                          Number(
-                            readAt
-                          )
-                      )
-                    : message.read,
-                })
-              )
-            )
+            (
+              previous
+            ) => {
+              const existingById =
+                new Map(
+                  previous.map(
+                    (
+                      message
+                    ) => [
+                      message.id,
+                      message,
+                    ]
+                  )
+                );
+
+              return dedupeChatMessages(
+                latest.map(
+                  (
+                    message
+                  ) => {
+                    const existing =
+                      existingById.get(
+                        message.id
+                      );
+
+                    const sameMedia =
+                      existing &&
+                      existing.mediaPath ===
+                        message.mediaPath;
+
+                    return {
+                      ...message,
+                      fileUrl:
+                        sameMedia &&
+                        existing.fileUrl
+                          ? existing.fileUrl
+                          : message.fileUrl,
+                      read:
+                        message.senderId ===
+                          "me"
+                          ? Boolean(
+                              readAt &&
+                              Number(
+                                message.createdAt
+                              ) <=
+                                Number(
+                                  readAt
+                                )
+                            )
+                          : message.read,
+                    };
+                  }
+                )
+              );
+            }
           );
         }
 
@@ -7001,15 +7035,26 @@ function Chats({
       blob,
       duration
     ) => {
-      if (!activeChat) {
+      if (
+        !activeChat ||
+        sendInFlightRef.current ||
+        !blob?.size
+      ) {
         return;
       }
 
-      if (
-        activeChat.backend &&
-        authSession?.user?.id
-      ) {
-        try {
+      sendInFlightRef.current =
+        true;
+
+      setSending(
+        true
+      );
+
+      try {
+        if (
+          activeChat.backend &&
+          authSession?.user?.id
+        ) {
           const voiceMimeType =
             blob.type ||
             "audio/webm";
@@ -7035,6 +7080,14 @@ function Chats({
               voiceFile
             );
 
+          if (
+            !uploaded?.path
+          ) {
+            throw new Error(
+              "Не вдалося завантажити голосове"
+            );
+          }
+
           const backendMessage =
             await sendBackendMessage(
               authSession,
@@ -7049,13 +7102,12 @@ function Chats({
                     ? replyTo.id
                     : null,
                 mediaPath:
-                  uploaded?.path ||
-                  null,
+                  uploaded.path,
                 fileName:
-                  uploaded?.fileName ||
+                  uploaded.fileName ||
                   voiceFile.name,
                 mimeType:
-                  uploaded?.mimeType ||
+                  uploaded.mimeType ||
                   voiceFile.type,
                 durationMs:
                   Math.round(
@@ -7069,103 +7121,117 @@ function Chats({
             );
 
           if (
-            backendMessage
+            !backendMessage
           ) {
-            setMessages(
-              (
-                previous
-              ) =>
-                appendUniqueMessage(
-                  previous,
-                  backendMessage
-                )
-            );
-
-            await updatePreview(
-              activeChat,
-              "🎙 Голосове"
+            throw new Error(
+              "Не вдалося створити голосове повідомлення"
             );
           }
 
-          setVoiceOpen(
-            false
+          setMessages(
+            (
+              previous
+            ) =>
+              appendUniqueMessage(
+                previous,
+                backendMessage
+              )
           );
 
-          setReplyTo(
-            null
+          await updatePreview(
+            activeChat,
+            "🎙 Голосове"
           );
-        } catch (
-          error
-        ) {
-          console.warn(
-            "BACKEND VOICE SEND ERROR:",
-            error
+        } else {
+          const message = {
+            id: createId(),
+            chatId:
+              activeChat.id,
+            senderId: "me",
+            type: "voice",
+            text: "",
+            fileBlob: blob,
+            voiceDuration:
+              duration,
+            createdAt:
+              Date.now(),
+            pinned: false,
+
+            replyTo:
+              replyTo
+                ? {
+                    id:
+                      replyTo.id,
+                    senderId:
+                      replyTo.senderId,
+                    text:
+                      replyTo.text ||
+                      "",
+                    type:
+                      replyTo.type,
+                  }
+                : null,
+          };
+
+          await saveMessage(
+            message
           );
 
-          showChatToast(
-            error?.message ||
-            "Не вдалося надіслати голосове"
+          setMessages(
+            (
+              previous
+            ) =>
+              appendUniqueMessage(
+                previous,
+                {
+                  ...message,
+                  fileUrl:
+                    URL.createObjectURL(
+                      blob
+                    ),
+                }
+              )
+          );
+
+          await updatePreview(
+            activeChat,
+            "🎙 Голосове"
           );
         }
 
-        return;
+        setVoiceOpen(
+          false
+        );
+
+        setReplyTo(
+          null
+        );
+      } catch (
+        error
+      ) {
+        console.warn(
+          "VOICE SEND ERROR:",
+          error
+        );
+
+        showChatToast(
+          error?.message ||
+          "Не вдалося надіслати голосове"
+        );
+
+        // Recorder has already stopped; return to normal composer
+        // so the user can retry immediately.
+        setVoiceOpen(
+          false
+        );
+      } finally {
+        sendInFlightRef.current =
+          false;
+
+        setSending(
+          false
+        );
       }
-
-      const message = {
-        id: createId(),
-        chatId:
-          activeChat.id,
-        senderId: "me",
-        type: "voice",
-        text: "",
-        fileBlob: blob,
-        voiceDuration:
-          duration,
-        createdAt:
-          Date.now(),
-        pinned: false,
-
-        replyTo:
-          replyTo
-            ? {
-                id:
-                  replyTo.id,
-                senderId:
-                  replyTo.senderId,
-                text:
-                  replyTo.text ||
-                  "",
-                type:
-                  replyTo.type,
-              }
-            : null,
-      };
-
-      await saveMessage(
-        message
-      );
-
-      setMessages(
-        (previous) => [
-          ...previous,
-
-          {
-            ...message,
-            fileUrl:
-              URL.createObjectURL(
-                blob
-              ),
-          },
-        ]
-      );
-
-      await updatePreview(
-        activeChat,
-        "🎙 Голосове"
-      );
-
-      setVoiceOpen(false);
-      setReplyTo(null);
     };
 
   /* =======================================================
