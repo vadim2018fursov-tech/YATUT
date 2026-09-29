@@ -694,7 +694,7 @@ const MOBILE_NAV = [
 
   {
     id: "profile",
-    icon: "friends",
+    icon: "profile",
     title: "Профіль",
   },
 ];
@@ -6500,36 +6500,19 @@ function MobileNavigation({
                 />
               ) : null}
 
-              {item.id ===
-              "profile" ? (
-                <span className="mobile-profile-avatar">
-                  {viewerProfile?.avatar ? (
-                    <img
-                      src={
-                        viewerProfile.avatar
-                      }
-                      alt=""
-                    />
-                  ) : (
-                    viewerProfile?.initial ||
-                    "Я"
-                  )}
-                </span>
-              ) : (
-                <span className="mobile-nav-icon">
-                  <YatutIcon
-                    name={
-                      item.icon
-                    }
-                    size={
-                      item.id ===
-                      "chats"
-                        ? 22
-                        : 21
-                    }
-                  />
-                </span>
-              )}
+              <span className="mobile-nav-icon">
+                <YatutIcon
+                  name={
+                    item.icon
+                  }
+                  size={
+                    item.id ===
+                    "chats"
+                      ? 22
+                      : 21
+                  }
+                />
+              </span>
 
               <small>
                 {
