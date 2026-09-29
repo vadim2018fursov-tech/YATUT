@@ -1890,3 +1890,62 @@ body.yatut-profile-editor-open {
     flex-basis: 27px !important;
   }
 }
+
+
+/* =========================================================
+   MOBILE NAV — VIEWPORT LOCK
+   The shell never moves between routes. Only page content transitions.
+========================================================= */
+@media (max-width: 767px) {
+  html body .app > .mobile-nav {
+    position: fixed !important;
+    left: 22px !important;
+    right: 22px !important;
+    bottom: max(8px, env(safe-area-inset-bottom)) !important;
+    top: auto !important;
+
+    width: auto !important;
+    max-width: calc(100% - 44px) !important;
+    height: 58px !important;
+    min-height: 58px !important;
+    max-height: 58px !important;
+
+    margin: 0 !important;
+    padding: 3px 4px !important;
+    gap: 2px !important;
+
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    box-sizing: border-box !important;
+
+    transform: none !important;
+    translate: none !important;
+    scale: 1 !important;
+    animation: none !important;
+    transition: none !important;
+    will-change: auto !important;
+    contain: none !important;
+
+    z-index: 50000 !important;
+  }
+
+  html body .app > .mobile-nav > button.mobile-nav-item {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    margin: 0 !important;
+    transform: none !important;
+    translate: none !important;
+  }
+}
+
+@media (max-width: 390px) {
+  html body .app > .mobile-nav {
+    left: 16px !important;
+    right: 16px !important;
+    width: auto !important;
+    max-width: calc(100% - 32px) !important;
+    height: 56px !important;
+    min-height: 56px !important;
+    max-height: 56px !important;
+  }
+}
