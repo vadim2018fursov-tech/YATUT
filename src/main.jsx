@@ -105,6 +105,20 @@ function syncVisualViewportRoot() {
         offsetTop
     );
 
+  const chatInputFocused =
+    document.documentElement.classList.contains(
+      "yatut-chat-input-focused"
+    );
+
+  const chatViewportGap =
+    chatInputFocused &&
+    keyboardHeight >
+      0 &&
+    keyboardHeight <
+      110
+      ? keyboardHeight
+      : 0;
+
   document.documentElement.style.setProperty(
     "--yatut-visual-viewport-height",
     `${Math.round(
@@ -137,6 +151,13 @@ function syncVisualViewportRoot() {
     "--yatut-keyboard-height",
     `${Math.round(
       keyboardHeight
+    )}px`
+  );
+
+  document.documentElement.style.setProperty(
+    "--yatut-chat-viewport-gap",
+    `${Math.round(
+      chatViewportGap
     )}px`
   );
 
