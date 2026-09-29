@@ -5080,6 +5080,38 @@ function Chats({
   ]);
 
   useEffect(() => {
+    if (draft) {
+      return;
+    }
+
+    const composer =
+      document.querySelector(
+        ".messenger.mobile-dialog-open .chat-composer:not(.voice-mode)"
+      );
+
+    const textarea =
+      composer?.querySelector(
+        "textarea"
+      );
+
+    composer?.style.setProperty(
+      "--chat-input-height",
+      "46px"
+    );
+
+    if (textarea) {
+      textarea.style.setProperty(
+        "--chat-input-height",
+        "46px"
+      );
+      textarea.style.height =
+        "46px";
+      textarea.style.overflowY =
+        "hidden";
+    }
+  }, [draft, mobileDialogOpen]);
+
+  useEffect(() => {
     if (
       messagesLoading ||
       !mobileDialogOpen ||
