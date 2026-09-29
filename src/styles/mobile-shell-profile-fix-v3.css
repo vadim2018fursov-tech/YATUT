@@ -1394,3 +1394,267 @@ body.yatut-profile-editor-open {
     font-size: 10.5px !important;
   }
 }
+
+
+/* =========================================================
+   MOBILE HOME GEOMETRY V5
+   Exact feed-tabs height + narrower bottom nav + round avatar.
+========================================================= */
+
+@media (max-width: 767px) {
+  /* Feed tabs: one exact geometry for all three items. */
+  .feed-column
+  > .feed-tabs {
+    box-sizing: border-box !important;
+
+    width:
+      calc(
+        100% -
+        24px
+      ) !important;
+
+    max-width:
+      calc(
+        100% -
+        24px
+      ) !important;
+
+    height: 58px !important;
+    min-height: 58px !important;
+
+    margin:
+      0
+      12px !important;
+
+    padding: 5px !important;
+
+    display: grid !important;
+
+    grid-template-columns:
+      repeat(
+        3,
+        minmax(0,1fr)
+      ) !important;
+
+    align-items: stretch !important;
+
+    gap: 4px !important;
+
+    border-radius:
+      18px !important;
+  }
+
+  .feed-column
+  > .feed-tabs
+  > .feed-tab {
+    box-sizing: border-box !important;
+
+    width: 100% !important;
+    height: 48px !important;
+    min-height: 48px !important;
+    max-height: 48px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    border: 0 !important;
+    border-radius: 14px !important;
+
+    line-height: 1 !important;
+  }
+
+  .feed-column
+  > .feed-tabs
+  > .feed-tab
+  > .feed-tab-motion-bg {
+    position: absolute !important;
+
+    inset: 0 !important;
+
+    width: 100% !important;
+    height: 100% !important;
+
+    border-radius: 14px !important;
+  }
+
+  .feed-column
+  > .feed-tabs
+  > .feed-tab
+  > .feed-tab-motion-label {
+    height: 100% !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    line-height: 1 !important;
+  }
+
+  /* Bottom nav: return to the tighter floating width. */
+  html body
+  .mobile-nav {
+    right: 18px !important;
+    left: 18px !important;
+
+    width: auto !important;
+    max-width:
+      calc(
+        100% -
+        36px
+      ) !important;
+
+    height: 76px !important;
+    min-height: 76px !important;
+
+    padding: 5px !important;
+
+    border-radius: 23px !important;
+  }
+
+  html body
+  .mobile-nav
+  > .mobile-nav-item {
+    height: 66px !important;
+    min-height: 66px !important;
+    max-height: 66px !important;
+  }
+
+  /* Profile picture in bottom nav can never become an oval. */
+  html body
+  .mobile-nav
+  .mobile-profile-avatar {
+    box-sizing: border-box !important;
+
+    position: relative !important;
+
+    width: 34px !important;
+    height: 34px !important;
+
+    min-width: 34px !important;
+    min-height: 34px !important;
+
+    max-width: 34px !important;
+    max-height: 34px !important;
+
+    flex:
+      0 0
+      34px !important;
+
+    aspect-ratio:
+      1 / 1 !important;
+
+    padding: 0 !important;
+
+    overflow: hidden !important;
+
+    border-radius:
+      999px !important;
+  }
+
+  html body
+  .mobile-nav
+  .mobile-profile-avatar
+  > img {
+    position: absolute !important;
+
+    inset: 0 !important;
+
+    width: 34px !important;
+    height: 34px !important;
+
+    min-width: 34px !important;
+    min-height: 34px !important;
+
+    max-width: 34px !important;
+    max-height: 34px !important;
+
+    aspect-ratio:
+      1 / 1 !important;
+
+    display: block !important;
+
+    border-radius:
+      999px !important;
+
+    object-fit: cover !important;
+    object-position: center !important;
+
+    clip-path:
+      circle(50%) !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .feed-column
+  > .feed-tabs {
+    width:
+      calc(
+        100% -
+        20px
+      ) !important;
+
+    max-width:
+      calc(
+        100% -
+        20px
+      ) !important;
+
+    margin:
+      0
+      10px !important;
+  }
+
+  html body
+  .mobile-nav {
+    right: 14px !important;
+    left: 14px !important;
+
+    max-width:
+      calc(
+        100% -
+        28px
+      ) !important;
+
+    height: 74px !important;
+    min-height: 74px !important;
+  }
+
+  html body
+  .mobile-nav
+  > .mobile-nav-item {
+    height: 64px !important;
+    min-height: 64px !important;
+    max-height: 64px !important;
+  }
+
+  html body
+  .mobile-nav
+  .mobile-profile-avatar,
+  html body
+  .mobile-nav
+  .mobile-profile-avatar
+  > img {
+    width: 32px !important;
+    height: 32px !important;
+
+    min-width: 32px !important;
+    min-height: 32px !important;
+
+    max-width: 32px !important;
+    max-height: 32px !important;
+  }
+
+  html body
+  .mobile-nav
+  .mobile-profile-avatar {
+    flex:
+      0 0
+      32px !important;
+  }
+}
