@@ -9352,160 +9352,164 @@ function Chats({
 
                   </div>
 
-                  <textarea
-                    value={draft}
-                    rows={1}
-                    enterKeyHint="send"
-                    autoComplete="off"
-                    onFocus={() => {
-                      document.documentElement.classList.add(
-                        "yatut-chat-input-focused"
-                      );
+                  <div className="chat-input-shell">
+                    <textarea
+                      value={draft}
+                      rows={1}
+                      enterKeyHint="send"
+                      autoComplete="off"
+                      onFocus={() => {
+                        document.documentElement.classList.add(
+                          "yatut-chat-input-focused"
+                        );
 
-                      window.setTimeout(
-                        () => {
-                          const container =
-                            messagesRef.current;
+                        window.setTimeout(
+                          () => {
+                            const container =
+                              messagesRef.current;
 
-                          if (
-                            container
-                          ) {
-                            container.scrollTop =
-                              container.scrollHeight;
-                          }
-
-                          window.dispatchEvent(
-                            new Event(
-                              "resize"
-                            )
-                          );
-                        },
-                        80
-                      );
-                    }}
-                    onBlur={() => {
-                      window.setTimeout(
-                        () => {
-                          if (
-                            document.activeElement !==
-                            document.querySelector(
-                              ".messenger.mobile-dialog-open .chat-composer textarea"
-                            )
-                          ) {
-                            document.documentElement.classList.remove(
-                              "yatut-chat-input-focused"
-                            );
+                            if (
+                              container
+                            ) {
+                              container.scrollTop =
+                                container.scrollHeight;
+                            }
 
                             window.dispatchEvent(
                               new Event(
                                 "resize"
                               )
                             );
-                          }
-                        },
-                        80
-                      );
-                    }}
-                    onChange={(event) =>
-                      setDraft(
-                        event.target
-                          .value
-                      )
-                    }
-                    placeholder={
-                      editing
-                        ? "Редагувати повідомлення..."
-                        : "Повідомлення..."
-                    }
-                    onKeyDown={(event) => {
-                      if (
-                        event.key ===
-                          "Enter" &&
-                        !event.shiftKey
-                      ) {
-                        event.preventDefault();
-
-                        if (
-                          event.repeat ||
-                          sending ||
-                          sendInFlightRef.current
-                        ) {
-                          return;
-                        }
-
-                        sendMessage();
-                      }
-                    }}
-                  />
-
-                  <div
-                    ref={
-                      emojiRef
-                    }
-                    className="yatut-emoji-wrapper"
-                  >
-
-                    <button
-                      className="chat-emoji"
-                      onClick={() => {
-                        setEmojiOpen(
-                          !emojiOpen
-                        );
-                        setAttachOpen(
-                          false
+                          },
+                          80
                         );
                       }}
-                    aria-label="Смайли"
+                      onBlur={() => {
+                        window.setTimeout(
+                          () => {
+                            if (
+                              document.activeElement !==
+                              document.querySelector(
+                                ".messenger.mobile-dialog-open .chat-composer textarea"
+                              )
+                            ) {
+                              document.documentElement.classList.remove(
+                                "yatut-chat-input-focused"
+                              );
+
+                              window.dispatchEvent(
+                                new Event(
+                                  "resize"
+                                )
+                              );
+                            }
+                          },
+                          80
+                        );
+                      }}
+                      onChange={(event) =>
+                        setDraft(
+                          event.target
+                            .value
+                        )
+                      }
+                      placeholder={
+                        editing
+                          ? "Редагувати повідомлення..."
+                          : "Повідомлення..."
+                      }
+                      onKeyDown={(event) => {
+                        if (
+                          event.key ===
+                            "Enter" &&
+                          !event.shiftKey
+                        ) {
+                          event.preventDefault();
+
+                          if (
+                            event.repeat ||
+                            sending ||
+                            sendInFlightRef.current
+                          ) {
+                            return;
+                          }
+
+                          sendMessage();
+                        }
+                      }}
+                    />
+
+                    <div
+                      ref={
+                        emojiRef
+                      }
+                      className="yatut-emoji-wrapper"
                     >
-                      <YatutIcon
-                        name="smile"
-                        size={18}
-                      />
-                    </button>
 
-                    {emojiOpen && (
-                      <div className="yatut-emoji-popover">
+                      <button
+                        className="chat-emoji"
+                        onClick={() => {
+                          setEmojiOpen(
+                            !emojiOpen
+                          );
+                          setAttachOpen(
+                            false
+                          );
+                        }}
+                      aria-label="Смайли"
+                      >
+                        <YatutIcon
+                          name="smile"
+                          size={18}
+                        />
+                      </button>
 
-                        <div className="yatut-emoji-top">
-                          <strong>
-                            Смайли
-                          </strong>
+                      {emojiOpen && (
+                        <div className="yatut-emoji-popover">
+
+                          <div className="yatut-emoji-top">
+                            <strong>
+                              Смайли
+                            </strong>
+                          </div>
+
+                          <div className="yatut-emoji-grid">
+
+                            {EMOJIS.map(
+                              (
+                                emoji,
+                                index
+                              ) => (
+                                <button
+                                  key={
+                                    index
+                                  }
+                                  onClick={() => {
+                                    setDraft(
+                                      (
+                                        previous
+                                      ) =>
+                                        `${previous}${emoji}`
+                                    );
+                                    setEmojiOpen(
+                                      false
+                                    );
+                                  }}
+                                >
+                                  {
+                                    emoji
+                                  }
+                                </button>
+                              )
+                            )}
+
+                          </div>
+
                         </div>
+                      )}
 
-                        <div className="yatut-emoji-grid">
+                    </div>
 
-                          {EMOJIS.map(
-                            (
-                              emoji,
-                              index
-                            ) => (
-                              <button
-                                key={
-                                  index
-                                }
-                                onClick={() => {
-                                  setDraft(
-                                    (
-                                      previous
-                                    ) =>
-                                      `${previous}${emoji}`
-                                  );
-                                  setEmojiOpen(
-                                    false
-                                  );
-                                }}
-                              >
-                                {
-                                  emoji
-                                }
-                              </button>
-                            )
-                          )}
-
-                        </div>
-
-                      </div>
-                    )}
 
                   </div>
 
