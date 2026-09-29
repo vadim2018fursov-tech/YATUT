@@ -3254,6 +3254,11 @@ function Chats({
   ] = useState([]);
 
   const [
+    messagesLoading,
+    setMessagesLoading,
+  ] = useState(false);
+
+  const [
     draft,
     setDraft,
   ] = useState("");
@@ -4929,8 +4934,11 @@ function Chats({
           !activeChatId
         ) {
           setMessages([]);
+          setMessagesLoading(false);
           return;
         }
+
+        setMessagesLoading(true);
 
         try {
           let stored =
@@ -5043,6 +5051,8 @@ function Chats({
         setMessageSearchOpen(
           false
         );
+
+        setMessagesLoading(false);
       };
 
     load();
@@ -5052,6 +5062,72 @@ function Chats({
     authSession?.user?.id,
     authSession?.access_token,
     mobileDialogOpen,
+  ]);
+
+  useEffect(() => {
+    if (
+      messagesLoading ||
+      !mobileDialogOpen ||
+      !activeChatId
+    ) {
+      return undefined;
+    }
+
+    let frameOne = null;
+    let frameTwo = null;
+    let timer = null;
+
+    const scrollToLatest = () => {
+      const container =
+        messagesRef.current;
+
+      if (!container) {
+        return;
+      }
+
+      container.scrollTop =
+        container.scrollHeight;
+    };
+
+    frameOne =
+      window.requestAnimationFrame(
+        () => {
+          frameTwo =
+            window.requestAnimationFrame(
+              scrollToLatest
+            );
+        }
+      );
+
+    timer =
+      window.setTimeout(
+        scrollToLatest,
+        180
+      );
+
+    return () => {
+      if (frameOne) {
+        window.cancelAnimationFrame(
+          frameOne
+        );
+      }
+
+      if (frameTwo) {
+        window.cancelAnimationFrame(
+          frameTwo
+        );
+      }
+
+      if (timer) {
+        window.clearTimeout(
+          timer
+        );
+      }
+    };
+  }, [
+    activeChatId,
+    mobileDialogOpen,
+    messagesLoading,
   ]);
 
   useEffect(() => {
