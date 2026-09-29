@@ -6419,6 +6419,7 @@ function MobileNavigation({
   return (
     <nav
       className="mobile-nav"
+      id="yatut-global-mobile-nav"
       aria-label="Головна навігація"
     >
       {MOBILE_NAV.map(
