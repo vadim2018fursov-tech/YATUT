@@ -1,0 +1,769 @@
+/* =========================================================
+   YATUT CHAT STABILITY V1
+   Mobile keyboard stability + voice message/recorder polish.
+   Bottom navigation intentionally untouched.
+========================================================= */
+
+@media (max-width: 767px) {
+  .messenger.mobile-dialog-open {
+    position: fixed !important;
+    top:
+      var(
+        --yatut-visual-viewport-top,
+        0px
+      ) !important;
+    left:
+      var(
+        --yatut-visual-viewport-left,
+        0px
+      ) !important;
+
+    width:
+      var(
+        --yatut-visual-viewport-width,
+        100vw
+      ) !important;
+
+    height:
+      var(
+        --yatut-visual-viewport-height,
+        100dvh
+      ) !important;
+
+    min-width: 0 !important;
+    max-width: 100% !important;
+    min-height: 0 !important;
+    max-height:
+      var(
+        --yatut-visual-viewport-height,
+        100dvh
+      ) !important;
+
+    margin: 0 !important;
+    overflow: hidden !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    transform: none !important;
+    z-index: 6500 !important;
+    background: #fbfbfd;
+  }
+
+  .messenger.mobile-dialog-open .chat-dialog {
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    overflow: hidden !important;
+    transform: none !important;
+    background: #fbfbfd;
+  }
+
+  .messenger.mobile-dialog-open .chat-dialog-header {
+    flex: 0 0 auto !important;
+
+    min-height:
+      calc(
+        60px +
+        var(
+          --yatut-safe-top,
+          env(
+            safe-area-inset-top,
+            0px
+          )
+        )
+      ) !important;
+
+    padding-top:
+      var(
+        --yatut-safe-top,
+        env(
+          safe-area-inset-top,
+          0px
+        )
+      ) !important;
+
+    padding-right:
+      max(
+        10px,
+        var(
+          --yatut-safe-right,
+          env(
+            safe-area-inset-right,
+            0px
+          )
+        )
+      ) !important;
+
+    padding-left:
+      max(
+        10px,
+        var(
+          --yatut-safe-left,
+          env(
+            safe-area-inset-left,
+            0px
+          )
+        )
+      ) !important;
+
+    box-sizing: border-box;
+    background: rgba(255,255,255,.98);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+
+  .messenger.mobile-dialog-open
+  :is(
+    .message-search-bar,
+    .pinned-message-bar,
+    .composer-context-bar,
+    .chat-attachment-preview
+  ) {
+    flex: 0 0 auto !important;
+  }
+
+  .messenger.mobile-dialog-open .chat-messages {
+    flex: 1 1 auto !important;
+
+    min-width: 0 !important;
+    min-height: 0 !important;
+    width: 100% !important;
+
+    padding:
+      12px
+      10px
+      14px !important;
+
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior:
+      contain;
+
+    -webkit-overflow-scrolling:
+      touch;
+
+    scroll-behavior: auto;
+    background: #fbfbfd;
+  }
+
+  .messenger.mobile-dialog-open .chat-composer {
+    position: relative !important;
+    inset: auto !important;
+
+    flex: 0 0 auto !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+
+    margin: 0 !important;
+
+    padding:
+      8px
+      max(
+        8px,
+        var(
+          --yatut-safe-right,
+          env(
+            safe-area-inset-right,
+            0px
+          )
+        )
+      )
+      calc(
+        8px +
+        var(
+          --yatut-safe-bottom,
+          env(
+            safe-area-inset-bottom,
+            0px
+          )
+        )
+      )
+      max(
+        8px,
+        var(
+          --yatut-safe-left,
+          env(
+            safe-area-inset-left,
+            0px
+          )
+        )
+      ) !important;
+
+    box-sizing: border-box;
+
+    display: flex !important;
+    align-items: flex-end !important;
+    flex-wrap: nowrap !important;
+
+    gap: 6px !important;
+
+    border-top:
+      1px solid
+      rgba(35,38,52,.07) !important;
+
+    background:
+      rgba(255,255,255,.98) !important;
+
+    box-shadow:
+      0 -10px 28px
+      rgba(31,35,54,.04);
+
+    transform: none !important;
+  }
+
+  html.yatut-chat-keyboard-open
+  .messenger.mobile-dialog-open
+  .chat-composer {
+    padding-bottom:
+      8px !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-composer textarea {
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: none !important;
+
+    min-height: 44px !important;
+    max-height: 112px !important;
+
+    flex:
+      1
+      1
+      0 !important;
+
+    margin: 0 !important;
+    padding:
+      11px
+      13px !important;
+
+    box-sizing: border-box;
+
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+
+    border:
+      1px solid
+      rgba(35,38,52,.065) !important;
+
+    border-radius:
+      17px !important;
+
+    background:
+      #f5f6f9 !important;
+
+    font-size:
+      16px !important;
+
+    line-height:
+      1.35 !important;
+
+    -webkit-appearance:
+      none;
+    appearance:
+      none;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-composer textarea:focus {
+    border-color:
+      rgba(99,91,255,.22) !important;
+
+    background:
+      #fff !important;
+
+    box-shadow:
+      0 0 0 3px
+      rgba(99,91,255,.055) !important;
+
+    outline: none;
+  }
+
+  .messenger.mobile-dialog-open
+  :is(
+    .chat-plus-wrap,
+    .yatut-emoji-wrapper
+  ) {
+    flex:
+      0
+      0
+      auto !important;
+
+    min-width: 0 !important;
+  }
+
+  .messenger.mobile-dialog-open
+  :is(
+    .chat-plus,
+    .chat-emoji,
+    .chat-voice-button,
+    .chat-send
+  ) {
+    width:
+      44px !important;
+
+    height:
+      44px !important;
+
+    min-width:
+      44px !important;
+
+    min-height:
+      44px !important;
+
+    flex:
+      0
+      0
+      44px !important;
+
+    margin: 0 !important;
+
+    border-radius:
+      15px !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-plus,
+  .messenger.mobile-dialog-open
+  .chat-emoji {
+    border:
+      1px solid
+      rgba(35,38,52,.06) !important;
+
+    background:
+      #f6f7fa !important;
+
+    color:
+      #666b78 !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-voice-button {
+    border:
+      1px solid
+      rgba(99,91,255,.10) !important;
+
+    background:
+      #efedff !important;
+
+    color:
+      #635bff !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-send {
+    border:
+      0 !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        #746cff,
+        #635bff
+      ) !important;
+
+    color:
+      #fff !important;
+
+    box-shadow:
+      0 8px 18px
+      rgba(99,91,255,.18);
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-send:disabled {
+    opacity: .68;
+  }
+
+  .messenger.mobile-dialog-open
+  .message-row {
+    min-width: 0;
+  }
+
+  .messenger.mobile-dialog-open
+  .message-shell {
+    min-width: 0;
+    max-width: 86%;
+  }
+
+  .messenger.mobile-dialog-open
+  .message-bubble {
+    max-width: 100% !important;
+  }
+}
+
+/* ---------------------------------------------------------
+   Voice recorder
+--------------------------------------------------------- */
+
+.voice-recorder {
+  width: 100%;
+  min-width: 0;
+
+  display: grid;
+  grid-template-columns:
+    auto
+    auto
+    minmax(0,1fr)
+    auto;
+  align-items: center;
+
+  gap: 9px;
+}
+
+.voice-cancel-button,
+.voice-send-button {
+  width: 42px;
+  height: 42px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 14px;
+}
+
+.voice-cancel-button {
+  border: 1px solid rgba(35,38,52,.07);
+  background: #f5f6f9;
+  color: #737885;
+}
+
+.voice-send-button {
+  border: 0;
+  background:
+    linear-gradient(
+      145deg,
+      #746cff,
+      #635bff
+    );
+  color: #fff;
+
+  box-shadow:
+    0 8px 18px
+    rgba(99,91,255,.18);
+}
+
+.voice-send-button:disabled {
+  background: #d9dbe4;
+  color: #9fa3ad;
+  box-shadow: none;
+}
+
+.voice-recording-status {
+  min-width: 82px;
+}
+
+.voice-wave {
+  min-width: 0;
+}
+
+.voice-recorder.has-error
+.voice-wave {
+  opacity: .25;
+}
+
+@media (max-width: 767px) {
+  .chat-composer.voice-mode {
+    min-height: 68px !important;
+  }
+
+  .chat-composer.voice-mode
+  .voice-recorder {
+    grid-template-columns:
+      42px
+      minmax(70px,auto)
+      minmax(0,1fr)
+      42px;
+
+    gap: 7px;
+  }
+
+  .chat-composer.voice-mode
+  .voice-recording-status strong {
+    display: block !important;
+    font-size: 10px !important;
+  }
+
+  .chat-composer.voice-mode
+  .voice-recording-status span:last-child {
+    font-size: 10px !important;
+  }
+
+  .chat-composer.voice-mode
+  .voice-wave {
+    display: flex !important;
+    max-width: 100%;
+  }
+
+  .voice-wave span {
+    flex:
+      0
+      0
+      3px;
+  }
+}
+
+@media (max-width: 390px) {
+  .chat-composer.voice-mode
+  .voice-recorder {
+    grid-template-columns:
+      40px
+      minmax(58px,auto)
+      minmax(0,1fr)
+      40px;
+  }
+
+  .voice-cancel-button,
+  .voice-send-button {
+    width: 40px;
+    height: 40px;
+  }
+
+  .chat-composer.voice-mode
+  .voice-recording-status strong {
+    display: none !important;
+  }
+}
+
+/* ---------------------------------------------------------
+   Custom voice playback
+--------------------------------------------------------- */
+
+.voice-message {
+  width:
+    min(
+      320px,
+      70vw
+    ) !important;
+
+  min-width: 0 !important;
+  max-width: 100% !important;
+
+  display: grid !important;
+  grid-template-columns:
+    46px
+    minmax(0,1fr) !important;
+
+  align-items: center !important;
+
+  gap: 10px !important;
+}
+
+.voice-message > audio {
+  position: absolute !important;
+
+  width: 1px !important;
+  height: 1px !important;
+
+  overflow: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.voice-message-play {
+  width: 46px;
+  height: 46px;
+
+  display: grid;
+  place-items: center;
+
+  border: 0;
+  border-radius: 50%;
+
+  background:
+    rgba(99,91,255,.12);
+
+  color:
+    #635bff;
+
+  font-size: 17px;
+  font-weight: 900;
+
+  transition:
+    transform 140ms ease,
+    background 160ms ease;
+}
+
+.message-bubble.mine
+.voice-message-play {
+  background:
+    rgba(255,255,255,.18);
+
+  color:
+    #fff;
+}
+
+.voice-message-play:active {
+  transform:
+    scale(.94);
+}
+
+.voice-message.is-playing
+.voice-message-play {
+  background:
+    rgba(99,91,255,.20);
+}
+
+.message-bubble.mine
+.voice-message.is-playing
+.voice-message-play {
+  background:
+    rgba(255,255,255,.25);
+}
+
+.voice-message-track {
+  min-width: 0;
+}
+
+.voice-message-track input[type="range"] {
+  width: 100%;
+  height: 24px;
+
+  margin: 0;
+
+  accent-color:
+    #635bff;
+
+  cursor: pointer;
+}
+
+.message-bubble.mine
+.voice-message-track
+input[type="range"] {
+  accent-color:
+    #fff;
+}
+
+.voice-message-meta {
+  margin-top: -2px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 8px;
+
+  font-size: 10px;
+  line-height: 1;
+
+  opacity: .72;
+}
+
+.voice-message.has-error
+.voice-message-meta span:last-child {
+  color: #d54a69;
+  opacity: 1;
+}
+
+@media (max-width: 390px) {
+  .voice-message {
+    width:
+      min(
+        270px,
+        72vw
+      ) !important;
+
+    grid-template-columns:
+      42px
+      minmax(0,1fr) !important;
+
+    gap: 8px !important;
+  }
+
+  .voice-message-play {
+    width: 42px;
+    height: 42px;
+  }
+}
+
+/* ---------------------------------------------------------
+   Dark mode
+--------------------------------------------------------- */
+
+body.yatut-dark-mode
+.messenger.mobile-dialog-open,
+body.yatut-dark-mode
+.messenger.mobile-dialog-open
+.chat-dialog,
+body.yatut-dark-mode
+.messenger.mobile-dialog-open
+.chat-messages {
+  background: #111219 !important;
+}
+
+body.yatut-dark-mode
+.messenger.mobile-dialog-open
+.chat-dialog-header,
+body.yatut-dark-mode
+.messenger.mobile-dialog-open
+.chat-composer {
+  border-color:
+    rgba(255,255,255,.065) !important;
+
+  background:
+    rgba(24,25,33,.98) !important;
+}
+
+body.yatut-dark-mode
+.messenger.mobile-dialog-open
+.chat-composer textarea {
+  border-color:
+    rgba(255,255,255,.07) !important;
+
+  background:
+    #151720 !important;
+
+  color:
+    #f3f4f8 !important;
+}
+
+body.yatut-dark-mode
+.messenger.mobile-dialog-open
+.chat-composer textarea:focus {
+  background:
+    #181a23 !important;
+}
+
+body.yatut-dark-mode
+.messenger.mobile-dialog-open
+:is(
+  .chat-plus,
+  .chat-emoji
+) {
+  border-color:
+    rgba(255,255,255,.07) !important;
+
+  background:
+    #20222c !important;
+
+  color:
+    #c0c3cd !important;
+}
+
+body.yatut-dark-mode
+.voice-cancel-button {
+  border-color:
+    rgba(255,255,255,.07);
+
+  background:
+    #20222c;
+
+  color:
+    #c0c3cd;
+}
+
+body.yatut-dark-mode
+.message-bubble:not(.mine)
+.voice-message-play {
+  background:
+    rgba(159,151,255,.14);
+
+  color:
+    #aaa4ff;
+}
