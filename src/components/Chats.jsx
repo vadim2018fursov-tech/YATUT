@@ -3259,6 +3259,11 @@ function Chats({
   ] = useState(false);
 
   const [
+    dialogPositioned,
+    setDialogPositioned,
+  ] = useState(false);
+
+  const [
     draft,
     setDraft,
   ] = useState("");
@@ -4948,6 +4953,7 @@ function Chats({
         }
 
         setMessagesLoading(true);
+        setDialogPositioned(false);
 
         try {
           let stored =
@@ -5105,6 +5111,10 @@ function Chats({
         container.scrollTop =
           container.scrollHeight;
       }
+
+      setDialogPositioned(
+        true
+      );
     };
 
     frameOne =
@@ -8393,6 +8403,11 @@ function Chats({
             ? "mobile-dialog-open"
             : ""
         } ${
+          mobileDialogOpen &&
+          !dialogPositioned
+            ? "dialog-positioning"
+            : ""
+        } ${
           infoOpen
             ? "chat-info-open"
             : ""
@@ -9917,7 +9932,7 @@ function Chats({
 
                   </div>
 
-                  <div className="chat-input-shell">
+                  <div className="chat-input-shell chat-input-unified">
                     <textarea
                       value={draft}
                       rows={1}
@@ -10035,7 +10050,7 @@ function Chats({
                       ref={
                         emojiRef
                       }
-                      className="yatut-emoji-wrapper"
+                      className="yatut-emoji-wrapper chat-input-emoji"
                     >
 
                       <button
