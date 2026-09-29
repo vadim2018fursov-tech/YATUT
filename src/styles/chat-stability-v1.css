@@ -1198,3 +1198,120 @@ body.yatut-dark-mode
     transform: translateY(-3px);
   }
 }
+
+
+/* =========================================================
+   CHAT MOBILE LAYOUT V7 — SINGLE SOURCE OF TRUTH
+   Keep the composer in flex flow. visualViewport defines the
+   whole dialog, so its bottom is the keyboard top on iOS.
+========================================================= */
+@media (max-width: 767px) {
+  html.yatut-chat-open
+  .messenger.mobile-dialog-open {
+    position: fixed !important;
+    top: var(--yatut-visual-viewport-top, 0px) !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: var(--yatut-visual-viewport-left, 0px) !important;
+    width: var(--yatut-visual-viewport-width, 100vw) !important;
+    height: var(--yatut-visual-viewport-height, 100dvh) !important;
+    max-height: var(--yatut-visual-viewport-height, 100dvh) !important;
+    overflow: hidden !important;
+  }
+
+  html.yatut-chat-open
+  .messenger.mobile-dialog-open
+  .chat-dialog {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  html.yatut-chat-open
+  .messenger.mobile-dialog-open
+  .chat-messages {
+    position: relative !important;
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+    padding: 12px 10px !important;
+    scroll-padding-bottom: 12px !important;
+    overflow-y: auto !important;
+  }
+
+  html.yatut-chat-open
+  .messenger.mobile-dialog-open
+  .chat-composer,
+  html.yatut-chat-open.yatut-keyboard-open
+  .messenger.mobile-dialog-open
+  .chat-composer {
+    position: relative !important;
+    inset: auto !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    transform: none !important;
+
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 60px !important;
+    max-height: 166px !important;
+
+    margin: 0 !important;
+    padding:
+      7px
+      10px
+      max(
+        7px,
+        var(--yatut-safe-bottom, env(safe-area-inset-bottom, 0px))
+      ) !important;
+    gap: 7px !important;
+
+    border: 0 !important;
+    border-top: 1px solid rgba(35,38,52,.055) !important;
+    border-radius: 0 !important;
+    background: rgba(255,255,255,.98) !important;
+    box-shadow: 0 -8px 24px rgba(31,35,54,.045) !important;
+    box-sizing: border-box !important;
+    align-items: flex-end !important;
+  }
+
+  html.yatut-chat-open.yatut-keyboard-open
+  .messenger.mobile-dialog-open
+  .chat-composer {
+    padding-bottom: 7px !important;
+  }
+
+  html.yatut-chat-open
+  .messenger.mobile-dialog-open
+  .chat-input-shell {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 46px !important;
+    max-height: 138px !important;
+    align-items: flex-end !important;
+  }
+
+  html.yatut-chat-open
+  .messenger.mobile-dialog-open
+  .chat-composer textarea {
+    field-sizing: auto !important;
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 46px;
+    min-height: 46px !important;
+    max-height: 132px !important;
+    flex: 1 1 auto !important;
+    overflow-x: hidden !important;
+    overflow-y: hidden;
+    resize: none !important;
+    box-sizing: border-box !important;
+    line-height: 1.32 !important;
+  }
+}
