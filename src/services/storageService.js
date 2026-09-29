@@ -230,43 +230,44 @@ async function uploadObject({
           upsert
             ? "true"
             : "false",
-        "cache-control":
-          "3600",
       }
     );
 
-  if (
-    typeof onProgress ===
-    "function"
-  ) {
-    await new Promise(
-      (
-        resolve,
-        reject
-      ) => {
-        const xhr =
-          new XMLHttpRequest();
+  await new Promise(
+    (
+      resolve,
+      reject
+    ) => {
+      const xhr =
+        new XMLHttpRequest();
 
-        xhr.open(
-          "POST",
-          url,
-          true
-        );
+      xhr.open(
+        "POST",
+        url,
+        true
+      );
 
-        Object.entries(
-          requestHeaders
-        ).forEach(
-          ([
+      xhr.timeout =
+        120000;
+
+      Object.entries(
+        requestHeaders
+      ).forEach(
+        ([
+          key,
+          value,
+        ]) => {
+          xhr.setRequestHeader(
             key,
-            value,
-          ]) => {
-            xhr.setRequestHeader(
-              key,
-              value
-            );
-          }
-        );
+            value
+          );
+        }
+      );
 
+      if (
+        typeof onProgress ===
+        "function"
+      ) {
         xhr.upload.onprogress =
           (
             event
@@ -277,7 +278,7 @@ async function uploadObject({
               return;
             }
 
-            const progress =
+            onProgress(
               Math.max(
                 0,
                 Math.min(
@@ -290,87 +291,97 @@ async function uploadObject({
                       100
                   )
                 )
-              );
-
-            onProgress(
-              progress
-            );
-          };
-
-        xhr.onerror =
-          () => {
-            reject(
-              new Error(
-                "Не вдалося завантажити файл."
               )
             );
           };
+      }
 
-        xhr.onload =
-          () => {
+      const rejectWithResponse =
+        (
+          fallbackMessage
+        ) => {
+          let data =
+            null;
+
+          try {
+            data =
+              xhr.responseText
+                ? JSON.parse(
+                    xhr.responseText
+                  )
+                : null;
+          } catch {
+            data =
+              xhr.responseText;
+          }
+
+          reject(
+            new Error(
+              data?.message ||
+              data?.error ||
+              data?.statusCode ||
+              fallbackMessage
+            )
+          );
+        };
+
+      xhr.onerror =
+        () => {
+          rejectWithResponse(
+            "Не вдалося завантажити файл. Перевірте з'єднання."
+          );
+        };
+
+      xhr.onabort =
+        () => {
+          reject(
+            new Error(
+              "Завантаження файлу скасовано."
+            )
+          );
+        };
+
+      xhr.ontimeout =
+        () => {
+          reject(
+            new Error(
+              "Завантаження триває надто довго. Спробуйте ще раз."
+            )
+          );
+        };
+
+      xhr.onload =
+        () => {
+          if (
+            xhr.status >=
+              200 &&
+            xhr.status <
+              300
+          ) {
             if (
-              xhr.status >=
-                200 &&
-              xhr.status <
-                300
+              typeof onProgress ===
+              "function"
             ) {
               onProgress(
                 100
               );
-
-              resolve();
-
-              return;
             }
 
-            let data =
-              null;
+            resolve();
 
-            try {
-              data =
-                xhr.responseText
-                  ? JSON.parse(
-                      xhr.responseText
-                    )
-                  : null;
-            } catch {
-              data =
-                xhr.responseText;
-            }
+            return;
+          }
 
-            reject(
-              new Error(
-                data?.message ||
-                data?.error ||
-                data?.statusCode ||
-                "Не вдалося завантажити файл."
-              )
-            );
-          };
+          rejectWithResponse(
+            "Не вдалося завантажити файл."
+          );
+        };
 
-        xhr.send(
-          file
-        );
-      }
-    );
-  } else {
-    const response =
-      await fetch(
-        url,
-        {
-          method:
-            "POST",
-          headers:
-            requestHeaders,
-          body:
-            file,
-        }
+      xhr.send(
+        file
       );
-
-    await parseResponse(
-      response
-    );
-  }
+    }
+  );
 
   return {
     bucket,
