@@ -2481,7 +2481,11 @@ function MessageBubble({
             className={`message-action-menu message-action-menu-${actionPlacement}`}
             initial={{
               opacity: 0,
-              y: 8,
+              y:
+                actionPlacement ===
+                "above"
+                  ? 7
+                  : -7,
               scale: 0.96,
             }}
             animate={{
@@ -2491,7 +2495,11 @@ function MessageBubble({
             }}
             exit={{
               opacity: 0,
-              y: 5,
+              y:
+                actionPlacement ===
+                "above"
+                  ? 5
+                  : -5,
               scale: 0.97,
             }}
             transition={{
@@ -2653,7 +2661,11 @@ function MessageBubble({
             className={`message-reaction-popover message-reaction-popover-${actionPlacement}`}
             initial={{
               opacity: 0,
-              y: 6,
+              y:
+                actionPlacement ===
+                "above"
+                  ? 6
+                  : -6,
               scale: 0.94,
             }}
             animate={{
@@ -2663,7 +2675,11 @@ function MessageBubble({
             }}
             exit={{
               opacity: 0,
-              y: 4,
+              y:
+                actionPlacement ===
+                "above"
+                  ? 4
+                  : -4,
               scale: 0.96,
             }}
             transition={{
