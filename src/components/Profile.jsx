@@ -2213,106 +2213,7 @@ export default function Profile({
           >
             <div className="profile-v2-cover-glow" />
 
-            <div className="profile-v2-cover-copy">
-
-              <span>
-                ЯТУТ • КИЇВ
-              </span>
-
-              <h2>
-                Люди. Місця.
-                Можливості.
-              </h2>
-
-              <p>
-                Тут починаються
-                справжні зв’язки.
-              </p>
-
-            </div>
-          </div>
-
-          {/* =================================================
-              MOBILE COMPACT PROFILE CARD
-          ================================================= */}
-
-          <section className="profile-v3-mobile-card">
-            <div
-              className={`profile-v3-mobile-avatar-wrap ${
-                profile.online
-                  ? "is-online"
-                  : ""
-              }`.trim()}
-            >
-              <motion.button
-                type="button"
-                className="profile-v3-mobile-avatar"
-                whileTap={{
-                  scale: 0.96,
-                }}
-                onClick={() =>
-                  openProfileMedia(
-                    profile.avatar,
-                    "image"
-                  )
-                }
-                aria-label="Відкрити фото профілю"
-                disabled={
-                  !profile.avatar
-                }
-              >
-                {profile.avatar ? (
-                  <img
-                    src={
-                      profile.avatar
-                    }
-                    alt={
-                      profile.name
-                    }
-                  />
-                ) : (
-                  <span>
-                    {profile.name
-                      ?.[0]
-                      ?.toUpperCase() ||
-                      "В"}
-                  </span>
-                )}
-              </motion.button>
-
-            </div>
-
-            <div className="profile-v3-mobile-identity-row">
-              <div className="profile-v3-mobile-identity">
-                <div className="profile-v3-mobile-name-row">
-                  <h1>
-                    {
-                      profile.name
-                    }
-                  </h1>
-
-                  {profile.verified && (
-                    <span className="profile-v3-mobile-badge verified">
-                      Я
-                    </span>
-                  )}
-
-                  {profile.founder && (
-                    <span className="profile-v3-mobile-badge founder">
-                      ✦
-                    </span>
-                  )}
-                </div>
-
-                <div className="profile-v3-mobile-username">
-                  @
-                  {
-                    profile.username
-                  }
-                </div>
-              </div>
-
-              <div className="profile-v3-mobile-actions">
+              <div className="profile-v3-mobile-actions profile-v4-cover-actions">
                 <button
                   className="profile-v3-mobile-edit"
                   type="button"
@@ -2441,6 +2342,107 @@ export default function Profile({
                   </AnimatePresence>
                 </div>
               </div>
+
+            <div className="profile-v2-cover-copy">
+
+              <span>
+                ЯТУТ • КИЇВ
+              </span>
+
+              <h2>
+                Люди. Місця.
+                Можливості.
+              </h2>
+
+              <p>
+                Тут починаються
+                справжні зв’язки.
+              </p>
+
+            </div>
+          </div>
+
+          {/* =================================================
+              MOBILE COMPACT PROFILE CARD
+          ================================================= */}
+
+          <section className="profile-v3-mobile-card">
+            <div
+              className={`profile-v3-mobile-avatar-wrap ${
+                profile.online
+                  ? "is-online"
+                  : ""
+              }`.trim()}
+            >
+              <motion.button
+                type="button"
+                className="profile-v3-mobile-avatar"
+                whileTap={{
+                  scale: 0.96,
+                }}
+                onClick={() =>
+                  openProfileMedia(
+                    profile.avatar,
+                    "image"
+                  )
+                }
+                aria-label="Відкрити фото профілю"
+                disabled={
+                  !profile.avatar
+                }
+              >
+                {profile.avatar ? (
+                  <img
+                    src={
+                      profile.avatar
+                    }
+                    alt={
+                      profile.name
+                    }
+                  />
+                ) : (
+                  <span>
+                    {profile.name
+                      ?.[0]
+                      ?.toUpperCase() ||
+                      "В"}
+                  </span>
+                )}
+              </motion.button>
+
+            </div>
+
+            <div className="profile-v3-mobile-identity-row">
+              <div className="profile-v3-mobile-identity">
+                <div className="profile-v3-mobile-name-row">
+                  <h1>
+                    {
+                      profile.name
+                    }
+                  </h1>
+
+                  {profile.verified && (
+                    <span className="profile-v3-mobile-badge verified">
+                      Я
+                    </span>
+                  )}
+
+                  {profile.founder && (
+                    <span className="profile-v3-mobile-badge founder">
+                      ✦
+                    </span>
+                  )}
+                </div>
+
+                <div className="profile-v3-mobile-username">
+                  @
+                  {
+                    profile.username
+                  }
+                </div>
+              </div>
+
+
             </div>
 
             <div className="profile-v3-mobile-stats">
