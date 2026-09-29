@@ -192,6 +192,7 @@ function timeAgo(
 
 function Stories({
   authSession = null,
+  viewerProfile = null,
 }) {
   const [
     stories,
@@ -2053,7 +2054,20 @@ function Stories({
           <div className="yatut-story-avatar-wrap own">
 
             <div className="yatut-story-avatar">
-              Я
+              {viewerProfile?.avatar ? (
+                <img
+                  src={
+                    viewerProfile.avatar
+                  }
+                  alt={
+                    viewerProfile?.name ||
+                    "Мій профіль"
+                  }
+                />
+              ) : (
+                viewerProfile?.initial ||
+                "Я"
+              )}
             </div>
 
             <button
