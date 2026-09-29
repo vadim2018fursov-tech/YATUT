@@ -1,0 +1,88 @@
+/* =========================================================
+   YATUT PROFILE MOBILE FIX V1
+   Status popover layering + light active tab.
+========================================================= */
+
+@media (max-width: 767px) {
+  .profile-v2-hero {
+    position: relative !important;
+    z-index: 20 !important;
+    overflow: visible !important;
+  }
+
+  .profile-v3-mobile-card {
+    position: relative !important;
+    z-index: 21 !important;
+    overflow: visible !important;
+  }
+
+  .profile-v3-mobile-status-wrap {
+    position: relative !important;
+    z-index: 80 !important;
+    overflow: visible !important;
+  }
+
+  .profile-v3-mobile-status-menu {
+    top: calc(100% + 8px) !important;
+    left: 0 !important;
+    z-index: 9000 !important;
+    width: min(270px, calc(100vw - 48px)) !important;
+    max-height: min(330px, 48dvh);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border: 1px solid rgba(99,91,255,.10) !important;
+    border-radius: 17px !important;
+    background: rgba(255,255,255,.98) !important;
+    box-shadow:
+      0 22px 54px rgba(31,35,54,.16),
+      0 2px 10px rgba(99,91,255,.08) !important;
+    backdrop-filter: blur(22px) saturate(1.08);
+    -webkit-backdrop-filter: blur(22px) saturate(1.08);
+  }
+
+  .profile-v2-grid {
+    position: relative !important;
+    z-index: 1 !important;
+  }
+
+  body:not(.yatut-dark-mode) .profile-v2-tabs {
+    border-color: rgba(32,35,49,.07) !important;
+    background: rgba(255,255,255,.96) !important;
+    box-shadow: 0 9px 28px rgba(31,35,54,.06) !important;
+  }
+
+  body:not(.yatut-dark-mode) .profile-v2-tabs button {
+    color: #777c88 !important;
+    background: transparent !important;
+  }
+
+  body:not(.yatut-dark-mode) .profile-v2-tabs button.active {
+    color: #635bff !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  body:not(.yatut-dark-mode) .profile-v2-tab-active {
+    background:
+      linear-gradient(
+        145deg,
+        #f0efff,
+        #e9e7ff
+      ) !important;
+    border: 1px solid rgba(99,91,255,.10);
+    box-shadow:
+      0 7px 18px rgba(99,91,255,.10),
+      inset 0 1px 0 rgba(255,255,255,.85) !important;
+  }
+
+  body.yatut-dark-mode .profile-v3-mobile-status-menu {
+    border-color: rgba(255,255,255,.08) !important;
+    background: rgba(25,26,35,.98) !important;
+    box-shadow: 0 24px 58px rgba(0,0,0,.34) !important;
+  }
+
+  body.yatut-dark-mode .profile-v2-tabs button.active {
+    color: #a59fff !important;
+    background: transparent !important;
+  }
+}
