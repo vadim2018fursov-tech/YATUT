@@ -3234,6 +3234,11 @@ function Chats({
   ] = useState([]);
 
   const [
+    chatsLoading,
+    setChatsLoading,
+  ] = useState(true);
+
+  const [
     activeChatId,
     setActiveChatId,
   ] = useState(null);
@@ -3642,8 +3647,30 @@ function Chats({
         "yatut-chat-input-focused"
       );
 
+      document.documentElement.classList.remove(
+        "yatut-keyboard-open"
+      );
+
       document.body.classList.remove(
         "yatut-chat-open"
+      );
+
+      const focused =
+        document.activeElement;
+
+      if (
+        focused instanceof
+          HTMLElement &&
+        focused.closest?.(
+          ".chat-composer"
+        )
+      ) {
+        focused.blur();
+      }
+
+      window.scrollTo(
+        0,
+        0
       );
     };
   }, [
@@ -4312,6 +4339,8 @@ function Chats({
   useEffect(() => {
     const load =
       async () => {
+        setChatsLoading(true);
+
         try {
           let stored =
             await getChats();
@@ -4636,6 +4665,8 @@ function Chats({
             "CHAT LOAD ERROR:",
             error
           );
+        } finally {
+          setChatsLoading(false);
         }
       };
 
@@ -8734,6 +8765,15 @@ function Chats({
                   </button>
                 )
               )
+            ) : chatsLoading ? (
+              <div
+                className="chat-list-loading"
+                aria-label="Завантаження чатів"
+              >
+                <span className="chat-list-loading-dot" />
+                <span className="chat-list-loading-dot" />
+                <span className="chat-list-loading-dot" />
+              </div>
             ) : (
               <div className="chat-list-empty">
                 <YatutIcon
@@ -9839,9 +9879,18 @@ function Chats({
 
                         textarea.style.height =
                           `${Math.min(
-                            textarea.scrollHeight,
+                            Math.max(
+                              textarea.scrollHeight,
+                              46
+                            ),
                             132
                           )}px`;
+
+                        textarea.style.overflowY =
+                          textarea.scrollHeight >
+                          132
+                            ? "auto"
+                            : "hidden";
                       }}
                       placeholder={
                         editing
