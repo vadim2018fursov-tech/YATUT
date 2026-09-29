@@ -39,6 +39,7 @@ import "./styles/mobile-more-menu.css";
 import "./styles/pulse-final-polish.css";
 import "./styles/final-ui-polish.css";
 import "./styles/dark-theme-v2.css";
+import "./styles/mobile-liquid-glass-nav.css";
 
 import Stories from "./components/Stories";
 import Profile from "./components/Profile";
