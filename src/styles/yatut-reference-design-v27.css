@@ -5541,3 +5541,529 @@ body.yatut-dark-mode
       22px !important;
   }
 }
+
+
+/* =========================================================
+   V27 — SIXTH PACKAGE
+   Sharing, chat management, badge tooltips, legacy feed shell.
+========================================================= */
+
+/* SHARE POST */
+
+.yatut-share-overlay,
+.yatut-chat-modal-backdrop {
+  backdrop-filter:
+    blur(12px)
+    saturate(1.10) !important;
+
+  -webkit-backdrop-filter:
+    blur(12px)
+    saturate(1.10) !important;
+}
+
+.yatut-share-sheet,
+.yatut-group-manage-modal,
+.yatut-chat-media-modal,
+.forward-modal,
+.group-modal {
+  border:
+    1px solid
+    var(--v27-glass-border) !important;
+
+  background:
+    var(--v27-glass-light) !important;
+
+  box-shadow:
+    0 28px 80px rgba(22,25,46,.22),
+    inset 0 1px 0 rgba(255,255,255,.88) !important;
+
+  backdrop-filter:
+    blur(24px)
+    saturate(1.24) !important;
+
+  -webkit-backdrop-filter:
+    blur(24px)
+    saturate(1.24) !important;
+
+  animation:
+    v27SheetIn .22s cubic-bezier(.2,.82,.22,1);
+}
+
+body.yatut-dark-mode
+:is(
+  .yatut-share-sheet,
+  .yatut-group-manage-modal,
+  .yatut-chat-media-modal,
+  .forward-modal,
+  .group-modal
+) {
+  border-color:
+    rgba(255,255,255,.12) !important;
+
+  background:
+    var(--v27-glass-dark) !important;
+}
+
+.yatut-share-post-preview,
+.yatut-share-quick-person,
+.yatut-share-recipient,
+.yatut-group-member,
+.yatut-chat-file-card,
+.yatut-chat-voice-card,
+.forward-chat-row {
+  border:
+    1px solid
+    rgba(78,84,111,.07) !important;
+
+  background:
+    rgba(248,249,252,.88) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.84),
+    0 6px 14px rgba(31,35,63,.035) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .yatut-share-post-preview,
+  .yatut-share-quick-person,
+  .yatut-share-recipient,
+  .yatut-group-member,
+  .yatut-chat-file-card,
+  .yatut-chat-voice-card,
+  .forward-chat-row
+) {
+  border-color:
+    rgba(255,255,255,.06) !important;
+
+  background:
+    rgba(255,255,255,.032) !important;
+}
+
+.yatut-share-send,
+.forward-send-button,
+.yatut-group-manage-footer .is-primary,
+.group-modal-footer button:last-child {
+  background:
+    linear-gradient(
+      135deg,
+      #7c6bff,
+      #5a49eb
+    ) !important;
+
+  color:
+    #fff !important;
+
+  box-shadow:
+    0 10px 22px rgba(85,68,224,.22),
+    inset 0 1px 0 rgba(255,255,255,.28) !important;
+}
+
+.yatut-share-avatar,
+.forward-chat-avatar,
+.yatut-group-member-avatar,
+.group-person-avatar {
+  box-shadow:
+    0 6px 14px rgba(31,35,63,.10),
+    0 0 0 2px rgba(255,255,255,.90) !important;
+}
+
+.yatut-share-online {
+  box-shadow:
+    0 0 0 2px rgba(255,255,255,.94),
+    0 0 10px rgba(37,200,122,.70) !important;
+}
+
+/* CHAT MANAGEMENT */
+
+.yatut-group-title-field,
+.yatut-manage-search,
+.group-name-field,
+.group-people-search,
+.forward-search {
+  border:
+    1px solid
+    rgba(78,84,111,.08) !important;
+
+  background:
+    rgba(247,248,252,.92) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.86) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .yatut-group-title-field,
+  .yatut-manage-search,
+  .group-name-field,
+  .group-people-search,
+  .forward-search
+) {
+  border-color:
+    rgba(255,255,255,.07) !important;
+
+  background:
+    rgba(255,255,255,.035) !important;
+}
+
+.yatut-chat-media-tabs button.active,
+.yatut-share-tabs button.active {
+  background:
+    linear-gradient(
+      135deg,
+      #7c6bff,
+      #5a49eb
+    ) !important;
+
+  color:
+    #fff !important;
+
+  box-shadow:
+    0 8px 18px rgba(85,68,224,.20),
+    inset 0 1px 0 rgba(255,255,255,.28) !important;
+}
+
+.yatut-chat-media-item {
+  overflow:
+    hidden;
+
+  border:
+    1px solid
+    rgba(255,255,255,.18) !important;
+
+  box-shadow:
+    0 8px 18px rgba(31,35,63,.08) !important;
+}
+
+/* BADGE TOOLTIP */
+
+.yat-badge-tooltip {
+  border:
+    1px solid
+    var(--v27-glass-border) !important;
+
+  background:
+    var(--v27-glass-light) !important;
+
+  box-shadow:
+    0 20px 50px rgba(26,29,50,.18),
+    inset 0 1px 0 rgba(255,255,255,.86) !important;
+
+  backdrop-filter:
+    blur(20px)
+    saturate(1.22) !important;
+
+  -webkit-backdrop-filter:
+    blur(20px)
+    saturate(1.22) !important;
+}
+
+body.yatut-dark-mode
+.yat-badge-tooltip {
+  border-color:
+    rgba(255,255,255,.12) !important;
+
+  background:
+    var(--v27-glass-dark) !important;
+}
+
+.yat-badge-tooltip-track {
+  overflow:
+    hidden;
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(111,93,255,.10) !important;
+}
+
+.yat-badge-tooltip-progress {
+  filter:
+    drop-shadow(
+      0 0 8px rgba(111,93,255,.22)
+    );
+}
+
+/* LEGACY FEED / APP SHELL */
+
+.post-composer,
+.post-card,
+.right-card,
+.sidebar-profile-card,
+.home-start-card,
+.card,
+.temporary-page {
+  border:
+    1px solid
+    rgba(255,255,255,.74) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.95),
+      rgba(255,255,255,.78)
+    ) !important;
+
+  box-shadow:
+    0 14px 32px rgba(31,35,63,.075),
+    inset 0 1px 0 rgba(255,255,255,.90) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .post-composer,
+  .post-card,
+  .right-card,
+  .sidebar-profile-card,
+  .home-start-card,
+  .card,
+  .temporary-page
+) {
+  border-color:
+    rgba(255,255,255,.08) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,24,41,.90),
+      rgba(8,13,25,.84)
+    ) !important;
+}
+
+.topbar {
+  border-bottom:
+    1px solid
+    rgba(255,255,255,.62) !important;
+
+  background:
+    rgba(255,255,255,.74) !important;
+
+  box-shadow:
+    0 10px 28px rgba(31,35,63,.06),
+    inset 0 1px 0 rgba(255,255,255,.92) !important;
+
+  backdrop-filter:
+    blur(20px)
+    saturate(1.20) !important;
+
+  -webkit-backdrop-filter:
+    blur(20px)
+    saturate(1.20) !important;
+}
+
+body.yatut-dark-mode
+.topbar {
+  border-bottom-color:
+    rgba(255,255,255,.08) !important;
+
+  background:
+    rgba(8,13,25,.76) !important;
+
+  box-shadow:
+    0 10px 28px rgba(0,0,0,.16),
+    inset 0 1px 0 rgba(255,255,255,.04) !important;
+}
+
+.desktop-search,
+.icon-button,
+.profile-mini {
+  border:
+    1px solid
+    rgba(78,84,111,.08) !important;
+
+  background:
+    rgba(247,248,252,.88) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.84),
+    0 7px 16px rgba(31,35,63,.04) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .desktop-search,
+  .icon-button,
+  .profile-mini
+) {
+  border-color:
+    rgba(255,255,255,.07) !important;
+
+  background:
+    rgba(255,255,255,.035) !important;
+}
+
+.publish-button,
+.home-start-card__actions .is-primary,
+.send-comment {
+  background:
+    linear-gradient(
+      135deg,
+      #7c6bff,
+      #5a49eb
+    ) !important;
+
+  color:
+    #fff !important;
+
+  box-shadow:
+    0 9px 20px rgba(85,68,224,.22),
+    inset 0 1px 0 rgba(255,255,255,.28) !important;
+}
+
+.comment-bubble,
+.comment-input-box,
+.composer-main {
+  border:
+    1px solid
+    rgba(78,84,111,.07) !important;
+
+  background:
+    rgba(248,249,252,.88) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.84) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .comment-bubble,
+  .comment-input-box,
+  .composer-main
+) {
+  border-color:
+    rgba(255,255,255,.06) !important;
+
+  background:
+    rgba(255,255,255,.032) !important;
+}
+
+.post-card-menu {
+  border:
+    1px solid
+    var(--v27-glass-border) !important;
+
+  background:
+    var(--v27-glass-light) !important;
+
+  box-shadow:
+    0 20px 50px rgba(26,29,50,.18),
+    inset 0 1px 0 rgba(255,255,255,.86) !important;
+
+  backdrop-filter:
+    blur(20px)
+    saturate(1.22) !important;
+
+  -webkit-backdrop-filter:
+    blur(20px)
+    saturate(1.22) !important;
+}
+
+body.yatut-dark-mode
+.post-card-menu {
+  border-color:
+    rgba(255,255,255,.12) !important;
+
+  background:
+    var(--v27-glass-dark) !important;
+}
+
+.feed-tab.active,
+.feed-tab[aria-selected="true"] {
+  color:
+    var(--v27-violet) !important;
+}
+
+.feed-tab-motion-bg {
+  background:
+    rgba(111,93,255,.08) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.70) !important;
+}
+
+.feed-feedback-toast,
+.yatut-toast,
+.pulse-feedback-toast {
+  border:
+    1px solid
+    var(--v27-glass-border) !important;
+
+  background:
+    var(--v27-glass-light) !important;
+
+  box-shadow:
+    0 18px 44px rgba(26,29,50,.16),
+    inset 0 1px 0 rgba(255,255,255,.84) !important;
+
+  backdrop-filter:
+    blur(18px)
+    saturate(1.20) !important;
+
+  -webkit-backdrop-filter:
+    blur(18px)
+    saturate(1.20) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .feed-feedback-toast,
+  .yatut-toast,
+  .pulse-feedback-toast
+) {
+  border-color:
+    rgba(255,255,255,.12) !important;
+
+  background:
+    var(--v27-glass-dark) !important;
+}
+
+/* SIDEBAR / NAV */
+
+.left-sidebar,
+.right-sidebar {
+  scrollbar-width:
+    none;
+}
+
+.left-sidebar::-webkit-scrollbar,
+.right-sidebar::-webkit-scrollbar {
+  display:
+    none;
+}
+
+.main-nav .nav-item,
+.main-nav button,
+.nav-icon {
+  transition:
+    transform .16s ease,
+    color .18s ease,
+    background .18s ease !important;
+}
+
+.main-nav .active,
+.main-nav [aria-current="page"] {
+  color:
+    var(--v27-violet) !important;
+}
+
+/* FINAL MOBILE TUNING */
+
+@media (max-width:767px) {
+  .yatut-share-sheet,
+  .yatut-group-manage-modal,
+  .yatut-chat-media-modal,
+  .forward-modal,
+  .group-modal {
+    border-radius:
+      26px 26px 0 0 !important;
+  }
+
+  .post-card,
+  .post-composer,
+  .right-card {
+    border-radius:
+      20px !important;
+  }
+}
