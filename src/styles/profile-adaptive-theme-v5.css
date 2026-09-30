@@ -1,0 +1,598 @@
+/* =========================================================
+   YATUT PROFILE V5 — ADAPTIVE LIGHT / DARK
+   Final visual override for the approved profile direction.
+   Keeps current profile logic, uploads and navigation intact.
+========================================================= */
+
+@media (max-width: 767px) {
+  body.yatut-profile-immersive {
+    --yp-page: #f6f7fb;
+    --yp-page-2: #ffffff;
+    --yp-text: #171923;
+    --yp-text-soft: #737988;
+    --yp-text-muted: #9297a4;
+    --yp-glass: rgba(255,255,255,.72);
+    --yp-glass-strong: rgba(255,255,255,.88);
+    --yp-glass-soft: rgba(250,251,255,.64);
+    --yp-border: rgba(67,72,96,.10);
+    --yp-border-strong: rgba(255,255,255,.72);
+    --yp-shadow: 0 14px 34px rgba(29,34,55,.10);
+    --yp-shadow-soft: 0 8px 24px rgba(29,34,55,.07);
+    --yp-accent: #655cff;
+    --yp-accent-2: #5148ed;
+    --yp-accent-soft: rgba(101,92,255,.13);
+    --yp-accent-text: #5d54ef;
+    --yp-nav-icon: #343845;
+    --yp-topbar-icon: #434856;
+  }
+
+  body.yatut-profile-immersive.yatut-dark-mode {
+    --yp-page: #070b16;
+    --yp-page-2: #0b101d;
+    --yp-text: #f8f9ff;
+    --yp-text-soft: rgba(223,228,243,.76);
+    --yp-text-muted: rgba(204,210,228,.58);
+    --yp-glass: rgba(27,32,51,.64);
+    --yp-glass-strong: rgba(24,29,47,.78);
+    --yp-glass-soft: rgba(19,24,40,.60);
+    --yp-border: rgba(255,255,255,.10);
+    --yp-border-strong: rgba(255,255,255,.14);
+    --yp-shadow: 0 16px 38px rgba(0,0,0,.26);
+    --yp-shadow-soft: 0 10px 26px rgba(0,0,0,.18);
+    --yp-accent: #7a70ff;
+    --yp-accent-2: #5c51ee;
+    --yp-accent-soft: rgba(122,112,255,.18);
+    --yp-accent-text: #aaa3ff;
+    --yp-nav-icon: rgba(223,228,244,.82);
+    --yp-topbar-icon: #f4f5ff;
+  }
+
+  html.yatut-profile-immersive,
+  body.yatut-profile-immersive,
+  body.yatut-profile-immersive .app {
+    background: var(--yp-page) !important;
+  }
+
+  /* ---------- BACKGROUND / COVER ---------- */
+
+  .profile-v4-immersive {
+    background: transparent !important;
+    color: var(--yp-text) !important;
+  }
+
+  .profile-v4-immersive .profile-v2-wallpaper {
+    opacity: 1 !important;
+    filter: saturate(1.03) contrast(1.02) brightness(.97) !important;
+  }
+
+  body.yatut-profile-immersive:not(.yatut-dark-mode)
+  .profile-v4-immersive .profile-v2-wallpaper::before {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(246,247,251,.00) 0%,
+        rgba(246,247,251,.04) 20%,
+        rgba(246,247,251,.18) 32%,
+        rgba(246,247,251,.66) 48%,
+        rgba(246,247,251,.94) 61%,
+        #f6f7fb 74%,
+        #f6f7fb 100%
+      ) !important;
+  }
+
+  body.yatut-profile-immersive:not(.yatut-dark-mode)
+  .profile-v4-immersive .profile-v2-wallpaper::after {
+    background:
+      radial-gradient(
+        circle at 86% 12%,
+        rgba(123,108,255,.12),
+        transparent 32%
+      ),
+      radial-gradient(
+        circle at 7% 44%,
+        rgba(66,218,172,.06),
+        transparent 26%
+      ) !important;
+    mix-blend-mode: normal !important;
+    opacity: .9 !important;
+  }
+
+  body.yatut-profile-immersive.yatut-dark-mode
+  .profile-v4-immersive .profile-v2-wallpaper {
+    filter: saturate(1.04) contrast(1.04) brightness(.83) !important;
+  }
+
+  body.yatut-profile-immersive.yatut-dark-mode
+  .profile-v4-immersive .profile-v2-wallpaper::before {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(7,11,22,.02) 0%,
+        rgba(7,11,22,.12) 27%,
+        rgba(7,11,22,.46) 49%,
+        rgba(7,11,22,.82) 68%,
+        #070b16 88%,
+        #070b16 100%
+      ) !important;
+  }
+
+  /* ---------- TOP BAR ---------- */
+
+  body.yatut-profile-immersive .topbar {
+    position: relative !important;
+    z-index: 1200 !important;
+    border-bottom: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  body.yatut-profile-immersive .topbar-inner {
+    background: transparent !important;
+  }
+
+  body.yatut-profile-immersive .brand-tut {
+    color: #fff !important;
+    text-shadow:
+      0 2px 12px rgba(0,0,0,.25),
+      0 1px 2px rgba(0,0,0,.20);
+  }
+
+  body.yatut-profile-immersive .topbar .icon-button,
+  body.yatut-profile-immersive .topbar .profile-mini {
+    border: 1px solid rgba(255,255,255,.58) !important;
+    border-radius: 15px !important;
+    background: rgba(255,255,255,.50) !important;
+    color: #343845 !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.72),
+      0 8px 24px rgba(24,28,48,.10) !important;
+    backdrop-filter: blur(20px) saturate(1.45) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(1.45) !important;
+  }
+
+  body.yatut-profile-immersive.yatut-dark-mode .topbar .icon-button,
+  body.yatut-profile-immersive.yatut-dark-mode .topbar .profile-mini {
+    border-color: rgba(255,255,255,.14) !important;
+    background: rgba(18,23,40,.40) !important;
+    color: #f2f4ff !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.09),
+      0 9px 26px rgba(0,0,0,.18) !important;
+  }
+
+  /* ---------- PROFILE IDENTITY ---------- */
+
+  .profile-v4-immersive .profile-v3-mobile-card {
+    color: var(--yp-text) !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-name-row h1 {
+    color: var(--yp-text) !important;
+    text-shadow: none !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-username {
+    color: var(--yp-text-soft) !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-bio {
+    color: var(--yp-text) !important;
+    text-shadow: none !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-meta span {
+    color: var(--yp-text-soft) !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-meta .yatut-icon {
+    color: var(--yp-accent) !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-avatar {
+    border-color: rgba(255,255,255,.98) !important;
+    background: rgba(255,255,255,.16) !important;
+    box-shadow:
+      0 0 0 2px rgba(54,211,153,.52),
+      0 0 18px rgba(54,211,153,.18),
+      0 12px 30px rgba(23,27,45,.14) !important;
+  }
+
+  body.yatut-profile-immersive.yatut-dark-mode
+  .profile-v4-immersive .profile-v3-mobile-avatar {
+    box-shadow:
+      0 0 0 2px rgba(54,211,153,.55),
+      0 0 20px rgba(54,211,153,.20),
+      0 14px 32px rgba(0,0,0,.28) !important;
+  }
+
+  /* ---------- STATUS ---------- */
+
+  .profile-v4-immersive .profile-v3-mobile-status {
+    min-height: 40px !important;
+    padding: 0 13px !important;
+    border: 1px solid rgba(101,92,255,.14) !important;
+    border-radius: 15px !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(239,237,255,.94),
+        rgba(250,249,255,.88)
+      ) !important;
+    color: var(--yp-accent-text) !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.90),
+      0 8px 20px rgba(74,65,190,.08) !important;
+    backdrop-filter: blur(18px) saturate(1.35) !important;
+    -webkit-backdrop-filter: blur(18px) saturate(1.35) !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-status small {
+    color: var(--yp-text-muted) !important;
+  }
+
+  body.yatut-profile-immersive.yatut-dark-mode
+  .profile-v4-immersive .profile-v3-mobile-status {
+    border-color: rgba(145,132,255,.28) !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(79,66,147,.58),
+        rgba(35,35,66,.52)
+      ) !important;
+    color: #b9b1ff !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.09),
+      0 9px 24px rgba(0,0,0,.14) !important;
+  }
+
+  /* ---------- ACTIONS ---------- */
+
+  .profile-v4-immersive .profile-v3-mobile-actions {
+    grid-template-columns: minmax(0,1fr) 48px 48px !important;
+    gap: 9px !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-edit {
+    min-height: 50px !important;
+    border: 1px solid rgba(255,255,255,.16) !important;
+    border-radius: 17px !important;
+    background:
+      linear-gradient(
+        135deg,
+        #766dff 0%,
+        #655cff 52%,
+        #5148ed 100%
+      ) !important;
+    color: #fff !important;
+    font-size: 13px !important;
+    font-weight: 850 !important;
+    box-shadow:
+      0 13px 28px rgba(81,72,237,.25),
+      inset 0 1px 0 rgba(255,255,255,.22) !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-action {
+    width: 48px !important;
+    height: 48px !important;
+    border: 1px solid var(--yp-border) !important;
+    border-radius: 16px !important;
+    background: var(--yp-glass-strong) !important;
+    color: var(--yp-text) !important;
+    box-shadow: var(--yp-shadow-soft) !important;
+    backdrop-filter: blur(20px) saturate(1.35) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(1.35) !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-action:active,
+  .profile-v4-immersive .profile-v3-mobile-edit:active {
+    transform: scale(.97) !important;
+  }
+
+  /* ---------- STATS ---------- */
+
+  .profile-v4-immersive .profile-v3-mobile-stats {
+    min-height: 82px !important;
+    margin-top: 18px !important;
+    padding: 7px 4px !important;
+    border: 1px solid var(--yp-border) !important;
+    border-radius: 20px !important;
+    background: var(--yp-glass-strong) !important;
+    box-shadow: var(--yp-shadow-soft) !important;
+    backdrop-filter: blur(20px) saturate(1.30) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(1.30) !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-stats button {
+    color: var(--yp-text) !important;
+    background: transparent !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-stats button + button {
+    border-left: 1px solid var(--yp-border) !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-stats strong {
+    color: var(--yp-text) !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-stats span {
+    color: var(--yp-text-soft) !important;
+  }
+
+  /* ---------- PROFILE TABS ---------- */
+
+  .profile-v4-immersive .profile-v2-tabs {
+    min-height: 60px !important;
+    padding: 5px !important;
+    border: 1px solid var(--yp-border) !important;
+    border-radius: 20px !important;
+    background: var(--yp-glass-strong) !important;
+    box-shadow: var(--yp-shadow-soft) !important;
+    backdrop-filter: blur(20px) saturate(1.25) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(1.25) !important;
+  }
+
+  .profile-v4-immersive .profile-v2-tabs button {
+    min-height: 50px !important;
+    border: 0 !important;
+    border-radius: 15px !important;
+    background: transparent !important;
+    color: var(--yp-text-soft) !important;
+    box-shadow: none !important;
+  }
+
+  .profile-v4-immersive .profile-v2-tabs button.active {
+    color: var(--yp-accent-text) !important;
+  }
+
+  .profile-v4-immersive .profile-v2-tab-active {
+    border: 1px solid rgba(101,92,255,.14) !important;
+    border-radius: 15px !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(233,230,255,.95),
+        rgba(246,244,255,.92)
+      ) !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.90),
+      0 6px 16px rgba(86,75,211,.08) !important;
+  }
+
+  body.yatut-profile-immersive.yatut-dark-mode
+  .profile-v4-immersive .profile-v2-tab-active {
+    border-color: rgba(153,139,255,.22) !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(101,83,231,.82),
+        rgba(72,58,177,.78)
+      ) !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.13),
+      0 8px 18px rgba(69,55,184,.22) !important;
+  }
+
+  .profile-v4-immersive .profile-v2-tab-label {
+    color: inherit !important;
+  }
+
+  /* ---------- POSTS / COMPOSER ---------- */
+
+  .profile-v4-immersive .profile-v2-inline-composer,
+  .profile-v4-immersive .profile-v2-post-card,
+  .profile-v4-immersive .profile-v2-card {
+    border: 1px solid var(--yp-border) !important;
+    border-radius: 20px !important;
+    background: var(--yp-glass-strong) !important;
+    color: var(--yp-text) !important;
+    box-shadow: var(--yp-shadow-soft) !important;
+    backdrop-filter: blur(18px) saturate(1.16) !important;
+    -webkit-backdrop-filter: blur(18px) saturate(1.16) !important;
+  }
+
+  .profile-v4-immersive .profile-v2-post-card strong,
+  .profile-v4-immersive .profile-v2-post-card p,
+  .profile-v4-immersive .profile-v2-post-card h3,
+  .profile-v4-immersive .profile-v2-inline-composer strong {
+    color: var(--yp-text) !important;
+  }
+
+  .profile-v4-immersive .profile-v2-post-card small,
+  .profile-v4-immersive .profile-v2-post-card span {
+    color: var(--yp-text-soft) !important;
+  }
+
+  .profile-v4-immersive .profile-v2-inline-composer textarea {
+    border-color: var(--yp-border) !important;
+    background: var(--yp-glass-soft) !important;
+    color: var(--yp-text) !important;
+  }
+
+  .profile-v4-immersive .profile-v2-inline-composer textarea::placeholder {
+    color: var(--yp-text-muted) !important;
+  }
+
+  /* ---------- GLOBAL BOTTOM NAV / LIQUID GLASS ---------- */
+
+  #yatut-global-mobile-nav.mobile-nav {
+    left: 14px !important;
+    right: 14px !important;
+    bottom: calc(10px + env(safe-area-inset-bottom)) !important;
+    z-index: 1700 !important;
+    width: auto !important;
+    min-height: 82px !important;
+    padding: 8px 7px 10px !important;
+    overflow: hidden !important;
+    isolation: isolate;
+    border: 1px solid rgba(255,255,255,.72) !important;
+    border-radius: 31px !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.80),
+        rgba(243,245,255,.66)
+      ) !important;
+    box-shadow:
+      0 18px 46px rgba(34,39,69,.14),
+      0 4px 16px rgba(101,92,255,.08),
+      inset 0 1px 0 rgba(255,255,255,.92) !important;
+    backdrop-filter: blur(30px) saturate(1.55) !important;
+    -webkit-backdrop-filter: blur(30px) saturate(1.55) !important;
+  }
+
+  #yatut-global-mobile-nav.mobile-nav::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(
+        ellipse 34% 88% at 96% 58%,
+        rgba(120,95,255,.24),
+        rgba(126,111,255,.08) 48%,
+        transparent 72%
+      ),
+      linear-gradient(
+        108deg,
+        rgba(255,255,255,.26),
+        transparent 35%,
+        rgba(120,109,255,.05) 72%,
+        rgba(255,255,255,.14)
+      ) !important;
+  }
+
+  #yatut-global-mobile-nav.mobile-nav > button {
+    position: relative !important;
+    z-index: 2 !important;
+    min-height: 62px !important;
+    padding: 4px 2px !important;
+    border: 0 !important;
+    border-radius: 18px !important;
+    background: transparent !important;
+    color: #373b48 !important;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+
+  #yatut-global-mobile-nav.mobile-nav > button.active,
+  #yatut-global-mobile-nav.mobile-nav > button[aria-current="page"] {
+    color: var(--yp-accent) !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  #yatut-global-mobile-nav.mobile-nav .mobile-nav-icon {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    min-height: 32px !important;
+    display: grid !important;
+    place-items: center !important;
+    background: transparent !important;
+    color: inherit !important;
+  }
+
+  #yatut-global-mobile-nav.mobile-nav .mobile-nav-icon .yatut-icon {
+    width: 24px !important;
+    height: 24px !important;
+    color: inherit !important;
+    opacity: 1 !important;
+    stroke-width: 1.9;
+  }
+
+  #yatut-global-mobile-nav.mobile-nav > button.active .mobile-nav-icon {
+    filter:
+      drop-shadow(0 0 8px rgba(101,92,255,.35))
+      drop-shadow(0 0 14px rgba(101,92,255,.15));
+  }
+
+  #yatut-global-mobile-nav.mobile-nav > button small {
+    color: inherit !important;
+    font-size: 10px !important;
+    font-weight: 760 !important;
+    line-height: 1 !important;
+  }
+
+  body.yatut-dark-mode #yatut-global-mobile-nav.mobile-nav {
+    border-color: rgba(142,130,255,.32) !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(31,35,56,.84),
+        rgba(16,20,36,.82)
+      ) !important;
+    box-shadow:
+      0 20px 52px rgba(0,0,0,.34),
+      0 0 24px rgba(96,77,255,.17),
+      inset 0 1px 0 rgba(255,255,255,.09) !important;
+  }
+
+  body.yatut-dark-mode #yatut-global-mobile-nav.mobile-nav::before {
+    background:
+      radial-gradient(
+        ellipse 32% 88% at 96% 60%,
+        rgba(112,79,255,.40),
+        rgba(78,59,202,.12) 48%,
+        transparent 72%
+      ),
+      linear-gradient(
+        100deg,
+        rgba(255,255,255,.04),
+        transparent 34%,
+        rgba(126,107,255,.07) 72%,
+        rgba(255,255,255,.04)
+      ) !important;
+  }
+
+  body.yatut-dark-mode #yatut-global-mobile-nav.mobile-nav > button {
+    color: rgba(217,222,240,.82) !important;
+  }
+
+  body.yatut-dark-mode #yatut-global-mobile-nav.mobile-nav > button.active,
+  body.yatut-dark-mode #yatut-global-mobile-nav.mobile-nav > button[aria-current="page"] {
+    color: #a89fff !important;
+  }
+
+  body.yatut-dark-mode #yatut-global-mobile-nav.mobile-nav > button.active .mobile-nav-icon {
+    filter:
+      drop-shadow(0 0 8px rgba(113,92,255,.55))
+      drop-shadow(0 0 16px rgba(113,92,255,.26));
+  }
+
+  #yatut-global-mobile-nav.mobile-nav .mobile-nav-item.has-unread
+  .mobile-nav-icon::after {
+    border-color: rgba(255,255,255,.94) !important;
+  }
+
+  body.yatut-dark-mode #yatut-global-mobile-nav.mobile-nav
+  .mobile-nav-item.has-unread .mobile-nav-icon::after {
+    border-color: rgba(20,24,39,.98) !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .profile-v4-immersive .profile-v3-mobile-actions {
+    grid-template-columns: minmax(0,1fr) 46px 46px !important;
+    gap: 7px !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-action {
+    width: 46px !important;
+    height: 46px !important;
+  }
+
+  #yatut-global-mobile-nav.mobile-nav {
+    left: 10px !important;
+    right: 10px !important;
+    min-height: 78px !important;
+    border-radius: 29px !important;
+  }
+
+  #yatut-global-mobile-nav.mobile-nav > button small {
+    font-size: 9.2px !important;
+  }
+}
