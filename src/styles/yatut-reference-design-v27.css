@@ -2767,3 +2767,1047 @@ html.yatut-platform-android
     blur(16px)
     saturate(1.16) !important;
 }
+
+
+/* =========================================================
+   V27 — THIRD PACKAGE
+   Business, Spaces, Admin, School, Creator, Watch,
+   City Pulse, Events Pulse, Nearby Pulse, restrictions.
+========================================================= */
+
+/* =========================================================
+   BUSINESS
+========================================================= */
+
+.business-dashboard,
+.business-card,
+.business-profile-header,
+.business-detail-grid,
+.business-activity-card,
+.business-services-grid,
+.business-review,
+.feature-modal {
+  border:
+    1px solid
+    rgba(255,255,255,.74) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.94),
+      rgba(255,255,255,.76)
+    ) !important;
+
+  box-shadow:
+    0 15px 34px rgba(31,35,63,.08),
+    inset 0 1px 0 rgba(255,255,255,.90) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .business-dashboard,
+  .business-card,
+  .business-profile-header,
+  .business-detail-grid,
+  .business-activity-card,
+  .business-services-grid,
+  .business-review,
+  .feature-modal
+) {
+  border-color:
+    rgba(255,255,255,.08) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,24,41,.90),
+      rgba(8,13,25,.84)
+    ) !important;
+}
+
+.business-card-cover,
+.business-profile-cover {
+  position:
+    relative;
+
+  overflow:
+    hidden;
+}
+
+.business-card-cover::after,
+.business-profile-cover::after {
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  pointer-events:
+    none;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.12),
+      transparent 36%,
+      rgba(7,11,22,.12)
+    );
+}
+
+.business-card-avatar,
+.business-profile-avatar {
+  box-shadow:
+    0 8px 20px rgba(31,35,63,.15),
+    0 0 0 2px rgba(255,255,255,.92) !important;
+}
+
+.business-verified,
+.business-name-check {
+  filter:
+    drop-shadow(
+      0 3px 6px rgba(84,67,216,.18)
+    );
+}
+
+/* =========================================================
+   SPACES / COMMUNITY WORKSPACE
+========================================================= */
+
+.space-card,
+.space-info-card,
+.space-summary-card,
+.space-live-module,
+.space-member-row,
+.community-feed-composer,
+.community-feed-post,
+.community-task-list,
+.community-overview-pinned,
+.space-admin-card {
+  border:
+    1px solid
+    rgba(255,255,255,.72) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.94),
+      rgba(255,255,255,.76)
+    ) !important;
+
+  box-shadow:
+    0 15px 34px rgba(31,35,63,.08),
+    inset 0 1px 0 rgba(255,255,255,.90) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .space-card,
+  .space-info-card,
+  .space-summary-card,
+  .space-live-module,
+  .space-member-row,
+  .community-feed-composer,
+  .community-feed-post,
+  .community-task-list,
+  .community-overview-pinned,
+  .space-admin-card
+) {
+  border-color:
+    rgba(255,255,255,.08) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,24,41,.90),
+      rgba(8,13,25,.84)
+    ) !important;
+}
+
+.space-card-cover,
+.space-detail-cover,
+.space-admin-cover-editor {
+  position:
+    relative;
+
+  overflow:
+    hidden;
+}
+
+.space-card-cover::after,
+.space-detail-cover::after,
+.space-admin-cover-editor::after {
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  pointer-events:
+    none;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.13),
+      transparent 34%,
+      rgba(7,11,22,.13)
+    );
+}
+
+.space-card-avatar,
+.space-detail-avatar,
+.space-create-avatar,
+.space-admin-avatar-editor {
+  box-shadow:
+    0 9px 22px rgba(31,35,63,.14),
+    0 0 0 2px rgba(255,255,255,.90) !important;
+}
+
+.space-engine-modal,
+.space-permissions-engine,
+.space-admin-studio {
+  border:
+    1px solid
+    var(--v27-glass-border) !important;
+
+  background:
+    var(--v27-glass-light) !important;
+
+  box-shadow:
+    0 28px 80px rgba(22,25,46,.22),
+    inset 0 1px 0 rgba(255,255,255,.88) !important;
+
+  backdrop-filter:
+    blur(24px)
+    saturate(1.24) !important;
+
+  -webkit-backdrop-filter:
+    blur(24px)
+    saturate(1.24) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .space-engine-modal,
+  .space-permissions-engine,
+  .space-admin-studio
+) {
+  border-color:
+    rgba(255,255,255,.12) !important;
+
+  background:
+    var(--v27-glass-dark) !important;
+}
+
+.space-template-card.active,
+.space-template-card.is-active,
+.space-permission-row.enabled,
+.space-admin-module-card.active {
+  border-color:
+    rgba(111,93,255,.20) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(240,237,255,.94),
+      rgba(248,247,255,.80)
+    ) !important;
+
+  box-shadow:
+    0 10px 22px rgba(91,72,226,.08),
+    inset 0 1px 0 rgba(255,255,255,.86) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .space-template-card.active,
+  .space-template-card.is-active,
+  .space-permission-row.enabled,
+  .space-admin-module-card.active
+) {
+  background:
+    rgba(111,93,255,.08) !important;
+}
+
+.space-engine-next,
+.space-engine-create,
+.space-admin-save,
+.community-feed-publish {
+  background:
+    linear-gradient(
+      135deg,
+      #7c6bff,
+      #5a49eb
+    ) !important;
+
+  color:
+    #fff !important;
+
+  box-shadow:
+    0 10px 22px rgba(85,68,224,.22),
+    inset 0 1px 0 rgba(255,255,255,.28) !important;
+}
+
+/* =========================================================
+   ADMIN CENTER
+========================================================= */
+
+.admin-center-hero,
+.admin-module,
+.admin-report-card,
+.admin-user-row,
+.admin-overview-row,
+.admin-icon-tile {
+  border:
+    1px solid
+    rgba(255,255,255,.72) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.94),
+      rgba(255,255,255,.76)
+    ) !important;
+
+  box-shadow:
+    0 14px 32px rgba(31,35,63,.075),
+    inset 0 1px 0 rgba(255,255,255,.90) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .admin-center-hero,
+  .admin-module,
+  .admin-report-card,
+  .admin-user-row,
+  .admin-overview-row,
+  .admin-icon-tile
+) {
+  border-color:
+    rgba(255,255,255,.08) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,24,41,.90),
+      rgba(8,13,25,.84)
+    ) !important;
+}
+
+.admin-center-search {
+  border:
+    1px solid
+    rgba(78,84,111,.08) !important;
+
+  background:
+    rgba(247,248,252,.92) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.86) !important;
+}
+
+body.yatut-dark-mode
+.admin-center-search {
+  border-color:
+    rgba(255,255,255,.07) !important;
+
+  background:
+    rgba(255,255,255,.035) !important;
+}
+
+.admin-status {
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.60);
+}
+
+/* =========================================================
+   ACCOUNT RESTRICTION
+========================================================= */
+
+.account-restriction-card {
+  border:
+    1px solid
+    rgba(255,255,255,.74) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.96),
+      rgba(255,255,255,.78)
+    ) !important;
+
+  box-shadow:
+    0 26px 72px rgba(31,35,63,.14),
+    inset 0 1px 0 rgba(255,255,255,.92) !important;
+}
+
+body.yatut-dark-mode
+.account-restriction-card {
+  border-color:
+    rgba(255,255,255,.10) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,24,41,.94),
+      rgba(8,13,25,.88)
+    ) !important;
+
+  box-shadow:
+    0 28px 76px rgba(0,0,0,.28),
+    inset 0 1px 0 rgba(255,255,255,.05) !important;
+}
+
+.account-restriction-icon {
+  box-shadow:
+    inset 0 2px 3px rgba(255,255,255,.30),
+    0 10px 22px rgba(31,35,63,.12);
+}
+
+.account-restriction-actions .primary {
+  background:
+    linear-gradient(
+      135deg,
+      #7c6bff,
+      #5a49eb
+    ) !important;
+
+  color:
+    #fff !important;
+
+  box-shadow:
+    0 10px 22px rgba(85,68,224,.22),
+    inset 0 1px 0 rgba(255,255,255,.28) !important;
+}
+
+/* =========================================================
+   SCHOOL
+========================================================= */
+
+.school-engine-header,
+.school-panel,
+.school-class-card,
+.school-subject-card,
+.school-class-detail,
+.school-subject-detail,
+.school-connected-chat-card,
+.school-connected-class-hero,
+.school-connected-grid,
+.school-connected-subject-grid {
+  border:
+    1px solid
+    rgba(255,255,255,.72) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.94),
+      rgba(255,255,255,.76)
+    ) !important;
+
+  box-shadow:
+    0 14px 32px rgba(31,35,63,.075),
+    inset 0 1px 0 rgba(255,255,255,.90) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .school-engine-header,
+  .school-panel,
+  .school-class-card,
+  .school-subject-card,
+  .school-class-detail,
+  .school-subject-detail,
+  .school-connected-chat-card,
+  .school-connected-class-hero,
+  .school-connected-grid,
+  .school-connected-subject-grid
+) {
+  border-color:
+    rgba(255,255,255,.08) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,24,41,.90),
+      rgba(8,13,25,.84)
+    ) !important;
+}
+
+.school-modal,
+.school-role-preview-menu {
+  border:
+    1px solid
+    var(--v27-glass-border) !important;
+
+  background:
+    var(--v27-glass-light) !important;
+
+  box-shadow:
+    0 24px 64px rgba(22,25,46,.20),
+    inset 0 1px 0 rgba(255,255,255,.88) !important;
+
+  backdrop-filter:
+    blur(22px)
+    saturate(1.22) !important;
+
+  -webkit-backdrop-filter:
+    blur(22px)
+    saturate(1.22) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .school-modal,
+  .school-role-preview-menu
+) {
+  border-color:
+    rgba(255,255,255,.12) !important;
+
+  background:
+    var(--v27-glass-dark) !important;
+}
+
+.school-stat-grid > *,
+.school-subject-stat-grid > *,
+.school-date-grade-cell,
+.school-attendance-status {
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.70),
+    0 7px 16px rgba(31,35,63,.045) !important;
+}
+
+.school-grade-value {
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.54),
+    0 5px 12px rgba(31,35,63,.045);
+}
+
+/* =========================================================
+   CREATOR STUDIO
+========================================================= */
+
+.creator-studio-header,
+.creator-studio-metric,
+.creator-studio-chart,
+.creator-studio-live-card,
+.creator-studio-section,
+.creator-studio-content-table,
+.creator-studio-audience,
+.creator-studio-pulse,
+.creator-studio-pulse-map,
+.creator-studio-pulse-breakdown {
+  border:
+    1px solid
+    rgba(255,255,255,.72) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.94),
+      rgba(255,255,255,.76)
+    ) !important;
+
+  box-shadow:
+    0 15px 34px rgba(31,35,63,.08),
+    inset 0 1px 0 rgba(255,255,255,.90) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .creator-studio-header,
+  .creator-studio-metric,
+  .creator-studio-chart,
+  .creator-studio-live-card,
+  .creator-studio-section,
+  .creator-studio-content-table,
+  .creator-studio-audience,
+  .creator-studio-pulse,
+  .creator-studio-pulse-map,
+  .creator-studio-pulse-breakdown
+) {
+  border-color:
+    rgba(255,255,255,.08) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,24,41,.90),
+      rgba(8,13,25,.84)
+    ) !important;
+}
+
+.creator-studio-chart__visual {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(111,93,255,.18),
+      rgba(111,93,255,.03)
+    ) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.12);
+}
+
+.creator-studio-live-card__icon,
+.creator-studio-header__pulse {
+  box-shadow:
+    0 0 18px rgba(111,93,255,.24),
+    inset 0 1px 0 rgba(255,255,255,.28);
+}
+
+/* =========================================================
+   CREATOR PROFILE
+========================================================= */
+
+.pulse-creator-hero {
+  position:
+    relative;
+
+  overflow:
+    hidden;
+
+  box-shadow:
+    0 24px 64px rgba(0,0,0,.20);
+}
+
+.pulse-creator-hero__shade {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(6,9,18,.03),
+      rgba(6,9,18,.10) 45%,
+      rgba(6,9,18,.72) 100%
+    ) !important;
+}
+
+.pulse-creator-avatar {
+  box-shadow:
+    0 0 0 3px rgba(255,255,255,.92),
+    0 0 0 5px rgba(37,200,122,.22),
+    0 12px 28px rgba(0,0,0,.24) !important;
+}
+
+.pulse-creator-subscribe {
+  border:
+    1px solid
+    rgba(255,255,255,.22) !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c6bff,
+      #5a49eb
+    ) !important;
+
+  color:
+    #fff !important;
+
+  box-shadow:
+    0 11px 24px rgba(85,68,224,.24),
+    inset 0 1px 0 rgba(255,255,255,.28) !important;
+}
+
+.pulse-creator-subscribe.is-active,
+.pulse-creator-subscribe.active {
+  background:
+    rgba(255,255,255,.12) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.12) !important;
+}
+
+.pulse-creator-stats,
+.pulse-creator-tabs,
+.pulse-creator-content {
+  border:
+    1px solid
+    rgba(255,255,255,.10) !important;
+
+  background:
+    rgba(8,13,24,.28) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.08),
+    0 12px 28px rgba(0,0,0,.12) !important;
+
+  backdrop-filter:
+    blur(16px)
+    saturate(1.18) !important;
+
+  -webkit-backdrop-filter:
+    blur(16px)
+    saturate(1.18) !important;
+}
+
+/* =========================================================
+   WATCH
+========================================================= */
+
+.pulse-watch-page {
+  background:
+    var(--app-bg, #f6f7fb);
+}
+
+.pulse-watch-main,
+.pulse-watch-comments,
+.pulse-watch-sidebar,
+.pulse-watch-recommendation {
+  border:
+    1px solid
+    rgba(255,255,255,.72) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.94),
+      rgba(255,255,255,.76)
+    ) !important;
+
+  box-shadow:
+    0 15px 34px rgba(31,35,63,.08),
+    inset 0 1px 0 rgba(255,255,255,.90) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .pulse-watch-main,
+  .pulse-watch-comments,
+  .pulse-watch-sidebar,
+  .pulse-watch-recommendation
+) {
+  border-color:
+    rgba(255,255,255,.08) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,24,41,.90),
+      rgba(8,13,25,.84)
+    ) !important;
+}
+
+.pulse-watch-author-bar,
+.pulse-watch-actions,
+.pulse-watch-location {
+  border:
+    1px solid
+    rgba(78,84,111,.07) !important;
+
+  background:
+    rgba(248,249,252,.88) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.84) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .pulse-watch-author-bar,
+  .pulse-watch-actions,
+  .pulse-watch-location
+) {
+  border-color:
+    rgba(255,255,255,.06) !important;
+
+  background:
+    rgba(255,255,255,.032) !important;
+}
+
+.pulse-watch-subscribe {
+  background:
+    linear-gradient(
+      135deg,
+      #7c6bff,
+      #5a49eb
+    ) !important;
+
+  color:
+    #fff !important;
+
+  box-shadow:
+    0 9px 20px rgba(85,68,224,.22),
+    inset 0 1px 0 rgba(255,255,255,.28) !important;
+}
+
+/* =========================================================
+   CITY PULSE
+========================================================= */
+
+.city-pulse-hero {
+  position:
+    relative;
+
+  overflow:
+    hidden;
+
+  box-shadow:
+    0 24px 64px rgba(20,24,45,.14),
+    inset 0 1px 0 rgba(255,255,255,.16) !important;
+}
+
+.city-pulse-hero__shade {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(7,11,22,.04),
+      rgba(7,11,22,.14) 42%,
+      rgba(7,11,22,.64) 100%
+    ) !important;
+}
+
+.city-pulse-tabs,
+.city-pulse-stat,
+.city-pulse-location-card,
+.city-pulse-person,
+.city-pulse-section {
+  border:
+    1px solid
+    rgba(255,255,255,.72) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.94),
+      rgba(255,255,255,.76)
+    ) !important;
+
+  box-shadow:
+    0 14px 32px rgba(31,35,63,.075),
+    inset 0 1px 0 rgba(255,255,255,.90) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .city-pulse-tabs,
+  .city-pulse-stat,
+  .city-pulse-location-card,
+  .city-pulse-person,
+  .city-pulse-section
+) {
+  border-color:
+    rgba(255,255,255,.08) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,24,41,.90),
+      rgba(8,13,25,.84)
+    ) !important;
+}
+
+.city-pulse-hero__pulse {
+  box-shadow:
+    0 0 22px rgba(111,93,255,.28);
+}
+
+/* =========================================================
+   EVENTS PULSE
+========================================================= */
+
+.events-pulse-hero,
+.events-pulse-card,
+.events-pulse-bridge,
+.events-pulse-people,
+.events-pulse-city {
+  border:
+    1px solid
+    rgba(255,255,255,.72) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.94),
+      rgba(255,255,255,.76)
+    ) !important;
+
+  box-shadow:
+    0 15px 34px rgba(31,35,63,.08),
+    inset 0 1px 0 rgba(255,255,255,.90) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .events-pulse-hero,
+  .events-pulse-card,
+  .events-pulse-bridge,
+  .events-pulse-people,
+  .events-pulse-city
+) {
+  border-color:
+    rgba(255,255,255,.08) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,24,41,.90),
+      rgba(8,13,25,.84)
+    ) !important;
+}
+
+.events-pulse-card__media {
+  position:
+    relative;
+
+  overflow:
+    hidden;
+}
+
+.events-pulse-card__shade {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(7,11,22,.02),
+      rgba(7,11,22,.12) 44%,
+      rgba(7,11,22,.68) 100%
+    ) !important;
+}
+
+.events-pulse-hero__buttons .is-primary,
+.events-pulse-people__button {
+  background:
+    linear-gradient(
+      135deg,
+      #7c6bff,
+      #5a49eb
+    ) !important;
+
+  color:
+    #fff !important;
+
+  box-shadow:
+    0 10px 22px rgba(85,68,224,.22),
+    inset 0 1px 0 rgba(255,255,255,.28) !important;
+}
+
+/* =========================================================
+   NEARBY PULSE
+========================================================= */
+
+.nearby-pulse-hero,
+.nearby-pulse-stats,
+.nearby-pulse-videos,
+.nearby-pulse-bridge,
+.nearby-pulse-existing {
+  border:
+    1px solid
+    rgba(255,255,255,.72) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.94),
+      rgba(255,255,255,.76)
+    ) !important;
+
+  box-shadow:
+    0 15px 34px rgba(31,35,63,.08),
+    inset 0 1px 0 rgba(255,255,255,.90) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .nearby-pulse-hero,
+  .nearby-pulse-stats,
+  .nearby-pulse-videos,
+  .nearby-pulse-bridge,
+  .nearby-pulse-existing
+) {
+  border-color:
+    rgba(255,255,255,.08) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,24,41,.90),
+      rgba(8,13,25,.84)
+    ) !important;
+}
+
+.nearby-pulse-hero__primary {
+  background:
+    linear-gradient(
+      135deg,
+      #7c6bff,
+      #5a49eb
+    ) !important;
+
+  color:
+    #fff !important;
+
+  box-shadow:
+    0 10px 22px rgba(85,68,224,.22),
+    inset 0 1px 0 rgba(255,255,255,.28) !important;
+}
+
+.nearby-pulse-hero__signal {
+  box-shadow:
+    0 0 24px rgba(37,200,122,.26);
+}
+
+.nearby-pulse-hero__rings {
+  filter:
+    drop-shadow(
+      0 0 12px rgba(111,93,255,.18)
+    );
+}
+
+/* =========================================================
+   UNIVERSAL PREMIUM ICON TILES
+========================================================= */
+
+:is(
+  .feature-hero-icon,
+  .feature-item-icon,
+  .business-card-avatar,
+  .space-template-icon,
+  .space-admin-module-icon,
+  .school-class-detail-icon,
+  .school-subject-hero-icon,
+  .creator-studio-live-card__icon,
+  .city-pulse-location-card__icon,
+  .events-pulse-bridge__icon,
+  .events-pulse-people__icon
+) {
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.62),
+    inset 0 -2px 4px rgba(35,26,89,.10),
+    0 8px 18px rgba(31,35,63,.09) !important;
+}
+
+/* =========================================================
+   SMALL SCREEN CONSISTENCY
+========================================================= */
+
+@media (max-width:767px) {
+  :is(
+    .business-card,
+    .space-card,
+    .admin-report-card,
+    .admin-user-row,
+    .school-panel,
+    .school-class-card,
+    .school-subject-card,
+    .creator-studio-metric,
+    .pulse-watch-recommendation,
+    .city-pulse-location-card,
+    .events-pulse-card,
+    .nearby-pulse-bridge
+  ) {
+    border-radius:
+      20px !important;
+  }
+
+  .space-engine-modal,
+  .school-modal,
+  .feature-modal {
+    border-radius:
+      26px !important;
+  }
+}
