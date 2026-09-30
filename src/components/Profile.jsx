@@ -5422,10 +5422,15 @@ function ProfileImageCropper({
   onCancel,
   onApply,
 }) {
-  const frameRef =
+  const stageRef =
     useRef(null);
 
-  const dragRef =
+  const pointersRef =
+    useRef(
+      new Map()
+    );
+
+  const gestureRef =
     useRef(null);
 
   const isAvatar =
@@ -5462,10 +5467,103 @@ function ProfileImageCropper({
     });
   }
 
+  function distance(
+    first,
+    second
+  ) {
+    return Math.hypot(
+      second.x -
+        first.x,
+      second.y -
+        first.y
+    );
+  }
+
+  function midpoint(
+    first,
+    second
+  ) {
+    return {
+      x:
+        (
+          first.x +
+          second.x
+        ) /
+        2,
+      y:
+        (
+          first.y +
+          second.y
+        ) /
+        2,
+    };
+  }
+
+  function beginPan(
+    pointer
+  ) {
+    gestureRef.current = {
+      type:
+        "pan",
+      pointerId:
+        pointer.id,
+      start:
+        pointer,
+      crop: {
+        ...crop,
+      },
+    };
+  }
+
+  function beginPinch() {
+    const pointers =
+      [
+        ...pointersRef
+          .current
+          .values(),
+      ];
+
+    if (
+      pointers.length <
+      2
+    ) {
+      return;
+    }
+
+    const first =
+      pointers[0];
+
+    const second =
+      pointers[1];
+
+    gestureRef.current = {
+      type:
+        "pinch",
+      startDistance:
+        Math.max(
+          1,
+          distance(
+            first,
+            second
+          )
+        ),
+      startMidpoint:
+        midpoint(
+          first,
+          second
+        ),
+      crop: {
+        ...crop,
+      },
+    };
+  }
+
   function handlePointerDown(
     event
   ) {
-    if (applying) {
+    if (
+      applying
+    ) {
       return;
     }
 
@@ -5476,104 +5574,280 @@ function ProfileImageCropper({
         event.pointerId
       );
 
-    dragRef.current = {
-      pointerId:
-        event.pointerId,
-      clientX:
-        event.clientX,
-      clientY:
-        event.clientY,
-      x:
-        crop.x,
-      y:
-        crop.y,
-    };
+    pointersRef.current.set(
+      event.pointerId,
+      {
+        id:
+          event.pointerId,
+        x:
+          event.clientX,
+        y:
+          event.clientY,
+      }
+    );
+
+    const pointerCount =
+      pointersRef.current
+        .size;
+
+    if (
+      pointerCount ===
+      1
+    ) {
+      beginPan({
+        id:
+          event.pointerId,
+        x:
+          event.clientX,
+        y:
+          event.clientY,
+      });
+    } else if (
+      pointerCount >=
+      2
+    ) {
+      beginPinch();
+    }
   }
 
   function handlePointerMove(
     event
   ) {
-    const drag =
-      dragRef.current;
-
-    const frame =
-      frameRef.current;
-
     if (
-      !drag ||
-      !frame ||
-      drag.pointerId !==
+      !pointersRef.current.has(
         event.pointerId
+      )
     ) {
       return;
     }
 
     event.preventDefault();
 
+    pointersRef.current.set(
+      event.pointerId,
+      {
+        id:
+          event.pointerId,
+        x:
+          event.clientX,
+        y:
+          event.clientY,
+      }
+    );
+
+    const stage =
+      stageRef.current;
+
+    const gesture =
+      gestureRef.current;
+
+    if (
+      !stage ||
+      !gesture
+    ) {
+      return;
+    }
+
     const rect =
-      frame.getBoundingClientRect();
+      stage.getBoundingClientRect();
 
-    const sensitivity =
-      100 /
-      Math.max(
-        1,
-        crop.zoom
-      );
+    const pointers =
+      [
+        ...pointersRef.current
+          .values(),
+      ];
 
-    patchCrop({
-      x:
+    if (
+      pointers.length >=
+      2
+    ) {
+      if (
+        gesture.type !==
+        "pinch"
+      ) {
+        beginPinch();
+
+        return;
+      }
+
+      const first =
+        pointers[0];
+
+      const second =
+        pointers[1];
+
+      const currentDistance =
+        Math.max(
+          1,
+          distance(
+            first,
+            second
+          )
+        );
+
+      const currentMidpoint =
+        midpoint(
+          first,
+          second
+        );
+
+      const nextZoom =
         clamp(
-          drag.x -
+          gesture.crop.zoom *
             (
+              currentDistance /
+              gesture.startDistance
+            ),
+          1,
+          3
+        );
+
+      const horizontalMove =
+        (
+          currentMidpoint.x -
+          gesture.startMidpoint.x
+        ) /
+        Math.max(
+          1,
+          rect.width
+        );
+
+      const verticalMove =
+        (
+          currentMidpoint.y -
+          gesture.startMidpoint.y
+        ) /
+        Math.max(
+          1,
+          rect.height
+        );
+
+      onCropChange?.({
+        ...gesture.crop,
+        zoom:
+          nextZoom,
+        x:
+          clamp(
+            gesture.crop.x -
+              horizontalMove *
+                100,
+            0,
+            100
+          ),
+        y:
+          clamp(
+            gesture.crop.y -
+              verticalMove *
+                100,
+            0,
+            100
+          ),
+      });
+
+      return;
+    }
+
+    if (
+      pointers.length ===
+      1
+    ) {
+      const pointer =
+        pointers[0];
+
+      if (
+        gesture.type !==
+          "pan" ||
+        gesture.pointerId !==
+          pointer.id
+      ) {
+        beginPan(
+          pointer
+        );
+
+        return;
+      }
+
+      const sensitivity =
+        100 /
+        Math.max(
+          1,
+          gesture.crop.zoom
+        );
+
+      onCropChange?.({
+        ...gesture.crop,
+        x:
+          clamp(
+            gesture.crop.x -
               (
-                event.clientX -
-                drag.clientX
-              ) /
-              Math.max(
-                1,
-                rect.width
-              )
-            ) *
-              sensitivity,
-          0,
-          100
-        ),
-      y:
-        clamp(
-          drag.y -
-            (
+                (
+                  pointer.x -
+                  gesture.start.x
+                ) /
+                Math.max(
+                  1,
+                  rect.width
+                )
+              ) *
+                sensitivity,
+            0,
+            100
+          ),
+        y:
+          clamp(
+            gesture.crop.y -
               (
-                event.clientY -
-                drag.clientY
-              ) /
-              Math.max(
-                1,
-                rect.height
-              )
-            ) *
-              sensitivity,
-          0,
-          100
-        ),
-    });
+                (
+                  pointer.y -
+                  gesture.start.y
+                ) /
+                Math.max(
+                  1,
+                  rect.height
+                )
+              ) *
+                sensitivity,
+            0,
+            100
+          ),
+      });
+    }
   }
 
   function handlePointerEnd(
     event
   ) {
-    if (
-      dragRef.current
-        ?.pointerId ===
+    pointersRef.current.delete(
       event.pointerId
-    ) {
-      dragRef.current =
-        null;
-    }
+    );
 
     event.currentTarget
       .releasePointerCapture?.(
         event.pointerId
       );
+
+    const pointers =
+      [
+        ...pointersRef.current
+          .values(),
+      ];
+
+    if (
+      pointers.length ===
+      1
+    ) {
+      beginPan(
+        pointers[0]
+      );
+    } else if (
+      pointers.length >=
+      2
+    ) {
+      beginPinch();
+    } else {
+      gestureRef.current =
+        null;
+    }
   }
 
   useEffect(
@@ -5609,7 +5883,7 @@ function ProfileImageCropper({
 
   return (
     <div
-      className="profile-image-cropper-backdrop"
+      className="profile-image-cropper-backdrop profile-image-cropper-native"
       role="dialog"
       aria-modal="true"
       aria-label={
@@ -5619,63 +5893,95 @@ function ProfileImageCropper({
       }
     >
       <section className="profile-image-cropper-sheet">
-        <header className="profile-image-cropper-header">
-          <div>
-            <span>
-              ПОПЕРЕДНІЙ ПЕРЕГЛЯД
-            </span>
-
-            <h3>
-              {isAvatar
-                ? "Фото профілю"
-                : "Фон профілю"}
-            </h3>
-          </div>
-
+        <header className="profile-image-cropper-native-header">
           <button
             type="button"
+            className="profile-image-cropper-native-close"
             onClick={
               onCancel
             }
             disabled={
               applying
             }
-            aria-label="Закрити кадрування"
+            aria-label="Скасувати"
           >
             <YatutIcon
               name="close"
-              size={18}
+              size={28}
             />
+          </button>
+
+          <div className="profile-image-cropper-native-title">
+            <strong>
+              {isAvatar
+                ? "Фото профілю"
+                : "Фон профілю"}
+            </strong>
+
+            <span>
+              {isAvatar
+                ? "Перемістіть і масштабуйте фото"
+                : "Налаштуйте, як фон виглядатиме у профілі"}
+            </span>
+          </div>
+
+          <button
+            type="button"
+            className="profile-image-cropper-native-apply"
+            onClick={
+              onApply
+            }
+            disabled={
+              applying
+            }
+            aria-label="Застосувати"
+          >
+            {applying
+              ? "…"
+              : "✓"}
           </button>
         </header>
 
-        <p className="profile-image-cropper-hint">
-          Перетягуйте фото пальцем усередині рамки. Нижче можна змінити масштаб.
-        </p>
-
-        <div className="profile-image-cropper-canvas">
-          <div
-            ref={
-              frameRef
+        <div
+          ref={
+            stageRef
+          }
+          className={
+            `profile-image-cropper-native-stage ${
+              isAvatar
+                ? "is-avatar"
+                : "is-cover"
+            }`
+          }
+          onPointerDown={
+            handlePointerDown
+          }
+          onPointerMove={
+            handlePointerMove
+          }
+          onPointerUp={
+            handlePointerEnd
+          }
+          onPointerCancel={
+            handlePointerEnd
+          }
+        >
+          <img
+            className="profile-image-cropper-native-backdrop-image"
+            src={
+              editor.src
             }
+            alt=""
+            draggable="false"
+          />
+
+          <div
             className={
-              `profile-image-cropper-frame ${
+              `profile-image-cropper-native-frame ${
                 isAvatar
                   ? "is-avatar"
                   : "is-cover"
               }`
-            }
-            onPointerDown={
-              handlePointerDown
-            }
-            onPointerMove={
-              handlePointerMove
-            }
-            onPointerUp={
-              handlePointerEnd
-            }
-            onPointerCancel={
-              handlePointerEnd
             }
           >
             <img
@@ -5694,116 +6000,57 @@ function ProfileImageCropper({
               }}
             />
 
-            <div className="profile-image-cropper-grid">
-              <span />
-              <span />
-              <span />
-              <span />
-            </div>
-
             {!isAvatar && (
               <>
-                <div className="profile-image-cropper-cover-top">
-                  <b>
-                    Я
-                  </b>
+                <div className="profile-image-cropper-native-cover-ui">
+                  <span className="brand">
+                    <b>
+                      Я
+                    </b>
 
-                  <strong>
-                    ТУТ
-                  </strong>
+                    <strong>
+                      ТУТ
+                    </strong>
+                  </span>
+
+                  <span className="avatar-dot" />
                 </div>
 
-                <div className="profile-image-cropper-cover-fade" />
+                <div className="profile-image-cropper-native-cover-fade" />
               </>
             )}
           </div>
-        </div>
 
-        <div className="profile-image-cropper-zoom">
-          <span>
-            −
-          </span>
-
-          <input
-            type="range"
-            min="1"
-            max="3"
-            step="0.05"
-            value={
-              crop.zoom
+          <div
+            className={
+              `profile-image-cropper-native-mask ${
+                isAvatar
+                  ? "is-avatar"
+                  : "is-cover"
+              }`
             }
-            onChange={(
-              event
-            ) =>
-              patchCrop({
-                zoom:
-                  Number(
-                    event.target.value
-                  ),
-              })
-            }
-            aria-label="Масштаб фото"
           />
 
-          <span>
-            +
-          </span>
+          <div className="profile-image-cropper-native-tip">
+            <span>
+              1 палець
+            </span>
+            <strong>
+              переміщення
+            </strong>
+
+            <i />
+
+            <span>
+              2 пальці
+            </span>
+            <strong>
+              масштаб
+            </strong>
+          </div>
         </div>
-
-        <div className="profile-image-cropper-position">
-          <span>
-            {isAvatar
-              ? "Кругла рамка показує майбутній аватар."
-              : "Рамка 9:16 показує фон мобільного профілю."}
-          </span>
-
-          <button
-            type="button"
-            onClick={() =>
-              onCropChange?.({
-                x: 50,
-                y: 50,
-                zoom: 1,
-              })
-            }
-            disabled={
-              applying
-            }
-          >
-            По центру
-          </button>
-        </div>
-
-        <footer className="profile-image-cropper-actions">
-          <button
-            type="button"
-            className="secondary"
-            onClick={
-              onCancel
-            }
-            disabled={
-              applying
-            }
-          >
-            Скасувати
-          </button>
-
-          <button
-            type="button"
-            className="primary"
-            onClick={
-              onApply
-            }
-            disabled={
-              applying
-            }
-          >
-            {applying
-              ? "Готуємо…"
-              : "Застосувати"}
-          </button>
-        </footer>
       </section>
     </div>
   );
 }
+
