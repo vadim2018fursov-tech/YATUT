@@ -4325,53 +4325,225 @@ export default function Profile({
 
             {activeTab ===
               "achievements" && (
-              <section className="profile-v2-card">
+              <section className="profile-v2-card profile-v2-achievements-page">
 
-                <div className="profile-v2-card-head">
+                <div className="profile-v2-card-head profile-v2-achievements-head">
 
                   <div>
                     <span>
-                      ЯТУТ
+                      СИСТЕМА ЗНАЧКІВ
                     </span>
 
                     <h3>
-                      Досягнення та
-                      нагороди
+                      Досягнення ЯТУТ
                     </h3>
+
+                    <p>
+                      Значки показують статус, внесок у спільноту та масштаб твого профілю.
+                    </p>
                   </div>
 
                   <strong className="profile-v2-achievement-count">
                     {
                       earnedAchievements.length
                     }
+                    <small>
+                      /
+                      {
+                        achievementCatalog.length
+                      }
+                    </small>
                   </strong>
 
                 </div>
 
-                <div className="profile-v2-achievements-grid">
+                <div className="profile-v2-achievement-overview">
+                  <div>
+                    <span>
+                      ОТРИМАНО
+                    </span>
 
-                  {earnedAchievements.length > 0 ? (
-                    earnedAchievements.map(
+                    <strong>
+                      {
+                        earnedAchievements.length
+                      }
+                    </strong>
+
+                    <small>
+                      активних відзнак
+                    </small>
+                  </div>
+
+                  <div>
+                    <span>
+                      ПІДПИСНИКИ
+                    </span>
+
+                    <strong>
+                      {
+                        formatProfileNumber(
+                          profile.followers
+                        )
+                      }
+                    </strong>
+
+                    <small>
+                      впливають на масштаб
+                    </small>
+                  </div>
+
+                  <div>
+                    <span>
+                      НАСТУПНА ЦІЛЬ
+                    </span>
+
+                    <strong>
+                      {
+                        nextScaleAchievement
+                          ? nextScaleAchievement.symbol
+                          : "MAX"
+                      }
+                    </strong>
+
+                    <small>
+                      {
+                        nextScaleAchievement
+                          ? nextScaleAchievement.title
+                          : "Усі рівні відкрито"
+                      }
+                    </small>
+                  </div>
+                </div>
+
+                {ACHIEVEMENT_GROUPS.map(
+                  (
+                    group
+                  ) => {
+                    const items =
+                      achievementCatalog.filter(
+                        (
+                          item
+                        ) =>
+                          item.group ===
+                          group.id
+                      );
+
+                    if (
+                      items.length ===
+                      0
+                    ) {
+                      return null;
+                    }
+
+                    return (
+                      <section
+                        key={
+                          group.id
+                        }
+                        className="profile-v2-achievement-group"
+                      >
+                        <header>
+                          <div>
+                            <span>
+                              {
+                                group.title
+                              }
+                            </span>
+
+                            <p>
+                              {
+                                group.subtitle
+                              }
+                            </p>
+                          </div>
+
+                          <strong>
+                            {
+                              items.filter(
+                                (
+                                  item
+                                ) =>
+                                  item.earned
+                              ).length
+                            }
+                            /
+                            {
+                              items.length
+                            }
+                          </strong>
+                        </header>
+
+                        <div className="profile-v2-achievements-grid">
+                          {items.map(
+                            (
+                              item
+                            ) => (
+                              <Achievement
+                                key={
+                                  item.id
+                                }
+                                item={
+                                  item
+                                }
+                              />
+                            )
+                          )}
+                        </div>
+                      </section>
+                    );
+                  }
+                )}
+
+                <section className="profile-v2-context-badges">
+                  <header>
+                    <div>
+                      <span>
+                        Контекстні мітки
+                      </span>
+
+                      <p>
+                        Показують, що відбувається з людиною просто зараз.
+                      </p>
+                    </div>
+                  </header>
+
+                  <div>
+                    {CONTEXT_BADGES.map(
                       (
                         item
                       ) => (
-                        <Achievement
+                        <article
                           key={
                             item.id
                           }
-                          item={
-                            item
+                          className={
+                            `profile-v2-context-badge ${item.tone}`
                           }
-                        />
-                      )
-                    )
-                  ) : (
-                    <p className="profile-v2-empty-note">
-                      Перші досягнення зʼявляться тут після активності у ЯТУТ.
-                    </p>
-                  )}
+                        >
+                          <i>
+                            {
+                              item.symbol
+                            }
+                          </i>
 
-                </div>
+                          <span>
+                            <strong>
+                              {
+                                item.title
+                              }
+                            </strong>
+
+                            <small>
+                              {
+                                item.subtitle
+                              }
+                            </small>
+                          </span>
+                        </article>
+                      )
+                    )}
+                  </div>
+                </section>
 
               </section>
             )}
