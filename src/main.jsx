@@ -32,6 +32,7 @@ import "./styles/friend-card-fade-avatar-v14.css";
 import "./styles/three-depth-v1.css";
 import "./styles/visual-unify-v15.css";
 import "./styles/profile-cover-nav-polish-v16.css";
+import "./styles/wet-glass-nav-v17.css";
 import {
   initNativePlatform,
 } from "./services/nativePlatformService.js";
