@@ -1,0 +1,499 @@
+/* =========================================================
+   YATUT PROFILE V10 — SAFE AREA + CONTROLLED COVER FADE
+   The profile cover extends behind the iOS status bar in
+   standalone mode, then fades out around the upper half of
+   the screen. Light and dark themes share the same image.
+========================================================= */
+
+@media (max-width: 767px) {
+  body.yatut-profile-immersive {
+    --yp-cover-height:
+      clamp(
+        500px,
+        62svh,
+        860px
+      );
+
+    background:
+      #f6f7fb !important;
+  }
+
+  body.yatut-profile-immersive.yatut-dark-mode {
+    background:
+      #070b16 !important;
+  }
+
+  body.yatut-profile-immersive .app,
+  body.yatut-profile-immersive .layout,
+  body.yatut-profile-immersive .layout-wide,
+  body.yatut-profile-immersive .main-content,
+  body.yatut-profile-immersive .topbar,
+  body.yatut-profile-immersive .topbar-inner {
+    background:
+      transparent !important;
+  }
+
+  /*
+    Real profile cover.
+    It starts above the safe-area so installed iOS PWA can
+    paint behind time / signal / battery.
+  */
+  body.yatut-profile-immersive::before {
+    content:
+      "" !important;
+
+    position:
+      absolute !important;
+
+    top:
+      calc(
+        -1 *
+        max(
+          env(
+            safe-area-inset-top
+          ),
+          0px
+        )
+      ) !important;
+
+    right:
+      0 !important;
+
+    bottom:
+      auto !important;
+
+    left:
+      0 !important;
+
+    width:
+      100% !important;
+
+    height:
+      calc(
+        var(
+          --yp-cover-height
+        ) +
+        max(
+          env(
+            safe-area-inset-top
+          ),
+          0px
+        )
+      ) !important;
+
+    z-index:
+      0 !important;
+
+    pointer-events:
+      none !important;
+
+    background-image:
+      var(
+        --yatut-profile-cover-image
+      ),
+      linear-gradient(
+        160deg,
+        #5d9ce1 0%,
+        #9cc8ee 48%,
+        #edf3fa 100%
+      ) !important;
+
+    background-size:
+      cover,
+      cover !important;
+
+    background-position:
+      center top,
+      center !important;
+
+    background-repeat:
+      no-repeat,
+      no-repeat !important;
+
+    opacity:
+      1 !important;
+
+    filter:
+      saturate(1.03)
+      contrast(1.01)
+      brightness(1.04) !important;
+
+    -webkit-mask-image:
+      none !important;
+
+    mask-image:
+      none !important;
+  }
+
+  body.yatut-profile-immersive.yatut-dark-mode::before {
+    filter:
+      saturate(1.05)
+      contrast(1.035)
+      brightness(.88) !important;
+  }
+
+  /* Tiny colour bloom only; never a full dark overlay. */
+  body.yatut-profile-immersive::after {
+    content:
+      "" !important;
+
+    position:
+      absolute !important;
+
+    top:
+      calc(
+        -1 *
+        max(
+          env(
+            safe-area-inset-top
+          ),
+          0px
+        )
+      ) !important;
+
+    right:
+      0 !important;
+
+    bottom:
+      auto !important;
+
+    left:
+      0 !important;
+
+    height:
+      calc(
+        var(
+          --yp-cover-height
+        ) +
+        max(
+          env(
+            safe-area-inset-top
+          ),
+          0px
+        )
+      ) !important;
+
+    z-index:
+      0 !important;
+
+    pointer-events:
+      none !important;
+
+    background:
+      radial-gradient(
+        circle
+        at 88% 12%,
+        rgba(
+          108,
+          91,
+          255,
+          .10
+        ),
+        transparent 34%
+      ) !important;
+  }
+
+  body.yatut-profile-immersive.yatut-dark-mode::after {
+    background:
+      radial-gradient(
+        circle
+        at 88% 12%,
+        rgba(
+          108,
+          91,
+          255,
+          .16
+        ),
+        transparent 35%
+      ) !important;
+  }
+
+  /*
+    The page itself performs the fade.
+    Image is clear at the top, begins disappearing around the
+    middle and is fully gone before lower profile content.
+  */
+  .profile-v4-immersive {
+    position:
+      relative !important;
+
+    z-index:
+      1 !important;
+
+    min-height:
+      100dvh !important;
+
+    color:
+      #171923 !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        rgba(
+          246,
+          247,
+          251,
+          0
+        ) 0%,
+        rgba(
+          246,
+          247,
+          251,
+          0
+        ) 35svh,
+        rgba(
+          246,
+          247,
+          251,
+          .08
+        ) 41svh,
+        rgba(
+          246,
+          247,
+          251,
+          .23
+        ) 46svh,
+        rgba(
+          246,
+          247,
+          251,
+          .48
+        ) 51svh,
+        rgba(
+          246,
+          247,
+          251,
+          .72
+        ) 55svh,
+        rgba(
+          246,
+          247,
+          251,
+          .90
+        ) 58svh,
+        rgba(
+          246,
+          247,
+          251,
+          .98
+        ) 61svh,
+        #f6f7fb 64svh,
+        #f6f7fb 100%
+      ) !important;
+  }
+
+  body.yatut-profile-immersive.yatut-dark-mode
+  .profile-v4-immersive {
+    color:
+      #f8f9ff !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        rgba(
+          7,
+          11,
+          22,
+          0
+        ) 0%,
+        rgba(
+          7,
+          11,
+          22,
+          0
+        ) 35svh,
+        rgba(
+          7,
+          11,
+          22,
+          .07
+        ) 41svh,
+        rgba(
+          7,
+          11,
+          22,
+          .20
+        ) 46svh,
+        rgba(
+          7,
+          11,
+          22,
+          .44
+        ) 51svh,
+        rgba(
+          7,
+          11,
+          22,
+          .68
+        ) 55svh,
+        rgba(
+          7,
+          11,
+          22,
+          .87
+        ) 58svh,
+        rgba(
+          7,
+          11,
+          22,
+          .97
+        ) 61svh,
+        #070b16 64svh,
+        #070b16 100%
+      ) !important;
+  }
+
+  /* Old pseudo fade layers must never reappear. */
+  .profile-v4-immersive::before,
+  .profile-v4-immersive::after,
+  .profile-v2-page::before {
+    content:
+      none !important;
+
+    display:
+      none !important;
+  }
+
+  body.yatut-profile-immersive
+  .profile-v4-immersive
+  .profile-v2-shell,
+  body.yatut-profile-immersive
+  .profile-v4-immersive
+  .profile-v2-hero,
+  body.yatut-profile-immersive
+  .profile-v4-immersive
+  .profile-v3-mobile-card,
+  body.yatut-profile-immersive
+  .profile-v4-immersive
+  .profile-v2-grid {
+    position:
+      relative !important;
+
+    z-index:
+      2 !important;
+
+    background:
+      transparent !important;
+  }
+
+  body.yatut-profile-immersive
+  .profile-v4-immersive
+  .profile-v2-hero {
+    border:
+      0 !important;
+
+    box-shadow:
+      none !important;
+  }
+
+  .profile-v4-immersive
+  .profile-v2-cover {
+    opacity:
+      0 !important;
+
+    background:
+      transparent !important;
+
+    box-shadow:
+      none !important;
+  }
+
+  /* Header sits on the image; existing safe-area padding remains active. */
+  body.yatut-profile-immersive
+  .topbar {
+    z-index:
+      1200 !important;
+
+    border:
+      0 !important;
+
+    border-bottom:
+      0 !important;
+
+    box-shadow:
+      none !important;
+  }
+
+  /* Light theme surfaces. */
+  body.yatut-profile-immersive:not(.yatut-dark-mode)
+  .profile-v4-immersive
+  .profile-v3-mobile-stats,
+  body.yatut-profile-immersive:not(.yatut-dark-mode)
+  .profile-v4-immersive
+  .profile-v2-tabs,
+  body.yatut-profile-immersive:not(.yatut-dark-mode)
+  .profile-v4-immersive
+  .profile-v2-inline-composer,
+  body.yatut-profile-immersive:not(.yatut-dark-mode)
+  .profile-v4-immersive
+  .profile-v2-post-card,
+  body.yatut-profile-immersive:not(.yatut-dark-mode)
+  .profile-v4-immersive
+  .profile-v2-card {
+    border-color:
+      rgba(
+        255,
+        255,
+        255,
+        .78
+      ) !important;
+
+    background:
+      rgba(
+        255,
+        255,
+        255,
+        .86
+      ) !important;
+
+    color:
+      #171923 !important;
+  }
+
+  /* Dark theme surfaces. */
+  body.yatut-profile-immersive.yatut-dark-mode
+  .profile-v4-immersive
+  .profile-v3-mobile-stats,
+  body.yatut-profile-immersive.yatut-dark-mode
+  .profile-v4-immersive
+  .profile-v2-tabs,
+  body.yatut-profile-immersive.yatut-dark-mode
+  .profile-v4-immersive
+  .profile-v2-inline-composer,
+  body.yatut-profile-immersive.yatut-dark-mode
+  .profile-v4-immersive
+  .profile-v2-post-card,
+  body.yatut-profile-immersive.yatut-dark-mode
+  .profile-v4-immersive
+  .profile-v2-card {
+    border-color:
+      rgba(
+        255,
+        255,
+        255,
+        .09
+      ) !important;
+
+    background:
+      rgba(
+        17,
+        22,
+        36,
+        .74
+      ) !important;
+
+    color:
+      #f8f9ff !important;
+  }
+}
+
+@media (max-width: 430px) {
+  body.yatut-profile-immersive {
+    --yp-cover-height:
+      clamp(
+        470px,
+        60svh,
+        760px
+      );
+  }
+}
