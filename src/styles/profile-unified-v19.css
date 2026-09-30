@@ -49,7 +49,7 @@
     width: 100% !important;
     height:
       calc(
-        640px +
+        760px +
         max(
           env(safe-area-inset-top),
           0px
@@ -63,12 +63,12 @@
       linear-gradient(
         180deg,
         rgba(246,247,251,.00) 0%,
-        rgba(246,247,251,.00) 44%,
-        rgba(246,247,251,.06) 55%,
-        rgba(246,247,251,.20) 66%,
-        rgba(246,247,251,.46) 76%,
-        rgba(246,247,251,.72) 85%,
-        rgba(246,247,251,.92) 94%,
+        rgba(246,247,251,.00) 60%,
+        rgba(246,247,251,.035) 68%,
+        rgba(246,247,251,.12) 76%,
+        rgba(246,247,251,.32) 84%,
+        rgba(246,247,251,.60) 91%,
+        rgba(246,247,251,.86) 96%,
         #f6f7fb 100%
       ),
       var(--yatut-profile-cover-image),
@@ -95,22 +95,22 @@
       no-repeat !important;
 
     filter:
-      saturate(1.06)
-      contrast(1.02)
-      brightness(1.01) !important;
+      saturate(1.10)
+      contrast(1.055)
+      brightness(1.035) !important;
   }
 
   body.yatut-profile-immersive.yatut-dark-mode::before {
     background-image:
       linear-gradient(
         180deg,
-        rgba(7,11,22,.02) 0%,
-        rgba(7,11,22,.04) 42%,
-        rgba(7,11,22,.12) 55%,
-        rgba(7,11,22,.28) 66%,
-        rgba(7,11,22,.48) 76%,
-        rgba(7,11,22,.72) 86%,
-        rgba(7,11,22,.92) 95%,
+        rgba(7,11,22,.00) 0%,
+        rgba(7,11,22,.00) 58%,
+        rgba(7,11,22,.035) 66%,
+        rgba(7,11,22,.10) 74%,
+        rgba(7,11,22,.24) 82%,
+        rgba(7,11,22,.46) 89%,
+        rgba(7,11,22,.76) 95%,
         #070b16 100%
       ),
       var(--yatut-profile-cover-image),
@@ -122,9 +122,9 @@
       ) !important;
 
     filter:
-      saturate(1.08)
-      contrast(1.05)
-      brightness(.86) !important;
+      saturate(1.14)
+      contrast(1.08)
+      brightness(1.02) !important;
   }
 
   body.yatut-profile-immersive::after {
