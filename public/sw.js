@@ -1,14 +1,11 @@
 const CACHE_NAME =
-  "yatut-shell-v24";
+  "yatut-shell-v25";
 
 const APP_SHELL = [
   "/",
   "/manifest.webmanifest",
   "/yatut-icon.svg",
   "/favicon.svg",
-  "/notifications",
-  "/chats",
-  "/pulse",
 ];
 
 self.addEventListener(
@@ -95,33 +92,44 @@ self.addEventListener(
     ) {
       event.respondWith(
         fetch(
-          request
+          request,
+          {
+            cache:
+              "no-store",
+          }
         )
           .then(
             (response) => {
-              const copy =
-                response.clone();
+              if (
+                response.ok
+              ) {
+                const copy =
+                  response.clone();
 
-              caches
-                .open(
-                  CACHE_NAME
-                )
-                .then(
-                  (cache) =>
-                    cache.put(
-                      "/",
-                      copy
-                    )
-                );
+                caches
+                  .open(
+                    CACHE_NAME
+                  )
+                  .then(
+                    (cache) =>
+                      cache.put(
+                        request,
+                        copy
+                      )
+                  );
+              }
 
               return response;
             }
           )
           .catch(
-            () =>
-              caches.match(
+            async () =>
+              (await caches.match(
+                request
+              )) ||
+              (await caches.match(
                 "/"
-              )
+              ))
           )
       );
 
