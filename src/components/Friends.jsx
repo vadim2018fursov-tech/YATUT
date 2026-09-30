@@ -2773,20 +2773,15 @@ function PersonCard({
 
       <div
         className={`friends-v2-person-cover ${
-          person.cover ||
-          person.avatar
+          person.cover
             ? "has-image"
             : ""
         }`.trim()}
         style={
-          person.cover ||
-          person.avatar
+          person.cover
             ? {
                 "--friend-card-cover":
-                  `url("${
-                    person.cover ||
-                    person.avatar
-                  }")`,
+                  `url("${person.cover}")`,
               }
             : undefined
         }
@@ -2836,49 +2831,46 @@ function PersonCard({
             size={17}
           />
         </button>
-      </div>
 
-      {/* ===================================================
-          AVATAR
-      =================================================== */}
-
-      <button
-        className="friends-v2-person-avatar-wrap"
-        type="button"
-        onClick={
-          onOpenProfile
-        }
-        aria-label={`Профіль ${person.name}`}
-      >
-        <span
-          className={`friends-v2-person-pulse ${
-            person.nearby
-              ? "nearby"
-              : person.online
-                ? "online"
-                : ""
-          }`}
+        {/* Avatar is physically anchored to the cover edge. */}
+        <button
+          className="friends-v2-person-avatar-wrap"
+          type="button"
+          onClick={
+            onOpenProfile
+          }
+          aria-label={`Профіль ${person.name}`}
         >
-          <span className="friends-v2-person-avatar">
-            {person.avatar ? (
-              <img
-                src={
-                  person.avatar
-                }
-                alt={
-                  person.name
-                }
-              />
-            ) : (
-              person.initial
-            )}
+          <span
+            className={`friends-v2-person-pulse ${
+              person.nearby
+                ? "nearby"
+                : person.online
+                  ? "online"
+                  : ""
+            }`}
+          >
+            <span className="friends-v2-person-avatar">
+              {person.avatar ? (
+                <img
+                  src={
+                    person.avatar
+                  }
+                  alt={
+                    person.name
+                  }
+                />
+              ) : (
+                person.initial
+              )}
+            </span>
           </span>
-        </span>
 
-        {person.online && (
-          <span className="friends-v2-person-online" />
-        )}
-      </button>
+          {person.online && (
+            <span className="friends-v2-person-online" />
+          )}
+        </button>
+      </div>
 
       {/* ===================================================
           BODY
