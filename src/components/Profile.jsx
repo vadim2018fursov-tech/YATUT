@@ -799,6 +799,27 @@ export default function Profile({
 
   useEffect(
     () => {
+      document.documentElement.classList.add(
+        "yatut-profile-immersive"
+      );
+      document.body.classList.add(
+        "yatut-profile-immersive"
+      );
+
+      return () => {
+        document.documentElement.classList.remove(
+          "yatut-profile-immersive"
+        );
+        document.body.classList.remove(
+          "yatut-profile-immersive"
+        );
+      };
+    },
+    []
+  );
+
+  useEffect(
+    () => {
       if (
         !authSession?.user?.id
       ) {
@@ -2176,8 +2197,18 @@ export default function Profile({
   ======================================================= */
 
   return (
-    <section className="profile-v2-page">
-      <div className="profile-v2-wallpaper" />
+    <section className="profile-v2-page profile-v4-immersive">
+      <div
+        className="profile-v2-wallpaper"
+        style={
+          profile.cover
+            ? {
+                backgroundImage:
+                  `url("${profile.cover}")`,
+              }
+            : undefined
+        }
+      />
 
       <section className="profile-v2-shell">
 
