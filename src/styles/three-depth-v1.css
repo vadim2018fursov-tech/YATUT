@@ -1,0 +1,154 @@
+/* =========================================================
+   YATUT THREE DEPTH V1
+   Lightweight WebGL depth layer for the global mobile nav.
+   The DOM buttons remain fully interactive above the canvas.
+========================================================= */
+
+@media (max-width: 767px) {
+  #yatut-global-mobile-nav.mobile-nav {
+    isolation: isolate;
+    overflow: hidden !important;
+    transform-style: preserve-3d;
+    perspective: 900px;
+  }
+
+  #yatut-global-mobile-nav
+  .mobile-nav-3d {
+    position: absolute;
+    inset: 0;
+
+    z-index: 0;
+
+    display: block;
+
+    overflow: hidden;
+
+    border-radius: inherit;
+
+    pointer-events: none;
+
+    opacity: .96;
+
+    mix-blend-mode: screen;
+  }
+
+  body:not(.yatut-dark-mode)
+  #yatut-global-mobile-nav
+  .mobile-nav-3d {
+    opacity: .62;
+    mix-blend-mode: multiply;
+  }
+
+  #yatut-global-mobile-nav
+  .mobile-nav-3d canvas {
+    width: 100% !important;
+    height: 100% !important;
+
+    display: block;
+
+    pointer-events: none;
+  }
+
+  #yatut-global-mobile-nav
+  .mobile-nav-3d-fallback {
+    position: absolute;
+    inset: 0;
+
+    display: block;
+
+    background:
+      radial-gradient(
+        ellipse
+        28%
+        82%
+        at
+        88%
+        58%,
+        rgba(
+          112,
+          87,
+          255,
+          .30
+        ),
+        transparent
+        72%
+      );
+  }
+
+  #yatut-global-mobile-nav
+  .mobile-nav-item {
+    position: relative;
+    z-index: 2;
+
+    transform-style:
+      preserve-3d;
+
+    backface-visibility:
+      hidden;
+
+    -webkit-backface-visibility:
+      hidden;
+  }
+
+  #yatut-global-mobile-nav
+  .mobile-nav-icon,
+  #yatut-global-mobile-nav
+  .mobile-nav-item small {
+    position: relative;
+
+    transform:
+      translateZ(10px);
+
+    text-shadow:
+      0 1px 0
+      rgba(
+        255,
+        255,
+        255,
+        .10
+      );
+  }
+
+  body.yatut-dark-mode
+  #yatut-global-mobile-nav
+  .mobile-nav-item.active
+  .mobile-nav-icon {
+    filter:
+      drop-shadow(
+        0
+        0
+        8px
+        rgba(
+          135,
+          114,
+          255,
+          .38
+        )
+      );
+  }
+
+  body:not(.yatut-dark-mode)
+  #yatut-global-mobile-nav
+  .mobile-nav-item.active
+  .mobile-nav-icon {
+    filter:
+      drop-shadow(
+        0
+        0
+        7px
+        rgba(
+          102,
+          86,
+          255,
+          .20
+        )
+      );
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #yatut-global-mobile-nav
+    .mobile-nav-3d {
+      opacity: .55;
+    }
+  }
+}
