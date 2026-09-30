@@ -1,0 +1,194 @@
+/* =========================================================
+   YATUT FRIEND CARD V14 — ROUND AVATAR + COVER FADE
+   Matches the approved visual: perfect circular avatar and
+   a cover image that dissolves smoothly into the card body.
+========================================================= */
+
+@media (max-width: 767px) {
+  /* ---------- Smooth cover -> body transition ---------- */
+
+  .friends-v2-person-card {
+    --friend-card-surface: #ffffff;
+  }
+
+  body.yatut-dark-mode .friends-v2-person-card {
+    --friend-card-surface: #151a2b;
+  }
+
+  .friends-v2-person-cover {
+    isolation: isolate !important;
+
+    border-radius:
+      17px
+      17px
+      0
+      0 !important;
+  }
+
+  .friends-v2-person-cover::after {
+    content: "" !important;
+
+    position: absolute !important;
+    inset: 0 !important;
+
+    z-index: 2 !important;
+
+    pointer-events: none !important;
+
+    border-radius:
+      17px
+      17px
+      0
+      0 !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,0) 50%,
+        rgba(255,255,255,.08) 61%,
+        rgba(255,255,255,.24) 70%,
+        rgba(255,255,255,.50) 79%,
+        rgba(255,255,255,.76) 88%,
+        rgba(255,255,255,.94) 96%,
+        #ffffff 100%
+      ) !important;
+  }
+
+  body.yatut-dark-mode
+  .friends-v2-person-cover::after {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(21,26,43,0) 0%,
+        rgba(21,26,43,0) 50%,
+        rgba(21,26,43,.08) 61%,
+        rgba(21,26,43,.24) 70%,
+        rgba(21,26,43,.50) 79%,
+        rgba(21,26,43,.76) 88%,
+        rgba(21,26,43,.94) 96%,
+        #151a2b 100%
+      ) !important;
+  }
+
+  .friends-v2-person-more,
+  .friends-v2-request-chip,
+  .friends-v2-nearby-chip {
+    z-index: 6 !important;
+  }
+
+  /* ---------- Avatar: force exact 1:1 geometry ---------- */
+
+  .friends-v2-person-avatar-wrap {
+    box-sizing: border-box !important;
+
+    width: 46px !important;
+    height: 46px !important;
+    min-width: 46px !important;
+    min-height: 46px !important;
+    max-width: 46px !important;
+    max-height: 46px !important;
+
+    aspect-ratio: 1 / 1 !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    display: block !important;
+
+    border: 0 !important;
+    border-radius: 50% !important;
+
+    overflow: visible !important;
+
+    line-height: 0 !important;
+
+    z-index: 8 !important;
+  }
+
+  .friends-v2-person-pulse {
+    box-sizing: border-box !important;
+
+    width: 46px !important;
+    height: 46px !important;
+    min-width: 46px !important;
+    min-height: 46px !important;
+    max-width: 46px !important;
+    max-height: 46px !important;
+
+    aspect-ratio: 1 / 1 !important;
+
+    padding: 2px !important;
+
+    display: block !important;
+
+    border-radius: 50% !important;
+
+    overflow: hidden !important;
+
+    line-height: 0 !important;
+  }
+
+  .friends-v2-person-avatar {
+    box-sizing: border-box !important;
+
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 100% !important;
+    min-height: 100% !important;
+
+    aspect-ratio: 1 / 1 !important;
+
+    display: block !important;
+
+    overflow: hidden !important;
+
+    border-radius: 50% !important;
+
+    line-height: 0 !important;
+  }
+
+  .friends-v2-person-avatar img {
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 100% !important;
+    min-height: 100% !important;
+
+    aspect-ratio: 1 / 1 !important;
+
+    display: block !important;
+
+    border-radius: 50% !important;
+
+    object-fit: cover !important;
+    object-position: center !important;
+  }
+
+  .friends-v2-person-online {
+    z-index: 10 !important;
+  }
+
+  /* Body starts under the dissolved cover, not as a hard new block. */
+  .friends-v2-person-body {
+    position: relative !important;
+
+    margin-top: -1px !important;
+
+    background:
+      var(
+        --friend-card-surface
+      ) !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .friends-v2-person-avatar-wrap,
+  .friends-v2-person-pulse {
+    width: 43px !important;
+    height: 43px !important;
+    min-width: 43px !important;
+    min-height: 43px !important;
+    max-width: 43px !important;
+    max-height: 43px !important;
+  }
+}
