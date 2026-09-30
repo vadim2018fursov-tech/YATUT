@@ -1,0 +1,178 @@
+/* =========================================================
+   YATUT PROFILE V8 — COVER ONLY ON TOP HALF
+   The user cover exists only in the upper profile zone and
+   fades completely into the page surface. It never reappears
+   lower on the page while scrolling.
+========================================================= */
+
+@media (max-width: 767px) {
+  body.yatut-profile-immersive {
+    position: relative !important;
+    background: var(--yp-page, #f6f7fb) !important;
+  }
+
+  /*
+    Important: the cover is no longer fixed to the viewport.
+    It is anchored to the top of the document and therefore
+    scrolls away naturally with the profile header.
+  */
+  body.yatut-profile-immersive::before {
+    content: "" !important;
+    position: absolute !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: auto !important;
+    left: 0 !important;
+
+    width: 100% !important;
+    height: clamp(520px, 61svh, 650px) !important;
+
+    z-index: 0 !important;
+    pointer-events: none !important;
+
+    background-image:
+      var(--yatut-profile-cover-image),
+      linear-gradient(
+        160deg,
+        #5266c8 0%,
+        #9bbce8 48%,
+        #edf1f9 100%
+      ) !important;
+
+    background-size:
+      cover,
+      cover !important;
+
+    background-position:
+      center top,
+      center !important;
+
+    background-repeat:
+      no-repeat,
+      no-repeat !important;
+
+    transform: none !important;
+
+    filter:
+      saturate(1.04)
+      contrast(1.025)
+      brightness(.98) !important;
+
+    -webkit-mask-image:
+      linear-gradient(
+        to bottom,
+        #000 0%,
+        #000 52%,
+        rgba(0,0,0,.94) 61%,
+        rgba(0,0,0,.76) 70%,
+        rgba(0,0,0,.48) 80%,
+        rgba(0,0,0,.20) 90%,
+        transparent 100%
+      );
+
+    mask-image:
+      linear-gradient(
+        to bottom,
+        #000 0%,
+        #000 52%,
+        rgba(0,0,0,.94) 61%,
+        rgba(0,0,0,.76) 70%,
+        rgba(0,0,0,.48) 80%,
+        rgba(0,0,0,.20) 90%,
+        transparent 100%
+      );
+  }
+
+  /*
+    A soft surface-colored veil makes the handoff into the page
+    gradual even on high-contrast user photos.
+  */
+  body.yatut-profile-immersive::after {
+    content: "" !important;
+    position: absolute !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: auto !important;
+    left: 0 !important;
+
+    width: 100% !important;
+    height: clamp(520px, 61svh, 650px) !important;
+
+    z-index: 0 !important;
+    pointer-events: none !important;
+
+    background:
+      radial-gradient(
+        circle at 86% 14%,
+        rgba(119,100,255,.10),
+        transparent 30%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(246,247,251,0) 0%,
+        rgba(246,247,251,0) 55%,
+        rgba(246,247,251,.05) 64%,
+        rgba(246,247,251,.16) 72%,
+        rgba(246,247,251,.38) 81%,
+        rgba(246,247,251,.72) 90%,
+        #f6f7fb 100%
+      ) !important;
+  }
+
+  body.yatut-profile-immersive.yatut-dark-mode::before {
+    filter:
+      saturate(1.06)
+      contrast(1.05)
+      brightness(.80) !important;
+  }
+
+  body.yatut-profile-immersive.yatut-dark-mode::after {
+    background:
+      radial-gradient(
+        circle at 86% 14%,
+        rgba(112,83,255,.16),
+        transparent 31%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(7,11,22,0) 0%,
+        rgba(7,11,22,0) 55%,
+        rgba(7,11,22,.07) 64%,
+        rgba(7,11,22,.20) 73%,
+        rgba(7,11,22,.43) 82%,
+        rgba(7,11,22,.76) 91%,
+        #070b16 100%
+      ) !important;
+  }
+
+  /*
+    Disable the older page-level full-height fade. The body
+    layer above now owns the whole transition.
+  */
+  .profile-v4-immersive::before {
+    display: none !important;
+    content: none !important;
+  }
+
+  .profile-v4-immersive,
+  .profile-v4-immersive .profile-v2-shell,
+  .profile-v4-immersive .profile-v2-hero,
+  .profile-v4-immersive .profile-v3-mobile-card {
+    background: transparent !important;
+  }
+
+  /*
+    Everything below the fading cover is the normal page surface,
+    so no image can reappear near the bottom during scrolling.
+  */
+  .profile-v4-immersive {
+    min-height: 100dvh !important;
+  }
+}
+
+@media (max-width: 430px) {
+  body.yatut-profile-immersive::before,
+  body.yatut-profile-immersive::after {
+    height: clamp(500px, 59svh, 610px) !important;
+  }
+}
