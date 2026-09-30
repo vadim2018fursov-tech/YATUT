@@ -1126,3 +1126,1644 @@ html.yatut-platform-android
       .001ms !important;
   }
 }
+
+
+/* =========================================================
+   V27 — SECOND PACKAGE
+   Home, chats, search, saved, profile edit, stories,
+   settings, onboarding, permissions, create hub, NOW.
+========================================================= */
+
+/* =========================================================
+   HOME / FEED
+========================================================= */
+
+.premium-home-page {
+  position:
+    relative;
+
+  isolation:
+    isolate;
+}
+
+.premium-home-page::before {
+  content:
+    "";
+
+  position:
+    fixed;
+
+  inset:
+    0;
+
+  z-index:
+    -1;
+
+  pointer-events:
+    none;
+
+  background:
+    radial-gradient(
+      62% 32%
+      at
+      6% 4%,
+      rgba(111,93,255,.055),
+      transparent 74%
+    ),
+    radial-gradient(
+      52% 28%
+      at
+      92% 12%,
+      rgba(37,196,230,.040),
+      transparent 76%
+    );
+}
+
+.premium-home-hero {
+  position:
+    relative;
+
+  overflow:
+    hidden;
+
+  border:
+    1px solid
+    rgba(255,255,255,.76) !important;
+
+  box-shadow:
+    0 20px 46px rgba(31,35,63,.11),
+    inset 0 1px 0 rgba(255,255,255,.62) !important;
+}
+
+.premium-home-hero::after {
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  pointer-events:
+    none;
+
+  background:
+    linear-gradient(
+      120deg,
+      rgba(255,255,255,.14),
+      transparent 28%,
+      transparent 70%,
+      rgba(111,93,255,.045)
+    );
+}
+
+.yatut-create-post {
+  border:
+    1px solid
+    rgba(255,255,255,.78) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.94),
+      rgba(255,255,255,.74)
+    ) !important;
+
+  box-shadow:
+    0 16px 34px rgba(31,35,63,.075),
+    inset 0 1px 0 rgba(255,255,255,.94) !important;
+
+  backdrop-filter:
+    blur(18px)
+    saturate(1.18) !important;
+
+  -webkit-backdrop-filter:
+    blur(18px)
+    saturate(1.18) !important;
+}
+
+body.yatut-dark-mode
+.yatut-create-post {
+  border-color:
+    rgba(255,255,255,.08) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(20,26,44,.88),
+      rgba(9,14,27,.82)
+    ) !important;
+
+  box-shadow:
+    0 18px 38px rgba(0,0,0,.22),
+    inset 0 1px 0 rgba(255,255,255,.045) !important;
+}
+
+.yatut-create-post-placeholder,
+.yatut-create-post-textarea {
+  border:
+    1px solid
+    rgba(90,95,124,.08) !important;
+
+  background:
+    rgba(248,249,253,.82) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.88) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .yatut-create-post-placeholder,
+  .yatut-create-post-textarea
+) {
+  border-color:
+    rgba(255,255,255,.06) !important;
+
+  background:
+    rgba(255,255,255,.035) !important;
+}
+
+.yatut-create-post-quick button,
+.yatut-create-post-tools button {
+  border:
+    1px solid
+    rgba(111,93,255,.08) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(248,247,255,.98),
+      rgba(242,240,255,.88)
+    ) !important;
+
+  color:
+    #5f55d8 !important;
+
+  box-shadow:
+    0 7px 16px rgba(63,52,144,.05),
+    inset 0 1px 0 rgba(255,255,255,.92) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .yatut-create-post-quick button,
+  .yatut-create-post-tools button
+) {
+  border-color:
+    rgba(255,255,255,.07) !important;
+
+  background:
+    rgba(255,255,255,.045) !important;
+
+  color:
+    #a89fff !important;
+}
+
+.premium-feed-post {
+  position:
+    relative;
+
+  overflow:
+    visible;
+
+  border:
+    1px solid
+    rgba(255,255,255,.82) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.96),
+      rgba(255,255,255,.84)
+    ) !important;
+
+  box-shadow:
+    0 16px 38px rgba(31,35,63,.085),
+    inset 0 1px 0 rgba(255,255,255,.94) !important;
+}
+
+body.yatut-dark-mode
+.premium-feed-post {
+  border-color:
+    rgba(255,255,255,.08) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,24,41,.92),
+      rgba(8,13,25,.88)
+    ) !important;
+
+  box-shadow:
+    0 19px 42px rgba(0,0,0,.24),
+    inset 0 1px 0 rgba(255,255,255,.045) !important;
+}
+
+.premium-feed-post::before {
+  content:
+    "";
+
+  position:
+    absolute;
+
+  left:
+    9%;
+
+  right:
+    9%;
+
+  top:
+    0;
+
+  height:
+    1px;
+
+  pointer-events:
+    none;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,.92),
+      transparent
+    );
+}
+
+.yatut-post-media,
+.premium-feed-single-image,
+.premium-feed-gallery,
+.premium-feed-gallery-two {
+  overflow:
+    hidden;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.14);
+}
+
+.yatut-feed-media-button img,
+.yatut-feed-video {
+  transition:
+    transform .38s cubic-bezier(.2,.8,.2,1),
+    filter .28s ease !important;
+}
+
+@media (hover:hover) and (pointer:fine) {
+  .yatut-feed-media-button:hover img,
+  .yatut-feed-media-button:hover .yatut-feed-video {
+    transform:
+      scale(1.015);
+  }
+}
+
+.premium-feed-actions button {
+  border-radius:
+    12px;
+
+  transition:
+    transform .15s ease,
+    background .18s ease,
+    color .18s ease !important;
+}
+
+.yatut-reaction-picker,
+.yatut-post-menu,
+.yatut-comment-menu {
+  border:
+    1px solid
+    var(--v27-glass-border) !important;
+
+  background:
+    var(--v27-glass-light) !important;
+
+  box-shadow:
+    0 22px 56px rgba(26,29,50,.18),
+    inset 0 1px 0 rgba(255,255,255,.86) !important;
+
+  backdrop-filter:
+    blur(22px)
+    saturate(1.25) !important;
+
+  -webkit-backdrop-filter:
+    blur(22px)
+    saturate(1.25) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .yatut-reaction-picker,
+  .yatut-post-menu,
+  .yatut-comment-menu
+) {
+  border-color:
+    rgba(255,255,255,.12) !important;
+
+  background:
+    var(--v27-glass-dark) !important;
+}
+
+.yatut-comment-bubble,
+.yatut-comment-input-wrap {
+  border:
+    1px solid
+    rgba(76,81,108,.07) !important;
+
+  background:
+    rgba(247,248,252,.90) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.82) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .yatut-comment-bubble,
+  .yatut-comment-input-wrap
+) {
+  border-color:
+    rgba(255,255,255,.06) !important;
+
+  background:
+    rgba(255,255,255,.035) !important;
+}
+
+/* stories row */
+
+.yatut-story-circle-ring {
+  background:
+    conic-gradient(
+      from 205deg,
+      #7c64ff,
+      #25c4e6,
+      #ff6f82,
+      #7c64ff
+    ) !important;
+
+  box-shadow:
+    0 0 18px rgba(111,93,255,.16);
+}
+
+.yatut-story-circle-inner,
+.yatut-add-story-avatar {
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.70),
+    0 8px 18px rgba(31,35,63,.10) !important;
+}
+
+.yatut-story-presence {
+  box-shadow:
+    0 0 0 2px #fff,
+    0 0 11px rgba(37,200,122,.70) !important;
+}
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.global-search-page {
+  position:
+    relative;
+
+  isolation:
+    isolate;
+}
+
+.global-search-hero,
+.search-side-card,
+.search-section,
+.search-person-card,
+.search-city-card,
+.search-event-card,
+.search-community-card,
+.search-business-card,
+.search-entity-card {
+  border:
+    1px solid
+    rgba(255,255,255,.74) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.93),
+      rgba(255,255,255,.76)
+    ) !important;
+
+  box-shadow:
+    0 14px 32px rgba(31,35,63,.075),
+    inset 0 1px 0 rgba(255,255,255,.90) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .global-search-hero,
+  .search-side-card,
+  .search-section,
+  .search-person-card,
+  .search-city-card,
+  .search-event-card,
+  .search-community-card,
+  .search-business-card,
+  .search-entity-card
+) {
+  border-color:
+    rgba(255,255,255,.08) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(19,25,42,.88),
+      rgba(8,13,25,.82)
+    ) !important;
+
+  box-shadow:
+    0 16px 36px rgba(0,0,0,.20),
+    inset 0 1px 0 rgba(255,255,255,.045) !important;
+}
+
+.global-search-box {
+  border:
+    1px solid
+    rgba(111,93,255,.10) !important;
+
+  background:
+    rgba(248,248,253,.92) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.92),
+    0 7px 18px rgba(31,35,63,.04) !important;
+}
+
+body.yatut-dark-mode
+.global-search-box {
+  border-color:
+    rgba(255,255,255,.07) !important;
+
+  background:
+    rgba(255,255,255,.035) !important;
+}
+
+.search-primary-button {
+  border:
+    1px solid
+    rgba(150,136,255,.24) !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7d6cff,
+      #5b4aeb
+    ) !important;
+
+  color:
+    #fff !important;
+
+  box-shadow:
+    0 9px 20px rgba(87,70,224,.22),
+    inset 0 1px 0 rgba(255,255,255,.28) !important;
+}
+
+.search-secondary-button,
+.search-chat-button {
+  border:
+    1px solid
+    rgba(78,84,111,.08) !important;
+
+  background:
+    rgba(248,249,252,.90) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.84),
+    0 6px 14px rgba(31,35,63,.04) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .search-secondary-button,
+  .search-chat-button
+) {
+  border-color:
+    rgba(255,255,255,.07) !important;
+
+  background:
+    rgba(255,255,255,.035) !important;
+}
+
+/* =========================================================
+   SAVED
+========================================================= */
+
+.saved-summary,
+.saved-toolbar,
+.saved-card {
+  border:
+    1px solid
+    rgba(255,255,255,.74) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.94),
+      rgba(255,255,255,.78)
+    ) !important;
+
+  box-shadow:
+    0 14px 32px rgba(31,35,63,.075),
+    inset 0 1px 0 rgba(255,255,255,.90) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .saved-summary,
+  .saved-toolbar,
+  .saved-card
+) {
+  border-color:
+    rgba(255,255,255,.08) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,24,41,.90),
+      rgba(8,13,25,.84)
+    ) !important;
+}
+
+.saved-card-image {
+  position:
+    relative;
+
+  overflow:
+    hidden;
+}
+
+.saved-card-image::after {
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  pointer-events:
+    none;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.10),
+      transparent 36%,
+      rgba(9,13,25,.08)
+    );
+}
+
+.saved-card-menu {
+  border:
+    1px solid
+    var(--v27-glass-border) !important;
+
+  background:
+    var(--v27-glass-light) !important;
+
+  box-shadow:
+    0 20px 48px rgba(27,30,52,.18),
+    inset 0 1px 0 rgba(255,255,255,.86) !important;
+
+  backdrop-filter:
+    blur(20px)
+    saturate(1.24) !important;
+
+  -webkit-backdrop-filter:
+    blur(20px)
+    saturate(1.24) !important;
+}
+
+body.yatut-dark-mode
+.saved-card-menu {
+  border-color:
+    rgba(255,255,255,.12) !important;
+
+  background:
+    var(--v27-glass-dark) !important;
+}
+
+/* =========================================================
+   PROFILE EDIT
+========================================================= */
+
+.profile-v2-edit-backdrop {
+  backdrop-filter:
+    blur(12px)
+    saturate(1.12) !important;
+
+  -webkit-backdrop-filter:
+    blur(12px)
+    saturate(1.12) !important;
+}
+
+.profile-v2-edit-modal {
+  overflow:
+    hidden;
+
+  border:
+    1px solid
+    rgba(255,255,255,.74) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.97),
+      rgba(250,250,254,.90)
+    ) !important;
+
+  box-shadow:
+    0 30px 82px rgba(26,29,50,.22),
+    inset 0 1px 0 rgba(255,255,255,.96) !important;
+
+  animation:
+    v27SheetIn .22s cubic-bezier(.2,.82,.22,1);
+}
+
+body.yatut-dark-mode
+.profile-v2-edit-modal {
+  border-color:
+    rgba(255,255,255,.10) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(17,23,39,.96),
+      rgba(8,13,25,.94)
+    ) !important;
+
+  box-shadow:
+    0 32px 86px rgba(0,0,0,.34),
+    inset 0 1px 0 rgba(255,255,255,.05) !important;
+}
+
+.profile-v2-edit-cover,
+.profile-v2-edit-avatar {
+  position:
+    relative;
+
+  overflow:
+    hidden;
+
+  box-shadow:
+    0 14px 30px rgba(31,35,63,.10),
+    inset 0 1px 0 rgba(255,255,255,.18) !important;
+}
+
+.profile-v2-edit-cover::after,
+.profile-v2-edit-avatar::after {
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  pointer-events:
+    none;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.12),
+      transparent 32%,
+      rgba(12,16,28,.08)
+    );
+}
+
+.profile-v2-form-grid input,
+.profile-v2-form-grid textarea,
+.profile-v2-form-grid select {
+  border:
+    1px solid
+    rgba(82,87,115,.09) !important;
+
+  background:
+    rgba(247,248,252,.92) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.86) !important;
+}
+
+body.yatut-dark-mode
+.profile-v2-form-grid
+:is(
+  input,
+  textarea,
+  select
+) {
+  border-color:
+    rgba(255,255,255,.07) !important;
+
+  background:
+    rgba(255,255,255,.035) !important;
+}
+
+.profile-v2-edit-save {
+  border:
+    1px solid
+    rgba(154,140,255,.26) !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c6bff,
+      #5b4aeb
+    ) !important;
+
+  color:
+    #fff !important;
+
+  box-shadow:
+    0 12px 26px rgba(86,68,224,.24),
+    inset 0 1px 0 rgba(255,255,255,.30) !important;
+}
+
+.profile-v2-edit-cancel {
+  border:
+    1px solid
+    rgba(79,85,112,.08) !important;
+
+  background:
+    rgba(245,246,250,.94) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.88),
+    0 7px 16px rgba(31,35,63,.045) !important;
+}
+
+body.yatut-dark-mode
+.profile-v2-edit-cancel {
+  border-color:
+    rgba(255,255,255,.07) !important;
+
+  background:
+    rgba(255,255,255,.045) !important;
+}
+
+/* =========================================================
+   STORIES CREATE / VIEWER
+========================================================= */
+
+.yatut-story-create,
+.yatut-story-window,
+.yatut-story-create-modal {
+  border:
+    1px solid
+    var(--v27-glass-border) !important;
+
+  background:
+    var(--v27-glass-light) !important;
+
+  box-shadow:
+    0 28px 80px rgba(21,24,44,.24),
+    inset 0 1px 0 rgba(255,255,255,.86) !important;
+
+  backdrop-filter:
+    blur(24px)
+    saturate(1.24) !important;
+
+  -webkit-backdrop-filter:
+    blur(24px)
+    saturate(1.24) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .yatut-story-create,
+  .yatut-story-window,
+  .yatut-story-create-modal
+) {
+  border-color:
+    rgba(255,255,255,.12) !important;
+
+  background:
+    var(--v27-glass-dark) !important;
+}
+
+.yatut-story-create-start,
+.yatut-story-upload-zone,
+.yatut-story-text-editor {
+  border:
+    1px solid
+    rgba(111,93,255,.10) !important;
+
+  background:
+    rgba(247,247,253,.88) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.88) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .yatut-story-create-start,
+  .yatut-story-upload-zone,
+  .yatut-story-text-editor
+) {
+  border-color:
+    rgba(255,255,255,.07) !important;
+
+  background:
+    rgba(255,255,255,.035) !important;
+}
+
+.yatut-story-publish {
+  border:
+    1px solid
+    rgba(151,136,255,.26) !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7d6cff,
+      #5b4aeb
+    ) !important;
+
+  color:
+    #fff !important;
+
+  box-shadow:
+    0 11px 24px rgba(87,70,224,.24),
+    inset 0 1px 0 rgba(255,255,255,.28) !important;
+}
+
+.yatut-story-top-actions button,
+.yatut-story-nav,
+.yatut-story-reactions button,
+.yatut-story-reply-send,
+.yatut-story-head-actions button {
+  border:
+    1px solid
+    rgba(255,255,255,.18) !important;
+
+  background:
+    rgba(8,13,24,.28) !important;
+
+  color:
+    #fff !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.10),
+    0 8px 18px rgba(0,0,0,.14) !important;
+
+  backdrop-filter:
+    blur(14px)
+    saturate(1.18) !important;
+
+  -webkit-backdrop-filter:
+    blur(14px)
+    saturate(1.18) !important;
+}
+
+/* =========================================================
+   SETTINGS
+========================================================= */
+
+.settings-layout {
+  gap:
+    16px;
+}
+
+.settings-sidebar,
+.settings-content {
+  border:
+    1px solid
+    rgba(255,255,255,.72) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.94),
+      rgba(255,255,255,.78)
+    ) !important;
+
+  box-shadow:
+    0 16px 36px rgba(31,35,63,.075),
+    inset 0 1px 0 rgba(255,255,255,.90) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .settings-sidebar,
+  .settings-content
+) {
+  border-color:
+    rgba(255,255,255,.08) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,24,41,.90),
+      rgba(8,13,25,.84)
+    ) !important;
+}
+
+.settings-row {
+  border-color:
+    rgba(78,84,111,.07) !important;
+}
+
+.settings-row-control select,
+.settings-row-control input {
+  border:
+    1px solid
+    rgba(78,84,111,.08) !important;
+
+  background:
+    rgba(247,248,252,.90) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.86) !important;
+}
+
+body.yatut-dark-mode
+.settings-row-control
+:is(
+  select,
+  input
+) {
+  border-color:
+    rgba(255,255,255,.07) !important;
+
+  background:
+    rgba(255,255,255,.035) !important;
+}
+
+/* =========================================================
+   CHATS
+========================================================= */
+
+.messenger {
+  background:
+    var(--app-bg, #f6f7fb);
+}
+
+.chat-list,
+.chat-dialog,
+.chat-info-panel {
+  border-color:
+    rgba(255,255,255,.70) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.95),
+      rgba(255,255,255,.82)
+    ) !important;
+
+  box-shadow:
+    0 16px 38px rgba(31,35,63,.075),
+    inset 0 1px 0 rgba(255,255,255,.90) !important;
+
+  backdrop-filter:
+    blur(18px)
+    saturate(1.16) !important;
+
+  -webkit-backdrop-filter:
+    blur(18px)
+    saturate(1.16) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .chat-list,
+  .chat-dialog,
+  .chat-info-panel
+) {
+  border-color:
+    rgba(255,255,255,.08) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(16,22,38,.94),
+      rgba(7,12,24,.92)
+    ) !important;
+
+  box-shadow:
+    0 18px 42px rgba(0,0,0,.22),
+    inset 0 1px 0 rgba(255,255,255,.04) !important;
+}
+
+.chat-item {
+  border:
+    1px solid
+    transparent;
+
+  transition:
+    transform .16s ease,
+    border-color .18s ease,
+    background .18s ease !important;
+}
+
+.chat-item.active {
+  border-color:
+    rgba(111,93,255,.12) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(241,239,255,.90),
+      rgba(248,247,255,.76)
+    ) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.80) !important;
+}
+
+body.yatut-dark-mode
+.chat-item.active {
+  border-color:
+    rgba(137,122,255,.16) !important;
+
+  background:
+    rgba(111,93,255,.09) !important;
+}
+
+.chat-search,
+.message-search-bar,
+.chat-input-shell {
+  border:
+    1px solid
+    rgba(78,84,111,.08) !important;
+
+  background:
+    rgba(247,248,252,.92) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.86),
+    0 7px 18px rgba(31,35,63,.04) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .chat-search,
+  .message-search-bar,
+  .chat-input-shell
+) {
+  border-color:
+    rgba(255,255,255,.07) !important;
+
+  background:
+    rgba(255,255,255,.035) !important;
+}
+
+.message-bubble {
+  border:
+    1px solid
+    rgba(78,84,111,.06) !important;
+
+  box-shadow:
+    0 7px 16px rgba(31,35,63,.055),
+    inset 0 1px 0 rgba(255,255,255,.44) !important;
+}
+
+.message-row.mine
+.message-bubble,
+.message-row.is-own
+.message-bubble {
+  border-color:
+    rgba(111,93,255,.12) !important;
+
+  box-shadow:
+    0 8px 18px rgba(86,68,224,.10),
+    inset 0 1px 0 rgba(255,255,255,.22) !important;
+}
+
+.chat-plus,
+.chat-emoji,
+.chat-voice-button,
+.chat-send,
+.chat-more-button,
+.chat-call-actions button {
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.70),
+    0 7px 16px rgba(31,35,63,.055) !important;
+}
+
+.chat-send {
+  background:
+    linear-gradient(
+      135deg,
+      #7c6bff,
+      #5a49eb
+    ) !important;
+
+  color:
+    #fff !important;
+
+  box-shadow:
+    0 9px 20px rgba(85,68,224,.22),
+    inset 0 1px 0 rgba(255,255,255,.28) !important;
+}
+
+.yatut-emoji-popover,
+.yatut-attach-popover,
+.chat-create-popover,
+.chat-list-action-popover,
+.message-action-menu,
+.message-reaction-popover {
+  border:
+    1px solid
+    var(--v27-glass-border) !important;
+
+  background:
+    var(--v27-glass-light) !important;
+
+  box-shadow:
+    0 22px 56px rgba(26,29,50,.18),
+    inset 0 1px 0 rgba(255,255,255,.86) !important;
+
+  backdrop-filter:
+    blur(22px)
+    saturate(1.24) !important;
+
+  -webkit-backdrop-filter:
+    blur(22px)
+    saturate(1.24) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .yatut-emoji-popover,
+  .yatut-attach-popover,
+  .chat-create-popover,
+  .chat-list-action-popover,
+  .message-action-menu,
+  .message-reaction-popover
+) {
+  border-color:
+    rgba(255,255,255,.12) !important;
+
+  background:
+    var(--v27-glass-dark) !important;
+}
+
+/* =========================================================
+   MOBILE MORE MENU
+========================================================= */
+
+.mobile-more-overlay {
+  backdrop-filter:
+    blur(10px)
+    saturate(1.10) !important;
+
+  -webkit-backdrop-filter:
+    blur(10px)
+    saturate(1.10) !important;
+}
+
+.mobile-more-sheet {
+  border:
+    1px solid
+    var(--v27-glass-border) !important;
+
+  background:
+    var(--v27-glass-light) !important;
+
+  box-shadow:
+    0 28px 80px rgba(22,25,46,.24),
+    inset 0 1px 0 rgba(255,255,255,.88) !important;
+
+  backdrop-filter:
+    blur(24px)
+    saturate(1.24) !important;
+
+  -webkit-backdrop-filter:
+    blur(24px)
+    saturate(1.24) !important;
+}
+
+body.yatut-dark-mode
+.mobile-more-sheet {
+  border-color:
+    rgba(255,255,255,.12) !important;
+
+  background:
+    var(--v27-glass-dark) !important;
+}
+
+.mobile-more-primary {
+  background:
+    linear-gradient(
+      135deg,
+      #7c6bff,
+      #5a49eb
+    ) !important;
+
+  color:
+    #fff !important;
+
+  box-shadow:
+    0 10px 22px rgba(85,68,224,.22),
+    inset 0 1px 0 rgba(255,255,255,.28) !important;
+}
+
+/* =========================================================
+   ONBOARDING / DEVICE PERMISSIONS
+========================================================= */
+
+.onboarding-page,
+.device-permissions-page {
+  position:
+    relative;
+
+  isolation:
+    isolate;
+
+  background:
+    radial-gradient(
+      62% 36%
+      at
+      12% 4%,
+      rgba(111,93,255,.13),
+      transparent 74%
+    ),
+    radial-gradient(
+      54% 32%
+      at
+      90% 15%,
+      rgba(37,196,230,.08),
+      transparent 76%
+    ),
+    var(--app-bg, #f6f7fb) !important;
+}
+
+.onboarding-card,
+.device-permissions-card {
+  border:
+    1px solid
+    rgba(255,255,255,.76) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.93),
+      rgba(255,255,255,.72)
+    ) !important;
+
+  box-shadow:
+    0 26px 70px rgba(31,35,63,.14),
+    inset 0 1px 0 rgba(255,255,255,.92) !important;
+
+  backdrop-filter:
+    blur(22px)
+    saturate(1.22) !important;
+
+  -webkit-backdrop-filter:
+    blur(22px)
+    saturate(1.22) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .onboarding-card,
+  .device-permissions-card
+) {
+  border-color:
+    rgba(255,255,255,.10) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,24,41,.92),
+      rgba(8,13,25,.86)
+    ) !important;
+
+  box-shadow:
+    0 28px 74px rgba(0,0,0,.28),
+    inset 0 1px 0 rgba(255,255,255,.05) !important;
+}
+
+.onboarding-primary,
+.device-permissions-primary {
+  background:
+    linear-gradient(
+      135deg,
+      #7d6cff,
+      #5b4aeb
+    ) !important;
+
+  color:
+    #fff !important;
+
+  box-shadow:
+    0 11px 24px rgba(87,70,224,.24),
+    inset 0 1px 0 rgba(255,255,255,.28) !important;
+}
+
+.onboarding-secondary,
+.device-permissions-secondary {
+  border:
+    1px solid
+    rgba(78,84,111,.08) !important;
+
+  background:
+    rgba(247,248,252,.90) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.86) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .onboarding-secondary,
+  .device-permissions-secondary
+) {
+  border-color:
+    rgba(255,255,255,.07) !important;
+
+  background:
+    rgba(255,255,255,.035) !important;
+}
+
+.device-permission-row {
+  border:
+    1px solid
+    rgba(78,84,111,.07) !important;
+
+  background:
+    rgba(248,249,252,.88) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.84) !important;
+}
+
+body.yatut-dark-mode
+.device-permission-row {
+  border-color:
+    rgba(255,255,255,.06) !important;
+
+  background:
+    rgba(255,255,255,.032) !important;
+}
+
+/* =========================================================
+   CREATE HUB
+========================================================= */
+
+.yatut-create-hero,
+.yatut-create-card {
+  border:
+    1px solid
+    rgba(255,255,255,.74) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.94),
+      rgba(255,255,255,.76)
+    ) !important;
+
+  box-shadow:
+    0 15px 34px rgba(31,35,63,.08),
+    inset 0 1px 0 rgba(255,255,255,.90) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .yatut-create-hero,
+  .yatut-create-card
+) {
+  border-color:
+    rgba(255,255,255,.08) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,24,41,.90),
+      rgba(8,13,25,.84)
+    ) !important;
+}
+
+.yatut-create-card__icon,
+.yatut-create-hero__icon {
+  border:
+    2px solid
+    rgba(255,215,132,.72) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.48),
+    inset 0 -2px 4px rgba(31,18,88,.12),
+    0 8px 18px rgba(36,27,83,.14) !important;
+}
+
+/* =========================================================
+   NOW PAGE
+========================================================= */
+
+.now-v2-hero,
+.now-v2-card,
+.now-v2-summary {
+  border:
+    1px solid
+    rgba(255,255,255,.70) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.92),
+      rgba(255,255,255,.74)
+    ) !important;
+
+  box-shadow:
+    0 16px 36px rgba(31,35,63,.08),
+    inset 0 1px 0 rgba(255,255,255,.90) !important;
+
+  backdrop-filter:
+    blur(18px)
+    saturate(1.18) !important;
+
+  -webkit-backdrop-filter:
+    blur(18px)
+    saturate(1.18) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .now-v2-hero,
+  .now-v2-card,
+  .now-v2-summary
+) {
+  border-color:
+    rgba(255,255,255,.08) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,24,41,.90),
+      rgba(8,13,25,.84)
+    ) !important;
+}
+
+.now-v2-live-orbit__ring {
+  box-shadow:
+    0 0 22px rgba(111,93,255,.16);
+}
+
+.now-v2-live-orbit__core {
+  box-shadow:
+    0 0 28px rgba(111,93,255,.34),
+    inset 0 1px 0 rgba(255,255,255,.30) !important;
+
+  animation:
+    v27NowPulse 2.6s ease-in-out infinite;
+}
+
+@keyframes v27NowPulse {
+  0%,
+  100% {
+    transform:
+      scale(1);
+
+    filter:
+      brightness(1);
+  }
+
+  50% {
+    transform:
+      scale(1.04);
+
+    filter:
+      brightness(1.08);
+  }
+}
+
+/* =========================================================
+   EVENTS + NEARBY — REFERENCE DEPTH
+========================================================= */
+
+.events-hero,
+.events-side-card,
+.event-detail-card,
+.nearby-live-strip,
+.nearby-person-card,
+.nearby-list-card,
+.nearby-place-card,
+.nearby-community-card,
+.nearby-place-detail-info,
+.feature-section {
+  border:
+    1px solid
+    rgba(255,255,255,.72) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.94),
+      rgba(255,255,255,.76)
+    ) !important;
+
+  box-shadow:
+    0 15px 34px rgba(31,35,63,.08),
+    inset 0 1px 0 rgba(255,255,255,.90) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .events-hero,
+  .events-side-card,
+  .event-detail-card,
+  .nearby-live-strip,
+  .nearby-person-card,
+  .nearby-list-card,
+  .nearby-place-card,
+  .nearby-community-card,
+  .nearby-place-detail-info,
+  .feature-section
+) {
+  border-color:
+    rgba(255,255,255,.08) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,24,41,.90),
+      rgba(8,13,25,.84)
+    ) !important;
+}
+
+.event-card-cover,
+.nearby-place-cover {
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.16);
+}
+
+/* =========================================================
+   RESPONSIVE / PLATFORM
+========================================================= */
+
+@media (max-width:767px) {
+  .premium-feed-post,
+  .yatut-create-post,
+  .search-person-card,
+  .saved-card,
+  .notification-item,
+  .event-card,
+  .nearby-person-card,
+  .nearby-place-card,
+  .now-v2-card {
+    border-radius:
+      20px !important;
+  }
+
+  .profile-v2-edit-modal,
+  .mobile-more-sheet,
+  .yatut-story-create,
+  .yatut-story-window {
+    border-radius:
+      26px !important;
+  }
+
+  .chat-list,
+  .chat-dialog {
+    border-radius:
+      0 !important;
+  }
+}
+
+html.yatut-platform-ios
+:is(
+  .yatut-create-post,
+  .premium-feed-post,
+  .profile-v2-edit-modal,
+  .mobile-more-sheet,
+  .onboarding-card,
+  .device-permissions-card
+) {
+  backdrop-filter:
+    blur(22px)
+    saturate(1.28) !important;
+
+  -webkit-backdrop-filter:
+    blur(22px)
+    saturate(1.28) !important;
+}
+
+html.yatut-platform-android
+:is(
+  .yatut-create-post,
+  .premium-feed-post,
+  .profile-v2-edit-modal,
+  .mobile-more-sheet,
+  .onboarding-card,
+  .device-permissions-card
+) {
+  backdrop-filter:
+    blur(16px)
+    saturate(1.16) !important;
+
+  -webkit-backdrop-filter:
+    blur(16px)
+    saturate(1.16) !important;
+}
