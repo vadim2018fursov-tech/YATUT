@@ -1,0 +1,112 @@
+/* =========================================================
+   YATUT PROFILE V7 — SEAMLESS COVER FADE
+   Removes the old hard profile-page backdrop and replaces it
+   with a long, anchored fade from the user cover into the page.
+========================================================= */
+
+@media (max-width: 767px) {
+  /* The legacy page backdrop is what caused the hard horizontal cut. */
+  .profile-v4-immersive::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 0 !important;
+    pointer-events: none !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        rgba(246,247,251,0) 0px,
+        rgba(246,247,251,0.015) 130px,
+        rgba(246,247,251,0.05) 240px,
+        rgba(246,247,251,0.13) 360px,
+        rgba(246,247,251,0.30) 500px,
+        rgba(246,247,251,0.56) 640px,
+        rgba(246,247,251,0.78) 760px,
+        rgba(246,247,251,0.93) 860px,
+        #f6f7fb 950px,
+        #f6f7fb 100%
+      ) !important;
+  }
+
+  body.yatut-profile-immersive.yatut-dark-mode
+  .profile-v4-immersive::before {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(7,11,22,0) 0px,
+        rgba(7,11,22,0.02) 150px,
+        rgba(7,11,22,0.07) 270px,
+        rgba(7,11,22,0.16) 390px,
+        rgba(7,11,22,0.34) 540px,
+        rgba(7,11,22,0.58) 690px,
+        rgba(7,11,22,0.79) 820px,
+        rgba(7,11,22,0.93) 930px,
+        #070b16 1030px,
+        #070b16 100%
+      ) !important;
+  }
+
+  /* Body keeps only the actual cover image. Page pseudo-element does the fade. */
+  body.yatut-profile-immersive::after {
+    background:
+      radial-gradient(
+        circle at 88% 13%,
+        rgba(119,100,255,.12),
+        transparent 32%
+      ) !important;
+  }
+
+  body.yatut-profile-immersive.yatut-dark-mode::after {
+    background:
+      radial-gradient(
+        circle at 88% 13%,
+        rgba(112,83,255,.17),
+        transparent 33%
+      ) !important;
+  }
+
+  /* Ensure every profile surface lets the cover/fade show through. */
+  .profile-v4-immersive,
+  .profile-v4-immersive .profile-v2-shell,
+  .profile-v4-immersive .profile-v2-hero,
+  .profile-v4-immersive .profile-v3-mobile-card {
+    background: transparent !important;
+  }
+
+  .profile-v4-immersive .profile-v2-shell,
+  .profile-v4-immersive .profile-v2-hero,
+  .profile-v4-immersive .profile-v3-mobile-card,
+  .profile-v4-immersive .profile-v2-grid {
+    position: relative !important;
+    z-index: 2 !important;
+  }
+
+  /* Keep the hidden spacer from painting its own rectangular cover. */
+  .profile-v4-immersive .profile-v2-cover {
+    background: transparent !important;
+    box-shadow: none !important;
+    opacity: 0 !important;
+  }
+
+  /* Slightly softer lower surfaces so the image-to-panel handoff feels continuous. */
+  .profile-v4-immersive .profile-v3-mobile-stats,
+  .profile-v4-immersive .profile-v2-tabs {
+    backdrop-filter: blur(24px) saturate(1.30) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(1.30) !important;
+  }
+
+  body.yatut-profile-immersive:not(.yatut-dark-mode)
+  .profile-v4-immersive .profile-v3-mobile-stats,
+  body.yatut-profile-immersive:not(.yatut-dark-mode)
+  .profile-v4-immersive .profile-v2-tabs {
+    background: rgba(255,255,255,.68) !important;
+  }
+
+  body.yatut-profile-immersive.yatut-dark-mode
+  .profile-v4-immersive .profile-v3-mobile-stats,
+  body.yatut-profile-immersive.yatut-dark-mode
+  .profile-v4-immersive .profile-v2-tabs {
+    background: rgba(18,23,39,.66) !important;
+  }
+}
