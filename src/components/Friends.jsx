@@ -2782,14 +2782,8 @@ function PersonCard({
           person.cover ||
           person.avatar
             ? {
-                backgroundImage:
-                  `linear-gradient(
-                    180deg,
-                    rgba(10,12,22,.04) 0%,
-                    rgba(10,12,22,.08) 54%,
-                    rgba(10,12,22,.24) 100%
-                  ),
-                  url("${
+                "--friend-card-cover":
+                  `url("${
                     person.cover ||
                     person.avatar
                   }")`,
