@@ -1,0 +1,1674 @@
+/* =========================================================
+   YATUT EXPERIENCE LAYER V26
+   Approved direction:
+   - keep current layout, button positions and navigation logic
+   - add premium depth, liquid glass, restrained 3D and motion
+   - light + dark
+   - iPhone + Android
+   - bottom navigation WITHOUT active glow/pill highlight
+========================================================= */
+
+:root {
+  --y26-accent: #6c5cf6;
+  --y26-accent-2: #5547e9;
+  --y26-accent-soft: rgba(108, 92, 246, .13);
+  --y26-cyan: #20b9dd;
+  --y26-green: #2dcf84;
+  --y26-coral: #ff7182;
+  --y26-amber: #f4a91e;
+
+  --y26-ink: #171923;
+  --y26-muted: #7d8290;
+  --y26-page: #f6f7fb;
+
+  --y26-surface:
+    rgba(255, 255, 255, .88);
+  --y26-surface-strong:
+    rgba(255, 255, 255, .95);
+  --y26-surface-soft:
+    rgba(255, 255, 255, .70);
+
+  --y26-border:
+    rgba(68, 73, 96, .085);
+  --y26-border-glass:
+    rgba(255, 255, 255, .62);
+
+  --y26-shadow-soft:
+    0 12px 30px rgba(31, 35, 63, .075);
+  --y26-shadow-card:
+    0 16px 38px rgba(31, 35, 63, .095);
+  --y26-shadow-float:
+    0 20px 50px rgba(27, 30, 54, .14);
+
+  --y26-inset-glass:
+    inset 0 1px 0 rgba(255, 255, 255, .90),
+    inset 0 -1px 0 rgba(74, 75, 116, .035);
+
+  --y26-radius-card: 22px;
+  --y26-radius-control: 16px;
+  --y26-radius-chip: 999px;
+
+  --y26-motion:
+    cubic-bezier(.2, .82, .22, 1);
+}
+
+body.yatut-dark-mode {
+  --y26-ink: #f7f8ff;
+  --y26-muted: rgba(224, 229, 244, .66);
+  --y26-page: #070b16;
+
+  --y26-surface:
+    rgba(15, 20, 35, .78);
+  --y26-surface-strong:
+    rgba(14, 19, 33, .92);
+  --y26-surface-soft:
+    rgba(16, 22, 39, .63);
+
+  --y26-border:
+    rgba(255, 255, 255, .085);
+  --y26-border-glass:
+    rgba(255, 255, 255, .16);
+
+  --y26-shadow-soft:
+    0 14px 34px rgba(0, 0, 0, .18);
+  --y26-shadow-card:
+    0 18px 44px rgba(0, 0, 0, .23);
+  --y26-shadow-float:
+    0 24px 60px rgba(0, 0, 0, .30);
+
+  --y26-inset-glass:
+    inset 0 1px 0 rgba(255, 255, 255, .07),
+    inset 0 -1px 0 rgba(0, 0, 0, .12);
+}
+
+/* =========================================================
+   GLOBAL FOUNDATION
+========================================================= */
+
+html,
+body,
+#root {
+  background:
+    var(--y26-page);
+}
+
+body {
+  color:
+    var(--y26-ink);
+}
+
+button,
+a,
+[role="button"],
+input,
+textarea,
+select {
+  -webkit-tap-highlight-color:
+    transparent;
+}
+
+button,
+[role="button"],
+a {
+  transition:
+    transform .16s var(--y26-motion),
+    box-shadow .20s var(--y26-motion),
+    border-color .20s var(--y26-motion),
+    background-color .20s var(--y26-motion),
+    color .20s var(--y26-motion),
+    opacity .18s ease !important;
+}
+
+.yatut-coarse-pointer button:active,
+.yatut-coarse-pointer [role="button"]:active,
+.yatut-coarse-pointer a:active {
+  transform:
+    scale(.975);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  button:not(:disabled):hover,
+  [role="button"]:not([aria-disabled="true"]):hover {
+    transform:
+      translateY(-1px);
+  }
+}
+
+/* =========================================================
+   LIQUID GLASS PRIMITIVES
+========================================================= */
+
+:is(
+  .friends-v2-toolbar,
+  .friends-v2-tabs,
+  .friends-v2-summary,
+  .friends-v2-side-card,
+  .profile-v3-mobile-stats,
+  .profile-v2-tabs,
+  .profile-v2-inline-composer,
+  .profile-v2-card,
+  .community-info-card,
+  .community-side-card,
+  .community-owner-panel,
+  .community-post-composer,
+  .community-post,
+  .notifications-pulse,
+  .notifications-filters,
+  .notification-item,
+  .settings-data-card,
+  .settings-push-card,
+  .settings-security-card,
+  .settings-section,
+  .nearby-live-strip,
+  .nearby-toolbar,
+  .nearby-person-card,
+  .nearby-list-card,
+  .nearby-place-card,
+  .nearby-community-card,
+  .feature-section,
+  .event-card,
+  .event-detail-card,
+  .yatut-content-editor,
+  .yatut-content-settings,
+  .yatut-media-edit-card,
+  .yatut-media-create__settings,
+  .pulse-live-info,
+  .pulse-live-author,
+  .pulse-live-place,
+  .pulse-live-people,
+  .pulse-live-event,
+  .pulse-live-more,
+  .pulse-live-chat,
+  .chat-modal-backdrop > section,
+  .group-modal,
+  .forward-modal
+) {
+  border-color:
+    var(--y26-border) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--y26-surface-strong) 92%, transparent),
+      color-mix(in srgb, var(--y26-surface) 88%, transparent)
+    ) !important;
+
+  box-shadow:
+    var(--y26-shadow-soft),
+    var(--y26-inset-glass) !important;
+
+  backdrop-filter:
+    blur(22px)
+    saturate(1.24) !important;
+
+  -webkit-backdrop-filter:
+    blur(22px)
+    saturate(1.24) !important;
+}
+
+/* =========================================================
+   CARD DEPTH + EDGE LIGHT
+========================================================= */
+
+:is(
+  .friends-v2-person-card,
+  .community-post,
+  .community-info-card,
+  .community-side-card,
+  .notification-item,
+  .nearby-person-card,
+  .nearby-list-card,
+  .nearby-place-card,
+  .nearby-community-card,
+  .event-card,
+  .event-detail-card,
+  .settings-data-card,
+  .settings-push-card,
+  .settings-security-card,
+  .yatut-content-editor,
+  .yatut-content-settings,
+  .yatut-media-edit-card,
+  .premium-home-feed > *,
+  .feed-post,
+  .post-card
+) {
+  position:
+    relative;
+
+  isolation:
+    isolate;
+
+  border:
+    1px solid
+    var(--y26-border) !important;
+
+  box-shadow:
+    var(--y26-shadow-card),
+    var(--y26-inset-glass) !important;
+
+  transition:
+    transform .22s var(--y26-motion),
+    box-shadow .22s var(--y26-motion),
+    border-color .22s var(--y26-motion) !important;
+}
+
+:is(
+  .friends-v2-person-card,
+  .community-post,
+  .notification-item,
+  .nearby-person-card,
+  .nearby-list-card,
+  .nearby-place-card,
+  .nearby-community-card,
+  .event-card,
+  .settings-data-card
+)::after {
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  z-index:
+    5;
+
+  pointer-events:
+    none;
+
+  border-radius:
+    inherit;
+
+  background:
+    linear-gradient(
+      118deg,
+      rgba(255,255,255,.22),
+      rgba(255,255,255,0) 28%,
+      rgba(255,255,255,0) 72%,
+      rgba(108,92,246,.035)
+    );
+
+  opacity:
+    .72;
+}
+
+body.yatut-dark-mode
+:is(
+  .friends-v2-person-card,
+  .community-post,
+  .notification-item,
+  .nearby-person-card,
+  .nearby-list-card,
+  .nearby-place-card,
+  .nearby-community-card,
+  .event-card,
+  .settings-data-card
+)::after {
+  background:
+    linear-gradient(
+      118deg,
+      rgba(255,255,255,.055),
+      rgba(255,255,255,0) 30%,
+      rgba(255,255,255,0) 72%,
+      rgba(108,92,246,.05)
+    );
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :is(
+    .friends-v2-person-card,
+    .community-post,
+    .notification-item,
+    .nearby-person-card,
+    .nearby-place-card,
+    .event-card
+  ):hover {
+    transform:
+      translateY(-3px)
+      scale(1.006);
+
+    box-shadow:
+      0 22px 48px rgba(31, 35, 63, .13),
+      var(--y26-inset-glass) !important;
+  }
+
+  body.yatut-dark-mode
+  :is(
+    .friends-v2-person-card,
+    .community-post,
+    .notification-item,
+    .nearby-person-card,
+    .nearby-place-card,
+    .event-card
+  ):hover {
+    box-shadow:
+      0 24px 52px rgba(0,0,0,.30),
+      var(--y26-inset-glass) !important;
+  }
+}
+
+/* =========================================================
+   BUTTONS — SAME SHAPES, BETTER MATERIAL
+========================================================= */
+
+:is(
+  .friends-v2-find-button,
+  .profile-v3-mobile-edit,
+  .community-join-main,
+  .community-publish-post,
+  .community-create-submit,
+  .event-create-submit,
+  .feature-primary-button,
+  .yatut-content-publish,
+  .yatut-media-publish,
+  .auth-primary
+) {
+  position:
+    relative;
+
+  overflow:
+    hidden;
+
+  border:
+    1px solid
+    rgba(142, 125, 255, .26) !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7a6cff 0%,
+      #6758f8 48%,
+      #5647e8 100%
+    ) !important;
+
+  color:
+    #fff !important;
+
+  box-shadow:
+    0 12px 28px rgba(87, 70, 241, .26),
+    inset 0 1px 0 rgba(255,255,255,.30),
+    inset 0 -1px 0 rgba(67, 49, 189, .22) !important;
+}
+
+:is(
+  .friends-v2-find-button,
+  .profile-v3-mobile-edit,
+  .community-join-main,
+  .community-publish-post,
+  .community-create-submit,
+  .event-create-submit,
+  .feature-primary-button,
+  .yatut-content-publish,
+  .yatut-media-publish,
+  .auth-primary
+)::before {
+  content:
+    "";
+
+  position:
+    absolute;
+
+  left:
+    12%;
+
+  right:
+    12%;
+
+  top:
+    0;
+
+  height:
+    1px;
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(255,255,255,.66);
+
+  pointer-events:
+    none;
+}
+
+:is(
+  .friends-v2-person-actions button,
+  .profile-v3-mobile-action,
+  .community-chat-main,
+  .community-share-main,
+  .community-create-cancel,
+  .event-create-cancel,
+  .feature-secondary-button,
+  .notifications-settings-button,
+  .notifications-all-button,
+  .settings-row button,
+  .yatut-content-success__actions button,
+  .yatut-media-success__actions button
+) {
+  border-color:
+    var(--y26-border) !important;
+
+  background:
+    color-mix(
+      in srgb,
+      var(--y26-surface-strong) 86%,
+      transparent
+    ) !important;
+
+  color:
+    var(--y26-ink) !important;
+
+  box-shadow:
+    0 8px 20px rgba(29,34,55,.07),
+    var(--y26-inset-glass) !important;
+
+  backdrop-filter:
+    blur(18px)
+    saturate(1.18) !important;
+
+  -webkit-backdrop-filter:
+    blur(18px)
+    saturate(1.18) !important;
+}
+
+/* =========================================================
+   INPUTS / SEARCH / FIELDS
+========================================================= */
+
+:is(
+  .friends-v2-search,
+  .feature-search,
+  .forward-search,
+  .community-field input,
+  .community-field textarea,
+  .event-field input,
+  .event-field textarea,
+  .event-field select,
+  .auth-field input,
+  .auth-password-control,
+  .yatut-content-field input,
+  .yatut-content-field textarea,
+  .yatut-media-field input,
+  .yatut-media-field textarea,
+  .yatut-media-location-input,
+  .settings-row input,
+  .settings-row select
+) {
+  border-color:
+    var(--y26-border) !important;
+
+  background:
+    color-mix(
+      in srgb,
+      var(--y26-surface-soft) 88%,
+      transparent
+    ) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.60),
+    0 8px 18px rgba(31,35,63,.04) !important;
+
+  backdrop-filter:
+    blur(16px)
+    saturate(1.14) !important;
+
+  -webkit-backdrop-filter:
+    blur(16px)
+    saturate(1.14) !important;
+
+  transition:
+    border-color .18s ease,
+    box-shadow .18s ease,
+    background .18s ease !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .friends-v2-search,
+  .feature-search,
+  .forward-search,
+  .community-field input,
+  .community-field textarea,
+  .event-field input,
+  .event-field textarea,
+  .event-field select,
+  .auth-field input,
+  .auth-password-control,
+  .yatut-content-field input,
+  .yatut-content-field textarea,
+  .yatut-media-field input,
+  .yatut-media-field textarea,
+  .yatut-media-location-input,
+  .settings-row input,
+  .settings-row select
+) {
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.055),
+    0 8px 18px rgba(0,0,0,.08) !important;
+}
+
+:is(
+  input,
+  textarea,
+  select,
+  .friends-v2-search
+):focus-within,
+:is(
+  input,
+  textarea,
+  select
+):focus {
+  outline:
+    none !important;
+
+  border-color:
+    rgba(108, 92, 246, .34) !important;
+
+  box-shadow:
+    0 0 0 3px rgba(108, 92, 246, .08),
+    inset 0 1px 0 rgba(255,255,255,.65) !important;
+}
+
+/* =========================================================
+   AVATARS / PRESENCE / 3D ACCENTS
+========================================================= */
+
+:is(
+  .profile-v3-mobile-avatar,
+  .friends-v2-person-pulse,
+  .community-detail-avatar,
+  .notification-avatar,
+  .message-avatar,
+  .pulse-clips-author,
+  .pulse-live-author__identity img
+) {
+  box-shadow:
+    0 8px 20px rgba(28,33,55,.14),
+    0 0 0 1px rgba(255,255,255,.45) !important;
+}
+
+:is(
+  .friends-v2-person-online,
+  .notification-avatar-pulse,
+  .friends-v2-summary-live,
+  .notifications-live-dot
+) {
+  box-shadow:
+    0 0 0 2px rgba(255,255,255,.94),
+    0 0 12px rgba(45,207,132,.72) !important;
+
+  animation:
+    y26PresencePulse 2.2s ease-in-out infinite;
+}
+
+body.yatut-dark-mode
+:is(
+  .friends-v2-person-online,
+  .notification-avatar-pulse,
+  .friends-v2-summary-live,
+  .notifications-live-dot
+) {
+  box-shadow:
+    0 0 0 2px rgba(8,12,24,.94),
+    0 0 14px rgba(45,207,132,.82) !important;
+}
+
+@keyframes y26PresencePulse {
+  0%,
+  100% {
+    transform:
+      scale(1);
+
+    filter:
+      brightness(1);
+  }
+
+  50% {
+    transform:
+      scale(1.08);
+
+    filter:
+      brightness(1.12);
+  }
+}
+
+/* =========================================================
+   FRIENDS
+========================================================= */
+
+.friends-v2-page {
+  position:
+    relative;
+
+  isolation:
+    isolate;
+}
+
+.friends-v2-page::before {
+  content:
+    "";
+
+  position:
+    fixed;
+
+  inset:
+    0;
+
+  z-index:
+    -1;
+
+  pointer-events:
+    none;
+
+  background:
+    radial-gradient(
+      70% 36%
+      at
+      6% 5%,
+      rgba(108,92,246,.055),
+      transparent 72%
+    ),
+    radial-gradient(
+      52% 30%
+      at
+      93% 22%,
+      rgba(32,185,221,.035),
+      transparent 76%
+    );
+}
+
+.friends-v2-person-cover.has-image {
+  box-shadow:
+    inset 0 -28px 34px rgba(22,26,45,.08);
+}
+
+.friends-v2-person-more,
+.community-detail-actions button,
+.notification-more {
+  border:
+    1px solid
+    rgba(255,255,255,.56) !important;
+
+  background:
+    rgba(255,255,255,.34) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.52),
+    0 8px 18px rgba(22,28,50,.08) !important;
+
+  backdrop-filter:
+    blur(16px)
+    saturate(1.22) !important;
+
+  -webkit-backdrop-filter:
+    blur(16px)
+    saturate(1.22) !important;
+}
+
+body.yatut-dark-mode
+.friends-v2-person-more,
+body.yatut-dark-mode
+.community-detail-actions button,
+body.yatut-dark-mode
+.notification-more {
+  border-color:
+    rgba(255,255,255,.14) !important;
+
+  background:
+    rgba(12,17,31,.34) !important;
+}
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+.profile-v4-immersive
+.profile-v3-mobile-avatar {
+  filter:
+    drop-shadow(
+      0 10px 20px rgba(24,28,49,.14)
+    );
+}
+
+.profile-v4-immersive
+.profile-v3-mobile-name-row
+h1 {
+  letter-spacing:
+    -.045em !important;
+}
+
+.profile-v4-immersive
+.profile-v3-mobile-action,
+.profile-v4-immersive
+.profile-v3-mobile-status {
+  box-shadow:
+    var(--y26-shadow-soft),
+    var(--y26-inset-glass) !important;
+}
+
+.profile-v4-immersive
+.profile-v2-tabs
+button.active {
+  text-shadow:
+    none !important;
+}
+
+.profile-v4-immersive
+.profile-v2-tab-active {
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.56),
+    0 7px 18px rgba(91,70,235,.08) !important;
+}
+
+/* =========================================================
+   AUTH — SAME STRUCTURE, GLASS MATERIAL
+========================================================= */
+
+.auth-page {
+  position:
+    relative;
+
+  isolation:
+    isolate;
+
+  min-height:
+    100dvh;
+
+  background:
+    radial-gradient(
+      70% 44%
+      at
+      15% 5%,
+      rgba(111,95,255,.18),
+      transparent 72%
+    ),
+    radial-gradient(
+      52% 36%
+      at
+      92% 14%,
+      rgba(53,184,227,.14),
+      transparent 75%
+    ),
+    linear-gradient(
+      160deg,
+      #e8effb 0%,
+      #f6f7fb 46%,
+      #eef0f8 100%
+    ) !important;
+}
+
+.auth-page::before {
+  content:
+    "";
+
+  position:
+    fixed;
+
+  inset:
+    0;
+
+  z-index:
+    -1;
+
+  pointer-events:
+    none;
+
+  background:
+    linear-gradient(
+      120deg,
+      rgba(255,255,255,.40),
+      rgba(255,255,255,0) 40%,
+      rgba(108,92,246,.05)
+    );
+}
+
+.auth-card {
+  position:
+    relative;
+
+  overflow:
+    hidden;
+
+  border:
+    1px solid
+    rgba(255,255,255,.68) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.58),
+      rgba(255,255,255,.28)
+    ) !important;
+
+  box-shadow:
+    0 26px 70px rgba(40,45,81,.16),
+    inset 0 1px 0 rgba(255,255,255,.92),
+    inset 0 -1px 0 rgba(88,80,139,.06) !important;
+
+  backdrop-filter:
+    blur(28px)
+    saturate(1.30) !important;
+
+  -webkit-backdrop-filter:
+    blur(28px)
+    saturate(1.30) !important;
+}
+
+.auth-card::before {
+  content:
+    "";
+
+  position:
+    absolute;
+
+  left:
+    8%;
+
+  right:
+    8%;
+
+  top:
+    0;
+
+  height:
+    1px;
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(255,255,255,.86);
+
+  pointer-events:
+    none;
+}
+
+body.yatut-dark-mode
+.auth-page {
+  background:
+    radial-gradient(
+      72% 46%
+      at
+      12% 7%,
+      rgba(104,82,255,.18),
+      transparent 72%
+    ),
+    radial-gradient(
+      54% 34%
+      at
+      93% 13%,
+      rgba(38,136,190,.10),
+      transparent 74%
+    ),
+    #070b16 !important;
+}
+
+body.yatut-dark-mode
+.auth-card {
+  border-color:
+    rgba(255,255,255,.12) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(21,27,45,.72),
+      rgba(10,15,28,.60)
+    ) !important;
+
+  box-shadow:
+    0 28px 74px rgba(0,0,0,.34),
+    inset 0 1px 0 rgba(255,255,255,.07) !important;
+}
+
+/* =========================================================
+   COMMUNITIES
+========================================================= */
+
+.communities-page,
+.community-detail-page {
+  position:
+    relative;
+
+  isolation:
+    isolate;
+}
+
+.communities-hero,
+.community-detail-cover {
+  box-shadow:
+    0 18px 42px rgba(28,33,57,.12);
+}
+
+.community-detail-cover.has-image::after,
+.communities-hero::after {
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  pointer-events:
+    none;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.10),
+      transparent 38%,
+      rgba(11,15,28,.10) 100%
+    );
+}
+
+.community-owner-badge,
+.community-detail-meta span,
+.community-rule-preview,
+.community-section-title > span {
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.48);
+}
+
+/* =========================================================
+   NOTIFICATIONS + SETTINGS
+========================================================= */
+
+.notifications-v2,
+.feature-page {
+  position:
+    relative;
+
+  isolation:
+    isolate;
+}
+
+.notification-unread-dot {
+  box-shadow:
+    0 0 10px rgba(108,92,246,.58);
+}
+
+.notification-item.is-unread,
+.notification-item.unread {
+  border-color:
+    rgba(108,92,246,.16) !important;
+
+  box-shadow:
+    0 14px 32px rgba(85,72,198,.08),
+    var(--y26-inset-glass) !important;
+}
+
+.yatut-switch {
+  box-shadow:
+    inset 0 1px 2px rgba(25,28,45,.14),
+    0 5px 12px rgba(29,34,55,.05);
+}
+
+.yatut-switch.is-active,
+.yatut-switch.active,
+.yatut-switch[aria-checked="true"] {
+  background:
+    linear-gradient(
+      135deg,
+      #6f60ff,
+      #5849eb
+    ) !important;
+
+  box-shadow:
+    0 8px 18px rgba(91,72,226,.22),
+    inset 0 1px 0 rgba(255,255,255,.24) !important;
+}
+
+/* =========================================================
+   CHATS
+========================================================= */
+
+.message-bubble {
+  box-shadow:
+    0 7px 18px rgba(28,33,55,.06),
+    inset 0 1px 0 rgba(255,255,255,.35);
+}
+
+.message-row.own
+.message-bubble,
+.message-row.is-own
+.message-bubble {
+  box-shadow:
+    0 8px 20px rgba(86,69,228,.12),
+    inset 0 1px 0 rgba(255,255,255,.24);
+}
+
+.message-action-menu,
+.message-reaction-popover,
+.story-more-popover {
+  border:
+    1px solid
+    var(--y26-border-glass) !important;
+
+  background:
+    color-mix(
+      in srgb,
+      var(--y26-surface-strong) 88%,
+      transparent
+    ) !important;
+
+  box-shadow:
+    var(--y26-shadow-float),
+    var(--y26-inset-glass) !important;
+
+  backdrop-filter:
+    blur(26px)
+    saturate(1.28) !important;
+
+  -webkit-backdrop-filter:
+    blur(26px)
+    saturate(1.28) !important;
+
+  animation:
+    y26MenuIn .18s var(--y26-motion);
+}
+
+@keyframes y26MenuIn {
+  from {
+    opacity:
+      0;
+
+    transform:
+      translateY(5px)
+      scale(.97);
+  }
+
+  to {
+    opacity:
+      1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+.voice-live-dot {
+  animation:
+    y26PresencePulse 1.4s ease-in-out infinite;
+}
+
+/* =========================================================
+   CREATE POST / MEDIA / VIDEO
+========================================================= */
+
+.yatut-content-create,
+.yatut-media-create {
+  position:
+    relative;
+
+  isolation:
+    isolate;
+}
+
+.yatut-content-preview,
+.yatut-media-create__preview,
+.yatut-media-cover__preview {
+  overflow:
+    hidden;
+
+  border-color:
+    var(--y26-border) !important;
+
+  box-shadow:
+    var(--y26-shadow-card),
+    var(--y26-inset-glass) !important;
+}
+
+.yatut-content-preview.has-media::after,
+.yatut-media-create__preview.has-media::after {
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  pointer-events:
+    none;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.08),
+      transparent 34%,
+      rgba(8,12,24,.05) 100%
+    );
+}
+
+.yatut-content-source-actions button,
+.yatut-media-create__source-actions button,
+.yatut-media-create__media-actions button {
+  box-shadow:
+    0 8px 18px rgba(29,34,55,.06),
+    var(--y26-inset-glass) !important;
+}
+
+/* =========================================================
+   PULSE / CLIPS / LIVE
+========================================================= */
+
+.pulse-clips-stage,
+.pulse-live-player {
+  box-shadow:
+    0 22px 64px rgba(0,0,0,.22);
+}
+
+.pulse-clips-stage__shade,
+.pulse-live-player__shade {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(5,8,16,.05) 0%,
+      rgba(5,8,16,0) 42%,
+      rgba(5,8,16,.48) 78%,
+      rgba(5,8,16,.80) 100%
+    ) !important;
+}
+
+:is(
+  .pulse-clips-switch,
+  .pulse-clips-top-actions button,
+  .pulse-clips-actions button,
+  .pulse-live-page__back,
+  .pulse-live-player__top > *,
+  .pulse-live-chat__create
+) {
+  border-color:
+    rgba(255,255,255,.18) !important;
+
+  background:
+    rgba(10,14,26,.28) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.10),
+    0 8px 20px rgba(0,0,0,.16) !important;
+
+  backdrop-filter:
+    blur(18px)
+    saturate(1.18) !important;
+
+  -webkit-backdrop-filter:
+    blur(18px)
+    saturate(1.18) !important;
+}
+
+.pulse-clips-actions button:active,
+.pulse-live-player button:active {
+  transform:
+    scale(.94);
+}
+
+/* =========================================================
+   NEARBY + EVENTS
+========================================================= */
+
+.nearby-live-strip,
+.feature-hero,
+.event-detail-cover {
+  box-shadow:
+    0 18px 42px rgba(31,35,63,.10),
+    inset 0 1px 0 rgba(255,255,255,.42) !important;
+}
+
+.nearby-place-cover,
+.event-card-cover {
+  position:
+    relative;
+
+  overflow:
+    hidden;
+}
+
+.nearby-place-cover::after,
+.event-card-cover::after {
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  pointer-events:
+    none;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.12),
+      transparent 34%,
+      rgba(11,15,28,.08) 100%
+    );
+}
+
+/* =========================================================
+   MODALS / SHEETS
+========================================================= */
+
+:is(
+  .friends-v2-modal-backdrop,
+  .community-modal-backdrop,
+  .event-modal-backdrop,
+  .chat-modal-backdrop
+) {
+  backdrop-filter:
+    blur(12px)
+    saturate(1.10) !important;
+
+  -webkit-backdrop-filter:
+    blur(12px)
+    saturate(1.10) !important;
+}
+
+:is(
+  .friends-v2-preview,
+  .community-create-modal,
+  .event-create-modal,
+  .group-modal,
+  .forward-modal
+) {
+  animation:
+    y26SheetIn .24s var(--y26-motion);
+
+  box-shadow:
+    0 28px 80px rgba(20,22,42,.20),
+    var(--y26-inset-glass) !important;
+}
+
+@keyframes y26SheetIn {
+  from {
+    opacity:
+      0;
+
+    transform:
+      translateY(12px)
+      scale(.985);
+  }
+
+  to {
+    opacity:
+      1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+/* =========================================================
+   BOTTOM NAV — LIQUID GLASS, NO ACTIVE HIGHLIGHT
+========================================================= */
+
+#yatut-global-mobile-nav.mobile-nav {
+  overflow:
+    hidden !important;
+
+  border:
+    1px solid
+    rgba(255,255,255,.62) !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.115) 0%,
+      rgba(255,255,255,.045) 48%,
+      rgba(255,255,255,.030) 100%
+    ) !important;
+
+  box-shadow:
+    0 16px 38px rgba(22,27,48,.13),
+    inset 0 1.5px 1px rgba(255,255,255,.66),
+    inset 0 -1.5px 2px rgba(87,81,135,.08) !important;
+
+  backdrop-filter:
+    blur(9px)
+    saturate(1.72)
+    contrast(1.04) !important;
+
+  -webkit-backdrop-filter:
+    blur(9px)
+    saturate(1.72)
+    contrast(1.04) !important;
+}
+
+body.yatut-dark-mode
+#yatut-global-mobile-nav.mobile-nav {
+  border-color:
+    rgba(255,255,255,.28) !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.070) 0%,
+      rgba(12,17,31,.040) 52%,
+      rgba(8,13,26,.035) 100%
+    ) !important;
+
+  box-shadow:
+    0 18px 44px rgba(0,0,0,.22),
+    inset 0 1.5px 1px rgba(255,255,255,.26),
+    inset 0 -1px 2px rgba(93,72,185,.10) !important;
+}
+
+#yatut-global-mobile-nav.mobile-nav::before {
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    1px;
+
+  border-radius:
+    inherit;
+
+  pointer-events:
+    none;
+
+  background:
+    radial-gradient(
+      65% 34%
+      at
+      22% 0%,
+      rgba(255,255,255,.42),
+      rgba(255,255,255,.10) 30%,
+      transparent 66%
+    ),
+    radial-gradient(
+      52% 30%
+      at
+      84% 100%,
+      rgba(108,92,246,.07),
+      transparent 72%
+    );
+
+  opacity:
+    .82;
+}
+
+#yatut-global-mobile-nav.mobile-nav::after {
+  content:
+    "";
+
+  position:
+    absolute;
+
+  left:
+    8%;
+
+  right:
+    8%;
+
+  top:
+    1px;
+
+  height:
+    1.5px;
+
+  border-radius:
+    999px;
+
+  pointer-events:
+    none;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,.78) 24%,
+      rgba(255,255,255,.58) 54%,
+      rgba(255,255,255,.26) 78%,
+      transparent
+    );
+}
+
+#yatut-global-mobile-nav
+.mobile-nav-item.active::before,
+#yatut-global-mobile-nav
+.mobile-nav-item[aria-current="page"]::before {
+  content:
+    none !important;
+
+  display:
+    none !important;
+
+  opacity:
+    0 !important;
+
+  background:
+    transparent !important;
+
+  box-shadow:
+    none !important;
+}
+
+#yatut-global-mobile-nav
+.mobile-nav-item.active,
+#yatut-global-mobile-nav
+.mobile-nav-item[aria-current="page"] {
+  background:
+    transparent !important;
+
+  box-shadow:
+    none !important;
+}
+
+#yatut-global-mobile-nav
+.mobile-nav-item.active
+.mobile-nav-icon,
+#yatut-global-mobile-nav
+.mobile-nav-item[aria-current="page"]
+.mobile-nav-icon,
+#yatut-global-mobile-nav
+.mobile-nav-item.active
+small,
+#yatut-global-mobile-nav
+.mobile-nav-item[aria-current="page"]
+small {
+  color:
+    var(--y26-accent) !important;
+
+  text-shadow:
+    none !important;
+
+  filter:
+    none !important;
+}
+
+/* explicitly kill old 3D active blob */
+#yatut-global-mobile-nav
+.mobile-nav-3d {
+  opacity:
+    .018 !important;
+}
+
+#yatut-global-mobile-nav
+.mobile-nav-item.active
+.mobile-nav-3d,
+#yatut-global-mobile-nav
+.mobile-nav-item[aria-current="page"]
+.mobile-nav-3d {
+  opacity:
+    .018 !important;
+}
+
+/* =========================================================
+   LIGHT/DARK TYPOGRAPHY CONSISTENCY
+========================================================= */
+
+body:not(.yatut-dark-mode)
+:is(
+  .friends-v2-page,
+  .feature-page,
+  .communities-page,
+  .community-detail-page,
+  .notifications-v2,
+  .settings-content,
+  .yatut-content-create,
+  .yatut-media-create
+) {
+  color:
+    #171923;
+}
+
+body.yatut-dark-mode
+:is(
+  .friends-v2-page,
+  .feature-page,
+  .communities-page,
+  .community-detail-page,
+  .notifications-v2,
+  .settings-content,
+  .yatut-content-create,
+  .yatut-media-create
+) {
+  color:
+    #f7f8ff;
+}
+
+/* =========================================================
+   PLATFORM TUNING — IOS + ANDROID
+========================================================= */
+
+html.yatut-platform-ios {
+  --y26-radius-card:
+    23px;
+
+  --y26-radius-control:
+    17px;
+}
+
+html.yatut-platform-ios
+#yatut-global-mobile-nav.mobile-nav {
+  backdrop-filter:
+    blur(10px)
+    saturate(1.78)
+    contrast(1.04) !important;
+
+  -webkit-backdrop-filter:
+    blur(10px)
+    saturate(1.78)
+    contrast(1.04) !important;
+}
+
+html.yatut-platform-android {
+  --y26-radius-card:
+    21px;
+
+  --y26-radius-control:
+    15px;
+}
+
+html.yatut-platform-android
+:is(
+  .auth-card,
+  .profile-v3-mobile-stats,
+  .profile-v2-tabs,
+  .friends-v2-toolbar,
+  .friends-v2-tabs,
+  .notification-item,
+  .community-info-card
+) {
+  backdrop-filter:
+    blur(18px)
+    saturate(1.18) !important;
+
+  -webkit-backdrop-filter:
+    blur(18px)
+    saturate(1.18) !important;
+}
+
+html.yatut-platform-android
+#yatut-global-mobile-nav.mobile-nav {
+  backdrop-filter:
+    blur(7px)
+    saturate(1.62)
+    contrast(1.03) !important;
+
+  -webkit-backdrop-filter:
+    blur(7px)
+    saturate(1.62)
+    contrast(1.03) !important;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 767px) {
+  :is(
+    .friends-v2-person-card,
+    .community-post,
+    .notification-item,
+    .nearby-person-card,
+    .nearby-list-card,
+    .nearby-place-card,
+    .event-card,
+    .profile-v2-card,
+    .profile-v2-inline-composer
+  ) {
+    border-radius:
+      var(--y26-radius-card) !important;
+  }
+
+  :is(
+    .friends-v2-find-button,
+    .profile-v3-mobile-edit,
+    .profile-v3-mobile-action,
+    .community-join-main,
+    .community-chat-main,
+    .community-share-main,
+    .auth-primary,
+    .yatut-content-publish,
+    .yatut-media-publish
+  ) {
+    border-radius:
+      var(--y26-radius-control) !important;
+  }
+
+  .auth-card {
+    border-radius:
+      28px !important;
+  }
+
+  .notifications-v2 {
+    padding-bottom:
+      calc(
+        110px +
+        env(safe-area-inset-bottom)
+      );
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration:
+      .001ms !important;
+
+    animation-iteration-count:
+      1 !important;
+
+    transition-duration:
+      .001ms !important;
+
+    scroll-behavior:
+      auto !important;
+  }
+}
