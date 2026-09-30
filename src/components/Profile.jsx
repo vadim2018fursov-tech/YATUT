@@ -826,6 +826,49 @@ export default function Profile({
 
   useEffect(
     () => {
+      const cover =
+        String(
+          profile.cover ||
+          ""
+        ).trim();
+
+      const cssCover =
+        cover
+          ? `url("${cover.replace(
+              /"/g,
+              "\\\""
+            )}")`
+          : "none";
+
+      document.documentElement.style.setProperty(
+        "--yatut-profile-cover-image",
+        cssCover
+      );
+
+      document.body.classList.toggle(
+        "has-yatut-profile-cover",
+        Boolean(
+          cover
+        )
+      );
+
+      return () => {
+        document.documentElement.style.removeProperty(
+          "--yatut-profile-cover-image"
+        );
+
+        document.body.classList.remove(
+          "has-yatut-profile-cover"
+        );
+      };
+    },
+    [
+      profile.cover,
+    ]
+  );
+
+  useEffect(
+    () => {
       if (
         !authSession?.user?.id
       ) {
