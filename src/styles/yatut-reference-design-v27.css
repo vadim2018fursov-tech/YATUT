@@ -3811,3 +3811,1012 @@ body.yatut-dark-mode
       26px !important;
   }
 }
+
+
+/* =========================================================
+   V27 — FOURTH PACKAGE
+   Media editor, LIVE, other/unified profiles,
+   dialogs, media viewer and remaining PULSE surfaces.
+========================================================= */
+
+/* =========================================================
+   CREATE MEDIA / COVER EDITOR
+========================================================= */
+
+.yatut-media-editor,
+.yatut-media-success__card,
+.yatut-media-summary,
+.yatut-media-cover,
+.yatut-media-create__settings {
+  border:
+    1px solid
+    rgba(255,255,255,.74) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.95),
+      rgba(255,255,255,.78)
+    ) !important;
+
+  box-shadow:
+    0 16px 36px rgba(31,35,63,.08),
+    inset 0 1px 0 rgba(255,255,255,.91) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .yatut-media-editor,
+  .yatut-media-success__card,
+  .yatut-media-summary,
+  .yatut-media-cover,
+  .yatut-media-create__settings
+) {
+  border-color:
+    rgba(255,255,255,.08) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,24,41,.90),
+      rgba(8,13,25,.84)
+    ) !important;
+}
+
+.yatut-media-create__preview,
+.yatut-media-cover__preview,
+.yatut-media-preview-fragment {
+  position:
+    relative;
+
+  overflow:
+    hidden;
+
+  border:
+    1px solid
+    rgba(255,255,255,.30) !important;
+
+  box-shadow:
+    0 18px 42px rgba(20,24,45,.15),
+    inset 0 1px 0 rgba(255,255,255,.12) !important;
+}
+
+.yatut-media-create__preview::after,
+.yatut-media-cover__preview::after,
+.yatut-media-preview-fragment::after {
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  pointer-events:
+    none;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.10),
+      transparent 34%,
+      rgba(8,12,24,.12)
+    );
+}
+
+.yatut-media-create__source-actions button,
+.yatut-media-create__media-actions button,
+.yatut-media-cover__controls button,
+.yatut-media-editor__tools button {
+  border:
+    1px solid
+    rgba(111,93,255,.08) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(248,247,255,.98),
+      rgba(241,239,255,.86)
+    ) !important;
+
+  color:
+    #5d54d7 !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.92),
+    0 7px 16px rgba(63,52,144,.05) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .yatut-media-create__source-actions button,
+  .yatut-media-create__media-actions button,
+  .yatut-media-cover__controls button,
+  .yatut-media-editor__tools button
+) {
+  border-color:
+    rgba(255,255,255,.07) !important;
+
+  background:
+    rgba(255,255,255,.045) !important;
+
+  color:
+    #aaa2ff !important;
+}
+
+.yatut-media-progress__track,
+.yatut-content-progress__track {
+  overflow:
+    hidden;
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(111,93,255,.09) !important;
+}
+
+.yatut-media-progress__track::after,
+.yatut-content-progress__track::after {
+  box-shadow:
+    0 0 14px rgba(111,93,255,.24);
+}
+
+/* =========================================================
+   LIVE
+========================================================= */
+
+.pulse-live-page {
+  background:
+    #080c18;
+}
+
+.pulse-live-page__header,
+.pulse-live-info,
+.pulse-live-author,
+.pulse-live-place,
+.pulse-live-people,
+.pulse-live-event,
+.pulse-live-more,
+.pulse-live-chat {
+  border:
+    1px solid
+    rgba(255,255,255,.10) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(19,25,43,.72),
+      rgba(8,13,25,.58)
+    ) !important;
+
+  box-shadow:
+    0 14px 32px rgba(0,0,0,.18),
+    inset 0 1px 0 rgba(255,255,255,.06) !important;
+
+  backdrop-filter:
+    blur(18px)
+    saturate(1.16) !important;
+
+  -webkit-backdrop-filter:
+    blur(18px)
+    saturate(1.16) !important;
+}
+
+.pulse-live-player {
+  position:
+    relative;
+
+  overflow:
+    hidden;
+
+  border:
+    1px solid
+    rgba(255,255,255,.16) !important;
+
+  box-shadow:
+    0 28px 74px rgba(0,0,0,.30),
+    inset 0 1px 0 rgba(255,255,255,.10) !important;
+}
+
+.pulse-live-player::after {
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  pointer-events:
+    none;
+
+  background:
+    radial-gradient(
+      46% 28%
+      at
+      14% 4%,
+      rgba(255,255,255,.10),
+      transparent 76%
+    );
+}
+
+.pulse-live-player__live,
+.pulse-live-mini__badge {
+  box-shadow:
+    0 0 16px rgba(255,71,92,.28),
+    inset 0 1px 0 rgba(255,255,255,.24) !important;
+}
+
+.pulse-live-player__pulse {
+  box-shadow:
+    0 0 22px rgba(111,93,255,.34);
+}
+
+.pulse-live-subscribe {
+  border:
+    1px solid
+    rgba(255,255,255,.18) !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c6bff,
+      #5a49eb
+    ) !important;
+
+  color:
+    #fff !important;
+
+  box-shadow:
+    0 10px 22px rgba(85,68,224,.24),
+    inset 0 1px 0 rgba(255,255,255,.28) !important;
+}
+
+.pulse-live-chat__create {
+  border:
+    1px solid
+    rgba(255,255,255,.10) !important;
+
+  background:
+    rgba(255,255,255,.05) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.06) !important;
+}
+
+/* =========================================================
+   OTHER USER PROFILE
+========================================================= */
+
+.other-profile-page {
+  position:
+    relative;
+
+  isolation:
+    isolate;
+}
+
+.other-profile-cover {
+  position:
+    relative;
+
+  overflow:
+    hidden;
+
+  box-shadow:
+    0 18px 48px rgba(25,30,54,.12);
+}
+
+.other-profile-cover::after {
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  pointer-events:
+    none;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.08),
+      transparent 40%,
+      rgba(7,11,22,.18) 100%
+    );
+}
+
+.other-profile-avatar {
+  box-shadow:
+    0 0 0 3px rgba(255,255,255,.94),
+    0 0 0 5px rgba(111,93,255,.14),
+    0 11px 26px rgba(31,35,63,.16) !important;
+}
+
+.other-profile-online {
+  box-shadow:
+    0 0 0 2px rgba(255,255,255,.96),
+    0 0 12px rgba(37,200,122,.72) !important;
+}
+
+.other-profile-card,
+.other-profile-post-card,
+.blocked-profile-card {
+  border:
+    1px solid
+    rgba(255,255,255,.74) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.95),
+      rgba(255,255,255,.78)
+    ) !important;
+
+  box-shadow:
+    0 15px 34px rgba(31,35,63,.08),
+    inset 0 1px 0 rgba(255,255,255,.90) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .other-profile-card,
+  .other-profile-post-card,
+  .blocked-profile-card
+) {
+  border-color:
+    rgba(255,255,255,.08) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,24,41,.90),
+      rgba(8,13,25,.84)
+    ) !important;
+}
+
+.user-main-action {
+  border:
+    1px solid
+    rgba(151,136,255,.24) !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c6bff,
+      #5a49eb
+    ) !important;
+
+  color:
+    #fff !important;
+
+  box-shadow:
+    0 10px 22px rgba(85,68,224,.22),
+    inset 0 1px 0 rgba(255,255,255,.28) !important;
+}
+
+.user-main-action.secondary,
+.profile-more-button {
+  border:
+    1px solid
+    rgba(78,84,111,.08) !important;
+
+  background:
+    rgba(247,248,252,.90) !important;
+
+  color:
+    var(--v27-ink) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.86),
+    0 7px 16px rgba(31,35,63,.045) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .user-main-action.secondary,
+  .profile-more-button
+) {
+  border-color:
+    rgba(255,255,255,.07) !important;
+
+  background:
+    rgba(255,255,255,.04) !important;
+}
+
+.profile-more-menu {
+  border:
+    1px solid
+    var(--v27-glass-border) !important;
+
+  background:
+    var(--v27-glass-light) !important;
+
+  box-shadow:
+    0 22px 54px rgba(26,29,50,.18),
+    inset 0 1px 0 rgba(255,255,255,.86) !important;
+
+  backdrop-filter:
+    blur(22px)
+    saturate(1.24) !important;
+
+  -webkit-backdrop-filter:
+    blur(22px)
+    saturate(1.24) !important;
+}
+
+body.yatut-dark-mode
+.profile-more-menu {
+  border-color:
+    rgba(255,255,255,.12) !important;
+
+  background:
+    var(--v27-glass-dark) !important;
+}
+
+/* =========================================================
+   UNIFIED / PROFILE PAGE
+========================================================= */
+
+.unified-profile-tabs,
+.unified-profile-social,
+.unified-profile-media,
+.unified-profile-pulse,
+.profile-v2-feed,
+.profile-v2-create-post,
+.profile-v2-post,
+.profile-v2-studio,
+.profile-v2-sidebar .profile-v2-card {
+  border:
+    1px solid
+    rgba(255,255,255,.72) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.94),
+      rgba(255,255,255,.76)
+    ) !important;
+
+  box-shadow:
+    0 15px 34px rgba(31,35,63,.08),
+    inset 0 1px 0 rgba(255,255,255,.90) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .unified-profile-tabs,
+  .unified-profile-social,
+  .unified-profile-media,
+  .unified-profile-pulse,
+  .profile-v2-feed,
+  .profile-v2-create-post,
+  .profile-v2-post,
+  .profile-v2-studio,
+  .profile-v2-sidebar .profile-v2-card
+) {
+  border-color:
+    rgba(255,255,255,.08) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,24,41,.90),
+      rgba(8,13,25,.84)
+    ) !important;
+}
+
+.unified-profile-studio-button,
+.profile-v2-actions .is-primary {
+  background:
+    linear-gradient(
+      135deg,
+      #7c6bff,
+      #5a49eb
+    ) !important;
+
+  color:
+    #fff !important;
+
+  box-shadow:
+    0 10px 22px rgba(85,68,224,.22),
+    inset 0 1px 0 rgba(255,255,255,.28) !important;
+}
+
+.profile-v2-cover-avatar__frame {
+  box-shadow:
+    0 0 0 3px rgba(255,255,255,.94),
+    0 0 0 5px rgba(111,93,255,.13),
+    0 10px 24px rgba(31,35,63,.16) !important;
+}
+
+/* =========================================================
+   GLOBAL DIALOG / MEDIA VIEWER
+========================================================= */
+
+.yatut-dialog-overlay {
+  backdrop-filter:
+    blur(12px)
+    saturate(1.10) !important;
+
+  -webkit-backdrop-filter:
+    blur(12px)
+    saturate(1.10) !important;
+}
+
+[role="dialog"]:has(.yatut-dialog-title) {
+  border:
+    1px solid
+    var(--v27-glass-border) !important;
+
+  background:
+    var(--v27-glass-light) !important;
+
+  box-shadow:
+    0 28px 80px rgba(22,25,46,.22),
+    inset 0 1px 0 rgba(255,255,255,.88) !important;
+
+  backdrop-filter:
+    blur(24px)
+    saturate(1.24) !important;
+
+  -webkit-backdrop-filter:
+    blur(24px)
+    saturate(1.24) !important;
+}
+
+body.yatut-dark-mode
+[role="dialog"]:has(.yatut-dialog-title) {
+  border-color:
+    rgba(255,255,255,.12) !important;
+
+  background:
+    var(--v27-glass-dark) !important;
+}
+
+.yatut-media-viewer__overlay {
+  backdrop-filter:
+    blur(18px)
+    saturate(1.10) !important;
+
+  -webkit-backdrop-filter:
+    blur(18px)
+    saturate(1.10) !important;
+}
+
+.yatut-media-viewer {
+  border:
+    1px solid
+    rgba(255,255,255,.12) !important;
+
+  background:
+    rgba(5,8,16,.88) !important;
+
+  box-shadow:
+    0 30px 88px rgba(0,0,0,.42),
+    inset 0 1px 0 rgba(255,255,255,.06) !important;
+}
+
+.yatut-media-viewer__close {
+  border:
+    1px solid
+    rgba(255,255,255,.16) !important;
+
+  background:
+    rgba(255,255,255,.07) !important;
+
+  color:
+    #fff !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.08),
+    0 8px 20px rgba(0,0,0,.18) !important;
+
+  backdrop-filter:
+    blur(14px) !important;
+
+  -webkit-backdrop-filter:
+    blur(14px) !important;
+}
+
+/* =========================================================
+   GENERIC PREMIUM UI COMPONENTS
+========================================================= */
+
+.yat-premium-card-inner,
+.yat-card {
+  border:
+    1px solid
+    rgba(255,255,255,.72) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.94),
+      rgba(255,255,255,.76)
+    ) !important;
+
+  box-shadow:
+    0 14px 32px rgba(31,35,63,.075),
+    inset 0 1px 0 rgba(255,255,255,.90) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .yat-premium-card-inner,
+  .yat-card
+) {
+  border-color:
+    rgba(255,255,255,.08) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,24,41,.90),
+      rgba(8,13,25,.84)
+    ) !important;
+}
+
+.yat-badge-image-shell,
+.yat-badge-placeholder {
+  border:
+    2px solid
+    rgba(255,215,132,.82) !important;
+
+  box-shadow:
+    inset 0 2px 3px rgba(255,255,255,.40),
+    inset 0 -3px 5px rgba(31,18,88,.16),
+    0 8px 18px rgba(36,27,83,.16) !important;
+}
+
+.yat-badge-aura {
+  filter:
+    blur(12px);
+}
+
+.yat-badge-progress-ring {
+  filter:
+    drop-shadow(
+      0 0 8px rgba(111,93,255,.22)
+    );
+}
+
+/* =========================================================
+   PULSE COMMENTS
+========================================================= */
+
+.pulse-comments-backdrop {
+  backdrop-filter:
+    blur(12px)
+    saturate(1.10) !important;
+
+  -webkit-backdrop-filter:
+    blur(12px)
+    saturate(1.10) !important;
+}
+
+.pulse-comments-sheet {
+  border:
+    1px solid
+    rgba(255,255,255,.12) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,24,41,.94),
+      rgba(7,12,24,.92)
+    ) !important;
+
+  box-shadow:
+    0 -20px 62px rgba(0,0,0,.30),
+    inset 0 1px 0 rgba(255,255,255,.05) !important;
+}
+
+.pulse-comments-row__body,
+.pulse-comments-sheet__composer {
+  border:
+    1px solid
+    rgba(255,255,255,.07) !important;
+
+  background:
+    rgba(255,255,255,.035) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.035) !important;
+}
+
+.pulse-comments-sheet__send {
+  background:
+    linear-gradient(
+      135deg,
+      #7c6bff,
+      #5a49eb
+    ) !important;
+
+  color:
+    #fff !important;
+
+  box-shadow:
+    0 8px 18px rgba(85,68,224,.22),
+    inset 0 1px 0 rgba(255,255,255,.26) !important;
+}
+
+/* =========================================================
+   PULSE IMMERSIVE
+========================================================= */
+
+.pulse-immersive__slide {
+  background:
+    #050812;
+}
+
+.pulse-immersive__shade {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(5,8,18,.04) 0%,
+      rgba(5,8,18,0) 42%,
+      rgba(5,8,18,.48) 76%,
+      rgba(5,8,18,.84) 100%
+    ) !important;
+}
+
+.pulse-immersive__more,
+.pulse-action-icon,
+.pulse-immersive__sound,
+.pulse-immersive__tabs,
+.pulse-mobile-header,
+.pulse-mobile-nav {
+  border-color:
+    rgba(255,255,255,.14) !important;
+
+  background:
+    rgba(8,13,24,.22) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.08),
+    0 8px 20px rgba(0,0,0,.14) !important;
+
+  backdrop-filter:
+    blur(14px)
+    saturate(1.16) !important;
+
+  -webkit-backdrop-filter:
+    blur(14px)
+    saturate(1.16) !important;
+}
+
+.pulse-immersive__menu {
+  border:
+    1px solid
+    rgba(255,255,255,.14) !important;
+
+  background:
+    rgba(9,14,27,.72) !important;
+
+  box-shadow:
+    0 18px 44px rgba(0,0,0,.24),
+    inset 0 1px 0 rgba(255,255,255,.07) !important;
+
+  backdrop-filter:
+    blur(20px)
+    saturate(1.18) !important;
+
+  -webkit-backdrop-filter:
+    blur(20px)
+    saturate(1.18) !important;
+}
+
+.pulse-immersive__tab-active {
+  color:
+    #fff !important;
+
+  text-shadow:
+    none !important;
+}
+
+.pulse-immersive__tab-active::before {
+  display:
+    none !important;
+}
+
+.pulse-immersive__like-burst {
+  filter:
+    drop-shadow(
+      0 0 14px rgba(255,91,118,.30)
+    );
+}
+
+/* =========================================================
+   PULSE VIDEO CARDS / PLAYER
+========================================================= */
+
+.pulse-video-card {
+  position:
+    relative;
+
+  overflow:
+    hidden;
+
+  border:
+    1px solid
+    rgba(255,255,255,.16) !important;
+
+  box-shadow:
+    0 18px 44px rgba(0,0,0,.18),
+    inset 0 1px 0 rgba(255,255,255,.08) !important;
+}
+
+.pulse-video-card__shade {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(5,8,18,.02),
+      rgba(5,8,18,.10) 44%,
+      rgba(5,8,18,.68) 100%
+    ) !important;
+}
+
+.pulse-video-card__play {
+  border:
+    1px solid
+    rgba(255,255,255,.18) !important;
+
+  background:
+    rgba(8,13,24,.28) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.10),
+    0 8px 20px rgba(0,0,0,.16) !important;
+
+  backdrop-filter:
+    blur(12px) !important;
+
+  -webkit-backdrop-filter:
+    blur(12px) !important;
+}
+
+.pulse-real-player {
+  overflow:
+    hidden;
+
+  border:
+    1px solid
+    rgba(255,255,255,.13) !important;
+
+  box-shadow:
+    0 26px 68px rgba(0,0,0,.28),
+    inset 0 1px 0 rgba(255,255,255,.08) !important;
+}
+
+.pulse-real-player__controls,
+.pulse-real-player__speed-menu {
+  border:
+    1px solid
+    rgba(255,255,255,.12) !important;
+
+  background:
+    rgba(8,13,24,.46) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.06) !important;
+
+  backdrop-filter:
+    blur(14px)
+    saturate(1.14) !important;
+
+  -webkit-backdrop-filter:
+    blur(14px)
+    saturate(1.14) !important;
+}
+
+.pulse-real-player__played {
+  background:
+    linear-gradient(
+      90deg,
+      #8776ff,
+      #5b4aeb
+    ) !important;
+
+  box-shadow:
+    0 0 10px rgba(111,93,255,.35);
+}
+
+/* =========================================================
+   PREMIUM SHELL / HEADER
+========================================================= */
+
+.premium-global-header {
+  border-bottom:
+    1px solid
+    rgba(255,255,255,.62) !important;
+
+  background:
+    rgba(255,255,255,.72) !important;
+
+  box-shadow:
+    0 10px 28px rgba(31,35,63,.06),
+    inset 0 1px 0 rgba(255,255,255,.92) !important;
+
+  backdrop-filter:
+    blur(20px)
+    saturate(1.20) !important;
+
+  -webkit-backdrop-filter:
+    blur(20px)
+    saturate(1.20) !important;
+}
+
+body.yatut-dark-mode
+.premium-global-header {
+  border-bottom-color:
+    rgba(255,255,255,.08) !important;
+
+  background:
+    rgba(8,13,25,.76) !important;
+
+  box-shadow:
+    0 10px 28px rgba(0,0,0,.16),
+    inset 0 1px 0 rgba(255,255,255,.04) !important;
+}
+
+.premium-global-search,
+.premium-header-icon-button,
+.premium-header-profile,
+.premium-header-create {
+  border:
+    1px solid
+    rgba(78,84,111,.08) !important;
+
+  background:
+    rgba(247,248,252,.88) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.84),
+    0 7px 16px rgba(31,35,63,.04) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .premium-global-search,
+  .premium-header-icon-button,
+  .premium-header-profile,
+  .premium-header-create
+) {
+  border-color:
+    rgba(255,255,255,.07) !important;
+
+  background:
+    rgba(255,255,255,.035) !important;
+}
+
+/* =========================================================
+   MOBILE CONSISTENCY
+========================================================= */
+
+@media (max-width:767px) {
+  :is(
+    .yatut-media-editor,
+    .yatut-media-success__card,
+    .other-profile-card,
+    .other-profile-post-card,
+    .unified-profile-social,
+    .pulse-video-card
+  ) {
+    border-radius:
+      20px !important;
+  }
+
+  .pulse-comments-sheet,
+  .yatut-media-viewer,
+  [role="dialog"]:has(.yatut-dialog-title) {
+    border-radius:
+      26px 26px 0 0 !important;
+  }
+}
