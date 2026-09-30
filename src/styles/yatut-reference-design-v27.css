@@ -1,0 +1,1128 @@
+/* =========================================================
+   YATUT REFERENCE DESIGN V27
+   Production styling pass based on approved references.
+   Keeps existing layout + button placement.
+========================================================= */
+
+:root {
+  --v27-violet: #6f5dff;
+  --v27-violet-2: #5544eb;
+  --v27-violet-soft: rgba(111,93,255,.12);
+  --v27-blue: #4d9cff;
+  --v27-cyan: #25c4e6;
+  --v27-green: #25c87a;
+  --v27-gold: #f5b62e;
+  --v27-coral: #ff6f82;
+  --v27-ink: #171923;
+  --v27-muted: #858998;
+
+  --v27-glass-light:
+    linear-gradient(145deg, rgba(255,255,255,.84), rgba(255,255,255,.56));
+  --v27-glass-dark:
+    linear-gradient(145deg, rgba(24,30,49,.78), rgba(8,13,25,.62));
+
+  --v27-glass-border: rgba(255,255,255,.72);
+  --v27-shadow:
+    0 18px 44px rgba(34,38,68,.11),
+    inset 0 1px 0 rgba(255,255,255,.86);
+}
+
+body.yatut-dark-mode {
+  --v27-ink: #f7f8ff;
+  --v27-muted: rgba(224,229,244,.66);
+  --v27-glass-border: rgba(255,255,255,.16);
+  --v27-shadow:
+    0 20px 48px rgba(0,0,0,.24),
+    inset 0 1px 0 rgba(255,255,255,.07);
+}
+
+/* =========================================================
+   GLOBAL MOTION / MATERIAL
+========================================================= */
+
+body {
+  background:
+    var(--app-bg, #f6f7fb);
+}
+
+button,
+a,
+[role="button"] {
+  transition:
+    transform .16s cubic-bezier(.2,.8,.2,1),
+    box-shadow .18s ease,
+    filter .18s ease,
+    background-color .18s ease,
+    border-color .18s ease !important;
+}
+
+.yatut-coarse-pointer button:active,
+.yatut-coarse-pointer [role="button"]:active,
+.yatut-coarse-pointer a:active {
+  transform:
+    scale(.97) !important;
+}
+
+@media (hover:hover) and (pointer:fine) {
+  button:hover,
+  [role="button"]:hover {
+    filter:
+      brightness(1.015);
+  }
+}
+
+/* =========================================================
+   GLOSSY PRIMARY BUTTONS
+========================================================= */
+
+:is(
+  .auth-primary,
+  .friends-v2-find-button,
+  .profile-v3-mobile-edit,
+  .community-join-main,
+  .community-publish-post,
+  .community-create-submit,
+  .event-create-submit,
+  .feature-primary-button,
+  .yatut-content-publish,
+  .yatut-media-publish
+) {
+  position:
+    relative;
+
+  overflow:
+    hidden;
+
+  border:
+    1px solid
+    rgba(175,164,255,.38) !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      #8574ff 0%,
+      #6e5dff 42%,
+      #5846ec 74%,
+      #7d67ff 100%
+    ) !important;
+
+  color:
+    #fff !important;
+
+  box-shadow:
+    0 13px 28px rgba(90,69,229,.27),
+    inset 0 1px 0 rgba(255,255,255,.48),
+    inset 0 -2px 4px rgba(64,43,176,.20) !important;
+}
+
+:is(
+  .auth-primary,
+  .friends-v2-find-button,
+  .profile-v3-mobile-edit,
+  .community-join-main,
+  .community-publish-post,
+  .community-create-submit,
+  .event-create-submit,
+  .feature-primary-button,
+  .yatut-content-publish,
+  .yatut-media-publish
+)::after {
+  content:
+    "";
+
+  position:
+    absolute;
+
+  left:
+    8%;
+
+  right:
+    8%;
+
+  top:
+    1px;
+
+  height:
+    42%;
+
+  border-radius:
+    inherit;
+
+  pointer-events:
+    none;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.28),
+      rgba(255,255,255,0)
+    );
+
+  opacity:
+    .7;
+}
+
+/* =========================================================
+   GLASS SECONDARY CONTROLS
+========================================================= */
+
+:is(
+  .friends-v2-person-more,
+  .friends-v2-tabs,
+  .friends-v2-summary,
+  .profile-v3-mobile-action,
+  .profile-v3-mobile-stats,
+  .profile-v2-tabs,
+  .community-chat-main,
+  .community-share-main,
+  .notifications-filters,
+  .notifications-settings-button,
+  .settings-section,
+  .settings-data-card,
+  .settings-push-card,
+  .settings-security-card,
+  .nearby-toolbar,
+  .nearby-live-strip,
+  .yatut-content-editor,
+  .yatut-content-settings,
+  .yatut-media-edit-card,
+  .yatut-media-create__settings
+) {
+  border-color:
+    rgba(255,255,255,.64) !important;
+
+  background:
+    var(--v27-glass-light) !important;
+
+  box-shadow:
+    var(--v27-shadow) !important;
+
+  backdrop-filter:
+    blur(20px)
+    saturate(1.24) !important;
+
+  -webkit-backdrop-filter:
+    blur(20px)
+    saturate(1.24) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .friends-v2-person-more,
+  .friends-v2-tabs,
+  .friends-v2-summary,
+  .profile-v3-mobile-action,
+  .profile-v3-mobile-stats,
+  .profile-v2-tabs,
+  .community-chat-main,
+  .community-share-main,
+  .notifications-filters,
+  .notifications-settings-button,
+  .settings-section,
+  .settings-data-card,
+  .settings-push-card,
+  .settings-security-card,
+  .nearby-toolbar,
+  .nearby-live-strip,
+  .yatut-content-editor,
+  .yatut-content-settings,
+  .yatut-media-edit-card,
+  .yatut-media-create__settings
+) {
+  border-color:
+    rgba(255,255,255,.12) !important;
+
+  background:
+    var(--v27-glass-dark) !important;
+}
+
+/* =========================================================
+   AUTH — SCENIC GLASS LOGIN
+========================================================= */
+
+.auth-page {
+  position:
+    relative;
+
+  isolation:
+    isolate;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(10,18,31,.08),
+      rgba(246,247,251,.26) 56%,
+      rgba(246,247,251,.82) 100%
+    ),
+    url("/assets/yatut/cities/kyiv/hero.jpg")
+    center center /
+    cover
+    fixed
+    no-repeat !important;
+}
+
+.auth-page::before {
+  content:
+    "";
+
+  position:
+    fixed;
+
+  inset:
+    0;
+
+  z-index:
+    -1;
+
+  pointer-events:
+    none;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(72,88,147,.10),
+      rgba(255,255,255,.02) 42%,
+      rgba(57,35,111,.12)
+    );
+}
+
+.auth-card {
+  overflow:
+    hidden;
+
+  border:
+    1px solid
+    rgba(255,255,255,.72) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(35,42,57,.26),
+      rgba(255,255,255,.12)
+    ) !important;
+
+  box-shadow:
+    0 28px 80px rgba(20,24,42,.28),
+    inset 0 1px 0 rgba(255,255,255,.62),
+    inset 0 -1px 0 rgba(255,255,255,.08) !important;
+
+  backdrop-filter:
+    blur(26px)
+    saturate(1.32) !important;
+
+  -webkit-backdrop-filter:
+    blur(26px)
+    saturate(1.32) !important;
+}
+
+.auth-card,
+.auth-card h1,
+.auth-brand strong {
+  color:
+    #fff;
+}
+
+.auth-brand span,
+.auth-lead,
+.auth-field span,
+.auth-legal,
+.auth-divider,
+.auth-username-status {
+  color:
+    rgba(245,247,255,.72) !important;
+}
+
+.auth-brand-mark {
+  border:
+    1px solid
+    rgba(255,255,255,.46);
+
+  background:
+    linear-gradient(
+      145deg,
+      #8f7fff,
+      #5d4af3 52%,
+      #7439ec
+    );
+
+  box-shadow:
+    0 12px 28px rgba(66,43,185,.35),
+    inset 0 1px 0 rgba(255,255,255,.55),
+    inset 0 -2px 4px rgba(48,32,140,.22) !important;
+}
+
+.auth-tabs {
+  border:
+    1px solid
+    rgba(255,255,255,.16);
+
+  background:
+    rgba(10,15,26,.18) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.08);
+}
+
+.auth-tabs button {
+  color:
+    rgba(255,255,255,.72) !important;
+}
+
+.auth-tabs button.active {
+  background:
+    rgba(255,255,255,.16) !important;
+
+  color:
+    #fff !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.20),
+    0 8px 18px rgba(0,0,0,.10) !important;
+}
+
+.auth-field input,
+.auth-password-control {
+  border:
+    1px solid
+    rgba(255,255,255,.36) !important;
+
+  background:
+    rgba(13,18,29,.18) !important;
+
+  color:
+    #fff !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.08) !important;
+
+  backdrop-filter:
+    blur(12px) !important;
+
+  -webkit-backdrop-filter:
+    blur(12px) !important;
+}
+
+.auth-field input::placeholder {
+  color:
+    rgba(255,255,255,.45);
+}
+
+.auth-social {
+  border-color:
+    rgba(255,255,255,.28) !important;
+
+  background:
+    rgba(255,255,255,.12) !important;
+
+  color:
+    #fff !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.10) !important;
+}
+
+.auth-forgot-link,
+.auth-back-link {
+  color:
+    #dedaff !important;
+}
+
+/* =========================================================
+   PROFILE — STRONG DEPTH, 3D BADGES
+========================================================= */
+
+.profile-v4-immersive
+.profile-v3-mobile-avatar {
+  box-shadow:
+    0 0 0 3px rgba(255,255,255,.92),
+    0 0 0 5px rgba(75,219,157,.28),
+    0 10px 28px rgba(20,28,52,.20) !important;
+}
+
+.profile-v4-immersive
+.profile-v3-mobile-name-row
+h1 {
+  text-shadow:
+    0 2px 10px rgba(255,255,255,.12);
+}
+
+.profile-v2-achievement,
+.profile-v2-mini-badge {
+  position:
+    relative;
+
+  overflow:
+    visible !important;
+}
+
+.profile-v2-achievement > div,
+.profile-v2-mini-badge {
+  border:
+    2px solid
+    rgba(255,215,132,.86) !important;
+
+  box-shadow:
+    inset 0 2px 3px rgba(255,255,255,.45),
+    inset 0 -3px 5px rgba(31,18,88,.18),
+    0 8px 16px rgba(36,27,83,.18) !important;
+
+  transform:
+    translateZ(0);
+}
+
+.profile-v2-achievement > div::after,
+.profile-v2-mini-badge::after {
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    4px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.26);
+
+  border-radius:
+    inherit;
+
+  pointer-events:
+    none;
+
+  background:
+    radial-gradient(
+      circle at 28% 18%,
+      rgba(255,255,255,.42),
+      transparent 34%
+    );
+}
+
+.profile-v2-achievement.violet > div,
+.profile-v2-mini-badge.violet {
+  background:
+    radial-gradient(circle at 28% 18%, #c18cff, transparent 26%),
+    linear-gradient(145deg,#8b47ff,#4814b1) !important;
+}
+
+.profile-v2-achievement.indigo > div,
+.profile-v2-mini-badge.indigo {
+  background:
+    radial-gradient(circle at 28% 18%, #77d7ff, transparent 25%),
+    linear-gradient(145deg,#238fff,#2441c7) !important;
+}
+
+.profile-v2-achievement.silver > div,
+.profile-v2-mini-badge.silver {
+  background:
+    radial-gradient(circle at 28% 18%, #ffffff, transparent 25%),
+    linear-gradient(145deg,#dce5ef,#7a879b) !important;
+}
+
+.profile-v2-achievement.coral > div,
+.profile-v2-mini-badge.coral {
+  background:
+    radial-gradient(circle at 28% 18%, #ffc2cb, transparent 26%),
+    linear-gradient(145deg,#ff7b89,#df3149) !important;
+}
+
+.profile-v2-achievement.amber > div,
+.profile-v2-mini-badge.amber {
+  background:
+    radial-gradient(circle at 28% 18%, #fff3a6, transparent 26%),
+    linear-gradient(145deg,#ffc83b,#e58a00) !important;
+}
+
+.profile-v2-achievement.green > div,
+.profile-v2-mini-badge.green {
+  background:
+    radial-gradient(circle at 28% 18%, #9effcf, transparent 26%),
+    linear-gradient(145deg,#34d98e,#119d5f) !important;
+}
+
+/* =========================================================
+   FRIENDS — PHOTO CARDS
+========================================================= */
+
+.friends-v2-person-card {
+  overflow:
+    hidden;
+
+  border:
+    1px solid
+    rgba(255,255,255,.90) !important;
+
+  background:
+    rgba(255,255,255,.94) !important;
+
+  box-shadow:
+    0 14px 30px rgba(35,39,67,.09),
+    inset 0 1px 0 rgba(255,255,255,.94) !important;
+}
+
+body.yatut-dark-mode
+.friends-v2-person-card {
+  border-color:
+    rgba(255,255,255,.09) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,24,40,.92),
+      rgba(8,13,25,.90)
+    ) !important;
+
+  box-shadow:
+    0 18px 38px rgba(0,0,0,.24),
+    inset 0 1px 0 rgba(255,255,255,.05) !important;
+}
+
+.friends-v2-person-cover {
+  position:
+    relative;
+}
+
+.friends-v2-person-cover::after {
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  pointer-events:
+    none;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.08),
+      transparent 42%,
+      rgba(12,16,28,.08) 100%
+    );
+}
+
+.friends-v2-person-actions button {
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.82),
+    0 6px 14px rgba(29,34,55,.06) !important;
+}
+
+.friends-v2-person-actions .friend.active,
+.friends-v2-person-actions .friend {
+  border-color:
+    rgba(111,93,255,.18) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      #f0edff,
+      #e7e4ff
+    ) !important;
+
+  color:
+    #6658f4 !important;
+}
+
+/* =========================================================
+   COMMUNITIES — IMAGE-LED CARDS
+========================================================= */
+
+.community-card,
+.community-info-card,
+.community-side-card,
+.community-post {
+  border:
+    1px solid
+    var(--v27-glass-border) !important;
+
+  box-shadow:
+    var(--v27-shadow) !important;
+}
+
+.community-card {
+  position:
+    relative;
+
+  overflow:
+    hidden;
+}
+
+.community-card::after,
+.community-detail-cover::after {
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  pointer-events:
+    none;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.12),
+      transparent 34%,
+      rgba(7,11,22,.20) 100%
+    );
+}
+
+.community-card button,
+.community-detail-actions button {
+  backdrop-filter:
+    blur(12px)
+    saturate(1.18);
+
+  -webkit-backdrop-filter:
+    blur(12px)
+    saturate(1.18);
+}
+
+/* =========================================================
+   PULSE / VIDEO
+========================================================= */
+
+.pulse-clips-stage,
+.pulse-live-player {
+  border:
+    1px solid
+    rgba(255,255,255,.16);
+
+  box-shadow:
+    0 26px 68px rgba(0,0,0,.28),
+    inset 0 1px 0 rgba(255,255,255,.10) !important;
+}
+
+.pulse-clips-actions button,
+.pulse-clips-top-actions button,
+.pulse-live-player button {
+  border:
+    1px solid
+    rgba(255,255,255,.18) !important;
+
+  background:
+    rgba(8,13,24,.26) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.10),
+    0 8px 18px rgba(0,0,0,.14) !important;
+
+  backdrop-filter:
+    blur(14px)
+    saturate(1.20) !important;
+
+  -webkit-backdrop-filter:
+    blur(14px)
+    saturate(1.20) !important;
+}
+
+.pulse-clips-actions button:active {
+  transform:
+    scale(.92) !important;
+}
+
+/* =========================================================
+   NOTIFICATIONS — PREMIUM DARK / LIGHT LISTS
+========================================================= */
+
+.notifications-page.notifications-v2 {
+  box-shadow:
+    none !important;
+}
+
+.notifications-header,
+.notifications-filters {
+  backdrop-filter:
+    blur(22px)
+    saturate(1.22) !important;
+
+  -webkit-backdrop-filter:
+    blur(22px)
+    saturate(1.22) !important;
+}
+
+body.yatut-dark-mode
+.notifications-header,
+body.yatut-dark-mode
+.notifications-filters {
+  border-color:
+    rgba(255,255,255,.06) !important;
+
+  background:
+    rgba(8,13,24,.80) !important;
+}
+
+.notification-item {
+  border:
+    1px solid
+    rgba(255,255,255,.70) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.90),
+      rgba(255,255,255,.70)
+    ) !important;
+
+  box-shadow:
+    0 10px 24px rgba(31,35,63,.07),
+    inset 0 1px 0 rgba(255,255,255,.88) !important;
+}
+
+body.yatut-dark-mode
+.notification-item {
+  border-color:
+    rgba(255,255,255,.08) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(19,25,42,.86),
+      rgba(9,14,27,.78)
+    ) !important;
+
+  box-shadow:
+    0 14px 28px rgba(0,0,0,.18),
+    inset 0 1px 0 rgba(255,255,255,.045) !important;
+}
+
+.notification-item.is-unread,
+.notification-item.unread {
+  border-color:
+    rgba(111,93,255,.22) !important;
+}
+
+.notifications-filters button.active {
+  background:
+    linear-gradient(
+      135deg,
+      #7b6bff,
+      #5d4ded
+    ) !important;
+
+  box-shadow:
+    0 8px 18px rgba(86,69,226,.24),
+    inset 0 1px 0 rgba(255,255,255,.28) !important;
+}
+
+/* =========================================================
+   CREATE POST / EDITOR
+========================================================= */
+
+.yatut-content-editor,
+.yatut-media-edit-card,
+.yatut-content-settings,
+.yatut-media-create__settings {
+  border:
+    1px solid
+    rgba(255,255,255,.72) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.94),
+      rgba(255,255,255,.76)
+    ) !important;
+
+  box-shadow:
+    0 18px 38px rgba(31,35,63,.085),
+    inset 0 1px 0 rgba(255,255,255,.92) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .yatut-content-editor,
+  .yatut-media-edit-card,
+  .yatut-content-settings,
+  .yatut-media-create__settings
+) {
+  border-color:
+    rgba(255,255,255,.08) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(20,26,44,.86),
+      rgba(9,14,27,.80)
+    ) !important;
+}
+
+.yatut-content-source-actions button,
+.yatut-media-create__source-actions button,
+.yatut-media-create__media-actions button {
+  border:
+    1px solid
+    rgba(111,93,255,.08) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(248,247,255,.98),
+      rgba(241,239,255,.84)
+    ) !important;
+
+  color:
+    #5e54d8 !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.92),
+    0 7px 16px rgba(63,52,144,.05) !important;
+}
+
+/* =========================================================
+   BOTTOM NAV — GLASS WITHOUT ACTIVE GLOW
+========================================================= */
+
+#yatut-global-mobile-nav.mobile-nav {
+  border:
+    1px solid
+    rgba(255,255,255,.62) !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.12),
+      rgba(255,255,255,.045) 54%,
+      rgba(255,255,255,.03)
+    ) !important;
+
+  box-shadow:
+    0 16px 36px rgba(24,28,50,.13),
+    inset 0 1.5px 1px rgba(255,255,255,.68),
+    inset 0 -1px 2px rgba(76,74,114,.07) !important;
+
+  backdrop-filter:
+    blur(8px)
+    saturate(1.68)
+    contrast(1.035) !important;
+
+  -webkit-backdrop-filter:
+    blur(8px)
+    saturate(1.68)
+    contrast(1.035) !important;
+}
+
+body.yatut-dark-mode
+#yatut-global-mobile-nav.mobile-nav {
+  border-color:
+    rgba(255,255,255,.24) !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.065),
+      rgba(8,13,25,.035) 58%,
+      rgba(8,13,25,.025)
+    ) !important;
+
+  box-shadow:
+    0 18px 42px rgba(0,0,0,.22),
+    inset 0 1px 1px rgba(255,255,255,.20) !important;
+}
+
+#yatut-global-mobile-nav
+.mobile-nav-item.active::before,
+#yatut-global-mobile-nav
+.mobile-nav-item[aria-current="page"]::before {
+  display:
+    none !important;
+
+  content:
+    none !important;
+}
+
+#yatut-global-mobile-nav
+.mobile-nav-item.active,
+#yatut-global-mobile-nav
+.mobile-nav-item[aria-current="page"] {
+  background:
+    transparent !important;
+
+  box-shadow:
+    none !important;
+}
+
+#yatut-global-mobile-nav
+.mobile-nav-item.active
+.mobile-nav-icon,
+#yatut-global-mobile-nav
+.mobile-nav-item[aria-current="page"]
+.mobile-nav-icon,
+#yatut-global-mobile-nav
+.mobile-nav-item.active
+small,
+#yatut-global-mobile-nav
+.mobile-nav-item[aria-current="page"]
+small {
+  color:
+    var(--v27-violet) !important;
+
+  filter:
+    none !important;
+
+  text-shadow:
+    none !important;
+}
+
+/* =========================================================
+   MODALS / SHEETS
+========================================================= */
+
+:is(
+  .friends-v2-preview,
+  .community-create-modal,
+  .event-create-modal,
+  .group-modal,
+  .forward-modal,
+  .chat-modal-backdrop > section
+) {
+  border:
+    1px solid
+    var(--v27-glass-border) !important;
+
+  background:
+    var(--v27-glass-light) !important;
+
+  box-shadow:
+    0 28px 76px rgba(22,25,46,.20),
+    inset 0 1px 0 rgba(255,255,255,.84) !important;
+
+  backdrop-filter:
+    blur(24px)
+    saturate(1.28) !important;
+
+  -webkit-backdrop-filter:
+    blur(24px)
+    saturate(1.28) !important;
+
+  animation:
+    v27SheetIn .22s cubic-bezier(.2,.82,.22,1);
+}
+
+body.yatut-dark-mode
+:is(
+  .friends-v2-preview,
+  .community-create-modal,
+  .event-create-modal,
+  .group-modal,
+  .forward-modal,
+  .chat-modal-backdrop > section
+) {
+  border-color:
+    rgba(255,255,255,.12) !important;
+
+  background:
+    var(--v27-glass-dark) !important;
+}
+
+@keyframes v27SheetIn {
+  from {
+    opacity:
+      0;
+
+    transform:
+      translateY(10px)
+      scale(.985);
+  }
+
+  to {
+    opacity:
+      1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+/* =========================================================
+   PLATFORM TUNING
+========================================================= */
+
+html.yatut-platform-ios
+.auth-card,
+html.yatut-platform-ios
+:is(
+  .profile-v3-mobile-stats,
+  .profile-v2-tabs,
+  .friends-v2-tabs,
+  .notification-item
+) {
+  backdrop-filter:
+    blur(22px)
+    saturate(1.30) !important;
+
+  -webkit-backdrop-filter:
+    blur(22px)
+    saturate(1.30) !important;
+}
+
+html.yatut-platform-android
+.auth-card,
+html.yatut-platform-android
+:is(
+  .profile-v3-mobile-stats,
+  .profile-v2-tabs,
+  .friends-v2-tabs,
+  .notification-item
+) {
+  backdrop-filter:
+    blur(16px)
+    saturate(1.16) !important;
+
+  -webkit-backdrop-filter:
+    blur(16px)
+    saturate(1.16) !important;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width:767px) {
+  .auth-page {
+    background-attachment:
+      scroll !important;
+  }
+
+  .auth-card {
+    width:
+      min(100%, 390px);
+
+    border-radius:
+      28px !important;
+  }
+
+  .profile-v2-achievement {
+    min-height:
+      88px !important;
+  }
+
+  .friends-v2-person-card,
+  .notification-item,
+  .community-card,
+  .community-post,
+  .yatut-content-editor {
+    border-radius:
+      20px !important;
+  }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration:
+      .001ms !important;
+
+    transition-duration:
+      .001ms !important;
+  }
+}
