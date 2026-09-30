@@ -5000,30 +5000,91 @@ function AboutRow({
 function Achievement({
   item,
 }) {
+  const hasProgress =
+    Number.isFinite(
+      item.progress
+    );
+
   return (
     <article
-      className={`profile-v2-achievement ${item.tone}`}
+      className={`profile-v2-achievement ${item.tone} ${
+        item.earned
+          ? "is-earned"
+          : "is-locked"
+      }`}
     >
 
-      <div>
-        {
-          item.symbol
-        }
+      <div
+        className={`profile-v2-achievement-badge ${item.badge || "seal"}`}
+        aria-hidden="true"
+      >
+        <span>
+          {
+            item.symbol
+          }
+        </span>
+
+        {item.earned && (
+          <i>
+            ✓
+          </i>
+        )}
       </div>
 
       <section>
 
-        <strong>
-          {
-            item.title
-          }
-        </strong>
+        <div className="profile-v2-achievement-title-row">
+          <strong>
+            {
+              item.title
+            }
+          </strong>
 
-        <span>
+          <b>
+            {item.earned
+              ? "Отримано"
+              : "Закрито"}
+          </b>
+        </div>
+
+        <span className="profile-v2-achievement-subtitle">
           {
             item.subtitle
           }
         </span>
+
+        <p>
+          {
+            item.condition
+          }
+        </p>
+
+        {hasProgress && (
+          <div className="profile-v2-achievement-progress">
+            <div>
+              <i
+                style={{
+                  width:
+                    `${item.progress}%`,
+                }}
+              />
+            </div>
+
+            <span>
+              {
+                formatProfileNumber(
+                  item.current
+                )
+              }
+              {" / "}
+              {
+                formatProfileNumber(
+                  item.target
+                )
+              }
+            </span>
+          </div>
+        )}
 
       </section>
 
