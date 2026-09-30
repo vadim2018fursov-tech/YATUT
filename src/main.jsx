@@ -19,21 +19,12 @@ import "./styles/chat-search-forward-v1.css";
 import "./styles/chat-list-polish-v2.css";
 import "./styles/mobile-shell-profile-fix-v3.css";
 import "./styles/chat-stability-v1.css";
-import "./styles/profile-immersive-v4.css";
-import "./styles/profile-adaptive-theme-v5.css";
-import "./styles/profile-background-transition-v6.css";
-import "./styles/profile-cover-fade-v7.css";
-import "./styles/profile-half-cover-v8.css";
-import "./styles/profile-theme-cover-v9.css";
-import "./styles/profile-safe-area-fade-v10.css";
 import "./styles/yatut-premium-ui-v11.css";
 import "./styles/friend-cards-reference-v12.css";
 import "./styles/friend-card-fade-avatar-v14.css";
 import "./styles/three-depth-v1.css";
-import "./styles/visual-unify-v15.css";
-import "./styles/profile-cover-nav-polish-v16.css";
 import "./styles/wet-glass-nav-v17.css";
-import "./styles/profile-stability-v18.css";
+import "./styles/profile-unified-v19.css";
 import {
   initNativePlatform,
 } from "./services/nativePlatformService.js";
