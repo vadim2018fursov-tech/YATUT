@@ -26,6 +26,7 @@ import "./styles/three-depth-v1.css";
 import "./styles/wet-glass-nav-v17.css";
 import "./styles/profile-unified-v19.css";
 import "./styles/yatut-experience-layer-v26.css";
+import "./styles/yatut-reference-design-v27.css";
 import {
   initNativePlatform,
 } from "./services/nativePlatformService.js";
