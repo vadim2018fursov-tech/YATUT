@@ -1383,3 +1383,167 @@
       ) !important;
   }
 }
+
+
+/* =========================================================
+   PROFILE COVER V22 — TRUE IMAGE + INDEPENDENT FADE
+   Defeats the old high-specificity V11 overlay.
+========================================================= */
+
+@media (max-width: 767px) {
+  body.yatut-profile-immersive:not(.yatut-dark-mode)
+  .profile-v4-immersive,
+  body.yatut-profile-immersive.yatut-dark-mode
+  .profile-v4-immersive {
+    background:
+      transparent !important;
+  }
+
+  body.yatut-profile-immersive::before {
+    content: "" !important;
+    display: block !important;
+
+    position: absolute !important;
+    top:
+      calc(
+        -1 *
+        max(
+          env(safe-area-inset-top),
+          0px
+        )
+      ) !important;
+    left: 0 !important;
+    right: 0 !important;
+
+    width: 100% !important;
+
+    height:
+      calc(
+        760px +
+        max(
+          env(safe-area-inset-top),
+          0px
+        )
+      ) !important;
+
+    z-index: 0 !important;
+
+    pointer-events:
+      none !important;
+
+    opacity:
+      1 !important;
+
+    background-image:
+      var(--yatut-profile-cover-image),
+      linear-gradient(
+        160deg,
+        #497fc6 0%,
+        #7eaee5 48%,
+        #edf2fb 100%
+      ) !important;
+
+    background-size:
+      cover,
+      cover !important;
+
+    background-position:
+      center top,
+      center !important;
+
+    background-repeat:
+      no-repeat,
+      no-repeat !important;
+
+    background-blend-mode:
+      normal !important;
+
+    filter:
+      none !important;
+
+    mix-blend-mode:
+      normal !important;
+  }
+
+  body.yatut-profile-immersive.yatut-dark-mode::before {
+    background-image:
+      var(--yatut-profile-cover-image),
+      linear-gradient(
+        160deg,
+        #17233b 0%,
+        #0d1426 52%,
+        #070b16 100%
+      ) !important;
+
+    filter:
+      none !important;
+  }
+
+  body.yatut-profile-immersive::after {
+    content: "" !important;
+    display: block !important;
+
+    position: absolute !important;
+    top:
+      calc(
+        -1 *
+        max(
+          env(safe-area-inset-top),
+          0px
+        )
+      ) !important;
+    left: 0 !important;
+    right: 0 !important;
+
+    width: 100% !important;
+
+    height:
+      calc(
+        760px +
+        max(
+          env(safe-area-inset-top),
+          0px
+        )
+      ) !important;
+
+    z-index: 0 !important;
+
+    pointer-events:
+      none !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        rgba(246,247,251,0) 0%,
+        rgba(246,247,251,0) 70%,
+        rgba(246,247,251,.05) 77%,
+        rgba(246,247,251,.16) 84%,
+        rgba(246,247,251,.38) 90%,
+        rgba(246,247,251,.68) 95%,
+        #f6f7fb 100%
+      ) !important;
+
+    opacity:
+      1 !important;
+
+    filter:
+      none !important;
+
+    mix-blend-mode:
+      normal !important;
+  }
+
+  body.yatut-profile-immersive.yatut-dark-mode::after {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(7,11,22,0) 0%,
+        rgba(7,11,22,0) 70%,
+        rgba(7,11,22,.05) 77%,
+        rgba(7,11,22,.16) 84%,
+        rgba(7,11,22,.38) 90%,
+        rgba(7,11,22,.68) 95%,
+        #070b16 100%
+      ) !important;
+  }
+}
