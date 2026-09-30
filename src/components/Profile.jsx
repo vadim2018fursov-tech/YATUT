@@ -1837,47 +1837,51 @@ export default function Profile({
       [profile]
     );
 
+  const achievementCatalog =
+    useMemo(
+      () =>
+        ACHIEVEMENTS.map(
+          (
+            item
+          ) =>
+            resolveAchievement(
+              item,
+              profile
+            )
+        ),
+      [
+        profile,
+      ]
+    );
+
   const earnedAchievements =
     useMemo(
       () =>
-        ACHIEVEMENTS.filter(
+        achievementCatalog.filter(
           (
             item
-          ) => {
-            if (
-              item.id ===
-              "founder"
-            ) {
-              return Boolean(
-                profile.founder
-              );
-            }
-
-            if (
-              item.id ===
-              "verified"
-            ) {
-              return Boolean(
-                profile.verified
-              );
-            }
-
-            if (
-              item.id ===
-              "early"
-            ) {
-              return Boolean(
-                profile.earlyUser
-              );
-            }
-
-            return false;
-          }
+          ) =>
+            item.earned
         ),
       [
-        profile.founder,
-        profile.verified,
-        profile.earlyUser,
+        achievementCatalog,
+      ]
+    );
+
+  const nextScaleAchievement =
+    useMemo(
+      () =>
+        achievementCatalog.find(
+          (
+            item
+          ) =>
+            item.group ===
+              "scale" &&
+            !item.earned
+        ) ||
+        null,
+      [
+        achievementCatalog,
       ]
     );
 
