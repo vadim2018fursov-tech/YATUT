@@ -115,8 +115,8 @@ function MovingGlow({
         MathUtils.damp(
           core.opacity,
           visible
-            ? 0.46
-            : 0.10,
+            ? 0.30
+            : 0.06,
           7.5,
           delta
         );
@@ -125,8 +125,8 @@ function MovingGlow({
         MathUtils.damp(
           halo.opacity,
           visible
-            ? 0.20
-            : 0.07,
+            ? 0.10
+            : 0.04,
           7.5,
           delta
         );
@@ -146,9 +146,9 @@ function MovingGlow({
     >
       <mesh
         scale={[
-          1.25,
-          0.48,
-          0.58,
+          0.92,
+          0.34,
+          0.46,
         ]}
         rotation={[
           0.32,
@@ -170,7 +170,7 @@ function MovingGlow({
           }
           color="#8a7bff"
           transparent
-          opacity={0.42}
+          opacity={0.28}
           toneMapped={
             false
           }
@@ -187,9 +187,9 @@ function MovingGlow({
           -0.32,
         ]}
         scale={[
-          1.82,
-          0.72,
-          0.46,
+          1.16,
+          0.44,
+          0.38,
         ]}
       >
         <sphereGeometry
@@ -206,7 +206,7 @@ function MovingGlow({
           }
           color="#5848ee"
           transparent
-          opacity={0.18}
+          opacity={0.045}
           toneMapped={
             false
           }
@@ -303,9 +303,9 @@ function NavDepthScene({
           -0.55,
         ]}
         scale={[
-          0.82,
+          0.58,
+          0.24,
           0.34,
-          0.45,
         ]}
         color="#a89eff"
         opacity={0.10}
@@ -321,12 +321,12 @@ function NavDepthScene({
           -0.5,
         ]}
         scale={[
-          0.96,
-          0.38,
-          0.48,
+          0.64,
+          0.26,
+          0.36,
         ]}
         color="#6b58ff"
-        opacity={0.13}
+        opacity={0.055}
         reducedMotion={
           reducedMotion
         }
@@ -341,8 +341,8 @@ function NavDepthScene({
         <Bloom
           intensity={
             reducedMotion
-              ? 0.30
-              : 0.48
+              ? 0.20
+              : 0.30
           }
           luminanceThreshold={
             0.02
