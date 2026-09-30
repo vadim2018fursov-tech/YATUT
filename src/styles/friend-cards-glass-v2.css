@@ -1220,3 +1220,469 @@
       9px !important;
   }
 }
+
+
+/* =========================================================
+   FRIEND CARDS V3 — MATCH APPROVED MOCKUP
+   Final compact proportions + real cover rendering.
+========================================================= */
+
+@media (max-width: 767px) {
+  .friends-v2-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(
+          0,
+          1fr
+        )
+      ) !important;
+
+    gap:
+      9px !important;
+
+    align-items:
+      start !important;
+  }
+
+  .friends-v2-person-card {
+    align-self:
+      start !important;
+
+    border-radius:
+      18px !important;
+  }
+
+  .friends-v2-person-cover {
+    height:
+      104px !important;
+
+    border-radius:
+      16px
+      16px
+      13px
+      13px !important;
+
+    background-image:
+      radial-gradient(
+        circle at 18% 18%,
+        rgba(
+          125,
+          109,
+          255,
+          .20
+        ),
+        transparent 34%
+      ),
+      linear-gradient(
+        145deg,
+        #eeebff,
+        #e8efff
+      ) !important;
+
+    background-size:
+      cover !important;
+
+    background-position:
+      center 38% !important;
+  }
+
+  .friends-v2-person-cover.has-image {
+    background-image:
+      linear-gradient(
+        180deg,
+        rgba(
+          9,
+          11,
+          22,
+          .01
+        ) 0%,
+        rgba(
+          9,
+          11,
+          22,
+          .03
+        ) 58%,
+        rgba(
+          9,
+          11,
+          22,
+          .16
+        ) 100%
+      ),
+      var(
+        --friend-card-cover
+      ) !important;
+
+    background-size:
+      cover,
+      cover !important;
+
+    background-position:
+      center,
+      center 36% !important;
+
+    background-repeat:
+      no-repeat,
+      no-repeat !important;
+  }
+
+  body.yatut-dark-mode
+  .friends-v2-person-cover {
+    background-image:
+      radial-gradient(
+        circle at 18% 18%,
+        rgba(
+          123,
+          106,
+          255,
+          .20
+        ),
+        transparent 34%
+      ),
+      linear-gradient(
+        145deg,
+        #20273f,
+        #111827
+      ) !important;
+  }
+
+  body.yatut-dark-mode
+  .friends-v2-person-cover.has-image {
+    background-image:
+      linear-gradient(
+        180deg,
+        rgba(
+          5,
+          8,
+          18,
+          .03
+        ) 0%,
+        rgba(
+          5,
+          8,
+          18,
+          .08
+        ) 58%,
+        rgba(
+          5,
+          8,
+          18,
+          .28
+        ) 100%
+      ),
+      var(
+        --friend-card-cover
+      ) !important;
+  }
+
+  .friends-v2-person-cover::after {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(
+          10,
+          12,
+          22,
+          0
+        ) 52%,
+        rgba(
+          10,
+          12,
+          22,
+          .10
+        ) 100%
+      ) !important;
+  }
+
+  .friends-v2-person-more {
+    top:
+      7px !important;
+
+    right:
+      7px !important;
+
+    width:
+      30px !important;
+
+    height:
+      30px !important;
+
+    border-radius:
+      10px !important;
+  }
+
+  .friends-v2-person-avatar-wrap {
+    top:
+      72px !important;
+
+    left:
+      10px !important;
+  }
+
+  .friends-v2-person-pulse {
+    width:
+      58px !important;
+
+    height:
+      58px !important;
+
+    padding:
+      2px !important;
+  }
+
+  .friends-v2-person-avatar {
+    border-width:
+      2px !important;
+  }
+
+  .friends-v2-person-online {
+    width:
+      13px !important;
+
+    height:
+      13px !important;
+
+    border-width:
+      2px !important;
+  }
+
+  .friends-v2-person-body {
+    padding:
+      30px
+      9px
+      9px !important;
+  }
+
+  .friends-v2-person-name {
+    min-height:
+      17px !important;
+  }
+
+  .friends-v2-person-name
+  > span {
+    font-size:
+      clamp(
+        12px,
+        3.45vw,
+        14px
+      ) !important;
+
+    line-height:
+      1.04 !important;
+
+    letter-spacing:
+      -.025em !important;
+  }
+
+  .friends-v2-person-name
+  > b {
+    width:
+      15px !important;
+
+    height:
+      15px !important;
+
+    flex-basis:
+      15px !important;
+
+    border-radius:
+      5px !important;
+  }
+
+  .friends-v2-person-username {
+    margin-top:
+      2px !important;
+
+    font-size:
+      9.5px !important;
+  }
+
+  .friends-v2-person-city {
+    margin-top:
+      5px !important;
+
+    font-size:
+      9.5px !important;
+  }
+
+  .friends-v2-person-city
+  svg {
+    width:
+      13px !important;
+
+    height:
+      13px !important;
+  }
+
+  .friends-v2-relation {
+    min-height:
+      47px !important;
+
+    margin-top:
+      8px !important;
+
+    padding:
+      7px
+      8px !important;
+
+    border-radius:
+      12px !important;
+  }
+
+  .friends-v2-relation
+  > div:first-child
+  > span {
+    font-size:
+      7px !important;
+  }
+
+  .friends-v2-relation
+  > div:first-child
+  > strong {
+    margin-top:
+      2px !important;
+
+    font-size:
+      8.8px !important;
+
+    line-height:
+      1.15 !important;
+
+    -webkit-line-clamp:
+      1 !important;
+  }
+
+  .friends-v2-relation
+  > svg {
+    width:
+      14px !important;
+
+    height:
+      14px !important;
+  }
+
+  .friends-v2-person-actions,
+  .friends-v2-person-actions.incoming {
+    margin-top:
+      7px !important;
+
+    gap:
+      5px !important;
+  }
+
+  .friends-v2-person-actions
+  button {
+    min-height:
+      34px !important;
+
+    padding:
+      0
+      5px !important;
+
+    border-radius:
+      11px !important;
+
+    font-size:
+      clamp(
+        8px,
+        2.25vw,
+        9.2px
+      ) !important;
+
+    font-weight:
+      820 !important;
+  }
+
+  .friends-v2-person-actions
+  button svg {
+    width:
+      14px !important;
+
+    height:
+      14px !important;
+
+    flex-basis:
+      14px !important;
+  }
+
+  .friends-v2-request-chip {
+    min-height:
+      25px !important;
+
+    padding:
+      0
+      7px !important;
+
+    font-size:
+      8px !important;
+  }
+
+  .friends-v2-nearby-chip {
+    min-height:
+      24px !important;
+
+    padding:
+      0
+      6px !important;
+
+    font-size:
+      7.8px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .friends-v2-grid {
+    gap:
+      7px !important;
+  }
+
+  .friends-v2-person-cover {
+    height:
+      96px !important;
+  }
+
+  .friends-v2-person-avatar-wrap {
+    top:
+      66px !important;
+  }
+
+  .friends-v2-person-pulse {
+    width:
+      54px !important;
+
+    height:
+      54px !important;
+  }
+
+  .friends-v2-person-body {
+    padding:
+      29px
+      8px
+      8px !important;
+  }
+
+  .friends-v2-person-name
+  > span {
+    font-size:
+      11.5px !important;
+  }
+
+  .friends-v2-relation {
+    min-height:
+      44px !important;
+
+    padding:
+      6px
+      7px !important;
+  }
+
+  .friends-v2-person-actions
+  button {
+    min-height:
+      32px !important;
+
+    font-size:
+      7.8px !important;
+  }
+}
