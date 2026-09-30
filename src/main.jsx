@@ -25,6 +25,7 @@ import "./styles/friend-card-fade-avatar-v14.css";
 import "./styles/three-depth-v1.css";
 import "./styles/wet-glass-nav-v17.css";
 import "./styles/profile-unified-v19.css";
+import "./styles/yatut-experience-layer-v26.css";
 import {
   initNativePlatform,
 } from "./services/nativePlatformService.js";
@@ -52,6 +53,49 @@ document.documentElement.classList.toggle(
   Boolean(
     standalone
   )
+);
+
+const userAgent =
+  window.navigator.userAgent ||
+  "";
+
+const isWebIOS =
+  /iPhone|iPad|iPod/i.test(
+    userAgent
+  ) ||
+  (
+    /Macintosh/i.test(
+      userAgent
+    ) &&
+    Number(
+      window.navigator
+        .maxTouchPoints ||
+      0
+    ) >
+      1
+  );
+
+const isWebAndroid =
+  /Android/i.test(
+    userAgent
+  );
+
+document.documentElement.classList.toggle(
+  "yatut-platform-ios",
+  nativePlatform
+    ? document.documentElement.classList.contains(
+        "yatut-native-ios"
+      )
+    : isWebIOS
+);
+
+document.documentElement.classList.toggle(
+  "yatut-platform-android",
+  nativePlatform
+    ? document.documentElement.classList.contains(
+        "yatut-native-android"
+      )
+    : isWebAndroid
 );
 
 const coarsePointer =
