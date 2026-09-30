@@ -19,6 +19,7 @@ import "./styles/chat-list-polish-v2.css";
 import "./styles/mobile-shell-profile-fix-v3.css";
 import "./styles/chat-stability-v1.css";
 import "./styles/profile-immersive-v4.css";
+import "./styles/profile-adaptive-theme-v5.css";
 import {
   initNativePlatform,
 } from "./services/nativePlatformService.js";
