@@ -24,6 +24,7 @@ import "./styles/profile-adaptive-theme-v5.css";
 import "./styles/profile-background-transition-v6.css";
 import "./styles/profile-cover-fade-v7.css";
 import "./styles/profile-half-cover-v8.css";
+import "./styles/profile-theme-cover-v9.css";
 import {
   initNativePlatform,
 } from "./services/nativePlatformService.js";
