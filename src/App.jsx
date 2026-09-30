@@ -75,6 +75,7 @@ import CreateStoryPage from "./pages/CreateStoryPage";
 import CreateMediaPage from "./pages/CreateMediaPage";
 
 import YatutIcon from "./components/YatutIcon";
+import MobileNav3DGlow from "./components/MobileNav3DGlow";
 import AnimatedPageSwitch from "./components/AnimatedPageSwitch";
 import YatutBootScreen from "./components/YatutBootScreen";
 import YatutMediaViewer from "./components/ui/YatutMediaViewer";
@@ -6416,12 +6417,26 @@ function MobileNavigation({
   onToggleNotifications,
   viewerProfile = null,
 }) {
+  const active3DIndex =
+    MOBILE_NAV.findIndex(
+      (
+        item
+      ) =>
+        item.id ===
+        currentPage
+    );
+
   return (
     <nav
       className="mobile-nav"
       id="yatut-global-mobile-nav"
       aria-label="Головна навігація"
     >
+      <MobileNav3DGlow
+        activeIndex={
+          active3DIndex
+        }
+      />
       {MOBILE_NAV.map(
         (
           item
