@@ -20,6 +20,7 @@ import "./styles/mobile-shell-profile-fix-v3.css";
 import "./styles/chat-stability-v1.css";
 import "./styles/profile-immersive-v4.css";
 import "./styles/profile-adaptive-theme-v5.css";
+import "./styles/profile-background-transition-v6.css";
 import {
   initNativePlatform,
 } from "./services/nativePlatformService.js";
