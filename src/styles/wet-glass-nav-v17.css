@@ -1,0 +1,550 @@
+/* =========================================================
+   YATUT WET GLASS NAV V17
+   MagicPath-derived wet / liquid glass navigation.
+   Final mobile override.
+========================================================= */
+
+@media (max-width: 767px) {
+  #yatut-global-mobile-nav.mobile-nav {
+    position: fixed !important;
+
+    left: 12px !important;
+    right: 12px !important;
+
+    bottom:
+      calc(
+        8px +
+        env(safe-area-inset-bottom)
+      ) !important;
+
+    min-height: 76px !important;
+    height: auto !important;
+
+    padding:
+      6px
+      5px
+      8px !important;
+
+    isolation: isolate !important;
+    overflow: hidden !important;
+
+    border:
+      1px solid
+      rgba(
+        255,
+        255,
+        255,
+        .48
+      ) !important;
+
+    border-radius:
+      30px !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255,255,255,.22) 0%,
+        rgba(255,255,255,.11) 28%,
+        rgba(255,255,255,.075) 62%,
+        rgba(255,255,255,.13) 100%
+      ) !important;
+
+    box-shadow:
+      0 22px 56px rgba(27,33,58,.18),
+      inset 0 1px 0 rgba(255,255,255,.72),
+      inset 0 -1px 0 rgba(255,255,255,.12),
+      inset 18px 0 34px rgba(255,255,255,.025),
+      inset -18px 0 34px rgba(105,81,255,.025) !important;
+
+    backdrop-filter:
+      blur(30px)
+      saturate(1.65)
+      contrast(1.05) !important;
+
+    -webkit-backdrop-filter:
+      blur(30px)
+      saturate(1.65)
+      contrast(1.05) !important;
+
+    transform:
+      translateZ(0) !important;
+
+    -webkit-transform:
+      translateZ(0) !important;
+  }
+
+  /* Wet glass specular reflections. */
+  #yatut-global-mobile-nav.mobile-nav::before {
+    content: "" !important;
+
+    position: absolute !important;
+    inset: 1px !important;
+
+    z-index: 0 !important;
+
+    pointer-events: none !important;
+
+    border-radius:
+      29px !important;
+
+    background:
+      radial-gradient(
+        78% 55%
+        at
+        14% 0%,
+        rgba(255,255,255,.42) 0%,
+        rgba(255,255,255,.15) 28%,
+        rgba(255,255,255,0) 67%
+      ),
+      radial-gradient(
+        68% 50%
+        at
+        88% 100%,
+        rgba(119,93,255,.16) 0%,
+        rgba(119,93,255,.05) 34%,
+        rgba(119,93,255,0) 72%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(255,255,255,.12),
+        rgba(255,255,255,0) 42%
+      ) !important;
+
+    opacity: .94 !important;
+  }
+
+  #yatut-global-mobile-nav.mobile-nav::after {
+    content: "" !important;
+
+    position: absolute !important;
+
+    left: 9% !important;
+    right: 9% !important;
+    bottom: 3px !important;
+
+    height: 1px !important;
+
+    z-index: 0 !important;
+
+    pointer-events: none !important;
+
+    background:
+      linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,.32),
+        transparent
+      ) !important;
+
+    filter:
+      blur(.2px) !important;
+  }
+
+  body.yatut-dark-mode
+  #yatut-global-mobile-nav.mobile-nav {
+    border-color:
+      rgba(
+        255,
+        255,
+        255,
+        .15
+      ) !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        rgba(31,36,56,.30) 0%,
+        rgba(13,18,32,.28) 42%,
+        rgba(9,14,27,.34) 100%
+      ) !important;
+
+    box-shadow:
+      0 24px 62px rgba(0,0,0,.34),
+      inset 0 1px 0 rgba(255,255,255,.16),
+      inset 0 -1px 0 rgba(255,255,255,.04),
+      inset 18px 0 34px rgba(255,255,255,.018),
+      inset -18px 0 38px rgba(94,66,255,.06) !important;
+
+    backdrop-filter:
+      blur(32px)
+      saturate(1.58)
+      contrast(1.05) !important;
+
+    -webkit-backdrop-filter:
+      blur(32px)
+      saturate(1.58)
+      contrast(1.05) !important;
+  }
+
+  body.yatut-dark-mode
+  #yatut-global-mobile-nav.mobile-nav::before {
+    background:
+      radial-gradient(
+        80% 58%
+        at
+        13% 0%,
+        rgba(255,255,255,.16) 0%,
+        rgba(255,255,255,.055) 31%,
+        rgba(255,255,255,0) 68%
+      ),
+      radial-gradient(
+        70% 54%
+        at
+        88% 100%,
+        rgba(112,80,255,.22) 0%,
+        rgba(112,80,255,.075) 35%,
+        rgba(112,80,255,0) 74%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(255,255,255,.035),
+        rgba(255,255,255,0) 48%
+      ) !important;
+
+    opacity:
+      .96 !important;
+  }
+
+  /* WebGL is depth only now — no large purple puddle. */
+  #yatut-global-mobile-nav
+  .mobile-nav-3d {
+    z-index: 0 !important;
+
+    opacity:
+      .10 !important;
+
+    mix-blend-mode:
+      screen !important;
+  }
+
+  body.yatut-dark-mode
+  #yatut-global-mobile-nav
+  .mobile-nav-3d {
+    opacity:
+      .16 !important;
+  }
+
+  #yatut-global-mobile-nav
+  .mobile-nav-item {
+    position: relative !important;
+
+    z-index: 2 !important;
+
+    min-width: 0 !important;
+
+    border:
+      1px solid
+      transparent !important;
+
+    border-radius:
+      21px !important;
+
+    background:
+      transparent !important;
+
+    color:
+      #3b3f4c !important;
+
+    box-shadow:
+      none !important;
+
+    transform:
+      translateZ(0) !important;
+
+    transition:
+      transform .18s ease,
+      color .18s ease,
+      background .18s ease,
+      border-color .18s ease,
+      box-shadow .18s ease !important;
+  }
+
+  body.yatut-dark-mode
+  #yatut-global-mobile-nav
+  .mobile-nav-item {
+    color:
+      rgba(
+        229,
+        233,
+        245,
+        .80
+      ) !important;
+  }
+
+  #yatut-global-mobile-nav
+  .mobile-nav-item::before {
+    content: "" !important;
+
+    position: absolute !important;
+    inset: 5px 6px !important;
+
+    z-index: -1 !important;
+
+    border-radius:
+      18px !important;
+
+    border:
+      1px solid
+      transparent !important;
+
+    background:
+      transparent !important;
+
+    box-shadow:
+      none !important;
+
+    opacity:
+      0 !important;
+
+    transition:
+      opacity .18s ease,
+      background .18s ease,
+      border-color .18s ease,
+      box-shadow .18s ease !important;
+  }
+
+  #yatut-global-mobile-nav
+  .mobile-nav-item.active {
+    color:
+      #6f58ff !important;
+
+    transform:
+      translateY(-1px)
+      translateZ(0) !important;
+  }
+
+  #yatut-global-mobile-nav
+  .mobile-nav-item.active::before {
+    opacity:
+      1 !important;
+
+    border-color:
+      rgba(
+        255,
+        255,
+        255,
+        .22
+      ) !important;
+
+    background:
+      linear-gradient(
+        150deg,
+        rgba(255,255,255,.09),
+        rgba(110,84,255,.055)
+      ) !important;
+
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.13),
+      0 6px 16px rgba(89,66,230,.06) !important;
+  }
+
+  body.yatut-dark-mode
+  #yatut-global-mobile-nav
+  .mobile-nav-item.active {
+    color:
+      #a690ff !important;
+  }
+
+  body.yatut-dark-mode
+  #yatut-global-mobile-nav
+  .mobile-nav-item.active::before {
+    border-color:
+      rgba(
+        255,
+        255,
+        255,
+        .11
+      ) !important;
+
+    background:
+      linear-gradient(
+        150deg,
+        rgba(255,255,255,.035),
+        rgba(103,75,255,.065)
+      ) !important;
+
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.06),
+      0 8px 18px rgba(90,62,255,.08) !important;
+  }
+
+  #yatut-global-mobile-nav
+  .mobile-nav-icon {
+    position: relative !important;
+
+    z-index: 3 !important;
+
+    transform:
+      translateZ(12px) !important;
+
+    transition:
+      transform .18s ease,
+      filter .18s ease,
+      color .18s ease !important;
+  }
+
+  #yatut-global-mobile-nav
+  .mobile-nav-item.active
+  .mobile-nav-icon {
+    color:
+      #7158ff !important;
+
+    transform:
+      translateZ(14px)
+      scale(1.055) !important;
+
+    filter:
+      drop-shadow(
+        0
+        0
+        3px
+        rgba(119,90,255,.96)
+      )
+      drop-shadow(
+        0
+        0
+        8px
+        rgba(100,71,255,.66)
+      )
+      drop-shadow(
+        0
+        0
+        16px
+        rgba(84,55,255,.32)
+      ) !important;
+  }
+
+  body.yatut-dark-mode
+  #yatut-global-mobile-nav
+  .mobile-nav-item.active
+  .mobile-nav-icon {
+    color:
+      #ad99ff !important;
+
+    filter:
+      drop-shadow(
+        0
+        0
+        4px
+        rgba(168,145,255,.98)
+      )
+      drop-shadow(
+        0
+        0
+        10px
+        rgba(126,92,255,.76)
+      )
+      drop-shadow(
+        0
+        0
+        19px
+        rgba(91,57,255,.42)
+      ) !important;
+  }
+
+  #yatut-global-mobile-nav
+  .mobile-nav-item
+  small {
+    position: relative !important;
+
+    z-index: 3 !important;
+
+    color:
+      inherit !important;
+
+    transform:
+      translateZ(10px) !important;
+
+    text-shadow:
+      none !important;
+
+    opacity:
+      .95 !important;
+
+    transition:
+      color .18s ease,
+      text-shadow .18s ease !important;
+  }
+
+  #yatut-global-mobile-nav
+  .mobile-nav-item.active
+  small {
+    color:
+      #6f58ff !important;
+
+    text-shadow:
+      0 0 8px
+      rgba(
+        105,
+        80,
+        255,
+        .18
+      ) !important;
+  }
+
+  body.yatut-dark-mode
+  #yatut-global-mobile-nav
+  .mobile-nav-item.active
+  small {
+    color:
+      #aa97ff !important;
+
+    text-shadow:
+      0 0 10px
+      rgba(
+        132,
+        103,
+        255,
+        .25
+      ) !important;
+  }
+
+  #yatut-global-mobile-nav
+  .mobile-nav-item:active {
+    transform:
+      scale(.97)
+      translateZ(0) !important;
+  }
+}
+
+@media (max-width: 390px) {
+  #yatut-global-mobile-nav.mobile-nav {
+    left:
+      10px !important;
+
+    right:
+      10px !important;
+
+    min-height:
+      72px !important;
+
+    padding:
+      5px
+      4px
+      7px !important;
+
+    border-radius:
+      28px !important;
+  }
+
+  #yatut-global-mobile-nav.mobile-nav::before {
+    border-radius:
+      27px !important;
+  }
+
+  #yatut-global-mobile-nav
+  .mobile-nav-item {
+    border-radius:
+      19px !important;
+  }
+
+  #yatut-global-mobile-nav
+  .mobile-nav-item::before {
+    inset:
+      4px
+      5px !important;
+
+    border-radius:
+      16px !important;
+  }
+}
