@@ -1,0 +1,733 @@
+/* =========================================================
+   YATUT PREMIUM UI V11
+   Based on the approved MagicPath references:
+   - Friends: compact 2-column premium cards
+   - Profile: immersive dark glass profile
+   - Shared: consistent liquid-glass navigation
+========================================================= */
+
+@media (max-width: 767px) {
+  :root {
+    --yp-accent: #655cff;
+    --yp-accent-2: #574af0;
+    --yp-light-bg: #f7f8fc;
+    --yp-dark-bg: #070b16;
+  }
+
+  /* =======================================================
+     FRIENDS — LIGHT / DARK
+  ======================================================= */
+
+  .friends-v2-page {
+    background:
+      radial-gradient(
+        circle at 10% 0%,
+        rgba(114,101,255,.13),
+        transparent 30%
+      ),
+      radial-gradient(
+        circle at 95% 18%,
+        rgba(157,145,255,.10),
+        transparent 26%
+      ),
+      #f7f8fc !important;
+  }
+
+  body.yatut-dark-mode .friends-v2-page {
+    background:
+      radial-gradient(
+        circle at 8% 0%,
+        rgba(102,83,255,.13),
+        transparent 28%
+      ),
+      #070b16 !important;
+  }
+
+  .friends-v2-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0,1fr)
+      ) !important;
+    gap: 10px !important;
+    align-items: start !important;
+  }
+
+  .friends-v2-person-card {
+    min-width: 0 !important;
+    align-self: start !important;
+    overflow: hidden !important;
+    border: 1px solid rgba(115,103,255,.10) !important;
+    border-radius: 22px !important;
+    background: rgba(255,255,255,.92) !important;
+    box-shadow:
+      0 14px 34px rgba(33,36,69,.08),
+      inset 0 1px 0 rgba(255,255,255,.72) !important;
+    backdrop-filter: blur(18px) saturate(1.18) !important;
+    -webkit-backdrop-filter: blur(18px) saturate(1.18) !important;
+  }
+
+  body.yatut-dark-mode .friends-v2-person-card {
+    border-color: rgba(132,116,255,.14) !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(23,28,46,.94),
+        rgba(13,18,32,.92)
+      ) !important;
+    box-shadow:
+      0 16px 38px rgba(0,0,0,.24),
+      inset 0 1px 0 rgba(255,255,255,.04) !important;
+  }
+
+  .friends-v2-person-cover {
+    height: 128px !important;
+    border-radius:
+      20px
+      20px
+      16px
+      16px !important;
+    background-image:
+      radial-gradient(
+        circle at 18% 20%,
+        rgba(116,101,255,.18),
+        transparent 34%
+      ),
+      linear-gradient(
+        145deg,
+        #efeaff,
+        #eaf2ff
+      ) !important;
+    background-size: cover !important;
+    background-position: center 38% !important;
+  }
+
+  .friends-v2-person-cover.has-image {
+    background-image:
+      linear-gradient(
+        180deg,
+        rgba(8,10,20,0) 0%,
+        rgba(8,10,20,.02) 60%,
+        rgba(8,10,20,.14) 100%
+      ),
+      var(--friend-card-cover) !important;
+    background-size:
+      cover,
+      cover !important;
+    background-position:
+      center,
+      center 36% !important;
+    background-repeat:
+      no-repeat !important;
+  }
+
+  body.yatut-dark-mode
+  .friends-v2-person-cover.has-image {
+    background-image:
+      linear-gradient(
+        180deg,
+        rgba(6,8,17,.02) 0%,
+        rgba(6,8,17,.06) 60%,
+        rgba(6,8,17,.24) 100%
+      ),
+      var(--friend-card-cover) !important;
+  }
+
+  .friends-v2-person-more {
+    top: 10px !important;
+    right: 10px !important;
+    width: 32px !important;
+    height: 32px !important;
+    border: 1px solid rgba(255,255,255,.78) !important;
+    border-radius: 11px !important;
+    background: rgba(255,255,255,.82) !important;
+    color: #252936 !important;
+    box-shadow:
+      0 7px 18px rgba(22,27,46,.10),
+      inset 0 1px 0 rgba(255,255,255,.88) !important;
+    backdrop-filter: blur(16px) saturate(1.3) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(1.3) !important;
+  }
+
+  body.yatut-dark-mode
+  .friends-v2-person-more {
+    border-color: rgba(255,255,255,.13) !important;
+    background: rgba(18,23,39,.66) !important;
+    color: #f5f6ff !important;
+  }
+
+  .friends-v2-person-avatar-wrap {
+    top: 92px !important;
+    left: 12px !important;
+  }
+
+  .friends-v2-person-pulse {
+    width: 66px !important;
+    height: 66px !important;
+    padding: 2px !important;
+    border-radius: 50% !important;
+    background: rgba(255,255,255,.96) !important;
+    box-shadow:
+      0 0 0 4px #fff,
+      0 8px 20px rgba(21,24,42,.13) !important;
+  }
+
+  body.yatut-dark-mode
+  .friends-v2-person-pulse {
+    background: #151a2a !important;
+    box-shadow:
+      0 0 0 4px #111626,
+      0 9px 22px rgba(0,0,0,.28) !important;
+  }
+
+  .friends-v2-person-pulse.online {
+    background:
+      linear-gradient(
+        145deg,
+        #6d63ff,
+        #8a82ff
+      ) !important;
+  }
+
+  .friends-v2-person-avatar {
+    border: 2px solid #fff !important;
+    background: #f1efff !important;
+  }
+
+  body.yatut-dark-mode
+  .friends-v2-person-avatar {
+    border-color: #111626 !important;
+    background: #232a3e !important;
+  }
+
+  .friends-v2-person-online {
+    right: 0 !important;
+    bottom: 1px !important;
+    width: 15px !important;
+    height: 15px !important;
+    border: 3px solid #fff !important;
+    background: #36ca78 !important;
+  }
+
+  body.yatut-dark-mode
+  .friends-v2-person-online {
+    border-color: #111626 !important;
+  }
+
+  .friends-v2-person-body {
+    padding:
+      34px
+      12px
+      12px !important;
+  }
+
+  .friends-v2-person-name > span {
+    max-width: 100% !important;
+    overflow: hidden !important;
+    color: #121522 !important;
+    font-size:
+      clamp(
+        12px,
+        3.6vw,
+        15px
+      ) !important;
+    font-weight: 900 !important;
+    line-height: 1.05 !important;
+    letter-spacing: -.02em !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  body.yatut-dark-mode
+  .friends-v2-person-name > span {
+    color: #f8f9ff !important;
+  }
+
+  .friends-v2-person-username {
+    margin-top: 3px !important;
+    color: #9296a5 !important;
+    font-size: 9.5px !important;
+    font-weight: 560 !important;
+  }
+
+  body.yatut-dark-mode
+  .friends-v2-person-username {
+    color: rgba(217,222,240,.58) !important;
+  }
+
+  .friends-v2-person-city {
+    margin-top: 7px !important;
+    color: #74798a !important;
+    font-size: 9.5px !important;
+    font-weight: 650 !important;
+  }
+
+  body.yatut-dark-mode
+  .friends-v2-person-city {
+    color: rgba(222,226,242,.70) !important;
+  }
+
+  .friends-v2-person-city .yatut-icon {
+    color: #6a5cff !important;
+  }
+
+  .friends-v2-person-city i,
+  .friends-v2-person-city b {
+    display: none !important;
+  }
+
+  .friends-v2-relation {
+    min-height: 58px !important;
+    margin-top: 10px !important;
+    padding: 9px 10px !important;
+    border: 1px solid rgba(108,97,255,.10) !important;
+    border-radius: 14px !important;
+    background:
+      linear-gradient(
+        145deg,
+        #f4f1ff,
+        #fbfaff
+      ) !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.86) !important;
+  }
+
+  body.yatut-dark-mode
+  .friends-v2-relation {
+    border-color: rgba(139,124,255,.13) !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(35,39,62,.90),
+        rgba(21,25,43,.88)
+      ) !important;
+  }
+
+  .friends-v2-relation
+  > div:first-child
+  > span {
+    color: #7065ff !important;
+    font-size: 7.4px !important;
+    font-weight: 900 !important;
+    letter-spacing: .08em !important;
+  }
+
+  .friends-v2-relation
+  > div:first-child
+  > strong {
+    margin-top: 3px !important;
+    display: -webkit-box !important;
+    overflow: hidden !important;
+    color: #454a58 !important;
+    font-size: 9px !important;
+    font-weight: 760 !important;
+    line-height: 1.2 !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 2 !important;
+  }
+
+  body.yatut-dark-mode
+  .friends-v2-relation
+  > div:first-child
+  > strong {
+    color: rgba(241,243,250,.86) !important;
+  }
+
+  .friends-v2-relation
+  .friends-v2-mutual-avatars {
+    display: none !important;
+  }
+
+  .friends-v2-person-actions {
+    margin-top: 8px !important;
+    display: grid !important;
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0,1fr)
+      ) !important;
+    gap: 7px !important;
+  }
+
+  .friends-v2-person-actions button {
+    min-width: 0 !important;
+    min-height: 40px !important;
+    padding: 0 6px !important;
+    border-radius: 13px !important;
+    font-size:
+      clamp(
+        8px,
+        2.3vw,
+        9.5px
+      ) !important;
+    font-weight: 830 !important;
+  }
+
+  .friends-v2-person-actions .friend {
+    border: 1px solid rgba(105,94,255,.15) !important;
+    background: #f1eeff !important;
+    color: #655bff !important;
+  }
+
+  body.yatut-dark-mode
+  .friends-v2-person-actions .friend {
+    border-color: rgba(135,119,255,.18) !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(91,76,207,.30),
+        rgba(52,46,111,.28)
+      ) !important;
+    color: #b2aaff !important;
+  }
+
+  .friends-v2-person-actions .message {
+    border: 1px solid rgba(59,65,83,.10) !important;
+    background: #fff !important;
+    color: #313644 !important;
+  }
+
+  body.yatut-dark-mode
+  .friends-v2-person-actions .message {
+    border-color: rgba(255,255,255,.08) !important;
+    background: rgba(24,29,47,.76) !important;
+    color: #eef1fb !important;
+  }
+
+  /* =======================================================
+     PROFILE — MAGICPATH DARK PREMIUM
+  ======================================================= */
+
+  body.yatut-profile-immersive.yatut-dark-mode
+  .profile-v4-immersive {
+    color: #fff !important;
+  }
+
+  body.yatut-profile-immersive.yatut-dark-mode::before {
+    filter:
+      saturate(1.06)
+      contrast(1.04)
+      brightness(.82) !important;
+  }
+
+  body.yatut-profile-immersive.yatut-dark-mode
+  .profile-v4-immersive {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(7,11,22,0) 0%,
+        rgba(7,11,22,.04) 38svh,
+        rgba(7,11,22,.20) 48svh,
+        rgba(7,11,22,.48) 55svh,
+        rgba(7,11,22,.76) 61svh,
+        rgba(7,11,22,.94) 66svh,
+        #070b16 72svh,
+        #070b16 100%
+      ) !important;
+  }
+
+  body.yatut-profile-immersive:not(.yatut-dark-mode)
+  .profile-v4-immersive {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(247,248,252,0) 0%,
+        rgba(247,248,252,.05) 36svh,
+        rgba(247,248,252,.22) 45svh,
+        rgba(247,248,252,.50) 52svh,
+        rgba(247,248,252,.76) 58svh,
+        rgba(247,248,252,.94) 64svh,
+        #f7f8fc 70svh,
+        #f7f8fc 100%
+      ) !important;
+  }
+
+  .profile-v4-immersive
+  .profile-v3-mobile-card {
+    margin-top: -12px !important;
+    padding: 0 14px !important;
+  }
+
+  .profile-v4-immersive
+  .profile-v3-mobile-avatar-wrap {
+    margin-top: -44px !important;
+    margin-bottom: 12px !important;
+  }
+
+  .profile-v4-immersive
+  .profile-v3-mobile-avatar {
+    width: 96px !important;
+    height: 96px !important;
+    border: 4px solid #fff !important;
+    box-shadow:
+      0 0 0 2px rgba(51,218,163,.52),
+      0 0 22px rgba(51,218,163,.20),
+      0 16px 34px rgba(0,0,0,.26) !important;
+  }
+
+  .profile-v4-immersive
+  .profile-v3-mobile-name-row h1 {
+    font-size:
+      clamp(
+        31px,
+        8.7vw,
+        37px
+      ) !important;
+    font-weight: 900 !important;
+    line-height: .98 !important;
+    letter-spacing: -.045em !important;
+  }
+
+  .profile-v4-immersive
+  .profile-v3-mobile-username {
+    margin-top: 7px !important;
+    font-size: 15px !important;
+  }
+
+  .profile-v4-immersive
+  .profile-v3-mobile-bio {
+    margin-top: 14px !important;
+    font-size: 14px !important;
+    line-height: 1.4 !important;
+  }
+
+  .profile-v4-immersive
+  .profile-v3-mobile-meta {
+    margin-top: 11px !important;
+    gap: 8px 14px !important;
+  }
+
+  .profile-v4-immersive
+  .profile-v3-mobile-meta span {
+    font-size: 12px !important;
+  }
+
+  .profile-v4-immersive
+  .profile-v3-mobile-status-wrap {
+    margin-top: 11px !important;
+  }
+
+  .profile-v4-immersive
+  .profile-v3-mobile-status {
+    min-height: 40px !important;
+    border-radius: 13px !important;
+  }
+
+  .profile-v4-immersive
+  .profile-v3-mobile-actions {
+    margin-top: 15px !important;
+    grid-template-columns:
+      minmax(0,1fr)
+      50px
+      50px !important;
+    gap: 9px !important;
+  }
+
+  .profile-v4-immersive
+  .profile-v3-mobile-edit {
+    min-height: 54px !important;
+    border-radius: 18px !important;
+    background:
+      linear-gradient(
+        90deg,
+        #756bff,
+        #594df0
+      ) !important;
+    box-shadow:
+      0 13px 30px rgba(85,70,241,.30),
+      inset 0 1px 0 rgba(255,255,255,.20) !important;
+  }
+
+  .profile-v4-immersive
+  .profile-v3-mobile-action,
+  .profile-v4-immersive
+  .profile-v3-mobile-more-trigger {
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 17px !important;
+  }
+
+  body.yatut-profile-immersive.yatut-dark-mode
+  .profile-v4-immersive
+  .profile-v3-mobile-action,
+  body.yatut-profile-immersive.yatut-dark-mode
+  .profile-v4-immersive
+  .profile-v3-mobile-more-trigger {
+    border-color: rgba(255,255,255,.12) !important;
+    background: rgba(20,25,42,.68) !important;
+    color: #fff !important;
+  }
+
+  .profile-v4-immersive
+  .profile-v3-mobile-stats {
+    min-height: 82px !important;
+    margin-top: 16px !important;
+    border-radius: 22px !important;
+  }
+
+  body.yatut-profile-immersive.yatut-dark-mode
+  .profile-v4-immersive
+  .profile-v3-mobile-stats {
+    border-color: rgba(255,255,255,.10) !important;
+    background: rgba(18,23,39,.70) !important;
+    box-shadow:
+      0 14px 32px rgba(0,0,0,.18),
+      inset 0 1px 0 rgba(255,255,255,.05) !important;
+  }
+
+  .profile-v4-immersive
+  .profile-v3-mobile-stats strong {
+    font-size: 22px !important;
+  }
+
+  .profile-v4-immersive
+  .profile-v2-grid {
+    margin-top: 14px !important;
+  }
+
+  .profile-v4-immersive
+  .profile-v2-tabs {
+    min-height: 64px !important;
+    border-radius: 22px !important;
+    padding: 5px !important;
+  }
+
+  body.yatut-profile-immersive.yatut-dark-mode
+  .profile-v4-immersive
+  .profile-v2-tabs {
+    border-color: rgba(255,255,255,.10) !important;
+    background: rgba(17,22,39,.72) !important;
+    box-shadow:
+      0 13px 30px rgba(0,0,0,.18),
+      inset 0 1px 0 rgba(255,255,255,.05) !important;
+  }
+
+  body.yatut-profile-immersive.yatut-dark-mode
+  .profile-v4-immersive
+  .profile-v2-tab-active {
+    border-color: rgba(145,132,255,.26) !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(109,95,233,.94),
+        rgba(73,57,170,.88)
+      ) !important;
+    box-shadow:
+      0 0 22px rgba(104,83,238,.32),
+      inset 0 1px 0 rgba(255,255,255,.11) !important;
+  }
+
+  body.yatut-profile-immersive.yatut-dark-mode
+  .profile-v4-immersive
+  .profile-v2-post-card {
+    border-radius: 24px !important;
+    border-color: rgba(255,255,255,.09) !important;
+    background: rgba(16,22,37,.78) !important;
+    box-shadow:
+      0 16px 36px rgba(0,0,0,.20) !important;
+  }
+
+  /* =======================================================
+     SHARED BOTTOM NAV — LIGHT / DARK
+  ======================================================= */
+
+  #yatut-global-mobile-nav.mobile-nav {
+    left: 14px !important;
+    right: 14px !important;
+    bottom:
+      calc(
+        10px +
+        env(safe-area-inset-bottom)
+      ) !important;
+    min-height: 78px !important;
+    padding: 7px 6px 9px !important;
+    border: 1px solid rgba(255,255,255,.82) !important;
+    border-radius: 30px !important;
+    background: rgba(255,255,255,.78) !important;
+    box-shadow:
+      0 18px 44px rgba(28,33,58,.14),
+      inset 0 1px 0 rgba(255,255,255,.94) !important;
+    backdrop-filter:
+      blur(28px)
+      saturate(1.45) !important;
+    -webkit-backdrop-filter:
+      blur(28px)
+      saturate(1.45) !important;
+  }
+
+  body.yatut-dark-mode
+  #yatut-global-mobile-nav.mobile-nav {
+    border-color: rgba(134,119,255,.25) !important;
+    background: rgba(17,22,38,.84) !important;
+    box-shadow:
+      0 20px 52px rgba(0,0,0,.36),
+      0 0 28px rgba(96,73,255,.18),
+      inset 0 1px 0 rgba(255,255,255,.07) !important;
+  }
+
+  #yatut-global-mobile-nav.mobile-nav::before {
+    background:
+      radial-gradient(
+        ellipse at 92% 58%,
+        rgba(111,79,255,.22),
+        transparent 62%
+      ) !important;
+  }
+
+  body.yatut-dark-mode
+  #yatut-global-mobile-nav.mobile-nav::before {
+    background:
+      radial-gradient(
+        ellipse at 92% 58%,
+        rgba(111,79,255,.44),
+        transparent 65%
+      ) !important;
+  }
+
+  #yatut-global-mobile-nav.mobile-nav
+  > button.active {
+    color: #655cff !important;
+  }
+
+  body.yatut-dark-mode
+  #yatut-global-mobile-nav.mobile-nav
+  > button.active {
+    color: #b4acff !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .friends-v2-grid {
+    gap: 8px !important;
+  }
+
+  .friends-v2-person-cover {
+    height: 116px !important;
+  }
+
+  .friends-v2-person-avatar-wrap {
+    top: 83px !important;
+  }
+
+  .friends-v2-person-pulse {
+    width: 60px !important;
+    height: 60px !important;
+  }
+
+  .friends-v2-person-body {
+    padding:
+      31px
+      9px
+      9px !important;
+  }
+
+  .friends-v2-relation {
+    min-height: 54px !important;
+    padding: 8px !important;
+  }
+
+  .friends-v2-person-actions button {
+    min-height: 37px !important;
+    font-size: 8px !important;
+  }
+}
