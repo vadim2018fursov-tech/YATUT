@@ -97,55 +97,410 @@ const DEFAULT_PROFILE = {
   ],
 };
 
+const ACHIEVEMENT_GROUPS = [
+  {
+    id: "confirmation",
+    title: "Підтвердження",
+    subtitle:
+      "Офіційний статус і довіра в спільноті",
+  },
+  {
+    id: "community",
+    title: "Досягнення",
+    subtitle:
+      "Внесок у спільноту та активність",
+  },
+  {
+    id: "scale",
+    title: "Масштаб",
+    subtitle:
+      "Вплив і великі аудиторії",
+  },
+  {
+    id: "special",
+    title: "Особливі",
+    subtitle:
+      "Системні та унікальні відзнаки",
+  },
+];
+
 const ACHIEVEMENTS = [
   {
-    id: "founder",
-    title: "Засновник ЯТУТ",
-    subtitle: "Створює майбутнє мережі",
-    tone: "violet",
-    symbol: "Я",
-  },
-
-  {
     id: "verified",
+    group: "confirmation",
     title: "ЯТУТ Перевірено",
-    subtitle: "Підтверджений профіль",
-    tone: "indigo",
-    symbol: "✓",
+    subtitle:
+      "Підтверджений профіль",
+    condition:
+      "Підтвердити особу та пройти перевірку ЯТУТ.",
+    tone: "violet",
+    badge: "seal",
+    symbol: "Я",
+    rule: "flag",
+    flags: [
+      "verified",
+    ],
   },
-
+  {
+    id: "official",
+    group: "confirmation",
+    title: "Офіційна сторінка",
+    subtitle:
+      "Офіційний акаунт",
+    condition:
+      "Підтвердити офіційний акаунт бренду, організації або публічної особи.",
+    tone: "blue",
+    badge: "shield",
+    symbol: "Я",
+    rule: "flag",
+    flags: [
+      "officialAccount",
+      "official",
+    ],
+  },
+  {
+    id: "author",
+    group: "confirmation",
+    title: "Автор",
+    subtitle:
+      "Творчі люди",
+    condition:
+      "Отримати статус автора після підтвердження творчого профілю.",
+    tone: "coral",
+    badge: "star",
+    symbol: "Я",
+    rule: "flag",
+    flags: [
+      "authorBadge",
+      "creator",
+    ],
+  },
+  {
+    id: "expert",
+    group: "confirmation",
+    title: "Експерт",
+    subtitle:
+      "Професійні знання",
+    condition:
+      "Підтвердити експертність у своїй професійній сфері.",
+    tone: "violet",
+    badge: "hex",
+    symbol: "Я",
+    rule: "flag",
+    flags: [
+      "expertBadge",
+      "expert",
+    ],
+  },
+  {
+    id: "volunteer",
+    group: "confirmation",
+    title: "Волонтер",
+    subtitle:
+      "Добрі справи",
+    condition:
+      "Підтвердити волонтерську діяльність або участь у добрих справах.",
+    tone: "coral",
+    badge: "heart",
+    symbol: "Я",
+    rule: "flag",
+    flags: [
+      "volunteerBadge",
+      "volunteer",
+    ],
+  },
+  {
+    id: "business",
+    group: "confirmation",
+    title: "Бізнес-партнер",
+    subtitle:
+      "Надійний бізнес",
+    condition:
+      "Підтвердити бізнес-профіль і статус партнера ЯТУТ.",
+    tone: "cyan",
+    badge: "briefcase",
+    symbol: "Я",
+    rule: "flag",
+    flags: [
+      "businessPartner",
+      "business",
+    ],
+  },
   {
     id: "early",
+    group: "confirmation",
     title: "Перші тут",
-    subtitle: "Ранній користувач",
-    tone: "silver",
-    symbol: "1",
+    subtitle:
+      "Ранній користувач",
+    condition:
+      "Бути серед ранніх користувачів ЯТУТ.",
+    tone: "amber",
+    badge: "flag",
+    symbol: "Я",
+    rule: "flag",
+    flags: [
+      "earlyUser",
+    ],
   },
 
   {
     id: "community",
+    group: "community",
     title: "Серце спільноти",
-    subtitle: "Допомагає іншим",
+    subtitle:
+      "Підтримує інших",
+    condition:
+      "Активно підтримувати людей і допомагати спільноті.",
     tone: "coral",
+    badge: "heart",
     symbol: "♥",
+    rule: "flag",
+    flags: [
+      "communityHeart",
+    ],
   },
-
-  {
-    id: "organizer",
-    title: "Організатор",
-    subtitle: "Створює події та зустрічі",
-    tone: "amber",
-    symbol: "✦",
-  },
-
   {
     id: "trusted",
+    group: "community",
     title: "Надійний друг",
-    subtitle: "Висока довіра",
+    subtitle:
+      "Завжди поруч",
+    condition:
+      "Отримати високий рівень довіри від друзів і взаємодій.",
     tone: "green",
+    badge: "hex",
     symbol: "✓",
+    rule: "flag",
+    flags: [
+      "trustedFriend",
+    ],
+  },
+  {
+    id: "organizer",
+    group: "community",
+    title: "Організатор",
+    subtitle:
+      "Об’єднує людей",
+    condition:
+      "Створювати події та збирати людей разом.",
+    tone: "violet",
+    badge: "hex",
+    symbol: "●",
+    rule: "flag",
+    flags: [
+      "organizer",
+    ],
+  },
+  {
+    id: "leader",
+    group: "community",
+    title: "Лідер спільноти",
+    subtitle:
+      "Надихає і веде вперед",
+    condition:
+      "Розвивати активну спільноту та бути її лідером.",
+    tone: "amber",
+    badge: "hex",
+    symbol: "♛",
+    rule: "flag",
+    flags: [
+      "communityLeader",
+    ],
+  },
+  {
+    id: "top-week",
+    group: "community",
+    title: "Топ-автор тижня",
+    subtitle:
+      "Популярний контент",
+    condition:
+      "Увійти до рейтингу найпопулярніших авторів тижня.",
+    tone: "coral",
+    badge: "hex",
+    symbol: "🔥",
+    rule: "flag",
+    flags: [
+      "topAuthorWeek",
+    ],
+  },
+  {
+    id: "top-month",
+    group: "community",
+    title: "Топ-автор місяця",
+    subtitle:
+      "Створює тренди",
+    condition:
+      "Увійти до рейтингу найпопулярніших авторів місяця.",
+    tone: "violet",
+    badge: "hex",
+    symbol: "🏆",
+    rule: "flag",
+    flags: [
+      "topAuthorMonth",
+    ],
+  },
+
+  {
+    id: "recognized",
+    group: "scale",
+    title: "Визнаний",
+    subtitle:
+      "Твій голос важливий",
+    condition:
+      "Досягти 10 000 підписників.",
+    tone: "silver",
+    badge: "shield",
+    symbol: "10K",
+    rule: "followers",
+    target: 10000,
+  },
+  {
+    id: "voice",
+    group: "scale",
+    title: "Голос ЯТУТ",
+    subtitle:
+      "Формує спільноту",
+    condition:
+      "Досягти 100 000 підписників.",
+    tone: "blue",
+    badge: "shield",
+    symbol: "100K",
+    rule: "followers",
+    target: 100000,
+  },
+  {
+    id: "legend",
+    group: "scale",
+    title: "Легенда ЯТУТ",
+    subtitle:
+      "Залишає слід",
+    condition:
+      "Досягти 1 000 000 підписників.",
+    tone: "amber",
+    badge: "shield",
+    symbol: "1M",
+    rule: "followers",
+    target: 1000000,
+  },
+
+  {
+    id: "founder",
+    group: "special",
+    title: "Засновник ЯТУТ",
+    subtitle:
+      "Створює майбутнє мережі",
+    condition:
+      "Особлива системна відзнака засновника ЯТУТ.",
+    tone: "violet",
+    badge: "seal",
+    symbol: "Я",
+    rule: "flag",
+    flags: [
+      "founder",
+    ],
   },
 ];
+
+const CONTEXT_BADGES = [
+  {
+    id: "online",
+    title: "Онлайн",
+    subtitle:
+      "Зараз у мережі",
+    tone: "green",
+    symbol: "●",
+  },
+  {
+    id: "nearby",
+    title: "Поруч",
+    subtitle:
+      "Неподалік",
+    tone: "cyan",
+    symbol: "●",
+  },
+  {
+    id: "event",
+    title: "Зараз у події",
+    subtitle:
+      "Бере участь",
+    tone: "violet",
+    symbol: "▣",
+  },
+  {
+    id: "here",
+    title: "Я тут",
+    subtitle:
+      "Відмітка локації",
+    tone: "coral",
+    symbol: "➤",
+  },
+];
+
+function resolveAchievement(
+  item,
+  profile
+) {
+  if (
+    item.rule ===
+    "followers"
+  ) {
+    const current =
+      Math.max(
+        0,
+        Number(
+          profile?.followers
+        ) || 0
+      );
+
+    const target =
+      item.target || 1;
+
+    const earned =
+      current >= target;
+
+    return {
+      ...item,
+      earned,
+      current,
+      target,
+      progress:
+        Math.min(
+          100,
+          Math.round(
+            (
+              current /
+              target
+            ) *
+              100
+          )
+        ),
+    };
+  }
+
+  const earned =
+    (
+      item.flags ||
+      []
+    ).some(
+      (
+        flag
+      ) =>
+        Boolean(
+          profile?.[
+            flag
+          ]
+        )
+    );
+
+  return {
+    ...item,
+    earned,
+    progress:
+      earned
+        ? 100
+        : null,
+  };
+}
 
 const DEFAULT_PROFILE_POSTS = [
   {
