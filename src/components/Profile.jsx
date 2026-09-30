@@ -4581,23 +4581,24 @@ function EditProfileModal({
 
 
   const [
-    avatarCrop,
-    setAvatarCrop,
+    cropEditor,
+    setCropEditor,
   ] =
-    useState({
-      x: 50,
-      y: 50,
-      zoom: 1,
-    });
+    useState(null);
 
   const [
-    coverCrop,
-    setCoverCrop,
+    cropApplying,
+    setCropApplying,
+  ] =
+    useState(false);
+
+  const [
+    imageSources,
+    setImageSources,
   ] =
     useState({
-      x: 50,
-      y: 50,
-      zoom: 1,
+      avatar: null,
+      cover: null,
     });
 
   useEffect(
@@ -4645,45 +4646,144 @@ function EditProfileModal({
           file
         );
 
+      setCropEditor({
+        field,
+        file,
+        src:
+          dataUrl,
+        crop: {
+          x: 50,
+          y: 50,
+          zoom: 1,
+        },
+      });
+    } catch (error) {
+      console.error(
+        "PROFILE IMAGE ERROR:",
+        error
+      );
+    }
+  }
+
+  function reopenCropEditor(
+    field
+  ) {
+    const source =
+      imageSources[
+        field
+      ];
+
+    if (!source) {
+      return;
+    }
+
+    setCropEditor({
+      field,
+      file:
+        source.file,
+      src:
+        source.src,
+      crop: {
+        ...source.crop,
+      },
+    });
+  }
+
+  async function applyCrop() {
+    if (
+      !cropEditor ||
+      cropApplying
+    ) {
+      return;
+    }
+
+    try {
+      setCropApplying(
+        true
+      );
+
+      const isAvatar =
+        cropEditor.field ===
+        "avatar";
+
+      const preparedFile =
+        await cropProfileImage(
+          cropEditor.file,
+          {
+            ...cropEditor.crop,
+            aspect:
+              isAvatar
+                ? 1
+                : 9 / 16,
+            maxWidth:
+              isAvatar
+                ? 1024
+                : 1080,
+            prefix:
+              isAvatar
+                ? "avatar"
+                : "cover",
+          }
+        );
+
+      const previewUrl =
+        await fileToDataUrl(
+          preparedFile
+        );
+
       setDraft(
         (
           previous
         ) => ({
           ...previous,
-
-          [field]:
-            dataUrl,
+          [cropEditor.field]:
+            previewUrl,
         })
       );
 
-      if (
-        field ===
-        "avatar"
-      ) {
+      if (isAvatar) {
         setAvatarFile(
-          file
+          preparedFile
         );
-
-        setAvatarCrop({
-          x: 50,
-          y: 50,
-          zoom: 1,
-        });
       } else {
         setCoverFile(
-          file
+          preparedFile
         );
-
-        setCoverCrop({
-          x: 50,
-          y: 50,
-          zoom: 1,
-        });
       }
+
+      setImageSources(
+        (
+          previous
+        ) => ({
+          ...previous,
+          [cropEditor.field]: {
+            file:
+              cropEditor.file,
+            src:
+              cropEditor.src,
+            crop: {
+              ...cropEditor.crop,
+            },
+          },
+        })
+      );
+
+      setCropEditor(
+        null
+      );
     } catch (error) {
       console.error(
-        "PROFILE IMAGE ERROR:",
+        "PROFILE CROP ERROR:",
         error
+      );
+
+      window.alert(
+        error?.message ||
+        "Не вдалося підготувати кадрування."
+      );
+    } finally {
+      setCropApplying(
+        false
       );
     }
   }
@@ -4729,30 +4829,12 @@ function EditProfileModal({
       );
 
       const preparedAvatarFile =
-        avatarFile
-          ? await cropProfileImage(
-              avatarFile,
-              {
-                ...avatarCrop,
-                aspect: 1,
-                maxWidth: 1024,
-                prefix: "avatar",
-              }
-            )
-          : null;
+        avatarFile ||
+        null;
 
       const preparedCoverFile =
-        coverFile
-          ? await cropProfileImage(
-              coverFile,
-              {
-                ...coverCrop,
-                aspect: 2.4,
-                maxWidth: 1800,
-                prefix: "cover",
-              }
-            )
-          : null;
+        coverFile ||
+        null;
 
       await onSave({
         ...profile,
@@ -4861,14 +4943,6 @@ function EditProfileModal({
                 draft.cover
               }
               alt=""
-              style={{
-                objectPosition:
-                  `${coverCrop.x}% ${coverCrop.y}%`,
-                transform:
-                  `scale(${coverCrop.zoom})`,
-                transformOrigin:
-                  `${coverCrop.x}% ${coverCrop.y}%`,
-              }}
             />
           ) : null}
 
@@ -4883,111 +4957,22 @@ function EditProfileModal({
             >
               Змінити обкладинку
             </button>
+
+            {imageSources.cover && (
+              <button
+                type="button"
+                className="profile-v2-edit-recrop"
+                onClick={() =>
+                  reopenCropEditor(
+                    "cover"
+                  )
+                }
+              >
+                Налаштувати кадр
+              </button>
+            )}
           </div>
         </div>
-
-        {coverFile && (
-          <div className="profile-v2-crop-controls profile-v2-crop-controls-cover">
-            <strong>
-              Кадрування обкладинки
-            </strong>
-
-            <span>
-              Посуньте фото та змініть масштаб перед збереженням.
-            </span>
-
-            <label>
-              <b>
-                Горизонтально
-              </b>
-
-              <input
-                type="range"
-                min="0"
-                max="100"
-                value={
-                  coverCrop.x
-                }
-                onChange={(
-                  event
-                ) =>
-                  setCoverCrop(
-                    (
-                      previous
-                    ) => ({
-                      ...previous,
-                      x:
-                        Number(
-                          event.target.value
-                        ),
-                    })
-                  )
-                }
-              />
-            </label>
-
-            <label>
-              <b>
-                Вертикально
-              </b>
-
-              <input
-                type="range"
-                min="0"
-                max="100"
-                value={
-                  coverCrop.y
-                }
-                onChange={(
-                  event
-                ) =>
-                  setCoverCrop(
-                    (
-                      previous
-                    ) => ({
-                      ...previous,
-                      y:
-                        Number(
-                          event.target.value
-                        ),
-                    })
-                  )
-                }
-              />
-            </label>
-
-            <label>
-              <b>
-                Масштаб
-              </b>
-
-              <input
-                type="range"
-                min="1"
-                max="3"
-                step="0.05"
-                value={
-                  coverCrop.zoom
-                }
-                onChange={(
-                  event
-                ) =>
-                  setCoverCrop(
-                    (
-                      previous
-                    ) => ({
-                      ...previous,
-                      zoom:
-                        Number(
-                          event.target.value
-                        ),
-                    })
-                  )
-                }
-              />
-            </label>
-          </div>
-        )}
 
         {/* AVATAR */}
 
@@ -5001,14 +4986,6 @@ function EditProfileModal({
                   draft.avatar
                 }
                 alt=""
-                style={{
-                  objectPosition:
-                    `${avatarCrop.x}% ${avatarCrop.y}%`,
-                  transform:
-                    `scale(${avatarCrop.zoom})`,
-                  transformOrigin:
-                    `${avatarCrop.x}% ${avatarCrop.y}%`,
-                }}
               />
             ) : (
               draft.name?.[0] ||
@@ -5038,112 +5015,23 @@ function EditProfileModal({
               Змінити фото
             </button>
 
+            {imageSources.avatar && (
+              <button
+                type="button"
+                className="profile-v2-edit-recrop"
+                onClick={() =>
+                  reopenCropEditor(
+                    "avatar"
+                  )
+                }
+              >
+                Налаштувати кадр
+              </button>
+            )}
+
           </div>
 
         </div>
-
-        {avatarFile && (
-          <div className="profile-v2-crop-controls profile-v2-crop-controls-avatar">
-            <strong>
-              Кадрування фото профілю
-            </strong>
-
-            <span>
-              Виставте обличчя точно в центрі майбутнього аватара.
-            </span>
-
-            <label>
-              <b>
-                Горизонтально
-              </b>
-
-              <input
-                type="range"
-                min="0"
-                max="100"
-                value={
-                  avatarCrop.x
-                }
-                onChange={(
-                  event
-                ) =>
-                  setAvatarCrop(
-                    (
-                      previous
-                    ) => ({
-                      ...previous,
-                      x:
-                        Number(
-                          event.target.value
-                        ),
-                    })
-                  )
-                }
-              />
-            </label>
-
-            <label>
-              <b>
-                Вертикально
-              </b>
-
-              <input
-                type="range"
-                min="0"
-                max="100"
-                value={
-                  avatarCrop.y
-                }
-                onChange={(
-                  event
-                ) =>
-                  setAvatarCrop(
-                    (
-                      previous
-                    ) => ({
-                      ...previous,
-                      y:
-                        Number(
-                          event.target.value
-                        ),
-                    })
-                  )
-                }
-              />
-            </label>
-
-            <label>
-              <b>
-                Масштаб
-              </b>
-
-              <input
-                type="range"
-                min="1"
-                max="3"
-                step="0.05"
-                value={
-                  avatarCrop.zoom
-                }
-                onChange={(
-                  event
-                ) =>
-                  setAvatarCrop(
-                    (
-                      previous
-                    ) => ({
-                      ...previous,
-                      zoom:
-                        Number(
-                          event.target.value
-                        ),
-                    })
-                  )
-                }
-              />
-            </label>
-          </div>
-        )}
 
         {/* BODY */}
 
@@ -5436,6 +5324,12 @@ function EditProfileModal({
           type="file"
           accept="image/*"
           hidden
+          onClick={(
+            event
+          ) => {
+            event.currentTarget.value =
+              "";
+          }}
           onChange={(
             event
           ) =>
@@ -5456,6 +5350,12 @@ function EditProfileModal({
           type="file"
           accept="image/*"
           hidden
+          onClick={(
+            event
+          ) => {
+            event.currentTarget.value =
+              "";
+          }}
           onChange={(
             event
           ) =>
@@ -5471,7 +5371,439 @@ function EditProfileModal({
 
       </form>
 
+      {cropEditor && (
+        <ProfileImageCropper
+          editor={
+            cropEditor
+          }
+          applying={
+            cropApplying
+          }
+          onCropChange={(
+            nextCrop
+          ) =>
+            setCropEditor(
+              (
+                previous
+              ) =>
+                previous
+                  ? {
+                      ...previous,
+                      crop:
+                        nextCrop,
+                    }
+                  : previous
+            )
+          }
+          onCancel={() =>
+            setCropEditor(
+              null
+            )
+          }
+          onApply={
+            applyCrop
+          }
+        />
+      )}
+
     </div>,
     document.body
+  );
+}
+
+/* =========================================================
+   PROFILE IMAGE CROPPER
+========================================================= */
+
+function ProfileImageCropper({
+  editor,
+  applying,
+  onCropChange,
+  onCancel,
+  onApply,
+}) {
+  const frameRef =
+    useRef(null);
+
+  const dragRef =
+    useRef(null);
+
+  const isAvatar =
+    editor.field ===
+    "avatar";
+
+  const crop =
+    editor.crop || {
+      x: 50,
+      y: 50,
+      zoom: 1,
+    };
+
+  function clamp(
+    value,
+    min,
+    max
+  ) {
+    return Math.max(
+      min,
+      Math.min(
+        max,
+        value
+      )
+    );
+  }
+
+  function patchCrop(
+    patch
+  ) {
+    onCropChange?.({
+      ...crop,
+      ...patch,
+    });
+  }
+
+  function handlePointerDown(
+    event
+  ) {
+    if (applying) {
+      return;
+    }
+
+    event.preventDefault();
+
+    event.currentTarget
+      .setPointerCapture?.(
+        event.pointerId
+      );
+
+    dragRef.current = {
+      pointerId:
+        event.pointerId,
+      clientX:
+        event.clientX,
+      clientY:
+        event.clientY,
+      x:
+        crop.x,
+      y:
+        crop.y,
+    };
+  }
+
+  function handlePointerMove(
+    event
+  ) {
+    const drag =
+      dragRef.current;
+
+    const frame =
+      frameRef.current;
+
+    if (
+      !drag ||
+      !frame ||
+      drag.pointerId !==
+        event.pointerId
+    ) {
+      return;
+    }
+
+    event.preventDefault();
+
+    const rect =
+      frame.getBoundingClientRect();
+
+    const sensitivity =
+      100 /
+      Math.max(
+        1,
+        crop.zoom
+      );
+
+    patchCrop({
+      x:
+        clamp(
+          drag.x -
+            (
+              (
+                event.clientX -
+                drag.clientX
+              ) /
+              Math.max(
+                1,
+                rect.width
+              )
+            ) *
+              sensitivity,
+          0,
+          100
+        ),
+      y:
+        clamp(
+          drag.y -
+            (
+              (
+                event.clientY -
+                drag.clientY
+              ) /
+              Math.max(
+                1,
+                rect.height
+              )
+            ) *
+              sensitivity,
+          0,
+          100
+        ),
+    });
+  }
+
+  function handlePointerEnd(
+    event
+  ) {
+    if (
+      dragRef.current
+        ?.pointerId ===
+      event.pointerId
+    ) {
+      dragRef.current =
+        null;
+    }
+
+    event.currentTarget
+      .releasePointerCapture?.(
+        event.pointerId
+      );
+  }
+
+  useEffect(
+    () => {
+      function onKeyDown(
+        event
+      ) {
+        if (
+          event.key ===
+          "Escape" &&
+          !applying
+        ) {
+          onCancel?.();
+        }
+      }
+
+      window.addEventListener(
+        "keydown",
+        onKeyDown
+      );
+
+      return () =>
+        window.removeEventListener(
+          "keydown",
+          onKeyDown
+        );
+    },
+    [
+      applying,
+      onCancel,
+    ]
+  );
+
+  return (
+    <div
+      className="profile-image-cropper-backdrop"
+      role="dialog"
+      aria-modal="true"
+      aria-label={
+        isAvatar
+          ? "Кадрування фото профілю"
+          : "Кадрування фону профілю"
+      }
+    >
+      <section className="profile-image-cropper-sheet">
+        <header className="profile-image-cropper-header">
+          <div>
+            <span>
+              ПОПЕРЕДНІЙ ПЕРЕГЛЯД
+            </span>
+
+            <h3>
+              {isAvatar
+                ? "Фото профілю"
+                : "Фон профілю"}
+            </h3>
+          </div>
+
+          <button
+            type="button"
+            onClick={
+              onCancel
+            }
+            disabled={
+              applying
+            }
+            aria-label="Закрити кадрування"
+          >
+            <YatutIcon
+              name="close"
+              size={18}
+            />
+          </button>
+        </header>
+
+        <p className="profile-image-cropper-hint">
+          Перетягуйте фото пальцем усередині рамки. Нижче можна змінити масштаб.
+        </p>
+
+        <div className="profile-image-cropper-canvas">
+          <div
+            ref={
+              frameRef
+            }
+            className={
+              `profile-image-cropper-frame ${
+                isAvatar
+                  ? "is-avatar"
+                  : "is-cover"
+              }`
+            }
+            onPointerDown={
+              handlePointerDown
+            }
+            onPointerMove={
+              handlePointerMove
+            }
+            onPointerUp={
+              handlePointerEnd
+            }
+            onPointerCancel={
+              handlePointerEnd
+            }
+          >
+            <img
+              src={
+                editor.src
+              }
+              alt=""
+              draggable="false"
+              style={{
+                objectPosition:
+                  `${crop.x}% ${crop.y}%`,
+                transform:
+                  `scale(${crop.zoom})`,
+                transformOrigin:
+                  `${crop.x}% ${crop.y}%`,
+              }}
+            />
+
+            <div className="profile-image-cropper-grid">
+              <span />
+              <span />
+              <span />
+              <span />
+            </div>
+
+            {!isAvatar && (
+              <>
+                <div className="profile-image-cropper-cover-top">
+                  <b>
+                    Я
+                  </b>
+
+                  <strong>
+                    ТУТ
+                  </strong>
+                </div>
+
+                <div className="profile-image-cropper-cover-fade" />
+              </>
+            )}
+          </div>
+        </div>
+
+        <div className="profile-image-cropper-zoom">
+          <span>
+            −
+          </span>
+
+          <input
+            type="range"
+            min="1"
+            max="3"
+            step="0.05"
+            value={
+              crop.zoom
+            }
+            onChange={(
+              event
+            ) =>
+              patchCrop({
+                zoom:
+                  Number(
+                    event.target.value
+                  ),
+              })
+            }
+            aria-label="Масштаб фото"
+          />
+
+          <span>
+            +
+          </span>
+        </div>
+
+        <div className="profile-image-cropper-position">
+          <span>
+            {isAvatar
+              ? "Кругла рамка показує майбутній аватар."
+              : "Рамка 9:16 показує фон мобільного профілю."}
+          </span>
+
+          <button
+            type="button"
+            onClick={() =>
+              onCropChange?.({
+                x: 50,
+                y: 50,
+                zoom: 1,
+              })
+            }
+            disabled={
+              applying
+            }
+          >
+            По центру
+          </button>
+        </div>
+
+        <footer className="profile-image-cropper-actions">
+          <button
+            type="button"
+            className="secondary"
+            onClick={
+              onCancel
+            }
+            disabled={
+              applying
+            }
+          >
+            Скасувати
+          </button>
+
+          <button
+            type="button"
+            className="primary"
+            onClick={
+              onApply
+            }
+            disabled={
+              applying
+            }
+          >
+            {applying
+              ? "Готуємо…"
+              : "Застосувати"}
+          </button>
+        </footer>
+      </section>
+    </div>
   );
 }
