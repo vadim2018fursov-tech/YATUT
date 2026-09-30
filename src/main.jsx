@@ -28,6 +28,7 @@ import "./styles/profile-theme-cover-v9.css";
 import "./styles/profile-safe-area-fade-v10.css";
 import "./styles/yatut-premium-ui-v11.css";
 import "./styles/friend-cards-reference-v12.css";
+import "./styles/friend-card-fade-avatar-v14.css";
 import {
   initNativePlatform,
 } from "./services/nativePlatformService.js";
