@@ -5,6 +5,7 @@ import {
 } from "react";
 
 import "./FriendsV2.css";
+import "../styles/friends-cards-v6.css";
 
 import YatutIcon from "./YatutIcon";
 import UserProfile from "./UserProfile";
@@ -2765,13 +2766,38 @@ function PersonCard({
       person.friendStatus
     );
 
+  const cardCover =
+    person.cover ||
+    person.avatar ||
+    "";
+
   return (
     <article className="friends-v2-person-card">
       {/* ===================================================
           COVER
       =================================================== */}
 
-      <div className="friends-v2-person-cover">
+      <div
+        className={`friends-v2-person-cover ${
+          cardCover
+            ? "has-image"
+            : ""
+        }`.trim()}
+        style={
+          cardCover
+            ? {
+                backgroundImage:
+                  `linear-gradient(
+                    180deg,
+                    rgba(10,12,24,.03) 0%,
+                    rgba(10,12,24,.04) 58%,
+                    rgba(10,12,24,.18) 100%
+                  ),
+                  url("${cardCover}")`,
+              }
+            : undefined
+        }
+      >
         {person.friendStatus ===
           FRIEND_STATUSES.INCOMING && (
           <span className="friends-v2-request-chip incoming">
@@ -2803,6 +2829,20 @@ function PersonCard({
             }
           </span>
         )}
+
+        <button
+          className="friends-v2-card-more"
+          type="button"
+          onClick={
+            onOpenProfile
+          }
+          aria-label={`Відкрити профіль ${person.name}`}
+        >
+          <YatutIcon
+            name="more"
+            size={17}
+          />
+        </button>
       </div>
 
       {/* ===================================================
