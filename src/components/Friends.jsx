@@ -2771,7 +2771,32 @@ function PersonCard({
           COVER
       =================================================== */}
 
-      <div className="friends-v2-person-cover">
+      <div
+        className={`friends-v2-person-cover ${
+          person.cover ||
+          person.avatar
+            ? "has-image"
+            : ""
+        }`.trim()}
+        style={
+          person.cover ||
+          person.avatar
+            ? {
+                backgroundImage:
+                  `linear-gradient(
+                    180deg,
+                    rgba(10,12,22,.04) 0%,
+                    rgba(10,12,22,.08) 54%,
+                    rgba(10,12,22,.24) 100%
+                  ),
+                  url("${
+                    person.cover ||
+                    person.avatar
+                  }")`,
+              }
+            : undefined
+        }
+      >
         {person.friendStatus ===
           FRIEND_STATUSES.INCOMING && (
           <span className="friends-v2-request-chip incoming">
@@ -2803,6 +2828,20 @@ function PersonCard({
             }
           </span>
         )}
+
+        <button
+          className="friends-v2-person-more"
+          type="button"
+          aria-label={`Деталі зв’язку з ${person.name}`}
+          onClick={
+            onOpenRelation
+          }
+        >
+          <YatutIcon
+            name="more"
+            size={17}
+          />
+        </button>
       </div>
 
       {/* ===================================================
