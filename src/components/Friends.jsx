@@ -2765,13 +2765,105 @@ function PersonCard({
       person.friendStatus
     );
 
+  const [
+    personCardMenuOpen,
+    setPersonCardMenuOpen,
+  ] =
+    useState(false);
+
   return (
     <article className="friends-v2-person-card">
       {/* ===================================================
           COVER
       =================================================== */}
 
-      <div className="friends-v2-person-cover">
+      <div
+        className="friends-v2-person-cover"
+        style={
+          person.cover
+            ? {
+                backgroundImage:
+                  `linear-gradient(
+                    180deg,
+                    rgba(12,14,24,.02),
+                    rgba(12,14,24,.18)
+                  ),
+                  url("${person.cover}")`,
+              }
+            : undefined
+        }
+      >
+        <button
+          className="friends-v2-person-more"
+          type="button"
+          aria-label={`Більше дій для ${person.name}`}
+          aria-expanded={
+            personCardMenuOpen
+          }
+          onClick={(
+            event
+          ) => {
+            event.stopPropagation();
+
+            setPersonCardMenuOpen(
+              (
+                current
+              ) =>
+                !current
+            );
+          }}
+        >
+          <YatutIcon
+            name="more"
+            size={17}
+          />
+        </button>
+
+        {personCardMenuOpen && (
+          <div
+            className="friends-v2-person-more-menu"
+            role="menu"
+          >
+            <button
+              type="button"
+              role="menuitem"
+              onClick={() => {
+                setPersonCardMenuOpen(
+                  false
+                );
+                onOpenProfile();
+              }}
+            >
+              Профіль
+            </button>
+
+            <button
+              type="button"
+              role="menuitem"
+              onClick={() => {
+                setPersonCardMenuOpen(
+                  false
+                );
+                onOpenRelation();
+              }}
+            >
+              Чому ми знайомі?
+            </button>
+
+            <button
+              type="button"
+              role="menuitem"
+              onClick={() => {
+                setPersonCardMenuOpen(
+                  false
+                );
+                onMessage();
+              }}
+            >
+              Написати
+            </button>
+          </div>
+        )}
         {person.friendStatus ===
           FRIEND_STATUSES.INCOMING && (
           <span className="friends-v2-request-chip incoming">
