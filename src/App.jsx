@@ -1,4 +1,6 @@
 import {
+  lazy,
+  Suspense,
   useEffect,
   useMemo,
   useRef,
@@ -75,11 +77,17 @@ import CreateStoryPage from "./pages/CreateStoryPage";
 import CreateMediaPage from "./pages/CreateMediaPage";
 
 import YatutIcon from "./components/YatutIcon";
-import MobileNav3DGlow from "./components/MobileNav3DGlow";
 import AnimatedPageSwitch from "./components/AnimatedPageSwitch";
 import YatutBootScreen from "./components/YatutBootScreen";
 import YatutMediaViewer from "./components/ui/YatutMediaViewer";
 import useYatutAutoAnimate from "./hooks/useYatutAutoAnimate";
+
+const MobileNav3DGlow = lazy(
+  () =>
+    import(
+      "./components/MobileNav3DGlow"
+    )
+);
 
 import {
   shareYatutItem,
@@ -6432,11 +6440,17 @@ function MobileNavigation({
       id="yatut-global-mobile-nav"
       aria-label="Головна навігація"
     >
-      <MobileNav3DGlow
-        activeIndex={
-          active3DIndex
+      <Suspense
+        fallback={
+          null
         }
-      />
+      >
+        <MobileNav3DGlow
+          activeIndex={
+            active3DIndex
+          }
+        />
+      </Suspense>
       {MOBILE_NAV.map(
         (
           item
