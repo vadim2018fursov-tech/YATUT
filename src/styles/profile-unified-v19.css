@@ -1296,3 +1296,90 @@
     height: 46px !important;
   }
 }
+
+
+/* =========================================================
+   DARK THEME SPECIFICITY FIX
+   Overrides legacy ProfileV2 dark rules that otherwise paint
+   an opaque rectangle over the profile cover.
+========================================================= */
+
+@media (max-width: 767px) {
+  body.yatut-profile-immersive.yatut-dark-mode
+  .profile-v4-immersive
+  .profile-v2-shell,
+
+  body.yatut-profile-immersive.yatut-dark-mode
+  .profile-v4-immersive
+  .profile-v2-hero,
+
+  body.yatut-profile-immersive.yatut-dark-mode
+  .profile-v4-immersive
+  .profile-v3-mobile-card {
+    background:
+      transparent !important;
+
+    border-color:
+      transparent !important;
+
+    box-shadow:
+      none !important;
+  }
+
+  body.yatut-profile-immersive.yatut-dark-mode
+  .profile-v4-immersive
+  .profile-v2-hero {
+    border:
+      0 !important;
+
+    border-radius:
+      0 !important;
+
+    overflow:
+      visible !important;
+  }
+
+  body.yatut-profile-immersive.yatut-dark-mode
+  .profile-v4-immersive
+  .profile-v2-cover {
+    background:
+      transparent !important;
+
+    opacity:
+      0 !important;
+
+    border:
+      0 !important;
+
+    box-shadow:
+      none !important;
+  }
+
+  body.yatut-profile-immersive.yatut-dark-mode
+  .profile-v4-immersive
+  .profile-v3-mobile-avatar {
+    border-color:
+      rgba(
+        255,
+        255,
+        255,
+        .96
+      ) !important;
+
+    background:
+      #fff !important;
+  }
+
+  body.yatut-profile-immersive.yatut-dark-mode
+  .profile-v4-immersive
+  .profile-v3-mobile-stats
+  button + button {
+    border-left-color:
+      rgba(
+        255,
+        255,
+        255,
+        .08
+      ) !important;
+  }
+}
