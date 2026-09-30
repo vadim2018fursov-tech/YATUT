@@ -97,55 +97,410 @@ const DEFAULT_PROFILE = {
   ],
 };
 
+const ACHIEVEMENT_GROUPS = [
+  {
+    id: "confirmation",
+    title: "Підтвердження",
+    subtitle:
+      "Офіційний статус і довіра в спільноті",
+  },
+  {
+    id: "community",
+    title: "Досягнення",
+    subtitle:
+      "Внесок у спільноту та активність",
+  },
+  {
+    id: "scale",
+    title: "Масштаб",
+    subtitle:
+      "Вплив і великі аудиторії",
+  },
+  {
+    id: "special",
+    title: "Особливі",
+    subtitle:
+      "Системні та унікальні відзнаки",
+  },
+];
+
 const ACHIEVEMENTS = [
   {
-    id: "founder",
-    title: "Засновник ЯТУТ",
-    subtitle: "Створює майбутнє мережі",
-    tone: "violet",
-    symbol: "Я",
-  },
-
-  {
     id: "verified",
+    group: "confirmation",
     title: "ЯТУТ Перевірено",
-    subtitle: "Підтверджений профіль",
-    tone: "indigo",
-    symbol: "✓",
+    subtitle:
+      "Підтверджений профіль",
+    condition:
+      "Підтвердити особу та пройти перевірку ЯТУТ.",
+    tone: "violet",
+    badge: "seal",
+    symbol: "Я",
+    rule: "flag",
+    flags: [
+      "verified",
+    ],
   },
-
+  {
+    id: "official",
+    group: "confirmation",
+    title: "Офіційна сторінка",
+    subtitle:
+      "Офіційний акаунт",
+    condition:
+      "Підтвердити офіційний акаунт бренду, організації або публічної особи.",
+    tone: "blue",
+    badge: "shield",
+    symbol: "Я",
+    rule: "flag",
+    flags: [
+      "officialAccount",
+      "official",
+    ],
+  },
+  {
+    id: "author",
+    group: "confirmation",
+    title: "Автор",
+    subtitle:
+      "Творчі люди",
+    condition:
+      "Отримати статус автора після підтвердження творчого профілю.",
+    tone: "coral",
+    badge: "star",
+    symbol: "Я",
+    rule: "flag",
+    flags: [
+      "authorBadge",
+      "creator",
+    ],
+  },
+  {
+    id: "expert",
+    group: "confirmation",
+    title: "Експерт",
+    subtitle:
+      "Професійні знання",
+    condition:
+      "Підтвердити експертність у своїй професійній сфері.",
+    tone: "violet",
+    badge: "hex",
+    symbol: "Я",
+    rule: "flag",
+    flags: [
+      "expertBadge",
+      "expert",
+    ],
+  },
+  {
+    id: "volunteer",
+    group: "confirmation",
+    title: "Волонтер",
+    subtitle:
+      "Добрі справи",
+    condition:
+      "Підтвердити волонтерську діяльність або участь у добрих справах.",
+    tone: "coral",
+    badge: "heart",
+    symbol: "Я",
+    rule: "flag",
+    flags: [
+      "volunteerBadge",
+      "volunteer",
+    ],
+  },
+  {
+    id: "business",
+    group: "confirmation",
+    title: "Бізнес-партнер",
+    subtitle:
+      "Надійний бізнес",
+    condition:
+      "Підтвердити бізнес-профіль і статус партнера ЯТУТ.",
+    tone: "cyan",
+    badge: "briefcase",
+    symbol: "Я",
+    rule: "flag",
+    flags: [
+      "businessPartner",
+      "business",
+    ],
+  },
   {
     id: "early",
+    group: "confirmation",
     title: "Перші тут",
-    subtitle: "Ранній користувач",
-    tone: "silver",
-    symbol: "1",
+    subtitle:
+      "Ранній користувач",
+    condition:
+      "Бути серед ранніх користувачів ЯТУТ.",
+    tone: "amber",
+    badge: "flag",
+    symbol: "Я",
+    rule: "flag",
+    flags: [
+      "earlyUser",
+    ],
   },
 
   {
     id: "community",
+    group: "community",
     title: "Серце спільноти",
-    subtitle: "Допомагає іншим",
+    subtitle:
+      "Підтримує інших",
+    condition:
+      "Активно підтримувати людей і допомагати спільноті.",
     tone: "coral",
+    badge: "heart",
     symbol: "♥",
+    rule: "flag",
+    flags: [
+      "communityHeart",
+    ],
   },
-
-  {
-    id: "organizer",
-    title: "Організатор",
-    subtitle: "Створює події та зустрічі",
-    tone: "amber",
-    symbol: "✦",
-  },
-
   {
     id: "trusted",
+    group: "community",
     title: "Надійний друг",
-    subtitle: "Висока довіра",
+    subtitle:
+      "Завжди поруч",
+    condition:
+      "Отримати високий рівень довіри від друзів і взаємодій.",
     tone: "green",
+    badge: "hex",
     symbol: "✓",
+    rule: "flag",
+    flags: [
+      "trustedFriend",
+    ],
+  },
+  {
+    id: "organizer",
+    group: "community",
+    title: "Організатор",
+    subtitle:
+      "Об’єднує людей",
+    condition:
+      "Створювати події та збирати людей разом.",
+    tone: "violet",
+    badge: "hex",
+    symbol: "●",
+    rule: "flag",
+    flags: [
+      "organizer",
+    ],
+  },
+  {
+    id: "leader",
+    group: "community",
+    title: "Лідер спільноти",
+    subtitle:
+      "Надихає і веде вперед",
+    condition:
+      "Розвивати активну спільноту та бути її лідером.",
+    tone: "amber",
+    badge: "hex",
+    symbol: "♛",
+    rule: "flag",
+    flags: [
+      "communityLeader",
+    ],
+  },
+  {
+    id: "top-week",
+    group: "community",
+    title: "Топ-автор тижня",
+    subtitle:
+      "Популярний контент",
+    condition:
+      "Увійти до рейтингу найпопулярніших авторів тижня.",
+    tone: "coral",
+    badge: "hex",
+    symbol: "🔥",
+    rule: "flag",
+    flags: [
+      "topAuthorWeek",
+    ],
+  },
+  {
+    id: "top-month",
+    group: "community",
+    title: "Топ-автор місяця",
+    subtitle:
+      "Створює тренди",
+    condition:
+      "Увійти до рейтингу найпопулярніших авторів місяця.",
+    tone: "violet",
+    badge: "hex",
+    symbol: "🏆",
+    rule: "flag",
+    flags: [
+      "topAuthorMonth",
+    ],
+  },
+
+  {
+    id: "recognized",
+    group: "scale",
+    title: "Визнаний",
+    subtitle:
+      "Твій голос важливий",
+    condition:
+      "Досягти 10 000 підписників.",
+    tone: "silver",
+    badge: "shield",
+    symbol: "10K",
+    rule: "followers",
+    target: 10000,
+  },
+  {
+    id: "voice",
+    group: "scale",
+    title: "Голос ЯТУТ",
+    subtitle:
+      "Формує спільноту",
+    condition:
+      "Досягти 100 000 підписників.",
+    tone: "blue",
+    badge: "shield",
+    symbol: "100K",
+    rule: "followers",
+    target: 100000,
+  },
+  {
+    id: "legend",
+    group: "scale",
+    title: "Легенда ЯТУТ",
+    subtitle:
+      "Залишає слід",
+    condition:
+      "Досягти 1 000 000 підписників.",
+    tone: "amber",
+    badge: "shield",
+    symbol: "1M",
+    rule: "followers",
+    target: 1000000,
+  },
+
+  {
+    id: "founder",
+    group: "special",
+    title: "Засновник ЯТУТ",
+    subtitle:
+      "Створює майбутнє мережі",
+    condition:
+      "Особлива системна відзнака засновника ЯТУТ.",
+    tone: "violet",
+    badge: "seal",
+    symbol: "Я",
+    rule: "flag",
+    flags: [
+      "founder",
+    ],
   },
 ];
+
+const CONTEXT_BADGES = [
+  {
+    id: "online",
+    title: "Онлайн",
+    subtitle:
+      "Зараз у мережі",
+    tone: "green",
+    symbol: "●",
+  },
+  {
+    id: "nearby",
+    title: "Поруч",
+    subtitle:
+      "Неподалік",
+    tone: "cyan",
+    symbol: "●",
+  },
+  {
+    id: "event",
+    title: "Зараз у події",
+    subtitle:
+      "Бере участь",
+    tone: "violet",
+    symbol: "▣",
+  },
+  {
+    id: "here",
+    title: "Я тут",
+    subtitle:
+      "Відмітка локації",
+    tone: "coral",
+    symbol: "➤",
+  },
+];
+
+function resolveAchievement(
+  item,
+  profile
+) {
+  if (
+    item.rule ===
+    "followers"
+  ) {
+    const current =
+      Math.max(
+        0,
+        Number(
+          profile?.followers
+        ) || 0
+      );
+
+    const target =
+      item.target || 1;
+
+    const earned =
+      current >= target;
+
+    return {
+      ...item,
+      earned,
+      current,
+      target,
+      progress:
+        Math.min(
+          100,
+          Math.round(
+            (
+              current /
+              target
+            ) *
+              100
+          )
+        ),
+    };
+  }
+
+  const earned =
+    (
+      item.flags ||
+      []
+    ).some(
+      (
+        flag
+      ) =>
+        Boolean(
+          profile?.[
+            flag
+          ]
+        )
+    );
+
+  return {
+    ...item,
+    earned,
+    progress:
+      earned
+        ? 100
+        : null,
+  };
+}
 
 const DEFAULT_PROFILE_POSTS = [
   {
@@ -1482,47 +1837,51 @@ export default function Profile({
       [profile]
     );
 
+  const achievementCatalog =
+    useMemo(
+      () =>
+        ACHIEVEMENTS.map(
+          (
+            item
+          ) =>
+            resolveAchievement(
+              item,
+              profile
+            )
+        ),
+      [
+        profile,
+      ]
+    );
+
   const earnedAchievements =
     useMemo(
       () =>
-        ACHIEVEMENTS.filter(
+        achievementCatalog.filter(
           (
             item
-          ) => {
-            if (
-              item.id ===
-              "founder"
-            ) {
-              return Boolean(
-                profile.founder
-              );
-            }
-
-            if (
-              item.id ===
-              "verified"
-            ) {
-              return Boolean(
-                profile.verified
-              );
-            }
-
-            if (
-              item.id ===
-              "early"
-            ) {
-              return Boolean(
-                profile.earlyUser
-              );
-            }
-
-            return false;
-          }
+          ) =>
+            item.earned
         ),
       [
-        profile.founder,
-        profile.verified,
-        profile.earlyUser,
+        achievementCatalog,
+      ]
+    );
+
+  const nextScaleAchievement =
+    useMemo(
+      () =>
+        achievementCatalog.find(
+          (
+            item
+          ) =>
+            item.group ===
+              "scale" &&
+            !item.earned
+        ) ||
+        null,
+      [
+        achievementCatalog,
       ]
     );
 
@@ -3966,53 +4325,225 @@ export default function Profile({
 
             {activeTab ===
               "achievements" && (
-              <section className="profile-v2-card">
+              <section className="profile-v2-card profile-v2-achievements-page">
 
-                <div className="profile-v2-card-head">
+                <div className="profile-v2-card-head profile-v2-achievements-head">
 
                   <div>
                     <span>
-                      ЯТУТ
+                      СИСТЕМА ЗНАЧКІВ
                     </span>
 
                     <h3>
-                      Досягнення та
-                      нагороди
+                      Досягнення ЯТУТ
                     </h3>
+
+                    <p>
+                      Значки показують статус, внесок у спільноту та масштаб твого профілю.
+                    </p>
                   </div>
 
                   <strong className="profile-v2-achievement-count">
                     {
                       earnedAchievements.length
                     }
+                    <small>
+                      /
+                      {
+                        achievementCatalog.length
+                      }
+                    </small>
                   </strong>
 
                 </div>
 
-                <div className="profile-v2-achievements-grid">
+                <div className="profile-v2-achievement-overview">
+                  <div>
+                    <span>
+                      ОТРИМАНО
+                    </span>
 
-                  {earnedAchievements.length > 0 ? (
-                    earnedAchievements.map(
+                    <strong>
+                      {
+                        earnedAchievements.length
+                      }
+                    </strong>
+
+                    <small>
+                      активних відзнак
+                    </small>
+                  </div>
+
+                  <div>
+                    <span>
+                      ПІДПИСНИКИ
+                    </span>
+
+                    <strong>
+                      {
+                        formatProfileNumber(
+                          profile.followers
+                        )
+                      }
+                    </strong>
+
+                    <small>
+                      впливають на масштаб
+                    </small>
+                  </div>
+
+                  <div>
+                    <span>
+                      НАСТУПНА ЦІЛЬ
+                    </span>
+
+                    <strong>
+                      {
+                        nextScaleAchievement
+                          ? nextScaleAchievement.symbol
+                          : "MAX"
+                      }
+                    </strong>
+
+                    <small>
+                      {
+                        nextScaleAchievement
+                          ? nextScaleAchievement.title
+                          : "Усі рівні відкрито"
+                      }
+                    </small>
+                  </div>
+                </div>
+
+                {ACHIEVEMENT_GROUPS.map(
+                  (
+                    group
+                  ) => {
+                    const items =
+                      achievementCatalog.filter(
+                        (
+                          item
+                        ) =>
+                          item.group ===
+                          group.id
+                      );
+
+                    if (
+                      items.length ===
+                      0
+                    ) {
+                      return null;
+                    }
+
+                    return (
+                      <section
+                        key={
+                          group.id
+                        }
+                        className="profile-v2-achievement-group"
+                      >
+                        <header>
+                          <div>
+                            <span>
+                              {
+                                group.title
+                              }
+                            </span>
+
+                            <p>
+                              {
+                                group.subtitle
+                              }
+                            </p>
+                          </div>
+
+                          <strong>
+                            {
+                              items.filter(
+                                (
+                                  item
+                                ) =>
+                                  item.earned
+                              ).length
+                            }
+                            /
+                            {
+                              items.length
+                            }
+                          </strong>
+                        </header>
+
+                        <div className="profile-v2-achievements-grid">
+                          {items.map(
+                            (
+                              item
+                            ) => (
+                              <Achievement
+                                key={
+                                  item.id
+                                }
+                                item={
+                                  item
+                                }
+                              />
+                            )
+                          )}
+                        </div>
+                      </section>
+                    );
+                  }
+                )}
+
+                <section className="profile-v2-context-badges">
+                  <header>
+                    <div>
+                      <span>
+                        Контекстні мітки
+                      </span>
+
+                      <p>
+                        Показують, що відбувається з людиною просто зараз.
+                      </p>
+                    </div>
+                  </header>
+
+                  <div>
+                    {CONTEXT_BADGES.map(
                       (
                         item
                       ) => (
-                        <Achievement
+                        <article
                           key={
                             item.id
                           }
-                          item={
-                            item
+                          className={
+                            `profile-v2-context-badge ${item.tone}`
                           }
-                        />
-                      )
-                    )
-                  ) : (
-                    <p className="profile-v2-empty-note">
-                      Перші досягнення зʼявляться тут після активності у ЯТУТ.
-                    </p>
-                  )}
+                        >
+                          <i>
+                            {
+                              item.symbol
+                            }
+                          </i>
 
-                </div>
+                          <span>
+                            <strong>
+                              {
+                                item.title
+                              }
+                            </strong>
+
+                            <small>
+                              {
+                                item.subtitle
+                              }
+                            </small>
+                          </span>
+                        </article>
+                      )
+                    )}
+                  </div>
+                </section>
 
               </section>
             )}
@@ -4469,30 +5000,91 @@ function AboutRow({
 function Achievement({
   item,
 }) {
+  const hasProgress =
+    Number.isFinite(
+      item.progress
+    );
+
   return (
     <article
-      className={`profile-v2-achievement ${item.tone}`}
+      className={`profile-v2-achievement ${item.tone} ${
+        item.earned
+          ? "is-earned"
+          : "is-locked"
+      }`}
     >
 
-      <div>
-        {
-          item.symbol
-        }
+      <div
+        className={`profile-v2-achievement-badge ${item.badge || "seal"}`}
+        aria-hidden="true"
+      >
+        <span>
+          {
+            item.symbol
+          }
+        </span>
+
+        {item.earned && (
+          <i>
+            ✓
+          </i>
+        )}
       </div>
 
       <section>
 
-        <strong>
-          {
-            item.title
-          }
-        </strong>
+        <div className="profile-v2-achievement-title-row">
+          <strong>
+            {
+              item.title
+            }
+          </strong>
 
-        <span>
+          <b>
+            {item.earned
+              ? "Отримано"
+              : "Закрито"}
+          </b>
+        </div>
+
+        <span className="profile-v2-achievement-subtitle">
           {
             item.subtitle
           }
         </span>
+
+        <p>
+          {
+            item.condition
+          }
+        </p>
+
+        {hasProgress && (
+          <div className="profile-v2-achievement-progress">
+            <div>
+              <i
+                style={{
+                  width:
+                    `${item.progress}%`,
+                }}
+              />
+            </div>
+
+            <span>
+              {
+                formatProfileNumber(
+                  item.current
+                )
+              }
+              {" / "}
+              {
+                formatProfileNumber(
+                  item.target
+                )
+              }
+            </span>
+          </div>
+        )}
 
       </section>
 
@@ -5422,10 +6014,15 @@ function ProfileImageCropper({
   onCancel,
   onApply,
 }) {
-  const frameRef =
+  const stageRef =
     useRef(null);
 
-  const dragRef =
+  const pointersRef =
+    useRef(
+      new Map()
+    );
+
+  const gestureRef =
     useRef(null);
 
   const isAvatar =
@@ -5462,10 +6059,103 @@ function ProfileImageCropper({
     });
   }
 
+  function distance(
+    first,
+    second
+  ) {
+    return Math.hypot(
+      second.x -
+        first.x,
+      second.y -
+        first.y
+    );
+  }
+
+  function midpoint(
+    first,
+    second
+  ) {
+    return {
+      x:
+        (
+          first.x +
+          second.x
+        ) /
+        2,
+      y:
+        (
+          first.y +
+          second.y
+        ) /
+        2,
+    };
+  }
+
+  function beginPan(
+    pointer
+  ) {
+    gestureRef.current = {
+      type:
+        "pan",
+      pointerId:
+        pointer.id,
+      start:
+        pointer,
+      crop: {
+        ...crop,
+      },
+    };
+  }
+
+  function beginPinch() {
+    const pointers =
+      [
+        ...pointersRef
+          .current
+          .values(),
+      ];
+
+    if (
+      pointers.length <
+      2
+    ) {
+      return;
+    }
+
+    const first =
+      pointers[0];
+
+    const second =
+      pointers[1];
+
+    gestureRef.current = {
+      type:
+        "pinch",
+      startDistance:
+        Math.max(
+          1,
+          distance(
+            first,
+            second
+          )
+        ),
+      startMidpoint:
+        midpoint(
+          first,
+          second
+        ),
+      crop: {
+        ...crop,
+      },
+    };
+  }
+
   function handlePointerDown(
     event
   ) {
-    if (applying) {
+    if (
+      applying
+    ) {
       return;
     }
 
@@ -5476,104 +6166,280 @@ function ProfileImageCropper({
         event.pointerId
       );
 
-    dragRef.current = {
-      pointerId:
-        event.pointerId,
-      clientX:
-        event.clientX,
-      clientY:
-        event.clientY,
-      x:
-        crop.x,
-      y:
-        crop.y,
-    };
+    pointersRef.current.set(
+      event.pointerId,
+      {
+        id:
+          event.pointerId,
+        x:
+          event.clientX,
+        y:
+          event.clientY,
+      }
+    );
+
+    const pointerCount =
+      pointersRef.current
+        .size;
+
+    if (
+      pointerCount ===
+      1
+    ) {
+      beginPan({
+        id:
+          event.pointerId,
+        x:
+          event.clientX,
+        y:
+          event.clientY,
+      });
+    } else if (
+      pointerCount >=
+      2
+    ) {
+      beginPinch();
+    }
   }
 
   function handlePointerMove(
     event
   ) {
-    const drag =
-      dragRef.current;
-
-    const frame =
-      frameRef.current;
-
     if (
-      !drag ||
-      !frame ||
-      drag.pointerId !==
+      !pointersRef.current.has(
         event.pointerId
+      )
     ) {
       return;
     }
 
     event.preventDefault();
 
+    pointersRef.current.set(
+      event.pointerId,
+      {
+        id:
+          event.pointerId,
+        x:
+          event.clientX,
+        y:
+          event.clientY,
+      }
+    );
+
+    const stage =
+      stageRef.current;
+
+    const gesture =
+      gestureRef.current;
+
+    if (
+      !stage ||
+      !gesture
+    ) {
+      return;
+    }
+
     const rect =
-      frame.getBoundingClientRect();
+      stage.getBoundingClientRect();
 
-    const sensitivity =
-      100 /
-      Math.max(
-        1,
-        crop.zoom
-      );
+    const pointers =
+      [
+        ...pointersRef.current
+          .values(),
+      ];
 
-    patchCrop({
-      x:
+    if (
+      pointers.length >=
+      2
+    ) {
+      if (
+        gesture.type !==
+        "pinch"
+      ) {
+        beginPinch();
+
+        return;
+      }
+
+      const first =
+        pointers[0];
+
+      const second =
+        pointers[1];
+
+      const currentDistance =
+        Math.max(
+          1,
+          distance(
+            first,
+            second
+          )
+        );
+
+      const currentMidpoint =
+        midpoint(
+          first,
+          second
+        );
+
+      const nextZoom =
         clamp(
-          drag.x -
+          gesture.crop.zoom *
             (
+              currentDistance /
+              gesture.startDistance
+            ),
+          1,
+          3
+        );
+
+      const horizontalMove =
+        (
+          currentMidpoint.x -
+          gesture.startMidpoint.x
+        ) /
+        Math.max(
+          1,
+          rect.width
+        );
+
+      const verticalMove =
+        (
+          currentMidpoint.y -
+          gesture.startMidpoint.y
+        ) /
+        Math.max(
+          1,
+          rect.height
+        );
+
+      onCropChange?.({
+        ...gesture.crop,
+        zoom:
+          nextZoom,
+        x:
+          clamp(
+            gesture.crop.x -
+              horizontalMove *
+                100,
+            0,
+            100
+          ),
+        y:
+          clamp(
+            gesture.crop.y -
+              verticalMove *
+                100,
+            0,
+            100
+          ),
+      });
+
+      return;
+    }
+
+    if (
+      pointers.length ===
+      1
+    ) {
+      const pointer =
+        pointers[0];
+
+      if (
+        gesture.type !==
+          "pan" ||
+        gesture.pointerId !==
+          pointer.id
+      ) {
+        beginPan(
+          pointer
+        );
+
+        return;
+      }
+
+      const sensitivity =
+        100 /
+        Math.max(
+          1,
+          gesture.crop.zoom
+        );
+
+      onCropChange?.({
+        ...gesture.crop,
+        x:
+          clamp(
+            gesture.crop.x -
               (
-                event.clientX -
-                drag.clientX
-              ) /
-              Math.max(
-                1,
-                rect.width
-              )
-            ) *
-              sensitivity,
-          0,
-          100
-        ),
-      y:
-        clamp(
-          drag.y -
-            (
+                (
+                  pointer.x -
+                  gesture.start.x
+                ) /
+                Math.max(
+                  1,
+                  rect.width
+                )
+              ) *
+                sensitivity,
+            0,
+            100
+          ),
+        y:
+          clamp(
+            gesture.crop.y -
               (
-                event.clientY -
-                drag.clientY
-              ) /
-              Math.max(
-                1,
-                rect.height
-              )
-            ) *
-              sensitivity,
-          0,
-          100
-        ),
-    });
+                (
+                  pointer.y -
+                  gesture.start.y
+                ) /
+                Math.max(
+                  1,
+                  rect.height
+                )
+              ) *
+                sensitivity,
+            0,
+            100
+          ),
+      });
+    }
   }
 
   function handlePointerEnd(
     event
   ) {
-    if (
-      dragRef.current
-        ?.pointerId ===
+    pointersRef.current.delete(
       event.pointerId
-    ) {
-      dragRef.current =
-        null;
-    }
+    );
 
     event.currentTarget
       .releasePointerCapture?.(
         event.pointerId
       );
+
+    const pointers =
+      [
+        ...pointersRef.current
+          .values(),
+      ];
+
+    if (
+      pointers.length ===
+      1
+    ) {
+      beginPan(
+        pointers[0]
+      );
+    } else if (
+      pointers.length >=
+      2
+    ) {
+      beginPinch();
+    } else {
+      gestureRef.current =
+        null;
+    }
   }
 
   useEffect(
@@ -5609,7 +6475,7 @@ function ProfileImageCropper({
 
   return (
     <div
-      className="profile-image-cropper-backdrop"
+      className="profile-image-cropper-backdrop profile-image-cropper-native"
       role="dialog"
       aria-modal="true"
       aria-label={
@@ -5619,63 +6485,95 @@ function ProfileImageCropper({
       }
     >
       <section className="profile-image-cropper-sheet">
-        <header className="profile-image-cropper-header">
-          <div>
-            <span>
-              ПОПЕРЕДНІЙ ПЕРЕГЛЯД
-            </span>
-
-            <h3>
-              {isAvatar
-                ? "Фото профілю"
-                : "Фон профілю"}
-            </h3>
-          </div>
-
+        <header className="profile-image-cropper-native-header">
           <button
             type="button"
+            className="profile-image-cropper-native-close"
             onClick={
               onCancel
             }
             disabled={
               applying
             }
-            aria-label="Закрити кадрування"
+            aria-label="Скасувати"
           >
             <YatutIcon
               name="close"
-              size={18}
+              size={28}
             />
+          </button>
+
+          <div className="profile-image-cropper-native-title">
+            <strong>
+              {isAvatar
+                ? "Фото профілю"
+                : "Фон профілю"}
+            </strong>
+
+            <span>
+              {isAvatar
+                ? "Перемістіть і масштабуйте фото"
+                : "Налаштуйте, як фон виглядатиме у профілі"}
+            </span>
+          </div>
+
+          <button
+            type="button"
+            className="profile-image-cropper-native-apply"
+            onClick={
+              onApply
+            }
+            disabled={
+              applying
+            }
+            aria-label="Застосувати"
+          >
+            {applying
+              ? "…"
+              : "✓"}
           </button>
         </header>
 
-        <p className="profile-image-cropper-hint">
-          Перетягуйте фото пальцем усередині рамки. Нижче можна змінити масштаб.
-        </p>
-
-        <div className="profile-image-cropper-canvas">
-          <div
-            ref={
-              frameRef
+        <div
+          ref={
+            stageRef
+          }
+          className={
+            `profile-image-cropper-native-stage ${
+              isAvatar
+                ? "is-avatar"
+                : "is-cover"
+            }`
+          }
+          onPointerDown={
+            handlePointerDown
+          }
+          onPointerMove={
+            handlePointerMove
+          }
+          onPointerUp={
+            handlePointerEnd
+          }
+          onPointerCancel={
+            handlePointerEnd
+          }
+        >
+          <img
+            className="profile-image-cropper-native-backdrop-image"
+            src={
+              editor.src
             }
+            alt=""
+            draggable="false"
+          />
+
+          <div
             className={
-              `profile-image-cropper-frame ${
+              `profile-image-cropper-native-frame ${
                 isAvatar
                   ? "is-avatar"
                   : "is-cover"
               }`
-            }
-            onPointerDown={
-              handlePointerDown
-            }
-            onPointerMove={
-              handlePointerMove
-            }
-            onPointerUp={
-              handlePointerEnd
-            }
-            onPointerCancel={
-              handlePointerEnd
             }
           >
             <img
@@ -5694,116 +6592,57 @@ function ProfileImageCropper({
               }}
             />
 
-            <div className="profile-image-cropper-grid">
-              <span />
-              <span />
-              <span />
-              <span />
-            </div>
-
             {!isAvatar && (
               <>
-                <div className="profile-image-cropper-cover-top">
-                  <b>
-                    Я
-                  </b>
+                <div className="profile-image-cropper-native-cover-ui">
+                  <span className="brand">
+                    <b>
+                      Я
+                    </b>
 
-                  <strong>
-                    ТУТ
-                  </strong>
+                    <strong>
+                      ТУТ
+                    </strong>
+                  </span>
+
+                  <span className="avatar-dot" />
                 </div>
 
-                <div className="profile-image-cropper-cover-fade" />
+                <div className="profile-image-cropper-native-cover-fade" />
               </>
             )}
           </div>
-        </div>
 
-        <div className="profile-image-cropper-zoom">
-          <span>
-            −
-          </span>
-
-          <input
-            type="range"
-            min="1"
-            max="3"
-            step="0.05"
-            value={
-              crop.zoom
+          <div
+            className={
+              `profile-image-cropper-native-mask ${
+                isAvatar
+                  ? "is-avatar"
+                  : "is-cover"
+              }`
             }
-            onChange={(
-              event
-            ) =>
-              patchCrop({
-                zoom:
-                  Number(
-                    event.target.value
-                  ),
-              })
-            }
-            aria-label="Масштаб фото"
           />
 
-          <span>
-            +
-          </span>
+          <div className="profile-image-cropper-native-tip">
+            <span>
+              1 палець
+            </span>
+            <strong>
+              переміщення
+            </strong>
+
+            <i />
+
+            <span>
+              2 пальці
+            </span>
+            <strong>
+              масштаб
+            </strong>
+          </div>
         </div>
-
-        <div className="profile-image-cropper-position">
-          <span>
-            {isAvatar
-              ? "Кругла рамка показує майбутній аватар."
-              : "Рамка 9:16 показує фон мобільного профілю."}
-          </span>
-
-          <button
-            type="button"
-            onClick={() =>
-              onCropChange?.({
-                x: 50,
-                y: 50,
-                zoom: 1,
-              })
-            }
-            disabled={
-              applying
-            }
-          >
-            По центру
-          </button>
-        </div>
-
-        <footer className="profile-image-cropper-actions">
-          <button
-            type="button"
-            className="secondary"
-            onClick={
-              onCancel
-            }
-            disabled={
-              applying
-            }
-          >
-            Скасувати
-          </button>
-
-          <button
-            type="button"
-            className="primary"
-            onClick={
-              onApply
-            }
-            disabled={
-              applying
-            }
-          >
-            {applying
-              ? "Готуємо…"
-              : "Застосувати"}
-          </button>
-        </footer>
       </section>
     </div>
   );
 }
+
