@@ -6954,3 +6954,972 @@ body.yatut-dark-mode
       7px;
   }
 }
+
+
+/* =========================================================
+   NATIVE GESTURE CROPPER V24
+   iOS-like full-screen preview: one-finger pan + pinch zoom.
+========================================================= */
+
+.profile-image-cropper-native {
+  padding:
+    0 !important;
+
+  align-items:
+    stretch !important;
+
+  justify-content:
+    stretch !important;
+
+  background:
+    #080b13 !important;
+
+  backdrop-filter:
+    none !important;
+
+  -webkit-backdrop-filter:
+    none !important;
+
+  overscroll-behavior:
+    none !important;
+}
+
+.profile-image-cropper-native
+.profile-image-cropper-sheet {
+  width:
+    100% !important;
+
+  max-width:
+    none !important;
+
+  height:
+    100dvh !important;
+
+  max-height:
+    none !important;
+
+  margin:
+    0 !important;
+
+  padding:
+    0 !important;
+
+  display:
+    flex !important;
+
+  flex-direction:
+    column !important;
+
+  overflow:
+    hidden !important;
+
+  border:
+    0 !important;
+
+  border-radius:
+    0 !important;
+
+  background:
+    #080b13 !important;
+
+  box-shadow:
+    none !important;
+}
+
+.profile-image-cropper-native-header {
+  position:
+    relative;
+
+  z-index:
+    20;
+
+  min-height:
+    calc(
+      94px +
+      env(safe-area-inset-top)
+    );
+
+  padding:
+    calc(
+      14px +
+      env(safe-area-inset-top)
+    )
+    16px
+    14px;
+
+  display:
+    grid;
+
+  grid-template-columns:
+    58px
+    minmax(0,1fr)
+    58px;
+
+  align-items:
+    center;
+
+  gap:
+    10px;
+
+  background:
+    rgba(
+      250,
+      251,
+      253,
+      .96
+    );
+
+  border-bottom:
+    1px solid
+    rgba(
+      24,
+      28,
+      40,
+      .06
+    );
+
+  box-shadow:
+    0 8px 28px
+    rgba(
+      0,
+      0,
+      0,
+      .10
+    );
+}
+
+.profile-image-cropper-native-close,
+.profile-image-cropper-native-apply {
+  width:
+    56px;
+
+  height:
+    56px;
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  border:
+    0;
+
+  border-radius:
+    50%;
+
+  font: inherit;
+
+  -webkit-tap-highlight-color:
+    transparent;
+}
+
+.profile-image-cropper-native-close {
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .90
+    );
+
+  color:
+    #151820;
+
+  box-shadow:
+    0 7px 18px
+    rgba(
+      28,
+      32,
+      45,
+      .08
+    ),
+    inset 0 0 0 1px
+    rgba(
+      26,
+      30,
+      42,
+      .06
+    );
+}
+
+.profile-image-cropper-native-apply {
+  background:
+    linear-gradient(
+      145deg,
+      #159eff,
+      #0088f2
+    );
+
+  color:
+    #fff;
+
+  font-size:
+    32px;
+
+  line-height:
+    1;
+
+  font-weight:
+    500;
+
+  box-shadow:
+    0 10px 24px
+    rgba(
+      0,
+      139,
+      245,
+      .28
+    ),
+    inset 0 1px 0
+    rgba(
+      255,
+      255,
+      255,
+      .34
+    );
+}
+
+.profile-image-cropper-native-close:disabled,
+.profile-image-cropper-native-apply:disabled {
+  opacity:
+    .55;
+}
+
+.profile-image-cropper-native-title {
+  min-width:
+    0;
+
+  text-align:
+    center;
+}
+
+.profile-image-cropper-native-title strong {
+  display:
+    block;
+
+  color:
+    #10131a;
+
+  font-size:
+    18px;
+
+  line-height:
+    1.08;
+
+  font-weight:
+    850;
+
+  letter-spacing:
+    -.02em;
+}
+
+.profile-image-cropper-native-title span {
+  display:
+    block;
+
+  margin-top:
+    4px;
+
+  overflow:
+    hidden;
+
+  color:
+    #727784;
+
+  font-size:
+    10px;
+
+  line-height:
+    1.2;
+
+  font-weight:
+    650;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
+}
+
+.profile-image-cropper-native-stage {
+  position:
+    relative;
+
+  flex:
+    1 1 auto;
+
+  min-height:
+    0;
+
+  overflow:
+    hidden;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  touch-action:
+    none;
+
+  user-select:
+    none;
+
+  -webkit-user-select:
+    none;
+
+  overscroll-behavior:
+    none;
+
+  background:
+    #070a12;
+}
+
+.profile-image-cropper-native-backdrop-image {
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  width:
+    100%;
+
+  height:
+    100%;
+
+  object-fit:
+    cover;
+
+  object-position:
+    center;
+
+  transform:
+    scale(1.035);
+
+  filter:
+    brightness(.48)
+    saturate(.86);
+
+  opacity:
+    .92;
+
+  pointer-events:
+    none;
+
+  user-select:
+    none;
+
+  -webkit-user-drag:
+    none;
+}
+
+.profile-image-cropper-native-stage.is-avatar
+.profile-image-cropper-native-backdrop-image {
+  filter:
+    brightness(.58)
+    saturate(.90);
+}
+
+.profile-image-cropper-native-frame {
+  position:
+    relative;
+
+  z-index:
+    6;
+
+  overflow:
+    hidden;
+
+  background:
+    #111624;
+
+  pointer-events:
+    none;
+
+  box-shadow:
+    0 24px 70px
+    rgba(
+      0,
+      0,
+      0,
+      .36
+    );
+}
+
+.profile-image-cropper-native-frame > img {
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  width:
+    100%;
+
+  height:
+    100%;
+
+  object-fit:
+    cover;
+
+  pointer-events:
+    none;
+
+  user-select:
+    none;
+
+  -webkit-user-drag:
+    none;
+
+  will-change:
+    transform;
+}
+
+.profile-image-cropper-native-frame.is-avatar {
+  width:
+    min(
+      82vw,
+      360px
+    );
+
+  aspect-ratio:
+    1 / 1;
+
+  border:
+    5px solid
+    rgba(
+      125,
+      86,
+      220,
+      .78
+    );
+
+  border-radius:
+    50%;
+
+  box-shadow:
+    0 0 0 2px
+    rgba(
+      255,
+      255,
+      255,
+      .20
+    ),
+    0 22px 68px
+    rgba(
+      0,
+      0,
+      0,
+      .34
+    );
+}
+
+.profile-image-cropper-native-frame.is-cover {
+  width:
+    min(
+      90vw,
+      420px
+    );
+
+  max-height:
+    calc(
+      100dvh -
+      190px -
+      env(safe-area-inset-top)
+    );
+
+  aspect-ratio:
+    9 / 16;
+
+  border:
+    2px solid
+    rgba(
+      255,
+      255,
+      255,
+      .90
+    );
+
+  border-radius:
+    26px;
+
+  box-shadow:
+    0 0 0 1px
+    rgba(
+      105,
+      84,
+      244,
+      .28
+    ),
+    0 24px 72px
+    rgba(
+      0,
+      0,
+      0,
+      .40
+    );
+}
+
+.profile-image-cropper-native-mask {
+  position:
+    absolute;
+
+  z-index:
+    5;
+
+  pointer-events:
+    none;
+}
+
+.profile-image-cropper-native-mask.is-avatar {
+  width:
+    min(
+      82vw,
+      360px
+    );
+
+  aspect-ratio:
+    1 / 1;
+
+  border-radius:
+    50%;
+
+  box-shadow:
+    0 0 0
+    9999px
+    rgba(
+      4,
+      7,
+      14,
+      .26
+    );
+}
+
+.profile-image-cropper-native-mask.is-cover {
+  width:
+    min(
+      90vw,
+      420px
+    );
+
+  max-height:
+    calc(
+      100dvh -
+      190px -
+      env(safe-area-inset-top)
+    );
+
+  aspect-ratio:
+    9 / 16;
+
+  border-radius:
+    26px;
+
+  box-shadow:
+    0 0 0
+    9999px
+    rgba(
+      4,
+      7,
+      14,
+      .38
+    );
+}
+
+.profile-image-cropper-native-cover-ui {
+  position:
+    absolute;
+
+  top:
+    14px;
+
+  left:
+    14px;
+
+  right:
+    14px;
+
+  z-index:
+    4;
+
+  display:
+    flex;
+
+  justify-content:
+    space-between;
+
+  align-items:
+    center;
+
+  pointer-events:
+    none;
+}
+
+.profile-image-cropper-native-cover-ui
+.brand {
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    7px;
+}
+
+.profile-image-cropper-native-cover-ui
+.brand b {
+  width:
+    34px;
+
+  height:
+    34px;
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  border-radius:
+    11px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #776aff,
+      #584bf0
+    );
+
+  color:
+    #fff;
+
+  font-size:
+    19px;
+
+  box-shadow:
+    0 7px 18px
+    rgba(
+      77,
+      61,
+      226,
+      .25
+    );
+}
+
+.profile-image-cropper-native-cover-ui
+.brand strong {
+  color:
+    #fff;
+
+  font-size:
+    15px;
+
+  font-weight:
+    850;
+
+  text-shadow:
+    0 2px 8px
+    rgba(
+      0,
+      0,
+      0,
+      .32
+    );
+}
+
+.profile-image-cropper-native-cover-ui
+.avatar-dot {
+  width:
+    34px;
+
+  height:
+    34px;
+
+  border:
+    2px solid
+    rgba(
+      255,
+      255,
+      255,
+      .88
+    );
+
+  border-radius:
+    50%;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .22
+    );
+
+  box-shadow:
+    0 5px 14px
+    rgba(
+      0,
+      0,
+      0,
+      .16
+    );
+}
+
+.profile-image-cropper-native-cover-fade {
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  z-index:
+    3;
+
+  pointer-events:
+    none;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(
+        7,
+        11,
+        22,
+        0
+      )
+      0%,
+      rgba(
+        7,
+        11,
+        22,
+        0
+      )
+      68%,
+      rgba(
+        7,
+        11,
+        22,
+        .08
+      )
+      77%,
+      rgba(
+        7,
+        11,
+        22,
+        .28
+      )
+      88%,
+      rgba(
+        7,
+        11,
+        22,
+        .64
+      )
+      100%
+    );
+}
+
+.profile-image-cropper-native-tip {
+  position:
+    absolute;
+
+  z-index:
+    12;
+
+  left:
+    50%;
+
+  bottom:
+    calc(
+      18px +
+      env(safe-area-inset-bottom)
+    );
+
+  transform:
+    translateX(-50%);
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    6px;
+
+  max-width:
+    calc(
+      100% -
+      28px
+    );
+
+  padding:
+    9px
+    12px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      .13
+    );
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(
+      10,
+      14,
+      26,
+      .62
+    );
+
+  color:
+    rgba(
+      239,
+      242,
+      252,
+      .78
+    );
+
+  font-size:
+    9px;
+
+  line-height:
+    1;
+
+  white-space:
+    nowrap;
+
+  backdrop-filter:
+    blur(18px)
+    saturate(1.25);
+
+  -webkit-backdrop-filter:
+    blur(18px)
+    saturate(1.25);
+}
+
+.profile-image-cropper-native-tip
+span {
+  color:
+    #b3a7ff;
+
+  font-weight:
+    850;
+}
+
+.profile-image-cropper-native-tip
+strong {
+  color:
+    rgba(
+      239,
+      242,
+      252,
+      .76
+    );
+
+  font-weight:
+    720;
+}
+
+.profile-image-cropper-native-tip
+i {
+  width:
+    1px;
+
+  height:
+    12px;
+
+  display:
+    block;
+
+  margin:
+    0
+    2px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .18
+    );
+}
+
+.profile-image-cropper-native
+.profile-image-cropper-backdrop {
+  touch-action:
+    none;
+}
+
+.profile-image-cropper-native
+.profile-image-cropper-backdrop,
+.profile-image-cropper-native
+.profile-image-cropper-sheet,
+.profile-image-cropper-native
+.profile-image-cropper-native-stage {
+  overscroll-behavior:
+    none;
+}
+
+@media (max-width: 390px) {
+  .profile-image-cropper-native-header {
+    min-height:
+      calc(
+        88px +
+        env(safe-area-inset-top)
+      );
+
+    grid-template-columns:
+      52px
+      minmax(0,1fr)
+      52px;
+
+    padding:
+      calc(
+        12px +
+        env(safe-area-inset-top)
+      )
+      12px
+      12px;
+  }
+
+  .profile-image-cropper-native-close,
+  .profile-image-cropper-native-apply {
+    width:
+      50px;
+
+    height:
+      50px;
+  }
+
+  .profile-image-cropper-native-frame.is-avatar,
+  .profile-image-cropper-native-mask.is-avatar {
+    width:
+      min(
+        84vw,
+        330px
+      );
+  }
+
+  .profile-image-cropper-native-frame.is-cover,
+  .profile-image-cropper-native-mask.is-cover {
+    width:
+      min(
+        91vw,
+        360px
+      );
+  }
+}
