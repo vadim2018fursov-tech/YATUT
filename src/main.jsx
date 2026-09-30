@@ -9,6 +9,7 @@ import "./styles/home-polish-v1.css";
 import "./styles/profile-mobile-fix-v1.css";
 import "./styles/profile-polish-v2.css";
 import "./styles/friends-polish-v1.css";
+import "./styles/friend-cards-glass-v2.css";
 import "./styles/chat-polish-v2.css";
 import "./styles/chat-composer-fix-v3.css";
 import "./styles/chat-composer-match-v4.css";
