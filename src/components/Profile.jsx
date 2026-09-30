@@ -702,6 +702,12 @@ export default function Profile({
     );
 
   const [
+    mobileMoreOpen,
+    setMobileMoreOpen,
+  ] =
+    useState(false);
+
+  const [
     editing,
     setEditing,
   ] =
@@ -2347,7 +2353,7 @@ export default function Profile({
                     )
                   }
                 >
-                  Редагувати
+                  Редагувати профіль
                 </button>
 
                 <button
@@ -2366,21 +2372,97 @@ export default function Profile({
                   />
                 </button>
 
-                <button
-                  className="profile-v3-mobile-action"
-                  type="button"
-                  aria-label="Більше про профіль"
-                  onClick={() =>
-                    setActiveTab(
-                      "about"
-                    )
-                  }
+                <div
+                  className={`profile-v3-mobile-more-wrap ${
+                    mobileMoreOpen
+                      ? "is-open"
+                      : ""
+                  }`.trim()}
                 >
-                  <YatutIcon
-                    name="more"
-                    size={18}
-                  />
-                </button>
+                  <button
+                    className="profile-v3-mobile-action profile-v3-mobile-more-trigger"
+                    type="button"
+                    aria-label="Більше"
+                    aria-haspopup="menu"
+                    aria-expanded={
+                      mobileMoreOpen
+                    }
+                    onClick={() =>
+                      setMobileMoreOpen(
+                        (
+                          current
+                        ) =>
+                          !current
+                      )
+                    }
+                  >
+                    <YatutIcon
+                      name="more"
+                      size={18}
+                    />
+                    <YatutIcon
+                      name="chevronDown"
+                      size={11}
+                    />
+                  </button>
+
+                  <AnimatePresence>
+                    {mobileMoreOpen && (
+                      <motion.div
+                        className="profile-v3-mobile-more-menu"
+                        role="menu"
+                        initial={{
+                          opacity: 0,
+                          y: 6,
+                          scale: 0.97,
+                        }}
+                        animate={{
+                          opacity: 1,
+                          y: 0,
+                          scale: 1,
+                        }}
+                        exit={{
+                          opacity: 0,
+                          y: 4,
+                          scale: 0.98,
+                        }}
+                        transition={{
+                          duration: 0.15,
+                        }}
+                      >
+                        <button
+                          type="button"
+                          role="menuitem"
+                          onClick={() => {
+                            setActiveTab(
+                              "about"
+                            );
+                            setMobileMoreOpen(
+                              false
+                            );
+                          }}
+                        >
+                          Про мене
+                        </button>
+
+                        <button
+                          type="button"
+                          role="menuitem"
+                          onClick={() => {
+                            setActiveTab(
+                              "achievements"
+                            );
+                            setMobileMoreOpen(
+                              false
+                            );
+                          }}
+                        >
+                          Досягнення
+                        </button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
               </div>
             </div>
 
