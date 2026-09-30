@@ -1,0 +1,389 @@
+/* =========================================================
+   YATUT PROFILE COVER + NAV POLISH V16
+   Fixes iOS profile cover stacking and tightens 3D nav glow.
+   Loaded after V15.
+========================================================= */
+
+@media (max-width: 767px) {
+  /* =======================================================
+     PROFILE COVER — SINGLE SOURCE OF TRUTH
+  ======================================================= */
+
+  body.yatut-profile-immersive {
+    position: relative !important;
+    background: #f6f7fb !important;
+  }
+
+  body.yatut-profile-immersive.yatut-dark-mode {
+    background: #070b16 !important;
+  }
+
+  /*
+    Use the existing CSS variable set from profile.cover.
+    This avoids the fixed child wallpaper stacking issue seen on iOS.
+  */
+  body.has-yatut-profile-cover.yatut-profile-immersive::before {
+    content: "" !important;
+    display: block !important;
+
+    position: absolute !important;
+    top:
+      calc(
+        -1 *
+        max(
+          env(safe-area-inset-top),
+          0px
+        )
+      ) !important;
+    left: 0 !important;
+    right: 0 !important;
+
+    width: 100% !important;
+    height:
+      calc(
+        min(
+          100dvh,
+          780px
+        ) +
+        max(
+          env(safe-area-inset-top),
+          0px
+        )
+      ) !important;
+
+    z-index: 0 !important;
+    pointer-events: none !important;
+
+    background-image:
+      var(--yatut-profile-cover-image) !important;
+    background-size: cover !important;
+    background-position: center top !important;
+    background-repeat: no-repeat !important;
+
+    filter:
+      saturate(1.07)
+      contrast(1.03)
+      brightness(.98) !important;
+  }
+
+  body.has-yatut-profile-cover.yatut-profile-immersive::after {
+    content: "" !important;
+    display: block !important;
+
+    position: absolute !important;
+    top:
+      calc(
+        -1 *
+        max(
+          env(safe-area-inset-top),
+          0px
+        )
+      ) !important;
+    left: 0 !important;
+    right: 0 !important;
+
+    width: 100% !important;
+    height:
+      calc(
+        min(
+          100dvh,
+          780px
+        ) +
+        max(
+          env(safe-area-inset-top),
+          0px
+        )
+      ) !important;
+
+    z-index: 1 !important;
+    pointer-events: none !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        rgba(246,247,251,.02) 0%,
+        rgba(246,247,251,.03) 23%,
+        rgba(246,247,251,.08) 38%,
+        rgba(246,247,251,.20) 52%,
+        rgba(246,247,251,.44) 66%,
+        rgba(246,247,251,.70) 79%,
+        rgba(246,247,251,.90) 91%,
+        #f6f7fb 100%
+      ) !important;
+  }
+
+  body.has-yatut-profile-cover.yatut-profile-immersive.yatut-dark-mode::before {
+    filter:
+      saturate(1.10)
+      contrast(1.06)
+      brightness(.86) !important;
+  }
+
+  body.has-yatut-profile-cover.yatut-profile-immersive.yatut-dark-mode::after {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(5,8,17,.04) 0%,
+        rgba(5,8,17,.07) 22%,
+        rgba(5,8,17,.13) 39%,
+        rgba(5,8,17,.24) 55%,
+        rgba(5,8,17,.42) 70%,
+        rgba(5,8,17,.60) 84%,
+        rgba(7,11,22,.78) 94%,
+        #070b16 100%
+      ) !important;
+  }
+
+  /* The legacy child wallpaper is hidden to prevent double cover layers. */
+  .profile-v4-immersive .profile-v2-wallpaper {
+    display: none !important;
+  }
+
+  body.yatut-profile-immersive .app,
+  body.yatut-profile-immersive .layout,
+  body.yatut-profile-immersive .layout-wide,
+  body.yatut-profile-immersive .main-content,
+  body.yatut-profile-immersive .topbar,
+  body.yatut-profile-immersive .topbar-inner {
+    position: relative !important;
+    background: transparent !important;
+  }
+
+  body.yatut-profile-immersive .topbar {
+    z-index: 1200 !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .profile-v4-immersive {
+    position: relative !important;
+    z-index: 2 !important;
+    background: transparent !important;
+  }
+
+  .profile-v4-immersive .profile-v2-shell,
+  .profile-v4-immersive .profile-v2-hero,
+  .profile-v4-immersive .profile-v3-mobile-card,
+  .profile-v4-immersive .profile-v2-grid {
+    position: relative !important;
+    z-index: 2 !important;
+    background: transparent !important;
+  }
+
+  /* =======================================================
+     PROFILE HEADER READABILITY
+  ======================================================= */
+
+  body.yatut-profile-immersive .brand-tut {
+    color: #fff !important;
+    text-shadow:
+      0 2px 8px rgba(0,0,0,.30) !important;
+  }
+
+  body.yatut-profile-immersive .topbar .icon-button,
+  body.yatut-profile-immersive .topbar .profile-mini {
+    border-color: rgba(255,255,255,.26) !important;
+    background: rgba(12,17,31,.26) !important;
+    color: #fff !important;
+
+    box-shadow:
+      0 8px 24px rgba(0,0,0,.14),
+      inset 0 1px 0 rgba(255,255,255,.16) !important;
+
+    backdrop-filter:
+      blur(18px)
+      saturate(1.28) !important;
+
+    -webkit-backdrop-filter:
+      blur(18px)
+      saturate(1.28) !important;
+  }
+
+  .profile-v4-immersive
+  .profile-v3-mobile-name-row
+  h1 {
+    color: #fff !important;
+
+    text-shadow:
+      0 2px 10px rgba(0,0,0,.32) !important;
+  }
+
+  .profile-v4-immersive
+  .profile-v3-mobile-username {
+    color:
+      rgba(
+        255,
+        255,
+        255,
+        .78
+      ) !important;
+
+    text-shadow:
+      0 1px 6px rgba(0,0,0,.24) !important;
+  }
+
+  .profile-v4-immersive
+  .profile-v3-mobile-bio {
+    color:
+      rgba(
+        255,
+        255,
+        255,
+        .92
+      ) !important;
+
+    text-shadow:
+      0 1px 7px rgba(0,0,0,.24) !important;
+  }
+
+  .profile-v4-immersive
+  .profile-v3-mobile-meta
+  span {
+    color:
+      rgba(
+        255,
+        255,
+        255,
+        .82
+      ) !important;
+
+    text-shadow:
+      0 1px 6px rgba(0,0,0,.22) !important;
+  }
+
+  .profile-v4-immersive
+  .profile-v3-mobile-meta
+  .yatut-icon {
+    color: #735cff !important;
+    filter:
+      drop-shadow(
+        0
+        1px
+        5px
+        rgba(
+          255,
+          255,
+          255,
+          .28
+        )
+      ) !important;
+  }
+
+  /*
+    As the cover fades into the page surface, statistics and tabs remain
+    readable without turning into opaque white slabs.
+  */
+  .profile-v4-immersive
+  .profile-v3-mobile-stats {
+    background:
+      rgba(
+        255,
+        255,
+        255,
+        .72
+      ) !important;
+
+    border-color:
+      rgba(
+        255,
+        255,
+        255,
+        .82
+      ) !important;
+  }
+
+  body.yatut-profile-immersive.yatut-dark-mode
+  .profile-v4-immersive
+  .profile-v3-mobile-stats {
+    background:
+      rgba(
+        12,
+        17,
+        31,
+        .68
+      ) !important;
+
+    border-color:
+      rgba(
+        255,
+        255,
+        255,
+        .12
+      ) !important;
+  }
+
+  /* =======================================================
+     BOTTOM NAV — SMALLER / CLEANER 3D ACCENT
+  ======================================================= */
+
+  #yatut-global-mobile-nav
+  .mobile-nav-3d {
+    opacity: .42 !important;
+  }
+
+  body.yatut-dark-mode
+  #yatut-global-mobile-nav
+  .mobile-nav-3d {
+    opacity: .72 !important;
+  }
+
+  #yatut-global-mobile-nav
+  .mobile-nav-item.active {
+    transform:
+      translateY(-1px) !important;
+  }
+
+  #yatut-global-mobile-nav
+  .mobile-nav-item.active
+  .mobile-nav-icon {
+    filter:
+      drop-shadow(
+        0
+        0
+        5px
+        rgba(
+          100,
+          78,
+          255,
+          .24
+        )
+      ) !important;
+  }
+
+  body.yatut-dark-mode
+  #yatut-global-mobile-nav
+  .mobile-nav-item.active
+  .mobile-nav-icon {
+    filter:
+      drop-shadow(
+        0
+        0
+        7px
+        rgba(
+          136,
+          110,
+          255,
+          .34
+        )
+      ) !important;
+  }
+}
+
+@media (max-width: 390px) {
+  body.has-yatut-profile-cover.yatut-profile-immersive::before,
+  body.has-yatut-profile-cover.yatut-profile-immersive::after {
+    height:
+      calc(
+        min(
+          100dvh,
+          740px
+        ) +
+        max(
+          env(safe-area-inset-top),
+          0px
+        )
+      ) !important;
+  }
+}
