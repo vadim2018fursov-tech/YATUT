@@ -4820,3 +4820,724 @@ body.yatut-dark-mode
       26px 26px 0 0 !important;
   }
 }
+
+
+/* =========================================================
+   V27 — FIFTH PACKAGE
+   Boot, maps, school workflows, sanctions, safety/error UI.
+========================================================= */
+
+/* =========================================================
+   BOOT / SPLASH
+========================================================= */
+
+.yatut-boot {
+  background:
+    radial-gradient(
+      58% 34%
+      at
+      16% 10%,
+      rgba(111,93,255,.22),
+      transparent 74%
+    ),
+    radial-gradient(
+      48% 30%
+      at
+      86% 18%,
+      rgba(37,196,230,.14),
+      transparent 76%
+    ),
+    linear-gradient(
+      160deg,
+      #f7f8fc,
+      #eef1f8
+    ) !important;
+}
+
+body.yatut-dark-mode
+.yatut-boot {
+  background:
+    radial-gradient(
+      58% 34%
+      at
+      16% 10%,
+      rgba(111,93,255,.20),
+      transparent 74%
+    ),
+    radial-gradient(
+      48% 30%
+      at
+      86% 18%,
+      rgba(37,196,230,.09),
+      transparent 76%
+    ),
+    #070b16 !important;
+}
+
+.yatut-boot__mark {
+  border:
+    1px solid
+    rgba(255,255,255,.44);
+
+  background:
+    linear-gradient(
+      145deg,
+      #8f7fff,
+      #5d4af3 52%,
+      #7439ec
+    ) !important;
+
+  box-shadow:
+    0 16px 36px rgba(66,43,185,.28),
+    inset 0 1px 0 rgba(255,255,255,.56),
+    inset 0 -2px 4px rgba(48,32,140,.20) !important;
+}
+
+.yatut-boot__pulse {
+  box-shadow:
+    0 0 22px rgba(111,93,255,.34);
+
+  animation:
+    v27BootPulse 1.9s ease-in-out infinite;
+}
+
+@keyframes v27BootPulse {
+  0%,
+  100% {
+    transform:
+      scale(1);
+
+    opacity:
+      .70;
+  }
+
+  50% {
+    transform:
+      scale(1.08);
+
+    opacity:
+      1;
+  }
+}
+
+/* =========================================================
+   ADMIN SANCTIONS
+========================================================= */
+
+.admin-sanctions-backdrop {
+  backdrop-filter:
+    blur(12px)
+    saturate(1.10) !important;
+
+  -webkit-backdrop-filter:
+    blur(12px)
+    saturate(1.10) !important;
+}
+
+.admin-sanctions-modal,
+.admin-sanction-row {
+  border:
+    1px solid
+    rgba(255,255,255,.74) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.95),
+      rgba(255,255,255,.78)
+    ) !important;
+
+  box-shadow:
+    0 16px 36px rgba(31,35,63,.08),
+    inset 0 1px 0 rgba(255,255,255,.90) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .admin-sanctions-modal,
+  .admin-sanction-row
+) {
+  border-color:
+    rgba(255,255,255,.08) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,24,41,.90),
+      rgba(8,13,25,.84)
+    ) !important;
+}
+
+.admin-sanctions-reason {
+  border:
+    1px solid
+    rgba(78,84,111,.08) !important;
+
+  background:
+    rgba(247,248,252,.90) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.86) !important;
+}
+
+body.yatut-dark-mode
+.admin-sanctions-reason {
+  border-color:
+    rgba(255,255,255,.07) !important;
+
+  background:
+    rgba(255,255,255,.035) !important;
+}
+
+.admin-sanctions-submit {
+  background:
+    linear-gradient(
+      135deg,
+      #7c6bff,
+      #5a49eb
+    ) !important;
+
+  color:
+    #fff !important;
+
+  box-shadow:
+    0 10px 22px rgba(85,68,224,.22),
+    inset 0 1px 0 rgba(255,255,255,.28) !important;
+}
+
+/* =========================================================
+   SCHOOL HOMEWORK / TESTS / NOTIFICATIONS
+========================================================= */
+
+.school-homework-submit-modal,
+.school-homework-review-modal,
+.school-test-builder,
+.school-test-player,
+.school-notification-center,
+.school-test-builder-settings,
+.school-test-builder-side-card,
+.school-homework-review {
+  border:
+    1px solid
+    rgba(255,255,255,.72) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.95),
+      rgba(255,255,255,.78)
+    ) !important;
+
+  box-shadow:
+    0 18px 42px rgba(31,35,63,.09),
+    inset 0 1px 0 rgba(255,255,255,.91) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .school-homework-submit-modal,
+  .school-homework-review-modal,
+  .school-test-builder,
+  .school-test-player,
+  .school-notification-center,
+  .school-test-builder-settings,
+  .school-test-builder-side-card,
+  .school-homework-review
+) {
+  border-color:
+    rgba(255,255,255,.08) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,24,41,.92),
+      rgba(8,13,25,.86)
+    ) !important;
+}
+
+.school-homework-answer-field,
+.school-homework-review-answer,
+.school-homework-review-form textarea,
+.school-test-question-editor input,
+.school-test-option-editor input,
+.school-test-player-text textarea {
+  border:
+    1px solid
+    rgba(78,84,111,.08) !important;
+
+  background:
+    rgba(247,248,252,.92) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.86) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .school-homework-answer-field,
+  .school-homework-review-answer,
+  .school-homework-review-form textarea,
+  .school-test-question-editor input,
+  .school-test-option-editor input,
+  .school-test-player-text textarea
+) {
+  border-color:
+    rgba(255,255,255,.07) !important;
+
+  background:
+    rgba(255,255,255,.035) !important;
+}
+
+.school-homework-review-list > *,
+.school-notification-list > *,
+.school-test-option-editor,
+.school-test-player-options > * {
+  border:
+    1px solid
+    rgba(78,84,111,.06) !important;
+
+  background:
+    rgba(248,249,252,.88) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.82),
+    0 6px 14px rgba(31,35,63,.035) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .school-homework-review-list > *,
+  .school-notification-list > *,
+  .school-test-option-editor,
+  .school-test-player-options > *
+) {
+  border-color:
+    rgba(255,255,255,.06) !important;
+
+  background:
+    rgba(255,255,255,.032) !important;
+}
+
+.school-test-player-progress,
+.school-test-builder-progress {
+  overflow:
+    hidden;
+
+  background:
+    rgba(111,93,255,.09) !important;
+
+  border-radius:
+    999px;
+}
+
+.school-test-builder-footer .primary,
+.school-homework-submit-modal .primary {
+  background:
+    linear-gradient(
+      135deg,
+      #7c6bff,
+      #5a49eb
+    ) !important;
+
+  color:
+    #fff !important;
+
+  box-shadow:
+    0 10px 22px rgba(85,68,224,.22),
+    inset 0 1px 0 rgba(255,255,255,.28) !important;
+}
+
+/* =========================================================
+   MAPS / COORDINATE PICKER
+========================================================= */
+
+.nearby-map-shell,
+.nearby-coordinate-picker {
+  border:
+    1px solid
+    rgba(255,255,255,.72) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.94),
+      rgba(255,255,255,.76)
+    ) !important;
+
+  box-shadow:
+    0 18px 42px rgba(31,35,63,.10),
+    inset 0 1px 0 rgba(255,255,255,.90) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .nearby-map-shell,
+  .nearby-coordinate-picker
+) {
+  border-color:
+    rgba(255,255,255,.08) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,24,41,.90),
+      rgba(8,13,25,.84)
+    ) !important;
+}
+
+.nearby-map-stage,
+.nearby-coordinate-picker__stage {
+  position:
+    relative;
+
+  overflow:
+    hidden;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.12);
+}
+
+.nearby-map-stage::after,
+.nearby-coordinate-picker__stage::after {
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  pointer-events:
+    none;
+
+  background:
+    radial-gradient(
+      50% 28%
+      at
+      18% 4%,
+      rgba(255,255,255,.10),
+      transparent 74%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.03),
+      transparent 40%,
+      rgba(7,11,22,.06)
+    );
+}
+
+.nearby-map-marker,
+.nearby-coordinate-picker__pin {
+  filter:
+    drop-shadow(
+      0 8px 14px rgba(66,51,180,.18)
+    );
+
+  animation:
+    v27MapPin .24s cubic-bezier(.2,.82,.22,1);
+}
+
+@keyframes v27MapPin {
+  from {
+    opacity:
+      0;
+
+    transform:
+      translateY(-5px)
+      scale(.92);
+  }
+
+  to {
+    opacity:
+      1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+.nearby-map-popover,
+.nearby-map-controls,
+.nearby-coordinate-picker__controls,
+.nearby-coordinate-picker__search,
+.nearby-coordinate-picker__results {
+  border:
+    1px solid
+    var(--v27-glass-border) !important;
+
+  background:
+    var(--v27-glass-light) !important;
+
+  box-shadow:
+    0 14px 32px rgba(31,35,63,.10),
+    inset 0 1px 0 rgba(255,255,255,.86) !important;
+
+  backdrop-filter:
+    blur(18px)
+    saturate(1.20) !important;
+
+  -webkit-backdrop-filter:
+    blur(18px)
+    saturate(1.20) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .nearby-map-popover,
+  .nearby-map-controls,
+  .nearby-coordinate-picker__controls,
+  .nearby-coordinate-picker__search,
+  .nearby-coordinate-picker__results
+) {
+  border-color:
+    rgba(255,255,255,.12) !important;
+
+  background:
+    var(--v27-glass-dark) !important;
+}
+
+/* =========================================================
+   PLACE DETAIL / HISTORY / REVIEWS
+========================================================= */
+
+.nearby-place-detail-card,
+.nearby-place-review-panel,
+.nearby-place-history,
+.nearby-place-review {
+  border:
+    1px solid
+    rgba(255,255,255,.72) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.94),
+      rgba(255,255,255,.76)
+    ) !important;
+
+  box-shadow:
+    0 15px 34px rgba(31,35,63,.08),
+    inset 0 1px 0 rgba(255,255,255,.90) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .nearby-place-detail-card,
+  .nearby-place-review-panel,
+  .nearby-place-history,
+  .nearby-place-review
+) {
+  border-color:
+    rgba(255,255,255,.08) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,24,41,.90),
+      rgba(8,13,25,.84)
+    ) !important;
+}
+
+.nearby-place-detail-cover {
+  position:
+    relative;
+
+  overflow:
+    hidden;
+
+  box-shadow:
+    0 18px 44px rgba(20,24,45,.14);
+}
+
+.nearby-place-detail-cover::after {
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  pointer-events:
+    none;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.11),
+      transparent 36%,
+      rgba(7,11,22,.12)
+    );
+}
+
+.nearby-place-review-avatar {
+  box-shadow:
+    0 6px 14px rgba(31,35,63,.10),
+    0 0 0 2px rgba(255,255,255,.88);
+}
+
+/* =========================================================
+   FRIENDS SAFE / ERROR STATES
+========================================================= */
+
+.friends-safe-page {
+  position:
+    relative;
+
+  isolation:
+    isolate;
+
+  background:
+    radial-gradient(
+      58% 34%
+      at
+      14% 6%,
+      rgba(111,93,255,.10),
+      transparent 74%
+    ),
+    var(--app-bg, #f6f7fb) !important;
+}
+
+.friends-safe-hero,
+.friends-safe-list {
+  border:
+    1px solid
+    rgba(255,255,255,.74) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.95),
+      rgba(255,255,255,.78)
+    ) !important;
+
+  box-shadow:
+    0 16px 36px rgba(31,35,63,.08),
+    inset 0 1px 0 rgba(255,255,255,.91) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .friends-safe-hero,
+  .friends-safe-list
+) {
+  border-color:
+    rgba(255,255,255,.08) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,24,41,.90),
+      rgba(8,13,25,.84)
+    ) !important;
+}
+
+.friends-safe-actions .primary {
+  background:
+    linear-gradient(
+      135deg,
+      #7c6bff,
+      #5a49eb
+    ) !important;
+
+  color:
+    #fff !important;
+
+  box-shadow:
+    0 10px 22px rgba(85,68,224,.22),
+    inset 0 1px 0 rgba(255,255,255,.28) !important;
+}
+
+/* =========================================================
+   UNIVERSAL EMPTY / ERROR / LOADING STATES
+========================================================= */
+
+:is(
+  .feature-empty,
+  .global-search-empty,
+  .saved-empty-actions,
+  .events-empty,
+  .spaces-empty,
+  .school-empty,
+  .admin-empty,
+  .creator-studio-empty,
+  .pulse-watch-empty,
+  .pulse-creator-empty,
+  .nearby-real-empty,
+  .nearby-inline-empty,
+  .other-profile-post-empty,
+  .chat-list-empty,
+  .pulse-immersive__empty
+) {
+  border:
+    1px dashed
+    rgba(111,93,255,.14) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(248,247,255,.74),
+      rgba(255,255,255,.58)
+    ) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.76) !important;
+}
+
+body.yatut-dark-mode
+:is(
+  .feature-empty,
+  .global-search-empty,
+  .saved-empty-actions,
+  .events-empty,
+  .spaces-empty,
+  .school-empty,
+  .admin-empty,
+  .creator-studio-empty,
+  .pulse-watch-empty,
+  .pulse-creator-empty,
+  .nearby-real-empty,
+  .nearby-inline-empty,
+  .other-profile-post-empty,
+  .chat-list-empty,
+  .pulse-immersive__empty
+) {
+  border-color:
+    rgba(151,138,255,.14) !important;
+
+  background:
+    rgba(111,93,255,.035) !important;
+}
+
+:is(
+  .chat-list-loading-dot,
+  .creator-studio-loading,
+  .pulse-creator-loading__orb
+) {
+  box-shadow:
+    0 0 16px rgba(111,93,255,.26);
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width:767px) {
+  :is(
+    .admin-sanctions-modal,
+    .school-homework-submit-modal,
+    .school-homework-review-modal,
+    .school-test-builder,
+    .school-test-player,
+    .nearby-map-shell,
+    .nearby-coordinate-picker,
+    .nearby-place-detail-card,
+    .friends-safe-hero
+  ) {
+    border-radius:
+      22px !important;
+  }
+}
