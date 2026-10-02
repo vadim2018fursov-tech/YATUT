@@ -50,12 +50,8 @@ const TABS = [
     label: "Для тебе",
   },
   {
-    id: "following",
-    label: "Підписки",
-  },
-  {
     id: "clips",
-    label: "Короткі відео",
+    label: "Кліпи",
   },
   {
     id: "vlogs",
@@ -66,12 +62,8 @@ const TABS = [
     label: "LIVE",
   },
   {
-    id: "wave",
-    label: "Хвиля",
-  },
-  {
-    id: "events",
-    label: "Події",
+    id: "nearby",
+    label: "Поруч",
   },
 ];
 
@@ -154,11 +146,6 @@ function getFeed(
   switch (
     tab
   ) {
-    case "following":
-      return uniqueVideos(
-        followingVideos
-      );
-
     case "clips":
       return all.filter(
         (
@@ -189,24 +176,21 @@ function getFeed(
             "live"
       );
 
-    case "wave":
+    case "nearby":
       return all.filter(
         (
           video
         ) =>
-          video.pulseKind ===
-          "wave"
-      );
-
-    case "events":
-      return all.filter(
-        (
-          video
-        ) =>
-          video.type ===
-            "event" ||
-          video.recommendationType ===
-            "events"
+          Boolean(
+            video.location?.name ||
+            video.locationName ||
+            video.type ===
+              "event" ||
+            video.recommendationType ===
+              "events" ||
+            video.recommendationType ===
+              "nearby"
+          )
       );
 
     default:
@@ -1939,6 +1923,36 @@ export default function PulseMobileImmersive({
       haptic = true,
     } = {}
   ) {
+    if (
+      tabId ===
+      "live"
+    ) {
+      if (haptic) {
+        nativeLightHaptic();
+      }
+
+      onNavigate?.(
+        "live"
+      );
+
+      return;
+    }
+
+    if (
+      tabId ===
+      "nearby"
+    ) {
+      if (haptic) {
+        nativeLightHaptic();
+      }
+
+      onNavigate?.(
+        "nearbyPulse"
+      );
+
+      return;
+    }
+
     if (
       !TABS.some(
         (
