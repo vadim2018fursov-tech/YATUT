@@ -1,0 +1,263 @@
+/* =========================================================
+   YATUT V65 — FINAL CASCADE FIX
+   Loaded LAST so legacy glass layers cannot override it.
+========================================================= */
+
+@media (max-width: 767px) {
+  /* =======================================================
+     FRIEND SEARCH — CLEAN iOS FOCUS / CARET GEOMETRY
+  ======================================================= */
+
+  .friends-v2-toolbar .friends-v2-search {
+    box-sizing: border-box !important;
+    position: relative !important;
+    overflow: hidden !important;
+    contain: paint !important;
+    isolation: isolate !important;
+
+    border:
+      1px solid
+      rgba(185,181,230,.54) !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.88),
+        rgba(252,251,255,.72)
+      ) !important;
+
+    box-shadow:
+      0 12px 28px rgba(40,44,70,.055),
+      inset 0 1px 0 rgba(255,255,255,.96) !important;
+  }
+
+  .friends-v2-toolbar .friends-v2-search:focus-within {
+    outline: none !important;
+
+    border-color:
+      rgba(111,97,244,.34) !important;
+
+    box-shadow:
+      0 0 0 2px rgba(111,97,244,.07),
+      0 12px 28px rgba(40,44,70,.055),
+      inset 0 1px 0 rgba(255,255,255,.96) !important;
+  }
+
+  .friends-v2-toolbar
+  .friends-v2-search
+  input,
+  .friends-v2-toolbar
+  .friends-v2-search
+  input:focus,
+  .friends-v2-toolbar
+  .friends-v2-search
+  input:focus-visible,
+  .friends-v2-toolbar
+  .friends-v2-search
+  input:active {
+    box-sizing: border-box !important;
+
+    width: 100% !important;
+    height: 24px !important;
+    min-height: 24px !important;
+    max-height: 24px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: block !important;
+
+    border: 0 !important;
+    outline: 0 !important;
+    outline-offset: 0 !important;
+
+    background: transparent !important;
+
+    box-shadow: none !important;
+
+    color: #30333e !important;
+
+    font-size: 16px !important;
+    line-height: 24px !important;
+
+    caret-color: #6f61f4 !important;
+
+    -webkit-appearance: none !important;
+    appearance: none !important;
+
+    -webkit-tap-highlight-color: transparent !important;
+
+    clip-path: inset(0 0 0 0) !important;
+    overflow: hidden !important;
+
+    transform: translateZ(0) !important;
+  }
+
+  .friends-v2-page
+  input:focus-visible {
+    outline: 0 !important;
+    outline-offset: 0 !important;
+  }
+
+  body.yatut-dark-mode
+  .friends-v2-toolbar
+  .friends-v2-search {
+    border-color:
+      rgba(255,255,255,.12) !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.07),
+        rgba(8,14,27,.12)
+      ) !important;
+
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.08) !important;
+  }
+
+  body.yatut-dark-mode
+  .friends-v2-toolbar
+  .friends-v2-search:focus-within {
+    border-color:
+      rgba(139,123,255,.34) !important;
+
+    box-shadow:
+      0 0 0 2px rgba(111,97,244,.08),
+      inset 0 1px 0 rgba(255,255,255,.08) !important;
+  }
+
+  body.yatut-dark-mode
+  .friends-v2-toolbar
+  .friends-v2-search
+  input {
+    color: #f5f6fb !important;
+  }
+
+  /* =======================================================
+     MOBILE MENU — NO PURPLE RECTANGLE BEHIND 2x2 CARDS
+  ======================================================= */
+
+  .mobile-more-sheet
+  .mobile-more-primary {
+    position: relative !important;
+
+    margin-top: 11px !important;
+    padding: 0 !important;
+
+    display: grid !important;
+
+    grid-template-columns:
+      repeat(2,minmax(0,1fr)) !important;
+
+    gap: 9px !important;
+
+    border: 0 !important;
+    outline: 0 !important;
+    border-radius: 0 !important;
+
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+
+    color: inherit !important;
+
+    box-shadow: none !important;
+
+    filter: none !important;
+
+    overflow: visible !important;
+    isolation: isolate !important;
+  }
+
+  .mobile-more-sheet
+  .mobile-more-primary::before,
+  .mobile-more-sheet
+  .mobile-more-primary::after {
+    content: none !important;
+    display: none !important;
+
+    background: none !important;
+    box-shadow: none !important;
+  }
+
+  .mobile-more-sheet
+  .mobile-more-primary
+  > button {
+    position: relative !important;
+    z-index: 1 !important;
+
+    min-height: 116px !important;
+
+    border:
+      1px solid
+      rgba(232,232,241,.90) !important;
+
+    border-radius:
+      22px !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.96),
+        rgba(248,247,255,.88)
+      ) !important;
+
+    color: #30333d !important;
+
+    box-shadow:
+      0 8px 24px rgba(49,52,73,.055),
+      inset 0 1px 0 rgba(255,255,255,.95) !important;
+
+    filter: none !important;
+  }
+
+  body.yatut-dark-mode
+  .mobile-more-sheet
+  .mobile-more-primary {
+    background: transparent !important;
+    background-image: none !important;
+
+    box-shadow: none !important;
+  }
+
+  body.yatut-dark-mode
+  .mobile-more-sheet
+  .mobile-more-primary
+  > button {
+    border-color:
+      rgba(255,255,255,.08) !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.055),
+        rgba(16,21,34,.90)
+      ) !important;
+
+    color: #f5f6fb !important;
+
+    box-shadow:
+      0 9px 24px rgba(0,0,0,.16),
+      inset 0 1px 0 rgba(255,255,255,.05) !important;
+  }
+
+  /* =======================================================
+     KEYBOARD — DON'T FLOAT GLOBAL NAV ABOVE IT
+  ======================================================= */
+
+  html.yatut-keyboard-open
+  #yatut-global-mobile-nav {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+
+    transform:
+      translateY(20px) !important;
+
+    transition:
+      opacity .14s ease,
+      transform .14s ease,
+      visibility .14s ease !important;
+  }
+}
