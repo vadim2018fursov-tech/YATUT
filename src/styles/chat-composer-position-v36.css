@@ -1,0 +1,55 @@
+/* =========================================================
+   YATUT CHAT COMPOSER POSITION V36
+   Lift the mobile composer higher above the bottom edge.
+========================================================= */
+
+@media (max-width: 767px) {
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode),
+  .messenger.mobile-dialog-open
+  .chat-composer.voice-mode {
+    width: calc(100% - 10px) !important;
+    max-width: calc(100% - 10px) !important;
+
+    margin:
+      0
+      5px
+      max(
+        24px,
+        calc(
+          var(
+            --yatut-safe-bottom,
+            env(safe-area-inset-bottom, 0px)
+          ) +
+          10px
+        )
+      ) !important;
+
+    align-self: center !important;
+  }
+
+  /* When the keyboard is open, keep the composer close to it,
+     but still leave a small breathing gap. */
+  html.yatut-chat-input-focused
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode),
+  html.yatut-keyboard-open
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode),
+  html.yatut-chat-input-focused
+  .messenger.mobile-dialog-open
+  .chat-composer.voice-mode,
+  html.yatut-keyboard-open
+  .messenger.mobile-dialog-open
+  .chat-composer.voice-mode {
+    margin:
+      0
+      5px
+      10px !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-messages {
+    padding-bottom: 10px !important;
+  }
+}
