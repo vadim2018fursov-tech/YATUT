@@ -1,0 +1,330 @@
+/* =========================================================
+   YATUT PROFILE REFERENCE V28
+   Mobile profile alignment to approved Liquid Glass reference.
+   Loaded last on purpose to override legacy profile layers.
+========================================================= */
+
+@media (max-width: 767px) {
+  .profile-v4-immersive .profile-v2-shell {
+    width: 100% !important;
+    max-width: none !important;
+    padding: 0 10px !important;
+  }
+
+  .profile-v4-immersive .profile-v2-hero {
+    width: 100% !important;
+    margin: 0 !important;
+    overflow: visible !important;
+  }
+
+  /* The real cover is rendered on the page background.
+     This invisible spacer controls where the identity begins. */
+  .profile-v4-immersive .profile-v2-cover {
+    width: calc(100% + 20px) !important;
+    height: 172px !important;
+    margin: 0 -10px !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-card {
+    width: 100% !important;
+    margin: -8px 0 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-avatar-wrap {
+    width: fit-content !important;
+    margin: -58px 0 10px !important;
+    z-index: 30 !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-avatar {
+    width: 96px !important;
+    height: 96px !important;
+    padding: 3px !important;
+    border: 4px solid rgba(255,255,255,.96) !important;
+    border-radius: 50% !important;
+    box-shadow:
+      0 0 0 2px rgba(40,211,157,.52),
+      0 0 22px rgba(40,211,157,.18),
+      0 15px 34px rgba(19,27,52,.18) !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-identity {
+    width: 100% !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-name-row {
+    width: 100% !important;
+    gap: 7px !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-name-row h1 {
+    max-width: calc(100% - 34px) !important;
+    font-size: clamp(29px, 8.4vw, 35px) !important;
+    line-height: .98 !important;
+    letter-spacing: -.045em !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-username {
+    margin-top: 5px !important;
+    font-size: 14px !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-bio {
+    margin: 10px 0 0 !important;
+    font-size: 13px !important;
+    line-height: 1.36 !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-meta {
+    margin-top: 9px !important;
+    gap: 7px !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-meta span {
+    min-height: 38px !important;
+    padding: 0 12px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 7px !important;
+    border: 1px solid rgba(255,255,255,.52) !important;
+    border-radius: 14px !important;
+    background: rgba(255,255,255,.48) !important;
+    box-shadow:
+      0 8px 22px rgba(27,34,61,.08),
+      inset 0 1px 0 rgba(255,255,255,.78) !important;
+    backdrop-filter: blur(18px) saturate(1.28) !important;
+    -webkit-backdrop-filter: blur(18px) saturate(1.28) !important;
+  }
+
+  body.yatut-profile-immersive.yatut-dark-mode
+  .profile-v4-immersive .profile-v3-mobile-meta span {
+    border-color: rgba(255,255,255,.12) !important;
+    background: rgba(13,19,35,.52) !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-status-wrap {
+    margin-top: 8px !important;
+    z-index: 35 !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-status {
+    min-height: 42px !important;
+    padding: 0 13px !important;
+    border-radius: 14px !important;
+  }
+
+  /* Main action row — wider and visually balanced. */
+  .profile-v4-immersive .profile-v3-mobile-actions {
+    width: 100% !important;
+    margin-top: 12px !important;
+    display: grid !important;
+    grid-template-columns: minmax(0,1fr) 48px 48px !important;
+    align-items: center !important;
+    gap: 8px !important;
+    overflow: visible !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-edit {
+    width: 100% !important;
+    min-height: 48px !important;
+    padding: 0 18px !important;
+    border-radius: 17px !important;
+    font-size: 14px !important;
+    font-weight: 850 !important;
+    letter-spacing: -.01em !important;
+    box-shadow:
+      0 14px 30px rgba(84,67,237,.28),
+      inset 0 1px 0 rgba(255,255,255,.26) !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-action {
+    width: 48px !important;
+    height: 48px !important;
+    border-radius: 16px !important;
+  }
+
+  /* Three-dots trigger: dots only. The extra chevron created the
+     stacked/broken appearance visible in the screenshot. */
+  .profile-v4-immersive .profile-v3-mobile-more-trigger {
+    display: grid !important;
+    place-items: center !important;
+    padding: 0 !important;
+  }
+
+  .profile-v4-immersive
+  .profile-v3-mobile-more-trigger
+  > .yatut-icon:last-child {
+    display: none !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-more-wrap {
+    position: relative !important;
+    width: 48px !important;
+    height: 48px !important;
+    z-index: 140 !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-more-menu {
+    position: absolute !important;
+    top: calc(100% + 10px) !important;
+    right: 0 !important;
+    z-index: 200 !important;
+    width: 196px !important;
+    min-width: 196px !important;
+    padding: 7px !important;
+    display: grid !important;
+    gap: 3px !important;
+    overflow: visible !important;
+    border: 1px solid rgba(255,255,255,.72) !important;
+    border-radius: 18px !important;
+    background: rgba(249,250,255,.88) !important;
+    box-shadow:
+      0 22px 54px rgba(20,27,50,.20),
+      inset 0 1px 0 rgba(255,255,255,.92) !important;
+    backdrop-filter: blur(24px) saturate(1.30) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(1.30) !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-more-menu::before {
+    content: "" !important;
+    position: absolute !important;
+    top: -6px !important;
+    right: 18px !important;
+    width: 12px !important;
+    height: 12px !important;
+    transform: rotate(45deg) !important;
+    border-top: 1px solid rgba(255,255,255,.72) !important;
+    border-left: 1px solid rgba(255,255,255,.72) !important;
+    background: rgba(249,250,255,.92) !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-more-menu button {
+    position: relative !important;
+    z-index: 1 !important;
+    width: 100% !important;
+    min-height: 46px !important;
+    padding: 0 12px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 10px !important;
+    border: 0 !important;
+    border-radius: 13px !important;
+    background: transparent !important;
+    color: #252936 !important;
+    font-size: 14px !important;
+    font-weight: 720 !important;
+    text-align: left !important;
+    white-space: nowrap !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-more-menu button:active {
+    background: rgba(105,84,244,.09) !important;
+    transform: scale(.985) !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-more-menu .yatut-icon {
+    flex: 0 0 auto !important;
+    color: #6658f4 !important;
+  }
+
+  body.yatut-profile-immersive.yatut-dark-mode
+  .profile-v4-immersive .profile-v3-mobile-more-menu {
+    border-color: rgba(255,255,255,.13) !important;
+    background: rgba(12,18,33,.90) !important;
+    box-shadow:
+      0 24px 58px rgba(0,0,0,.38),
+      inset 0 1px 0 rgba(255,255,255,.07) !important;
+  }
+
+  body.yatut-profile-immersive.yatut-dark-mode
+  .profile-v4-immersive .profile-v3-mobile-more-menu::before {
+    border-color: rgba(255,255,255,.13) !important;
+    background: rgba(12,18,33,.94) !important;
+  }
+
+  body.yatut-profile-immersive.yatut-dark-mode
+  .profile-v4-immersive .profile-v3-mobile-more-menu button {
+    color: #f6f7ff !important;
+  }
+
+  /* Wider stats card like the approved reference. */
+  .profile-v4-immersive .profile-v3-mobile-stats {
+    width: 100% !important;
+    min-height: 84px !important;
+    margin-top: 14px !important;
+    padding: 7px 3px !important;
+    border-radius: 24px !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-stats strong {
+    font-size: 22px !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-stats span {
+    margin-top: 6px !important;
+    font-size: 10px !important;
+  }
+
+  .profile-v4-immersive .profile-v2-grid {
+    width: 100% !important;
+    margin-top: 12px !important;
+  }
+
+  .profile-v4-immersive .profile-v2-tabs {
+    width: 100% !important;
+    margin: 0 !important;
+    border-radius: 22px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .profile-v4-immersive .profile-v2-shell {
+    padding: 0 8px !important;
+  }
+
+  .profile-v4-immersive .profile-v2-cover {
+    width: calc(100% + 16px) !important;
+    height: 164px !important;
+    margin: 0 -8px !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-avatar-wrap {
+    margin-top: -55px !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-avatar {
+    width: 92px !important;
+    height: 92px !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-actions {
+    grid-template-columns: minmax(0,1fr) 46px 46px !important;
+    gap: 7px !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-action,
+  .profile-v4-immersive .profile-v3-mobile-more-wrap {
+    width: 46px !important;
+    height: 46px !important;
+  }
+
+  .profile-v4-immersive .profile-v3-mobile-edit {
+    min-height: 46px !important;
+    font-size: 13px !important;
+  }
+}
+
+html.yatut-platform-ios
+.profile-v4-immersive .profile-v3-mobile-more-menu {
+  border-radius: 20px !important;
+}
+
+html.yatut-platform-android
+.profile-v4-immersive .profile-v3-mobile-more-menu {
+  border-radius: 17px !important;
+  backdrop-filter: blur(18px) saturate(1.18) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(1.18) !important;
+}
