@@ -5170,8 +5170,8 @@ function Chats({
         composer.style.setProperty(
           "bottom",
           keyboardOpen
-            ? "6px"
-            : "max(58px, calc(env(safe-area-inset-bottom, 0px) + 24px))",
+            ? "4px"
+            : "max(14px, calc(env(safe-area-inset-bottom, 0px) + 4px))",
           "important"
         );
       };
