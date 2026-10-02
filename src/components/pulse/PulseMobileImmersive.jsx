@@ -398,6 +398,442 @@ function PulseForYouTeaser({
   );
 }
 
+function PulseInlineLive({
+  videos = [],
+  onStartLive,
+}) {
+  const featured =
+    videos[0] ||
+    null;
+
+  const rest =
+    videos.slice(
+      1
+    );
+
+  return (
+    <div className="pulse-inline-live">
+      <header className="pulse-inline-live__header">
+        <div>
+          <span>
+            <Radio
+              size={15}
+            />
+
+            LIVE
+          </span>
+
+          <div>
+            <strong>
+              Ефіри зараз
+            </strong>
+
+            <small>
+              Дивись наживо, не виходячи з PULSE
+            </small>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          onClick={
+            onStartLive
+          }
+        >
+          <Plus
+            size={16}
+          />
+
+          Почати ефір
+        </button>
+      </header>
+
+      {featured ? (
+        <>
+          <button
+            type="button"
+            className="pulse-inline-live__featured"
+          >
+            <div className="pulse-inline-live__featured-media">
+              {featured.thumbnail ||
+              featured.poster ? (
+                <img
+                  src={
+                    featured.thumbnail ||
+                    featured.poster
+                  }
+                  alt=""
+                />
+              ) : (
+                <div className="pulse-inline-live__placeholder">
+                  <Radio
+                    size={42}
+                  />
+
+                  <span>
+                    LIVE
+                  </span>
+                </div>
+              )}
+
+              <span className="pulse-inline-live__badge">
+                <i />
+
+                LIVE
+              </span>
+
+              <span className="pulse-inline-live__viewers">
+                <Users
+                  size={13}
+                />
+
+                {formatCompact(
+                  featured.viewers ||
+                  featured.views ||
+                  0
+                )}
+              </span>
+            </div>
+
+            <div className="pulse-inline-live__featured-copy">
+              <div className="pulse-inline-live__author">
+                {featured.author?.avatar ||
+                featured.authorAvatar ? (
+                  <img
+                    src={
+                      featured.author?.avatar ||
+                      featured.authorAvatar
+                    }
+                    alt=""
+                  />
+                ) : (
+                  <span>
+                    {
+                      featured.author?.name?.[0] ||
+                      "Я"
+                    }
+                  </span>
+                )}
+
+                <div>
+                  <small>
+                    {
+                      featured.author?.name ||
+                      "Автор ЯТУТ"
+                    }
+                  </small>
+
+                  <strong>
+                    {
+                      featured.title ||
+                      "LIVE зараз"
+                    }
+                  </strong>
+                </div>
+              </div>
+
+              {(featured.location?.name ||
+                featured.locationName ||
+                featured.city) && (
+                <span className="pulse-inline-live__location">
+                  <MapPin
+                    size={13}
+                  />
+
+                  {
+                    featured.location?.name ||
+                    featured.locationName ||
+                    featured.city
+                  }
+                </span>
+              )}
+            </div>
+          </button>
+
+          {rest.length > 0 && (
+            <section className="pulse-inline-live__more">
+              <header>
+                <strong>
+                  Ще наживо
+                </strong>
+
+                <span>
+                  {
+                    rest.length
+                  }
+                </span>
+              </header>
+
+              <div>
+                {rest.map(
+                  (
+                    video
+                  ) => (
+                    <button
+                      type="button"
+                      key={
+                        video.id
+                      }
+                      className="pulse-inline-live__card"
+                    >
+                      <div>
+                        {video.thumbnail ||
+                        video.poster ? (
+                          <img
+                            src={
+                              video.thumbnail ||
+                              video.poster
+                            }
+                            alt=""
+                          />
+                        ) : (
+                          <span>
+                            <Radio
+                              size={22}
+                            />
+                          </span>
+                        )}
+
+                        <i>
+                          LIVE
+                        </i>
+                      </div>
+
+                      <strong>
+                        {
+                          video.title ||
+                          "Прямий ефір"
+                        }
+                      </strong>
+
+                      <small>
+                        {
+                          video.author?.name ||
+                          "Автор ЯТУТ"
+                        }
+                      </small>
+                    </button>
+                  )
+                )}
+              </div>
+            </section>
+          )}
+        </>
+      ) : (
+        <div className="pulse-inline-live__empty">
+          <span>
+            <Radio
+              size={31}
+            />
+          </span>
+
+          <strong>
+            Зараз ніхто не в ефірі
+          </strong>
+
+          <p>
+            Коли автор почне трансляцію, вона зʼявиться тут одразу — без переходу на окрему сторінку.
+          </p>
+
+          <button
+            type="button"
+            onClick={
+              onStartLive
+            }
+          >
+            <Plus
+              size={16}
+            />
+
+            Почати свій LIVE
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function PulseInlineNearby({
+  videos = [],
+  onCreateNow,
+}) {
+  return (
+    <div className="pulse-inline-nearby">
+      <header className="pulse-inline-nearby__header">
+        <div>
+          <span>
+            <MapPin
+              size={16}
+            />
+          </span>
+
+          <div>
+            <strong>
+              Поруч
+            </strong>
+
+            <small>
+              Що відбувається навколо тебе зараз
+            </small>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          onClick={
+            onCreateNow
+          }
+        >
+          <Plus
+            size={16}
+          />
+
+          Зараз
+        </button>
+      </header>
+
+      <div className="pulse-inline-nearby__filters">
+        <button
+          type="button"
+          className="is-active"
+        >
+          Усе
+        </button>
+
+        <button
+          type="button"
+        >
+          Зараз
+        </button>
+
+        <button
+          type="button"
+        >
+          Події
+        </button>
+
+        <button
+          type="button"
+        >
+          Місця
+        </button>
+      </div>
+
+      {videos.length ? (
+        <div className="pulse-inline-nearby__grid">
+          {videos.map(
+            (
+              video
+            ) => (
+              <article
+                key={
+                  video.id
+                }
+                className="pulse-inline-nearby__card"
+              >
+                <div className="pulse-inline-nearby__media">
+                  {video.thumbnail ||
+                  video.poster ? (
+                    <img
+                      src={
+                        video.thumbnail ||
+                        video.poster
+                      }
+                      alt=""
+                    />
+                  ) : (
+                    <div>
+                      <MapPin
+                        size={28}
+                      />
+
+                      <span>
+                        ЯТУТ
+                      </span>
+                    </div>
+                  )}
+
+                  <span>
+                    {video.pulseKind ===
+                    "moment"
+                      ? "ЗАРАЗ"
+                      : video.type ===
+                        "event"
+                      ? "ПОДІЯ"
+                      : "ПОРУЧ"}
+                  </span>
+                </div>
+
+                <div className="pulse-inline-nearby__copy">
+                  <small>
+                    <MapPin
+                      size={12}
+                    />
+
+                    {
+                      video.location?.name ||
+                      video.locationName ||
+                      video.city ||
+                      "Поруч"
+                    }
+                  </small>
+
+                  <strong>
+                    {
+                      video.title ||
+                      video.description ||
+                      "Щось відбувається поруч"
+                    }
+                  </strong>
+
+                  <p>
+                    {
+                      video.author?.name ||
+                      "ЯТУТ"
+                    }
+                    {video.friendsNearby
+                      ? ` · ${video.friendsNearby} друзів поруч`
+                      : ""}
+                  </p>
+                </div>
+              </article>
+            )
+          )}
+        </div>
+      ) : (
+        <div className="pulse-inline-nearby__empty">
+          <span>
+            <MapPin
+              size={30}
+            />
+          </span>
+
+          <strong>
+            Поки тихо поруч
+          </strong>
+
+          <p>
+            Кліпи «Зараз», події та місця зʼявляться тут, коли буде актуальний контент.
+          </p>
+
+          <button
+            type="button"
+            onClick={
+              onCreateNow
+            }
+          >
+            <Plus
+              size={16}
+            />
+
+            Показати, що тут зараз
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function PulseImmersiveSlide({
   video,
   authSession,
@@ -2365,6 +2801,12 @@ export default function PulseMobileImmersive({
         activeTab ===
         "vlogs"
           ? "is-long-form"
+          : activeTab ===
+            "live"
+          ? "is-live-tab"
+          : activeTab ===
+            "nearby"
+          ? "is-nearby-tab"
           : ""
       } ${
         longWatchOpen
@@ -2450,6 +2892,38 @@ export default function PulseMobileImmersive({
           }
           onWatchChange={
             handleLongWatchChange
+          }
+        />
+      ) : activeTab ===
+        "live" ? (
+        <PulseInlineLive
+          videos={
+            videos
+          }
+          onStartLive={() =>
+            onNavigate?.(
+              "createMedia",
+              {
+                type:
+                  "live",
+              }
+            )
+          }
+        />
+      ) : activeTab ===
+        "nearby" ? (
+        <PulseInlineNearby
+          videos={
+            videos
+          }
+          onCreateNow={() =>
+            onNavigate?.(
+              "createMedia",
+              {
+                type:
+                  "moment",
+              }
+            )
           }
         />
       ) : (
