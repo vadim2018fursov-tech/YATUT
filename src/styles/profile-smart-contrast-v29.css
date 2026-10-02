@@ -1,0 +1,498 @@
+/* =========================================================
+   YATUT PROFILE SMART CONTRAST V29
+   Per-zone contrast over the user's actual cover image.
+   data-profile-tone="dark"  => dark pixels beneath the zone.
+   data-profile-tone="light" => light pixels beneath the zone.
+========================================================= */
+
+@media (max-width: 767px) {
+  body.yatut-profile-smart-contrast
+  :is(
+    .profile-v3-mobile-identity,
+    .profile-v3-mobile-bio,
+    .profile-v3-mobile-meta,
+    .profile-v3-mobile-status-wrap,
+    .profile-v3-mobile-actions,
+    .profile-v3-mobile-stats,
+    .profile-v2-tabs
+  ) {
+    transition:
+      color .24s ease,
+      background-color .24s ease,
+      border-color .24s ease,
+      box-shadow .24s ease,
+      text-shadow .24s ease !important;
+  }
+
+  /* =======================================================
+     IDENTITY TEXT
+  ======================================================= */
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v3-mobile-identity[data-profile-tone="dark"]
+  .profile-v3-mobile-name-row h1 {
+    color: #fff !important;
+    text-shadow:
+      0 2px 12px rgba(0,0,0,.48),
+      0 1px 2px rgba(0,0,0,.24) !important;
+  }
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v3-mobile-identity[data-profile-tone="light"]
+  .profile-v3-mobile-name-row h1 {
+    color: #111522 !important;
+    text-shadow:
+      0 1px 8px rgba(255,255,255,.72),
+      0 1px 2px rgba(255,255,255,.42) !important;
+  }
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v3-mobile-identity[data-profile-tone="dark"]
+  .profile-v3-mobile-username {
+    color: rgba(255,255,255,.78) !important;
+    text-shadow:
+      0 1px 7px rgba(0,0,0,.44) !important;
+  }
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v3-mobile-identity[data-profile-tone="light"]
+  .profile-v3-mobile-username {
+    color: rgba(35,41,56,.72) !important;
+    text-shadow:
+      0 1px 6px rgba(255,255,255,.62) !important;
+  }
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v3-mobile-bio[data-profile-tone="dark"] {
+    color: rgba(255,255,255,.92) !important;
+    text-shadow:
+      0 1px 8px rgba(0,0,0,.42) !important;
+  }
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v3-mobile-bio[data-profile-tone="light"] {
+    color: #2b3040 !important;
+    text-shadow:
+      0 1px 6px rgba(255,255,255,.58) !important;
+  }
+
+  /* Extra legibility when a zone contains both bright and dark pixels. */
+  body.yatut-profile-smart-contrast
+  .profile-v3-mobile-identity[data-profile-mixed="true"]
+  .profile-v3-mobile-name-row h1,
+  body.yatut-profile-smart-contrast
+  .profile-v3-mobile-bio[data-profile-mixed="true"] {
+    -webkit-text-stroke:
+      .12px
+      rgba(127,127,127,.12);
+  }
+
+  /* =======================================================
+     META CHIPS
+  ======================================================= */
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v3-mobile-meta[data-profile-tone="dark"]
+  span {
+    border-color: rgba(255,255,255,.19) !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(18,25,43,.56),
+        rgba(8,14,27,.43)
+      ) !important;
+    color: rgba(248,250,255,.92) !important;
+    text-shadow:
+      0 1px 5px rgba(0,0,0,.28) !important;
+    box-shadow:
+      0 10px 26px rgba(0,0,0,.16),
+      inset 0 1px 0 rgba(255,255,255,.11) !important;
+  }
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v3-mobile-meta[data-profile-tone="light"]
+  span {
+    border-color: rgba(255,255,255,.70) !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.78),
+        rgba(246,248,255,.60)
+      ) !important;
+    color: #353a49 !important;
+    text-shadow: none !important;
+    box-shadow:
+      0 10px 24px rgba(28,34,58,.09),
+      inset 0 1px 0 rgba(255,255,255,.94) !important;
+  }
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v3-mobile-meta
+  .yatut-icon {
+    color: #6a58ff !important;
+    filter:
+      drop-shadow(
+        0 1px 5px rgba(77,57,210,.12)
+      );
+  }
+
+  /* =======================================================
+     STATUS CHIP
+  ======================================================= */
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v3-mobile-status-wrap[data-profile-tone="dark"]
+  .profile-v3-mobile-status {
+    border-color: rgba(190,180,255,.22) !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(18,23,42,.58),
+        rgba(15,19,36,.43)
+      ) !important;
+    color: #c6bbff !important;
+    box-shadow:
+      0 10px 25px rgba(0,0,0,.15),
+      inset 0 1px 0 rgba(255,255,255,.10) !important;
+  }
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v3-mobile-status-wrap[data-profile-tone="dark"]
+  .profile-v3-mobile-status small {
+    color: rgba(236,233,255,.66) !important;
+  }
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v3-mobile-status-wrap[data-profile-tone="light"]
+  .profile-v3-mobile-status {
+    border-color: rgba(101,83,238,.16) !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.76),
+        rgba(242,240,255,.64)
+      ) !important;
+    color: #6352ef !important;
+    box-shadow:
+      0 9px 22px rgba(36,40,64,.08),
+      inset 0 1px 0 rgba(255,255,255,.92) !important;
+  }
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v3-mobile-status-wrap[data-profile-tone="light"]
+  .profile-v3-mobile-status small {
+    color: #827aa9 !important;
+  }
+
+  /* =======================================================
+     ACTION ROW
+  ======================================================= */
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v3-mobile-actions[data-profile-tone="dark"]
+  .profile-v3-mobile-action {
+    border-color: rgba(255,255,255,.19) !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(26,33,53,.58),
+        rgba(10,16,30,.44)
+      ) !important;
+    color: #fff !important;
+    box-shadow:
+      0 11px 27px rgba(0,0,0,.17),
+      inset 0 1px 0 rgba(255,255,255,.12) !important;
+  }
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v3-mobile-actions[data-profile-tone="light"]
+  .profile-v3-mobile-action {
+    border-color: rgba(255,255,255,.72) !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.82),
+        rgba(244,247,255,.62)
+      ) !important;
+    color: #313745 !important;
+    box-shadow:
+      0 11px 26px rgba(29,35,59,.10),
+      inset 0 1px 0 rgba(255,255,255,.95) !important;
+  }
+
+  /* Primary violet stays branded, only its edge/shadow adapts. */
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v3-mobile-actions[data-profile-tone="dark"]
+  .profile-v3-mobile-edit {
+    border-color: rgba(201,193,255,.34) !important;
+    box-shadow:
+      0 14px 32px rgba(73,54,222,.38),
+      0 0 22px rgba(112,88,255,.12),
+      inset 0 1px 0 rgba(255,255,255,.28) !important;
+  }
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v3-mobile-actions[data-profile-tone="light"]
+  .profile-v3-mobile-edit {
+    border-color: rgba(103,79,239,.24) !important;
+    box-shadow:
+      0 14px 30px rgba(84,67,237,.27),
+      inset 0 1px 0 rgba(255,255,255,.30) !important;
+  }
+
+  /* More-menu follows the tone of its parent action row. */
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v3-mobile-actions[data-profile-tone="dark"]
+  .profile-v3-mobile-more-menu {
+    border-color: rgba(255,255,255,.15) !important;
+    background: rgba(11,17,31,.90) !important;
+  }
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v3-mobile-actions[data-profile-tone="dark"]
+  .profile-v3-mobile-more-menu::before {
+    border-color: rgba(255,255,255,.15) !important;
+    background: rgba(11,17,31,.94) !important;
+  }
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v3-mobile-actions[data-profile-tone="dark"]
+  .profile-v3-mobile-more-menu button {
+    color: #f7f8ff !important;
+  }
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v3-mobile-actions[data-profile-tone="light"]
+  .profile-v3-mobile-more-menu {
+    border-color: rgba(255,255,255,.74) !important;
+    background: rgba(249,250,255,.91) !important;
+  }
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v3-mobile-actions[data-profile-tone="light"]
+  .profile-v3-mobile-more-menu::before {
+    border-color: rgba(255,255,255,.74) !important;
+    background: rgba(249,250,255,.95) !important;
+  }
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v3-mobile-actions[data-profile-tone="light"]
+  .profile-v3-mobile-more-menu button {
+    color: #252936 !important;
+  }
+
+  /* =======================================================
+     STATS GLASS
+  ======================================================= */
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v3-mobile-stats[data-profile-tone="dark"] {
+    border-color: rgba(255,255,255,.14) !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(18,24,42,.72),
+        rgba(9,15,29,.58)
+      ) !important;
+    box-shadow:
+      0 16px 36px rgba(0,0,0,.20),
+      inset 0 1px 0 rgba(255,255,255,.09) !important;
+  }
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v3-mobile-stats[data-profile-tone="dark"]
+  :is(button, strong) {
+    color: #f8f9ff !important;
+  }
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v3-mobile-stats[data-profile-tone="dark"]
+  span {
+    color: rgba(232,235,247,.68) !important;
+  }
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v3-mobile-stats[data-profile-tone="dark"]
+  button + button {
+    border-left-color: rgba(255,255,255,.10) !important;
+  }
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v3-mobile-stats[data-profile-tone="light"] {
+    border-color: rgba(255,255,255,.76) !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.86),
+        rgba(246,248,255,.70)
+      ) !important;
+    box-shadow:
+      0 14px 32px rgba(29,34,55,.09),
+      inset 0 1px 0 rgba(255,255,255,.96) !important;
+  }
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v3-mobile-stats[data-profile-tone="light"]
+  :is(button, strong) {
+    color: #171923 !important;
+  }
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v3-mobile-stats[data-profile-tone="light"]
+  span {
+    color: #707684 !important;
+  }
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v3-mobile-stats[data-profile-tone="light"]
+  button + button {
+    border-left-color: rgba(65,70,92,.09) !important;
+  }
+
+  /* =======================================================
+     TABS GLASS
+  ======================================================= */
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v2-tabs[data-profile-tone="dark"] {
+    border-color: rgba(255,255,255,.14) !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(18,24,42,.72),
+        rgba(9,15,29,.58)
+      ) !important;
+    box-shadow:
+      0 16px 36px rgba(0,0,0,.19),
+      inset 0 1px 0 rgba(255,255,255,.08) !important;
+  }
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v2-tabs[data-profile-tone="dark"]
+  button {
+    color: rgba(231,234,246,.72) !important;
+  }
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v2-tabs[data-profile-tone="dark"]
+  button.active {
+    color: #d3caff !important;
+  }
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v2-tabs[data-profile-tone="dark"]
+  .profile-v2-tab-active {
+    border-color: rgba(157,139,255,.24) !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(116,94,255,.22),
+        rgba(93,74,232,.12)
+      ) !important;
+  }
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v2-tabs[data-profile-tone="light"] {
+    border-color: rgba(255,255,255,.76) !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.86),
+        rgba(246,248,255,.70)
+      ) !important;
+    box-shadow:
+      0 14px 32px rgba(29,34,55,.09),
+      inset 0 1px 0 rgba(255,255,255,.96) !important;
+  }
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v2-tabs[data-profile-tone="light"]
+  button {
+    color: #747987 !important;
+  }
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v2-tabs[data-profile-tone="light"]
+  button.active {
+    color: #6252f2 !important;
+  }
+
+  /* Mixed image zones get slightly denser glass. */
+  body.yatut-profile-smart-contrast
+  :is(
+    .profile-v3-mobile-meta,
+    .profile-v3-mobile-status-wrap,
+    .profile-v3-mobile-actions,
+    .profile-v3-mobile-stats,
+    .profile-v2-tabs
+  )[data-profile-mixed="true"] {
+    --profile-mixed-boost: 1;
+  }
+
+  body.yatut-profile-smart-contrast
+  .profile-v3-mobile-stats[data-profile-mixed="true"],
+  body.yatut-profile-smart-contrast
+  .profile-v2-tabs[data-profile-mixed="true"] {
+    backdrop-filter:
+      blur(26px)
+      saturate(1.28)
+      contrast(1.025) !important;
+    -webkit-backdrop-filter:
+      blur(26px)
+      saturate(1.28)
+      contrast(1.025) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.yatut-profile-smart-contrast
+  :is(
+    .profile-v3-mobile-identity,
+    .profile-v3-mobile-bio,
+    .profile-v3-mobile-meta,
+    .profile-v3-mobile-status-wrap,
+    .profile-v3-mobile-actions,
+    .profile-v3-mobile-stats,
+    .profile-v2-tabs
+  ) {
+    transition: none !important;
+  }
+}
