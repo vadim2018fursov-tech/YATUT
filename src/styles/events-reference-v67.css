@@ -1,0 +1,358 @@
+/* =========================================================
+   YATUT EVENTS REFERENCE TIGHTENING V67
+   Match the approved Events template more closely on phones.
+========================================================= */
+
+@media (max-width: 900px) {
+  .events-page {
+    gap: 10px !important;
+    padding-bottom:
+      calc(
+        92px +
+        env(
+          safe-area-inset-bottom,
+          0px
+        )
+      ) !important;
+  }
+
+  /* HERO — slightly flatter and closer to reference */
+  .events-page .events-hero {
+    min-height: 238px !important;
+    padding: 20px 20px !important;
+    grid-template-columns:
+      minmax(0, 1.18fr)
+      minmax(126px, .82fr) !important;
+    border-radius: 24px !important;
+  }
+
+  .events-page .events-hero h1 {
+    max-width: 330px !important;
+    font-size: clamp(28px, 6.8vw, 36px) !important;
+    line-height: 1.01 !important;
+  }
+
+  .events-page .events-hero p {
+    margin-top: 12px !important;
+    max-width: 330px !important;
+  }
+
+  .events-page .events-hero > div:first-child > button {
+    min-height: 44px !important;
+    margin-top: 14px !important;
+    border-radius: 14px !important;
+  }
+
+  .events-page .events-hero-art {
+    height: 160px !important;
+  }
+
+  .events-page .events-hero-art::before {
+    left: 10px !important;
+    right: 2px !important;
+    top: 28px !important;
+    bottom: 4px !important;
+    border-radius: 30px !important;
+  }
+
+  .events-page .events-hero-art > span {
+    top: 46px !important;
+    width: 84px !important;
+    height: 84px !important;
+    font-size: 43px !important;
+    border-radius: 24px !important;
+  }
+
+  .events-page .events-hero-art > i,
+  .events-page .events-hero-art > b {
+    width: 42px !important;
+    height: 42px !important;
+    border-radius: 15px !important;
+  }
+
+  .events-page .events-hero-art > i {
+    top: 18px !important;
+    right: 2px !important;
+  }
+
+  .events-page .events-hero-art > b {
+    left: 0 !important;
+    bottom: 4px !important;
+  }
+
+  /* CONTROLS */
+  .events-page .events-search-row {
+    grid-template-columns:
+      minmax(0, 1fr)
+      46px !important;
+  }
+
+  .events-page .events-search,
+  .events-page .events-filter-button {
+    height: 46px !important;
+    min-height: 46px !important;
+  }
+
+  .events-page .events-filter-button {
+    width: 46px !important;
+    min-width: 46px !important;
+  }
+
+  .events-page .events-tabs {
+    min-height: 46px !important;
+    padding: 4px !important;
+  }
+
+  .events-page .events-tabs button {
+    min-height: 38px !important;
+  }
+
+  /* SECTION HEADER */
+  .events-page .events-section-title {
+    min-height: 56px !important;
+    margin-bottom: 6px !important;
+    align-items: center !important;
+  }
+
+  .events-page .events-section-title h2 {
+    font-size: 21px !important;
+    line-height: 1.02 !important;
+    max-width: 270px !important;
+  }
+
+  .events-page .events-section-title-actions {
+    align-self: center !important;
+  }
+
+  .events-page .events-section-title-actions > button {
+    min-height: 32px !important;
+    min-width: 78px !important;
+    white-space: nowrap !important;
+    border-radius: 11px !important;
+    font-size: 7.5px !important;
+  }
+
+  .events-page .events-section-title-actions > strong {
+    min-width: 32px !important;
+    height: 32px !important;
+    border-radius: 11px !important;
+  }
+
+  /* EMPTY STATE — compact, not a huge blank card */
+  .events-page .events-empty {
+    min-height: 138px !important;
+    max-height: 138px !important;
+    padding: 14px 18px !important;
+    border-radius: 22px !important;
+    gap: 4px !important;
+  }
+
+  .events-page .events-empty > span {
+    width: 52px !important;
+    height: 52px !important;
+    border-radius: 17px !important;
+    font-size: 23px !important;
+  }
+
+  .events-page .events-empty h3 {
+    margin-top: 2px !important;
+    font-size: 15px !important;
+  }
+
+  .events-page .events-empty p {
+    font-size: 8px !important;
+    line-height: 1.35 !important;
+  }
+
+  /* CITY — one compact horizontal card */
+  .events-page .events-side-card:first-child {
+    min-height: 126px !important;
+    padding: 16px 17px !important;
+    grid-template-columns:
+      minmax(0, 1fr)
+      154px !important;
+    border-radius: 22px !important;
+  }
+
+  .events-page .events-side-card:first-child h3 {
+    font-size: 24px !important;
+  }
+
+  .events-page .events-side-card:first-child p {
+    max-width: 210px !important;
+    font-size: 8px !important;
+  }
+
+  .events-page .events-city-stat {
+    gap: 7px !important;
+  }
+
+  .events-page .events-city-stat > div {
+    min-height: 68px !important;
+    padding: 9px 10px !important;
+    border-radius: 14px !important;
+  }
+
+  .events-page .events-city-stat strong {
+    font-size: 16px !important;
+  }
+
+  /* CATEGORIES — exactly one compact row, like reference */
+  .events-page .events-side-card:nth-child(2) {
+    padding: 14px 14px 15px !important;
+    border-radius: 22px !important;
+  }
+
+  .events-page .events-side-card:nth-child(2) > span {
+    margin-bottom: 9px !important;
+  }
+
+  .events-page .events-category-list {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns:
+      repeat(
+        6,
+        minmax(0, 1fr)
+      ) !important;
+    gap: 6px !important;
+    overflow: visible !important;
+  }
+
+  .events-page .events-category-list button {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 84px !important;
+    padding: 8px 3px !important;
+    gap: 6px !important;
+    border-radius: 15px !important;
+  }
+
+  .events-page .events-category-list button > span {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 12px !important;
+    font-size: 17px !important;
+  }
+
+  .events-page .events-category-list strong {
+    width: 100% !important;
+    font-size: 6.8px !important;
+    line-height: 1.1 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  /* CTA — short banner, not a whole screen */
+  .events-page .events-create-side-card {
+    min-height: 150px !important;
+    max-height: 150px !important;
+    padding: 18px 20px !important;
+    border-radius: 22px !important;
+  }
+
+  .events-page .events-create-side-card > span {
+    font-size: 18px !important;
+  }
+
+  .events-page .events-create-side-card > strong {
+    margin-top: 7px !important;
+    font-size: 20px !important;
+  }
+
+  .events-page .events-create-side-card > p {
+    max-width: 58% !important;
+    margin-top: 5px !important;
+    font-size: 8px !important;
+    line-height: 1.35 !important;
+  }
+
+  .events-page .events-create-side-card > button {
+    min-height: 38px !important;
+    margin-top: 11px !important;
+    padding: 0 12px !important;
+    font-size: 8px !important;
+    border-radius: 12px !important;
+  }
+
+  .events-page .events-create-side-card::after {
+    right: 18px !important;
+    bottom: 10px !important;
+    width: 78px !important;
+    height: 78px !important;
+    border-radius: 26px !important;
+    font-size: 36px !important;
+  }
+
+  .events-page .events-side {
+    gap: 10px !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .events-page {
+    padding-left: 9px !important;
+    padding-right: 9px !important;
+  }
+
+  .events-page .events-hero {
+    min-height: 230px !important;
+    padding: 18px 15px !important;
+    grid-template-columns:
+      minmax(0, 1.24fr)
+      minmax(102px, .76fr) !important;
+  }
+
+  .events-page .events-hero h1 {
+    font-size: 26px !important;
+  }
+
+  .events-page .events-hero p {
+    font-size: 8.5px !important;
+  }
+
+  .events-page .events-side-card:first-child {
+    grid-template-columns:
+      minmax(0, 1fr)
+      132px !important;
+    min-height: 118px !important;
+    padding: 14px !important;
+  }
+
+  .events-page .events-city-stat > div {
+    min-height: 62px !important;
+    padding: 8px !important;
+  }
+
+  .events-page .events-category-list {
+    gap: 4px !important;
+  }
+
+  .events-page .events-category-list button {
+    min-height: 78px !important;
+    padding: 7px 2px !important;
+  }
+
+  .events-page .events-category-list button > span {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 15px !important;
+  }
+
+  .events-page .events-category-list strong {
+    font-size: 6px !important;
+  }
+
+  .events-page .events-create-side-card {
+    min-height: 140px !important;
+    max-height: 140px !important;
+    padding: 16px !important;
+  }
+
+  .events-page .events-create-side-card::after {
+    right: 10px !important;
+    width: 70px !important;
+    height: 70px !important;
+  }
+}
