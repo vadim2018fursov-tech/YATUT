@@ -365,43 +365,6 @@ export default function CreateHubPage({
         </div>
       </section>
 
-      <section className="yatut-create-section yatut-create-section--pulse">
-        <header className="yatut-create-section__header">
-          <div>
-            <small>
-              ЯТУТ PULSE
-            </small>
-
-            <h2>
-              Живі моменти
-            </h2>
-          </div>
-
-          <span>
-            Тут і зараз
-          </span>
-        </header>
-
-        <div className="yatut-create-grid yatut-create-grid--pulse">
-          {pulseItems.map(
-            (item) => (
-              <CreateCard
-                key={
-                  item.id
-                }
-                item={
-                  item
-                }
-                variant="pulse"
-                onCreate={
-                  handleCreate
-                }
-              />
-            )
-          )}
-        </div>
-      </section>
-
       {studioItem && (
         <section className="yatut-create-section yatut-create-section--tools">
           <header className="yatut-create-section__header">
