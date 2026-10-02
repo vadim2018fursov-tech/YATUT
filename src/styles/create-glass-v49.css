@@ -1,0 +1,1235 @@
+/* =========================================================
+   YATUT CREATE GLASS V49
+   Glass reference implementation for /create.
+   Scoped to CreateHubPage only. Global bottom navigation untouched.
+========================================================= */
+
+.yatut-create-page {
+  position: relative !important;
+  isolation: isolate !important;
+
+  width: 100% !important;
+  max-width: 980px !important;
+
+  margin: 0 auto !important;
+
+  padding:
+    14px
+    18px
+    150px !important;
+
+  display: grid !important;
+  gap: 18px !important;
+
+  overflow: visible !important;
+
+  background:
+    radial-gradient(
+      circle at 12% 6%,
+      rgba(126, 104, 255, .12),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 92% 18%,
+      rgba(77, 189, 255, .10),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 56% 72%,
+      rgba(246, 119, 214, .075),
+      transparent 30%
+    ),
+    transparent !important;
+}
+
+.yatut-create-page::before,
+.yatut-create-page::after {
+  content: "" !important;
+  position: absolute !important;
+  z-index: -2 !important;
+  pointer-events: none !important;
+  border-radius: 999px !important;
+  filter: blur(42px) !important;
+}
+
+.yatut-create-page::before {
+  width: 270px !important;
+  height: 270px !important;
+  left: -100px !important;
+  top: 190px !important;
+  background: rgba(112, 93, 255, .10) !important;
+}
+
+.yatut-create-page::after {
+  width: 300px !important;
+  height: 300px !important;
+  right: -120px !important;
+  top: 480px !important;
+  background: rgba(86, 192, 255, .085) !important;
+}
+
+/* =========================================================
+   HERO HEADER
+========================================================= */
+
+.yatut-create-header {
+  position: relative !important;
+  z-index: 1 !important;
+
+  min-height: 300px !important;
+
+  padding: 24px 28px 28px !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  align-items: flex-start !important;
+
+  gap: 28px !important;
+
+  overflow: hidden !important;
+
+  border:
+    1px solid
+    rgba(255,255,255,.38) !important;
+
+  border-radius: 34px !important;
+
+  background:
+    radial-gradient(
+      circle at 86% 16%,
+      rgba(255, 150, 237, .24),
+      transparent 24%
+    ),
+    radial-gradient(
+      circle at 70% 88%,
+      rgba(91, 182, 255, .22),
+      transparent 34%
+    ),
+    linear-gradient(
+      135deg,
+      rgba(32, 25, 99, .98) 0%,
+      rgba(73, 45, 185, .97) 48%,
+      rgba(119, 78, 238, .94) 100%
+    ) !important;
+
+  box-shadow:
+    0 28px 58px rgba(56, 43, 155, .22),
+    inset 0 1px 0 rgba(255,255,255,.32),
+    inset 0 -1px 0 rgba(255,255,255,.08) !important;
+
+  backdrop-filter:
+    blur(24px)
+    saturate(1.34) !important;
+
+  -webkit-backdrop-filter:
+    blur(24px)
+    saturate(1.34) !important;
+}
+
+.yatut-create-header::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: -10% -8% -18% 42% !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+
+  background:
+    radial-gradient(
+      ellipse at 54% 22%,
+      rgba(255,255,255,.21) 0 18%,
+      rgba(255,255,255,.055) 19% 34%,
+      transparent 35%
+    ),
+    radial-gradient(
+      ellipse at 72% 64%,
+      rgba(198, 179, 255, .24) 0 19%,
+      rgba(255,255,255,.045) 20% 38%,
+      transparent 39%
+    ),
+    radial-gradient(
+      ellipse at 34% 80%,
+      rgba(83, 186, 255, .18) 0 24%,
+      transparent 25%
+    ) !important;
+
+  transform:
+    rotate(-9deg) !important;
+
+  filter:
+    blur(.2px) !important;
+}
+
+.yatut-create-header::after {
+  content: "+" !important;
+  position: absolute !important;
+  z-index: 1 !important;
+
+  right: 54px !important;
+  top: 48px !important;
+
+  width: 104px !important;
+  height: 104px !important;
+
+  display: grid !important;
+  place-items: center !important;
+
+  border:
+    1px solid
+    rgba(255,255,255,.42) !important;
+
+  border-radius: 28px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.34),
+      rgba(181, 152, 255, .16)
+    ) !important;
+
+  color: rgba(255,255,255,.95) !important;
+
+  font-size: 64px !important;
+  font-weight: 350 !important;
+  line-height: 1 !important;
+
+  box-shadow:
+    0 18px 44px rgba(32,20,106,.22),
+    0 0 28px rgba(255,162,235,.18),
+    inset 0 1px 0 rgba(255,255,255,.62),
+    inset 0 -1px 0 rgba(255,255,255,.10) !important;
+
+  backdrop-filter:
+    blur(18px)
+    saturate(1.45) !important;
+
+  -webkit-backdrop-filter:
+    blur(18px)
+    saturate(1.45) !important;
+
+  transform:
+    rotate(7deg) !important;
+}
+
+.yatut-create-back,
+.yatut-create-title {
+  position: relative !important;
+  z-index: 3 !important;
+}
+
+.yatut-create-back {
+  min-height: 48px !important;
+
+  padding:
+    0
+    18px !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  gap: 8px !important;
+
+  border:
+    1px solid
+    rgba(255,255,255,.24) !important;
+
+  border-radius: 999px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.18),
+      rgba(255,255,255,.075)
+    ) !important;
+
+  color: #fff !important;
+
+  font-size: 13px !important;
+  font-weight: 800 !important;
+
+  box-shadow:
+    0 10px 22px rgba(14, 10, 68, .16),
+    inset 0 1px 0 rgba(255,255,255,.28) !important;
+
+  backdrop-filter:
+    blur(16px)
+    saturate(1.25) !important;
+
+  -webkit-backdrop-filter:
+    blur(16px)
+    saturate(1.25) !important;
+}
+
+.yatut-create-title {
+  max-width: 580px !important;
+}
+
+.yatut-create-title > span {
+  display: inline-flex !important;
+  align-items: center !important;
+
+  gap: 7px !important;
+
+  margin-bottom: 7px !important;
+
+  color:
+    rgba(255,255,255,.82) !important;
+
+  font-size: 11px !important;
+  font-weight: 900 !important;
+  letter-spacing: .16em !important;
+}
+
+.yatut-create-title h1 {
+  margin: 0 !important;
+
+  color: #fff !important;
+
+  font-size: clamp(44px, 7vw, 66px) !important;
+  line-height: .98 !important;
+  font-weight: 950 !important;
+  letter-spacing: -.055em !important;
+
+  text-shadow:
+    0 3px 18px rgba(17,11,75,.20) !important;
+}
+
+.yatut-create-title p {
+  max-width: 560px !important;
+
+  margin:
+    13px
+    0
+    0 !important;
+
+  color:
+    rgba(255,255,255,.80) !important;
+
+  font-size: 16px !important;
+  line-height: 1.48 !important;
+  font-weight: 560 !important;
+}
+
+/* Older secondary hero is redundant on the reference mobile layout. */
+.yatut-create-hero {
+  border:
+    1px solid
+    rgba(255,255,255,.66) !important;
+
+  border-radius: 26px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.48),
+      rgba(248,250,255,.22)
+    ) !important;
+
+  box-shadow:
+    0 14px 32px rgba(31,38,68,.06),
+    inset 0 1px 0 rgba(255,255,255,.82) !important;
+
+  backdrop-filter:
+    blur(18px)
+    saturate(1.28) !important;
+
+  -webkit-backdrop-filter:
+    blur(18px)
+    saturate(1.28) !important;
+}
+
+/* =========================================================
+   SECTION HEADERS
+========================================================= */
+
+.yatut-create-section {
+  display: grid !important;
+  gap: 12px !important;
+}
+
+.yatut-create-section__header {
+  min-height: 66px !important;
+
+  padding:
+    0
+    6px !important;
+
+  display: flex !important;
+  align-items: end !important;
+  justify-content: space-between !important;
+
+  gap: 14px !important;
+}
+
+.yatut-create-section__header > div {
+  min-width: 0 !important;
+}
+
+.yatut-create-section__header small {
+  display: block !important;
+
+  margin-bottom: 4px !important;
+
+  color: #7d6bf3 !important;
+
+  font-size: 11px !important;
+  font-weight: 900 !important;
+  letter-spacing: .16em !important;
+}
+
+.yatut-create-section__header h2 {
+  margin: 0 !important;
+
+  color: #171a24 !important;
+
+  font-size: clamp(28px, 5vw, 38px) !important;
+  line-height: 1.04 !important;
+  font-weight: 940 !important;
+  letter-spacing: -.035em !important;
+}
+
+.yatut-create-section__header > span {
+  flex: 0 0 auto !important;
+
+  min-height: 40px !important;
+
+  padding:
+    0
+    15px !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  border:
+    1px solid
+    rgba(255,255,255,.72) !important;
+
+  border-radius: 999px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.48),
+      rgba(246,248,255,.18)
+    ) !important;
+
+  color: #666c7d !important;
+
+  font-size: 12px !important;
+  font-weight: 760 !important;
+
+  box-shadow:
+    0 8px 18px rgba(33,39,67,.05),
+    inset 0 1px 0 rgba(255,255,255,.86) !important;
+
+  backdrop-filter:
+    blur(14px)
+    saturate(1.24) !important;
+
+  -webkit-backdrop-filter:
+    blur(14px)
+    saturate(1.24) !important;
+}
+
+/* =========================================================
+   CREATE GRID + GLASS CARDS
+========================================================= */
+
+.yatut-create-grid {
+  display: grid !important;
+  grid-template-columns:
+    repeat(2, minmax(0,1fr)) !important;
+
+  gap: 12px !important;
+}
+
+.yatut-create-card {
+  --create-accent: 105, 88, 242;
+  --create-accent-2: 85, 182, 255;
+
+  position: relative !important;
+
+  box-sizing: border-box !important;
+
+  min-width: 0 !important;
+  min-height: 188px !important;
+
+  padding: 18px !important;
+
+  display: grid !important;
+
+  grid-template-columns:
+    58px
+    minmax(0,1fr)
+    42px !important;
+
+  grid-template-rows:
+    auto
+    1fr !important;
+
+  align-items: start !important;
+
+  column-gap: 12px !important;
+  row-gap: 10px !important;
+
+  overflow: hidden !important;
+
+  border:
+    1px solid
+    rgba(255,255,255,.78) !important;
+
+  border-radius: 28px !important;
+
+  background:
+    radial-gradient(
+      circle at 86% 14%,
+      rgba(var(--create-accent), .12),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 12% 88%,
+      rgba(var(--create-accent-2), .10),
+      transparent 38%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.58),
+      rgba(248,250,255,.24)
+    ) !important;
+
+  color: #252936 !important;
+
+  text-align: left !important;
+
+  box-shadow:
+    0 16px 34px rgba(31,37,64,.07),
+    inset 0 1px 0 rgba(255,255,255,.91),
+    inset 0 -1px 0 rgba(104,94,165,.04) !important;
+
+  backdrop-filter:
+    blur(22px)
+    saturate(1.38) !important;
+
+  -webkit-backdrop-filter:
+    blur(22px)
+    saturate(1.38) !important;
+
+  isolation: isolate !important;
+}
+
+.yatut-create-card::before,
+.yatut-create-card::after {
+  content: "" !important;
+  position: absolute !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+  border-radius: 50% !important;
+}
+
+.yatut-create-card::before {
+  width: 150px !important;
+  height: 150px !important;
+
+  right: -50px !important;
+  bottom: -62px !important;
+
+  border:
+    1px solid
+    rgba(var(--create-accent), .12) !important;
+
+  background:
+    radial-gradient(
+      circle at 35% 30%,
+      rgba(255,255,255,.26),
+      rgba(var(--create-accent), .08) 58%,
+      transparent 72%
+    ) !important;
+}
+
+.yatut-create-card::after {
+  width: 84px !important;
+  height: 84px !important;
+
+  right: 30px !important;
+  top: -32px !important;
+
+  background:
+    rgba(var(--create-accent), .07) !important;
+
+  filter: blur(3px) !important;
+}
+
+.yatut-create-card--blue {
+  --create-accent: 67, 143, 255;
+  --create-accent-2: 105, 193, 255;
+}
+
+.yatut-create-card--pink {
+  --create-accent: 236, 85, 180;
+  --create-accent-2: 205, 104, 245;
+}
+
+.yatut-create-card--purple {
+  --create-accent: 129, 83, 245;
+  --create-accent-2: 178, 111, 255;
+}
+
+.yatut-create-card--green {
+  --create-accent: 38, 187, 126;
+  --create-accent-2: 91, 222, 179;
+}
+
+.yatut-create-card--orange {
+  --create-accent: 255, 151, 77;
+  --create-accent-2: 255, 205, 89;
+}
+
+.yatut-create-card--violet {
+  --create-accent: 105, 87, 241;
+  --create-accent-2: 227, 104, 237;
+}
+
+.yatut-create-card--studio {
+  --create-accent: 64, 86, 214;
+  --create-accent-2: 103, 180, 255;
+}
+
+.yatut-create-card__icon {
+  position: relative !important;
+  z-index: 2 !important;
+
+  grid-row:
+    1 / -1 !important;
+
+  width: 58px !important;
+  height: 58px !important;
+
+  display: grid !important;
+  place-items: center !important;
+
+  border:
+    1px solid
+    rgba(255,255,255,.66) !important;
+
+  border-radius: 19px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(var(--create-accent), .98),
+      rgba(var(--create-accent-2), .86)
+    ) !important;
+
+  color: #fff !important;
+
+  box-shadow:
+    0 11px 24px rgba(var(--create-accent), .20),
+    inset 0 1px 0 rgba(255,255,255,.38),
+    inset 0 -1px 0 rgba(35,31,86,.08) !important;
+}
+
+.yatut-create-card__copy {
+  position: relative !important;
+  z-index: 2 !important;
+
+  min-width: 0 !important;
+}
+
+.yatut-create-card__copy small {
+  display: block !important;
+
+  margin-bottom: 7px !important;
+
+  color: #777f9b !important;
+
+  font-size: 10.5px !important;
+  font-weight: 900 !important;
+  letter-spacing: .12em !important;
+}
+
+.yatut-create-card__copy strong {
+  display: block !important;
+
+  color: #202430 !important;
+
+  font-size: 19px !important;
+  line-height: 1.08 !important;
+  font-weight: 900 !important;
+  letter-spacing: -.02em !important;
+}
+
+.yatut-create-card__copy p {
+  margin:
+    8px
+    0
+    0 !important;
+
+  color: #777e8e !important;
+
+  font-size: 12.5px !important;
+  line-height: 1.42 !important;
+  font-weight: 560 !important;
+}
+
+.yatut-create-card__arrow {
+  position: relative !important;
+  z-index: 2 !important;
+
+  width: 42px !important;
+  height: 42px !important;
+
+  display: grid !important;
+  place-items: center !important;
+
+  align-self: start !important;
+
+  border:
+    1px solid
+    rgba(255,255,255,.76) !important;
+
+  border-radius: 15px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.66),
+      rgba(247,249,255,.22)
+    ) !important;
+
+  color: #596079 !important;
+
+  box-shadow:
+    0 8px 18px rgba(35,41,69,.055),
+    inset 0 1px 0 rgba(255,255,255,.90) !important;
+
+  backdrop-filter:
+    blur(12px)
+    saturate(1.22) !important;
+
+  -webkit-backdrop-filter:
+    blur(12px)
+    saturate(1.22) !important;
+}
+
+/* Fifth quick item = Event. Full-width reference card. */
+.yatut-create-grid--quick
+.yatut-create-card:nth-child(5) {
+  grid-column:
+    1 / -1 !important;
+
+  min-height:
+    128px !important;
+
+  grid-template-columns:
+    58px
+    minmax(0,1fr)
+    42px !important;
+
+  grid-template-rows:
+    auto !important;
+
+  align-items:
+    center !important;
+}
+
+.yatut-create-grid--quick
+.yatut-create-card:nth-child(5)
+.yatut-create-card__icon {
+  grid-row:
+    auto !important;
+}
+
+/* Pulse and creator cards continue the same material system. */
+.yatut-create-grid--pulse
+.yatut-create-card,
+.yatut-create-section--tools
+.yatut-create-card {
+  min-height:
+    150px !important;
+}
+
+.yatut-create-section--tools
+.yatut-create-card {
+  width: 100% !important;
+}
+
+/* =========================================================
+   INTERACTION
+========================================================= */
+
+@media (hover:hover) and (pointer:fine) {
+  .yatut-create-card:hover {
+    border-color:
+      rgba(var(--create-accent), .22) !important;
+
+    box-shadow:
+      0 22px 42px rgba(31,37,64,.10),
+      0 0 0 1px rgba(var(--create-accent), .055),
+      inset 0 1px 0 rgba(255,255,255,.94) !important;
+  }
+
+  .yatut-create-card:hover
+  .yatut-create-card__arrow {
+    color:
+      rgb(var(--create-accent)) !important;
+  }
+}
+
+/* =========================================================
+   MOBILE REFERENCE MATCH
+========================================================= */
+
+@media (max-width: 767px) {
+  .yatut-create-page {
+    width: 100% !important;
+    max-width: none !important;
+
+    padding:
+      8px
+      14px
+      138px !important;
+
+    gap: 16px !important;
+  }
+
+  .yatut-create-header {
+    min-height:
+      288px !important;
+
+    padding:
+      18px
+      20px
+      24px !important;
+
+    border-radius:
+      30px !important;
+  }
+
+  .yatut-create-header::after {
+    right:
+      28px !important;
+
+    top:
+      40px !important;
+
+    width:
+      90px !important;
+
+    height:
+      90px !important;
+
+    border-radius:
+      25px !important;
+
+    font-size:
+      55px !important;
+  }
+
+  .yatut-create-back {
+    min-height:
+      46px !important;
+
+    padding:
+      0
+      16px !important;
+  }
+
+  .yatut-create-title {
+    max-width:
+      calc(
+        100% -
+        2px
+      ) !important;
+  }
+
+  .yatut-create-title h1 {
+    max-width:
+      70% !important;
+
+    font-size:
+      clamp(
+        42px,
+        12.4vw,
+        56px
+      ) !important;
+  }
+
+  .yatut-create-title p {
+    max-width:
+      82% !important;
+
+    margin-top:
+      11px !important;
+
+    font-size:
+      14px !important;
+
+    line-height:
+      1.42 !important;
+  }
+
+  .yatut-create-hero {
+    display:
+      none !important;
+  }
+
+  .yatut-create-section {
+    gap:
+      10px !important;
+  }
+
+  .yatut-create-section__header {
+    min-height:
+      60px !important;
+
+    padding:
+      0
+      4px !important;
+
+    align-items:
+      end !important;
+  }
+
+  .yatut-create-section__header small {
+    margin-bottom:
+      3px !important;
+
+    font-size:
+      10px !important;
+  }
+
+  .yatut-create-section__header h2 {
+    font-size:
+      29px !important;
+  }
+
+  .yatut-create-section__header > span {
+    min-height:
+      38px !important;
+
+    padding:
+      0
+      13px !important;
+
+    font-size:
+      11px !important;
+  }
+
+  .yatut-create-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(
+          0,
+          1fr
+        )
+      ) !important;
+
+    gap:
+      10px !important;
+  }
+
+  .yatut-create-card {
+    min-height:
+      176px !important;
+
+    padding:
+      14px !important;
+
+    grid-template-columns:
+      50px
+      minmax(
+        0,
+        1fr
+      )
+      36px !important;
+
+    column-gap:
+      9px !important;
+
+    row-gap:
+      8px !important;
+
+    border-radius:
+      23px !important;
+  }
+
+  .yatut-create-card__icon {
+    width:
+      50px !important;
+
+    height:
+      50px !important;
+
+    border-radius:
+      16px !important;
+  }
+
+  .yatut-create-card__icon svg {
+    width:
+      21px !important;
+
+    height:
+      21px !important;
+  }
+
+  .yatut-create-card__arrow {
+    width:
+      36px !important;
+
+    height:
+      36px !important;
+
+    border-radius:
+      13px !important;
+  }
+
+  .yatut-create-card__copy small {
+    margin-bottom:
+      5px !important;
+
+    font-size:
+      9.2px !important;
+
+    letter-spacing:
+      .10em !important;
+  }
+
+  .yatut-create-card__copy strong {
+    font-size:
+      17px !important;
+  }
+
+  .yatut-create-card__copy p {
+    margin-top:
+      6px !important;
+
+    font-size:
+      11px !important;
+
+    line-height:
+      1.38 !important;
+  }
+
+  .yatut-create-grid--quick
+  .yatut-create-card:nth-child(5) {
+    min-height:
+      118px !important;
+
+    grid-template-columns:
+      50px
+      minmax(
+        0,
+        1fr
+      )
+      36px !important;
+  }
+
+  .yatut-create-grid--pulse
+  .yatut-create-card,
+  .yatut-create-section--tools
+  .yatut-create-card {
+    min-height:
+      136px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .yatut-create-page {
+    padding-left:
+      10px !important;
+
+    padding-right:
+      10px !important;
+  }
+
+  .yatut-create-header {
+    min-height:
+      272px !important;
+
+    padding-left:
+      16px !important;
+
+    padding-right:
+      16px !important;
+  }
+
+  .yatut-create-header::after {
+    right:
+      20px !important;
+
+    top:
+      38px !important;
+
+    width:
+      80px !important;
+
+    height:
+      80px !important;
+
+    font-size:
+      49px !important;
+  }
+
+  .yatut-create-title h1 {
+    font-size:
+      43px !important;
+  }
+
+  .yatut-create-title p {
+    max-width:
+      88% !important;
+
+    font-size:
+      13px !important;
+  }
+
+  .yatut-create-card {
+    min-height:
+      166px !important;
+
+    padding:
+      12px !important;
+
+    grid-template-columns:
+      46px
+      minmax(
+        0,
+        1fr
+      )
+      32px !important;
+
+    column-gap:
+      8px !important;
+
+    border-radius:
+      21px !important;
+  }
+
+  .yatut-create-card__icon {
+    width:
+      46px !important;
+
+    height:
+      46px !important;
+
+    border-radius:
+      15px !important;
+  }
+
+  .yatut-create-card__arrow {
+    width:
+      32px !important;
+
+    height:
+      32px !important;
+
+    border-radius:
+      12px !important;
+  }
+
+  .yatut-create-card__copy strong {
+    font-size:
+      16px !important;
+  }
+
+  .yatut-create-card__copy p {
+    font-size:
+      10.4px !important;
+  }
+
+  .yatut-create-grid--quick
+  .yatut-create-card:nth-child(5) {
+    min-height:
+      112px !important;
+
+    grid-template-columns:
+      46px
+      minmax(
+        0,
+        1fr
+      )
+      32px !important;
+  }
+}
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+body.yatut-dark-mode
+.yatut-create-page {
+  background:
+    radial-gradient(
+      circle at 12% 6%,
+      rgba(115, 91, 255, .12),
+      transparent 26%
+    ),
+    radial-gradient(
+      circle at 90% 22%,
+      rgba(68, 174, 255, .08),
+      transparent 28%
+    ),
+    transparent !important;
+}
+
+body.yatut-dark-mode
+.yatut-create-section__header h2,
+body.yatut-dark-mode
+.yatut-create-card__copy strong {
+  color:
+    #f4f6fb !important;
+}
+
+body.yatut-dark-mode
+.yatut-create-section__header > span,
+body.yatut-dark-mode
+.yatut-create-card__copy p,
+body.yatut-dark-mode
+.yatut-create-card__copy small {
+  color:
+    #a8adbb !important;
+}
+
+body.yatut-dark-mode
+.yatut-create-card,
+body.yatut-dark-mode
+.yatut-create-hero {
+  border-color:
+    rgba(255,255,255,.10) !important;
+
+  background:
+    radial-gradient(
+      circle at 86% 14%,
+      rgba(var(--create-accent), .12),
+      transparent 34%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.055),
+      rgba(11,16,27,.26)
+    ) !important;
+
+  box-shadow:
+    0 18px 38px rgba(0,0,0,.20),
+    inset 0 1px 0 rgba(255,255,255,.055) !important;
+}
+
+body.yatut-dark-mode
+.yatut-create-card__arrow,
+body.yatut-dark-mode
+.yatut-create-section__header > span {
+  border-color:
+    rgba(255,255,255,.09) !important;
+
+  background:
+    rgba(255,255,255,.055) !important;
+
+  color:
+    #d9dce6 !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.055) !important;
+}
