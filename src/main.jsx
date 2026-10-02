@@ -30,6 +30,7 @@ import "./styles/yatut-reference-design-v27.css";
 import "./styles/profile-reference-v28.css";
 import "./styles/profile-smart-contrast-v29.css";
 import "./styles/glass-ui-v30.css";
+import "./styles/optical-glass-v31.css";
 import {
   initNativePlatform,
 } from "./services/nativePlatformService.js";
