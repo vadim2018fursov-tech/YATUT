@@ -57,6 +57,7 @@ import "./styles/final-mobile-fixes-v65.css";
 import "./styles/mobile-final-fix-v65.css";
 import "./styles/events-reference-v66.css";
 import "./styles/events-reference-v67.css";
+import "./styles/events-reference-v68.css";
 import {
   initNativePlatform,
 } from "./services/nativePlatformService.js";
