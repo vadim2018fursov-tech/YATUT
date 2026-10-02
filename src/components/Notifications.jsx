@@ -1277,51 +1277,7 @@ export default function Notifications({
         )}
       </div>
 
-      {/* ===================================================
-          FOOTER
-      =================================================== */}
 
-      <footer className="notifications-footer">
-        <button
-          className="notifications-settings-button"
-          type="button"
-          onClick={() => {
-            onNavigate?.(
-              "settings"
-            );
-
-            onClose?.();
-          }}
-        >
-          <YatutIcon
-            name="settings"
-            size={17}
-          />
-
-          <span>
-            Налаштування
-          </span>
-        </button>
-
-        <button
-          className="notifications-all-button"
-          type="button"
-          onClick={() =>
-            setActiveFilter(
-              "all"
-            )
-          }
-        >
-          <span>
-            Усі сповіщення
-          </span>
-
-          <YatutIcon
-            name="arrowRight"
-            size={17}
-          />
-        </button>
-      </footer>
     </aside>
   );
 }
