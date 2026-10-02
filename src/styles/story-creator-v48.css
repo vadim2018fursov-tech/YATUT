@@ -1,0 +1,1010 @@
+/* =========================================================
+   YATUT STORY CREATOR V48
+   Premium Liquid Glass redesign for create-story flow.
+========================================================= */
+
+.yatut-story-backdrop:has(.yatut-story-create) {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 12000 !important;
+
+  display: grid !important;
+  place-items: center !important;
+
+  padding:
+    max(14px, env(safe-area-inset-top, 0px))
+    14px
+    max(14px, env(safe-area-inset-bottom, 0px)) !important;
+
+  overflow: auto !important;
+
+  background:
+    radial-gradient(
+      circle at 18% 12%,
+      rgba(126, 104, 255, .18),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 88% 22%,
+      rgba(87, 194, 255, .14),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 54% 92%,
+      rgba(247, 126, 213, .10),
+      transparent 34%
+    ),
+    rgba(242, 245, 252, .62) !important;
+
+  backdrop-filter:
+    blur(26px)
+    saturate(1.20) !important;
+
+  -webkit-backdrop-filter:
+    blur(26px)
+    saturate(1.20) !important;
+}
+
+.yatut-story-create {
+  box-sizing: border-box !important;
+
+  width: min(620px, calc(100vw - 28px)) !important;
+  max-height:
+    calc(
+      100dvh -
+      max(28px, env(safe-area-inset-top, 0px)) -
+      max(28px, env(safe-area-inset-bottom, 0px))
+    ) !important;
+
+  overflow: auto !important;
+  overscroll-behavior: contain !important;
+
+  border:
+    1px solid
+    rgba(255,255,255,.78) !important;
+
+  border-radius:
+    34px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.70),
+      rgba(248,250,255,.46)
+    ) !important;
+
+  box-shadow:
+    0 34px 90px rgba(39, 45, 80, .16),
+    0 10px 28px rgba(39, 45, 80, .08),
+    inset 0 1px 0 rgba(255,255,255,.94),
+    inset 0 -1px 0 rgba(104, 92, 173, .06) !important;
+
+  backdrop-filter:
+    blur(30px)
+    saturate(1.38) !important;
+
+  -webkit-backdrop-filter:
+    blur(30px)
+    saturate(1.38) !important;
+}
+
+.yatut-story-create-header {
+  position: relative !important;
+
+  padding:
+    22px
+    22px
+    18px !important;
+
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+
+  gap: 16px !important;
+
+  border-bottom:
+    1px solid
+    rgba(255,255,255,.44) !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.22),
+      rgba(255,255,255,0)
+    ) !important;
+}
+
+.yatut-story-create-heading {
+  min-width: 0 !important;
+
+  display: flex !important;
+  align-items: flex-start !important;
+
+  gap: 14px !important;
+}
+
+.yatut-story-create-heading > div {
+  min-width: 0 !important;
+}
+
+.yatut-story-create-mark {
+  width: 54px !important;
+  height: 54px !important;
+
+  flex: 0 0 54px !important;
+
+  display: grid !important;
+  place-items: center !important;
+
+  overflow: hidden !important;
+
+  border:
+    1px solid
+    rgba(213, 204, 255, .56) !important;
+
+  border-radius:
+    18px !important;
+
+  background:
+    radial-gradient(
+      circle at 30% 16%,
+      rgba(255,255,255,.52),
+      transparent 28%
+    ),
+    linear-gradient(
+      145deg,
+      #826dff,
+      #5e4bf0
+    ) !important;
+
+  color: #fff !important;
+
+  box-shadow:
+    0 13px 26px rgba(91, 70, 225, .22),
+    inset 0 1px 0 rgba(255,255,255,.40) !important;
+}
+
+.yatut-story-create-mark svg {
+  width: 23px !important;
+  height: 23px !important;
+
+  stroke-width: 2.2 !important;
+}
+
+.yatut-story-create-heading > div > span {
+  display: block !important;
+
+  margin:
+    2px
+    0
+    5px !important;
+
+  color:
+    #786ed0 !important;
+
+  font-size:
+    10px !important;
+
+  font-weight:
+    900 !important;
+
+  letter-spacing:
+    .14em !important;
+}
+
+.yatut-story-create-heading h2 {
+  margin: 0 !important;
+
+  color:
+    #1f2330 !important;
+
+  font-size:
+    clamp(28px, 5vw, 36px) !important;
+
+  line-height:
+    1.02 !important;
+
+  font-weight:
+    920 !important;
+
+  letter-spacing:
+    -.035em !important;
+}
+
+.yatut-story-create-heading p {
+  margin:
+    8px
+    0
+    0 !important;
+
+  max-width:
+    390px !important;
+
+  color:
+    #9297a5 !important;
+
+  font-size:
+    13px !important;
+
+  line-height:
+    1.42 !important;
+}
+
+.yatut-story-close-light {
+  width: 48px !important;
+  height: 48px !important;
+
+  flex: 0 0 48px !important;
+
+  display: grid !important;
+  place-items: center !important;
+
+  border:
+    1px solid
+    rgba(255,255,255,.72) !important;
+
+  border-radius:
+    16px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.55),
+      rgba(244,247,255,.20)
+    ) !important;
+
+  color:
+    #555b6b !important;
+
+  box-shadow:
+    0 10px 24px rgba(36,42,69,.08),
+    inset 0 1px 0 rgba(255,255,255,.88) !important;
+
+  backdrop-filter:
+    blur(14px)
+    saturate(1.25) !important;
+
+  -webkit-backdrop-filter:
+    blur(14px)
+    saturate(1.25) !important;
+}
+
+.yatut-story-create-start {
+  padding:
+    18px
+    18px
+    20px !important;
+
+  display: grid !important;
+
+  grid-template-columns:
+    repeat(2, minmax(0,1fr)) !important;
+
+  gap: 12px !important;
+}
+
+.yatut-story-create-start > button {
+  position: relative !important;
+
+  box-sizing: border-box !important;
+
+  min-width: 0 !important;
+  min-height: 168px !important;
+
+  padding:
+    18px !important;
+
+  display: grid !important;
+
+  grid-template-columns:
+    58px
+    minmax(0,1fr)
+    40px !important;
+
+  grid-template-rows:
+    auto
+    1fr !important;
+
+  align-items: center !important;
+
+  gap:
+    10px
+    12px !important;
+
+  overflow: hidden !important;
+
+  border:
+    1px solid
+    rgba(255,255,255,.68) !important;
+
+  border-radius:
+    25px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.46),
+      rgba(255,255,255,.14)
+    ) !important;
+
+  color:
+    #262b38 !important;
+
+  text-align:
+    left !important;
+
+  box-shadow:
+    0 12px 30px rgba(38,44,74,.075),
+    inset 0 1px 0 rgba(255,255,255,.84) !important;
+
+  backdrop-filter:
+    blur(16px)
+    saturate(1.28) !important;
+
+  -webkit-backdrop-filter:
+    blur(16px)
+    saturate(1.28) !important;
+
+  transition:
+    transform .18s cubic-bezier(.22,.8,.26,1),
+    box-shadow .22s ease,
+    border-color .22s ease !important;
+}
+
+.yatut-story-create-start > button::before {
+  content: "" !important;
+
+  position: absolute !important;
+  inset: 0 !important;
+
+  pointer-events: none !important;
+
+  opacity: .96 !important;
+}
+
+.yatut-story-create-start > button.is-photo::before {
+  background:
+    radial-gradient(
+      circle at 20% 14%,
+      rgba(127,103,255,.21),
+      transparent 48%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(129,107,255,.10),
+      rgba(255,255,255,0)
+    ) !important;
+}
+
+.yatut-story-create-start > button.is-video::before {
+  background:
+    radial-gradient(
+      circle at 20% 14%,
+      rgba(74,183,255,.22),
+      transparent 48%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(74,183,255,.09),
+      rgba(255,255,255,0)
+    ) !important;
+}
+
+.yatut-story-create-start > button.is-text {
+  grid-column:
+    1 / -1 !important;
+
+  min-height:
+    126px !important;
+
+  grid-template-columns:
+    58px
+    minmax(0,1fr)
+    40px !important;
+
+  grid-template-rows:
+    auto !important;
+}
+
+.yatut-story-create-start > button.is-text::before {
+  background:
+    radial-gradient(
+      circle at 14% 20%,
+      rgba(244,111,207,.20),
+      transparent 44%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(244,111,207,.08),
+      rgba(255,255,255,0)
+    ) !important;
+}
+
+.yatut-story-create-option-icon {
+  position: relative !important;
+  z-index: 1 !important;
+
+  grid-row:
+    1 / -1 !important;
+
+  width: 58px !important;
+  height: 58px !important;
+
+  display: grid !important;
+  place-items: center !important;
+
+  border:
+    1px solid
+    rgba(255,255,255,.34) !important;
+
+  border-radius:
+    18px !important;
+
+  color: #fff !important;
+
+  box-shadow:
+    0 11px 24px rgba(55,63,96,.14),
+    inset 0 1px 0 rgba(255,255,255,.34) !important;
+}
+
+.is-photo
+.yatut-story-create-option-icon {
+  background:
+    linear-gradient(
+      145deg,
+      #806cff,
+      #6550f2
+    ) !important;
+}
+
+.is-video
+.yatut-story-create-option-icon {
+  background:
+    linear-gradient(
+      145deg,
+      #58b8ff,
+      #368ff2
+    ) !important;
+}
+
+.is-text
+.yatut-story-create-option-icon {
+  background:
+    linear-gradient(
+      145deg,
+      #f16db9,
+      #db4698
+    ) !important;
+}
+
+.yatut-story-create-start > button > div {
+  position: relative !important;
+  z-index: 1 !important;
+
+  min-width: 0 !important;
+}
+
+.yatut-story-create-start > button strong {
+  display: block !important;
+
+  color:
+    #252936 !important;
+
+  font-size:
+    17px !important;
+
+  font-weight:
+    880 !important;
+
+  line-height:
+    1.12 !important;
+}
+
+.yatut-story-create-start > button small {
+  display: block !important;
+
+  margin-top:
+    6px !important;
+
+  color:
+    #9499a8 !important;
+
+  font-size:
+    12px !important;
+
+  font-weight:
+    600 !important;
+
+  line-height:
+    1.36 !important;
+}
+
+.yatut-story-create-start > button > i {
+  position: relative !important;
+  z-index: 1 !important;
+
+  width: 40px !important;
+  height: 40px !important;
+
+  display: grid !important;
+  place-items: center !important;
+
+  border:
+    1px solid
+    rgba(255,255,255,.76) !important;
+
+  border-radius:
+    14px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.70),
+      rgba(255,255,255,.26)
+    ) !important;
+
+  color:
+    #6555ec !important;
+
+  font-size:
+    19px !important;
+
+  font-style:
+    normal !important;
+
+  box-shadow:
+    0 7px 17px rgba(45,50,78,.07),
+    inset 0 1px 0 rgba(255,255,255,.86) !important;
+}
+
+@media (hover:hover) and (pointer:fine) {
+  .yatut-story-create-start > button:hover {
+    transform:
+      translateY(-2px) !important;
+
+    border-color:
+      rgba(171,158,255,.40) !important;
+
+    box-shadow:
+      0 18px 38px rgba(38,44,74,.11),
+      inset 0 1px 0 rgba(255,255,255,.88) !important;
+  }
+}
+
+/* =========================================================
+   EDITOR / NEXT STEPS
+========================================================= */
+
+.yatut-story-editor,
+.yatut-story-upload-zone,
+.yatut-story-text-editor {
+  border-radius:
+    24px !important;
+}
+
+.yatut-story-editor {
+  padding:
+    18px !important;
+}
+
+.yatut-story-upload-zone {
+  min-height:
+    320px !important;
+
+  border:
+    1px dashed
+    rgba(128,108,244,.26) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.46),
+      rgba(245,248,255,.22)
+    ) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.74) !important;
+}
+
+.yatut-story-upload-icon {
+  width: 62px !important;
+  height: 62px !important;
+
+  display: grid !important;
+  place-items: center !important;
+
+  border-radius:
+    20px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      #816cff,
+      #5c4af0
+    ) !important;
+
+  color: #fff !important;
+
+  box-shadow:
+    0 12px 28px rgba(91,71,226,.20) !important;
+}
+
+.yatut-story-media-preview {
+  overflow: hidden !important;
+
+  border-radius:
+    24px !important;
+
+  box-shadow:
+    0 16px 34px rgba(26,32,56,.10) !important;
+}
+
+.yatut-story-text-editor,
+.yatut-story-text-preview {
+  border-radius:
+    24px !important;
+}
+
+.yatut-story-backgrounds {
+  padding:
+    10px
+    12px !important;
+
+  margin:
+    12px
+    18px
+    0 !important;
+
+  border:
+    1px solid
+    rgba(255,255,255,.66) !important;
+
+  border-radius:
+    18px !important;
+
+  background:
+    rgba(255,255,255,.28) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.70) !important;
+}
+
+.yatut-story-create-footer {
+  padding:
+    15px
+    18px
+    18px !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+
+  gap: 10px !important;
+
+  border-top:
+    1px solid
+    rgba(255,255,255,.46) !important;
+}
+
+.yatut-story-back-button,
+.yatut-story-publish {
+  min-height:
+    46px !important;
+
+  padding:
+    0
+    16px !important;
+
+  border-radius:
+    15px !important;
+
+  font-size:
+    12px !important;
+
+  font-weight:
+    850 !important;
+}
+
+.yatut-story-back-button {
+  border:
+    1px solid
+    rgba(255,255,255,.70) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.50),
+      rgba(247,249,255,.20)
+    ) !important;
+
+  color:
+    #626879 !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.82) !important;
+}
+
+.yatut-story-publish {
+  border:
+    1px solid
+    rgba(206,196,255,.46) !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      #806cff,
+      #5c4bf0
+    ) !important;
+
+  color:
+    #fff !important;
+
+  box-shadow:
+    0 11px 24px rgba(91,70,221,.20),
+    inset 0 1px 0 rgba(255,255,255,.30) !important;
+}
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+body.yatut-dark-mode
+.yatut-story-backdrop:has(.yatut-story-create) {
+  background:
+    radial-gradient(
+      circle at 18% 12%,
+      rgba(118,92,255,.18),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 86% 22%,
+      rgba(67,177,255,.12),
+      transparent 34%
+    ),
+    rgba(8,12,21,.72) !important;
+}
+
+body.yatut-dark-mode
+.yatut-story-create {
+  border-color:
+    rgba(255,255,255,.10) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(24,29,42,.90),
+      rgba(16,21,33,.80)
+    ) !important;
+
+  box-shadow:
+    0 34px 90px rgba(0,0,0,.38),
+    inset 0 1px 0 rgba(255,255,255,.06) !important;
+}
+
+body.yatut-dark-mode
+.yatut-story-create-heading h2,
+body.yatut-dark-mode
+.yatut-story-create-start > button strong {
+  color:
+    #f5f7fb !important;
+}
+
+body.yatut-dark-mode
+.yatut-story-create-heading p,
+body.yatut-dark-mode
+.yatut-story-create-start > button small {
+  color:
+    #9fa5b4 !important;
+}
+
+body.yatut-dark-mode
+.yatut-story-create-start > button {
+  border-color:
+    rgba(255,255,255,.09) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.055),
+      rgba(255,255,255,.018)
+    ) !important;
+
+  box-shadow:
+    0 14px 30px rgba(0,0,0,.22),
+    inset 0 1px 0 rgba(255,255,255,.05) !important;
+}
+
+body.yatut-dark-mode
+.yatut-story-close-light,
+body.yatut-dark-mode
+.yatut-story-create-start > button > i,
+body.yatut-dark-mode
+.yatut-story-back-button {
+  border-color:
+    rgba(255,255,255,.09) !important;
+
+  background:
+    rgba(255,255,255,.055) !important;
+
+  color:
+    #d8dce7 !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.05) !important;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 767px) {
+  .yatut-story-backdrop:has(.yatut-story-create) {
+    place-items:
+      center !important;
+
+    padding:
+      max(12px, env(safe-area-inset-top, 0px))
+      10px
+      max(12px, env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  .yatut-story-create {
+    width:
+      calc(100vw - 20px) !important;
+
+    max-height:
+      calc(
+        100dvh -
+        max(24px, env(safe-area-inset-top, 0px)) -
+        max(24px, env(safe-area-inset-bottom, 0px))
+      ) !important;
+
+    border-radius:
+      30px !important;
+  }
+
+  .yatut-story-create-header {
+    padding:
+      18px
+      16px
+      14px !important;
+  }
+
+  .yatut-story-create-mark {
+    width: 48px !important;
+    height: 48px !important;
+
+    flex-basis:
+      48px !important;
+
+    border-radius:
+      16px !important;
+  }
+
+  .yatut-story-create-heading {
+    gap:
+      11px !important;
+  }
+
+  .yatut-story-create-heading h2 {
+    font-size:
+      29px !important;
+  }
+
+  .yatut-story-create-heading p {
+    max-width:
+      260px !important;
+
+    margin-top:
+      6px !important;
+
+    font-size:
+      11.5px !important;
+  }
+
+  .yatut-story-close-light {
+    width: 44px !important;
+    height: 44px !important;
+
+    flex-basis:
+      44px !important;
+
+    border-radius:
+      15px !important;
+  }
+
+  .yatut-story-create-start {
+    padding:
+      14px
+      14px
+      16px !important;
+
+    gap:
+      10px !important;
+  }
+
+  .yatut-story-create-start > button {
+    min-height:
+      150px !important;
+
+    padding:
+      14px !important;
+
+    grid-template-columns:
+      52px
+      minmax(0,1fr)
+      36px !important;
+
+    gap:
+      8px
+      10px !important;
+
+    border-radius:
+      22px !important;
+  }
+
+  .yatut-story-create-start > button.is-text {
+    min-height:
+      110px !important;
+
+    grid-template-columns:
+      52px
+      minmax(0,1fr)
+      36px !important;
+  }
+
+  .yatut-story-create-option-icon {
+    width: 52px !important;
+    height: 52px !important;
+
+    border-radius:
+      17px !important;
+  }
+
+  .yatut-story-create-start > button > i {
+    width: 36px !important;
+    height: 36px !important;
+
+    border-radius:
+      13px !important;
+  }
+
+  .yatut-story-create-start > button strong {
+    font-size:
+      15px !important;
+  }
+
+  .yatut-story-create-start > button small {
+    font-size:
+      10.5px !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .yatut-story-create-start {
+    grid-template-columns:
+      1fr !important;
+  }
+
+  .yatut-story-create-start > button,
+  .yatut-story-create-start > button.is-text {
+    grid-column:
+      auto !important;
+
+    min-height:
+      102px !important;
+
+    grid-template-columns:
+      52px
+      minmax(0,1fr)
+      36px !important;
+
+    grid-template-rows:
+      auto !important;
+  }
+
+  .yatut-story-create-start > button small {
+    max-width:
+      210px !important;
+  }
+}
