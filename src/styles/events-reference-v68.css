@@ -1,0 +1,419 @@
+/* =========================================================
+   YATUT EVENTS REFERENCE POLISH V68
+   Production-empty-state alignment with approved reference.
+========================================================= */
+
+@media (max-width: 900px) {
+  /* Remove legacy mobile stretching around Events */
+  .premium-section-main:has(.events-page) {
+    min-height: auto !important;
+    height: auto !important;
+  }
+
+  .events-page {
+    min-height: auto !important;
+    height: auto !important;
+    padding-bottom:
+      calc(
+        86px +
+        env(safe-area-inset-bottom, 0px)
+      ) !important;
+  }
+
+  /* =======================================================
+     EMPTY STATE — much closer to a compact card row
+  ======================================================= */
+  .events-page .events-empty {
+    min-height: 108px !important;
+    max-height: 108px !important;
+    padding: 12px 16px !important;
+
+    display: grid !important;
+    grid-template-columns: 48px minmax(0,1fr) !important;
+    grid-template-rows: auto auto !important;
+    column-gap: 12px !important;
+    row-gap: 2px !important;
+
+    align-items: center !important;
+    justify-content: stretch !important;
+
+    border-radius: 20px !important;
+
+    background:
+      radial-gradient(
+        circle at 86% 20%,
+        rgba(111,93,244,.07),
+        transparent 30%
+      ),
+      rgba(255,255,255,.62) !important;
+  }
+
+  .events-page .events-empty > span {
+    grid-column: 1 !important;
+    grid-row: 1 / 3 !important;
+
+    width: 48px !important;
+    height: 48px !important;
+
+    border-radius: 15px !important;
+    font-size: 21px !important;
+  }
+
+  .events-page .events-empty h3 {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+
+    margin: 0 !important;
+
+    align-self: end !important;
+
+    text-align: left !important;
+
+    font-size: 14px !important;
+    line-height: 1.15 !important;
+  }
+
+  .events-page .events-empty p {
+    grid-column: 2 !important;
+    grid-row: 2 !important;
+
+    max-width: 300px !important;
+
+    margin: 0 !important;
+
+    align-self: start !important;
+
+    text-align: left !important;
+
+    font-size: 7.8px !important;
+    line-height: 1.35 !important;
+  }
+
+  /* =======================================================
+     CITY — use existing Kyiv visual asset
+  ======================================================= */
+  .events-page .events-side-card:first-child {
+    position: relative !important;
+    overflow: hidden !important;
+
+    min-height: 118px !important;
+
+    background:
+      linear-gradient(
+        90deg,
+        rgba(255,255,255,.98) 0%,
+        rgba(255,255,255,.95) 42%,
+        rgba(255,255,255,.70) 64%,
+        rgba(255,255,255,.18) 100%
+      ),
+      url("/assets/yatut/cities/kyiv/mini-banner.jpg")
+      center right / 48% 100%
+      no-repeat !important;
+  }
+
+  .events-page .events-side-card:first-child::after {
+    content: "⌖" !important;
+
+    position: absolute !important;
+    right: 14px !important;
+    top: 12px !important;
+
+    width: 28px !important;
+    height: 28px !important;
+
+    display: grid !important;
+    place-items: center !important;
+
+    border: 1px solid rgba(255,255,255,.72) !important;
+    border-radius: 10px !important;
+
+    background: rgba(255,255,255,.74) !important;
+    color: #725ff0 !important;
+
+    font-size: 14px !important;
+    font-weight: 900 !important;
+
+    box-shadow:
+      0 8px 18px rgba(40,46,78,.08),
+      inset 0 1px 0 rgba(255,255,255,.94) !important;
+
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+  }
+
+  .events-page .events-side-card:first-child h3 {
+    position: relative !important;
+    z-index: 2 !important;
+    font-size: 23px !important;
+  }
+
+  .events-page .events-side-card:first-child p,
+  .events-page .events-side-card:first-child > span,
+  .events-page .events-city-stat {
+    position: relative !important;
+    z-index: 2 !important;
+  }
+
+  .events-page .events-city-stat {
+    align-self: center !important;
+  }
+
+  .events-page .events-city-stat > div {
+    min-height: 58px !important;
+    padding: 8px 9px !important;
+
+    background: rgba(255,255,255,.78) !important;
+
+    box-shadow:
+      0 8px 18px rgba(43,48,74,.05),
+      inset 0 1px 0 rgba(255,255,255,.95) !important;
+
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+  }
+
+  /* =======================================================
+     CATEGORIES — lighter, flatter, closer to reference
+  ======================================================= */
+  .events-page .events-side-card:nth-child(2) {
+    padding: 12px 12px 13px !important;
+  }
+
+  .events-page .events-category-list {
+    gap: 5px !important;
+  }
+
+  .events-page .events-category-list button {
+    min-height: 70px !important;
+    padding: 7px 2px !important;
+
+    border-color: rgba(231,232,240,.72) !important;
+    border-radius: 14px !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.90),
+        rgba(249,248,255,.74)
+      ) !important;
+
+    box-shadow:
+      0 6px 15px rgba(38,43,70,.035),
+      inset 0 1px 0 rgba(255,255,255,.94) !important;
+  }
+
+  .events-page .events-category-list button > span {
+    width: 31px !important;
+    height: 31px !important;
+
+    border-radius: 11px !important;
+
+    font-size: 15px !important;
+  }
+
+  .events-page .events-category-list strong {
+    font-size: 6.4px !important;
+  }
+
+  /* =======================================================
+     CTA — shorter + richer reference-like composition
+  ======================================================= */
+  .events-page .events-create-side-card {
+    min-height: 128px !important;
+    max-height: 128px !important;
+
+    padding: 15px 18px !important;
+
+    border-radius: 20px !important;
+
+    background:
+      radial-gradient(
+        circle at 83% 54%,
+        rgba(255,255,255,.16),
+        transparent 24%
+      ),
+      radial-gradient(
+        circle at 72% 120%,
+        rgba(83,215,255,.25),
+        transparent 34%
+      ),
+      linear-gradient(
+        135deg,
+        #5f59f3,
+        #713fe5 56%,
+        #9840df
+      ) !important;
+  }
+
+  .events-page .events-create-side-card::before {
+    content: "" !important;
+
+    position: absolute !important;
+    right: 30px !important;
+    top: 50% !important;
+
+    width: 108px !important;
+    height: 72px !important;
+
+    transform: translateY(-50%) !important;
+
+    border: 1px solid rgba(255,255,255,.18) !important;
+    border-radius: 999px 999px 28px 28px !important;
+
+    background:
+      radial-gradient(
+        circle at 50% 34%,
+        rgba(255,255,255,.28) 0 11px,
+        transparent 12px
+      ),
+      radial-gradient(
+        circle at 28% 58%,
+        rgba(255,255,255,.20) 0 13px,
+        transparent 14px
+      ),
+      radial-gradient(
+        circle at 72% 58%,
+        rgba(255,255,255,.20) 0 13px,
+        transparent 14px
+      ),
+      rgba(255,255,255,.08) !important;
+
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.18),
+      0 10px 22px rgba(67,47,183,.15) !important;
+  }
+
+  .events-page .events-create-side-card::after {
+    content: "♥" !important;
+
+    right: 14px !important;
+    top: 14px !important;
+    bottom: auto !important;
+
+    width: 40px !important;
+    height: 40px !important;
+
+    border-radius: 14px !important;
+
+    background: rgba(255,255,255,.16) !important;
+    color: rgba(255,255,255,.90) !important;
+
+    font-size: 18px !important;
+
+    transform: rotate(8deg) !important;
+  }
+
+  .events-page .events-create-side-card > span {
+    font-size: 16px !important;
+  }
+
+  .events-page .events-create-side-card > strong {
+    margin-top: 5px !important;
+    font-size: 18px !important;
+  }
+
+  .events-page .events-create-side-card > p {
+    max-width: 55% !important;
+    margin-top: 4px !important;
+
+    font-size: 7.5px !important;
+    line-height: 1.28 !important;
+  }
+
+  .events-page .events-create-side-card > button {
+    min-height: 34px !important;
+    margin-top: 8px !important;
+
+    padding: 0 11px !important;
+
+    border-radius: 11px !important;
+
+    font-size: 7.6px !important;
+  }
+
+  /* Make end of page visually terminate closer to content */
+  .events-page .events-side {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .events-page .events-side-card:first-child {
+    min-height: 110px !important;
+
+    grid-template-columns:
+      minmax(0,1fr)
+      126px !important;
+
+    background:
+      linear-gradient(
+        90deg,
+        rgba(255,255,255,.98) 0%,
+        rgba(255,255,255,.94) 48%,
+        rgba(255,255,255,.60) 69%,
+        rgba(255,255,255,.12) 100%
+      ),
+      url("/assets/yatut/cities/kyiv/mini-banner.jpg")
+      center right / 52% 100%
+      no-repeat !important;
+  }
+
+  .events-page .events-city-stat > div {
+    min-height: 54px !important;
+  }
+
+  .events-page .events-category-list button {
+    min-height: 66px !important;
+  }
+
+  .events-page .events-category-list button > span {
+    width: 29px !important;
+    height: 29px !important;
+    font-size: 14px !important;
+  }
+
+  .events-page .events-category-list strong {
+    font-size: 5.7px !important;
+  }
+
+  .events-page .events-create-side-card {
+    min-height: 120px !important;
+    max-height: 120px !important;
+    padding: 14px 15px !important;
+  }
+
+  .events-page .events-create-side-card::before {
+    right: 18px !important;
+    width: 92px !important;
+    height: 64px !important;
+  }
+
+  .events-page .events-create-side-card > p {
+    max-width: 58% !important;
+  }
+}
+
+@media (max-width: 900px) {
+  body.yatut-dark-mode
+  .events-page
+  .events-side-card:first-child {
+    background:
+      linear-gradient(
+        90deg,
+        rgba(12,17,27,.98) 0%,
+        rgba(12,17,27,.94) 44%,
+        rgba(12,17,27,.62) 68%,
+        rgba(12,17,27,.14) 100%
+      ),
+      url("/assets/yatut/cities/kyiv/mini-banner.jpg")
+      center right / 48% 100%
+      no-repeat !important;
+  }
+
+  body.yatut-dark-mode
+  .events-page
+  .events-city-stat > div {
+    background: rgba(18,24,38,.74) !important;
+  }
+}
