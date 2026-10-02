@@ -16,6 +16,7 @@ import {
   MapPin,
   MessageCircle,
   Search,
+  SlidersHorizontal,
   Share2,
   Sparkles,
   Users,
@@ -3809,26 +3810,45 @@ function Events({
         </section>
 
         <section className="events-controls">
-          <label className="events-search">
-            <Search
-              size={18}
-            />
+          <div className="events-search-row">
+            <label className="events-search">
+              <Search
+                size={18}
+              />
 
-            <input
-              value={
-                search
-              }
-              onChange={(
-                event
-              ) =>
-                setSearch(
-                  event.target
-                    .value
-                )
-              }
-              placeholder="Знайти подію"
-            />
-          </label>
+              <input
+                value={
+                  search
+                }
+                onChange={(
+                  event
+                ) =>
+                  setSearch(
+                    event.target
+                      .value
+                  )
+                }
+                placeholder="Знайти подію"
+              />
+            </label>
+
+            <button
+              type="button"
+              className="events-filter-button"
+              aria-label="Скинути фільтри"
+              title="Скинути фільтри"
+              onClick={() => {
+                setSearch("");
+                setActiveTab(
+                  "for-you"
+                );
+              }}
+            >
+              <SlidersHorizontal
+                size={18}
+              />
+            </button>
+          </div>
 
           <nav className="events-tabs">
             {(authSession?.user?.id
@@ -3881,11 +3901,28 @@ function Events({
                 </h2>
               </div>
 
-              <strong>
-                {
-                  filteredEvents.length
-                }
-              </strong>
+              <div className="events-section-title-actions">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearch("");
+                    setActiveTab(
+                      "for-you"
+                    );
+                  }}
+                >
+                  Усі події
+                  <span>
+                    ›
+                  </span>
+                </button>
+
+                <strong>
+                  {
+                    filteredEvents.length
+                  }
+                </strong>
+              </div>
             </div>
 
             {filteredEvents.length >
