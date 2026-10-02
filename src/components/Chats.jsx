@@ -5410,23 +5410,33 @@ function Chats({
     let timer = null;
 
     const scrollToLatest = () => {
-      const marker =
-        bottomRef.current;
-
       const container =
         messagesRef.current;
-
-      if (marker) {
-        marker.scrollIntoView({
-          block: "end",
-          inline: "nearest",
-          behavior: "auto",
-        });
-      }
 
       if (container) {
         container.scrollTop =
           container.scrollHeight;
+      }
+
+      if (
+        !document.documentElement.classList.contains(
+          "yatut-keyboard-open"
+        )
+      ) {
+        const scrollingElement =
+          document.scrollingElement;
+
+        if (scrollingElement) {
+          scrollingElement.scrollTop =
+            0;
+          scrollingElement.scrollLeft =
+            0;
+        }
+
+        window.scrollTo(
+          0,
+          0
+        );
       }
 
       setDialogPositioned(
