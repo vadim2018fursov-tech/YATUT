@@ -5080,8 +5080,9 @@ function Chats({
   ]);
 
   /* =======================================================
-     MOBILE COMPOSER HARD POSITION V41
-     Inline !important styles intentionally outrank legacy CSS layers.
+     MOBILE COMPOSER VIEWPORT POSITION V44
+     Center against the real visual viewport and reserve
+     exactly enough scroll space above the fixed composer.
   ======================================================= */
   useEffect(() => {
     if (
@@ -5093,6 +5094,9 @@ function Chats({
     const root =
       document.documentElement;
 
+    let resizeObserver =
+      null;
+
     const applyComposerPosition =
       () => {
         const composer =
@@ -5100,18 +5104,56 @@ function Chats({
             ".messenger.mobile-dialog-open .chat-composer"
           );
 
+        const messages =
+          messagesRef.current;
+
         if (
           !composer ||
+          !messages ||
           window.innerWidth >
             767
         ) {
           return;
         }
 
+        const viewport =
+          window.visualViewport;
+
+        const viewportWidth =
+          viewport?.width ||
+          window.innerWidth;
+
+        const viewportHeight =
+          viewport?.height ||
+          window.innerHeight;
+
+        const viewportLeft =
+          viewport?.offsetLeft ||
+          0;
+
         const keyboardOpen =
           root.classList.contains(
             "yatut-keyboard-open"
           );
+
+        const horizontalGap =
+          12;
+
+        const width =
+          Math.max(
+            280,
+            Math.min(
+              720,
+              viewportWidth -
+                horizontalGap *
+                  2
+            )
+          );
+
+        const centerX =
+          viewportLeft +
+          viewportWidth /
+            2;
 
         composer.style.setProperty(
           "position",
@@ -5121,13 +5163,13 @@ function Chats({
 
         composer.style.setProperty(
           "left",
-          "5px",
+          `${centerX}px`,
           "important"
         );
 
         composer.style.setProperty(
           "right",
-          "5px",
+          "auto",
           "important"
         );
 
@@ -5139,13 +5181,13 @@ function Chats({
 
         composer.style.setProperty(
           "width",
-          "auto",
+          `${width}px`,
           "important"
         );
 
         composer.style.setProperty(
           "max-width",
-          "none",
+          `${width}px`,
           "important"
         );
 
@@ -5157,7 +5199,7 @@ function Chats({
 
         composer.style.setProperty(
           "transform",
-          "none",
+          "translateX(-50%)",
           "important"
         );
 
@@ -5170,9 +5212,37 @@ function Chats({
         composer.style.setProperty(
           "bottom",
           keyboardOpen
-            ? "4px"
+            ? "5px"
             : "max(14px, calc(env(safe-area-inset-bottom, 0px) + 4px))",
           "important"
+        );
+
+        window.requestAnimationFrame(
+          () => {
+            const rect =
+              composer.getBoundingClientRect();
+
+            const reserve =
+              Math.max(
+                96,
+                Math.ceil(
+                  viewportHeight -
+                    rect.top +
+                    14
+                )
+              );
+
+            messages.style.setProperty(
+              "--chat-composer-reserve",
+              `${reserve}px`
+            );
+
+            messages.style.setProperty(
+              "scroll-padding-bottom",
+              `${reserve}px`,
+              "important"
+            );
+          }
         );
       };
 
@@ -5183,6 +5253,26 @@ function Chats({
         );
 
     applyComposerPosition();
+
+    const composer =
+      document.querySelector(
+        ".messenger.mobile-dialog-open .chat-composer"
+      );
+
+    if (
+      composer &&
+      typeof ResizeObserver !==
+        "undefined"
+    ) {
+      resizeObserver =
+        new ResizeObserver(
+          schedule
+        );
+
+      resizeObserver.observe(
+        composer
+      );
+    }
 
     window.addEventListener(
       "resize",
@@ -5231,11 +5321,15 @@ function Chats({
       );
 
       observer.disconnect();
+      resizeObserver?.disconnect();
 
       const composer =
         document.querySelector(
           ".messenger .chat-composer"
         );
+
+      const messages =
+        messagesRef.current;
 
       [
         "position",
@@ -5255,6 +5349,14 @@ function Chats({
           composer?.style.removeProperty(
             property
           )
+      );
+
+      messages?.style.removeProperty(
+        "--chat-composer-reserve"
+      );
+
+      messages?.style.removeProperty(
+        "scroll-padding-bottom"
       );
     };
   }, [
@@ -9745,6 +9847,8 @@ function Chats({
                   ref={
                     bottomRef
                   }
+                  className="chat-bottom-spacer"
+                  aria-hidden="true"
                 />
 
               </div>
