@@ -1,0 +1,437 @@
+/* =========================================================
+   YATUT FRIEND CARD V62 — CONTINUOUS COVER FADE
+   The cover/background visually continues into the body and
+   dissolves smoothly instead of ending on a hard horizontal edge.
+========================================================= */
+
+@media (max-width: 767px) {
+  .friends-v2-person-card {
+    position: relative !important;
+    isolation: isolate !important;
+    overflow: hidden !important;
+
+    --friend-card-surface:
+      rgba(255,255,255,.90);
+  }
+
+  body.yatut-dark-mode
+  .friends-v2-person-card {
+    --friend-card-surface:
+      rgba(17,22,38,.92);
+  }
+
+  /* -------------------------------------------------------
+     Real user cover
+  ------------------------------------------------------- */
+
+  .friends-v2-person-card.has-cover-image::before {
+    content: "" !important;
+
+    position: absolute !important;
+    z-index: 0 !important;
+
+    left: -10% !important;
+    right: -10% !important;
+    top: 42px !important;
+
+    height: 178px !important;
+
+    pointer-events: none !important;
+
+    background-image:
+      var(--friend-card-cover) !important;
+
+    background-size:
+      cover !important;
+
+    background-position:
+      center 54% !important;
+
+    background-repeat:
+      no-repeat !important;
+
+    filter:
+      blur(24px)
+      saturate(1.16)
+      brightness(1.08) !important;
+
+    opacity:
+      .34 !important;
+
+    transform:
+      scale(1.08) !important;
+
+    -webkit-mask-image:
+      linear-gradient(
+        180deg,
+        rgba(0,0,0,.96) 0%,
+        rgba(0,0,0,.78) 40%,
+        rgba(0,0,0,.42) 68%,
+        rgba(0,0,0,.12) 86%,
+        transparent 100%
+      ) !important;
+
+    mask-image:
+      linear-gradient(
+        180deg,
+        rgba(0,0,0,.96) 0%,
+        rgba(0,0,0,.78) 40%,
+        rgba(0,0,0,.42) 68%,
+        rgba(0,0,0,.12) 86%,
+        transparent 100%
+      ) !important;
+  }
+
+  /* A soft color veil keeps the transition elegant even when
+     the actual cover image is visually busy. */
+  .friends-v2-person-card.has-cover-image::after {
+    content: "" !important;
+
+    position: absolute !important;
+    z-index: 1 !important;
+
+    inset:
+      64px
+      0
+      auto !important;
+
+    height: 150px !important;
+
+    pointer-events: none !important;
+
+    background:
+      radial-gradient(
+        circle at 16% 20%,
+        rgba(118,95,245,.13),
+        transparent 36%
+      ),
+      radial-gradient(
+        circle at 86% 12%,
+        rgba(80,184,255,.12),
+        transparent 34%
+      ),
+      radial-gradient(
+        circle at 62% 56%,
+        rgba(237,122,211,.09),
+        transparent 42%
+      ) !important;
+
+    -webkit-mask-image:
+      linear-gradient(
+        180deg,
+        rgba(0,0,0,.85),
+        rgba(0,0,0,.32) 68%,
+        transparent 100%
+      ) !important;
+
+    mask-image:
+      linear-gradient(
+        180deg,
+        rgba(0,0,0,.85),
+        rgba(0,0,0,.32) 68%,
+        transparent 100%
+      ) !important;
+  }
+
+  /* -------------------------------------------------------
+     No cover image: keep the same premium flowing background
+  ------------------------------------------------------- */
+
+  .friends-v2-person-card.has-soft-cover {
+    background:
+      radial-gradient(
+        circle at 18% 8%,
+        rgba(111,93,244,.13),
+        transparent 30%
+      ),
+      radial-gradient(
+        circle at 90% 18%,
+        rgba(80,185,255,.12),
+        transparent 34%
+      ),
+      radial-gradient(
+        circle at 62% 38%,
+        rgba(240,130,213,.09),
+        transparent 38%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(247,246,255,.98),
+        rgba(255,255,255,.98) 58%,
+        #fff 100%
+      ) !important;
+  }
+
+  .friends-v2-person-card.has-soft-cover
+  .friends-v2-person-cover {
+    background:
+      radial-gradient(
+        circle at 20% 18%,
+        rgba(112,94,245,.18),
+        transparent 40%
+      ),
+      radial-gradient(
+        circle at 88% 30%,
+        rgba(79,185,255,.16),
+        transparent 42%
+      ),
+      radial-gradient(
+        circle at 54% 76%,
+        rgba(237,121,211,.12),
+        transparent 45%
+      ),
+      linear-gradient(
+        145deg,
+        #f1efff,
+        #edf7ff 56%,
+        #fff5fb
+      ) !important;
+  }
+
+  /* -------------------------------------------------------
+     Cover itself
+  ------------------------------------------------------- */
+
+  .friends-v2-person-card
+  .friends-v2-person-cover {
+    position: relative !important;
+    z-index: 2 !important;
+
+    border-radius:
+      20px
+      20px
+      0
+      0 !important;
+
+    overflow: visible !important;
+  }
+
+  .friends-v2-person-card.has-cover-image
+  .friends-v2-person-cover.has-image {
+    background-image:
+      linear-gradient(
+        180deg,
+        rgba(9,11,22,.00) 0%,
+        rgba(9,11,22,.015) 52%,
+        rgba(255,255,255,.10) 67%,
+        rgba(255,255,255,.36) 79%,
+        rgba(255,255,255,.68) 90%,
+        rgba(255,255,255,.94) 100%
+      ),
+      var(--friend-card-cover) !important;
+
+    background-size:
+      cover,
+      cover !important;
+
+    background-position:
+      center,
+      center 36% !important;
+  }
+
+  .friends-v2-person-card
+  .friends-v2-person-cover::after {
+    content: "" !important;
+
+    position: absolute !important;
+    z-index: 3 !important;
+
+    inset:
+      auto
+      0
+      -1px !important;
+
+    height: 56% !important;
+
+    pointer-events: none !important;
+
+    border-radius:
+      0 !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,.12) 30%,
+        rgba(255,255,255,.42) 60%,
+        rgba(255,255,255,.78) 82%,
+        rgba(255,255,255,.96) 100%
+      ) !important;
+  }
+
+  /* -------------------------------------------------------
+     Body becomes slightly translucent so the blurred cover
+     continuation is visible underneath without hurting text.
+  ------------------------------------------------------- */
+
+  .friends-v2-person-card
+  .friends-v2-person-body {
+    position: relative !important;
+    z-index: 4 !important;
+
+    margin-top: -1px !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255,255,255,.76) 0%,
+        rgba(255,255,255,.90) 30%,
+        rgba(255,255,255,.97) 62%,
+        #fff 100%
+      ) !important;
+
+    backdrop-filter:
+      blur(8px)
+      saturate(1.08) !important;
+
+    -webkit-backdrop-filter:
+      blur(8px)
+      saturate(1.08) !important;
+  }
+
+  .friends-v2-person-card
+  .friends-v2-person-avatar-wrap,
+  .friends-v2-person-card
+  .friends-v2-person-more,
+  .friends-v2-person-card
+  .friends-v2-request-chip,
+  .friends-v2-person-card
+  .friends-v2-nearby-chip {
+    z-index: 7 !important;
+  }
+
+  /* -------------------------------------------------------
+     Dark mode
+  ------------------------------------------------------- */
+
+  body.yatut-dark-mode
+  .friends-v2-person-card.has-cover-image::before {
+    opacity:
+      .26 !important;
+
+    filter:
+      blur(26px)
+      saturate(1.12)
+      brightness(.70) !important;
+  }
+
+  body.yatut-dark-mode
+  .friends-v2-person-card.has-cover-image::after {
+    background:
+      radial-gradient(
+        circle at 16% 20%,
+        rgba(112,94,245,.17),
+        transparent 36%
+      ),
+      radial-gradient(
+        circle at 86% 12%,
+        rgba(75,170,255,.10),
+        transparent 34%
+      ),
+      radial-gradient(
+        circle at 62% 56%,
+        rgba(221,92,191,.08),
+        transparent 42%
+      ) !important;
+  }
+
+  body.yatut-dark-mode
+  .friends-v2-person-card.has-soft-cover {
+    background:
+      radial-gradient(
+        circle at 18% 8%,
+        rgba(109,90,245,.16),
+        transparent 30%
+      ),
+      radial-gradient(
+        circle at 90% 18%,
+        rgba(66,154,236,.10),
+        transparent 34%
+      ),
+      linear-gradient(
+        180deg,
+        #181d2d,
+        #111625 60%,
+        #0f1422 100%
+      ) !important;
+  }
+
+  body.yatut-dark-mode
+  .friends-v2-person-card.has-soft-cover
+  .friends-v2-person-cover {
+    background:
+      radial-gradient(
+        circle at 18% 18%,
+        rgba(112,94,245,.24),
+        transparent 42%
+      ),
+      radial-gradient(
+        circle at 86% 26%,
+        rgba(70,160,244,.16),
+        transparent 44%
+      ),
+      linear-gradient(
+        145deg,
+        #282344,
+        #17243a 58%,
+        #251c31
+      ) !important;
+  }
+
+  body.yatut-dark-mode
+  .friends-v2-person-card.has-cover-image
+  .friends-v2-person-cover.has-image {
+    background-image:
+      linear-gradient(
+        180deg,
+        rgba(8,10,18,.02) 0%,
+        rgba(8,10,18,.08) 54%,
+        rgba(16,20,34,.28) 70%,
+        rgba(17,22,38,.65) 88%,
+        rgba(17,22,38,.96) 100%
+      ),
+      var(--friend-card-cover) !important;
+  }
+
+  body.yatut-dark-mode
+  .friends-v2-person-card
+  .friends-v2-person-cover::after {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(17,22,38,0) 0%,
+        rgba(17,22,38,.14) 30%,
+        rgba(17,22,38,.46) 60%,
+        rgba(17,22,38,.80) 82%,
+        rgba(17,22,38,.97) 100%
+      ) !important;
+  }
+
+  body.yatut-dark-mode
+  .friends-v2-person-card
+  .friends-v2-person-body {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(17,22,38,.72) 0%,
+        rgba(17,22,38,.89) 30%,
+        rgba(17,22,38,.97) 66%,
+        #111626 100%
+      ) !important;
+
+    backdrop-filter:
+      blur(9px)
+      saturate(1.05) !important;
+
+    -webkit-backdrop-filter:
+      blur(9px)
+      saturate(1.05) !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .friends-v2-person-card.has-cover-image::before {
+    height:
+      166px !important;
+  }
+}
