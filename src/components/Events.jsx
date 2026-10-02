@@ -186,6 +186,35 @@ const FILTER_TABS = [
   },
 ];
 
+const CITY_VISUALS = {
+  "київ": "/assets/yatut/cities/kyiv/mini-banner.jpg",
+  "киев": "/assets/yatut/cities/kyiv/mini-banner.jpg",
+  "kyiv": "/assets/yatut/cities/kyiv/mini-banner.jpg",
+};
+
+function normalizeCityName(value) {
+  const raw = String(value || "").trim();
+
+  if (!raw) {
+    return "Київ";
+  }
+
+  return raw
+    .split(",")[0]
+    .trim() || "Київ";
+}
+
+function resolveCityImage(city) {
+  return (
+    CITY_VISUALS[
+      String(city || "")
+        .trim()
+        .toLowerCase()
+    ] ||
+    "/assets/yatut/cities/kyiv/mini-banner.jpg"
+  );
+}
+
 /* =========================================================
    HELPERS
 ========================================================= */
@@ -2527,6 +2556,26 @@ function Events({
     "for-you"
   );
 
+  const currentCity =
+    normalizeCityName(
+      authSession?.user
+        ?.user_metadata
+        ?.city ||
+      authSession?.user
+        ?.user_metadata
+        ?.location ||
+      events.find(
+        (event) =>
+          event.city
+      )?.city ||
+      "Київ"
+    );
+
+  const currentCityImage =
+    resolveCityImage(
+      currentCity
+    );
+
   useEffect(() => {
     if (
       !authSession?.user?.id
@@ -3794,18 +3843,40 @@ function Events({
             </button>
           </div>
 
-          <div className="events-hero-art">
-            <span>
-              Я
+          <div className="events-hero-art" aria-hidden="true">
+            <div className="events-hero-orbit events-hero-orbit--one" />
+            <div className="events-hero-orbit events-hero-orbit--two" />
+
+            <div className="events-hero-calendar">
+              <span className="events-hero-calendar-pin events-hero-calendar-pin--left" />
+              <span className="events-hero-calendar-pin events-hero-calendar-pin--right" />
+
+              <div className="events-hero-calendar-grid">
+                <i />
+                <i />
+                <i />
+              </div>
+
+              <div className="events-hero-logo">
+                Я
+              </div>
+            </div>
+
+            <span className="events-hero-float events-hero-float--location">
+              <MapPin size={22} />
             </span>
 
-            <i>
-              📍
-            </i>
+            <span className="events-hero-float events-hero-float--people">
+              <Users size={22} />
+            </span>
 
-            <b>
+            <span className="events-hero-float events-hero-float--party">
               🎉
-            </b>
+            </span>
+
+            <span className="events-hero-float events-hero-float--heart">
+              <Heart size={21} fill="currentColor" />
+            </span>
           </div>
         </section>
 
@@ -3971,24 +4042,43 @@ function Events({
           </main>
 
           <aside className="events-side">
-            <article className="events-side-card">
-              <span>
-                ВАШЕ МІСТО
-              </span>
+            <article
+              className="events-side-card events-city-card"
+              style={{
+                "--events-city-image":
+                  `url("${currentCityImage}")`,
+              }}
+            >
+              <div className="events-city-copy">
+                <span>
+                  ВАШЕ МІСТО
+                </span>
 
-              <h3>
-                Київ
-              </h3>
+                <h3>
+                  {currentCity}
+                  <MapPin size={17} />
+                </h3>
 
-              <p>
-                Події та активності, які відбуваються у вашому місті.
-              </p>
+                <p>
+                  Події та активності, які відбуваються у вашому місті.
+                </p>
+              </div>
+
+              <div className="events-city-photo" aria-hidden="true" />
 
               <div className="events-city-stat">
                 <div>
+                  <CalendarDays size={18} />
+
                   <strong>
                     {
-                      events.length
+                      events.filter(
+                        (event) =>
+                          normalizeCityName(
+                            event.city
+                          ).toLowerCase() ===
+                          currentCity.toLowerCase()
+                      ).length
                     }
                   </strong>
 
@@ -3998,23 +4088,33 @@ function Events({
                 </div>
 
                 <div>
+                  <Users size={18} />
+
                   <strong>
-                    {events.reduce(
-                      (
-                        sum,
-                        event
-                      ) =>
-                        sum +
+                    {events
+                      .filter(
+                        (event) =>
+                          normalizeCityName(
+                            event.city
+                          ).toLowerCase() ===
+                          currentCity.toLowerCase()
+                      )
+                      .reduce(
                         (
-                          event.backend
-                            ? event.goingCount ||
-                              0
-                            : event.attendees
-                                ?.length ||
-                              0
-                        ),
-                      0
-                    )}
+                          sum,
+                          event
+                        ) =>
+                          sum +
+                          (
+                            event.backend
+                              ? event.goingCount ||
+                                0
+                              : event.attendees
+                                  ?.length ||
+                                0
+                          ),
+                        0
+                      )}
                   </strong>
 
                   <span>
@@ -4070,28 +4170,48 @@ function Events({
             </article>
 
             <article className="events-create-side-card">
-              <span>
-                ✨
-              </span>
+              <div className="events-cta-copy">
+                <span>
+                  ✨
+                </span>
 
-              <strong>
-                Збери своїх
-              </strong>
+                <div>
+                  <strong>
+                    Збери своїх
+                  </strong>
 
-              <p>
-                {authSession?.user?.id
-                  ? "Створи подію, збери учасників і продовжуйте спілкування у серверному чаті ЯТУТ."
-                  : "Створи подію, запроси друзів і продовжуйте спілкування у чаті ЯТУТ."}
-              </p>
+                  <p>
+                    {authSession?.user?.id
+                      ? "Створи подію, збери учасників і продовжуйте спілкування у серверному чаті ЯТУТ."
+                      : "Створи подію, запроси друзів і продовжуйте спілкування у чаті ЯТУТ."}
+                  </p>
 
-              <button
-                type="button"
-                onClick={
-                  openNormalCreator
-                }
-              >
-                Створити подію
-              </button>
+                  <button
+                    type="button"
+                    onClick={
+                      openNormalCreator
+                    }
+                  >
+                    <span>＋</span>
+                    Створити подію
+                  </button>
+                </div>
+              </div>
+
+              <div className="events-cta-art" aria-hidden="true">
+                <div className="events-cta-ring" />
+                <div className="events-cta-person events-cta-person--left" />
+                <div className="events-cta-person events-cta-person--center" />
+                <div className="events-cta-person events-cta-person--right" />
+
+                <span className="events-cta-bubble events-cta-bubble--heart">
+                  <Heart size={18} fill="currentColor" />
+                </span>
+
+                <span className="events-cta-bubble events-cta-bubble--spark">
+                  <Sparkles size={18} />
+                </span>
+              </div>
             </article>
           </aside>
         </div>
