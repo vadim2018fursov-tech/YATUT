@@ -37,6 +37,7 @@ import "./styles/mobile-bugfix-v34.css";
 import "./styles/mobile-fix-v35.css";
 import "./styles/visual-fix-v43.css";
 import "./styles/home-optical-v47.css";
+import "./styles/story-creator-v48.css";
 import {
   initNativePlatform,
 } from "./services/nativePlatformService.js";
