@@ -39,6 +39,7 @@ import "./styles/visual-fix-v43.css";
 import "./styles/home-optical-v47.css";
 import "./styles/story-creator-v48.css";
 import "./styles/create-glass-v49.css";
+import "./styles/create-glass-v50.css";
 import {
   initNativePlatform,
 } from "./services/nativePlatformService.js";
