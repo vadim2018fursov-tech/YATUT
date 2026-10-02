@@ -867,6 +867,628 @@ export default function Profile({
     ]
   );
 
+  /* =======================================================
+     PROFILE SMART CONTRAST V29
+     Samples the actual cover pixels beneath each mobile
+     profile zone and chooses readable foreground/glass tones.
+     Falls back safely when cross-origin pixel access is blocked.
+  ======================================================= */
+  useEffect(
+    () => {
+      const cover =
+        String(
+          profile.cover ||
+          ""
+        ).trim();
+
+      const selectors = [
+        ".profile-v3-mobile-identity",
+        ".profile-v3-mobile-bio",
+        ".profile-v3-mobile-meta",
+        ".profile-v3-mobile-status-wrap",
+        ".profile-v3-mobile-actions",
+        ".profile-v3-mobile-stats",
+        ".profile-v2-tabs",
+      ];
+
+      let disposed =
+        false;
+
+      let resizeTimer =
+        null;
+
+      let animationFrame =
+        null;
+
+      const getTargets =
+        () =>
+          selectors
+            .map(
+              (
+                selector
+              ) =>
+                document.querySelector(
+                  selector
+                )
+            )
+            .filter(
+              Boolean
+            );
+
+      const clearTones =
+        () => {
+          getTargets().forEach(
+            (
+              element
+            ) => {
+              delete element.dataset
+                .profileTone;
+
+              delete element.dataset
+                .profileMixed;
+            }
+          );
+
+          document.body.classList.remove(
+            "yatut-profile-smart-contrast"
+          );
+        };
+
+      if (!cover) {
+        clearTones();
+
+        return undefined;
+      }
+
+      const setFallbackTones =
+        () => {
+          const identity =
+            document.querySelector(
+              ".profile-v3-mobile-identity"
+            );
+
+          const bio =
+            document.querySelector(
+              ".profile-v3-mobile-bio"
+            );
+
+          const meta =
+            document.querySelector(
+              ".profile-v3-mobile-meta"
+            );
+
+          const status =
+            document.querySelector(
+              ".profile-v3-mobile-status-wrap"
+            );
+
+          const actions =
+            document.querySelector(
+              ".profile-v3-mobile-actions"
+            );
+
+          const stats =
+            document.querySelector(
+              ".profile-v3-mobile-stats"
+            );
+
+          const tabs =
+            document.querySelector(
+              ".profile-v2-tabs"
+            );
+
+          [
+            identity,
+            bio,
+          ]
+            .filter(
+              Boolean
+            )
+            .forEach(
+              (
+                element
+              ) => {
+                element.dataset.profileTone =
+                  "dark";
+              }
+            );
+
+          [
+            meta,
+            status,
+            actions,
+            stats,
+            tabs,
+          ]
+            .filter(
+              Boolean
+            )
+            .forEach(
+              (
+                element
+              ) => {
+                element.dataset.profileTone =
+                  "light";
+              }
+            );
+
+          document.body.classList.add(
+            "yatut-profile-smart-contrast"
+          );
+        };
+
+      const image =
+        new Image();
+
+      image.decoding =
+        "async";
+
+      image.crossOrigin =
+        "anonymous";
+
+      const sampleImage =
+        () => {
+          if (
+            disposed ||
+            !image.naturalWidth ||
+            !image.naturalHeight
+          ) {
+            return;
+          }
+
+          const canvas =
+            document.createElement(
+              "canvas"
+            );
+
+          const maxSide =
+            220;
+
+          const downscale =
+            Math.min(
+              1,
+              maxSide /
+                Math.max(
+                  image.naturalWidth,
+                  image.naturalHeight
+                )
+            );
+
+          canvas.width =
+            Math.max(
+              1,
+              Math.round(
+                image.naturalWidth *
+                  downscale
+              )
+            );
+
+          canvas.height =
+            Math.max(
+              1,
+              Math.round(
+                image.naturalHeight *
+                  downscale
+              )
+            );
+
+          const context =
+            canvas.getContext(
+              "2d",
+              {
+                willReadFrequently:
+                  true,
+              }
+            );
+
+          if (!context) {
+            setFallbackTones();
+
+            return;
+          }
+
+          try {
+            context.drawImage(
+              image,
+              0,
+              0,
+              canvas.width,
+              canvas.height
+            );
+
+            context.getImageData(
+              0,
+              0,
+              1,
+              1
+            );
+          } catch (
+            error
+          ) {
+            setFallbackTones();
+
+            return;
+          }
+
+          const viewportWidth =
+            Math.max(
+              1,
+              document.documentElement
+                .clientWidth ||
+                window.innerWidth ||
+                1
+            );
+
+          const coverHeight =
+            760;
+
+          const scale =
+            Math.max(
+              viewportWidth /
+                image.naturalWidth,
+              coverHeight /
+                image.naturalHeight
+            );
+
+          const renderedWidth =
+            image.naturalWidth *
+            scale;
+
+          const renderedHeight =
+            image.naturalHeight *
+            scale;
+
+          const offsetX =
+            (
+              viewportWidth -
+              renderedWidth
+            ) /
+            2;
+
+          const offsetY =
+            0;
+
+          const toLinear =
+            (
+              channel
+            ) => {
+              const value =
+                channel /
+                255;
+
+              return value <=
+                0.04045
+                ? value /
+                    12.92
+                : Math.pow(
+                    (
+                      value +
+                      0.055
+                    ) /
+                      1.055,
+                    2.4
+                  );
+            };
+
+          const readLuminance =
+            (
+              red,
+              green,
+              blue
+            ) =>
+              0.2126 *
+                toLinear(
+                  red
+                ) +
+              0.7152 *
+                toLinear(
+                  green
+                ) +
+              0.0722 *
+                toLinear(
+                  blue
+                );
+
+          const sampleTone =
+            (
+              element
+            ) => {
+              const rect =
+                element
+                  .getBoundingClientRect();
+
+              const scrollY =
+                window.scrollY ||
+                window.pageYOffset ||
+                0;
+
+              const docTop =
+                rect.top +
+                scrollY;
+
+              const docLeft =
+                rect.left +
+                (
+                  window.scrollX ||
+                  window.pageXOffset ||
+                  0
+                );
+
+              const xFractions = [
+                0.18,
+                0.38,
+                0.62,
+                0.82,
+              ];
+
+              const yFractions = [
+                0.24,
+                0.50,
+                0.76,
+              ];
+
+              const values =
+                [];
+
+              xFractions.forEach(
+                (
+                  xFraction
+                ) => {
+                  yFractions.forEach(
+                    (
+                      yFraction
+                    ) => {
+                      const screenX =
+                        docLeft +
+                        rect.width *
+                          xFraction;
+
+                      const screenY =
+                        docTop +
+                        rect.height *
+                          yFraction;
+
+                      const sourceX =
+                        (
+                          screenX -
+                          offsetX
+                        ) /
+                        scale;
+
+                      const sourceY =
+                        (
+                          screenY -
+                          offsetY
+                        ) /
+                        scale;
+
+                      if (
+                        sourceX <
+                          0 ||
+                        sourceY <
+                          0 ||
+                        sourceX >=
+                          image.naturalWidth ||
+                        sourceY >=
+                          image.naturalHeight
+                      ) {
+                        return;
+                      }
+
+                      const canvasX =
+                        Math.max(
+                          0,
+                          Math.min(
+                            canvas.width -
+                              1,
+                            Math.floor(
+                              sourceX *
+                                downscale
+                            )
+                          )
+                        );
+
+                      const canvasY =
+                        Math.max(
+                          0,
+                          Math.min(
+                            canvas.height -
+                              1,
+                            Math.floor(
+                              sourceY *
+                                downscale
+                            )
+                          )
+                        );
+
+                      const pixel =
+                        context.getImageData(
+                          canvasX,
+                          canvasY,
+                          1,
+                          1
+                        ).data;
+
+                      values.push(
+                        readLuminance(
+                          pixel[0],
+                          pixel[1],
+                          pixel[2]
+                        )
+                      );
+                    }
+                  );
+                }
+              );
+
+              if (!values.length) {
+                return {
+                  tone:
+                    "light",
+                  mixed:
+                    false,
+                };
+              }
+
+              const average =
+                values.reduce(
+                  (
+                    total,
+                    value
+                  ) =>
+                    total +
+                    value,
+                  0
+                ) /
+                values.length;
+
+              const variance =
+                values.reduce(
+                  (
+                    total,
+                    value
+                  ) =>
+                    total +
+                    Math.pow(
+                      value -
+                        average,
+                      2
+                    ),
+                  0
+                ) /
+                values.length;
+
+              const deviation =
+                Math.sqrt(
+                  variance
+                );
+
+              return {
+                tone:
+                  average >
+                  0.34
+                    ? "light"
+                    : "dark",
+                mixed:
+                  deviation >
+                  0.17,
+              };
+            };
+
+          getTargets().forEach(
+            (
+              element
+            ) => {
+              const result =
+                sampleTone(
+                  element
+                );
+
+              element.dataset.profileTone =
+                result.tone;
+
+              element.dataset.profileMixed =
+                result.mixed
+                  ? "true"
+                  : "false";
+            }
+          );
+
+          document.body.classList.add(
+            "yatut-profile-smart-contrast"
+          );
+        };
+
+      const scheduleSample =
+        () => {
+          if (
+            animationFrame
+          ) {
+            window.cancelAnimationFrame(
+              animationFrame
+            );
+          }
+
+          animationFrame =
+            window.requestAnimationFrame(
+              sampleImage
+            );
+        };
+
+      const handleResize =
+        () => {
+          if (
+            resizeTimer
+          ) {
+            window.clearTimeout(
+              resizeTimer
+            );
+          }
+
+          resizeTimer =
+            window.setTimeout(
+              scheduleSample,
+              100
+            );
+        };
+
+      image.onload =
+        scheduleSample;
+
+      image.onerror =
+        setFallbackTones;
+
+      image.src =
+        cover;
+
+      window.addEventListener(
+        "resize",
+        handleResize
+      );
+
+      window.addEventListener(
+        "orientationchange",
+        handleResize
+      );
+
+      return () => {
+        disposed =
+          true;
+
+        if (
+          resizeTimer
+        ) {
+          window.clearTimeout(
+            resizeTimer
+          );
+        }
+
+        if (
+          animationFrame
+        ) {
+          window.cancelAnimationFrame(
+            animationFrame
+          );
+        }
+
+        window.removeEventListener(
+          "resize",
+          handleResize
+        );
+
+        window.removeEventListener(
+          "orientationchange",
+          handleResize
+        );
+
+        clearTones();
+      };
+    },
+    [
+      profile.cover,
+    ]
+  );
+
   useEffect(
     () => {
       if (
