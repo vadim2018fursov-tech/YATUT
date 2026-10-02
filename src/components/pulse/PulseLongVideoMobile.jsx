@@ -371,6 +371,371 @@ const LONG_VIDEO_CRITICAL_CSS = `
     font-size: 11px !important;
     text-align: center !important;
   }
+
+
+  /* =======================================================
+     SITE THEME SYNC V52
+     Light site => light vlogs. Dark site keeps cinematic dark.
+  ======================================================= */
+
+  body.pulse-vlogs-active:not(.yatut-dark-mode) {
+    background: #f7f8fc !important;
+    color: #1d212c !important;
+  }
+
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .topbar,
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .topbar-inner {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(248,249,253,.98),
+        rgba(248,249,253,.94)
+      ) !important;
+    border-color:
+      rgba(225,228,238,.88) !important;
+    color: #1d212c !important;
+  }
+
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .brand-tut {
+    color: #171a24 !important;
+  }
+
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .topbar .icon-button {
+    border-color:
+      rgba(219,223,234,.92) !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.82),
+        rgba(244,247,253,.56)
+      ) !important;
+    color: #555c6d !important;
+    box-shadow:
+      0 8px 20px rgba(35,41,68,.07),
+      inset 0 1px 0 rgba(255,255,255,.96) !important;
+  }
+
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .pulse-immersive-mobile.is-long-form {
+    background:
+      radial-gradient(
+        circle at 12% 4%,
+        rgba(108,88,245,.075),
+        transparent 26%
+      ),
+      #f7f8fc !important;
+    color: #1d212c !important;
+  }
+
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .pulse-immersive-mobile.is-long-form
+  .pulse-immersive__tabs {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(248,249,253,.98),
+        rgba(248,249,253,.94)
+      ) !important;
+    border-bottom:
+      1px solid rgba(222,225,235,.88) !important;
+    box-shadow:
+      0 7px 22px rgba(31,37,65,.045) !important;
+  }
+
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .pulse-immersive-mobile.is-long-form
+  .pulse-immersive__tabs button {
+    color: #656b7a !important;
+    border-color:
+      rgba(223,226,236,.84) !important;
+    background:
+      rgba(255,255,255,.42) !important;
+  }
+
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .pulse-immersive-mobile.is-long-form
+  .pulse-immersive__tabs button.is-active {
+    color: #fff !important;
+  }
+
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .pulse-long-mobile,
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .pulse-long-watch {
+    color: #1d212c !important;
+    background:
+      radial-gradient(
+        circle at 86% 10%,
+        rgba(82,184,255,.07),
+        transparent 28%
+      ),
+      #f7f8fc !important;
+  }
+
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .pulse-long-mobile__chips button {
+    border:
+      1px solid
+      rgba(220,224,235,.92) !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.88),
+        rgba(245,247,252,.62)
+      ) !important;
+    color: #555c6c !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.96),
+      0 5px 14px rgba(35,41,68,.045) !important;
+  }
+
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .pulse-long-mobile__chips button.is-active {
+    border-color:
+      rgba(116,96,245,.28) !important;
+    background:
+      linear-gradient(
+        135deg,
+        #7464f7,
+        #8d4dea
+      ) !important;
+    color: #fff !important;
+    box-shadow:
+      0 8px 18px rgba(99,91,255,.18),
+      inset 0 1px 0 rgba(255,255,255,.26) !important;
+  }
+
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .pulse-long-mobile__channels {
+    border-bottom:
+      1px solid rgba(222,225,235,.82) !important;
+  }
+
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .pulse-long-mobile__section-title {
+    color: #2a2f3b !important;
+  }
+
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .pulse-long-mobile__channel-row button {
+    color: #697080 !important;
+  }
+
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .pulse-long-mobile__channel-row button > span {
+    border:
+      2px solid rgba(222,225,235,.96) !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.95),
+        rgba(239,242,250,.92)
+      ) !important;
+    color: #6f60ef !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.96),
+      0 6px 15px rgba(39,45,73,.06) !important;
+  }
+
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .pulse-long-mobile__channel-row button.is-active > span {
+    border-color:
+      rgba(122,108,255,.66) !important;
+    background:
+      linear-gradient(
+        145deg,
+        #7568f9,
+        #9a54ec
+      ) !important;
+    color: #fff !important;
+    box-shadow:
+      0 0 0 3px rgba(99,91,255,.11),
+      0 8px 18px rgba(99,91,255,.16) !important;
+  }
+
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .pulse-long-mobile__channel-row small {
+    color: #777d8b !important;
+  }
+
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .pulse-long-card {
+    border:
+      1px solid rgba(222,225,235,.88) !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.92),
+        rgba(248,250,255,.72)
+      ) !important;
+    color: #1d212c !important;
+    box-shadow:
+      0 10px 26px rgba(34,40,68,.07),
+      inset 0 1px 0 rgba(255,255,255,.96) !important;
+  }
+
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .pulse-long-card__media {
+    background:
+      radial-gradient(
+        circle at 30% 30%,
+        rgba(99,91,255,.14),
+        transparent 38%
+      ),
+      #eef1f7 !important;
+  }
+
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .pulse-long-card__avatar {
+    border-color:
+      rgba(255,255,255,.92) !important;
+  }
+
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .pulse-long-card__copy strong {
+    color: #242834 !important;
+  }
+
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .pulse-long-card__copy span {
+    color: #8a909e !important;
+  }
+
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .pulse-long-card__meta > svg {
+    color: #707787 !important;
+  }
+
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .pulse-long-mobile__empty {
+    border:
+      1px solid rgba(221,225,235,.92) !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.82),
+        rgba(246,248,253,.66)
+      ) !important;
+    color: #858b99 !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.94) !important;
+  }
+
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .pulse-long-watch__body h1,
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .pulse-long-watch__channel strong,
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .pulse-long-watch__description strong,
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .pulse-long-watch__next-head strong {
+    color: #20242f !important;
+  }
+
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .pulse-long-watch__stats,
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .pulse-long-watch__channel small,
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .pulse-long-watch__description p {
+    color: #838998 !important;
+  }
+
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .pulse-long-watch__channel {
+    border-top:
+      1px solid rgba(222,225,235,.84) !important;
+    border-bottom:
+      1px solid rgba(222,225,235,.84) !important;
+  }
+
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .pulse-long-watch__actions button,
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .pulse-long-watch__quality > button {
+    border:
+      1px solid rgba(220,224,235,.88) !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.90),
+        rgba(245,247,252,.64)
+      ) !important;
+    color: #555c6c !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.95),
+      0 5px 14px rgba(35,41,68,.045) !important;
+  }
+
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .pulse-long-watch__actions button.is-active {
+    border-color:
+      rgba(112,91,245,.20) !important;
+    background:
+      rgba(112,91,245,.10) !important;
+    color: #6555ef !important;
+  }
+
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .pulse-long-watch__quality-menu {
+    border:
+      1px solid rgba(220,224,235,.94) !important;
+    background:
+      rgba(255,255,255,.97) !important;
+    color: #2a2f3b !important;
+    box-shadow:
+      0 18px 42px rgba(32,38,67,.12) !important;
+  }
+
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .pulse-long-watch__quality-menu button {
+    background: transparent !important;
+    color: #555c6c !important;
+    box-shadow: none !important;
+  }
+
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .pulse-long-watch__description {
+    border:
+      1px solid rgba(222,225,235,.86) !important;
+    background:
+      rgba(255,255,255,.58) !important;
+  }
+
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .mobile-nav {
+    border-color:
+      rgba(218,222,233,.92) !important;
+    background:
+      rgba(255,255,255,.86) !important;
+    box-shadow:
+      0 -10px 28px rgba(29,34,58,.07),
+      inset 0 1px 0 rgba(255,255,255,.92) !important;
+    backdrop-filter:
+      blur(22px)
+      saturate(1.24) !important;
+    -webkit-backdrop-filter:
+      blur(22px)
+      saturate(1.24) !important;
+  }
+
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .mobile-nav > button,
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .mobile-nav-item {
+    color: #3f4554 !important;
+  }
+
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .mobile-nav > button.active,
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .mobile-nav-item.active {
+    color: #6555ef !important;
+  }
 `;
 
 function formatCompact(
