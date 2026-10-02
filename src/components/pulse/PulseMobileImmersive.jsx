@@ -2116,6 +2116,19 @@ export default function PulseMobileImmersive({
       const body =
         document.body;
 
+      const tabClasses = [
+        "pulse-vlogs-active",
+        "pulse-live-active",
+        "pulse-nearby-active",
+      ];
+
+      tabClasses.forEach(
+        (className) =>
+          body.classList.remove(
+            className
+          )
+      );
+
       if (
         activeTab ===
         "vlogs"
@@ -2123,15 +2136,32 @@ export default function PulseMobileImmersive({
         body.classList.add(
           "pulse-vlogs-active"
         );
-      } else {
-        body.classList.remove(
-          "pulse-vlogs-active"
+      }
+
+      if (
+        activeTab ===
+        "live"
+      ) {
+        body.classList.add(
+          "pulse-live-active"
+        );
+      }
+
+      if (
+        activeTab ===
+        "nearby"
+      ) {
+        body.classList.add(
+          "pulse-nearby-active"
         );
       }
 
       return () => {
-        body.classList.remove(
-          "pulse-vlogs-active"
+        tabClasses.forEach(
+          (className) =>
+            body.classList.remove(
+              className
+            )
         );
       };
     },
