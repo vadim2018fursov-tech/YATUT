@@ -3365,6 +3365,136 @@ function Chats({
     )
   );
 
+
+  /* =======================================================
+     MOBILE CHAT HISTORY
+     iOS edge-swipe / browser back closes the open dialog
+     before leaving the Chats page.
+  ======================================================= */
+
+  useEffect(() => {
+    const mobile =
+      window.matchMedia?.(
+        "(max-width: 767px)"
+      )?.matches;
+
+    if (
+      !mobile ||
+      !mobileDialogOpen
+    ) {
+      return undefined;
+    }
+
+    const currentState =
+      window.history.state ||
+      {};
+
+    if (
+      !currentState
+        ?.yatutChatDialog
+    ) {
+      window.history.pushState(
+        {
+          ...currentState,
+          yatut:
+            true,
+          page:
+            "chats",
+          yatutChatDialog:
+            true,
+          chatId:
+            activeChatId ||
+            null,
+        },
+        "",
+        window.location.href
+      );
+    }
+
+    const handleDialogPopState =
+      () => {
+        setInfoOpen(
+          false
+        );
+
+        setMessageSearchOpen(
+          false
+        );
+
+        setEmojiOpen(
+          false
+        );
+
+        setAttachOpen(
+          false
+        );
+
+        setVoiceOpen(
+          false
+        );
+
+        setMobileDialogOpen(
+          false
+        );
+      };
+
+    window.addEventListener(
+      "popstate",
+      handleDialogPopState
+    );
+
+    return () => {
+      window.removeEventListener(
+        "popstate",
+        handleDialogPopState
+      );
+    };
+  }, [
+    mobileDialogOpen,
+    activeChatId,
+  ]);
+
+  function closeMobileDialog() {
+    const mobile =
+      window.matchMedia?.(
+        "(max-width: 767px)"
+      )?.matches;
+
+    if (
+      mobile &&
+      window.history.state
+        ?.yatutChatDialog
+    ) {
+      window.history.back();
+
+      return;
+    }
+
+    setInfoOpen(
+      false
+    );
+
+    setMessageSearchOpen(
+      false
+    );
+
+    setEmojiOpen(
+      false
+    );
+
+    setAttachOpen(
+      false
+    );
+
+    setVoiceOpen(
+      false
+    );
+
+    setMobileDialogOpen(
+      false
+    );
+  }
+
   const [
     remoteTyping,
     setRemoteTyping,
@@ -9469,10 +9599,8 @@ function Chats({
 
                   <button
                     className="chat-mobile-back"
-                    onClick={() =>
-                      setMobileDialogOpen(
-                        false
-                      )
+                    onClick={
+                      closeMobileDialog
                     }
                   >
                     ‹
