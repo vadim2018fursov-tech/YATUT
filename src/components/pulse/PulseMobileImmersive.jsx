@@ -2065,36 +2065,6 @@ export default function PulseMobileImmersive({
     } = {}
   ) {
     if (
-      tabId ===
-      "live"
-    ) {
-      if (haptic) {
-        nativeLightHaptic();
-      }
-
-      onNavigate?.(
-        "live"
-      );
-
-      return;
-    }
-
-    if (
-      tabId ===
-      "nearby"
-    ) {
-      if (haptic) {
-        nativeLightHaptic();
-      }
-
-      onNavigate?.(
-        "nearbyPulse"
-      );
-
-      return;
-    }
-
-    if (
       !TABS.some(
         (
           tab
@@ -2526,12 +2496,8 @@ export default function PulseMobileImmersive({
                         video.type ===
                           "live"
                       ) {
-                        onNavigate?.(
-                          "live",
-                          {
-                            videoId:
-                              video.id,
-                          }
+                        selectTab(
+                          "live"
                         );
 
                         return;
@@ -2645,8 +2611,11 @@ export default function PulseMobileImmersive({
 
             <p>
               {activeTab ===
-              "following"
-                ? "Підпишись на авторів — їхні нові відео зʼявляться тут."
+              "nearby"
+                ? "Тут зʼявляться Кліпи «Зараз», події та відео з місць поруч."
+                : activeTab ===
+                  "live"
+                ? "Коли хтось почне трансляцію, LIVE зʼявиться тут без переходу на окрему сторінку."
                 : "Новий контент цього формату зʼявиться у PULSE."}
             </p>
 
