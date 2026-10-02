@@ -1,0 +1,95 @@
+/* =========================================================
+   YATUT FRIEND CARD V63 — AVATAR LAYER FIX
+   Keep the circular avatar above the card body/fade layer.
+========================================================= */
+
+@media (max-width: 767px) {
+  .friends-v2-person-card {
+    position: relative !important;
+    overflow: hidden !important;
+    isolation: isolate !important;
+  }
+
+  /* Cover must sit above the body so the avatar can cross
+     the boundary without being visually cut in half. */
+  .friends-v2-person-card
+  .friends-v2-person-cover {
+    position: relative !important;
+    z-index: 5 !important;
+    overflow: visible !important;
+  }
+
+  /* Body remains below the cover/avatar stack. */
+  .friends-v2-person-card
+  .friends-v2-person-body {
+    position: relative !important;
+    z-index: 2 !important;
+  }
+
+  /* The fade belongs below the avatar. */
+  .friends-v2-person-card
+  .friends-v2-person-cover::after {
+    z-index: 3 !important;
+  }
+
+  /* Avatar itself always wins the stacking order. */
+  .friends-v2-person-card
+  .friends-v2-person-avatar-wrap {
+    position: absolute !important;
+    z-index: 12 !important;
+
+    overflow: visible !important;
+
+    transform:
+      translateZ(0) !important;
+  }
+
+  .friends-v2-person-card
+  .friends-v2-person-pulse,
+  .friends-v2-person-card
+  .friends-v2-person-avatar,
+  .friends-v2-person-card
+  .friends-v2-person-avatar
+  img {
+    position: relative !important;
+    z-index: 13 !important;
+
+    overflow: hidden !important;
+
+    border-radius:
+      50% !important;
+  }
+
+  .friends-v2-person-card
+  .friends-v2-person-avatar,
+  .friends-v2-person-card
+  .friends-v2-person-avatar
+  img {
+    width:
+      100% !important;
+
+    height:
+      100% !important;
+
+    min-width:
+      100% !important;
+
+    min-height:
+      100% !important;
+
+    aspect-ratio:
+      1 / 1 !important;
+
+    object-fit:
+      cover !important;
+
+    object-position:
+      center !important;
+  }
+
+  .friends-v2-person-card
+  .friends-v2-person-online {
+    z-index:
+      14 !important;
+  }
+}
