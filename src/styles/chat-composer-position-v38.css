@@ -1,0 +1,64 @@
+/* =========================================================
+   YATUT CHAT COMPOSER POSITION V38
+   Single final positioning layer.
+   Focus state does NOT change position.
+   Only the real keyboard-open state changes the offset.
+========================================================= */
+
+@media (max-width: 767px) {
+  /* Neutralize all older bottom/inset/margin positioning. */
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode),
+  .messenger.mobile-dialog-open
+  .chat-composer.voice-mode,
+  html.yatut-chat-input-focused:not(.yatut-keyboard-open)
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode),
+  html.yatut-chat-input-focused:not(.yatut-keyboard-open)
+  .messenger.mobile-dialog-open
+  .chat-composer.voice-mode {
+    position: relative !important;
+    inset: auto !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+
+    width: calc(100% - 10px) !important;
+    max-width: calc(100% - 10px) !important;
+
+    margin: 0 5px !important;
+
+    /* Actual visual lift. Not affected by old bottom/inset rules. */
+    transform: translateY(-38px) !important;
+
+    align-self: center !important;
+  }
+
+  /* When the real software keyboard is open, VisualViewport already
+     shrinks the chat. Keep the composer close to the keyboard. */
+  html.yatut-keyboard-open
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode),
+  html.yatut-keyboard-open
+  .messenger.mobile-dialog-open
+  .chat-composer.voice-mode,
+  html.yatut-keyboard-open.yatut-chat-input-focused
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode),
+  html.yatut-keyboard-open.yatut-chat-input-focused
+  .messenger.mobile-dialog-open
+  .chat-composer.voice-mode {
+    inset: auto !important;
+    bottom: auto !important;
+    margin: 0 5px !important;
+    transform: translateY(-7px) !important;
+  }
+
+  /* Reserve space for the lifted composer so the last message
+     never sits underneath it. */
+  .messenger.mobile-dialog-open
+  .chat-messages {
+    padding-bottom: 54px !important;
+  }
+}
