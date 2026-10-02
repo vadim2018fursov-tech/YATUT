@@ -41,6 +41,7 @@ import "./styles/story-creator-v48.css";
 import "./styles/create-glass-v49.css";
 import "./styles/create-glass-v50.css";
 import "./styles/creator-studio-glass-v51.css";
+import "./styles/pulse-unified-v53.css";
 import {
   initNativePlatform,
 } from "./services/nativePlatformService.js";
