@@ -187,9 +187,26 @@ const FILTER_TABS = [
 ];
 
 const CITY_VISUALS = {
-  "київ": "/assets/yatut/cities/kyiv/city-card.jpg",
-  "киев": "/assets/yatut/cities/kyiv/city-card.jpg",
-  "kyiv": "/assets/yatut/cities/kyiv/city-card.jpg",
+  "київ": "/assets/yatut/cities/kyiv/mini-banner.jpg",
+  "киев": "/assets/yatut/cities/kyiv/mini-banner.jpg",
+  "kyiv": "/assets/yatut/cities/kyiv/mini-banner.jpg",
+
+  "львів": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Ukraine-Lviv-Panorama.jpg?width=1200",
+  "львов": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Ukraine-Lviv-Panorama.jpg?width=1200",
+  "lviv": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Ukraine-Lviv-Panorama.jpg?width=1200",
+
+  "одеса": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Odessa%20panorama.jpg?width=1200",
+  "одесса": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Odessa%20panorama.jpg?width=1200",
+  "odesa": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Odessa%20panorama.jpg?width=1200",
+  "odessa": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Odessa%20panorama.jpg?width=1200",
+
+  "дніпро": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Dnipro-city%20Panorama.jpg?width=1200",
+  "днепр": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Dnipro-city%20Panorama.jpg?width=1200",
+  "dnipro": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Dnipro-city%20Panorama.jpg?width=1200",
+
+  "харків": "https://commons.wikimedia.org/wiki/Special:Redirect/file/%2843%29%20PANORAMIC%20VIEW%20ON%20CENTRAL%20DISTRICT%20IN%20CITY%20OF%20KHARKIV%20STATE%20OF%20UKRAINE%20PHOTOGRAPH%20BY%20VIKTOR%20O%20LEDENYOV%2020160621.jpg?width=1200",
+  "харьков": "https://commons.wikimedia.org/wiki/Special:Redirect/file/%2843%29%20PANORAMIC%20VIEW%20ON%20CENTRAL%20DISTRICT%20IN%20CITY%20OF%20KHARKIV%20STATE%20OF%20UKRAINE%20PHOTOGRAPH%20BY%20VIKTOR%20O%20LEDENYOV%2020160621.jpg?width=1200",
+  "kharkiv": "https://commons.wikimedia.org/wiki/Special:Redirect/file/%2843%29%20PANORAMIC%20VIEW%20ON%20CENTRAL%20DISTRICT%20IN%20CITY%20OF%20KHARKIV%20STATE%20OF%20UKRAINE%20PHOTOGRAPH%20BY%20VIKTOR%20O%20LEDENYOV%2020160621.jpg?width=1200",
 };
 
 function normalizeCityName(value) {
