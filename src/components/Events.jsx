@@ -3927,30 +3927,32 @@ function Events({
 
             {filteredEvents.length >
             0 ? (
-              filteredEvents.map(
-                (event) => (
-                  <EventCard
-                    key={
-                      event.id
-                    }
-                    event={
-                      event
-                    }
-                    onOpen={
-                      setActiveEventId
-                    }
-                    onToggleLike={
-                      toggleLike
-                    }
-                    onToggleGoing={
-                      toggleGoing
-                    }
-                    onShare={
-                      shareEvent
-                    }
-                  />
-                )
-              )
+              <div className="events-card-rail">
+                {filteredEvents.map(
+                  (event) => (
+                    <EventCard
+                      key={
+                        event.id
+                      }
+                      event={
+                        event
+                      }
+                      onOpen={
+                        setActiveEventId
+                      }
+                      onToggleLike={
+                        toggleLike
+                      }
+                      onToggleGoing={
+                        toggleGoing
+                      }
+                      onShare={
+                        shareEvent
+                      }
+                    />
+                  )
+                )}
+              </div>
             ) : (
               <div className="events-empty">
                 <span>
