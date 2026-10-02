@@ -1,0 +1,177 @@
+/* =========================================================
+   YATUT MOBILE FIX V35
+   1) Remove dark profile header strip in dark mode
+   2) Notifications footer removed in JSX
+   3) Lift chat composer away from bottom edge
+========================================================= */
+
+@media (max-width: 767px) {
+
+  /* =======================================================
+     PROFILE / TOPBAR — NO DARK STRIP
+  ======================================================= */
+
+  body.yatut-profile-immersive.yatut-dark-mode .topbar,
+  body.yatut-profile-immersive.yatut-dark-mode .topbar-inner,
+  html.yatut-profile-immersive.yatut-dark-mode .topbar,
+  html.yatut-profile-immersive.yatut-dark-mode .topbar-inner {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    border: 0 !important;
+    border-bottom: 0 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  body.yatut-profile-immersive.yatut-dark-mode .topbar::before,
+  body.yatut-profile-immersive.yatut-dark-mode .topbar::after,
+  body.yatut-profile-immersive.yatut-dark-mode .topbar-inner::before,
+  body.yatut-profile-immersive.yatut-dark-mode .topbar-inner::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  /* Keep the cover visible continuously behind the header. */
+  body.yatut-profile-immersive.has-yatut-profile-cover .topbar,
+  body.yatut-profile-immersive.has-yatut-profile-cover .topbar-inner {
+    position: relative !important;
+    z-index: 1200 !important;
+  }
+
+  /* Dark mode only affects the controls, not the whole header slab. */
+  body.yatut-profile-immersive.yatut-dark-mode .topbar .icon-button,
+  body.yatut-profile-immersive.yatut-dark-mode .topbar .profile-mini {
+    border-color: rgba(255,255,255,.46) !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.11),
+        rgba(255,255,255,.018)
+      ) !important;
+    color: #fff !important;
+    box-shadow:
+      0 11px 26px rgba(7,12,28,.14),
+      inset 0 0 0 1px rgba(255,255,255,.17),
+      inset 0 1px 0 rgba(255,255,255,.56) !important;
+    backdrop-filter: blur(10px) saturate(1.48) contrast(1.05) !important;
+    -webkit-backdrop-filter: blur(10px) saturate(1.48) contrast(1.05) !important;
+  }
+
+  /* =======================================================
+     NOTIFICATIONS — NO BOTTOM SETTINGS FOOTER
+  ======================================================= */
+
+  .notifications-footer {
+    display: none !important;
+  }
+
+  .notifications-page,
+  .notifications-v2 {
+    padding-bottom:
+      calc(
+        94px +
+        env(safe-area-inset-bottom, 0px)
+      ) !important;
+  }
+
+  /* =======================================================
+     CHAT COMPOSER — LIFT IT ABOVE THE BOTTOM EDGE
+  ======================================================= */
+
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode) {
+    width: calc(100% - 10px) !important;
+    max-width: calc(100% - 10px) !important;
+
+    margin:
+      0
+      5px
+      max(
+        9px,
+        calc(
+          var(
+            --yatut-safe-bottom,
+            env(safe-area-inset-bottom, 0px)
+          ) -
+          22px
+        )
+      ) !important;
+
+    padding:
+      6px
+      max(
+        8px,
+        var(
+          --yatut-safe-right,
+          env(safe-area-inset-right, 0px)
+        )
+      )
+      6px
+      max(
+        8px,
+        var(
+          --yatut-safe-left,
+          env(safe-area-inset-left, 0px)
+        )
+      ) !important;
+
+    border-radius: 30px !important;
+    align-self: center !important;
+  }
+
+  /* Keyboard already provides the visual bottom boundary.
+     Keep only a tiny gap there so the bar sits close to it. */
+  html.yatut-chat-input-focused
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode),
+  html.yatut-keyboard-open
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode) {
+    margin:
+      0
+      5px
+      3px !important;
+
+    padding-bottom: 6px !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-messages {
+    padding-bottom: 12px !important;
+  }
+
+  /* Voice recorder follows the same vertical position. */
+  .messenger.mobile-dialog-open
+  .chat-composer.voice-mode {
+    width: calc(100% - 10px) !important;
+    max-width: calc(100% - 10px) !important;
+
+    margin:
+      0
+      5px
+      max(
+        9px,
+        calc(
+          var(
+            --yatut-safe-bottom,
+            env(safe-area-inset-bottom, 0px)
+          ) -
+          22px
+        )
+      ) !important;
+
+    border-radius: 30px !important;
+    align-self: center !important;
+  }
+
+  html.yatut-chat-input-focused
+  .messenger.mobile-dialog-open
+  .chat-composer.voice-mode,
+  html.yatut-keyboard-open
+  .messenger.mobile-dialog-open
+  .chat-composer.voice-mode {
+    margin-bottom: 3px !important;
+  }
+}
