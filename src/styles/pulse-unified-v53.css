@@ -1319,3 +1319,300 @@ body.yatut-dark-mode .yatut-media-location-input {
     justify-self: start !important;
   }
 }
+
+
+/* =========================================================
+   V53B — FOR YOU MIXED TEASERS + CREATE HUB SIX FORMATS
+========================================================= */
+
+/* Create hub now has six primary formats: keep all six balanced. */
+.yatut-create-grid--quick
+.yatut-create-card:nth-child(5),
+.yatut-create-grid--quick
+.yatut-create-card:nth-child(6) {
+  grid-column: auto !important;
+  min-height: 188px !important;
+  grid-template-columns: 58px minmax(0,1fr) 42px !important;
+  grid-template-rows: auto 1fr !important;
+  align-items: start !important;
+}
+
+.yatut-create-grid--quick
+.yatut-create-card:nth-child(5)
+.yatut-create-card__icon,
+.yatut-create-grid--quick
+.yatut-create-card:nth-child(6)
+.yatut-create-card__icon {
+  grid-row: 1 / -1 !important;
+}
+
+/* Mixed "Для тебе": long-form / LIVE / event use a clear teaser instead of a clip UI. */
+.pulse-for-you-teaser {
+  box-sizing: border-box !important;
+
+  width: calc(100% - 24px) !important;
+  min-height: calc(100dvh - 190px) !important;
+
+  margin: 12px !important;
+  padding: 12px !important;
+
+  display: grid !important;
+  grid-template-rows: minmax(280px, 1fr) auto !important;
+  align-content: stretch !important;
+
+  overflow: hidden !important;
+
+  border: 1px solid rgba(255,255,255,.78) !important;
+  border-radius: 28px !important;
+
+  background:
+    radial-gradient(circle at 88% 10%, rgba(104,87,244,.10), transparent 32%),
+    linear-gradient(145deg, rgba(255,255,255,.82), rgba(247,249,255,.52)) !important;
+
+  color: #212530 !important;
+  text-align: left !important;
+
+  box-shadow:
+    0 20px 48px rgba(29,35,61,.10),
+    inset 0 1px 0 rgba(255,255,255,.94) !important;
+
+  backdrop-filter: blur(18px) saturate(1.26) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(1.26) !important;
+}
+
+.pulse-for-you-teaser__media {
+  position: relative !important;
+  overflow: hidden !important;
+
+  min-height: 280px !important;
+
+  border-radius: 22px !important;
+
+  background: #11131a !important;
+}
+
+.pulse-for-you-teaser__media img,
+.pulse-for-you-teaser__placeholder {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 280px !important;
+
+  display: grid !important;
+  place-items: center !important;
+
+  object-fit: cover !important;
+}
+
+.pulse-for-you-teaser__placeholder {
+  background:
+    radial-gradient(circle at 72% 18%, rgba(238,104,210,.26), transparent 30%),
+    linear-gradient(145deg, #31236f, #6544da) !important;
+
+  color: rgba(255,255,255,.92) !important;
+  font-size: 34px !important;
+  font-weight: 950 !important;
+  letter-spacing: .12em !important;
+}
+
+.pulse-for-you-teaser__media::after {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  pointer-events: none !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(6,8,13,.06),
+      rgba(6,8,13,0) 54%,
+      rgba(6,8,13,.46) 100%
+    ) !important;
+}
+
+.pulse-for-you-teaser__badge,
+.pulse-for-you-teaser__viewers {
+  position: absolute !important;
+  z-index: 2 !important;
+  top: 12px !important;
+
+  min-height: 32px !important;
+  padding: 0 10px !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+
+  border: 1px solid rgba(255,255,255,.20) !important;
+  border-radius: 999px !important;
+
+  background: rgba(13,16,23,.38) !important;
+  color: #fff !important;
+
+  font-size: 9px !important;
+  font-weight: 900 !important;
+
+  backdrop-filter: blur(12px) saturate(1.20) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(1.20) !important;
+}
+
+.pulse-for-you-teaser__badge {
+  left: 12px !important;
+}
+
+.pulse-for-you-teaser__viewers {
+  right: 12px !important;
+}
+
+.pulse-for-you-teaser.is-live
+.pulse-for-you-teaser__badge {
+  background: rgba(239,68,112,.88) !important;
+}
+
+.pulse-for-you-teaser__body {
+  padding: 14px 4px 3px !important;
+
+  display: grid !important;
+  grid-template-columns: minmax(0,1fr) auto !important;
+  align-items: end !important;
+  gap: 12px !important;
+}
+
+.pulse-for-you-teaser__body small,
+.pulse-for-you-teaser__body strong,
+.pulse-for-you-teaser__body p {
+  display: block !important;
+}
+
+.pulse-for-you-teaser__body small {
+  margin-bottom: 5px !important;
+
+  color: #7b6df1 !important;
+  font-size: 9px !important;
+  font-weight: 850 !important;
+}
+
+.pulse-for-you-teaser__body strong {
+  color: #222632 !important;
+
+  font-size: 19px !important;
+  line-height: 1.12 !important;
+  font-weight: 920 !important;
+}
+
+.pulse-for-you-teaser__body p {
+  margin: 6px 0 0 !important;
+
+  max-width: 540px !important;
+
+  color: #858b99 !important;
+  font-size: 10.5px !important;
+  line-height: 1.42 !important;
+}
+
+.pulse-for-you-teaser__open {
+  min-height: 40px !important;
+  padding: 0 14px !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+
+  border-radius: 14px !important;
+
+  background:
+    linear-gradient(135deg, #7164f8, #9149eb) !important;
+
+  color: #fff !important;
+  font-size: 9px !important;
+  font-weight: 880 !important;
+
+  box-shadow:
+    0 9px 22px rgba(104,87,244,.18),
+    inset 0 1px 0 rgba(255,255,255,.25) !important;
+}
+
+body.yatut-dark-mode
+.pulse-for-you-teaser {
+  border-color: rgba(255,255,255,.09) !important;
+  background:
+    radial-gradient(circle at 88% 10%, rgba(104,87,244,.14), transparent 32%),
+    linear-gradient(145deg, rgba(255,255,255,.055), rgba(11,16,27,.30)) !important;
+  color: #f4f6fb !important;
+}
+
+body.yatut-dark-mode
+.pulse-for-you-teaser__body strong {
+  color: #f4f6fb !important;
+}
+
+body.yatut-dark-mode
+.pulse-for-you-teaser__body p {
+  color: #a1a7b5 !important;
+}
+
+@media (max-width: 850px) {
+  .yatut-create-grid--quick
+  .yatut-create-card:nth-child(5),
+  .yatut-create-grid--quick
+  .yatut-create-card:nth-child(6) {
+    min-height: 186px !important;
+    padding: 14px !important;
+    grid-template-columns: 50px minmax(0,1fr) 36px !important;
+    grid-template-rows: 50px auto !important;
+  }
+
+  .yatut-create-grid--quick
+  .yatut-create-card:nth-child(5)
+  .yatut-create-card__icon,
+  .yatut-create-grid--quick
+  .yatut-create-card:nth-child(6)
+  .yatut-create-card__icon {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+  }
+
+  .yatut-create-grid--quick
+  .yatut-create-card:nth-child(5)
+  .yatut-create-card__arrow,
+  .yatut-create-grid--quick
+  .yatut-create-card:nth-child(6)
+  .yatut-create-card__arrow {
+    grid-column: 3 !important;
+    grid-row: 1 !important;
+  }
+
+  .yatut-create-grid--quick
+  .yatut-create-card:nth-child(5)
+  .yatut-create-card__copy,
+  .yatut-create-grid--quick
+  .yatut-create-card:nth-child(6)
+  .yatut-create-card__copy {
+    grid-column: 1 / -1 !important;
+    grid-row: 2 !important;
+  }
+
+  .pulse-for-you-teaser {
+    min-height: calc(100dvh - 178px) !important;
+    margin: 10px !important;
+    width: calc(100% - 20px) !important;
+    padding: 10px !important;
+    border-radius: 24px !important;
+  }
+
+  .pulse-for-you-teaser__media {
+    min-height: 52vh !important;
+    border-radius: 19px !important;
+  }
+
+  .pulse-for-you-teaser__media img,
+  .pulse-for-you-teaser__placeholder {
+    min-height: 52vh !important;
+  }
+
+  .pulse-for-you-teaser__body {
+    padding-top: 12px !important;
+  }
+
+  .pulse-for-you-teaser__body strong {
+    font-size: 17px !important;
+  }
+}
