@@ -285,6 +285,119 @@ function buildStats(
   };
 }
 
+function PulseForYouTeaser({
+  video,
+  onOpen,
+}) {
+  const isLive =
+    Boolean(
+      video.isLive ||
+      video.type ===
+        "live"
+    );
+
+  const isVlog =
+    video.type ===
+      "vlog" ||
+    video.type ===
+      "video";
+
+  const formatLabel =
+    isLive
+      ? "LIVE"
+      : isVlog
+      ? "ВЛОГ"
+      : video.type ===
+        "event"
+      ? "ПОДІЯ"
+      : "КЛІП";
+
+  return (
+    <motion.button
+      type="button"
+      className={`pulse-for-you-teaser ${
+        isLive
+          ? "is-live"
+          : isVlog
+          ? "is-vlog"
+          : ""
+      }`.trim()}
+      whileTap={{
+        scale: 0.985,
+      }}
+      onClick={
+        onOpen
+      }
+    >
+      <div className="pulse-for-you-teaser__media">
+        {video.thumbnail ? (
+          <img
+            src={
+              video.thumbnail
+            }
+            alt=""
+          />
+        ) : (
+          <div className="pulse-for-you-teaser__placeholder">
+            ЯТУТ
+          </div>
+        )}
+
+        <span className="pulse-for-you-teaser__badge">
+          {formatLabel}
+        </span>
+
+        {isLive && (
+          <span className="pulse-for-you-teaser__viewers">
+            <Radio
+              size={13}
+            />
+
+            {formatCompact(
+              video.viewers ||
+              video.views ||
+              0
+            )}
+          </span>
+        )}
+      </div>
+
+      <div className="pulse-for-you-teaser__body">
+        <div>
+          <small>
+            {
+              video.author?.name ||
+              "Автор ЯТУТ"
+            }
+          </small>
+
+          <strong>
+            {
+              video.title ||
+              (isLive
+                ? "LIVE зараз"
+                : "Новий влог")
+            }
+          </strong>
+
+          <p>
+            {
+              video.description ||
+              (isLive
+                ? "Дивись, що відбувається просто зараз."
+                : "Повна історія у ЯТУТ PULSE.")
+            }
+          </p>
+        </div>
+
+        <span className="pulse-for-you-teaser__open">
+          Дивитися
+        </span>
+      </div>
+    </motion.button>
+  );
+}
+
 function PulseImmersiveSlide({
   video,
   authSession,
@@ -2380,73 +2493,145 @@ export default function PulseMobileImmersive({
           videos.map(
             (
               video
-            ) => (
-              <PulseImmersiveSlide
-                key={
-                  `${activeTab}-${video.id}`
-                }
-                video={
-                  video
-                }
-                authSession={
-                  authSession
-                }
-                socialRevision={
-                  socialRevision
-                }
-                onShare={() =>
-                  share(
+            ) => {
+              const isForYouTeaser =
+                activeTab ===
+                  "forYou" &&
+                (
+                  video.isLive ||
+                  video.type ===
+                    "live" ||
+                  video.type ===
+                    "vlog" ||
+                  video.type ===
+                    "video" ||
+                  video.type ===
+                    "event"
+                );
+
+              if (
+                isForYouTeaser
+              ) {
+                return (
+                  <PulseForYouTeaser
+                    key={
+                      `${activeTab}-${video.id}`
+                    }
+                    video={
+                      video
+                    }
+                    onOpen={() => {
+                      if (
+                        video.isLive ||
+                        video.type ===
+                          "live"
+                      ) {
+                        onNavigate?.(
+                          "live",
+                          {
+                            videoId:
+                              video.id,
+                          }
+                        );
+
+                        return;
+                      }
+
+                      if (
+                        video.type ===
+                          "event"
+                      ) {
+                        onNavigate?.(
+                          "events",
+                          {
+                            eventId:
+                              video.id,
+                          }
+                        );
+
+                        return;
+                      }
+
+                      onNavigate?.(
+                        "watch",
+                        {
+                          videoId:
+                            video.id,
+                        }
+                      );
+                    }}
+                  />
+                );
+              }
+
+              return (
+                <PulseImmersiveSlide
+                  key={
+                    `${activeTab}-${video.id}`
+                  }
+                  video={
                     video
-                  )
-                }
-                onCreate={() =>
-                  onNavigate?.(
-                    video.isLive
-                      ? "live"
-                      : "createMedia",
-                    video.isLive
-                      ? {
-                          source:
-                            "pulse",
-                        }
-                      : {
-                          type:
-                            "clip",
-                          continueWaveFrom:
-                            video.pulseKind ===
-                            "wave"
-                              ? video.id
-                              : null,
-                        }
-                  )
-                }
-                showRecommendationControls={
-                  activeTab ===
-                  "forYou"
-                }
-                onNotInterested={
-                  handleNotInterested
-                }
-                onLessFromAuthor={
-                  handleLessFromAuthor
-                }
-                onNotice={(
-                  label
-                ) =>
-                  setFeedbackNotice({
-                    kind:
-                      "notice",
-                    mediaId:
-                      null,
-                    authorId:
-                      null,
-                    persisted:
-                      false,
-                    label,
-                  })
-                }
-              />
-            )
+                  }
+                  authSession={
+                    authSession
+                  }
+                  socialRevision={
+                    socialRevision
+                  }
+                  onShare={() =>
+                    share(
+                      video
+                    )
+                  }
+                  onCreate={() =>
+                    onNavigate?.(
+                      video.isLive
+                        ? "live"
+                        : "createMedia",
+                      video.isLive
+                        ? {
+                            source:
+                              "pulse",
+                          }
+                        : {
+                            type:
+                              "clip",
+                            continueWaveFrom:
+                              video.pulseKind ===
+                              "wave"
+                                ? video.id
+                                : null,
+                          }
+                    )
+                  }
+                  showRecommendationControls={
+                    activeTab ===
+                    "forYou"
+                  }
+                  onNotInterested={
+                    handleNotInterested
+                  }
+                  onLessFromAuthor={
+                    handleLessFromAuthor
+                  }
+                  onNotice={(
+                    label
+                  ) =>
+                    setFeedbackNotice({
+                      kind:
+                        "notice",
+                      mediaId:
+                        null,
+                      authorId:
+                        null,
+                      persisted:
+                        false,
+                      label,
+                    })
+                  }
+                />
+              );
+            }
           )
         ) : (
           <div className="pulse-immersive__empty">
