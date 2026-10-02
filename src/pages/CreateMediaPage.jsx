@@ -487,11 +487,41 @@ export default function CreateMediaPage({
   onNavigate,
   authSession = null,
 }) {
+  const [
+    selectedFormat,
+    setSelectedFormat,
+  ] = useState(
+    type ===
+      "video"
+      ? "video"
+      : "clip"
+  );
+
+  const [
+    nowMode,
+    setNowMode,
+  ] = useState(
+    type ===
+      "moment"
+  );
+
+  const publicationKind =
+    selectedFormat ===
+      "clip" &&
+    nowMode
+      ? "moment"
+      : selectedFormat;
+
   const config =
-    typeConfig[
-      type
-    ] ||
-    typeConfig.video;
+    isLive
+      ? typeConfig.live
+      : publicationKind ===
+        "moment"
+      ? typeConfig.moment
+      : typeConfig[
+          selectedFormat
+        ] ||
+        typeConfig.video;
 
   const Icon =
     config.icon;
@@ -1302,7 +1332,7 @@ export default function CreateMediaPage({
         await uploadPulseMedia(
           authSession,
           file,
-          type,
+          publicationKind,
           {
             onProgress:
               (
@@ -1356,7 +1386,7 @@ export default function CreateMediaPage({
           await uploadPulseThumbnail(
             authSession,
             finalCover,
-            type
+            publicationKind
           );
       }
 
@@ -1373,7 +1403,7 @@ export default function CreateMediaPage({
           authSession,
           {
             kind:
-              type,
+              publicationKind,
             title:
               effectiveTitle,
             description:
@@ -1502,7 +1532,7 @@ export default function CreateMediaPage({
     }
 
     onNavigate?.(
-      publishedMedia.type ===
+      selectedFormat ===
         "clip"
         ? "clips"
         : "watch",
@@ -1667,6 +1697,140 @@ export default function CreateMediaPage({
           </div>
         </div>
       </header>
+
+      {!isLive && (
+        <section className="yatut-media-format-picker">
+          <header>
+            <div>
+              <small>
+                КУДИ ПУБЛІКУЄМО?
+              </small>
+
+              <strong>
+                Обери формат
+              </strong>
+            </div>
+
+            <span>
+              Формат можна змінити до публікації
+            </span>
+          </header>
+
+          <div className="yatut-media-format-picker__options">
+            <button
+              type="button"
+              className={
+                selectedFormat ===
+                "clip"
+                  ? "is-active"
+                  : ""
+              }
+              onClick={() => {
+                nativeSelectionHaptic();
+
+                setSelectedFormat(
+                  "clip"
+                );
+              }}
+            >
+              <span>
+                <Film
+                  size={20}
+                />
+              </span>
+
+              <div>
+                <strong>
+                  Кліп
+                </strong>
+
+                <small>
+                  Коротке вертикальне відео
+                </small>
+              </div>
+            </button>
+
+            <button
+              type="button"
+              className={
+                selectedFormat ===
+                "video"
+                  ? "is-active"
+                  : ""
+              }
+              onClick={() => {
+                nativeSelectionHaptic();
+
+                setSelectedFormat(
+                  "video"
+                );
+
+                setNowMode(
+                  false
+                );
+              }}
+            >
+              <span>
+                <Camera
+                  size={20}
+                />
+              </span>
+
+              <div>
+                <strong>
+                  Влог
+                </strong>
+
+                <small>
+                  Довга історія, огляд або випуск
+                </small>
+              </div>
+            </button>
+          </div>
+
+          {selectedFormat ===
+            "clip" && (
+            <button
+              type="button"
+              className={`yatut-media-now-mode ${
+                nowMode
+                  ? "is-active"
+                  : ""
+              }`.trim()}
+              onClick={() => {
+                nativeSelectionHaptic();
+
+                setNowMode(
+                  (value) =>
+                    !value
+                );
+              }}
+            >
+              <span>
+                <Zap
+                  size={18}
+                />
+              </span>
+
+              <div>
+                <strong>
+                  Зараз
+                </strong>
+
+                <small>
+                  Додай місце й покажи, що відбувається тут і зараз. Такий кліп також може зʼявитися у «Поруч».
+                </small>
+              </div>
+
+              <i>
+                {nowMode
+                  ? "Увімкнено"
+                  : "Увімкнути"}
+              </i>
+            </button>
+          )}
+        </section>
+      )}
 
       <section className="yatut-media-create__workspace">
         <div className="yatut-media-editor">
@@ -2217,7 +2381,12 @@ export default function CreateMediaPage({
 
                 <div>
                   <strong>
-                    Готово до PULSE
+                    {selectedFormat ===
+                    "clip"
+                      ? nowMode
+                        ? "Кліп · Зараз готовий"
+                        : "Кліп готовий"
+                      : "Влог готовий"}
                   </strong>
 
                   <span>
@@ -2297,7 +2466,12 @@ export default function CreateMediaPage({
               ? `Публікуємо · ${publishProgress}%`
               : isLive
               ? "LIVE — наступний модуль"
-              : "Опублікувати у PULSE"}
+              : selectedFormat ===
+                "clip"
+              ? nowMode
+                ? "Опублікувати · Зараз"
+                : "Опублікувати Кліп"
+              : "Опублікувати Влог"}
           </motion.button>
 
           <small className="yatut-media-create__note">
