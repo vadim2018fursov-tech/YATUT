@@ -6,10 +6,9 @@ import {
   ChevronRight,
   FileText,
   Images,
+  Radio,
   Sparkles,
   Video,
-  Waves,
-  Zap,
 } from "lucide-react";
 
 import {
@@ -26,7 +25,7 @@ const createItems = [
     icon: FileText,
     eyebrow: "СТРІЧКА ЯТУТ",
     title: "Допис",
-    description: "Текст, фото або відео у ваш профіль та стрічку.",
+    description: "Текст, фото або відео у профіль та головну стрічку.",
     color: "blue",
   },
   {
@@ -34,55 +33,47 @@ const createItems = [
     icon: Images,
     eyebrow: "STORIES",
     title: "Історія",
-    description: "Фото, відео або текст у повноекранному форматі.",
+    description: "Фото, відео або текст, що живе 24 години.",
     color: "pink",
   },
   {
     id: "clip",
     icon: Video,
-    eyebrow: "КОРОТКЕ ВІДЕО",
-    title: "Clip",
-    description: "Швидке вертикальне відео.",
+    eyebrow: "PULSE · КОРОТКЕ",
+    title: "Кліп",
+    description: "Вертикальне коротке відео. Тут же можна увімкнути режим «Зараз».",
     color: "purple",
   },
   {
     id: "video",
     icon: Video,
-    eyebrow: "ВІДЕО / ВЛОГ",
-    title: "Відео",
-    description: "Історія, огляд або повноцінний влог.",
+    eyebrow: "PULSE · ДОВГЕ",
+    title: "Влог",
+    description: "Довге відео: історія, огляд, подорож або повноцінний випуск.",
     color: "blue",
+  },
+  {
+    id: "live",
+    icon: Radio,
+    eyebrow: "PULSE · LIVE",
+    title: "Прямий ефір",
+    description: "Почни трансляцію наживо. Це окремий режим, а не завантаження файлу.",
+    color: "violet",
   },
   {
     id: "event",
     icon: CalendarDays,
-    eyebrow: "ЗУСТРІЧІ ТА АКТИВНОСТІ",
+    eyebrow: "ПОРУЧ · ПОДІЯ",
     title: "Подія",
-    description: "Збери людей офлайн або онлайн.",
+    description: "Створи зустріч або активність офлайн чи онлайн.",
     color: "green",
-  },
-  {
-    id: "moment",
-    icon: Zap,
-    eyebrow: "ЯТУТ PULSE",
-    title: "PULSE Момент",
-    description: "Короткий живий момент, привʼязаний до місця та часу.",
-    color: "orange",
-  },
-  {
-    id: "wave",
-    icon: Waves,
-    eyebrow: "ЯТУТ ХВИЛЯ",
-    title: "Продовжити хвилю",
-    description: "Додай свій момент до спільної історії міста.",
-    color: "violet",
   },
   {
     id: "studio",
     icon: BarChart3,
     eyebrow: "ДЛЯ АВТОРІВ",
     title: "Creator Studio",
-    description: "Статистика контенту, аудиторії та ЯТУТ PULSE.",
+    description: "Статистика контенту, аудиторії та PULSE.",
     color: "studio",
   },
 ];
@@ -92,12 +83,8 @@ const QUICK_IDS = [
   "story",
   "clip",
   "video",
+  "live",
   "event",
-];
-
-const PULSE_IDS = [
-  "moment",
-  "wave",
 ];
 
 function CreateCard({
@@ -177,14 +164,6 @@ export default function CreateHubPage({
         )
     );
 
-  const pulseItems =
-    createItems.filter(
-      (item) =>
-        PULSE_IDS.includes(
-          item.id
-        )
-    );
-
   const studioItem =
     createItems.find(
       (item) =>
@@ -214,6 +193,23 @@ export default function CreateHubPage({
         "events",
         {
           createEvent:
+            true,
+          source:
+            "createHub",
+        }
+      );
+
+      return;
+    }
+
+    if (
+      item.id ===
+      "live"
+    ) {
+      onNavigate?.(
+        "live",
+        {
+          startLive:
             true,
           source:
             "createHub",
@@ -325,8 +321,8 @@ export default function CreateHubPage({
             </strong>
 
             <p>
-              Допис, історія, Clip,
-              відео, момент, хвиля або подія.
+              Допис, історія, Кліп, Влог,
+              LIVE або Подія — без дублювання форматів.
             </p>
           </div>
         </div>
