@@ -21,6 +21,7 @@ import "./styles/chat-list-glass-v56.css";
 import "./styles/chat-list-clean-v58.css";
 import "./styles/chat-list-compact-v58.css";
 import "./styles/chat-list-micro-v60.css";
+import "./styles/chat-avatar-circle-v61.css";
 import "./styles/mobile-shell-profile-fix-v3.css";
 import "./styles/chat-stability-v1.css";
 import "./styles/yatut-premium-ui-v11.css";
