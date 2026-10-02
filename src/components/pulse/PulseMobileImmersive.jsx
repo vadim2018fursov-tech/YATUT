@@ -1550,6 +1550,35 @@ export default function PulseMobileImmersive({
   const swipeStartRef =
     useRef(null);
 
+  useEffect(
+    () => {
+      const body =
+        document.body;
+
+      if (
+        activeTab ===
+        "vlogs"
+      ) {
+        body.classList.add(
+          "pulse-vlogs-active"
+        );
+      } else {
+        body.classList.remove(
+          "pulse-vlogs-active"
+        );
+      }
+
+      return () => {
+        body.classList.remove(
+          "pulse-vlogs-active"
+        );
+      };
+    },
+    [
+      activeTab,
+    ]
+  );
+
   const videos =
     useMemo(
       () => {
