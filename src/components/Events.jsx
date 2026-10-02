@@ -3844,39 +3844,11 @@ function Events({
           </div>
 
           <div className="events-hero-art" aria-hidden="true">
-            <div className="events-hero-orbit events-hero-orbit--one" />
-            <div className="events-hero-orbit events-hero-orbit--two" />
-
-            <div className="events-hero-calendar">
-              <span className="events-hero-calendar-pin events-hero-calendar-pin--left" />
-              <span className="events-hero-calendar-pin events-hero-calendar-pin--right" />
-
-              <div className="events-hero-calendar-grid">
-                <i />
-                <i />
-                <i />
-              </div>
-
-              <div className="events-hero-logo">
-                Я
-              </div>
-            </div>
-
-            <div className="events-hero-float events-hero-float--location">
-              <MapPin size={22} />
-            </div>
-
-            <div className="events-hero-float events-hero-float--people">
-              <Users size={22} />
-            </div>
-
-            <div className="events-hero-float events-hero-float--party">
-              🎉
-            </div>
-
-            <div className="events-hero-float events-hero-float--heart">
-              <Heart size={21} fill="currentColor" />
-            </div>
+            <img
+              src="/assets/yatut/events/events-hero-calendar-v70.svg"
+              alt=""
+              draggable="false"
+            />
           </div>
         </section>
 
@@ -4199,18 +4171,11 @@ function Events({
               </div>
 
               <div className="events-cta-art" aria-hidden="true">
-                <div className="events-cta-ring" />
-                <div className="events-cta-person events-cta-person--left" />
-                <div className="events-cta-person events-cta-person--center" />
-                <div className="events-cta-person events-cta-person--right" />
-
-                <span className="events-cta-bubble events-cta-bubble--heart">
-                  <Heart size={18} fill="currentColor" />
-                </span>
-
-                <span className="events-cta-bubble events-cta-bubble--spark">
-                  <Sparkles size={18} />
-                </span>
+                <img
+                  src="/assets/yatut/events/events-cta-people-v70.svg"
+                  alt=""
+                  draggable="false"
+                />
               </div>
             </article>
           </aside>
