@@ -2766,7 +2766,21 @@ function PersonCard({
     );
 
   return (
-    <article className="friends-v2-person-card">
+    <article
+      className={`friends-v2-person-card ${
+        person.cover
+          ? "has-cover-image"
+          : "has-soft-cover"
+      }`.trim()}
+      style={
+        person.cover
+          ? {
+              "--friend-card-cover":
+                `url("${person.cover}")`,
+            }
+          : undefined
+      }
+    >
       {/* ===================================================
           COVER
       =================================================== */}
@@ -2777,14 +2791,6 @@ function PersonCard({
             ? "has-image"
             : ""
         }`.trim()}
-        style={
-          person.cover
-            ? {
-                "--friend-card-cover":
-                  `url("${person.cover}")`,
-              }
-            : undefined
-        }
       >
         {person.friendStatus ===
           FRIEND_STATUSES.INCOMING && (
