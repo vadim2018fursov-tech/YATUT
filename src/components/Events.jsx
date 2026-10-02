@@ -187,9 +187,9 @@ const FILTER_TABS = [
 ];
 
 const CITY_VISUALS = {
-  "київ": "/assets/yatut/cities/kyiv/mini-banner.jpg",
-  "киев": "/assets/yatut/cities/kyiv/mini-banner.jpg",
-  "kyiv": "/assets/yatut/cities/kyiv/mini-banner.jpg",
+  "київ": "/assets/yatut/cities/kyiv/city-card.jpg",
+  "киев": "/assets/yatut/cities/kyiv/city-card.jpg",
+  "kyiv": "/assets/yatut/cities/kyiv/city-card.jpg",
 };
 
 function normalizeCityName(value) {
@@ -211,7 +211,7 @@ function resolveCityImage(city) {
         .trim()
         .toLowerCase()
     ] ||
-    "/assets/yatut/cities/kyiv/mini-banner.jpg"
+    "/assets/yatut/cities/kyiv/city-card.jpg"
   );
 }
 
@@ -3862,21 +3862,21 @@ function Events({
               </div>
             </div>
 
-            <span className="events-hero-float events-hero-float--location">
+            <div className="events-hero-float events-hero-float--location">
               <MapPin size={22} />
-            </span>
+            </div>
 
-            <span className="events-hero-float events-hero-float--people">
+            <div className="events-hero-float events-hero-float--people">
               <Users size={22} />
-            </span>
+            </div>
 
-            <span className="events-hero-float events-hero-float--party">
+            <div className="events-hero-float events-hero-float--party">
               🎉
-            </span>
+            </div>
 
-            <span className="events-hero-float events-hero-float--heart">
+            <div className="events-hero-float events-hero-float--heart">
               <Heart size={21} fill="currentColor" />
-            </span>
+            </div>
           </div>
         </section>
 
