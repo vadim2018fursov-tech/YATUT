@@ -9,6 +9,7 @@ import {
   Radio,
   Send,
   Users,
+  Waves,
 } from "lucide-react";
 
 import {
@@ -1012,7 +1013,15 @@ function PulseImmersiveSlide({
           </span>
         ) : (
           <span className="pulse-immersive__type">
-            ЯТУТ PULSE
+            {video.pulseKind ===
+            "moment"
+              ? "ЗАРАЗ"
+              : video.type ===
+                  "vlog" ||
+                video.type ===
+                  "video"
+              ? "ВЛОГ"
+              : "КЛІП"}
             {video.recommendationReason
               ? ` · ${video.recommendationReason}`
               : ""}
@@ -1418,6 +1427,25 @@ function PulseImmersiveSlide({
             </span>
           )}
         </div>
+
+        {video.pulseKind ===
+          "wave" && (
+          <button
+            type="button"
+            className="pulse-immersive__continue-wave"
+            onClick={
+              onCreate
+            }
+          >
+            <Waves
+              size={16}
+            />
+
+            <span>
+              Продовжити хвилю
+            </span>
+          </button>
+        )}
 
         {isLive ? (
           <div className="pulse-immersive__live-info">
@@ -2373,13 +2401,23 @@ export default function PulseMobileImmersive({
                 }
                 onCreate={() =>
                   onNavigate?.(
-                    "createMedia",
-                    {
-                      type:
-                        video.isLive
-                          ? "live"
-                          : "clip",
-                    }
+                    video.isLive
+                      ? "live"
+                      : "createMedia",
+                    video.isLive
+                      ? {
+                          source:
+                            "pulse",
+                        }
+                      : {
+                          type:
+                            "clip",
+                          continueWaveFrom:
+                            video.pulseKind ===
+                            "wave"
+                              ? video.id
+                              : null,
+                        }
                   )
                 }
                 showRecommendationControls={
