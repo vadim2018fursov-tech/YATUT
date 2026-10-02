@@ -1,0 +1,412 @@
+/* =========================================================
+   YATUT EVENTS VISUAL CORRECTION V70
+   Fix legacy selector collision + closer approved reference.
+========================================================= */
+
+@media (max-width: 900px) {
+  .events-page {
+    font-family:
+      Inter,
+      -apple-system,
+      BlinkMacSystemFont,
+      "SF Pro Display",
+      "SF Pro Text",
+      system-ui,
+      sans-serif !important;
+  }
+
+  /* =======================================================
+     HERO ILLUSTRATION
+     Explicitly isolate every visual layer from legacy rules.
+  ======================================================= */
+
+  .events-page .events-hero-art > .events-hero-float {
+    position: absolute !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: grid !important;
+    place-items: center !important;
+
+    transform: none !important;
+
+    color: inherit !important;
+
+    font-style: normal !important;
+    font-weight: 700 !important;
+
+    border: 1px solid rgba(255,255,255,.86) !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.96),
+        rgba(247,246,255,.82)
+      ) !important;
+
+    box-shadow:
+      0 12px 25px rgba(59,63,92,.10),
+      inset 0 1px 0 rgba(255,255,255,.98) !important;
+
+    backdrop-filter: blur(14px) saturate(1.08) !important;
+    -webkit-backdrop-filter: blur(14px) saturate(1.08) !important;
+  }
+
+  .events-page .events-hero-art > .events-hero-float--location {
+    left: -3px !important;
+    right: auto !important;
+    top: 24px !important;
+    bottom: auto !important;
+
+    width: 46px !important;
+    height: 46px !important;
+
+    border-radius: 16px !important;
+
+    color: #775ff3 !important;
+
+    transform: rotate(-8deg) !important;
+  }
+
+  .events-page .events-hero-art > .events-hero-float--people {
+    left: auto !important;
+    right: -2px !important;
+    top: 34px !important;
+    bottom: auto !important;
+
+    width: 46px !important;
+    height: 46px !important;
+
+    border-radius: 16px !important;
+
+    color: #775ff3 !important;
+
+    transform: rotate(8deg) !important;
+  }
+
+  .events-page .events-hero-art > .events-hero-float--party {
+    left: 1px !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: 10px !important;
+
+    width: 46px !important;
+    height: 46px !important;
+
+    border-radius: 16px !important;
+
+    font-size: 21px !important;
+
+    transform: rotate(-7deg) !important;
+  }
+
+  .events-page .events-hero-art > .events-hero-float--heart {
+    left: auto !important;
+    right: 1px !important;
+    top: auto !important;
+    bottom: 15px !important;
+
+    width: 46px !important;
+    height: 46px !important;
+
+    border-radius: 16px !important;
+
+    color: #ef5e92 !important;
+
+    transform: rotate(8deg) !important;
+  }
+
+  .events-page .events-hero-calendar {
+    left: 52% !important;
+    top: 51% !important;
+
+    width: 126px !important;
+    height: 126px !important;
+
+    transform:
+      translate(-50%,-50%)
+      rotate(5deg) !important;
+
+    border-radius: 30px !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        #8a6ff8 0%,
+        #7457f2 26%,
+        #f2efff 26.5%,
+        #ece9ff 100%
+      ) !important;
+  }
+
+  .events-page .events-hero-calendar::before {
+    left: 11px !important;
+    right: 11px !important;
+    top: 38px !important;
+    bottom: 11px !important;
+
+    border-radius: 19px !important;
+
+    background:
+      linear-gradient(
+        160deg,
+        rgba(255,255,255,.96),
+        rgba(245,243,255,.84)
+      ) !important;
+  }
+
+  .events-page .events-hero-calendar-grid {
+    left: 22px !important;
+    top: 54px !important;
+
+    grid-template-columns: repeat(3, 13px) !important;
+    gap: 7px !important;
+  }
+
+  .events-page .events-hero-calendar-grid i {
+    width: 13px !important;
+    height: 13px !important;
+
+    border-radius: 4px !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(113,91,240,.16),
+        rgba(113,91,240,.08)
+      ) !important;
+  }
+
+  .events-page .events-hero-logo {
+    right: -6px !important;
+    bottom: -6px !important;
+
+    width: 72px !important;
+    height: 72px !important;
+
+    border-radius: 23px !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        #745ef4 0%,
+        #6241e4 100%
+      ) !important;
+
+    font-size: 41px !important;
+
+    transform: rotate(-3deg) !important;
+  }
+
+  .events-page .events-hero-calendar-pin {
+    top: -8px !important;
+    height: 26px !important;
+    width: 10px !important;
+  }
+
+  /* =======================================================
+     CITY PHOTO — true soft image fade rather than hard split
+  ======================================================= */
+
+  .events-page .events-city-card::before {
+    background:
+      linear-gradient(
+        90deg,
+        rgba(255,255,255,1) 0%,
+        rgba(255,255,255,.99) 31%,
+        rgba(255,255,255,.93) 42%,
+        rgba(255,255,255,.56) 56%,
+        rgba(255,255,255,.13) 69%,
+        rgba(255,255,255,0) 82%
+      ) !important;
+  }
+
+  .events-page .events-city-photo {
+    grid-column: 1 / -1 !important;
+
+    position: absolute !important;
+    right: 0 !important;
+    top: 0 !important;
+
+    width: 58% !important;
+    height: 100% !important;
+
+    mask-image:
+      linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(0,0,0,.16) 14%,
+        #000 38%,
+        #000 100%
+      ) !important;
+
+    -webkit-mask-image:
+      linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(0,0,0,.16) 14%,
+        #000 38%,
+        #000 100%
+      ) !important;
+
+    background-position:
+      center 52% !important;
+
+    transform: scale(1.02) !important;
+  }
+
+  .events-page .events-city-copy {
+    width: 55% !important;
+  }
+
+  /* =======================================================
+     CTA ILLUSTRATION — closer to approved promo banner
+  ======================================================= */
+
+  .events-page .events-cta-art {
+    overflow: visible !important;
+  }
+
+  .events-page .events-cta-ring {
+    left: 54% !important;
+    top: 54% !important;
+
+    width: 176px !important;
+    height: 76px !important;
+
+    transform:
+      translate(-50%,-50%)
+      rotate(-15deg) !important;
+
+    border-color: rgba(255,194,239,.78) !important;
+
+    box-shadow:
+      0 0 18px rgba(255,184,236,.38),
+      inset 0 0 16px rgba(91,209,255,.20) !important;
+  }
+
+  .events-page .events-cta-person {
+    background:
+      radial-gradient(
+        circle at 38% 18%,
+        rgba(255,255,255,.44),
+        transparent 27%
+      ),
+      linear-gradient(
+        180deg,
+        #c291ff 0%,
+        #9667fb 36%,
+        #6d55ed 100%
+      ) !important;
+
+    box-shadow:
+      0 12px 24px rgba(55,40,157,.22),
+      inset 0 1px 0 rgba(255,255,255,.31) !important;
+  }
+
+  .events-page .events-cta-person::before {
+    background:
+      radial-gradient(
+        circle at 37% 27%,
+        rgba(255,255,255,.48),
+        transparent 28%
+      ),
+      linear-gradient(
+        145deg,
+        #c69cff,
+        #7f63f4
+      ) !important;
+  }
+
+  .events-page .events-cta-person--center {
+    bottom: 16px !important;
+
+    width: 68px !important;
+    height: 57px !important;
+  }
+
+  .events-page .events-cta-person--left,
+  .events-page .events-cta-person--right {
+    bottom: 18px !important;
+  }
+
+  .events-page .events-cta-bubble--heart {
+    right: 13px !important;
+    top: 13px !important;
+
+    width: 42px !important;
+    height: 42px !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.24),
+        rgba(255,255,255,.10)
+      ) !important;
+  }
+
+  .events-page .events-cta-bubble--spark {
+    left: 7px !important;
+    bottom: 12px !important;
+
+    width: 36px !important;
+    height: 36px !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .events-page .events-hero-calendar {
+    width: 112px !important;
+    height: 116px !important;
+  }
+
+  .events-page .events-hero-logo {
+    width: 65px !important;
+    height: 65px !important;
+    font-size: 37px !important;
+  }
+
+  .events-page .events-hero-art > .events-hero-float--location,
+  .events-page .events-hero-art > .events-hero-float--people,
+  .events-page .events-hero-art > .events-hero-float--party,
+  .events-page .events-hero-art > .events-hero-float--heart {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .events-page .events-city-photo {
+    width: 61% !important;
+  }
+}
+
+@media (max-width: 900px) {
+  body.yatut-dark-mode
+  .events-page
+  .events-city-card::before {
+    background:
+      linear-gradient(
+        90deg,
+        rgba(16,22,37,1) 0%,
+        rgba(16,22,37,.99) 31%,
+        rgba(16,22,37,.92) 42%,
+        rgba(16,22,37,.58) 56%,
+        rgba(16,22,37,.15) 69%,
+        rgba(16,22,37,0) 82%
+      ) !important;
+  }
+
+  body.yatut-dark-mode
+  .events-page
+  .events-hero-art > .events-hero-float {
+    border-color:
+      rgba(255,255,255,.14) !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.12),
+        rgba(17,23,38,.82)
+      ) !important;
+  }
+}
