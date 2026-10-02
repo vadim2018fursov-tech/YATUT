@@ -1,0 +1,787 @@
+/* =========================================================
+   YATUT GLASS UI V30
+   Unified Liquid Glass controls for profile + topbar + mobile nav.
+   Loaded last to provide a single visual language.
+========================================================= */
+
+:root {
+  --y30-glass-radius-xl: 24px;
+  --y30-glass-radius-lg: 20px;
+  --y30-glass-radius-md: 16px;
+
+  --y30-glass-light:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.58),
+      rgba(244,247,255,.30)
+    );
+
+  --y30-glass-light-strong:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.70),
+      rgba(241,245,255,.42)
+    );
+
+  --y30-glass-dark:
+    linear-gradient(
+      145deg,
+      rgba(31,39,61,.48),
+      rgba(9,15,29,.28)
+    );
+
+  --y30-glass-violet:
+    linear-gradient(
+      135deg,
+      rgba(137,116,255,.72),
+      rgba(91,71,239,.58) 52%,
+      rgba(87,68,230,.48)
+    );
+
+  --y30-glass-border:
+    rgba(255,255,255,.64);
+
+  --y30-glass-border-dark:
+    rgba(255,255,255,.16);
+
+  --y30-glass-shadow:
+    0 13px 30px rgba(27,34,59,.10),
+    inset 0 1px 0 rgba(255,255,255,.82),
+    inset 0 -1px 0 rgba(93,104,145,.06);
+
+  --y30-glass-shadow-dark:
+    0 15px 34px rgba(0,0,0,.20),
+    inset 0 1px 0 rgba(255,255,255,.11);
+
+  --y30-glass-shadow-violet:
+    0 15px 34px rgba(83,62,222,.25),
+    0 0 22px rgba(114,91,255,.10),
+    inset 0 1px 0 rgba(255,255,255,.28),
+    inset 0 -1px 0 rgba(48,31,153,.12);
+}
+
+/* =========================================================
+   SHARED GLASS CONTROL BEHAVIOR
+========================================================= */
+
+@media (max-width: 767px) {
+  :is(
+    .profile-v3-mobile-edit,
+    .profile-v3-mobile-action,
+    .profile-v3-mobile-status,
+    .profile-v3-mobile-meta span,
+    .profile-v2-tabs,
+    .topbar .icon-button,
+    .topbar .profile-mini
+  ) {
+    position: relative !important;
+    isolation: isolate !important;
+    overflow: hidden !important;
+    border: 1px solid var(--y30-glass-border) !important;
+    background: var(--y30-glass-light) !important;
+    box-shadow: var(--y30-glass-shadow) !important;
+    backdrop-filter:
+      blur(22px)
+      saturate(1.34)
+      contrast(1.03) !important;
+    -webkit-backdrop-filter:
+      blur(22px)
+      saturate(1.34)
+      contrast(1.03) !important;
+  }
+
+  :is(
+    .profile-v3-mobile-edit,
+    .profile-v3-mobile-action,
+    .profile-v3-mobile-status,
+    .profile-v3-mobile-meta span,
+    .topbar .icon-button,
+    .topbar .profile-mini
+  )::before {
+    content: "" !important;
+    position: absolute !important;
+    z-index: -1 !important;
+    left: 2px !important;
+    right: 2px !important;
+    top: 1px !important;
+    height: 48% !important;
+    border-radius: inherit !important;
+    pointer-events: none !important;
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255,255,255,.48),
+        rgba(255,255,255,.13) 58%,
+        rgba(255,255,255,0)
+      ) !important;
+  }
+
+  :is(
+    .profile-v3-mobile-edit,
+    .profile-v3-mobile-action,
+    .profile-v3-mobile-status,
+    .topbar .icon-button,
+    .topbar .profile-mini
+  )::after {
+    content: "" !important;
+    position: absolute !important;
+    z-index: -1 !important;
+    inset: auto 9% 3px 9% !important;
+    height: 1px !important;
+    border-radius: 999px !important;
+    pointer-events: none !important;
+    background:
+      linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,.40),
+        transparent
+      ) !important;
+    opacity: .78 !important;
+  }
+
+  :is(
+    .profile-v3-mobile-edit,
+    .profile-v3-mobile-action,
+    .profile-v3-mobile-status,
+    .topbar .icon-button
+  ):active {
+    transform: translateY(1px) scale(.975) !important;
+    box-shadow:
+      0 7px 18px rgba(27,34,59,.10),
+      inset 0 1px 0 rgba(255,255,255,.72),
+      inset 0 2px 8px rgba(55,62,98,.08) !important;
+  }
+
+  /* =======================================================
+     PROFILE — PRIMARY TINTED GLASS
+  ======================================================= */
+
+  .profile-v4-immersive
+  .profile-v3-mobile-edit {
+    border-color: rgba(213,205,255,.42) !important;
+    background: var(--y30-glass-violet) !important;
+    color: #fff !important;
+    text-shadow:
+      0 1px 3px rgba(39,25,129,.18) !important;
+    box-shadow: var(--y30-glass-shadow-violet) !important;
+    backdrop-filter:
+      blur(24px)
+      saturate(1.45)
+      contrast(1.04) !important;
+    -webkit-backdrop-filter:
+      blur(24px)
+      saturate(1.45)
+      contrast(1.04) !important;
+  }
+
+  .profile-v4-immersive
+  .profile-v3-mobile-edit::before {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255,255,255,.42),
+        rgba(255,255,255,.10) 58%,
+        rgba(255,255,255,0)
+      ) !important;
+  }
+
+  /* =======================================================
+     PROFILE — ICON GLASS
+  ======================================================= */
+
+  .profile-v4-immersive
+  .profile-v3-mobile-action {
+    color: #303746 !important;
+  }
+
+  .profile-v4-immersive
+  .profile-v3-mobile-action .yatut-icon {
+    filter:
+      drop-shadow(
+        0 1px 4px rgba(39,48,82,.08)
+      );
+  }
+
+  .profile-v4-immersive
+  .profile-v3-mobile-more-wrap {
+    overflow: visible !important;
+  }
+
+  /* =======================================================
+     PROFILE — CHIPS / STATUS
+  ======================================================= */
+
+  .profile-v4-immersive
+  .profile-v3-mobile-meta span {
+    border-radius: 15px !important;
+    background: var(--y30-glass-light) !important;
+  }
+
+  .profile-v4-immersive
+  .profile-v3-mobile-status {
+    border-radius: 15px !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.56),
+        rgba(239,236,255,.34)
+      ) !important;
+  }
+
+  /* =======================================================
+     PROFILE — STATS GLASS PANEL
+  ======================================================= */
+
+  .profile-v4-immersive
+  .profile-v3-mobile-stats {
+    position: relative !important;
+    isolation: isolate !important;
+    overflow: hidden !important;
+
+    border:
+      1px solid
+      rgba(255,255,255,.72) !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.66),
+        rgba(245,248,255,.38)
+      ) !important;
+
+    box-shadow:
+      0 16px 36px rgba(26,33,59,.10),
+      inset 0 1px 0 rgba(255,255,255,.92),
+      inset 0 -1px 0 rgba(91,104,145,.05) !important;
+
+    backdrop-filter:
+      blur(27px)
+      saturate(1.36)
+      contrast(1.03) !important;
+
+    -webkit-backdrop-filter:
+      blur(27px)
+      saturate(1.36)
+      contrast(1.03) !important;
+  }
+
+  .profile-v4-immersive
+  .profile-v3-mobile-stats::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: 1px 2px auto 2px !important;
+    height: 46% !important;
+    border-radius: inherit !important;
+    pointer-events: none !important;
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255,255,255,.34),
+        rgba(255,255,255,.05)
+      ) !important;
+  }
+
+  /* =======================================================
+     PROFILE — TABS AS INDIVIDUAL GLASS BUTTONS
+  ======================================================= */
+
+  .profile-v4-immersive
+  .profile-v2-tabs {
+    padding: 6px !important;
+    gap: 6px !important;
+
+    border:
+      1px solid
+      rgba(255,255,255,.72) !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.58),
+        rgba(244,247,255,.32)
+      ) !important;
+
+    box-shadow:
+      0 15px 34px rgba(27,34,58,.10),
+      inset 0 1px 0 rgba(255,255,255,.90) !important;
+
+    backdrop-filter:
+      blur(26px)
+      saturate(1.34) !important;
+
+    -webkit-backdrop-filter:
+      blur(26px)
+      saturate(1.34) !important;
+  }
+
+  .profile-v4-immersive
+  .profile-v2-tabs button {
+    position: relative !important;
+    z-index: 1 !important;
+    min-height: 50px !important;
+
+    border:
+      1px solid
+      rgba(255,255,255,.26) !important;
+
+    border-radius:
+      17px !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.16),
+        rgba(255,255,255,.055)
+      ) !important;
+
+    color: #606777 !important;
+
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.40) !important;
+
+    backdrop-filter:
+      blur(16px)
+      saturate(1.18) !important;
+
+    -webkit-backdrop-filter:
+      blur(16px)
+      saturate(1.18) !important;
+
+    transition:
+      transform .17s ease,
+      color .22s ease,
+      background .22s ease,
+      box-shadow .22s ease,
+      border-color .22s ease !important;
+  }
+
+  .profile-v4-immersive
+  .profile-v2-tabs button.active {
+    border-color:
+      rgba(141,121,255,.26) !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(235,230,255,.68),
+        rgba(255,255,255,.34)
+      ) !important;
+
+    color: #6352ef !important;
+
+    box-shadow:
+      0 8px 19px rgba(88,70,222,.10),
+      inset 0 1px 0 rgba(255,255,255,.82) !important;
+  }
+
+  .profile-v4-immersive
+  .profile-v2-tabs button:active {
+    transform:
+      scale(.975) !important;
+  }
+
+  .profile-v4-immersive
+  .profile-v2-tab-active {
+    opacity: 0 !important;
+    box-shadow: none !important;
+    pointer-events: none !important;
+  }
+
+  /* =======================================================
+     TOPBAR — REAL LIQUID GLASS CONTROLS
+  ======================================================= */
+
+  body.yatut-profile-immersive
+  .topbar .icon-button,
+  body.yatut-profile-immersive
+  .topbar .profile-mini {
+    border-color:
+      rgba(255,255,255,.30) !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.20),
+        rgba(255,255,255,.075)
+      ) !important;
+
+    color:
+      rgba(255,255,255,.92) !important;
+
+    box-shadow:
+      0 11px 28px rgba(8,14,31,.14),
+      inset 0 1px 0 rgba(255,255,255,.34),
+      inset 0 -1px 0 rgba(17,24,48,.06) !important;
+
+    backdrop-filter:
+      blur(24px)
+      saturate(1.48)
+      contrast(1.04) !important;
+
+    -webkit-backdrop-filter:
+      blur(24px)
+      saturate(1.48)
+      contrast(1.04) !important;
+  }
+
+  body.yatut-profile-immersive
+  .topbar .icon-button.active {
+    border-color:
+      rgba(196,186,255,.34) !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(126,105,255,.27),
+        rgba(255,255,255,.09)
+      ) !important;
+
+    color: #fff !important;
+  }
+
+  body.yatut-profile-immersive
+  .topbar .profile-mini {
+    padding: 2px !important;
+  }
+
+  body.yatut-profile-immersive
+  .topbar .profile-mini img {
+    position: relative !important;
+    z-index: 1 !important;
+    border-radius: inherit !important;
+  }
+
+  /* =======================================================
+     GLOBAL MOBILE NAV — GLASS BAR, NO ACTIVE GLOW
+     The approved layout stays untouched.
+  ======================================================= */
+
+  #yatut-global-mobile-nav.mobile-nav {
+    position: fixed !important;
+    isolation: isolate !important;
+    overflow: hidden !important;
+
+    border:
+      1px solid
+      rgba(255,255,255,.76) !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.60),
+        rgba(245,248,255,.30)
+      ) !important;
+
+    box-shadow:
+      0 18px 42px rgba(25,31,55,.13),
+      inset 0 1px 0 rgba(255,255,255,.96),
+      inset 0 -1px 0 rgba(82,95,137,.06) !important;
+
+    backdrop-filter:
+      blur(29px)
+      saturate(1.38)
+      contrast(1.03) !important;
+
+    -webkit-backdrop-filter:
+      blur(29px)
+      saturate(1.38)
+      contrast(1.03) !important;
+  }
+
+  #yatut-global-mobile-nav.mobile-nav::after {
+    content: "" !important;
+    position: absolute !important;
+    pointer-events: none !important;
+    z-index: 0 !important;
+    inset: 1px 3px auto 3px !important;
+    height: 42% !important;
+    border-radius: inherit !important;
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255,255,255,.30),
+        rgba(255,255,255,.035)
+      ) !important;
+  }
+
+  #yatut-global-mobile-nav
+  .mobile-nav-item {
+    position: relative !important;
+    z-index: 2 !important;
+
+    border:
+      1px solid
+      transparent !important;
+
+    border-radius:
+      16px !important;
+
+    background:
+      transparent !important;
+
+    box-shadow:
+      none !important;
+
+    transition:
+      transform .16s ease,
+      color .20s ease !important;
+  }
+
+  #yatut-global-mobile-nav
+  .mobile-nav-item.active,
+  #yatut-global-mobile-nav
+  .mobile-nav-item[aria-current="page"] {
+    border-color:
+      transparent !important;
+
+    background:
+      transparent !important;
+
+    box-shadow:
+      none !important;
+
+    transform:
+      none !important;
+  }
+
+  #yatut-global-mobile-nav
+  .mobile-nav-item:active {
+    transform:
+      scale(.96) !important;
+  }
+
+  #yatut-global-mobile-nav
+  .mobile-nav-item.active
+  .mobile-nav-icon,
+  #yatut-global-mobile-nav
+  .mobile-nav-item[aria-current="page"]
+  .mobile-nav-icon {
+    filter:
+      drop-shadow(
+        0 2px 5px rgba(91,72,231,.15)
+      ) !important;
+  }
+
+  /* =======================================================
+     DARK / SMART-CONTRAST GLASS
+  ======================================================= */
+
+  body.yatut-profile-immersive.yatut-dark-mode
+  :is(
+    .profile-v3-mobile-action,
+    .profile-v3-mobile-status,
+    .profile-v3-mobile-meta span
+  ) {
+    border-color:
+      var(--y30-glass-border-dark) !important;
+
+    background:
+      var(--y30-glass-dark) !important;
+
+    color: #f7f9ff !important;
+
+    box-shadow:
+      var(--y30-glass-shadow-dark) !important;
+  }
+
+  body.yatut-profile-immersive.yatut-dark-mode
+  .profile-v4-immersive
+  .profile-v3-mobile-stats,
+  body.yatut-profile-immersive.yatut-dark-mode
+  .profile-v4-immersive
+  .profile-v2-tabs {
+    border-color:
+      rgba(255,255,255,.14) !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(22,29,49,.58),
+        rgba(9,15,29,.37)
+      ) !important;
+
+    box-shadow:
+      0 17px 38px rgba(0,0,0,.22),
+      inset 0 1px 0 rgba(255,255,255,.10) !important;
+  }
+
+  body.yatut-profile-immersive.yatut-dark-mode
+  .profile-v4-immersive
+  .profile-v2-tabs button {
+    border-color:
+      rgba(255,255,255,.075) !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.065),
+        rgba(255,255,255,.018)
+      ) !important;
+  }
+
+  body.yatut-profile-immersive.yatut-dark-mode
+  .profile-v4-immersive
+  .profile-v2-tabs button.active {
+    border-color:
+      rgba(163,146,255,.22) !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(119,96,255,.20),
+        rgba(255,255,255,.04)
+      ) !important;
+  }
+
+  /* Smart contrast should choose the glass tone under the controls. */
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v3-mobile-actions[data-profile-tone="dark"]
+  .profile-v3-mobile-action {
+    border-color:
+      rgba(255,255,255,.17) !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(27,35,57,.48),
+        rgba(8,15,29,.28)
+      ) !important;
+
+    box-shadow:
+      var(--y30-glass-shadow-dark) !important;
+  }
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v3-mobile-actions[data-profile-tone="light"]
+  .profile-v3-mobile-action {
+    border-color:
+      rgba(255,255,255,.68) !important;
+
+    background:
+      var(--y30-glass-light) !important;
+
+    box-shadow:
+      var(--y30-glass-shadow) !important;
+  }
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v3-mobile-actions
+  .profile-v3-mobile-edit {
+    background:
+      var(--y30-glass-violet) !important;
+
+    color: #fff !important;
+
+    box-shadow:
+      var(--y30-glass-shadow-violet) !important;
+  }
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v3-mobile-stats[data-profile-tone="dark"],
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v2-tabs[data-profile-tone="dark"] {
+    border-color:
+      rgba(255,255,255,.15) !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(25,32,52,.58),
+        rgba(8,14,28,.35)
+      ) !important;
+
+    box-shadow:
+      0 17px 38px rgba(0,0,0,.20),
+      inset 0 1px 0 rgba(255,255,255,.10) !important;
+  }
+
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v3-mobile-stats[data-profile-tone="light"],
+  body.yatut-profile-smart-contrast
+  .profile-v4-immersive
+  .profile-v2-tabs[data-profile-tone="light"] {
+    border-color:
+      rgba(255,255,255,.74) !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.65),
+        rgba(244,247,255,.36)
+      ) !important;
+
+    box-shadow:
+      0 15px 34px rgba(27,34,58,.10),
+      inset 0 1px 0 rgba(255,255,255,.92) !important;
+  }
+}
+
+/* iOS: richer refraction. */
+@media (max-width: 767px) {
+  html.yatut-platform-ios
+  :is(
+    .profile-v3-mobile-edit,
+    .profile-v3-mobile-action,
+    .profile-v3-mobile-status,
+    .profile-v3-mobile-meta span,
+    .profile-v3-mobile-stats,
+    .profile-v2-tabs,
+    .topbar .icon-button,
+    .topbar .profile-mini,
+    #yatut-global-mobile-nav.mobile-nav
+  ) {
+    backdrop-filter:
+      blur(28px)
+      saturate(1.45)
+      contrast(1.035) !important;
+
+    -webkit-backdrop-filter:
+      blur(28px)
+      saturate(1.45)
+      contrast(1.035) !important;
+  }
+
+  /* Android: slightly less blur for performance and cleaner edges. */
+  html.yatut-platform-android
+  :is(
+    .profile-v3-mobile-edit,
+    .profile-v3-mobile-action,
+    .profile-v3-mobile-status,
+    .profile-v3-mobile-meta span,
+    .profile-v3-mobile-stats,
+    .profile-v2-tabs,
+    .topbar .icon-button,
+    .topbar .profile-mini,
+    #yatut-global-mobile-nav.mobile-nav
+  ) {
+    backdrop-filter:
+      blur(18px)
+      saturate(1.24)
+      contrast(1.025) !important;
+
+    -webkit-backdrop-filter:
+      blur(18px)
+      saturate(1.24)
+      contrast(1.025) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is(
+    .profile-v3-mobile-edit,
+    .profile-v3-mobile-action,
+    .profile-v3-mobile-status,
+    .profile-v2-tabs button,
+    .topbar .icon-button,
+    #yatut-global-mobile-nav .mobile-nav-item
+  ) {
+    transition: none !important;
+  }
+}
