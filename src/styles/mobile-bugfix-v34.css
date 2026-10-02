@@ -1,0 +1,329 @@
+/* =========================================================
+   YATUT BUGFIX + OPTICAL GLASS V34
+   Fixes issues visible in mobile screenshots:
+   - visible page scrollbar
+   - overly dark/opaque mobile nav on light backgrounds
+   - PULSE empty-state grey slab + non-glass tabs
+   - chat composer controls not reading as one system
+   - send button shown on empty composer
+========================================================= */
+
+@media (max-width: 767px) {
+  html,
+  body {
+    scrollbar-width: none !important;
+  }
+
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
+    display: none !important;
+  }
+
+  /* =======================================================
+     GLOBAL TOPBAR OPTICAL GLASS
+  ======================================================= */
+
+  .topbar {
+    border-bottom-color: rgba(255,255,255,.18) !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .topbar .icon-button,
+  .topbar .profile-mini {
+    position: relative !important;
+    isolation: isolate !important;
+    overflow: hidden !important;
+
+    border: 1px solid rgba(255,255,255,.52) !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.11),
+        rgba(255,255,255,.015)
+      ) !important;
+
+    box-shadow:
+      0 11px 26px rgba(18,24,46,.10),
+      inset 0 0 0 1px rgba(255,255,255,.16),
+      inset 0 1px 0 rgba(255,255,255,.62) !important;
+
+    backdrop-filter: blur(10px) saturate(1.48) contrast(1.05) !important;
+    -webkit-backdrop-filter: blur(10px) saturate(1.48) contrast(1.05) !important;
+  }
+
+  .topbar .icon-button::before,
+  .topbar .profile-mini::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: 1px 2px auto 2px !important;
+    height: 42% !important;
+    border-radius: inherit !important;
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255,255,255,.58),
+        rgba(255,255,255,.07)
+      ) !important;
+    opacity: .55 !important;
+    pointer-events: none !important;
+    z-index: -1 !important;
+  }
+
+  /* =======================================================
+     MOBILE NAV — LIGHT THEME STABILITY
+  ======================================================= */
+
+  body:not(.yatut-dark-mode)
+  #yatut-global-mobile-nav.mobile-nav {
+    border-color: rgba(255,255,255,.70) !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.26),
+        rgba(255,255,255,.10)
+      ) !important;
+    box-shadow:
+      0 18px 40px rgba(24,30,53,.13),
+      inset 0 0 0 1px rgba(255,255,255,.20),
+      inset 0 1px 0 rgba(255,255,255,.82) !important;
+    backdrop-filter: blur(18px) saturate(1.46) contrast(1.03) !important;
+    -webkit-backdrop-filter: blur(18px) saturate(1.46) contrast(1.03) !important;
+  }
+
+  /* =======================================================
+     PULSE — EMPTY STATE + OPTICAL TABS
+  ======================================================= */
+
+  body:not(.yatut-dark-mode):has(.pulse-immersive__empty),
+  html:not(.yatut-dark-mode):has(.pulse-immersive__empty),
+  body:not(.yatut-dark-mode):has(.pulse-immersive__empty) #root,
+  body:not(.yatut-dark-mode):has(.pulse-immersive__empty) .app,
+  body:not(.yatut-dark-mode):has(.pulse-immersive__empty) .layout-pulse-immersive,
+  body:not(.yatut-dark-mode):has(.pulse-immersive__empty) .layout-pulse-immersive .main-content,
+  body:not(.yatut-dark-mode):has(.pulse-immersive__empty) .pulse-immersive-mobile,
+  body:not(.yatut-dark-mode):has(.pulse-immersive__empty) .pulse-immersive__feed {
+    background:
+      linear-gradient(
+        180deg,
+        #eef5ff 0%,
+        #f7f9fe 40%,
+        #eef1f8 100%
+      ) !important;
+    color: #242936 !important;
+  }
+
+  body:not(.yatut-dark-mode):has(.pulse-immersive__empty)
+  .pulse-immersive__empty {
+    background:
+      radial-gradient(
+        circle at 50% 36%,
+        rgba(117,91,255,.15),
+        transparent 34%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(255,255,255,.18),
+        rgba(234,240,251,.60)
+      ) !important;
+    color: #252a37 !important;
+  }
+
+  body:not(.yatut-dark-mode):has(.pulse-immersive__empty)
+  .pulse-immersive__empty p {
+    color: #7b8190 !important;
+  }
+
+  .pulse-immersive__tabs {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(10,15,27,.18),
+        rgba(10,15,27,.04),
+        transparent
+      ) !important;
+  }
+
+  body:not(.yatut-dark-mode):has(.pulse-immersive__empty)
+  .pulse-immersive__tabs {
+    border-bottom: 1px solid rgba(255,255,255,.38) !important;
+    background:
+      linear-gradient(
+        180deg,
+        rgba(247,249,253,.86),
+        rgba(247,249,253,.58),
+        rgba(247,249,253,.18)
+      ) !important;
+    backdrop-filter: blur(16px) saturate(1.35) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(1.35) !important;
+  }
+
+  .pulse-immersive__tabs button {
+    border: 1px solid rgba(255,255,255,.24) !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.10),
+        rgba(255,255,255,.02)
+      ) !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.34) !important;
+    backdrop-filter: blur(10px) saturate(1.35) !important;
+    -webkit-backdrop-filter: blur(10px) saturate(1.35) !important;
+  }
+
+  body:not(.yatut-dark-mode):has(.pulse-immersive__empty)
+  .pulse-immersive__tabs button {
+    border-color: rgba(255,255,255,.68) !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.33),
+        rgba(255,255,255,.10)
+      ) !important;
+    color: #4d5464 !important;
+    box-shadow:
+      0 8px 18px rgba(29,35,59,.07),
+      inset 0 1px 0 rgba(255,255,255,.76) !important;
+  }
+
+  .pulse-immersive__tabs button.is-active,
+  body:not(.yatut-dark-mode):has(.pulse-immersive__empty)
+  .pulse-immersive__tabs button.is-active {
+    border-color: rgba(194,181,255,.48) !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(130,106,255,.46),
+        rgba(102,76,239,.30)
+      ) !important;
+    color: #fff !important;
+    box-shadow:
+      0 10px 24px rgba(89,67,221,.18),
+      inset 0 1px 0 rgba(255,255,255,.44) !important;
+  }
+
+  .pulse-immersive__empty button {
+    border: 1px solid rgba(205,195,255,.52) !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(130,106,255,.52),
+        rgba(104,79,241,.38)
+      ) !important;
+    box-shadow:
+      0 12px 26px rgba(83,62,221,.18),
+      inset 0 1px 0 rgba(255,255,255,.46) !important;
+    backdrop-filter: blur(10px) saturate(1.48) !important;
+    -webkit-backdrop-filter: blur(10px) saturate(1.48) !important;
+  }
+
+  /* =======================================================
+     CHAT COMPOSER — HIGH-SPECIFICITY FINAL FIX
+  ======================================================= */
+
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode) {
+    border: 1px solid rgba(255,255,255,.66) !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.18),
+        rgba(255,255,255,.055)
+      ) !important;
+    box-shadow:
+      0 14px 32px rgba(23,29,52,.10),
+      inset 0 0 0 1px rgba(255,255,255,.18),
+      inset 0 1px 0 rgba(255,255,255,.76) !important;
+    backdrop-filter: blur(16px) saturate(1.46) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(1.46) !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode)
+  .chat-input-shell {
+    border: 1px solid rgba(255,255,255,.52) !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.13),
+        rgba(255,255,255,.025)
+      ) !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.58),
+      inset 0 -1px 0 rgba(52,67,104,.05) !important;
+    backdrop-filter: blur(10px) saturate(1.34) !important;
+    -webkit-backdrop-filter: blur(10px) saturate(1.34) !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode)
+  .chat-plus,
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode)
+  .chat-voice-button,
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode)
+  .chat-send {
+    border: 1px solid rgba(255,255,255,.58) !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.14),
+        rgba(255,255,255,.025)
+      ) !important;
+    box-shadow:
+      0 8px 18px rgba(24,31,56,.07),
+      inset 0 1px 0 rgba(255,255,255,.62) !important;
+    backdrop-filter: blur(9px) saturate(1.38) !important;
+    -webkit-backdrop-filter: blur(9px) saturate(1.38) !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode)
+  .chat-send:not(.is-empty) {
+    border-color: rgba(203,193,255,.50) !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(124,102,255,.54),
+        rgba(94,72,236,.40)
+      ) !important;
+    color: #fff !important;
+    box-shadow:
+      0 10px 22px rgba(82,61,223,.17),
+      inset 0 1px 0 rgba(255,255,255,.45) !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode)
+  .chat-send.is-empty {
+    display: none !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode):has(.chat-send.is-empty) {
+    grid-template-columns:
+      var(--chat-plus-size)
+      minmax(0,1fr)
+      var(--chat-control-size) !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode):has(.chat-send.is-empty)
+  > .chat-voice-button {
+    grid-column: 3 !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode)
+  .chat-input-shell
+  > .yatut-emoji-wrapper
+  .chat-emoji {
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+}
