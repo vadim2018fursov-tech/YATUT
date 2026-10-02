@@ -27,6 +27,7 @@ import "./styles/wet-glass-nav-v17.css";
 import "./styles/profile-unified-v19.css";
 import "./styles/yatut-experience-layer-v26.css";
 import "./styles/yatut-reference-design-v27.css";
+import "./styles/profile-reference-v28.css";
 import {
   initNativePlatform,
 } from "./services/nativePlatformService.js";
