@@ -1,0 +1,35 @@
+<svg width="520" height="250" viewBox="0 0 520 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <linearGradient id="p1" x1="150" y1="65" x2="370" y2="220" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#C395FF"/>
+    <stop offset=".55" stop-color="#8A66F5"/>
+    <stop offset="1" stop-color="#6849DF"/>
+  </linearGradient>
+  <linearGradient id="p2" x1="170" y1="60" x2="385" y2="220" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#D0A6FF"/>
+    <stop offset=".5" stop-color="#9A72F8"/>
+    <stop offset="1" stop-color="#6A4AE2"/>
+  </linearGradient>
+  <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+    <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#402EA9" flood-opacity=".22"/>
+  </filter>
+</defs>
+<ellipse cx="270" cy="144" rx="180" ry="83" stroke="#F0A3F4" stroke-width="5" stroke-opacity=".68" transform="rotate(-12 270 144)"/>
+<ellipse cx="270" cy="144" rx="152" ry="68" stroke="#83D7FF" stroke-width="4" stroke-opacity=".34" transform="rotate(15 270 144)"/>
+<g filter="url(#glow)">
+  <circle cx="175" cy="103" r="34" fill="url(#p1)"/>
+  <path d="M122 205C125 158 145 131 175 131C205 131 226 159 229 205H122Z" fill="url(#p1)"/>
+  <circle cx="345" cy="103" r="34" fill="url(#p1)"/>
+  <path d="M291 205C295 158 315 131 345 131C376 131 396 159 400 205H291Z" fill="url(#p1)"/>
+  <circle cx="260" cy="78" r="45" fill="url(#p2)"/>
+  <path d="M188 209C192 145 221 112 260 112C300 112 329 146 333 209H188Z" fill="url(#p2)"/>
+</g>
+<g filter="url(#glow)">
+  <rect x="390" y="35" width="88" height="88" rx="28" fill="white" fill-opacity=".17" stroke="white" stroke-opacity=".22"/>
+  <path d="M434 91C409 75 410 55 423 51C430 49 434 54 437 59C440 54 445 49 452 51C465 55 466 75 441 91L437 94L434 91Z" fill="white"/>
+</g>
+<g filter="url(#glow)">
+  <rect x="82" y="156" width="76" height="76" rx="24" fill="white" fill-opacity=".14" stroke="white" stroke-opacity=".20"/>
+  <path d="M120 174L124 186L136 190L124 194L120 206L116 194L104 190L116 186L120 174Z" stroke="#89F2FF" stroke-width="5" stroke-linejoin="round"/>
+</g>
+</svg>
