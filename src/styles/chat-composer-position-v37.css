@@ -1,0 +1,54 @@
+/* =========================================================
+   YATUT CHAT COMPOSER POSITION V37
+   Raise composer clearly above the bottom edge.
+   Keep send button visible.
+========================================================= */
+
+@media (max-width: 767px) {
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode),
+  .messenger.mobile-dialog-open
+  .chat-composer.voice-mode {
+    position: relative !important;
+
+    width: calc(100% - 10px) !important;
+    max-width: calc(100% - 10px) !important;
+
+    margin: 0 5px !important;
+
+    bottom: 32px !important;
+    transform: none !important;
+
+    align-self: center !important;
+  }
+
+  /* When the keyboard is open, the visual viewport is already reduced,
+     so only keep a small gap above it. */
+  html.yatut-chat-input-focused
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode),
+  html.yatut-keyboard-open
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode),
+  html.yatut-chat-input-focused
+  .messenger.mobile-dialog-open
+  .chat-composer.voice-mode,
+  html.yatut-keyboard-open
+  .messenger.mobile-dialog-open
+  .chat-composer.voice-mode {
+    bottom: 8px !important;
+    margin: 0 5px !important;
+  }
+
+  .messenger.mobile-dialog-open
+  .chat-messages {
+    padding-bottom: 42px !important;
+  }
+
+  /* V34 previously hid send on an empty composer.
+     Keep it visible now, but disabled state may still be handled by React. */
+  .messenger.mobile-dialog-open
+  .chat-send.is-empty {
+    display: grid !important;
+  }
+}
