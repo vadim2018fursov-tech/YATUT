@@ -1,0 +1,1840 @@
+/* =========================================================
+   YATUT NOTIFICATIONS + DARK PULSE V59
+   Premium mobile notifications and complete dark-mode tab shell.
+========================================================= */
+
+/* =========================================================
+   NOTIFICATIONS PAGE — LIGHT GLASS
+========================================================= */
+
+@media (max-width: 767px) {
+  .notifications-panel.notifications-page {
+    box-sizing: border-box !important;
+
+    width: 100% !important;
+    min-height:
+      calc(
+        100dvh -
+        64px
+      ) !important;
+
+    padding:
+      10px
+      12px
+      calc(
+        104px +
+        env(
+          safe-area-inset-bottom,
+          0px
+        )
+      ) !important;
+
+    background:
+      radial-gradient(
+        circle at 12% 4%,
+        rgba(107, 87, 244, .075),
+        transparent 26%
+      ),
+      radial-gradient(
+        circle at 92% 16%,
+        rgba(76, 181, 255, .055),
+        transparent 28%
+      ),
+      #f7f8fc !important;
+
+    overflow-x:
+      hidden !important;
+  }
+
+  /* -------------------------------------------------------
+     Title card
+  ------------------------------------------------------- */
+
+  .notifications-page
+  .notifications-header {
+    position:
+      relative !important;
+
+    top:
+      auto !important;
+
+    z-index:
+      8 !important;
+
+    min-height:
+      78px !important;
+
+    margin:
+      0
+      0
+      10px !important;
+
+    padding:
+      12px
+      14px !important;
+
+    display:
+      grid !important;
+
+    grid-template-columns:
+      44px
+      minmax(
+        0,
+        1fr
+      )
+      auto !important;
+
+    align-items:
+      center !important;
+
+    gap:
+      10px !important;
+
+    border:
+      1px solid
+      rgba(
+        255,
+        255,
+        255,
+        .82
+      ) !important;
+
+    border-radius:
+      24px !important;
+
+    background:
+      radial-gradient(
+        circle at 88% 12%,
+        rgba(
+          121,
+          102,
+          246,
+          .09
+        ),
+        transparent 32%
+      ),
+      linear-gradient(
+        145deg,
+        rgba(
+          255,
+          255,
+          255,
+          .78
+        ),
+        rgba(
+          247,
+          249,
+          255,
+          .42
+        )
+      ) !important;
+
+    box-shadow:
+      0
+      15px
+      34px
+      rgba(
+        31,
+        37,
+        64,
+        .065
+      ),
+      inset
+      0
+      1px
+      0
+      rgba(
+        255,
+        255,
+        255,
+        .96
+      ) !important;
+
+    backdrop-filter:
+      blur(20px)
+      saturate(1.28) !important;
+
+    -webkit-backdrop-filter:
+      blur(20px)
+      saturate(1.28) !important;
+  }
+
+  .notifications-page-back {
+    width:
+      44px !important;
+
+    height:
+      44px !important;
+
+    min-width:
+      44px !important;
+
+    padding:
+      0 !important;
+
+    display:
+      grid !important;
+
+    place-items:
+      center !important;
+
+    border:
+      1px solid
+      rgba(
+        224,
+        227,
+        237,
+        .92
+      ) !important;
+
+    border-radius:
+      15px !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(
+          255,
+          255,
+          255,
+          .86
+        ),
+        rgba(
+          245,
+          247,
+          252,
+          .58
+        )
+      ) !important;
+
+    color:
+      #666d7d !important;
+
+    box-shadow:
+      0
+      7px
+      18px
+      rgba(
+        35,
+        41,
+        68,
+        .045
+      ),
+      inset
+      0
+      1px
+      0
+      rgba(
+        255,
+        255,
+        255,
+        .96
+      ) !important;
+  }
+
+  .notifications-page
+  .notifications-heading {
+    min-width:
+      0 !important;
+  }
+
+  .notifications-page
+  .notifications-brand {
+    display:
+      block !important;
+
+    margin-bottom:
+      4px !important;
+
+    color:
+      #7869ed !important;
+
+    font-size:
+      8px !important;
+
+    font-weight:
+      900 !important;
+
+    letter-spacing:
+      .16em !important;
+  }
+
+  .notifications-page
+  .notifications-title-row {
+    display:
+      flex !important;
+
+    align-items:
+      center !important;
+
+    gap:
+      7px !important;
+  }
+
+  .notifications-page
+  .notifications-title-row
+  h2 {
+    margin:
+      0 !important;
+
+    color:
+      #1f2330 !important;
+
+    font-size:
+      26px !important;
+
+    line-height:
+      1 !important;
+
+    font-weight:
+      940 !important;
+
+    letter-spacing:
+      -.045em !important;
+  }
+
+  .notifications-page
+  .notifications-title-row
+  b {
+    min-width:
+      24px !important;
+
+    height:
+      24px !important;
+
+    padding:
+      0
+      7px !important;
+
+    display:
+      inline-flex !important;
+
+    align-items:
+      center !important;
+
+    justify-content:
+      center !important;
+
+    border-radius:
+      999px !important;
+
+    background:
+      linear-gradient(
+        135deg,
+        #7567f5,
+        #9450ea
+      ) !important;
+
+    color:
+      #fff !important;
+
+    font-size:
+      8px !important;
+
+    box-shadow:
+      0
+      6px
+      14px
+      rgba(
+        105,
+        87,
+        244,
+        .16
+      ) !important;
+  }
+
+  .notifications-page
+  .notifications-header-actions {
+    gap:
+      5px !important;
+
+    justify-self:
+      end !important;
+  }
+
+  .notifications-page
+  .notifications-read-all {
+    min-height:
+      36px !important;
+
+    padding:
+      0
+      10px !important;
+
+    border:
+      1px solid
+      rgba(
+        224,
+        227,
+        237,
+        .88
+      ) !important;
+
+    border-radius:
+      12px !important;
+
+    background:
+      rgba(
+        255,
+        255,
+        255,
+        .62
+      ) !important;
+
+    color:
+      #696f7e !important;
+
+    font-size:
+      8px !important;
+
+    font-weight:
+      820 !important;
+  }
+
+  .notifications-page
+  .notifications-global-menu-button {
+    width:
+      38px !important;
+
+    height:
+      38px !important;
+
+    min-width:
+      38px !important;
+
+    border:
+      1px solid
+      rgba(
+        224,
+        227,
+        237,
+        .88
+      ) !important;
+
+    border-radius:
+      13px !important;
+
+    background:
+      rgba(
+        255,
+        255,
+        255,
+        .62
+      ) !important;
+
+    color:
+      #6c7281 !important;
+  }
+
+  /* -------------------------------------------------------
+     Pulse summary
+  ------------------------------------------------------- */
+
+  .notifications-page
+  .notifications-pulse {
+    min-height:
+      82px !important;
+
+    margin:
+      0
+      0
+      10px !important;
+
+    padding:
+      12px
+      14px !important;
+
+    display:
+      grid !important;
+
+    grid-template-columns:
+      48px
+      minmax(
+        0,
+        1fr
+      )
+      auto !important;
+
+    align-items:
+      center !important;
+
+    gap:
+      11px !important;
+
+    border:
+      1px solid
+      rgba(
+        255,
+        255,
+        255,
+        .82
+      ) !important;
+
+    border-radius:
+      22px !important;
+
+    background:
+      radial-gradient(
+        circle at 88% 18%,
+        rgba(
+          112,
+          206,
+          191,
+          .09
+        ),
+        transparent 28%
+      ),
+      linear-gradient(
+        145deg,
+        rgba(
+          255,
+          255,
+          255,
+          .76
+        ),
+        rgba(
+          247,
+          249,
+          255,
+          .40
+        )
+      ) !important;
+
+    box-shadow:
+      0
+      14px
+      32px
+      rgba(
+        31,
+        37,
+        64,
+        .055
+      ),
+      inset
+      0
+      1px
+      0
+      rgba(
+        255,
+        255,
+        255,
+        .94
+      ) !important;
+
+    backdrop-filter:
+      blur(18px)
+      saturate(1.24) !important;
+
+    -webkit-backdrop-filter:
+      blur(18px)
+      saturate(1.24) !important;
+  }
+
+  .notifications-page
+  .notifications-pulse-icon {
+    width:
+      48px !important;
+
+    height:
+      48px !important;
+
+    display:
+      grid !important;
+
+    place-items:
+      center !important;
+
+    border-radius:
+      16px !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        #7567f6,
+        #5c56f0
+      ) !important;
+
+    color:
+      #fff !important;
+
+    box-shadow:
+      0
+      9px
+      22px
+      rgba(
+        105,
+        87,
+        244,
+        .18
+      ),
+      inset
+      0
+      1px
+      0
+      rgba(
+        255,
+        255,
+        255,
+        .25
+      ) !important;
+  }
+
+  .notifications-page
+  .notifications-pulse
+  > div:nth-child(2)
+  > span {
+    display:
+      block !important;
+
+    margin-bottom:
+      3px !important;
+
+    color:
+      #7a6cec !important;
+
+    font-size:
+      8px !important;
+
+    font-weight:
+      900 !important;
+
+    letter-spacing:
+      .15em !important;
+  }
+
+  .notifications-page
+  .notifications-pulse
+  strong {
+    color:
+      #303543 !important;
+
+    font-size:
+      12px !important;
+
+    font-weight:
+      880 !important;
+  }
+
+  .notifications-page
+  .notifications-live-dot {
+    width:
+      18px !important;
+
+    height:
+      18px !important;
+
+    border:
+      5px solid
+      rgba(
+        255,
+        255,
+        255,
+        .92
+      ) !important;
+
+    border-radius:
+      50% !important;
+
+    background:
+      #b7e9df !important;
+
+    box-shadow:
+      0
+      0
+      0
+      5px
+      rgba(
+        119,
+        216,
+        196,
+        .10
+      ) !important;
+  }
+
+  .notifications-page
+  .notifications-live-dot.active {
+    background:
+      #6d5df1 !important;
+
+    box-shadow:
+      0
+      0
+      0
+      5px
+      rgba(
+        109,
+        93,
+        241,
+        .11
+      ) !important;
+  }
+
+  /* -------------------------------------------------------
+     Filter glass rail
+  ------------------------------------------------------- */
+
+  .notifications-page
+  .notifications-filters {
+    position:
+      relative !important;
+
+    top:
+      auto !important;
+
+    z-index:
+      7 !important;
+
+    margin:
+      0
+      0
+      12px !important;
+
+    padding:
+      6px !important;
+
+    display:
+      flex !important;
+
+    gap:
+      5px !important;
+
+    overflow-x:
+      auto !important;
+
+    overflow-y:
+      hidden !important;
+
+    border:
+      1px solid
+      rgba(
+        255,
+        255,
+        255,
+        .80
+      ) !important;
+
+    border-radius:
+      20px !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(
+          255,
+          255,
+          255,
+          .67
+        ),
+        rgba(
+          247,
+          249,
+          255,
+          .36
+        )
+      ) !important;
+
+    box-shadow:
+      0
+      11px
+      26px
+      rgba(
+        31,
+        37,
+        64,
+        .045
+      ),
+      inset
+      0
+      1px
+      0
+      rgba(
+        255,
+        255,
+        255,
+        .92
+      ) !important;
+
+    backdrop-filter:
+      blur(18px)
+      saturate(1.20) !important;
+
+    -webkit-backdrop-filter:
+      blur(18px)
+      saturate(1.20) !important;
+
+    scrollbar-width:
+      none !important;
+  }
+
+  .notifications-page
+  .notifications-filters::-webkit-scrollbar {
+    display:
+      none !important;
+  }
+
+  .notifications-page
+  .notifications-filters
+  button {
+    min-width:
+      max-content !important;
+
+    min-height:
+      40px !important;
+
+    padding:
+      0
+      13px !important;
+
+    display:
+      inline-flex !important;
+
+    align-items:
+      center !important;
+
+    justify-content:
+      center !important;
+
+    gap:
+      6px !important;
+
+    flex:
+      0 0 auto !important;
+
+    border:
+      1px solid
+      rgba(
+        224,
+        227,
+        237,
+        .82
+      ) !important;
+
+    border-radius:
+      14px !important;
+
+    background:
+      rgba(
+        255,
+        255,
+        255,
+        .50
+      ) !important;
+
+    color:
+      #676e7d !important;
+
+    font-size:
+      9px !important;
+
+    font-weight:
+      830 !important;
+
+    box-shadow:
+      inset
+      0
+      1px
+      0
+      rgba(
+        255,
+        255,
+        255,
+        .91
+      ) !important;
+  }
+
+  .notifications-page
+  .notifications-filters
+  button.active {
+    border-color:
+      rgba(
+        111,
+        94,
+        243,
+        .24
+      ) !important;
+
+    background:
+      linear-gradient(
+        135deg,
+        #7567f6,
+        #8d53ec
+      ) !important;
+
+    color:
+      #fff !important;
+
+    box-shadow:
+      0
+      8px
+      18px
+      rgba(
+        105,
+        87,
+        244,
+        .17
+      ),
+      inset
+      0
+      1px
+      0
+      rgba(
+        255,
+        255,
+        255,
+        .24
+      ) !important;
+  }
+
+  .notifications-page
+  .notifications-filters
+  button
+  b {
+    min-width:
+      20px !important;
+
+    height:
+      20px !important;
+
+    padding:
+      0
+      5px !important;
+
+    display:
+      inline-flex !important;
+
+    align-items:
+      center !important;
+
+    justify-content:
+      center !important;
+
+    border-radius:
+      999px !important;
+
+    background:
+      rgba(
+        99,
+        91,
+        255,
+        .09
+      ) !important;
+
+    color:
+      #6d60e8 !important;
+
+    font-size:
+      7px !important;
+  }
+
+  .notifications-page
+  .notifications-filters
+  button.active
+  b {
+    background:
+      rgba(
+        255,
+        255,
+        255,
+        .16
+      ) !important;
+
+    color:
+      #fff !important;
+  }
+
+  /* -------------------------------------------------------
+     List
+  ------------------------------------------------------- */
+
+  .notifications-page
+  .notifications-scroll {
+    overflow:
+      visible !important;
+
+    padding-bottom:
+      0 !important;
+  }
+
+  .notifications-page
+  .notifications-groups {
+    padding:
+      0
+      0
+      12px !important;
+  }
+
+  .notifications-page
+  .notifications-group {
+    margin-top:
+      0 !important;
+  }
+
+  .notifications-page
+  .notifications-group
+  + .notifications-group {
+    margin-top:
+      14px !important;
+  }
+
+  .notifications-page
+  .notifications-group-header {
+    min-height:
+      34px !important;
+
+    padding:
+      0
+      7px
+      7px !important;
+
+    display:
+      flex !important;
+
+    align-items:
+      center !important;
+
+    justify-content:
+      space-between !important;
+  }
+
+  .notifications-page
+  .notifications-group-header
+  h3 {
+    margin:
+      0 !important;
+
+    color:
+      #6b7180 !important;
+
+    font-size:
+      10px !important;
+
+    font-weight:
+      880 !important;
+  }
+
+  .notifications-page
+  .notifications-group-header
+  > span {
+    min-width:
+      24px !important;
+
+    height:
+      24px !important;
+
+    display:
+      grid !important;
+
+    place-items:
+      center !important;
+
+    border-radius:
+      999px !important;
+
+    background:
+      rgba(
+        106,
+        87,
+        244,
+        .055
+      ) !important;
+
+    color:
+      #747a88 !important;
+
+    font-size:
+      8px !important;
+
+    font-weight:
+      820 !important;
+  }
+
+  .notifications-page
+  .notifications-list {
+    display:
+      grid !important;
+
+    gap:
+      8px !important;
+  }
+
+  .notifications-page
+  .notification-item {
+    min-height:
+      112px !important;
+
+    padding:
+      12px !important;
+
+    display:
+      grid !important;
+
+    grid-template-columns:
+      52px
+      minmax(
+        0,
+        1fr
+      )
+      36px !important;
+
+    align-items:
+      start !important;
+
+    gap:
+      10px !important;
+
+    border:
+      1px solid
+      rgba(
+        255,
+        255,
+        255,
+        .80
+      ) !important;
+
+    border-radius:
+      21px !important;
+
+    background:
+      radial-gradient(
+        circle at 92% 12%,
+        rgba(
+          109,
+          93,
+          242,
+          .055
+        ),
+        transparent 32%
+      ),
+      linear-gradient(
+        145deg,
+        rgba(
+          255,
+          255,
+          255,
+          .78
+        ),
+        rgba(
+          248,
+          250,
+          255,
+          .42
+        )
+      ) !important;
+
+    box-shadow:
+      0
+      12px
+      28px
+      rgba(
+        31,
+        37,
+        64,
+        .05
+      ),
+      inset
+      0
+      1px
+      0
+      rgba(
+        255,
+        255,
+        255,
+        .94
+      ) !important;
+
+    backdrop-filter:
+      blur(17px)
+      saturate(1.18) !important;
+
+    -webkit-backdrop-filter:
+      blur(17px)
+      saturate(1.18) !important;
+  }
+
+  .notifications-page
+  .notification-item.unread {
+    border-color:
+      rgba(
+        111,
+        94,
+        243,
+        .15
+      ) !important;
+
+    background:
+      radial-gradient(
+        circle at 94% 8%,
+        rgba(
+          126,
+          95,
+          245,
+          .09
+        ),
+        transparent 30%
+      ),
+      linear-gradient(
+        145deg,
+        rgba(
+          251,
+          250,
+          255,
+          .94
+        ),
+        rgba(
+          246,
+          247,
+          255,
+          .66
+        )
+      ) !important;
+  }
+
+  .notifications-page
+  .notification-avatar-area {
+    width:
+      52px !important;
+
+    height:
+      52px !important;
+  }
+
+  .notifications-page
+  .notification-avatar {
+    width:
+      52px !important;
+
+    height:
+      52px !important;
+
+    min-width:
+      52px !important;
+
+    border:
+      2px solid
+      rgba(
+        255,
+        255,
+        255,
+        .96
+      ) !important;
+
+    border-radius:
+      16px !important;
+
+    box-shadow:
+      0
+      7px
+      17px
+      rgba(
+        31,
+        37,
+        64,
+        .08
+      ) !important;
+  }
+
+  .notifications-page
+  .notification-avatar
+  img {
+    border-radius:
+      14px !important;
+  }
+
+  .notifications-page
+  .notification-content {
+    min-width:
+      0 !important;
+  }
+
+  .notifications-page
+  .notification-top-row
+  strong {
+    color:
+      #292d39 !important;
+
+    font-size:
+      12px !important;
+
+    line-height:
+      1.26 !important;
+
+    font-weight:
+      900 !important;
+  }
+
+  .notifications-page
+  .notification-content
+  > p {
+    margin:
+      5px
+      0
+      0 !important;
+
+    color:
+      #8a909e !important;
+
+    font-size:
+      9.5px !important;
+
+    line-height:
+      1.35 !important;
+  }
+
+  .notifications-page
+  .notification-meta-row {
+    margin-top:
+      9px !important;
+
+    gap:
+      5px !important;
+
+    flex-wrap:
+      wrap !important;
+  }
+
+  .notifications-page
+  .notification-time {
+    color:
+      #9ba0ac !important;
+
+    font-size:
+      8px !important;
+  }
+
+  .notifications-page
+  .notification-source-chip,
+  .notifications-page
+  .notification-action-status,
+  .notifications-page
+  .notification-context-label {
+    min-height:
+      25px !important;
+
+    padding:
+      0
+      8px !important;
+
+    display:
+      inline-flex !important;
+
+    align-items:
+      center !important;
+
+    border-radius:
+      999px !important;
+
+    font-size:
+      7.5px !important;
+
+    font-weight:
+      820 !important;
+  }
+
+  .notifications-page
+  .notification-menu-wrap {
+    align-self:
+      start !important;
+  }
+
+  .notifications-page
+  .notification-more {
+    width:
+      36px !important;
+
+    height:
+      36px !important;
+
+    min-width:
+      36px !important;
+
+    display:
+      grid !important;
+
+    place-items:
+      center !important;
+
+    border:
+      1px solid
+      rgba(
+        224,
+        227,
+        237,
+        .88
+      ) !important;
+
+    border-radius:
+      13px !important;
+
+    background:
+      rgba(
+        255,
+        255,
+        255,
+        .62
+      ) !important;
+
+    color:
+      #6d7382 !important;
+
+    box-shadow:
+      0
+      6px
+      15px
+      rgba(
+        35,
+        41,
+        68,
+        .035
+      ),
+      inset
+      0
+      1px
+      0
+      rgba(
+        255,
+        255,
+        255,
+        .93
+      ) !important;
+  }
+
+  /* Hide the old footer/settings strip on full page. */
+  .notifications-page
+  .notifications-footer {
+    display:
+      none !important;
+  }
+}
+
+/* =========================================================
+   NOTIFICATIONS — DARK MODE
+========================================================= */
+
+@media (max-width: 767px) {
+  body.yatut-dark-mode
+  .notifications-panel.notifications-page {
+    background:
+      radial-gradient(
+        circle at 12% 4%,
+        rgba(
+          111,
+          88,
+          245,
+          .11
+        ),
+        transparent 26%
+      ),
+      #0c111b !important;
+  }
+
+  body.yatut-dark-mode
+  .notifications-page
+  .notifications-header,
+  body.yatut-dark-mode
+  .notifications-page
+  .notifications-pulse,
+  body.yatut-dark-mode
+  .notifications-page
+  .notifications-filters,
+  body.yatut-dark-mode
+  .notifications-page
+  .notification-item {
+    border-color:
+      rgba(
+        255,
+        255,
+        255,
+        .075
+      ) !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(
+          255,
+          255,
+          255,
+          .055
+        ),
+        rgba(
+          11,
+          16,
+          27,
+          .34
+        )
+      ) !important;
+
+    box-shadow:
+      0
+      14px
+      32px
+      rgba(
+        0,
+        0,
+        0,
+        .18
+      ),
+      inset
+      0
+      1px
+      0
+      rgba(
+        255,
+        255,
+        255,
+        .05
+      ) !important;
+  }
+
+  body.yatut-dark-mode
+  .notifications-page
+  .notifications-title-row
+  h2,
+  body.yatut-dark-mode
+  .notifications-page
+  .notifications-pulse
+  strong,
+  body.yatut-dark-mode
+  .notifications-page
+  .notification-top-row
+  strong {
+    color:
+      #f3f5fb !important;
+  }
+
+  body.yatut-dark-mode
+  .notifications-page-back,
+  body.yatut-dark-mode
+  .notifications-page
+  .notifications-global-menu-button,
+  body.yatut-dark-mode
+  .notifications-page
+  .notifications-read-all,
+  body.yatut-dark-mode
+  .notifications-page
+  .notification-more,
+  body.yatut-dark-mode
+  .notifications-page
+  .notifications-filters
+  button {
+    border-color:
+      rgba(
+        255,
+        255,
+        255,
+        .075
+      ) !important;
+
+    background:
+      rgba(
+        255,
+        255,
+        255,
+        .045
+      ) !important;
+
+    color:
+      #b6bbc8 !important;
+  }
+
+  body.yatut-dark-mode
+  .notifications-page
+  .notifications-filters
+  button.active {
+    border-color:
+      rgba(
+        126,
+        108,
+        244,
+        .24
+      ) !important;
+
+    background:
+      linear-gradient(
+        135deg,
+        #6554e8,
+        #853ee3
+      ) !important;
+
+    color:
+      #fff !important;
+  }
+
+  body.yatut-dark-mode
+  .notifications-page
+  .notification-content
+  > p,
+  body.yatut-dark-mode
+  .notifications-page
+  .notifications-group-header
+  h3 {
+    color:
+      #a5aab8 !important;
+  }
+}
+
+/* =========================================================
+   PULSE DARK MODE — FIX THE LIGHT TAB PANEL
+========================================================= */
+
+body.yatut-dark-mode
+.pulse-immersive__tabs {
+  border-bottom:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      .075
+    ) !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(
+        14,
+        18,
+        29,
+        .98
+      ),
+      rgba(
+        12,
+        16,
+        26,
+        .94
+      )
+    ) !important;
+
+  box-shadow:
+    0
+    8px
+    24px
+    rgba(
+      0,
+      0,
+      0,
+      .22
+    ) !important;
+
+  backdrop-filter:
+    blur(22px)
+    saturate(1.20) !important;
+
+  -webkit-backdrop-filter:
+    blur(22px)
+    saturate(1.20) !important;
+}
+
+body.yatut-dark-mode
+.pulse-immersive__tabs
+button {
+  border-color:
+    rgba(
+      255,
+      255,
+      255,
+      .085
+    ) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(
+        255,
+        255,
+        255,
+        .055
+      ),
+      rgba(
+        20,
+        24,
+        37,
+        .68
+      )
+    ) !important;
+
+  color:
+    #c0c5d2 !important;
+
+  box-shadow:
+    inset
+    0
+    1px
+    0
+    rgba(
+      255,
+      255,
+      255,
+      .055
+    ),
+    0
+    6px
+    16px
+    rgba(
+      0,
+      0,
+      0,
+      .10
+    ) !important;
+}
+
+body.yatut-dark-mode
+.pulse-immersive__tabs
+button.is-active {
+  border-color:
+    rgba(
+      128,
+      104,
+      255,
+      .38
+    ) !important;
+
+  color:
+    #fff !important;
+
+  box-shadow:
+    0
+    8px
+    22px
+    rgba(
+      93,
+      66,
+      233,
+      .24
+    ),
+    inset
+    0
+    1px
+    0
+    rgba(
+      255,
+      255,
+      255,
+      .18
+    ) !important;
+}
+
+body.yatut-dark-mode
+.pulse-immersive__tab-active {
+  background:
+    linear-gradient(
+      135deg,
+      #604af2,
+      #8d36e6
+    ) !important;
+}
+
+@media (max-width: 767px) {
+  body.yatut-dark-mode
+  .pulse-immersive-mobile
+  .pulse-immersive__tabs {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(
+          13,
+          17,
+          27,
+          .99
+        ),
+        rgba(
+          11,
+          15,
+          24,
+          .96
+        )
+      ) !important;
+
+    border-bottom-color:
+      rgba(
+        255,
+        255,
+        255,
+        .07
+      ) !important;
+  }
+}
+
+/* =========================================================
+   SMALL PHONE TUNING
+========================================================= */
+
+@media (max-width: 390px) {
+  .notifications-panel.notifications-page {
+    padding-left:
+      9px !important;
+
+    padding-right:
+      9px !important;
+  }
+
+  .notifications-page
+  .notifications-header {
+    min-height:
+      74px !important;
+
+    padding:
+      10px
+      11px !important;
+  }
+
+  .notifications-page
+  .notifications-title-row
+  h2 {
+    font-size:
+      23px !important;
+  }
+
+  .notifications-page
+  .notifications-pulse {
+    min-height:
+      78px !important;
+
+    padding:
+      11px
+      12px !important;
+  }
+
+  .notifications-page
+  .notification-item {
+    min-height:
+      108px !important;
+
+    grid-template-columns:
+      48px
+      minmax(
+        0,
+        1fr
+      )
+      34px !important;
+
+    padding:
+      10px !important;
+  }
+
+  .notifications-page
+  .notification-avatar-area,
+  .notifications-page
+  .notification-avatar {
+    width:
+      48px !important;
+
+    height:
+      48px !important;
+
+    min-width:
+      48px !important;
+  }
+
+  .notifications-page
+  .notification-more {
+    width:
+      34px !important;
+
+    height:
+      34px !important;
+
+    min-width:
+      34px !important;
+  }
+}
