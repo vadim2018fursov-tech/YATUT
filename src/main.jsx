@@ -35,7 +35,7 @@ import "./styles/optical-glass-v32.css";
 import "./styles/optical-glass-v33.css";
 import "./styles/mobile-bugfix-v34.css";
 import "./styles/mobile-fix-v35.css";
-import "./styles/chat-layout-v39.css";
+import "./styles/chat-composer-fixed-v40.css";
 import {
   initNativePlatform,
 } from "./services/nativePlatformService.js";
