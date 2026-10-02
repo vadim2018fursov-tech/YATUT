@@ -10191,12 +10191,6 @@ function Chats({
                       sending
                         ? "is-sending"
                         : ""
-                    } ${
-                      !editing &&
-                      !String(draft || "").trim() &&
-                      !attachment
-                        ? "is-empty"
-                        : ""
                     }`.trim()}
                     disabled={
                       sending
