@@ -1,0 +1,652 @@
+/* =========================================================
+   YATUT PARTICLE BOOT V42
+   Rotating particle sphere loader.
+   Intentionally does not touch the global mobile navigation.
+========================================================= */
+
+.yatut-boot--particles {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 99999 !important;
+  overflow: hidden !important;
+
+  display: grid !important;
+  place-items: center !important;
+
+  background:
+    radial-gradient(
+      circle at 20% 16%,
+      rgba(120, 94, 255, .22),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 84% 28%,
+      rgba(76, 196, 255, .18),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 60% 82%,
+      rgba(255, 122, 214, .13),
+      transparent 34%
+    ),
+    linear-gradient(
+      160deg,
+      #fbfcff 0%,
+      #f1f6ff 48%,
+      #faf5ff 100%
+    ) !important;
+
+  color: #151824 !important;
+  isolation: isolate !important;
+}
+
+.yatut-boot--particles::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: -30% !important;
+  z-index: -3 !important;
+
+  background:
+    conic-gradient(
+      from 220deg at 50% 50%,
+      rgba(117, 91, 255, .07),
+      rgba(79, 194, 255, .10),
+      rgba(255,255,255,0),
+      rgba(255, 120, 209, .08),
+      rgba(117, 91, 255, .07)
+    ) !important;
+
+  filter: blur(58px) !important;
+  animation: yatutBootParticleAurora 12s linear infinite !important;
+}
+
+.yatut-boot--particles::after {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  pointer-events: none !important;
+  z-index: -1 !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.55),
+      rgba(255,255,255,.10) 42%,
+      rgba(255,255,255,.24)
+    ) !important;
+}
+
+.yatut-boot--particles .yatut-boot__ambient {
+  position: absolute !important;
+  border-radius: 50% !important;
+  filter: blur(62px) !important;
+  opacity: .62 !important;
+  pointer-events: none !important;
+}
+
+.yatut-boot--particles .yatut-boot__ambient--one {
+  width: min(76vw, 620px) !important;
+  height: min(76vw, 620px) !important;
+  left: -28vw !important;
+  top: 5vh !important;
+  background: rgba(120, 92, 255, .19) !important;
+  animation: yatutBootParticleFloatOne 8s ease-in-out infinite alternate !important;
+}
+
+.yatut-boot--particles .yatut-boot__ambient--two {
+  width: min(72vw, 580px) !important;
+  height: min(72vw, 580px) !important;
+  right: -24vw !important;
+  top: 18vh !important;
+  background: rgba(72, 193, 255, .15) !important;
+  animation: yatutBootParticleFloatTwo 9s ease-in-out infinite alternate !important;
+}
+
+.yatut-boot--particles .yatut-boot__ambient--three {
+  width: min(68vw, 540px) !important;
+  height: min(68vw, 540px) !important;
+  left: 20vw !important;
+  bottom: -20vh !important;
+  background: rgba(247, 110, 211, .11) !important;
+  animation: yatutBootParticleFloatThree 9.5s ease-in-out infinite alternate !important;
+}
+
+.yatut-boot__particle-stage {
+  position: relative !important;
+  width: min(420px, calc(100vw - 36px)) !important;
+
+  display: grid !important;
+  justify-items: center !important;
+  gap: 34px !important;
+
+  padding:
+    max(20px, env(safe-area-inset-top, 0px))
+    0
+    max(24px, env(safe-area-inset-bottom, 0px)) !important;
+}
+
+.yatut-boot__sphere-shell {
+  position: relative !important;
+  width: min(74vw, 310px) !important;
+  aspect-ratio: 1 !important;
+
+  display: grid !important;
+  place-items: center !important;
+
+  perspective: 720px !important;
+  transform-style: preserve-3d !important;
+
+  filter:
+    drop-shadow(0 28px 46px rgba(91, 73, 214, .10))
+    drop-shadow(0 0 24px rgba(83, 191, 255, .08)) !important;
+}
+
+.yatut-boot__sphere-shell::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 18% !important;
+  border-radius: 50% !important;
+  z-index: -2 !important;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(109, 91, 255, .15),
+      rgba(89, 177, 255, .07) 46%,
+      transparent 72%
+    ) !important;
+
+  filter: blur(22px) !important;
+  animation: yatutBootSphereBreath 2.8s ease-in-out infinite !important;
+}
+
+.yatut-boot__sphere {
+  position: relative !important;
+
+  width: 236px !important;
+  height: 236px !important;
+
+  transform-style: preserve-3d !important;
+  transform:
+    rotateX(-9deg)
+    rotateY(0deg) !important;
+
+  animation:
+    yatutBootSphereRotate
+    6.4s
+    linear
+    infinite !important;
+}
+
+.yatut-boot__sphere.is-static {
+  animation: none !important;
+}
+
+.yatut-boot__particle {
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+
+  width: var(--particle-size) !important;
+  height: var(--particle-size) !important;
+
+  margin:
+    calc(var(--particle-size) / -2)
+    0
+    0
+    calc(var(--particle-size) / -2) !important;
+
+  border-radius: 50% !important;
+
+  opacity: var(--particle-opacity) !important;
+
+  transform:
+    translate3d(
+      var(--particle-x),
+      var(--particle-y),
+      var(--particle-z)
+    ) !important;
+
+  box-shadow:
+    0 0 5px currentColor,
+    0 0 10px rgba(255,255,255,.28) !important;
+
+  backface-visibility: visible !important;
+  will-change: transform !important;
+}
+
+.yatut-boot__particle--violet {
+  color: rgba(112, 87, 255, .95) !important;
+  background: rgba(123, 101, 255, .92) !important;
+}
+
+.yatut-boot__particle--blue {
+  color: rgba(79, 179, 255, .92) !important;
+  background: rgba(91, 188, 255, .90) !important;
+}
+
+.yatut-boot__particle--pink {
+  color: rgba(242, 120, 218, .90) !important;
+  background: rgba(247, 133, 221, .88) !important;
+}
+
+.yatut-boot__particle--ice {
+  color: rgba(255,255,255,.96) !important;
+  background: rgba(255,255,255,.95) !important;
+}
+
+.yatut-boot__beacon {
+  position: absolute !important;
+  left: 68% !important;
+  top: 24% !important;
+
+  width: 16px !important;
+  height: 16px !important;
+
+  border-radius: 50% !important;
+
+  transform-style: preserve-3d !important;
+  transform:
+    translate3d(
+      0,
+      0,
+      128px
+    ) !important;
+
+  animation:
+    yatutBootBeaconApproach
+    2.4s
+    ease-in-out
+    infinite !important;
+}
+
+.yatut-boot__beacon::before,
+.yatut-boot__beacon::after {
+  content: "" !important;
+  position: absolute !important;
+  inset: 50% auto auto 50% !important;
+  border-radius: 50% !important;
+  transform: translate(-50%, -50%) !important;
+}
+
+.yatut-boot__beacon::before {
+  width: 66px !important;
+  height: 66px !important;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,255,255,.92) 0 9%,
+      rgba(255, 221, 251, .62) 18%,
+      rgba(126, 177, 255, .28) 38%,
+      rgba(127, 102, 255, .10) 56%,
+      transparent 72%
+    ) !important;
+
+  filter: blur(2px) !important;
+}
+
+.yatut-boot__beacon::after {
+  width: 116px !important;
+  height: 116px !important;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,255,255,.18),
+      rgba(121, 92, 255, .08) 34%,
+      transparent 66%
+    ) !important;
+
+  filter: blur(9px) !important;
+}
+
+.yatut-boot__beacon-core {
+  position: absolute !important;
+  inset: 2px !important;
+  z-index: 2 !important;
+
+  border-radius: 50% !important;
+
+  background: #fff !important;
+
+  box-shadow:
+    0 0 11px rgba(255,255,255,.98),
+    0 0 22px rgba(179, 152, 255, .82),
+    0 0 42px rgba(94, 183, 255, .48) !important;
+}
+
+.yatut-boot__orbit {
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+
+  border:
+    1px solid
+    rgba(112, 92, 255, .14) !important;
+
+  border-radius: 50% !important;
+
+  pointer-events: none !important;
+
+  transform-style: preserve-3d !important;
+}
+
+.yatut-boot__orbit--one {
+  width: 294px !important;
+  height: 122px !important;
+
+  transform:
+    translate(-50%, -50%)
+    rotate(-10deg) !important;
+
+  animation:
+    yatutBootOrbitA
+    5.2s
+    linear
+    infinite !important;
+}
+
+.yatut-boot__orbit--two {
+  width: 268px !important;
+  height: 156px !important;
+
+  border-color:
+    rgba(82, 188, 255, .13) !important;
+
+  transform:
+    translate(-50%, -50%)
+    rotate(58deg) !important;
+
+  animation:
+    yatutBootOrbitB
+    7.2s
+    linear
+    infinite
+    reverse !important;
+}
+
+.yatut-boot__orbit--three {
+  width: 242px !important;
+  height: 194px !important;
+
+  border-color:
+    rgba(245, 126, 218, .12) !important;
+
+  transform:
+    translate(-50%, -50%)
+    rotate(112deg) !important;
+
+  animation:
+    yatutBootOrbitC
+    8.2s
+    linear
+    infinite !important;
+}
+
+.yatut-boot__logo-lockup {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 16px !important;
+}
+
+.yatut-boot__logo-mark {
+  position: relative !important;
+
+  width: 64px !important;
+  height: 64px !important;
+
+  display: grid !important;
+  place-items: center !important;
+
+  overflow: hidden !important;
+
+  border:
+    1px solid
+    rgba(211, 202, 255, .62) !important;
+
+  border-radius: 20px !important;
+
+  background:
+    radial-gradient(
+      circle at 26% 12%,
+      rgba(255,255,255,.48),
+      transparent 28%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(131, 108, 255, .96),
+      rgba(81, 63, 235, .94)
+    ) !important;
+
+  color: #fff !important;
+
+  font-size: 39px !important;
+  line-height: 1 !important;
+  font-weight: 950 !important;
+  letter-spacing: -.05em !important;
+
+  box-shadow:
+    0 16px 34px rgba(93,72,236,.22),
+    inset 0 1px 0 rgba(255,255,255,.42),
+    inset 0 -1px 0 rgba(47,31,147,.16) !important;
+}
+
+.yatut-boot__logo-mark::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 2px 3px auto 3px !important;
+  height: 42% !important;
+  border-radius: 17px !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.50),
+      rgba(255,255,255,0)
+    ) !important;
+}
+
+.yatut-boot__logo-lockup strong {
+  color: #151824 !important;
+  font-size: 39px !important;
+  line-height: 1 !important;
+  font-weight: 950 !important;
+  letter-spacing: .12em !important;
+  text-shadow:
+    0 1px 0 rgba(255,255,255,.75) !important;
+}
+
+@keyframes yatutBootSphereRotate {
+  0% {
+    transform:
+      rotateX(-9deg)
+      rotateY(0deg)
+      rotateZ(0deg);
+  }
+
+  50% {
+    transform:
+      rotateX(7deg)
+      rotateY(180deg)
+      rotateZ(4deg);
+  }
+
+  100% {
+    transform:
+      rotateX(-9deg)
+      rotateY(360deg)
+      rotateZ(0deg);
+  }
+}
+
+@keyframes yatutBootBeaconApproach {
+  0%,
+  100% {
+    transform:
+      translate3d(0, 0, 120px)
+      scale(.76);
+
+    opacity: .72;
+  }
+
+  48% {
+    transform:
+      translate3d(8px, -5px, 176px)
+      scale(1.34);
+
+    opacity: 1;
+  }
+
+  68% {
+    transform:
+      translate3d(3px, -2px, 148px)
+      scale(.96);
+
+    opacity: .86;
+  }
+}
+
+@keyframes yatutBootSphereBreath {
+  0%,
+  100% {
+    transform: scale(.94);
+    opacity: .58;
+  }
+
+  50% {
+    transform: scale(1.08);
+    opacity: .92;
+  }
+}
+
+@keyframes yatutBootOrbitA {
+  from {
+    transform:
+      translate(-50%, -50%)
+      rotate(-10deg);
+  }
+
+  to {
+    transform:
+      translate(-50%, -50%)
+      rotate(350deg);
+  }
+}
+
+@keyframes yatutBootOrbitB {
+  from {
+    transform:
+      translate(-50%, -50%)
+      rotate(58deg);
+  }
+
+  to {
+    transform:
+      translate(-50%, -50%)
+      rotate(418deg);
+  }
+}
+
+@keyframes yatutBootOrbitC {
+  from {
+    transform:
+      translate(-50%, -50%)
+      rotate(112deg);
+  }
+
+  to {
+    transform:
+      translate(-50%, -50%)
+      rotate(472deg);
+  }
+}
+
+@keyframes yatutBootParticleAurora {
+  to {
+    transform:
+      rotate(360deg)
+      scale(1.06);
+  }
+}
+
+@keyframes yatutBootParticleFloatOne {
+  from {
+    transform:
+      translate3d(0,0,0)
+      scale(1);
+  }
+
+  to {
+    transform:
+      translate3d(12vw,7vh,0)
+      scale(1.10);
+  }
+}
+
+@keyframes yatutBootParticleFloatTwo {
+  from {
+    transform:
+      translate3d(0,0,0)
+      scale(1);
+  }
+
+  to {
+    transform:
+      translate3d(-10vw,9vh,0)
+      scale(1.10);
+  }
+}
+
+@keyframes yatutBootParticleFloatThree {
+  from {
+    transform:
+      translate3d(0,0,0)
+      scale(1);
+  }
+
+  to {
+    transform:
+      translate3d(7vw,-8vh,0)
+      scale(1.12);
+  }
+}
+
+@media (max-width: 390px) {
+  .yatut-boot__particle-stage {
+    gap: 28px !important;
+  }
+
+  .yatut-boot__sphere-shell {
+    width: min(78vw, 286px) !important;
+  }
+
+  .yatut-boot__sphere {
+    transform:
+      scale(.92)
+      rotateX(-9deg)
+      rotateY(0deg) !important;
+  }
+
+  .yatut-boot__logo-mark {
+    width: 58px !important;
+    height: 58px !important;
+    border-radius: 18px !important;
+    font-size: 35px !important;
+  }
+
+  .yatut-boot__logo-lockup strong {
+    font-size: 35px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .yatut-boot--particles::before,
+  .yatut-boot--particles .yatut-boot__ambient,
+  .yatut-boot__sphere,
+  .yatut-boot__orbit,
+  .yatut-boot__beacon,
+  .yatut-boot__sphere-shell::before {
+    animation: none !important;
+  }
+}
