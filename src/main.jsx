@@ -29,6 +29,7 @@ import "./styles/friend-cards-reference-v12.css";
 import "./styles/friend-card-fade-avatar-v14.css";
 import "./styles/friend-card-smooth-cover-v62.css";
 import "./styles/friend-card-avatar-layer-v63.css";
+import "./styles/friends-search-menu-fix-v64.css";
 import "./styles/three-depth-v1.css";
 import "./styles/wet-glass-nav-v17.css";
 import "./styles/profile-unified-v19.css";
