@@ -36,6 +36,7 @@ import "./styles/optical-glass-v33.css";
 import "./styles/mobile-bugfix-v34.css";
 import "./styles/mobile-fix-v35.css";
 import "./styles/visual-polish-v41.css";
+import "./styles/particle-boot-v42.css";
 import {
   initNativePlatform,
 } from "./services/nativePlatformService.js";
