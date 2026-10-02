@@ -1,0 +1,599 @@
+/* =========================================================
+   YATUT EVENTS REFERENCE LOCK V70
+   Match approved screenshot proportions and assets.
+========================================================= */
+
+@media (max-width: 900px) {
+  .events-page {
+    --ev-ink: #1f2330;
+    --ev-muted: #8f95a3;
+    --ev-violet: #6d58f3;
+    --ev-line: rgba(224,226,235,.88);
+
+    gap: 8px !important;
+
+    padding:
+      8px
+      9px
+      calc(92px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  /* ---------- HERO ---------- */
+  .events-page .events-hero {
+    min-height: 0 !important;
+    height: auto !important;
+    aspect-ratio: 2.27 / 1 !important;
+
+    padding: 17px 17px 16px !important;
+
+    grid-template-columns:
+      minmax(0, 1.16fr)
+      minmax(0, .84fr) !important;
+
+    gap: 4px !important;
+
+    border-radius: 23px !important;
+  }
+
+  .events-page .events-hero > div:first-child {
+    max-width: none !important;
+    min-width: 0 !important;
+  }
+
+  .events-page .events-eyebrow {
+    font-size: 7px !important;
+    letter-spacing: .18em !important;
+  }
+
+  .events-page .events-hero h1 {
+    max-width: 245px !important;
+
+    margin-top: 8px !important;
+
+    font-size: 23px !important;
+    line-height: .98 !important;
+    letter-spacing: -.055em !important;
+  }
+
+  .events-page .events-hero p {
+    max-width: 240px !important;
+
+    margin-top: 9px !important;
+
+    font-size: 7.7px !important;
+    line-height: 1.43 !important;
+  }
+
+  .events-page .events-hero > div:first-child > button {
+    min-height: 35px !important;
+    height: 35px !important;
+
+    margin-top: 10px !important;
+    padding: 0 12px !important;
+
+    border-radius: 11px !important;
+
+    font-size: 7.8px !important;
+  }
+
+  .events-page .events-hero-art {
+    width: 100% !important;
+    height: 100% !important;
+
+    display: grid !important;
+    place-items: center !important;
+
+    overflow: visible !important;
+
+    filter: none !important;
+  }
+
+  .events-page .events-hero-art::before,
+  .events-page .events-hero-art::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  .events-page .events-hero-art > img {
+    width: 132% !important;
+    max-width: none !important;
+    height: auto !important;
+
+    object-fit: contain !important;
+
+    transform: translateX(-5%) !important;
+
+    user-select: none !important;
+    pointer-events: none !important;
+  }
+
+  /* Remove old DOM-art rules from previous layers */
+  .events-page .events-hero-orbit,
+  .events-page .events-hero-calendar,
+  .events-page .events-hero-float {
+    display: none !important;
+  }
+
+  /* ---------- SEARCH / TABS ---------- */
+  .events-page .events-controls {
+    gap: 5px !important;
+  }
+
+  .events-page .events-search-row {
+    grid-template-columns: minmax(0,1fr) 42px !important;
+    gap: 5px !important;
+  }
+
+  .events-page .events-search,
+  .events-page .events-filter-button {
+    min-height: 40px !important;
+    height: 40px !important;
+  }
+
+  .events-page .events-search {
+    padding: 0 12px !important;
+    border-radius: 13px !important;
+  }
+
+  .events-page .events-search input {
+    font-size: 9px !important;
+  }
+
+  .events-page .events-filter-button {
+    width: 42px !important;
+    min-width: 42px !important;
+    border-radius: 13px !important;
+  }
+
+  .events-page .events-tabs {
+    min-height: 40px !important;
+    padding: 3px !important;
+    border-radius: 13px !important;
+  }
+
+  .events-page .events-tabs button {
+    min-height: 34px !important;
+    border-radius: 10px !important;
+
+    font-size: 7px !important;
+  }
+
+  /* ---------- SECTION HEADING ---------- */
+  .events-page .events-section-title {
+    min-height: 45px !important;
+
+    margin: 2px 0 4px !important;
+    padding: 0 2px !important;
+  }
+
+  .events-page .events-section-title > div:first-child > span {
+    font-size: 6.5px !important;
+  }
+
+  .events-page .events-section-title h2 {
+    max-width: 310px !important;
+
+    margin-top: 4px !important;
+
+    font-size: 18px !important;
+    line-height: 1 !important;
+    letter-spacing: -.045em !important;
+  }
+
+  .events-page .events-section-title-actions {
+    gap: 4px !important;
+  }
+
+  .events-page .events-section-title-actions > button {
+    min-width: 64px !important;
+    min-height: 27px !important;
+
+    padding: 0 8px !important;
+
+    border-radius: 9px !important;
+
+    font-size: 6.2px !important;
+  }
+
+  .events-page .events-section-title-actions > strong {
+    min-width: 27px !important;
+    height: 27px !important;
+
+    border-radius: 9px !important;
+
+    font-size: 7px !important;
+  }
+
+  /* ---------- EMPTY STATE ---------- */
+  .events-page .events-empty {
+    min-height: 72px !important;
+    max-height: 72px !important;
+
+    grid-template-columns: 35px minmax(0,1fr) !important;
+
+    column-gap: 9px !important;
+
+    padding: 8px 12px !important;
+
+    border-radius: 16px !important;
+  }
+
+  .events-page .events-empty > span {
+    width: 35px !important;
+    height: 35px !important;
+
+    border-radius: 11px !important;
+
+    font-size: 17px !important;
+  }
+
+  .events-page .events-empty h3 {
+    font-size: 11.5px !important;
+  }
+
+  .events-page .events-empty p {
+    font-size: 6.2px !important;
+  }
+
+  /* ---------- CITY ---------- */
+  .events-page .events-city-card {
+    min-height: 0 !important;
+    height: auto !important;
+    aspect-ratio: 5.1 / 1 !important;
+
+    grid-template-columns:
+      1fr
+      49% !important;
+
+    border-radius: 18px !important;
+  }
+
+  .events-page .events-city-card::before {
+    background:
+      linear-gradient(
+        90deg,
+        rgba(255,255,255,1) 0%,
+        rgba(255,255,255,1) 34%,
+        rgba(255,255,255,.98) 43%,
+        rgba(255,255,255,.88) 50%,
+        rgba(255,255,255,.62) 59%,
+        rgba(255,255,255,.28) 70%,
+        rgba(255,255,255,.04) 84%,
+        rgba(255,255,255,0) 100%
+      ) !important;
+  }
+
+  .events-page .events-city-photo {
+    -webkit-mask-image:
+      linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(0,0,0,.10) 9%,
+        rgba(0,0,0,.45) 30%,
+        #000 58%,
+        #000 100%
+      ) !important;
+
+    mask-image:
+      linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(0,0,0,.10) 9%,
+        rgba(0,0,0,.45) 30%,
+        #000 58%,
+        #000 100%
+      ) !important;
+
+    filter:
+      saturate(.96)
+      contrast(.98)
+      brightness(1.03) !important;
+  }
+
+  .events-page .events-city-copy {
+    padding:
+      11px
+      0
+      11px
+      13px !important;
+  }
+
+  .events-page .events-city-copy > span {
+    font-size: 6.2px !important;
+  }
+
+  .events-page .events-city-copy h3 {
+    margin-top: 5px !important;
+
+    gap: 4px !important;
+
+    font-size: 18px !important;
+  }
+
+  .events-page .events-city-copy h3 svg {
+    width: 13px !important;
+    height: 13px !important;
+  }
+
+  .events-page .events-city-copy p {
+    max-width: 155px !important;
+
+    margin-top: 6px !important;
+
+    font-size: 6px !important;
+    line-height: 1.3 !important;
+  }
+
+  .events-page .events-city-stat {
+    right: 10px !important;
+
+    grid-template-columns:
+      repeat(2, 54px) !important;
+
+    gap: 5px !important;
+  }
+
+  .events-page .events-city-stat > div {
+    min-height: 48px !important;
+
+    padding: 6px !important;
+
+    grid-template-columns:
+      16px
+      1fr !important;
+
+    column-gap: 4px !important;
+
+    border-radius: 13px !important;
+  }
+
+  .events-page .events-city-stat svg {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+  .events-page .events-city-stat strong {
+    font-size: 10px !important;
+  }
+
+  .events-page .events-city-stat span {
+    margin-top: 2px !important;
+    font-size: 5.3px !important;
+  }
+
+  /* ---------- CATEGORIES ---------- */
+  .events-page .events-side-card:nth-child(2) {
+    padding: 9px 10px 10px !important;
+    border-radius: 18px !important;
+  }
+
+  .events-page .events-side-card:nth-child(2) > span {
+    margin: 0 0 6px 1px !important;
+    font-size: 6.2px !important;
+  }
+
+  .events-page .events-category-list {
+    gap: 4px !important;
+  }
+
+  .events-page .events-category-list button {
+    min-height: 56px !important;
+
+    padding: 5px 2px !important;
+
+    border-radius: 11px !important;
+  }
+
+  .events-page .events-category-list button > span {
+    width: 25px !important;
+    height: 25px !important;
+
+    border-radius: 9px !important;
+
+    font-size: 12px !important;
+  }
+
+  .events-page .events-category-list strong {
+    font-size: 5px !important;
+    line-height: 1 !important;
+  }
+
+  /* ---------- CTA ---------- */
+  .events-page .events-create-side-card {
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+
+    aspect-ratio: 4.75 / 1 !important;
+
+    grid-template-columns:
+      minmax(0, 1.05fr)
+      minmax(0, .95fr) !important;
+
+    border-radius: 18px !important;
+  }
+
+  .events-page .events-cta-copy {
+    padding:
+      10px
+      0
+      9px
+      13px !important;
+
+    grid-template-columns:
+      20px
+      minmax(0,1fr) !important;
+
+    gap: 4px !important;
+  }
+
+  .events-page .events-cta-copy > span {
+    font-size: 18px !important;
+  }
+
+  .events-page .events-cta-copy > div > strong {
+    font-size: 16px !important;
+  }
+
+  .events-page .events-cta-copy p {
+    max-width: 205px !important;
+
+    margin-top: 4px !important;
+
+    font-size: 5.6px !important;
+    line-height: 1.28 !important;
+  }
+
+  .events-page .events-cta-copy button {
+    min-height: 28px !important;
+
+    margin-top: 6px !important;
+    padding: 0 9px !important;
+
+    gap: 4px !important;
+
+    border-radius: 9px !important;
+
+    font-size: 6.2px !important;
+  }
+
+  .events-page .events-cta-copy button > span {
+    font-size: 10px !important;
+  }
+
+  .events-page .events-cta-art {
+    width: 100% !important;
+    height: 100% !important;
+
+    display: grid !important;
+    place-items: center !important;
+  }
+
+  .events-page .events-cta-art > img {
+    width: 122% !important;
+    max-width: none !important;
+    height: auto !important;
+
+    object-fit: contain !important;
+
+    transform: translateX(-7%) !important;
+
+    user-select: none !important;
+    pointer-events: none !important;
+  }
+
+  .events-page .events-cta-ring,
+  .events-page .events-cta-person,
+  .events-page .events-cta-bubble {
+    display: none !important;
+  }
+
+  /* ---------- EVENT CARDS WHEN REAL DATA EXISTS ---------- */
+  .events-page .events-card-rail {
+    gap: 7px !important;
+  }
+
+  .events-page .event-card {
+    width: min(43vw, 186px) !important;
+    min-width: min(43vw, 186px) !important;
+    flex-basis: min(43vw, 186px) !important;
+
+    border-radius: 14px !important;
+  }
+
+  .events-page .event-card-cover {
+    height: 94px !important;
+    min-height: 94px !important;
+  }
+
+  .events-page .event-card-content {
+    padding: 8px !important;
+  }
+
+  .events-page .event-card-title {
+    font-size: 9px !important;
+    line-height: 1.12 !important;
+  }
+
+  .events-page .event-card-meta,
+  .events-page .event-card-footer {
+    font-size: 6px !important;
+  }
+
+  .events-page .events-side {
+    gap: 8px !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .events-page .events-hero h1 {
+    max-width: 220px !important;
+    font-size: 21px !important;
+  }
+
+  .events-page .events-hero p {
+    max-width: 210px !important;
+    font-size: 7.1px !important;
+  }
+
+  .events-page .events-hero-art > img {
+    width: 138% !important;
+  }
+
+  .events-page .events-section-title h2 {
+    max-width: 250px !important;
+    font-size: 16.5px !important;
+  }
+
+  .events-page .events-city-copy p {
+    max-width: 140px !important;
+  }
+
+  .events-page .events-city-stat {
+    right: 7px !important;
+
+    grid-template-columns:
+      repeat(2, 49px) !important;
+  }
+
+  .events-page .events-category-list button {
+    min-height: 52px !important;
+  }
+
+  .events-page .events-category-list button > span {
+    width: 23px !important;
+    height: 23px !important;
+    font-size: 11px !important;
+  }
+
+  .events-page .events-category-list strong {
+    font-size: 4.6px !important;
+  }
+
+  .events-page .events-cta-copy > div > strong {
+    font-size: 15px !important;
+  }
+
+  .events-page .events-cta-copy p {
+    max-width: 176px !important;
+    font-size: 5.2px !important;
+  }
+}
+
+/* ---------- DARK MODE ---------- */
+@media (max-width: 900px) {
+  body.yatut-dark-mode .events-page .events-city-card::before {
+    background:
+      linear-gradient(
+        90deg,
+        rgba(16,22,37,1) 0%,
+        rgba(16,22,37,1) 34%,
+        rgba(16,22,37,.98) 43%,
+        rgba(16,22,37,.88) 50%,
+        rgba(16,22,37,.62) 59%,
+        rgba(16,22,37,.28) 70%,
+        rgba(16,22,37,.04) 84%,
+        rgba(16,22,37,0) 100%
+      ) !important;
+  }
+}
