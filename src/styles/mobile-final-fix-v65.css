@@ -1,0 +1,182 @@
+/* =========================================================
+   YATUT V65 — FINAL MOBILE FRIEND SEARCH / MENU / KEYBOARD FIX
+   Loaded last on purpose to win over later visual-system layers.
+========================================================= */
+
+@media (max-width: 767px) {
+  /* -------------------------------------------------------
+     FRIENDS SEARCH
+     Keep the actual input visually inert; focus lives on shell.
+  ------------------------------------------------------- */
+  html body .friends-v2-page
+  .friends-v2-search {
+    position: relative !important;
+    isolation: isolate !important;
+    overflow: hidden !important;
+  }
+
+  html body .friends-v2-page
+  .friends-v2-search input,
+  html body .friends-v2-page
+  .friends-v2-search input:hover,
+  html body .friends-v2-page
+  .friends-v2-search input:active,
+  html body .friends-v2-page
+  .friends-v2-search input:focus,
+  html body .friends-v2-page
+  .friends-v2-search input:focus-visible {
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 100% !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    border: 0 !important;
+    outline: 0 !important;
+    outline-offset: 0 !important;
+
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+
+    -webkit-appearance: none !important;
+    appearance: none !important;
+
+    -webkit-tap-highlight-color: transparent !important;
+    caret-color: #6d5df7 !important;
+  }
+
+  html body .friends-v2-page
+  .friends-v2-search:focus-within {
+    border-color: rgba(109,93,247,.28) !important;
+    outline: 0 !important;
+
+    box-shadow:
+      0 0 0 2px rgba(109,93,247,.055),
+      0 12px 32px rgba(62,56,110,.055),
+      inset 0 1px 0 rgba(255,255,255,.92) !important;
+  }
+
+  html body.yatut-dark-mode
+  .friends-v2-page
+  .friends-v2-search:focus-within {
+    border-color: rgba(140,125,255,.30) !important;
+    box-shadow:
+      0 0 0 2px rgba(109,93,247,.08),
+      inset 0 1px 0 rgba(255,255,255,.04) !important;
+  }
+
+  /* -------------------------------------------------------
+     MOBILE MORE MENU
+     Absolutely no purple board behind the 2x2 cards.
+  ------------------------------------------------------- */
+  html body .mobile-more-sheet
+  .mobile-more-primary {
+    position: relative !important;
+
+    margin: 11px 0 0 !important;
+    padding: 0 !important;
+
+    display: grid !important;
+    grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+    gap: 9px !important;
+
+    border: 0 !important;
+    outline: 0 !important;
+    border-radius: 0 !important;
+
+    background: none !important;
+    background-color: transparent !important;
+    background-image: none !important;
+
+    box-shadow: none !important;
+    filter: none !important;
+
+    overflow: visible !important;
+    isolation: isolate !important;
+  }
+
+  html body .mobile-more-sheet
+  .mobile-more-primary::before,
+  html body .mobile-more-sheet
+  .mobile-more-primary::after {
+    content: none !important;
+    display: none !important;
+    background: none !important;
+    box-shadow: none !important;
+  }
+
+  html body .mobile-more-sheet
+  .mobile-more-primary > button {
+    position: relative !important;
+    z-index: 2 !important;
+
+    min-height: 116px !important;
+
+    border: 1px solid rgba(230,231,239,.90) !important;
+    border-radius: 22px !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.94),
+        rgba(247,247,255,.82)
+      ) !important;
+
+    background-color: rgba(255,255,255,.94) !important;
+    background-image:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.94),
+        rgba(247,247,255,.82)
+      ) !important;
+
+    box-shadow:
+      0 9px 24px rgba(45,49,72,.05),
+      inset 0 1px 0 rgba(255,255,255,.96) !important;
+
+    overflow: hidden !important;
+  }
+
+  html body.yatut-dark-mode
+  .mobile-more-sheet
+  .mobile-more-primary {
+    background: none !important;
+    background-color: transparent !important;
+    background-image: none !important;
+  }
+
+  html body.yatut-dark-mode
+  .mobile-more-sheet
+  .mobile-more-primary > button {
+    border-color: rgba(255,255,255,.075) !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.055),
+        rgba(20,24,36,.86)
+      ) !important;
+  }
+
+  /* -------------------------------------------------------
+     KEYBOARD
+     Global nav must not float above iOS keyboard.
+  ------------------------------------------------------- */
+  html.yatut-keyboard-open
+  #yatut-global-mobile-nav {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+
+    transform:
+      translateY(26px)
+      scale(.985) !important;
+
+    transition:
+      opacity 120ms ease,
+      transform 120ms ease,
+      visibility 0s linear 120ms !important;
+  }
+}
