@@ -32,6 +32,7 @@ import "./styles/profile-smart-contrast-v29.css";
 import "./styles/glass-ui-v30.css";
 import "./styles/optical-glass-v31.css";
 import "./styles/optical-glass-v32.css";
+import "./styles/optical-glass-v33.css";
 import {
   initNativePlatform,
 } from "./services/nativePlatformService.js";
