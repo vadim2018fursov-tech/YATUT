@@ -53,6 +53,7 @@ import "./styles/pulse-unified-v53.css";
 import "./styles/pulse-inline-v54.css";
 import "./styles/pulse-bugfix-v55.css";
 import "./styles/notifications-glass-v59.css";
+import "./styles/mobile-final-fix-v65.css";
 import {
   initNativePlatform,
 } from "./services/nativePlatformService.js";
