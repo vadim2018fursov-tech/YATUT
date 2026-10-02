@@ -1,0 +1,524 @@
+/* =========================================================
+   YATUT VISUAL POLISH V41
+   Premium boot screen + home create-post card cleanup.
+   Chat positioning itself is handled in React with inline !important.
+========================================================= */
+
+/* =========================================================
+   PREMIUM BOOT / SPLASH
+========================================================= */
+
+.yatut-boot {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 99999 !important;
+
+  display: grid !important;
+  place-items: center !important;
+
+  overflow: hidden !important;
+
+  background:
+    radial-gradient(
+      circle at 18% 14%,
+      rgba(119, 92, 255, .24),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 84% 24%,
+      rgba(82, 202, 255, .18),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 58% 88%,
+      rgba(255, 126, 219, .12),
+      transparent 36%
+    ),
+    linear-gradient(
+      160deg,
+      #f8f9ff 0%,
+      #eff4ff 46%,
+      #f7f4ff 100%
+    ) !important;
+
+  color: #171a27 !important;
+  isolation: isolate !important;
+}
+
+.yatut-boot::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: -22% !important;
+  z-index: -3 !important;
+
+  background:
+    conic-gradient(
+      from 210deg at 50% 50%,
+      rgba(91, 75, 255, .08),
+      rgba(76, 198, 255, .10),
+      rgba(255, 255, 255, 0),
+      rgba(255, 122, 210, .08),
+      rgba(91, 75, 255, .08)
+    ) !important;
+
+  filter: blur(42px) !important;
+  animation: yatutBootAurora 11s linear infinite !important;
+}
+
+.yatut-boot::after {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, .46),
+      rgba(255, 255, 255, .10) 34%,
+      rgba(255, 255, 255, .20)
+    ) !important;
+}
+
+.yatut-boot__ambient {
+  position: absolute !important;
+  border-radius: 50% !important;
+  filter: blur(54px) !important;
+  opacity: .70 !important;
+  pointer-events: none !important;
+}
+
+.yatut-boot__ambient--one {
+  width: min(68vw, 520px) !important;
+  height: min(68vw, 520px) !important;
+  left: -22vw !important;
+  top: 2vh !important;
+  background: rgba(120, 92, 255, .22) !important;
+  animation: yatutBootFloatOne 7.5s ease-in-out infinite alternate !important;
+}
+
+.yatut-boot__ambient--two {
+  width: min(72vw, 560px) !important;
+  height: min(72vw, 560px) !important;
+  right: -26vw !important;
+  top: 14vh !important;
+  background: rgba(74, 199, 255, .18) !important;
+  animation: yatutBootFloatTwo 8.4s ease-in-out infinite alternate !important;
+}
+
+.yatut-boot__ambient--three {
+  width: min(64vw, 500px) !important;
+  height: min(64vw, 500px) !important;
+  left: 18vw !important;
+  bottom: -26vh !important;
+  background: rgba(247, 111, 215, .12) !important;
+  animation: yatutBootFloatThree 9.2s ease-in-out infinite alternate !important;
+}
+
+.yatut-boot__grain {
+  position: absolute !important;
+  inset: 0 !important;
+  pointer-events: none !important;
+  opacity: .16 !important;
+  background-image:
+    radial-gradient(
+      circle at 20% 30%,
+      rgba(255,255,255,.70) 0 1px,
+      transparent 1.5px
+    ),
+    radial-gradient(
+      circle at 72% 64%,
+      rgba(95,78,210,.22) 0 1px,
+      transparent 1.5px
+    ) !important;
+  background-size: 34px 34px, 46px 46px !important;
+  mask-image:
+    linear-gradient(
+      180deg,
+      transparent,
+      #000 15%,
+      #000 85%,
+      transparent
+    ) !important;
+}
+
+.yatut-boot__brand {
+  width: min(390px, calc(100vw - 48px)) !important;
+  display: grid !important;
+  justify-items: center !important;
+  gap: 22px !important;
+}
+
+.yatut-boot__glass {
+  position: relative !important;
+  isolation: isolate !important;
+
+  width: 100% !important;
+  min-height: 144px !important;
+
+  padding: 20px 24px !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 18px !important;
+
+  overflow: hidden !important;
+
+  border: 1px solid rgba(255,255,255,.76) !important;
+  border-radius: 34px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.52),
+      rgba(255,255,255,.16)
+    ) !important;
+
+  box-shadow:
+    0 28px 70px rgba(52, 58, 99, .14),
+    0 7px 18px rgba(52, 58, 99, .07),
+    inset 0 1px 0 rgba(255,255,255,.94),
+    inset 0 -1px 0 rgba(97,87,170,.07) !important;
+
+  backdrop-filter:
+    blur(28px)
+    saturate(1.45)
+    contrast(1.03) !important;
+
+  -webkit-backdrop-filter:
+    blur(28px)
+    saturate(1.45)
+    contrast(1.03) !important;
+}
+
+.yatut-boot__glass::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 2px 3px auto 3px !important;
+  height: 46% !important;
+  border-radius: 31px 31px 52% 52% !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.58),
+      rgba(255,255,255,.04)
+    ) !important;
+}
+
+.yatut-boot__glass::after {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  border-radius: inherit !important;
+  pointer-events: none !important;
+  z-index: -1 !important;
+
+  background:
+    linear-gradient(
+      118deg,
+      rgba(255, 95, 205, .08),
+      transparent 22%,
+      rgba(67, 186, 255, .10) 62%,
+      rgba(255, 207, 95, .10) 88%
+    ) !important;
+
+  mix-blend-mode: screen !important;
+}
+
+.yatut-boot__ring {
+  position: absolute !important;
+  border: 1px solid rgba(108, 88, 255, .16) !important;
+  border-radius: 50% !important;
+  pointer-events: none !important;
+}
+
+.yatut-boot__ring--one {
+  width: 132px !important;
+  height: 132px !important;
+  left: -46px !important;
+  top: -52px !important;
+}
+
+.yatut-boot__ring--two {
+  width: 170px !important;
+  height: 170px !important;
+  right: -74px !important;
+  bottom: -96px !important;
+  border-color: rgba(64, 190, 255, .15) !important;
+}
+
+.yatut-boot__mark {
+  position: relative !important;
+
+  width: 78px !important;
+  height: 78px !important;
+  flex: 0 0 78px !important;
+
+  display: grid !important;
+  place-items: center !important;
+
+  overflow: hidden !important;
+
+  border: 1px solid rgba(220, 214, 255, .62) !important;
+  border-radius: 25px !important;
+
+  background:
+    radial-gradient(
+      circle at 28% 16%,
+      rgba(255,255,255,.48),
+      transparent 28%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(130, 106, 255, .95),
+      rgba(82, 64, 236, .92)
+    ) !important;
+
+  color: #fff !important;
+
+  box-shadow:
+    0 18px 42px rgba(94,72,246,.24),
+    inset 0 1px 0 rgba(255,255,255,.42),
+    inset 0 -1px 0 rgba(45,30,145,.18) !important;
+
+  filter:
+    drop-shadow(1px 0 1px rgba(65,190,255,.18))
+    drop-shadow(-1px 0 1px rgba(255,104,207,.12)) !important;
+}
+
+.yatut-boot__mark::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 2px 3px auto 3px !important;
+  height: 42% !important;
+  border-radius: 22px !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.48),
+      rgba(255,255,255,0)
+    ) !important;
+}
+
+.yatut-boot__mark span {
+  position: relative !important;
+  z-index: 1 !important;
+  font-size: 49px !important;
+  line-height: 1 !important;
+  font-weight: 950 !important;
+  letter-spacing: -.05em !important;
+}
+
+.yatut-boot__wordmark {
+  min-width: 0 !important;
+  display: grid !important;
+  align-content: center !important;
+  gap: 7px !important;
+}
+
+.yatut-boot__wordmark strong {
+  color: #171a27 !important;
+  font-size: clamp(32px, 9vw, 43px) !important;
+  line-height: .95 !important;
+  font-weight: 950 !important;
+  letter-spacing: .10em !important;
+  text-shadow: 0 1px 0 rgba(255,255,255,.75) !important;
+}
+
+.yatut-boot__tagline {
+  color: rgba(65, 70, 91, .64) !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  letter-spacing: .01em !important;
+}
+
+.yatut-boot__progress {
+  width: min(218px, 58vw) !important;
+  height: 6px !important;
+  padding: 1px !important;
+  overflow: hidden !important;
+
+  border: 1px solid rgba(255,255,255,.72) !important;
+  border-radius: 999px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.42),
+      rgba(216,222,246,.26)
+    ) !important;
+
+  box-shadow:
+    inset 0 1px 2px rgba(63,68,96,.06),
+    0 5px 16px rgba(73,62,149,.07) !important;
+}
+
+.yatut-boot__progress-fill {
+  width: 100% !important;
+  height: 100% !important;
+  transform-origin: left center !important;
+  border-radius: inherit !important;
+
+  background:
+    linear-gradient(
+      90deg,
+      #7766ff,
+      #5abdfb 52%,
+      #b774ff
+    ) !important;
+
+  box-shadow:
+    0 0 13px rgba(104,87,255,.42) !important;
+}
+
+.yatut-boot__loading-copy {
+  margin-top: -11px !important;
+  color: rgba(77, 81, 102, .54) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: .02em !important;
+}
+
+.yatut-boot__rive {
+  width: min(430px, 86vw) !important;
+  height: min(430px, 86vw) !important;
+}
+
+/* =========================================================
+   HOME CREATE POST — REMOVE SHARP RECTANGLE
+========================================================= */
+
+@media (max-width: 767px) {
+  .yatut-create-post,
+  .premium-create-post {
+    border-radius: 28px !important;
+  }
+
+  .yatut-create-post {
+    border-color: rgba(255,255,255,.70) !important;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.60),
+        rgba(255,255,255,.34)
+      ) !important;
+
+    box-shadow:
+      0 16px 38px rgba(28,35,61,.09),
+      inset 0 1px 0 rgba(255,255,255,.90) !important;
+
+    backdrop-filter:
+      blur(18px)
+      saturate(1.30) !important;
+
+    -webkit-backdrop-filter:
+      blur(18px)
+      saturate(1.30) !important;
+  }
+
+  .yatut-create-post-top {
+    margin: 12px 12px 0 !important;
+    padding: 9px 10px !important;
+
+    border: 1px solid rgba(255,255,255,.68) !important;
+    border-radius: 22px !important;
+    outline: 0 !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.26),
+        rgba(255,255,255,.07)
+      ) !important;
+
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.72),
+      0 8px 22px rgba(28,35,61,.05) !important;
+
+    backdrop-filter:
+      blur(12px)
+      saturate(1.30) !important;
+
+    -webkit-backdrop-filter:
+      blur(12px)
+      saturate(1.30) !important;
+  }
+
+  .yatut-create-post-placeholder {
+    min-height: 52px !important;
+    height: auto !important;
+
+    border: 0 !important;
+    border-radius: 18px !important;
+    outline: 0 !important;
+
+    background:
+      rgba(255,255,255,.20) !important;
+
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.52) !important;
+
+    font-size: 16px !important;
+  }
+
+  .premium-create-post,
+  .premium-create-post-main {
+    border-radius: 24px !important;
+  }
+
+  .premium-create-post-main {
+    border: 0 !important;
+    outline: 0 !important;
+  }
+
+  /* Fixed composer needs real content clearance. */
+  .messenger.mobile-dialog-open .chat-messages {
+    padding-bottom: 164px !important;
+    scroll-padding-bottom: 164px !important;
+  }
+}
+
+@keyframes yatutBootAurora {
+  to {
+    transform: rotate(360deg) scale(1.08);
+  }
+}
+
+@keyframes yatutBootFloatOne {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(12vw, 7vh, 0) scale(1.12);
+  }
+}
+
+@keyframes yatutBootFloatTwo {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(-11vw, 10vh, 0) scale(1.10);
+  }
+}
+
+@keyframes yatutBootFloatThree {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(6vw, -9vh, 0) scale(1.14);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .yatut-boot::before,
+  .yatut-boot__ambient {
+    animation: none !important;
+  }
+}
