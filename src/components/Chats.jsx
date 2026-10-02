@@ -5079,6 +5079,189 @@ function Chats({
     mobileDialogOpen,
   ]);
 
+  /* =======================================================
+     MOBILE COMPOSER HARD POSITION V41
+     Inline !important styles intentionally outrank legacy CSS layers.
+  ======================================================= */
+  useEffect(() => {
+    if (
+      !mobileDialogOpen
+    ) {
+      return undefined;
+    }
+
+    const root =
+      document.documentElement;
+
+    const applyComposerPosition =
+      () => {
+        const composer =
+          document.querySelector(
+            ".messenger.mobile-dialog-open .chat-composer"
+          );
+
+        if (
+          !composer ||
+          window.innerWidth >
+            767
+        ) {
+          return;
+        }
+
+        const keyboardOpen =
+          root.classList.contains(
+            "yatut-keyboard-open"
+          );
+
+        composer.style.setProperty(
+          "position",
+          "fixed",
+          "important"
+        );
+
+        composer.style.setProperty(
+          "left",
+          "5px",
+          "important"
+        );
+
+        composer.style.setProperty(
+          "right",
+          "5px",
+          "important"
+        );
+
+        composer.style.setProperty(
+          "top",
+          "auto",
+          "important"
+        );
+
+        composer.style.setProperty(
+          "width",
+          "auto",
+          "important"
+        );
+
+        composer.style.setProperty(
+          "max-width",
+          "none",
+          "important"
+        );
+
+        composer.style.setProperty(
+          "margin",
+          "0",
+          "important"
+        );
+
+        composer.style.setProperty(
+          "transform",
+          "none",
+          "important"
+        );
+
+        composer.style.setProperty(
+          "z-index",
+          "7800",
+          "important"
+        );
+
+        composer.style.setProperty(
+          "bottom",
+          keyboardOpen
+            ? "6px"
+            : "max(58px, calc(env(safe-area-inset-bottom, 0px) + 24px))",
+          "important"
+        );
+      };
+
+    const schedule =
+      () =>
+        window.requestAnimationFrame(
+          applyComposerPosition
+        );
+
+    applyComposerPosition();
+
+    window.addEventListener(
+      "resize",
+      schedule
+    );
+
+    window.visualViewport?.addEventListener(
+      "resize",
+      schedule
+    );
+
+    window.visualViewport?.addEventListener(
+      "scroll",
+      schedule
+    );
+
+    const observer =
+      new MutationObserver(
+        schedule
+      );
+
+    observer.observe(
+      root,
+      {
+        attributes: true,
+        attributeFilter: [
+          "class",
+        ],
+      }
+    );
+
+    return () => {
+      window.removeEventListener(
+        "resize",
+        schedule
+      );
+
+      window.visualViewport?.removeEventListener(
+        "resize",
+        schedule
+      );
+
+      window.visualViewport?.removeEventListener(
+        "scroll",
+        schedule
+      );
+
+      observer.disconnect();
+
+      const composer =
+        document.querySelector(
+          ".messenger .chat-composer"
+        );
+
+      [
+        "position",
+        "left",
+        "right",
+        "top",
+        "bottom",
+        "width",
+        "max-width",
+        "margin",
+        "transform",
+        "z-index",
+      ].forEach(
+        (
+          property
+        ) =>
+          composer?.style.removeProperty(
+            property
+          )
+      );
+    };
+  }, [
+    mobileDialogOpen,
+    voiceOpen,
+  ]);
+
   useEffect(() => {
     if (draft) {
       return;
