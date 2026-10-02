@@ -1,0 +1,368 @@
+/* =========================================================
+   YATUT PULSE BUGFIX V55
+   Fixes legacy immersive rules leaking into LIVE / Nearby / Vlogs.
+========================================================= */
+
+/* =========================================================
+   LIGHT THEME SHELL
+========================================================= */
+
+@media (max-width: 767px) {
+  body.pulse-live-active:not(.yatut-dark-mode),
+  body.pulse-nearby-active:not(.yatut-dark-mode),
+  body.pulse-vlogs-active:not(.yatut-dark-mode),
+  body.pulse-live-active:not(.yatut-dark-mode) #root,
+  body.pulse-nearby-active:not(.yatut-dark-mode) #root,
+  body.pulse-vlogs-active:not(.yatut-dark-mode) #root,
+  body.pulse-live-active:not(.yatut-dark-mode) .app,
+  body.pulse-nearby-active:not(.yatut-dark-mode) .app,
+  body.pulse-vlogs-active:not(.yatut-dark-mode) .app {
+    background:
+      #f7f8fc !important;
+  }
+
+  body.pulse-live-active:not(.yatut-dark-mode)
+  .layout.layout-wide.layout-pulse-immersive,
+  body.pulse-nearby-active:not(.yatut-dark-mode)
+  .layout.layout-wide.layout-pulse-immersive,
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .layout.layout-wide.layout-pulse-immersive,
+  body.pulse-live-active:not(.yatut-dark-mode)
+  .layout-pulse-immersive
+  .main-content,
+  body.pulse-nearby-active:not(.yatut-dark-mode)
+  .layout-pulse-immersive
+  .main-content,
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .layout-pulse-immersive
+  .main-content {
+    background:
+      #f7f8fc !important;
+  }
+
+  body.pulse-live-active:not(.yatut-dark-mode)
+  .topbar,
+  body.pulse-nearby-active:not(.yatut-dark-mode)
+  .topbar,
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .topbar,
+  body.pulse-live-active:not(.yatut-dark-mode)
+  .topbar-inner,
+  body.pulse-nearby-active:not(.yatut-dark-mode)
+  .topbar-inner,
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .topbar-inner {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(249,250,253,.98),
+        rgba(247,248,252,.95)
+      ) !important;
+
+    border-color:
+      rgba(224,227,237,.88) !important;
+
+    color:
+      #1d212c !important;
+
+    box-shadow:
+      0 8px 26px rgba(31,37,64,.045) !important;
+  }
+
+  body.pulse-live-active:not(.yatut-dark-mode)
+  .brand-tut,
+  body.pulse-nearby-active:not(.yatut-dark-mode)
+  .brand-tut,
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .brand-tut {
+    color:
+      #171a24 !important;
+  }
+
+  body.pulse-live-active:not(.yatut-dark-mode)
+  .topbar .icon-button,
+  body.pulse-nearby-active:not(.yatut-dark-mode)
+  .topbar .icon-button,
+  body.pulse-vlogs-active:not(.yatut-dark-mode)
+  .topbar .icon-button {
+    border-color:
+      rgba(219,223,234,.94) !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.88),
+        rgba(244,247,253,.60)
+      ) !important;
+
+    color:
+      #565d6d !important;
+
+    box-shadow:
+      0 7px 18px rgba(35,41,68,.055),
+      inset 0 1px 0 rgba(255,255,255,.96) !important;
+  }
+}
+
+/* =========================================================
+   STOP LEGACY TAB OVERLAP
+========================================================= */
+
+@media (max-width: 767px) {
+  .pulse-immersive-mobile.is-live-tab
+  .pulse-immersive__tabs,
+  .pulse-immersive-mobile.is-nearby-tab
+  .pulse-immersive__tabs,
+  .pulse-immersive-mobile.is-long-form
+  .pulse-immersive__tabs {
+    position:
+      sticky !important;
+
+    top:
+      0 !important;
+
+    margin:
+      0 !important;
+
+    margin-bottom:
+      0 !important;
+
+    padding:
+      7px
+      8px
+      8px !important;
+
+    background:
+      linear-gradient(
+        180deg,
+        rgba(249,250,253,.98),
+        rgba(247,248,252,.94)
+      ) !important;
+
+    box-shadow:
+      0 7px 20px rgba(31,37,64,.045) !important;
+  }
+
+  .pulse-immersive-mobile.is-live-tab
+  .pulse-inline-live,
+  .pulse-immersive-mobile.is-nearby-tab
+  .pulse-inline-nearby,
+  .pulse-immersive-mobile.is-long-form
+  .pulse-long-mobile {
+    margin-top:
+      0 !important;
+
+    padding-top:
+      10px !important;
+  }
+
+  .pulse-immersive-mobile.is-live-tab,
+  .pulse-immersive-mobile.is-nearby-tab,
+  .pulse-immersive-mobile.is-long-form {
+    height:
+      calc(
+        var(
+          --yatut-visual-viewport-height,
+          100dvh
+        ) -
+        64px
+      ) !important;
+
+    min-height:
+      calc(
+        var(
+          --yatut-visual-viewport-height,
+          100dvh
+        ) -
+        64px
+      ) !important;
+
+    overflow-x:
+      hidden !important;
+
+    overflow-y:
+      auto !important;
+
+    overscroll-behavior:
+      contain !important;
+
+    -webkit-overflow-scrolling:
+      touch !important;
+
+    background:
+      #f7f8fc !important;
+  }
+}
+
+/* =========================================================
+   LIVE / NEARBY CONTENT MUST START BELOW TABS
+========================================================= */
+
+.pulse-inline-live,
+.pulse-inline-nearby {
+  position:
+    relative !important;
+
+  z-index:
+    1 !important;
+}
+
+.pulse-inline-live__header,
+.pulse-inline-nearby__header {
+  margin:
+    0 !important;
+
+  transform:
+    none !important;
+}
+
+.pulse-inline-live__empty,
+.pulse-inline-nearby__empty {
+  margin-top:
+    0 !important;
+}
+
+/* =========================================================
+   VLOG SEPARATOR BUG
+========================================================= */
+
+body.pulse-vlogs-active
+.pulse-long-mobile__channels,
+body.pulse-vlogs-active
+.pulse-immersive-mobile
+.pulse-long-mobile__channels {
+  border:
+    0 !important;
+
+  border-bottom:
+    0 !important;
+
+  padding-bottom:
+    8px !important;
+}
+
+body.pulse-vlogs-active
+.pulse-long-mobile
+> .pulse-long-mobile__section-title {
+  position:
+    relative !important;
+
+  margin-top:
+    6px !important;
+
+  padding:
+    10px
+    14px
+    9px !important;
+
+  border:
+    0 !important;
+
+  background:
+    transparent !important;
+}
+
+body.pulse-vlogs-active
+.pulse-long-mobile
+> .pulse-long-mobile__section-title::before {
+  content:
+    none !important;
+}
+
+/* =========================================================
+   DARK MODE RETAINS DARK SHELL
+========================================================= */
+
+@media (max-width: 767px) {
+  body.yatut-dark-mode.pulse-live-active,
+  body.yatut-dark-mode.pulse-nearby-active,
+  body.yatut-dark-mode.pulse-vlogs-active,
+  body.yatut-dark-mode.pulse-live-active #root,
+  body.yatut-dark-mode.pulse-nearby-active #root,
+  body.yatut-dark-mode.pulse-vlogs-active #root,
+  body.yatut-dark-mode.pulse-live-active .app,
+  body.yatut-dark-mode.pulse-nearby-active .app,
+  body.yatut-dark-mode.pulse-vlogs-active .app,
+  body.yatut-dark-mode.pulse-live-active
+  .layout.layout-wide.layout-pulse-immersive,
+  body.yatut-dark-mode.pulse-nearby-active
+  .layout.layout-wide.layout-pulse-immersive,
+  body.yatut-dark-mode.pulse-vlogs-active
+  .layout.layout-wide.layout-pulse-immersive,
+  body.yatut-dark-mode.pulse-live-active
+  .layout-pulse-immersive
+  .main-content,
+  body.yatut-dark-mode.pulse-nearby-active
+  .layout-pulse-immersive
+  .main-content,
+  body.yatut-dark-mode.pulse-vlogs-active
+  .layout-pulse-immersive
+  .main-content {
+    background:
+      #0b101a !important;
+  }
+
+  body.yatut-dark-mode
+  .pulse-immersive-mobile.is-live-tab,
+  body.yatut-dark-mode
+  .pulse-immersive-mobile.is-nearby-tab,
+  body.yatut-dark-mode
+  .pulse-immersive-mobile.is-long-form {
+    background:
+      #0b101a !important;
+  }
+
+  body.yatut-dark-mode
+  .pulse-immersive-mobile.is-live-tab
+  .pulse-immersive__tabs,
+  body.yatut-dark-mode
+  .pulse-immersive-mobile.is-nearby-tab
+  .pulse-immersive__tabs,
+  body.yatut-dark-mode
+  .pulse-immersive-mobile.is-long-form
+  .pulse-immersive__tabs {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(11,16,26,.98),
+        rgba(11,16,26,.94)
+      ) !important;
+
+    border-color:
+      rgba(255,255,255,.08) !important;
+
+    box-shadow:
+      0 8px 22px rgba(0,0,0,.16) !important;
+  }
+}
+
+/* =========================================================
+   EXTRA MOBILE POLISH
+========================================================= */
+
+@media (max-width: 430px) {
+  .pulse-inline-live,
+  .pulse-inline-nearby {
+    padding-top:
+      8px !important;
+  }
+
+  .pulse-inline-live__header,
+  .pulse-inline-nearby__header {
+    min-height:
+      68px !important;
+  }
+
+  .pulse-inline-live__empty,
+  .pulse-inline-nearby__empty {
+    min-height:
+      48vh !important;
+  }
+
+  body.pulse-vlogs-active
+  .pulse-long-mobile
+  > .pulse-long-mobile__section-title {
+    margin-top:
+      8px !important;
+  }
+}
