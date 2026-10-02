@@ -1,0 +1,311 @@
+/* =========================================================
+   YATUT V64 — FRIEND SEARCH FOCUS + MOBILE MENU GRID FIX
+========================================================= */
+
+/* =========================================================
+   FRIENDS SEARCH — iOS FOCUS FIX
+========================================================= */
+
+@media (max-width: 767px) {
+  .friends-v2-search {
+    position: relative !important;
+
+    overflow: hidden !important;
+
+    isolation: isolate !important;
+
+    -webkit-tap-highlight-color:
+      transparent !important;
+  }
+
+  .friends-v2-search input,
+  .friends-v2-search input:focus,
+  .friends-v2-search input:focus-visible,
+  .friends-v2-search input:active {
+    border:
+      0 !important;
+
+    outline:
+      none !important;
+
+    outline-offset:
+      0 !important;
+
+    box-shadow:
+      none !important;
+
+    background:
+      transparent !important;
+
+    -webkit-appearance:
+      none !important;
+
+    appearance:
+      none !important;
+
+    -webkit-tap-highlight-color:
+      transparent !important;
+
+    caret-color:
+      #6f61f4 !important;
+  }
+
+  .friends-v2-page
+  .friends-v2-search
+  input:focus-visible {
+    outline:
+      none !important;
+  }
+
+  .friends-v2-search:focus-within {
+    border-color:
+      rgba(
+        111,
+        97,
+        244,
+        .28
+      ) !important;
+
+    box-shadow:
+      0
+      0
+      0
+      2px
+      rgba(
+        111,
+        97,
+        244,
+        .07
+      ),
+      0
+      12px
+      30px
+      rgba(
+        64,
+        57,
+        110,
+        .055
+      ),
+      inset
+      0
+      1px
+      0
+      rgba(
+        255,
+        255,
+        255,
+        .92
+      ) !important;
+  }
+
+  body.yatut-dark-mode
+  .friends-v2-search:focus-within {
+    border-color:
+      rgba(
+        139,
+        123,
+        255,
+        .28
+      ) !important;
+
+    box-shadow:
+      0
+      0
+      0
+      2px
+      rgba(
+        111,
+        97,
+        244,
+        .09
+      ),
+      inset
+      0
+      1px
+      0
+      rgba(
+        255,
+        255,
+        255,
+        .045
+      ) !important;
+  }
+}
+
+/* =========================================================
+   MOBILE MORE MENU — REMOVE PURPLE GRID BACKPLATE
+========================================================= */
+
+@media (max-width: 767px) {
+  .mobile-more-primary {
+    position: relative !important;
+
+    margin-top:
+      11px !important;
+
+    padding:
+      0 !important;
+
+    border:
+      0 !important;
+
+    outline:
+      0 !important;
+
+    border-radius:
+      0 !important;
+
+    background:
+      transparent !important;
+
+    background-color:
+      transparent !important;
+
+    background-image:
+      none !important;
+
+    box-shadow:
+      none !important;
+
+    overflow:
+      visible !important;
+
+    isolation:
+      isolate !important;
+  }
+
+  .mobile-more-primary::before,
+  .mobile-more-primary::after {
+    content:
+      none !important;
+
+    display:
+      none !important;
+  }
+
+  .mobile-more-primary
+  > button {
+    position:
+      relative !important;
+
+    z-index:
+      1 !important;
+
+    overflow:
+      hidden !important;
+
+    border:
+      1px solid
+      rgba(
+        231,
+        232,
+        241,
+        .90
+      ) !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(
+          255,
+          255,
+          255,
+          .91
+        ),
+        rgba(
+          248,
+          248,
+          255,
+          .78
+        )
+      ) !important;
+
+    box-shadow:
+      0
+      10px
+      25px
+      rgba(
+        45,
+        49,
+        72,
+        .05
+      ),
+      inset
+      0
+      1px
+      0
+      rgba(
+        255,
+        255,
+        255,
+        .94
+      ) !important;
+
+    backdrop-filter:
+      blur(16px)
+      saturate(1.12) !important;
+
+    -webkit-backdrop-filter:
+      blur(16px)
+      saturate(1.12) !important;
+  }
+
+  body.yatut-dark-mode
+  .mobile-more-primary {
+    background:
+      transparent !important;
+
+    background-image:
+      none !important;
+  }
+
+  body.yatut-dark-mode
+  .mobile-more-primary
+  > button {
+    border-color:
+      rgba(
+        255,
+        255,
+        255,
+        .075
+      ) !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(
+          255,
+          255,
+          255,
+          .055
+        ),
+        rgba(
+          20,
+          24,
+          36,
+          .80
+        )
+      ) !important;
+
+    box-shadow:
+      0
+      10px
+      26px
+      rgba(
+        0,
+        0,
+        0,
+        .17
+      ),
+      inset
+      0
+      1px
+      0
+      rgba(
+        255,
+        255,
+        255,
+        .045
+      ) !important;
+  }
+}
