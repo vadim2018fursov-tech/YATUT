@@ -1,0 +1,81 @@
+/* =========================================================
+   YATUT CHAT COMPOSER FIXED V40
+   Final mobile positioning independent of old grid/flex layers.
+========================================================= */
+
+@media (max-width: 767px) {
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode),
+  .messenger.mobile-dialog-open
+  .chat-composer.voice-mode {
+    position: fixed !important;
+
+    left:
+      max(
+        5px,
+        env(safe-area-inset-left, 0px)
+      ) !important;
+
+    right:
+      max(
+        5px,
+        env(safe-area-inset-right, 0px)
+      ) !important;
+
+    bottom:
+      max(
+        30px,
+        calc(
+          env(safe-area-inset-bottom, 0px) +
+          18px
+        )
+      ) !important;
+
+    top: auto !important;
+
+    width: auto !important;
+    max-width: none !important;
+
+    margin: 0 !important;
+    transform: none !important;
+
+    z-index: 7600 !important;
+  }
+
+  /* Real keyboard open: keep the panel close to the keyboard. */
+  html.yatut-keyboard-open
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode),
+  html.yatut-keyboard-open
+  .messenger.mobile-dialog-open
+  .chat-composer.voice-mode {
+    bottom: 7px !important;
+  }
+
+  /* Input focus by itself must not lower the panel. */
+  html.yatut-chat-input-focused:not(.yatut-keyboard-open)
+  .messenger.mobile-dialog-open
+  .chat-composer:not(.voice-mode),
+  html.yatut-chat-input-focused:not(.yatut-keyboard-open)
+  .messenger.mobile-dialog-open
+  .chat-composer.voice-mode {
+    bottom:
+      max(
+        30px,
+        calc(
+          env(safe-area-inset-bottom, 0px) +
+          18px
+        )
+      ) !important;
+  }
+
+  /* Leave enough room in the message canvas for the fixed composer. */
+  .messenger.mobile-dialog-open
+  .chat-messages {
+    padding-bottom:
+      132px !important;
+
+    scroll-padding-bottom:
+      132px !important;
+  }
+}
