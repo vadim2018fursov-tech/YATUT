@@ -59,6 +59,7 @@ import "./styles/events-reference-v66.css";
 import "./styles/events-reference-v67.css";
 import "./styles/events-reference-v68.css";
 import "./styles/events-final-reference-v69.css";
+import "./styles/events-reference-lock-v70.css";
 import "./styles/events-visual-correction-v70.css";
 import {
   initNativePlatform,
