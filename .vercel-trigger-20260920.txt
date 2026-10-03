@@ -1,2 +1,3 @@
 Vercel deployment trigger check. No application code changes.
 Retry deployment after V67: 2026-10-02 19:53 EEST.
+Retry latest Events variant after build-rate-limit: 2026-10-03.
