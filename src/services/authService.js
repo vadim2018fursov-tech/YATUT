@@ -31,6 +31,28 @@ const SESSION_KEY =
 const AUTH_EVENT =
   "yatut:auth-changed";
 
+async function fetchWithTimeout(url, options = {}, timeoutMs = 15000) {
+  const controller = new AbortController();
+  const timeoutId = window.setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    return await fetch(url, {
+      ...options,
+      signal: controller.signal,
+    });
+  } catch (error) {
+    if (error?.name === "AbortError") {
+      throw new Error(
+        "Сервер авторизації не відповідає. Перевірте інтернет і спробуйте ще раз."
+      );
+    }
+
+    throw error;
+  } finally {
+    window.clearTimeout(timeoutId);
+  }
+}
+
 export function isAuthBackendConfigured() {
   return Boolean(
     SUPABASE_URL &&
@@ -81,7 +103,7 @@ export async function checkUsernameAvailable(
   }
 
   const response =
-    await fetch(
+    await fetchWithTimeout(
       `${SUPABASE_URL}/rest/v1/rpc/check_username_available`,
       {
         method:
@@ -119,7 +141,7 @@ export async function getAuthCapabilities() {
 
   try {
     const response =
-      await fetch(
+      await fetchWithTimeout(
         `${SUPABASE_URL}/auth/v1/settings`,
         {
           headers: {
@@ -313,7 +335,7 @@ async function fetchUser(
   accessToken
 ) {
   const response =
-    await fetch(
+    await fetchWithTimeout(
       `${SUPABASE_URL}/auth/v1/user`,
       {
         headers:
@@ -342,7 +364,7 @@ async function refreshSession(
   }
 
   const response =
-    await fetch(
+    await fetchWithTimeout(
       `${SUPABASE_URL}/auth/v1/token?grant_type=refresh_token`,
       {
         method: "POST",
@@ -541,7 +563,7 @@ export async function requestPasswordReset(
   );
 
   const response =
-    await fetch(
+    await fetchWithTimeout(
       url,
       {
         method:
@@ -581,7 +603,7 @@ export async function updatePassword(
   }
 
   const response =
-    await fetch(
+    await fetchWithTimeout(
       `${SUPABASE_URL}/auth/v1/user`,
       {
         method:
@@ -613,7 +635,7 @@ export async function signInWithPassword({
   password,
 }) {
   const response =
-    await fetch(
+    await fetchWithTimeout(
       `${SUPABASE_URL}/auth/v1/token?grant_type=password`,
       {
         method: "POST",
@@ -670,7 +692,7 @@ export async function signUp({
   }
 
   const response =
-    await fetch(
+    await fetchWithTimeout(
       `${SUPABASE_URL}/auth/v1/signup`,
       {
         method: "POST",
@@ -767,7 +789,7 @@ export async function signOut() {
       session?.access_token &&
       isAuthBackendConfigured()
     ) {
-      await fetch(
+      await fetchWithTimeout(
         `${SUPABASE_URL}/auth/v1/logout`,
         {
           method:
@@ -847,7 +869,7 @@ export async function completeMyOnboarding(
   }
 
   const response =
-    await fetch(
+    await fetchWithTimeout(
       `${SUPABASE_URL}/rest/v1/rpc/complete_my_onboarding`,
       {
         method:
@@ -938,7 +960,7 @@ export async function updateMyProfile(
   };
 
   const response =
-    await fetch(
+    await fetchWithTimeout(
       `${SUPABASE_URL}/rest/v1/profiles?id=eq.${encodeURIComponent(
         session.user.id
       )}`,
@@ -982,7 +1004,7 @@ export async function getMyProfile(
   }
 
   const response =
-    await fetch(
+    await fetchWithTimeout(
       `${SUPABASE_URL}/rest/v1/profiles?id=eq.${encodeURIComponent(
         session.user.id
       )}&select=*`,
