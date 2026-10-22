@@ -219,16 +219,26 @@ function saveSession(
     return null;
   }
 
-  const expiresAt =
-    session.expires_at ||
-    (
-      Date.now() +
-      Number(
-        session.expires_in ||
-          3600
-      ) *
-        1000
+  const rawExpiresAt =
+    Number(
+      session.expires_at ||
+        0
     );
+
+  // Supabase returns expires_at in Unix seconds; the browser clock uses milliseconds.
+  const expiresAt =
+    rawExpiresAt
+      ? rawExpiresAt < 1e12
+        ? rawExpiresAt * 1000
+        : rawExpiresAt
+      : (
+          Date.now() +
+          Number(
+            session.expires_in ||
+              3600
+          ) *
+            1000
+        );
 
   const normalized = {
     ...session,
