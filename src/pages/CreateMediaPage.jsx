@@ -505,6 +505,10 @@ export default function CreateMediaPage({
       "moment"
   );
 
+  const isLive =
+    type ===
+    "live";
+
   const publicationKind =
     selectedFormat ===
       "clip" &&
@@ -662,10 +666,6 @@ export default function CreateMediaPage({
     setPublishedMedia,
   ] =
     useState(null);
-
-  const isLive =
-    type ===
-    "live";
 
   const effectiveTitle =
     title.trim() ||
